@@ -1,0 +1,246 @@
+tile.bwm:stokedFire.name=Stoked Fire
+tile.bwm:crank.name=Hand Crank
+tile.bwm:axle.name=Axle
+tile.bwm:gearbox.name=Gearbox
+tile.bwm:tileMachine.0.name=Mill Stone
+tile.bwm:tileMachine.1.name=Pulley
+tile.bwm:tileMachine.2.name=Crucible
+tile.bwm:tileMachine.3.name=Cauldron
+tile.bwm:tileMachine.4.name=Filtered Hopper
+tile.bwm:tileMachine.5.name=Turntable
+tile.bwm:tileMachine.6.name=Turntable
+tile.bwm:pane.0.name=Grate
+tile.bwm:pane.1.name=Slats
+tile.bwm:pane.2.name=Wicker
+tile.bwm:paneGrate.0.name=Oak Grate
+tile.bwm:paneGrate.1.name=Spruce Grate
+tile.bwm:paneGrate.2.name=Birch Grate
+tile.bwm:paneGrate.3.name=Jungle Grate
+tile.bwm:paneGrate.4.name=Acacia Grate
+tile.bwm:paneGrate.5.name=Dark Oak Grate
+tile.bwm:paneSlats.0.name=Oak Slats
+tile.bwm:paneSlats.1.name=Spruce Slats
+tile.bwm:paneSlats.2.name=Birch Slats
+tile.bwm:paneSlats.3.name=Jungle Slats
+tile.bwm:paneSlats.4.name=Acacia Slats
+tile.bwm:paneSlats.5.name=Dark Oak Slats
+
+tile.bwm:kiln.name=Kiln
+tile.bwm:bellows.name=Bellows
+tile.bwm:saw.name=Saw
+tile.bwm:aesthetic.0.name=Chopping Block
+tile.bwm:aesthetic.1.name=Bloodied Chopping Block
+tile.bwm:aesthetic.2.name=Soulforged Steel Block
+tile.bwm:aesthetic.3.name=Concentrated Hellfire Block
+tile.bwm:aesthetic.4.name=Rope Block
+tile.bwm:aesthetic.5.name=Flint Block
+
+tile.bwm:powerSource.0.name=Windmill
+tile.bwm:powerSource.1.name=Waterwheel
+tile.bwm:powerSource.2.name=Vertical Windmill
+
+tile.bwm:planter.0.name=Planter
+tile.bwm:planter.1.name=Dirt Planter
+tile.bwm:planter.2.name=Grass Planter
+tile.bwm:planter.3.name=Soul Sand Planter
+tile.bwm:planter.4.name=Fertile Planter
+tile.bwm:planter.5.name=Sandy Planter
+tile.bwm:planter.6.name=Water Planter
+tile.bwm:planter.7.name=Gravel Planter
+tile.bwm:planter.8.name=Red Sand Planter
+
+tile.bwm:urn.0.name=Urn
+tile.bwm:urn.1.name=Soul Urn (12%)
+tile.bwm:urn.2.name=Soul Urn (25%)
+tile.bwm:urn.3.name=Soul Urn (37%)
+tile.bwm:urn.4.name=Soul Urn (50%)
+tile.bwm:urn.5.name=Soul Urn (62%)
+tile.bwm:urn.6.name=Soul Urn (75%)
+tile.bwm:urn.7.name=Soul Urn (87%)
+tile.bwm:urn.8.name=Soul Urn
+tile.bwm:urn.9.name=Void Urn
+
+tile.bwm:unfiredPottery.0.name=Unfired Crucible
+tile.bwm:unfiredPottery.1.name=Unfired Planter
+tile.bwm:unfiredPottery.2.name=Unfired Urn
+
+tile.bwm:anchor.name=Anchor
+tile.bwm:rope.name=Hemp Rope
+tile.bwm:hibachi.name=Hibachi
+tile.bwm:hemp.name=Hemp Seeds
+tile.bwm:detector.name=Detector Block
+tile.bwm:lens.name=Lens Focus
+
+tile.bwm:booster.name=Mechanical Booster Rail
+
+tile.bwm:woodSiding.0.name=Oak Wood Siding
+tile.bwm:woodSiding.1.name=Spruce Wood Siding
+tile.bwm:woodSiding.2.name=Birch Wood Siding
+tile.bwm:woodSiding.3.name=Jungle Wood Siding
+tile.bwm:woodSiding.4.name=Acacia Wood Siding
+tile.bwm:woodSiding.5.name=Dark Oak Wood Siding
+tile.bwm:woodSiding.6.name=Blood Wood Siding
+
+tile.bwm:woodMoulding.0.name=Oak Wood Moulding
+tile.bwm:woodMoulding.1.name=Spruce Wood Moulding
+tile.bwm:woodMoulding.2.name=Birch Wood Moulding
+tile.bwm:woodMoulding.3.name=Jungle Wood Moulding
+tile.bwm:woodMoulding.4.name=Acacia Wood Moulding
+tile.bwm:woodMoulding.5.name=Dark Oak Wood Moulding
+tile.bwm:woodMoulding.6.name=Blood Wood Moulding
+
+tile.bwm:woodCorner.0.name=Oak Wood Corner
+tile.bwm:woodCorner.1.name=Spruce Wood Corner
+tile.bwm:woodCorner.2.name=Birch Wood Corner
+tile.bwm:woodCorner.3.name=Jungle Wood Corner
+tile.bwm:woodCorner.4.name=Acacia Wood Corner
+tile.bwm:woodCorner.5.name=Dark Oak Wood Corner
+tile.bwm:woodCorner.6.name=Blood Wood Corner
+
+tile.bwm:woodTable.0.name=Oak Wood Table
+tile.bwm:woodTable.1.name=Spruce Wood Table
+tile.bwm:woodTable.2.name=Birch Wood Table
+tile.bwm:woodTable.3.name=Jungle Wood Table
+tile.bwm:woodTable.4.name=Acacia Wood Table
+tile.bwm:woodTable.5.name=Dark Oak Wood Table
+tile.bwm:woodTable.6.name=Blood Wood Table
+
+tile.bwm:woodBench.0.name=Oak Wood Bench
+tile.bwm:woodBench.1.name=Spruce Wood Bench
+tile.bwm:woodBench.2.name=Birch Wood Bench
+tile.bwm:woodBench.3.name=Jungle Wood Bench
+tile.bwm:woodBench.4.name=Acacia Wood Bench
+tile.bwm:woodBench.5.name=Dark Oak Wood Bench
+tile.bwm:woodBench.6.name=Blood Wood Bench
+
+tile.bwm:debarkedOld.0.name=Oak Debarked Log
+tile.bwm:debarkedOld.1.name=Spruce Debarked Log
+tile.bwm:debarkedOld.2.name=Birch Debarked Log
+tile.bwm:debarkedOld.3.name=Jungle Debarked Log
+tile.bwm:debarkedNew.0.name=Acacia Debarked Log
+tile.bwm:debarkedNew.1.name=Dark Oak Debarked Log
+
+tile.bwm:block_dispenser.name=Block Dispenser
+tile.bwm:wolf.name=Companion Cube
+
+tile.bwm:bamboo_chime.0.name=Oak Bamboo Chime
+tile.bwm:bamboo_chime.1.name=Spruce Bamboo Chime
+tile.bwm:bamboo_chime.2.name=Birch Bamboo Chime
+tile.bwm:bamboo_chime.3.name=Jungle Bamboo Chime
+tile.bwm:bamboo_chime.4.name=Acacia Bamboo Chime
+tile.bwm:bamboo_chime.5.name=Dark Oak Bamboo Chime
+tile.bwm:metal_chime.0.name=Oak Wind Chime
+tile.bwm:metal_chime.1.name=Spruce Wind Chime
+tile.bwm:metal_chime.2.name=Birch Wind Chime
+tile.bwm:metal_chime.3.name=Jungle Wind Chime
+tile.bwm:metal_chime.4.name=Acacia Wind Chime
+tile.bwm:metal_chime.5.name=Dark Oak Wind Chime
+tile.bwm:immersive_axle.name=Treated Wood Axle
+
+item.bwm:material.Gear.name=Wooden Gear
+item.bwm:material.Nethercoal.name=Nethercoal
+item.bwm:material.Hemp.name=Hemp
+item.bwm:material.HempFibers.name=Hemp Fibers
+item.bwm:material.HempCloth.name=Hemp Cloth
+item.bwm:material.Dung.name=Dung
+item.bwm:material.TannedLeather.name=Tanned Leather
+item.bwm:material.ScouredLeather.name=Scoured Leather
+item.bwm:material.LeatherStrap.name=Leather Strap
+item.bwm:material.LeatherBelt.name=Leather Belt
+item.bwm:material.WoodBlade.name=Wood Blade
+item.bwm:material.WindmillBlade.name=Windmill Blade
+item.bwm:material.Glue.name=Glue
+item.bwm:material.Tallow.name=Tallow
+item.bwm:material.IngotSteel.name=Soulforged Steel Ingot
+item.bwm:material.GroundNetherrack.name=Ground Netherrack
+item.bwm:material.HellfireDust.name=Hellfire Dust
+item.bwm:material.ConcentratedHellfire.name=Concentrated Hellfire
+item.bwm:material.CoalDust.name=Coal Dust
+item.bwm:material.Filament.name=Filament
+item.bwm:material.PolishedLapis.name=Polished Lapis Lazuli
+item.bwm:material.Potash.name=Potash
+item.bwm:material.Sawdust.name=Sawdust
+item.bwm:material.Souldust.name=Soul Dust
+item.bwm:material.Screw.name=Archimedes Screw
+item.bwm:material.Brimstone.name=Brimstone
+item.bwm:material.Niter.name=Niter
+item.bwm:material.Element.name=Heating Element
+item.bwm:material.Fuse.name=Explosive Fuse
+item.bwm:material.BlastingOil.name=Blasting Oil
+item.bwm:material.NuggetIron.name=Iron Nugget
+item.bwm:material.NuggetSteel.name=Steel Nugget
+item.bwm:material.LeatherCut.name=Cut Leather
+item.bwm:material.TannedLeatherCut.name=Cut Leather (Tanned)
+item.bwm:material.ScouredLeatherCut.name=Cut Leather (Scoured)
+item.bwm:material.RedstoneLatch.name=Redstone Latch
+item.bwm:material.NetherSludge.name=Nether Sludge
+item.bwm:material.Flour.name=Flour
+item.bwm:material.Haft.name=Haft
+item.bwm:material.SoulDust.name=Soul Dust
+item.bwm:material.CharcoalDust.name=Charcoal Dust
+item.bwm:material.SharpeningStone.name=Sharpening Stone
+item.bwm:material.KnifeBlade.name=Knife Blade
+
+item.bwm:donut.name=Donut
+item.bwm:iron_knife.name=Iron Knife
+item.bwm:dynamite.name=Dynamite
+item.bwm:fertilizer.name=Fertilizer
+
+item.bwm:powerSource.Windmill.name=Windmill
+item.bwm:powerSource.Waterwheel.name=Water Wheel
+item.bwm:powerSource.WindmillVertical.name=Vertical Windmill
+
+item.bwm:bark.0.name=Oak Bark
+item.bwm:bark.1.name=Spruce Bark
+item.bwm:bark.2.name=Birch Bark
+item.bwm:bark.3.name=Jungle Bark
+item.bwm:bark.4.name=Acacia Bark
+item.bwm:bark.5.name=Dark Oak Bark
+item.bwm:bark.6.name=Bloody Bark
+
+item.bwm:soulforged_axe.name=Soulforged Steel Axe
+item.bwm:soulforged_hoe.name=Soulforged Steel Hoe
+item.bwm:soulforged_pickaxe.name=Soulforged Steel Pickaxe
+item.bwm:soulforged_shovel.name=Soulforged Steel Shovel
+item.bwm:soulforged_sword.name=Soulforged Steel Sword
+
+lore.bwm:dynamite=Dwarven Fishing Pole
+
+material.hellfire=Hellfire
+material.hellfire.ability=Molten
+material.soulforged=Soulforged Steel
+material.soulforged.ability=Soul-Sucking
+fluid.molten.hellfire=Molten Hellfire
+fluid.molten.soulforge=Molten Soulforged Steel
+
+message.bwm:async.enabled=Asynchronous timer enabled
+message.bwm:async.disabled=Asynchronous timer disabled
+message.bwm:async.unavailable=Unable to toggle asynchronous timer: World does not advance time.
+
+inv.cauldron.name=Cauldron
+inv.cauldron.stoked.name=Stoked Cauldron
+inv.crucible.name=Crucible
+inv.crucible.stoked.name=Stoked Crucible
+inv.filteredhopper.name=Filtered Hopper
+inv.mill.name=Mill Stone
+inv.bwm.dispenser.name=Block Dispenser
+
+itemGroup.bwm:bwTab=Better With Mods
+
+fluid.betterwithmods:soulforged_steel.name=Molten Soulforged Steel
+fluid.betterwithmods:hellfire.name=Molten Hellfire
+material.soulforgedsteel.name=Soulforged Steel
+material.hellfire.name=Hellfire
+modifier.mending.name=Mending
+modifier.mending.desc=§oKillsteal!§r\nAbsorbs experience to repair the tool.
+
+subtitles.bwm.wood.creak=Wood creaks
+subtitles.bwm.stone.grind=Stones grinding
+subtitles.bwm.wood.chime=Wood chimes
+subtitles.bwm.metal.chime=Metal chimes
+
+death.attack.saw=%s forgot the lessons of wood shop safety
+death.attack.choppingBlock=%s lost their head
+
+bwm.message.immersive.0=Only works to bridge mechanical power
+bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos

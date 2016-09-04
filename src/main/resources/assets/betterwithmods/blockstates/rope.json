@@ -1,0 +1,15 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures":{
+			"particle": "betterwithmods:blocks/rope",
+			"side": "betterwithmods:blocks/rope"
+			
+		},
+		"model": "betterwithmods:rope"
+	},
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}]
+	}
+}

@@ -1,0 +1,230 @@
+package betterwithmods.blocks;
+
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import betterwithmods.BWRegistry;
+import betterwithmods.api.block.ISoulSensitive;
+import betterwithmods.util.InvUtils;
+
+public class BlockUrn extends BTWBlock implements ISoulSensitive
+{
+	public static final PropertyEnum<EnumUrnType> urnType = PropertyEnum.create("urntype", EnumUrnType.class);
+	public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
+	public BlockUrn()
+	{
+		super(Material.ROCK, "urn");
+		this.setHardness(2.0F);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(urnType, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
+	}
+	
+	@Override
+	public boolean isOpaqueCube(IBlockState state)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		state = state.getActualState(world, pos);
+		double offset = state.getValue(UNDERHOPPER) ? 0.375D : 0.0D;
+		return new AxisAlignedBB(0.3125D, offset, 0.3125D, 0.6875D, 0.625D + offset, 0.6875D);
+	}
+
+	@Override
+	public boolean isSoulSensitive(IBlockAccess world, BlockPos pos) 
+	{
+		return true;
+	}
+
+	@Override
+	public int getMaximumSoulIntake(IBlockAccess world, BlockPos pos)
+	{
+		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		if(meta < 8)
+			return 8 - meta;
+		else if(meta == 9)
+			return 64;
+		return 0;
+	}
+
+	@Override
+	public int getMaximumSoulIntake(IBlockState state)
+	{
+		int meta = state.getValue(urnType).getMeta();
+		if(meta < 8)
+			return 8 - meta;
+		else if(meta == 9)
+			return 64;
+		return 0;
+	}
+
+	@Override
+	public int processSouls(World world, BlockPos pos, int souls) 
+	{
+		int soulsProcessed = Math.min(getMaximumSoulIntake(world, pos), souls);
+		return soulsProcessed;
+	}
+
+	@Override
+	public boolean consumeSouls(World world, BlockPos pos, int souls)
+	{
+		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		if(souls > 1 && meta != 9)
+		{
+			int newMeta = meta + souls;
+			if(newMeta == 8)
+			{
+				InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.urn, 1, 8));
+				return world.setBlockToAir(pos);
+			}
+			else
+				return world.setBlockState(pos, BWRegistry.urn.getStateFromMeta(newMeta));
+		}
+		else if(meta == 9)
+			return true;
+		return false;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
+	{
+		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		if(meta > 0)
+		{
+			int[] souls = {1, 2, 3, 4, 5, 6, 7, 8, 64};
+			int chance = 80 - souls[meta - 1] / 2;
+			if(rand.nextInt(chance) == 0)
+			{
+				int x = pos.getX(); int y = pos.getY(); int z = pos.getZ();
+				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, rand.nextFloat() * 0.1F + 0.45F, false);
+				float flX = x + rand.nextFloat();
+				float flY = y + rand.nextFloat() * 0.5F + 0.625F;
+				float flZ = z + rand.nextFloat();
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
+			}
+		}
+	}
+	
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		BlockPos up = pos.up();
+		Block block = world.getBlockState(up).getBlock();
+		if(block != null && block == BWRegistry.singleMachines)
+		{
+			if(world.getBlockState(up).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER)
+			{
+				return state.withProperty(UNDERHOPPER, true);
+			}
+		}
+		return state;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
+	{
+	    for (int i = 0; i < 10; i++)
+	    {
+	      list.add(new ItemStack(item, 1, i));
+	    }
+	}
+	
+	@Override
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, urnType, UNDERHOPPER);
+	}
+	
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		IBlockState state = this.getDefaultState().withProperty(urnType, EnumUrnType.byMeta(meta));
+		return state;
+	}
+	
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		int meta = state.getValue(urnType).getMeta();
+		return meta;
+	}
+	
+	public enum EnumUrnType implements IStringSerializable
+	{
+		EMPTY("empty", 0),
+		ONE("12", 1),
+		TWO("25", 2),
+		THREE("37", 3),
+		FOUR("50", 4),
+		FIVE("62", 5),
+		SIX("75", 6),
+		SEVEN("87", 7),
+		FULL("full", 8),
+		VOID("void", 9);
+		
+		private String name;
+		private int meta;
+		private static final EnumUrnType[] META_LOOKUP = new EnumUrnType[values().length];
+		private EnumUrnType(String name, int meta)
+		{
+			this.name = name;
+			this.meta = meta;
+		}
+		
+		public static EnumUrnType byMeta(int meta)
+		{
+			if(meta < 0 || meta > 9)
+				meta = 0;
+			return META_LOOKUP[meta];
+		}
+		
+		static
+		{
+			for(EnumUrnType types : values())
+			{
+				META_LOOKUP[types.getMeta()] = types;
+			}
+		}
+		
+		@Override
+		public String getName() 
+		{
+			return name;
+		}
+		
+		public int getMeta()
+		{
+			return meta;
+		}
+		
+	}
+}

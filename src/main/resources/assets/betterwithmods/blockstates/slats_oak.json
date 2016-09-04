@@ -1,0 +1,13 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"side": "betterwithmods:blocks/wood_side_oak"
+		},
+		"model": "betterwithmods:slats_inv"
+	},
+    "variants": {
+		"normal": [{}],
+        "inventory": [{"transform": "forge:default-block"}]
+    }
+}

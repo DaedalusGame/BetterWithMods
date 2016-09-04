@@ -1,0 +1,7 @@
+{
+  "parent": "betterwithmods:block/table_supported",
+  "textures": {
+    "side": "betterwithmods:blocks/woodSideBirch",
+    "bottom": "blocks/planks_birch"
+  }
+}

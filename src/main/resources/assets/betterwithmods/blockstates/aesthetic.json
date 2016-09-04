@@ -1,0 +1,31 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+        "textures": {
+			"side": "betterwithmods:blocks/chop_block_clean",
+			"north": "#side",
+			"south": "#side",
+			"west": "#side",
+			"east": "#side",
+			"up": "#side",
+			"down": "#side",
+			"particle": "#side"
+        },
+        "model": "cube",
+		"uvlock": true
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+			"transform": "forge:default-block"
+		}],
+		"blocktype": {
+			"chopping": {},
+			"chopping_blood": {"textures": {"side": "betterwithmods:blocks/chop_block_dirty"}},
+			"steel": {"textures": {"side": "betterwithmods:blocks/soulforged_steel"}},
+			"hellfire": {"textures": {"side": "betterwithmods:blocks/hellfire_block"}},
+			"rope": {"textures": {"up": "betterwithmods:blocks/rope_top", "down": "betterwithmods:blocks/rope_top", "side": "betterwithmods:blocks/rope_side"}},
+			"flint": {"textures": {"side": "blocks/bedrock"}}
+        }
+	}
+}

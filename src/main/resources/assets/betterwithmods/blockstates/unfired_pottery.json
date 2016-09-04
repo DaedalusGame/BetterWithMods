@@ -1,0 +1,24 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+        "textures": {
+			"particle": "blocks/clay",
+			"side": "blocks/clay",
+			"top": "#side",
+			"bottom": "#side"
+        },
+        "model": "betterwithmods:cooking_vat",
+		"uvlock": false
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+			"transform": "forge:default-block"
+		}],
+		"potterytype": {
+			"crucible": {"model": "betterwithmods:cooking_vat"},
+			"planter": {"model": "betterwithmods:planter"},
+			"urn": {"model": "betterwithmods:urn"}
+		}
+	}
+}

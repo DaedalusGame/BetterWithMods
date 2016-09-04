@@ -1,0 +1,7 @@
+{
+  "parent": "betterwithmods:block/table_supported",
+  "textures": {
+    "side": "betterwithmods:blocks/woodSideAcacia",
+    "bottom": "blocks/planks_acacia"
+  }
+}

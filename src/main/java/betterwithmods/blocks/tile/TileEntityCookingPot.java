@@ -27,7 +27,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 	
 	public TileEntityCookingPot()
 	{
-		this.contents = new ItemStack[27];
 		this.cookCounter = 0;
 		this.containsValidIngredients = false;
 		this.forceValidation = true;
@@ -35,20 +34,16 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 		this.fireIntensity = -1;
 		this.occupiedSlots = 0;
 	}
-	
+
+
+	@Override
+	public SimpleItemStackHandler createItemStackHandler() {
+		return new SimpleItemStackHandler(this, true, 27);
+	}
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-		NBTTagCompound items = tag.getCompoundTag("Items");
-		for(int i = 0; i < this.contents.length; i++)
-		{
-			if(items.hasKey("Item_" + i))
-			{
-				this.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(items.getCompoundTag("Item_" + i)));
-			}
-		}
-		
 		if(tag.hasKey("fireIntensity"))
 			this.fireIntensity = tag.getInteger("fireIntensity");
 		else
@@ -61,21 +56,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		NBTTagCompound t = super.writeToNBT(tag);
-		
-		NBTTagCompound items = new NBTTagCompound();
-		
-		for(int i = 0; i < this.getSizeInventory(); i++)
-		{
-			if(this.getStackInSlot(i) != null)
-			{
-				NBTTagCompound item = new NBTTagCompound();
-				this.getStackInSlot(i).writeToNBT(item);
-				items.setTag("Item_" + i, item);
-			}
-		}
-		
-		t.setTag("Items", items);
-		
 		t.setInteger("fireIntensity", this.fireIntensity);
 		return t;
 	}
@@ -135,51 +115,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 		validateInventory();
 		this.scaledCookCounter = this.cookCounter * 1000 / 4350;
 	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 27;
-	}
-	
-	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
-		return this.contents[slot];
-	}
-	
-	@Override
-	public ItemStack decrStackSize(int slot, int amount)
-	{
-		return InvUtils.decrStackSize(this, slot, amount);
-	}
-	
-	@Override
-	public ItemStack removeStackFromSlot(int index) 
-	{
-		return getStackInSlotOnClosing(index);
-	}
-	
-	public ItemStack getStackInSlotOnClosing(int slot)
-	{
-		if(this.contents[slot] != null)
-		{
-			ItemStack stack = this.contents[slot];
-			this.contents[slot] = null;
-			return stack;
-		}
-		return null;
-	}
-	
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
-	{
-		this.contents[slot] = stack;
-		if(stack != null && stack.stackSize > getInventoryStackLimit())
-			stack.stackSize = getInventoryStackLimit();
-		markDirty();
-	}
-	
+
+
 	@Override
 	public void markDirty()
 	{
@@ -191,12 +128,12 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 		}
 	}
 	
-	@Override
+
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
 		return this.worldObj.getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
 	}
-	
+
 	public abstract void validateContents();
 	
 	protected abstract CraftingManagerBulk getCraftingManager(boolean stoked);
@@ -275,20 +212,20 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 
 	private boolean containsItem(Item item, int meta)
 	{
-		return InvUtils.getFirstOccupiedStackOfItem(this, item, meta) > -1;
+		return InvUtils.getFirstOccupiedStackOfItem(inventory, item, meta) > -1;
 	}
 	
 	private void explode()
 	{
-		int hellfire = InvUtils.countItemsInInventory(this, BWRegistry.material, 16);
+		int hellfire = InvUtils.countItemsInInventory(inventory, BWRegistry.material, 16);
 		float expSize = hellfire * 10.0F / 64.0F;
-		expSize += InvUtils.countItemsInInventory(this, Items.GUNPOWDER) * 10.0F / 64.0F;
-		expSize += InvUtils.countItemsInInventory(this, BWRegistry.material, 29) * 10.0F / 64.0F;
-		if(InvUtils.countItemsInInventory(this, Item.getItemFromBlock(Blocks.TNT)) > 0)
+		expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
+		expSize += InvUtils.countItemsInInventory(inventory, BWRegistry.material, 29) * 10.0F / 64.0F;
+		if(InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0)
 		{
 			if(expSize < 4.0F)
 				expSize = 4.0F;
-			expSize += InvUtils.countItemsInInventory(this, Item.getItemFromBlock(Blocks.TNT));
+			expSize += InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT));
 		}
 
 		if(expSize < 2.0F)
@@ -296,7 +233,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 		else if(expSize > 10.0F)
 			expSize = 10.0F;
 
-		InvUtils.clearInventory(this);
+		InvUtils.clearInventory(inventory);
 		worldObj.setBlockToAir(pos);
 		worldObj.createExplosion(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, expSize, true);
 	}
@@ -315,15 +252,15 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 	{
 		if(man != null)
 		{
-			if(man.getCraftingResult(this) != null)
+			if(man.getCraftingResult(inventory) != null)
 			{
-				ItemStack[] output = man.craftItem(this);
+				ItemStack[] output = man.craftItem(inventory);
 
 				if(output != null) {
 					for (ItemStack out : output) {
 						if (out != null) {
 							ItemStack stack = out.copy();
-							if (!InvUtils.addItemStackToInv(this, stack))
+							if (!InvUtils.addItemStackToInv(inventory, stack))
 								InvUtils.ejectStackWithOffset(this.worldObj, this.pos.up(), stack);
 						}
 					}
@@ -347,7 +284,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 	private boolean validateInventory()
 	{
 		boolean stateChanged = false;
-		short currentSlots = (short)InvUtils.getOccupiedStacks(this);
+		short currentSlots = (short)InvUtils.getOccupiedStacks(inventory);
 		if(currentSlots != this.occupiedSlots)
 		{
 			this.occupiedSlots = currentSlots;

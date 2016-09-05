@@ -2,8 +2,8 @@ package betterwithmods.craft.bulk;
 
 import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public abstract class CraftingManagerBulk
         return false;
     }
 
-    public ItemStack[] getCraftingResult(IInventory inv)
+    public ItemStack[] getCraftingResult(ItemStackHandler inv)
     {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if(recipe != null) {
@@ -113,7 +113,7 @@ public abstract class CraftingManagerBulk
         return null;
     }
 
-    private BulkRecipe getMostValidRecipe(IInventory inv) {
+    private BulkRecipe getMostValidRecipe(ItemStackHandler inv) {
         HashMap<Integer, BulkRecipe> recipes = getValidRecipes(inv);
         if(!recipes.isEmpty()) {
             for(int i = 0; i < recipes.size(); i++) {
@@ -125,11 +125,11 @@ public abstract class CraftingManagerBulk
         return null;
     }
 
-    private HashMap<Integer, BulkRecipe> getValidRecipes(IInventory inv)
+    private HashMap<Integer, BulkRecipe> getValidRecipes(ItemStackHandler inv)
     {
         HashMap<Integer, BulkRecipe> recipe = new HashMap<Integer, BulkRecipe>();
         int order = 0;
-        for(int i = 0; i < inv.getSizeInventory(); i++) {
+        for(int i = 0; i < inv.getSlots(); i++) {
             BulkRecipe single = null;
             if(inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i).copy();
@@ -171,7 +171,7 @@ public abstract class CraftingManagerBulk
         return false;
     }
 
-    public List<Object> getValidCraftingIngredients(IInventory inv)
+    public List<Object> getValidCraftingIngredients(ItemStackHandler inv)
     {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if(recipe != null)
@@ -179,7 +179,7 @@ public abstract class CraftingManagerBulk
         return null;
     }
 
-    public ItemStack[] craftItem(IInventory inv)
+    public ItemStack[] craftItem(ItemStackHandler inv)
     {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if(recipe != null) {

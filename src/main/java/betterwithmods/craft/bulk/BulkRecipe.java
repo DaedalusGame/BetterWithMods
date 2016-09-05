@@ -3,9 +3,9 @@ package betterwithmods.craft.bulk;
 import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +112,7 @@ public class BulkRecipe
         return this.input;
     }
 
-    public boolean matches(IInventory inv)
+    public boolean matches(ItemStackHandler inv)
     {
         ArrayList<Object> required = new ArrayList<Object>(input);
 
@@ -160,7 +160,7 @@ public class BulkRecipe
         return false;
     }
 
-    public boolean consumeInvIngredients(IInventory inv)
+    public boolean consumeInvIngredients(ItemStackHandler inv)
     {
         boolean success = true;
         ArrayList<Object> required = input;

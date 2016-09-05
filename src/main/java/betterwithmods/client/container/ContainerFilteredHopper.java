@@ -1,7 +1,5 @@
 package betterwithmods.client.container;
 
-import java.util.Iterator;
-
 import betterwithmods.blocks.BlockBTWPane;
 import betterwithmods.blocks.BlockNewBTWPane;
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
@@ -12,18 +10,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
+
+import java.util.Iterator;
 
 public class ContainerFilteredHopper extends Container
 {
 	private TileEntityFilteredHopper tile;
 	private byte lastMechPower;
 	
-	public ContainerFilteredHopper(IInventory inv, TileEntityFilteredHopper tile)
+	public ContainerFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile)
 	{
 		this.tile = tile;
 		this.lastMechPower = 0;
@@ -32,23 +33,23 @@ public class ContainerFilteredHopper extends Container
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				addSlotToContainer(new Slot(tile, j + i * 9, 8 + j * 18, 60 + i * 18));
+				addSlotToContainer(new SlotItemHandler(tile.inventory, j + i * 9, 8 + j * 18, 60 + i * 18));
 			}
 		}
 		
-		addSlotToContainer(new Slot(tile, 18, 80, 37));
+		addSlotToContainer(new SlotItemHandler(tile.inventory, 18, 80, 37));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				addSlotToContainer(new Slot(inv, j + i * 9 + 9, 8 + j * 18, 111 + i * 18));
+				addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null), j + i * 9 + 9, 8 + j * 18, 111 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			addSlotToContainer(new Slot(inv, i, 8 + i * 18, 169));
+			addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null), i, 8 + i * 18, 169));
 		}
 	}
 
@@ -107,7 +108,6 @@ public class ContainerFilteredHopper extends Container
 	public void addListener(IContainerListener listener)
 	{
 		super.addListener(listener);
-		listener.sendAllWindowProperties(this, this.tile);
 	}
 	
 	@Override

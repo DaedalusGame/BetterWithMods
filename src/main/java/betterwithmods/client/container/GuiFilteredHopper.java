@@ -1,22 +1,23 @@
 package betterwithmods.client.container;
 
-import net.minecraft.client.resources.I18n;
-import org.lwjgl.opengl.GL11;
-
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.opengl.GL11;
 
 public class GuiFilteredHopper extends GuiContainer
 {
 	private TileEntityFilteredHopper tile;
-	private IInventory playerInv;
+	private IItemHandler playerInv;
 	
-	public GuiFilteredHopper(IInventory inv, TileEntityFilteredHopper tile)
+	public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile)
 	{
-		super(new ContainerFilteredHopper(inv, tile));
-		this.playerInv = inv;
+		super(new ContainerFilteredHopper(player, tile));
+		this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 		this.ySize = 193;
 		this.tile = tile;
 	}
@@ -26,7 +27,6 @@ public class GuiFilteredHopper extends GuiContainer
 	{
 		String s = I18n.format(tile.getName());
 		this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override

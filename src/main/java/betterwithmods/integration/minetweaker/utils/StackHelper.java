@@ -56,11 +56,11 @@ public class StackHelper {
         if(ingredient == null) {
             return false;
         }
-        
+
         if(!ingredient.matches(itemStack)) {
             return false;
         }
-        
+
             return true;
     }
     

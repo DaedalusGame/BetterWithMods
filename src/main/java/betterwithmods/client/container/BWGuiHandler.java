@@ -23,15 +23,15 @@ public class BWGuiHandler implements IGuiHandler
 		{
 			TileEntity tile = world.getTileEntity(pos);
 			if(tile instanceof TileEntityBlockDispenser)
-				return new ContainerBlockDispenser(player.inventory, (TileEntityBlockDispenser)tile);
+				return new ContainerBlockDispenser(player, (TileEntityBlockDispenser)tile);
 			if(tile instanceof TileEntityCrucible)
-				return new ContainerCookingPot(player.inventory, (TileEntityCrucible)tile);
+				return new ContainerCookingPot(player, (TileEntityCrucible)tile);
 			if(tile instanceof TileEntityCauldron)
-				return new ContainerCookingPot(player.inventory, (TileEntityCauldron)tile);
+				return new ContainerCookingPot(player, (TileEntityCauldron)tile);
 			if(tile instanceof TileEntityMill)
-				return new ContainerMill(player.inventory, (TileEntityMill)tile);
+				return new ContainerMill(player, (TileEntityMill)tile);
 			if(tile instanceof TileEntityFilteredHopper)
-				return new ContainerFilteredHopper(player.inventory, (TileEntityFilteredHopper)tile);
+				return new ContainerFilteredHopper(player, (TileEntityFilteredHopper)tile);
 		}
 		return null;
 	}
@@ -45,15 +45,15 @@ public class BWGuiHandler implements IGuiHandler
 		{
 			TileEntity tile = world.getTileEntity(pos);
 			if(tile instanceof TileEntityBlockDispenser)
-				return new GuiBlockDispenser(player.inventory, (TileEntityBlockDispenser)tile);
+				return new GuiBlockDispenser(player, (TileEntityBlockDispenser)tile);
 			if(tile instanceof TileEntityCrucible)
-				return new GuiCrucible(player.inventory, (TileEntityCrucible)tile);
+				return new GuiCrucible(player, (TileEntityCrucible)tile);
 			if(tile instanceof TileEntityCauldron)
-				return new GuiCauldron(player.inventory, (TileEntityCauldron)tile);
+				return new GuiCauldron(player, (TileEntityCauldron)tile);
 			if(tile instanceof TileEntityMill)
-				return new GuiMill(player.inventory, (TileEntityMill)tile);
+				return new GuiMill(player, (TileEntityMill)tile);
 			if(tile instanceof TileEntityFilteredHopper)
-				return new GuiFilteredHopper(player.inventory, (TileEntityFilteredHopper)tile);
+				return new GuiFilteredHopper(player, (TileEntityFilteredHopper)tile);
 		}
 		return null;
 	}

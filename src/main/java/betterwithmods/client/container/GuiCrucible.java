@@ -1,12 +1,12 @@
 package betterwithmods.client.container;
 
 import betterwithmods.blocks.tile.TileEntityCrucible;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiCrucible extends GuiCookingPot
 {
-    public GuiCrucible(IInventory inv, TileEntityCrucible crucible)
+    public GuiCrucible(EntityPlayer player, TileEntityCrucible crucible)
     {
-        super(inv, crucible);
+        super(player, crucible);
     }
 }

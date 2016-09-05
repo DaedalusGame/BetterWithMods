@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -82,11 +83,11 @@ public class InvUtils {
 
     }
 
-    public static void clearInventory(IItemHandler inv) {
+    public static void clearInventory(ItemStackHandler inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null) {
-                inv.insertItem(i, (ItemStack) null, false);
+                inv.setStackInSlot(i, (ItemStack) null);
             }
         }
 
@@ -99,17 +100,17 @@ public class InvUtils {
 
     }
 
-    public static ItemStack decrStackSize(IItemHandler inv, int slot, int amount) {
+    public static ItemStack decrStackSize(ItemStackHandler inv, int slot, int amount) {
         if (inv.getStackInSlot(slot) != null) {
             ItemStack splitStack;
             if (inv.getStackInSlot(slot).stackSize <= amount) {
                 splitStack = inv.getStackInSlot(slot);
-                inv.insertItem(slot, (ItemStack) null, false);
+                inv.setStackInSlot(slot, (ItemStack) null);
                 return splitStack;
             } else {
                 splitStack = inv.getStackInSlot(slot).splitStack(amount);
                 if (inv.getStackInSlot(slot).stackSize < 1) {
-                    inv.insertItem(slot, (ItemStack) null, false);
+                    inv.setStackInSlot(slot, (ItemStack) null);
                 }
                 return splitStack;
             }
@@ -236,7 +237,7 @@ public class InvUtils {
         return ret;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, Item item, int meta, int stackSize) {
+    public static boolean consumeItemsInInventory(ItemStackHandler inv, Item item, int meta, int stackSize) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null && stack.getItem() == item && (meta == 32767 || stack.getItemDamage() == meta)) {
@@ -246,14 +247,14 @@ public class InvUtils {
                 }
 
                 stackSize -= stack.stackSize;
-                inv.insertItem(i, null, false);
+                inv.setStackInSlot(i, (ItemStack) null);
             }
         }
 
         return false;
     }
 
-    public static boolean consumeOresInInventory(IItemHandler inv, List list, int stackSize) {
+    public static boolean consumeOresInInventory(ItemStackHandler inv, List list, int stackSize) {
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); ++i) {
                 ItemStack tempStack = (ItemStack) list.get(i);
@@ -269,7 +270,7 @@ public class InvUtils {
                         }
 
                         stackSize -= stack.stackSize;
-                        inv.insertItem(j, null, false);
+                        inv.setStackInSlot(j, (ItemStack) null);
                     }
                 }
             }

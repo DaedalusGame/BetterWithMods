@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 {
@@ -207,7 +208,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 
 	private boolean containsItem(Item item)
 	{
-		return containsItem(item, 32767);
+		return containsItem(item, OreDictionary.WILDCARD_VALUE);
 	}
 
 	private boolean containsItem(Item item, int meta)

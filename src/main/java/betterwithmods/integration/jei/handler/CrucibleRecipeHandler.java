@@ -1,44 +1,45 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.integration.jei.wrapper.CrucibleRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class StokedCauldronRecipeHandler implements IRecipeHandler<StokedCauldronRecipeWrapper>
+public class CrucibleRecipeHandler implements IRecipeHandler<CrucibleRecipeWrapper>
 {
     @Nonnull
     @Override
     public String getRecipeCategoryUid()
     {
-        return "bwm.cauldron.stoked";
+        return "bwm.crucible";
     }
 
     @Nonnull
     @Override
-    public Class<StokedCauldronRecipeWrapper> getRecipeClass()
+    public Class<CrucibleRecipeWrapper> getRecipeClass()
     {
-        return StokedCauldronRecipeWrapper.class;
+        return CrucibleRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull StokedCauldronRecipeWrapper recipe)
+    public String getRecipeCategoryUid(@Nonnull CrucibleRecipeWrapper recipe)
     {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull StokedCauldronRecipeWrapper recipe)
+    public IRecipeWrapper getRecipeWrapper(@Nonnull CrucibleRecipeWrapper recipe)
     {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull StokedCauldronRecipeWrapper wrapper)
+    public boolean isRecipeValid(@Nonnull CrucibleRecipeWrapper wrapper)
     {
         BulkRecipe recipe = wrapper.getRecipe();
         if(recipe.getOutput() == null)

@@ -1,4 +1,4 @@
-package betterwithmods.craft.bulk.category;
+package betterwithmods.integration.jei.category;
 
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.BlankRecipeCategory;

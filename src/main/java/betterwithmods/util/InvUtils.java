@@ -40,7 +40,6 @@ public class InvUtils {
                 list.addAll(OreDictionary.getOres(name));
             }
         }
-
         return list;
     }
 
@@ -141,7 +140,7 @@ public class InvUtils {
     }
 
     private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-        for(int slot = minSlot; slot<=maxSlot;slot++) {
+        for(int slot = minSlot; slot<maxSlot;slot++) {
             if(inv.insertItem(slot,stack,false) == null)
                 return true;
         }
@@ -154,7 +153,6 @@ public class InvUtils {
                 return slot;
             }
         }
-
         return -1;
     }
 
@@ -185,7 +183,7 @@ public class InvUtils {
     }
 
     public static int countItemsInInventory(IItemHandler inv, Item item) {
-        return countItemsInInventory(inv, item, 32767);
+        return countItemsInInventory(inv, item, OreDictionary.WILDCARD_VALUE);
     }
 
     public static int countItemsInInventory(IItemHandler inv, Item item, int meta) {
@@ -194,7 +192,7 @@ public class InvUtils {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null) {
                 if (stack.getItem() == item) {
-                    if ((meta == 32767) || (stack.getItemDamage() == meta)) {
+                    if ((meta == OreDictionary.WILDCARD_VALUE) || (stack.getItemDamage() == meta)) {
                         itemCount += inv.getStackInSlot(i).stackSize;
                     }
                 }
@@ -240,7 +238,7 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(ItemStackHandler inv, Item item, int meta, int stackSize) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != null && stack.getItem() == item && (meta == 32767 || stack.getItemDamage() == meta)) {
+            if (stack != null && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
                 if (stack.stackSize >= stackSize) {
                     decrStackSize(inv, i, stackSize);
                     return false;
@@ -263,7 +261,7 @@ public class InvUtils {
 
                 for (int j = 0; j < inv.getSlots(); ++j) {
                     ItemStack stack = inv.getStackInSlot(j);
-                    if (stack != null && stack.getItem() == item && (stack.getItemDamage() == meta || meta == 32767)) {
+                    if (stack != null && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
                         if (stack.stackSize >= stackSize) {
                             decrStackSize(inv, j, stackSize);
                             return false;
@@ -280,14 +278,14 @@ public class InvUtils {
     }
 
     public static int getFirstOccupiedStackNotOfItem(IItemHandler inv, Item item) {
-        return getFirstOccupiedStackNotOfItem(inv, item, 32767);
+        return getFirstOccupiedStackNotOfItem(inv, item, OreDictionary.WILDCARD_VALUE);
     }
 
     public static int getFirstOccupiedStackNotOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             if (inv.getStackInSlot(i) != null) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
-                if (inv.getStackInSlot(i).getItem() != item && (meta == 32767 || tempMeta != meta)) {
+                if (inv.getStackInSlot(i).getItem() != item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta != meta)) {
                     return i;
                 }
             }
@@ -297,14 +295,14 @@ public class InvUtils {
     }
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item) {
-        return getFirstOccupiedStackOfItem(inv, item, 32767);
+        return getFirstOccupiedStackOfItem(inv, item, OreDictionary.WILDCARD_VALUE);
     }
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             if (inv.getStackInSlot(i) != null) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
-                if (inv.getStackInSlot(i).getItem() == item && (meta == 32767 || tempMeta == meta)) {
+                if (inv.getStackInSlot(i).getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta == meta)) {
                     return i;
                 }
             }
@@ -313,7 +311,7 @@ public class InvUtils {
         return -1;
     }
 
-    public static void ejectStackWithOffset(World world, BlockPos pos, ArrayList<ItemStack> stacks) {
+    public static void ejectStackWithOffset(World world, BlockPos pos, List<ItemStack> stacks) {
         for (ItemStack stack : stacks) {
             if (stack != null)
                 ejectStackWithOffset(world, pos, stack.copy());

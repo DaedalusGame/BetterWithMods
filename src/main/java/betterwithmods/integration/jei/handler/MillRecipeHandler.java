@@ -1,44 +1,45 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.integration.jei.wrapper.MillRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class StokedCrucibleRecipeHandler implements IRecipeHandler<StokedCrucibleRecipeWrapper>
+public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper>
 {
     @Nonnull
     @Override
     public String getRecipeCategoryUid()
     {
-        return "bwm.crucible.stoked";
+        return "bwm.mill";
     }
 
     @Nonnull
     @Override
-    public Class<StokedCrucibleRecipeWrapper> getRecipeClass()
+    public Class<MillRecipeWrapper> getRecipeClass()
     {
-        return StokedCrucibleRecipeWrapper.class;
+        return MillRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull StokedCrucibleRecipeWrapper recipe)
+    public String getRecipeCategoryUid(@Nonnull MillRecipeWrapper recipe)
     {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull StokedCrucibleRecipeWrapper recipe)
+    public IRecipeWrapper getRecipeWrapper(@Nonnull MillRecipeWrapper recipe)
     {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull StokedCrucibleRecipeWrapper wrapper)
+    public boolean isRecipeValid(@Nonnull MillRecipeWrapper wrapper)
     {
         BulkRecipe recipe = wrapper.getRecipe();
         if(recipe.getOutput() == null)

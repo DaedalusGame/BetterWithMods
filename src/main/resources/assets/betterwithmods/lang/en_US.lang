@@ -226,6 +226,8 @@ inv.crucible.stoked.name=Stoked Crucible
 inv.filteredhopper.name=Filtered Hopper
 inv.mill.name=Mill Stone
 inv.bwm.dispenser.name=Block Dispenser
+inv.saw.name=Saw
+inv.kiln.name=Kiln
 
 itemGroup.bwm:bwTab=Better With Mods
 

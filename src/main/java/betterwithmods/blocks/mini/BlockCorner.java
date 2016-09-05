@@ -1,12 +1,10 @@
 package betterwithmods.blocks.mini;
 
-import betterwithmods.BWRegistry;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -54,13 +52,6 @@ public class BlockCorner extends BlockMini
             case 7: return new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D);
             default: return new AxisAlignedBB(0.0D, 0.0D, 0.5D, 0.5D, 0.5D, 1.0D);
         }
-    }
-
-    @Override
-    public ItemStack getStackFromSaw(IBlockState state)
-    {
-        ItemStack stack = new ItemStack(BWRegistry.material, 2, 0);
-        return mat == Material.WOOD ? stack : null;
     }
 
     @Override

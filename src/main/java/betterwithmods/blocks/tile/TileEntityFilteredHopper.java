@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSeeds;
@@ -258,7 +257,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     public List<EntityItem> getCaptureItems(World worldIn, BlockPos pos) {
-        return worldIn.<EntityItem>getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+        return worldIn.<EntityItem>getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
     }
 
     private boolean captureDroppedItems() {
@@ -272,7 +271,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 } else if (filterType() == 6 && stack.getItem() == BWRegistry.material && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23)) {
                     handleSoulCase(item);
                 } else if (this.canFilterProcessItem(stack))
-                    flag = InvUtils.addItemStackToInv(inventory, item.getEntityItem()) || flag;
+                    flag = putDropInInventoryAllSlots(inventory, item) || flag;
             }
             if (flag) {
                 if (this.validateInventory()) {
@@ -286,6 +285,33 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
         return false;
+    }
+
+    public static ItemStack attemptToInsert(IItemHandler inv, ItemStack stack) {
+        ItemStack leftover = null;
+        for (int slot = 0; slot < inv.getSlots() - 1; slot++) {
+            leftover = inv.insertItem(slot, stack, false);
+            if (leftover == null)
+                break;
+        }
+        return leftover;
+    }
+
+    public static boolean putDropInInventoryAllSlots(IItemHandler inv, EntityItem entityItem) {
+        boolean putAll = false;
+        if (entityItem == null) {
+            return false;
+        } else {
+            ItemStack itemstack = entityItem.getEntityItem().copy();
+            ItemStack leftovers = attemptToInsert(inv, itemstack);
+            if (leftovers != null && leftovers.stackSize != 0) {
+                entityItem.setEntityItemStack(leftovers);
+            } else {
+                putAll = true;
+                entityItem.setDead();
+            }
+            return putAll;
+        }
     }
 
     private boolean captureXP() {
@@ -383,20 +409,18 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                     ejectIntoWorld = true;
                 else {
                     TileEntity tile = this.worldObj.getTileEntity(down);
-                    if (tile != null && tile instanceof ISidedInventory) {
-                        ISidedInventory inv = (ISidedInventory) tile;
-                        int[] slots = inv.getSlotsForFace(EnumFacing.UP);
-                        for (int slot : slots) {
-                            if (inv.canInsertItem(slot, ejectStack, EnumFacing.UP)) {
-                                if (inv.getStackInSlot(slot) != null) {
-                                    if (inv.getStackInSlot(slot).stackSize + ejectStackSize > inv.getStackInSlot(slot).getMaxStackSize())
-                                        ejectStackSize = inv.getStackInSlot(slot).getMaxStackSize() - inv.getStackInSlot(slot).stackSize;
-                                    inv.getStackInSlot(slot).stackSize = inv.getStackInSlot(slot).stackSize + ejectStackSize;
-                                } else
-                                    inv.setInventorySlotContents(slot, ejectStack);
-                                inventory.extractItem(stackIndex, ejectStackSize, false);
+                    if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                        IItemHandler below = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+                        ItemStack leftover = null;
+                        for (int slot = 0; slot < below.getSlots(); slot++) {
+                            leftover = below.insertItem(slot, ejectStack, false);
+                            if (leftover == null) {
+                                inventory.extractItem(stackIndex,ejectStackSize,false);
+                                break;
                             }
                         }
+
+
                     } else if (tile != null) {
                         if (InvUtils.addItemStackToInv(inventory, ejectStack))
                             inventory.extractItem(stackIndex, ejectStackSize, false);

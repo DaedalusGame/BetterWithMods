@@ -1,13 +1,11 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.wrapper;
 
 import betterwithmods.craft.OreStack;
 import betterwithmods.craft.bulk.BulkRecipe;
-import betterwithmods.craft.bulk.CraftingManagerCauldron;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BulkRecipeWrapper extends BWMRecipeWrapper

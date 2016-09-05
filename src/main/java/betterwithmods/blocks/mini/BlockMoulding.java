@@ -1,13 +1,10 @@
 package betterwithmods.blocks.mini;
 
-import betterwithmods.BWRegistry;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -58,16 +55,6 @@ public class BlockMoulding extends BlockMini
             case 11: return new AxisAlignedBB(0.5D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
             default: return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 0.5D, 1.0D);
         }
-    }
-
-    @Override
-    public ItemStack getStackFromSaw(IBlockState state)
-    {
-        ItemStack stack = new ItemStack(BWRegistry.woodCorner, 2, state.getValue(TYPE));/*
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("type", state.getValue(TYPE));
-        stack.setTagCompound(tag);*/
-        return mat == Material.WOOD ? stack : null;
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +37,12 @@ public class BulkRecipe
                 this.jeiInput.add(((ItemStack) in).copy());
             }
             else if(in instanceof Item) {
-                this.input.add(new ItemStack((Item) in, 1, 32767));
-                this.jeiInput.add(new ItemStack((Item) in, 1, 32767));
+                this.input.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
+                this.jeiInput.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
             }
             else if(in instanceof Block) {
-                this.input.add(new ItemStack((Block) in, 1, 32767));
-                this.jeiInput.add(new ItemStack((Block)in, 1, 32767));
+                this.input.add(new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
+                this.jeiInput.add(new ItemStack((Block)in, 1, OreDictionary.WILDCARD_VALUE));
             }
             else if(in instanceof String)
             {

@@ -1,6 +1,11 @@
 package betterwithmods;
 
+import betterwithmods.craft.KilnInteraction;
+import betterwithmods.craft.OreStack;
+import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.craft.bulk.*;
+import betterwithmods.craft.heat.BWMHeatRegistry;
+import betterwithmods.util.NetherSpawnWhitelist;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -11,17 +16,10 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
-
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
-
-import betterwithmods.craft.HardcoreWoodInteraction;
-import betterwithmods.craft.KilnInteraction;
-import betterwithmods.craft.OreStack;
-import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.craft.heat.BWMHeatRegistry;
-import betterwithmods.util.NetherSpawnWhitelist;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class BWIMCHandler 
 {
@@ -70,7 +68,7 @@ public class BWIMCHandler
 						}
 						if(block != null)
 						{
-							if(meta != 32767)
+							if(meta != OreDictionary.WILDCARD_VALUE)
 							{
 								KilnInteraction.addBlockRecipe(block, meta, ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output")));
 							}
@@ -89,18 +87,18 @@ public class BWIMCHandler
 						int meta = 0;
 						if(blockStack.getItem() instanceof ItemBlock)
 						{
-							if(blockStack.getItemDamage() != 32767)
+							if(blockStack.getItemDamage() != OreDictionary.WILDCARD_VALUE)
 								state = ((ItemBlock)blockStack.getItem()).getBlock().getStateFromMeta(blockStack.getItemDamage());
 							else {
 								state = ((ItemBlock)blockStack.getItem()).getBlock().getDefaultState();
-								meta = 32767;
+								meta = OreDictionary.WILDCARD_VALUE;
 							}
 						}
 						IBlockState output = Blocks.AIR.getDefaultState();
 						if(tag.hasKey("Output")) {
 							ItemStack outputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
 							if (outputStack.getItem() instanceof ItemBlock) {
-								if(blockStack.getItemDamage() != 32767)
+								if(blockStack.getItemDamage() != OreDictionary.WILDCARD_VALUE)
 									output = ((ItemBlock)outputStack.getItem()).getBlock().getStateFromMeta(blockStack.getItemDamage());
 								else
 									output = ((ItemBlock)outputStack.getItem()).getBlock().getDefaultState();
@@ -117,7 +115,7 @@ public class BWIMCHandler
 						}
 						if(state.getBlock() != Blocks.AIR)
 						{
-							if(meta != 32767)
+							if(meta != OreDictionary.WILDCARD_VALUE)
 							{
 								TurntableInteraction.addBlockRecipe(state, output, scraps);
 							}
@@ -142,7 +140,7 @@ public class BWIMCHandler
 						}
 						if(block != null)
 						{
-							if(meta != 32767)
+							if(meta != OreDictionary.WILDCARD_VALUE)
 							{
 								BWMHeatRegistry.setBlockHeatRegistry(block, meta, value);
 							}
@@ -166,41 +164,13 @@ public class BWIMCHandler
 						}
 						if(block != null)
 						{
-							if(meta != 32767)
+							if(meta != OreDictionary.WILDCARD_VALUE)
 								NetherSpawnWhitelist.addBlock(block, meta);
 							else
 								NetherSpawnWhitelist.addBlock(block);
 						}
 					}
 				}
-				else if("addLogHarvest".equals(k))
-				{
-					if(m.isNBTMessage())
-					{
-						NBTTagCompound tag = m.getNBTValue();
-						ItemStack blockStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
-						Block block = null;
-						int meta = 0;
-						ItemStack plankStack = null;
-						if(tag.hasKey("Output"))
-							plankStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
-						if(blockStack.getItem() instanceof ItemBlock)
-						{
-							block = ((ItemBlock)blockStack.getItem()).getBlock();
-							meta = blockStack.getItemDamage();
-						}
-						if(block != null)
-						{
-							if(meta != 32767)
-							{
-								HardcoreWoodInteraction.addBlock(block, meta, plankStack);
-							}
-							else
-								HardcoreWoodInteraction.addBlock(block, plankStack);
-						}
-					}
-				}
-				
 			}
 			catch(Throwable t)
 			{

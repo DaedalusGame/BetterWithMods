@@ -1,37 +1,45 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.integration.jei.wrapper.CauldronRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public abstract class BulkRecipeHandler implements IRecipeHandler<BulkRecipeWrapper>
+public class CauldronRecipeHandler implements IRecipeHandler<CauldronRecipeWrapper>
 {
     @Nonnull
     @Override
-    public Class<BulkRecipeWrapper> getRecipeClass()
+    public String getRecipeCategoryUid()
     {
-        return BulkRecipeWrapper.class;
+        return "bwm.cauldron";
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull BulkRecipeWrapper recipe)
+    public Class<CauldronRecipeWrapper> getRecipeClass()
+    {
+        return CauldronRecipeWrapper.class;
+    }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull CauldronRecipeWrapper recipe)
     {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull BulkRecipeWrapper recipe)
+    public IRecipeWrapper getRecipeWrapper(@Nonnull CauldronRecipeWrapper recipe)
     {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull BulkRecipeWrapper wrapper)
+    public boolean isRecipeValid(@Nonnull CauldronRecipeWrapper wrapper)
     {
         BulkRecipe recipe = wrapper.getRecipe();
         if(recipe.getOutput() == null)

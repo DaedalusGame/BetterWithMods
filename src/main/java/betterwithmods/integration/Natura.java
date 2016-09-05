@@ -1,11 +1,6 @@
 package betterwithmods.integration;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import betterwithmods.BWRegistry;
-import betterwithmods.craft.HardcoreWoodInteraction;
-import betterwithmods.craft.SawInteraction;
 import betterwithmods.util.NetherSpawnWhitelist;
 
 public class Natura 

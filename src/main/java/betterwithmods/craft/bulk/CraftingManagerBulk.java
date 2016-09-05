@@ -4,6 +4,7 @@ import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,7 +160,7 @@ public abstract class CraftingManagerBulk
         {
             if(obj instanceof ItemStack)
             {
-                if(ItemStack.areItemsEqual((ItemStack)obj, stack) || (((ItemStack)obj).getItemDamage() == 32767 && stack.getItem() == ((ItemStack)obj).getItem()))
+                if(ItemStack.areItemsEqual((ItemStack)obj, stack) || (((ItemStack)obj).getItemDamage() == OreDictionary.WILDCARD_VALUE && stack.getItem() == ((ItemStack)obj).getItem()))
                     return true;
             }
             else if(obj instanceof OreStack)

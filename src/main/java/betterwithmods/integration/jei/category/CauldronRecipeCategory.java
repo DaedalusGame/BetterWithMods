@@ -1,6 +1,6 @@
-package betterwithmods.craft.bulk.category;
+package betterwithmods.integration.jei.category;
 
-import betterwithmods.integration.jei.BulkRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class StokedCauldronRecipeCategory extends BWMRecipeCategory
+public class CauldronRecipeCategory extends BWMRecipeCategory
 {
     private static final int inputSlots = 2;
     private static final int outputSlots = 0;
@@ -20,11 +20,11 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory
     @Nonnull
     private final IDrawableAnimated flame;
 
-    public StokedCauldronRecipeCategory(IGuiHelper helper)
+    public CauldronRecipeCategory(IGuiHelper helper)
     {
-        super(helper.createDrawable(guiTexture, 5, 6, 158, 60), "inv.cauldron.stoked.name");
+        super(helper.createDrawable(guiTexture, 5, 6, 158, 60), "inv.cauldron.name");
         craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlots);
-        IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 176, 16, 14, 14);
+        IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 176, 0, 14, 14);
         this.flame = helper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
 
@@ -32,7 +32,7 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory
     @Override
     public String getUid()
     {
-        return "bwm.cauldron.stoked";
+        return "bwm.cauldron";
     }
 
     @Override

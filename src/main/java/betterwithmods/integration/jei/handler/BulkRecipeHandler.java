@@ -1,44 +1,38 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper>
+public abstract class BulkRecipeHandler implements IRecipeHandler<BulkRecipeWrapper>
 {
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
+    public Class<BulkRecipeWrapper> getRecipeClass()
     {
-        return "bwm.mill";
+        return BulkRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public Class<MillRecipeWrapper> getRecipeClass()
-    {
-        return MillRecipeWrapper.class;
-    }
-
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid(@Nonnull MillRecipeWrapper recipe)
+    public String getRecipeCategoryUid(@Nonnull BulkRecipeWrapper recipe)
     {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull MillRecipeWrapper recipe)
+    public IRecipeWrapper getRecipeWrapper(@Nonnull BulkRecipeWrapper recipe)
     {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull MillRecipeWrapper wrapper)
+    public boolean isRecipeValid(@Nonnull BulkRecipeWrapper wrapper)
     {
         BulkRecipe recipe = wrapper.getRecipe();
         if(recipe.getOutput() == null)

@@ -1,6 +1,6 @@
-package betterwithmods.craft.bulk.category;
+package betterwithmods.integration.jei.category;
 
-import betterwithmods.integration.jei.BulkRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.recipe.IRecipeWrapper;

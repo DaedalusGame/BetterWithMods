@@ -1,4 +1,4 @@
-package betterwithmods.integration.jei;
+package betterwithmods.integration.jei.wrapper;
 
 import betterwithmods.craft.bulk.BulkRecipe;
 import mezz.jei.api.recipe.BlankRecipeWrapper;

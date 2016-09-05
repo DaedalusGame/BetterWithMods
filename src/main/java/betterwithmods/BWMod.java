@@ -1,28 +1,5 @@
 package betterwithmods;
 
-import java.io.File;
-
-import betterwithmods.util.InvUtils;
-import betterwithmods.util.RecipeUtils;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityDynamite;
@@ -33,6 +10,27 @@ import betterwithmods.event.NetherSpawnEvent;
 import betterwithmods.integration.ModIntegration;
 import betterwithmods.proxy.CommonProxy;
 import betterwithmods.util.ColorUtils;
+import betterwithmods.util.InvUtils;
+import betterwithmods.util.RecipeUtils;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 @Mod(modid="betterwithmods", name="Better With Mods", version="0.9.2 Beta", dependencies="before:survivalist;after:tcontruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering")
 public class BWMod
@@ -63,7 +61,7 @@ public class BWMod
 		BWRegistry.registerHeatSources();
 		GameRegistry.registerFuelHandler(new BWFuelHandler());
 		BWRegistry.registerNetherWhitelist();
-		BWRegistry.registerWood();
+
 		ModIntegration.init();
 		BWSounds.registerSounds();
 	}
@@ -77,8 +75,8 @@ public class BWMod
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt)
 	{
-		RecipeUtils.sawRecipeInit();
 		RecipeUtils.gatherCookableFood();
+		BWRegistry.registerWood();
 		InvUtils.initOreDictGathering();
 		proxy.postRender();
 		ColorUtils.initColors();

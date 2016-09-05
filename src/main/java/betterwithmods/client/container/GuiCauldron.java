@@ -1,12 +1,12 @@
 package betterwithmods.client.container;
 
 import betterwithmods.blocks.tile.TileEntityCauldron;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiCauldron extends GuiCookingPot
 {
-    public GuiCauldron(IInventory inv, TileEntityCauldron cauldron)
+    public GuiCauldron(EntityPlayer player, TileEntityCauldron cauldron)
     {
-        super(inv, cauldron);
+        super(player, cauldron);
     }
 }

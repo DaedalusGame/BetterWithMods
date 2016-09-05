@@ -5,15 +5,10 @@ import betterwithmods.craft.bulk.CraftingManagerBulk;
 import betterwithmods.craft.bulk.CraftingManagerCauldron;
 import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
 import betterwithmods.util.InvUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityCauldron extends TileEntityCookingPot
 {
@@ -52,18 +47,18 @@ public class TileEntityCauldron extends TileEntityCookingPot
 		
 		if(this.fireIntensity > 0 && this.fireIntensity < 5)
 		{
-			if(InvUtils.getFirstOccupiedStackOfItem(this, BWRegistry.material, 5) > -1 && hasNonFoulFood())
+			if(InvUtils.getFirstOccupiedStackOfItem(inventory, BWRegistry.material, 5) > -1 && hasNonFoulFood())
 			{
 				this.containsValidIngredients = true;
 			}
-			else if(CraftingManagerCauldron.getInstance().getCraftingResult(this) != null)
+			else if(CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
 				this.containsValidIngredients = true;
 		}
 		else if(this.fireIntensity > 5)
 		{
 			if(containsExplosives())
 				this.containsValidIngredients = true;
-			else if(CraftingManagerCauldronStoked.getInstance().getCraftingResult(this) != null)
+			else if(CraftingManagerCauldronStoked.getInstance().getCraftingResult(inventory) != null)
 				this.containsValidIngredients = true;
 		}
 	}
@@ -80,7 +75,7 @@ public class TileEntityCauldron extends TileEntityCookingPot
 	@Override
 	protected boolean attemptToCookNormal()
 	{
-		int dung = InvUtils.getFirstOccupiedStackOfItem(this, BWRegistry.material, 5);
+		int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, BWRegistry.material, 5);
 		if(dung > -1 && this.hasNonFoulFood())
 		{
 			return spoilFood();
@@ -93,9 +88,9 @@ public class TileEntityCauldron extends TileEntityCookingPot
 	{
 		for(int i = 0; i < 27; i++)
 		{
-			if(this.contents[i] != null)
+			if(this.inventory.getStackInSlot(i) != null)
 			{
-				Item item = this.contents[i].getItem();
+				Item item = this.inventory.getStackInSlot(i).getItem();
 				if(item != null)
 				{
 					if(item instanceof ItemFood)
@@ -113,16 +108,16 @@ public class TileEntityCauldron extends TileEntityCookingPot
 		boolean foodSpoiled = false;
 		for(int i = 0; i < 27; i++)
 		{
-			if(this.contents[i] != null)
+			if(this.inventory.getStackInSlot(i) != null)
 			{
-				Item item = this.contents[i].getItem();
+				Item item = this.inventory.getStackInSlot(i).getItem();
 				if(item != null)
 				{
 					if(item != BWRegistry.fertilizer && item instanceof ItemFood)
 					{
-						int stackSize = this.contents[i].stackSize;
+						int stackSize = this.inventory.getStackInSlot(i).stackSize;
 						ItemStack spoiled = new ItemStack(BWRegistry.fertilizer, stackSize);
-						this.setInventorySlotContents(i, spoiled);
+						this.inventory.setStackInSlot(i, spoiled);
 						foodSpoiled = true;
 					}
 				}
@@ -131,55 +126,11 @@ public class TileEntityCauldron extends TileEntityCookingPot
 		return foodSpoiled;
 	}
 
-	@Override
-	public void openInventory(EntityPlayer player) 
-	{
-		
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) 
-	{
-		
-	}
-
-	@Override
-	public int getField(int id) 
-	{
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) 
-	{
-		
-	}
-
-	@Override
-	public int getFieldCount() 
-	{
-		return 0;
-	}
-
-	@Override
-	public void clear() 
-	{
-		for(int i = 0; i < this.contents.length; i++)
-		{
-			this.contents[i] = null;
-		}
-	}
 
 	@Override
 	public String getName() 
 	{
 		return "inv.cauldron.name";
-	}
-
-	@Override
-	public boolean hasCustomName() 
-	{
-		return true;
 	}
 	
 }

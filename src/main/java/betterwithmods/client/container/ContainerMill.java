@@ -1,40 +1,41 @@
 package betterwithmods.client.container;
 
-import java.util.Iterator;
-
 import betterwithmods.blocks.tile.TileEntityMill;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
+
+import java.util.Iterator;
 
 public class ContainerMill extends Container
 {
 	private TileEntityMill mill;
 	private int lastMillCounter;
 	
-	public ContainerMill(IInventory inv, TileEntityMill mill)
+	public ContainerMill(EntityPlayer player, TileEntityMill mill)
 	{
 		this.mill = mill;
 		
 		for(int j = 0; j < 3; j++)
 		{
-			addSlotToContainer(new Slot(mill, j, 62 + j * 18, 43));
+			addSlotToContainer(new SlotItemHandler(mill.inventory, j, 62 + j * 18, 43));
 		}
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				addSlotToContainer(new Slot(inv, j + i * 9 + 9, 8 + j * 18, 76 + i * 18));
+				addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null), j + i * 9 + 9, 8 + j * 18, 76 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			addSlotToContainer(new Slot(inv, i, 8 + i * 18, 134));
+			addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null), i, 8 + i * 18, 134));
 		}
 	}
 	
@@ -74,7 +75,6 @@ public class ContainerMill extends Container
 	public void addListener(IContainerListener listener)
 	{
 		super.addListener(listener);
-		listener.sendAllWindowProperties(this, this.mill);
 	}
 	
 	@Override

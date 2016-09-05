@@ -95,8 +95,8 @@ public class BlockBDispenser extends BlockDispenser
     protected void dispense(World world, BlockPos pos)
     {
         BlockSourceImpl impl = new BlockSourceImpl(world, pos);
-        TileEntityBlockDispenser disp = impl.getBlockTileEntity();
-        if(disp != null)
+        TileEntityBlockDispenser tile = impl.getBlockTileEntity();
+        if(tile != null)
         {
             if(!world.getBlockState(pos).getValue(TRIGGERED))
             {
@@ -109,21 +109,21 @@ public class BlockBDispenser extends BlockDispenser
                         stacks.add(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
                     if(!stacks.isEmpty()) {
                         for (ItemStack stack : stacks)
-                            disp.addStackToInventory(stack, check);
+                            tile.addStackToInventory(stack, check);
                     }
                     world.playSound(null, check, state.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
                     state.getBlock().breakBlock(world, check, state);
                     world.setBlockToAir(check);
                     return;
                 }
-                List<EntityLivingBase> creatures = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(check, check.add(1, 1, 1)), InvUtils.GET_VALID_BDISP_ENTITIES);
+                List<EntityLivingBase> creatures = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(check, check.add(1, 1, 1)), entity -> !entity.isDead && (entity instanceof EntityWolf || entity instanceof EntitySheep || entity instanceof EntityChicken));
                 if(!creatures.isEmpty() && creatures.size() > 0)
                 {
                     for(EntityLivingBase creature : creatures)
                     {
                         if(creature instanceof EntityWolf)
                         {
-                            disp.addStackToInventory(new ItemStack(BWRegistry.wolf), check);
+                            tile.addStackToInventory(new ItemStack(BWRegistry.wolf), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(3)));
                             //InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.DYE, 1 + rand.nextInt(2), 1));
                             world.playSound(null, check, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
@@ -137,14 +137,14 @@ public class BlockBDispenser extends BlockDispenser
                                 List<ItemStack> shear = sheep.onSheared(new ItemStack(Items.SHEARS), world, check, 0);
                                 for(ItemStack wool : shear)
                                 {
-                                    disp.addStackToInventory(wool, check);
+                                    tile.addStackToInventory(wool, check);
                                 }
                                 InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(2)));
                             }
                         }
                         else if(creature instanceof EntityChicken)
                         {
-                            disp.addStackToInventory(new ItemStack(Items.EGG), check);
+                            tile.addStackToInventory(new ItemStack(Items.EGG), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.FEATHER, 1 + rand.nextInt(2)));
                             world.playSound(null, check, SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
                             creature.setDead();
@@ -154,8 +154,8 @@ public class BlockBDispenser extends BlockDispenser
             }
             else
             {
-                int index = disp.nextIndex;
-                ItemStack stack = disp.getNextStackFromInv();
+                int index = tile.nextIndex;
+                ItemStack stack = tile.getNextStackFromInv();
                 if(index == -1 || stack == null)
                     world.playEvent(1001, pos, 0);
                 else
@@ -164,7 +164,7 @@ public class BlockBDispenser extends BlockDispenser
                     if(item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR)
                     {
                         ItemStack stack1 = item.dispense(impl, stack);
-                        disp.setInventorySlotContents(index, stack1.stackSize <= 0 ? null : stack1);
+                        tile.inventory.setStackInSlot(index, stack1.stackSize <= 0 ? null : stack1);
                     }
                 }
             }
@@ -177,7 +177,7 @@ public class BlockBDispenser extends BlockDispenser
         TileEntity te = world.getTileEntity(pos);
         if(te instanceof TileEntityBlockDispenser)
         {
-            InvUtils.ejectInventoryContents(world, pos, (TileEntityBlockDispenser)te);
+            InvUtils.ejectInventoryContents(world, pos, ((TileEntityBlockDispenser) te).inventory);
             world.updateComparatorOutputLevel(pos, this);
         }
         super.breakBlock(world, pos, state);

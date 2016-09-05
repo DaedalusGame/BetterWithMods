@@ -224,7 +224,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		if(target instanceof BlockPistonBase)
 		{
 			IBlockState state = worldObj.getBlockState(pos);
-			
+
 			if(!state.getValue(BlockPistonBase.EXTENDED))
 				return true;
 			return false;
@@ -250,7 +250,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		if(target instanceof BlockPistonBase)
 		{
 			IBlockState state = worldObj.getBlockState(pos);
-			
+
 			if(!state.getValue(BlockPistonBase.EXTENDED))
 				return true;
 			return false;

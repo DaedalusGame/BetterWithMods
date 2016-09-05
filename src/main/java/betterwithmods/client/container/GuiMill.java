@@ -1,22 +1,23 @@
 package betterwithmods.client.container;
 
-import net.minecraft.client.resources.I18n;
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.util.ResourceLocation;
 import betterwithmods.blocks.tile.TileEntityMill;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.opengl.GL11;
 
 public class GuiMill extends GuiContainer
 {
 	private TileEntityMill mill;
-	private IInventory playerInv;
+	private IItemHandler playerInv;
 	
-	public GuiMill(IInventory inv, TileEntityMill mill)
+	public GuiMill(EntityPlayer player, TileEntityMill mill)
 	{
-		super(new ContainerMill(inv, mill));
-		this.playerInv = inv;
+		super(new ContainerMill(player, mill));
+		this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 		this.ySize = 158;
 		this.mill = mill;
 	}
@@ -26,7 +27,6 @@ public class GuiMill extends GuiContainer
 	{
 		String s = I18n.format(mill.getName());
 		this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override

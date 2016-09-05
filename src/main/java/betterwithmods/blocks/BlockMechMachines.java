@@ -1,28 +1,10 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.*;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
-import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.blocks.tile.IMechSubtype;
-import betterwithmods.blocks.tile.TileEntityCauldron;
-import betterwithmods.blocks.tile.TileEntityCookingPot;
-import betterwithmods.blocks.tile.TileEntityCrucible;
-import betterwithmods.blocks.tile.TileEntityDirectional;
-import betterwithmods.blocks.tile.TileEntityFilteredHopper;
-import betterwithmods.blocks.tile.TileEntityMill;
-import betterwithmods.blocks.tile.TileEntityPulley;
-import betterwithmods.blocks.tile.TileEntityTurntable;
-import betterwithmods.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.blocks.tile.*;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
@@ -31,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -39,15 +22,20 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMechanicalBlock
 {
@@ -145,7 +133,7 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 			return true;
 		}
 		else {
-			if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IInventory) {
+			if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null)) {
 				player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			else
@@ -161,16 +149,10 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 		if(!keepInv) {
-			if (tileentity instanceof IInventory) {
-				InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
-				if(tileentity instanceof TileEntityFilteredHopper)
-				{
-					TileEntityFilteredHopper hopper = (TileEntityFilteredHopper)tileentity;
-					if(hopper.getStackInSlot(18) != null)
-						InvUtils.ejectStackWithOffset(world, pos, hopper.getStackInSlot(18));
-				}
+			if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null)) {
+                InvUtils.ejectInventoryContents(world,pos, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null));
 				world.updateComparatorOutputLevel(pos, this);
 			}
 		}

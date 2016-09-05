@@ -75,7 +75,7 @@ public class BWRegistry
 	public static Block bambooChime;
 	public static Block metalChime;
 	public static Block buddyBlock;
-
+	public static Block creativeGenerator;
 	public static Block treatedAxle;
 	
 	public static Item material;
@@ -134,7 +134,7 @@ public class BWRegistry
 		bambooChime = new BlockChime(Material.WOOD).setUnlocalizedName("bwm:bamboo_chime");
 		metalChime = new BlockChime(Material.IRON).setUnlocalizedName("bwm:metal_chime");
 		buddyBlock = new BlockBUD();
-
+		creativeGenerator = new BlockCreativeGenerator();
 		registerBlock(axle, "axle");
 		registerMetaBlock(singleMachines, "single_machine");
 		GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");

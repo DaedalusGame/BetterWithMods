@@ -19,7 +19,7 @@ public abstract class BaseListModification<T> extends BaseUndoable {
     public boolean canUndo() {
         if(recipes.isEmpty() || successful.isEmpty())
             return false;
-        
+
         return true;
     }
 	
@@ -113,11 +113,11 @@ public abstract class BaseListModification<T> extends BaseUndoable {
         if(recipe == otherRecipe) {
             return true;
         }
-        
+
         if(!recipe.equals(otherRecipe)) {
             return false;
         }
-        
+
         return true;
     }
 }

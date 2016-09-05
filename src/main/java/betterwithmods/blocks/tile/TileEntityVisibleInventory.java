@@ -73,8 +73,8 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
 
     public int filledSlots() {
         int fill = 0;
-        int third = this.inventory.getSlots() / 3;
-        for (int i = 0; i < this.inventory.getSlots(); i++) {
+        int third = this.getMaxVisibleSlots() / 3;
+        for (int i = 0; i < this.getMaxVisibleSlots(); i++) {
             if (inventory.getStackInSlot(i) != null)
                 fill++;
         }
@@ -87,4 +87,7 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
             percent = 3;
         return percent;
     }
+
+    //Mostly for aesthetic purposes, primarily so the filter in the filtered hopper doesn't count.
+    public abstract int getMaxVisibleSlots();
 }

@@ -633,4 +633,10 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public void setSubtype(int type) {
         this.filterType = (short) Math.min(type, 7);
     }
+
+    @Override
+    public int getMaxVisibleSlots()
+    {
+        return 18;
+    }
 }

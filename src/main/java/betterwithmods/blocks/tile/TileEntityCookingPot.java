@@ -320,4 +320,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory
 		else
 			fireIntensity = -1;
 	}
+
+	@Override
+	public int getMaxVisibleSlots()
+	{
+		return 27;
+	}
 }

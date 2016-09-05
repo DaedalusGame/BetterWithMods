@@ -44,6 +44,9 @@ public class ModIntegration
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "stoneDecoration")), 6, 4), "CCC", "FFF", "CCC", 'C', Items.CLAY_BALL, 'F', "fiberHemp"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "wirecoil")), 4, 3), " F ", "FSF", " F ", 'F', "fiberHemp", 'S', "stickWood"));
 		}
+		if(Loader.isModLoaded("MineTweaker3")) {
+			MineTweaker.init();
+		}
 		OreDict.init();
 	}
 }

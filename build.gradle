@@ -18,7 +18,7 @@ group = "betterwithmods"
 archivesBaseName = "Better With Mods"
 
 minecraft {
-    version = "1.10.2-12.18.1.2024"
+    version = "1.10.2-12.18.1.2076"
     runDir = "run"
     mappings = "snapshot_20160518"
 

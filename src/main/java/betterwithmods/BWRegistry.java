@@ -3,36 +3,36 @@ package betterwithmods;
 import betterwithmods.blocks.*;
 import betterwithmods.blocks.mini.*;
 import betterwithmods.blocks.tile.*;
-import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.config.BWConfig;
-import betterwithmods.items.*;
-import betterwithmods.items.tools.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.init.Items;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.config.BWConfig;
 import betterwithmods.craft.HardcoreWoodInteraction;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
+import betterwithmods.items.*;
+import betterwithmods.items.tools.*;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class BWRegistry 
@@ -74,6 +74,7 @@ public class BWRegistry
 	public static Block wolf;
 	public static Block bambooChime;
 	public static Block metalChime;
+	public static Block buddyBlock;
 
 	public static Block treatedAxle;
 	
@@ -92,8 +93,9 @@ public class BWRegistry
 	public static Item steelShovel;
 
 	public static final ToolMaterial SOULFORGEDSTEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3, 22);
-	
-	public static void init()
+
+
+    public static void init()
 	{
 		anchor = new BlockAnchor().setCreativeTab(BWCreativeTabs.BWTAB);
 		rope = new BlockRope().setCreativeTab(BWCreativeTabs.BWTAB);
@@ -131,7 +133,8 @@ public class BWRegistry
 		blockDispenser = new BlockBDispenser();
 		bambooChime = new BlockChime(Material.WOOD).setUnlocalizedName("bwm:bamboo_chime");
 		metalChime = new BlockChime(Material.IRON).setUnlocalizedName("bwm:metal_chime");
-		
+		buddyBlock = new BlockBUD();
+
 		registerBlock(axle, "axle");
 		registerMetaBlock(singleMachines, "single_machine");
 		GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");

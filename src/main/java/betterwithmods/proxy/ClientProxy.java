@@ -114,6 +114,7 @@ public class ClientProxy extends CommonProxy
 		variant = new String[] {"active=false,type=oak", "active=false,type=spruce", "active=false,type=birch", "active=false,type=jungle", "active=false,type=acacia", "active=false,type=dark_oak"};
 		registerBlock("betterwithmods:bamboo_chime", BWRegistry.bambooChime, variant);
 		registerBlock("betterwithmods:metal_chime", BWRegistry.metalChime, variant);
+		registerBlock("betterwithmods:buddy_block", BWRegistry.buddyBlock,"inventory");
 		if(Loader.isModLoaded("immersiveengineering"))
 			registerBlock("betterwithmods:immersive_axle", BWRegistry.treatedAxle, "active=false,dir=0");
 	}

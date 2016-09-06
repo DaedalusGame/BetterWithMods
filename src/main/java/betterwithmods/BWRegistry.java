@@ -82,6 +82,7 @@ public class BWRegistry {
     public static Block buddyBlock;
     public static Block creativeGenerator;
     public static Block treatedAxle;
+    public static Block light;
 
     public static Item material;
     public static Item windmill;
@@ -139,6 +140,7 @@ public class BWRegistry {
         metalChime = new BlockChime(Material.IRON).setUnlocalizedName("bwm:metal_chime");
         buddyBlock = new BlockBUD();
         creativeGenerator = new BlockCreativeGenerator();
+        light = new BlockLight();
         registerBlock(axle, "axle");
         registerMetaBlock(singleMachines, "single_machine");
         GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
@@ -187,6 +189,7 @@ public class BWRegistry {
         GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
         registerMetaBlock(bambooChime, "bamboo_chime");
         registerMetaBlock(metalChime, "metal_chime");
+        registerBlock(light, "light");
 
         if (Loader.isModLoaded("immersiveengineering")) {
             treatedAxle = new BlockImmersiveAxle();

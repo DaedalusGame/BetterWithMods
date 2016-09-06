@@ -276,6 +276,11 @@ public class BlockPlanter extends BTWBlock
 	{
 		return true;
 	}
+
+	@Override
+	public boolean isFertile(World world, BlockPos pos) {
+		return world.getBlockState(pos).getValue(planterType) == EnumPlanterType.FERTILE;
+	}
 	
 	@Override
 	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing dir, IPlantable plant)

@@ -4,6 +4,7 @@ import betterwithmods.BWRegistry;
 import betterwithmods.BWSounds;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.bulk.CraftingManagerMill;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -23,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityMill extends TileBasicInventory implements ITickable {
@@ -119,35 +121,29 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
     }
 
 
-    public void ejectStack(ItemStack stack) {
-        int dir = 2 + this.worldObj.rand.nextInt(4);
-        BlockPos offset = pos.offset(EnumFacing.getFront(dir));
-
-        float xOff = this.worldObj.rand.nextFloat() * 0.7F + 0.15F;
-        float yOff = this.worldObj.rand.nextFloat() * 0.2F + 0.1F;
-        float zOff = this.worldObj.rand.nextFloat() * 0.7F + 0.15F;
-        EntityItem item = new EntityItem(this.worldObj, offset.getX() + xOff, offset.getY() + yOff, offset.getZ() + zOff, stack);
-
-        float velocity = 0.05F;
-
-        item.motionX = (float) this.worldObj.rand.nextGaussian() * velocity;
-        item.motionY = (float) this.worldObj.rand.nextGaussian() * velocity + 0.2F;
-        item.motionZ = (float) this.worldObj.rand.nextGaussian() * velocity;
-        switch (dir) {
-            case 2:
-                item.motionZ = -velocity;
-                break;
-            case 3:
-                item.motionZ = velocity;
-                break;
-            case 4:
-                item.motionX = -velocity;
-                break;
-            default:
-                item.motionX = velocity;
+    private void ejectStack(ItemStack stack) {
+        List<EnumFacing> validDirections = new ArrayList<>();
+        for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+            IBlockState check = worldObj.getBlockState(pos.offset(facing));
+            if(check.getBlock().isReplaceable(worldObj, pos.offset(facing)) || worldObj.isAirBlock(pos.offset(facing)))
+                validDirections.add(facing);
         }
-        item.setDefaultPickupDelay();
-        this.worldObj.spawnEntityInWorld(item);
+
+        if(validDirections.isEmpty()) {
+            IBlockState down = worldObj.getBlockState(pos.offset(EnumFacing.DOWN));
+            if(down.getBlock().isReplaceable(worldObj, pos.offset(EnumFacing.DOWN)) || worldObj.isAirBlock(pos.offset(EnumFacing.DOWN)))
+                validDirections.add(EnumFacing.DOWN);
+        }
+
+        BlockPos offset;
+        if(validDirections.size() > 1)
+            offset = pos.offset(validDirections.get(worldObj.rand.nextInt(validDirections.size())));
+        else if(validDirections.isEmpty())
+            offset = pos.offset(EnumFacing.UP);
+        else
+            offset = pos.offset(validDirections.get(0));
+
+        InvUtils.ejectStackWithOffset(worldObj, offset, stack);
     }
 
     public int getGrindProgressScaled(int scale) {

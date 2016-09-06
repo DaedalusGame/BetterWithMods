@@ -116,6 +116,7 @@ public class ClientProxy extends CommonProxy
 		registerBlock("betterwithmods:metal_chime", BWRegistry.metalChime, variant);
 		registerBlock("betterwithmods:buddy_block", BWRegistry.buddyBlock,"inventory");
 		registerBlock("betterwithmods:creativeGenerator",BWRegistry.creativeGenerator,"inventory");
+		registerBlock("betterwithmods:light", BWRegistry.light, "active=false", "active=true");
 		if(Loader.isModLoaded("immersiveengineering"))
 			registerBlock("betterwithmods:immersive_axle", BWRegistry.treatedAxle, "active=false,dir=0");
 	}

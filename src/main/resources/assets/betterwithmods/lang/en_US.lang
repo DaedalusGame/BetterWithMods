@@ -138,6 +138,7 @@ tile.bwm:metal_chime.5.name=Dark Oak Wind Chime
 tile.bwm:immersive_axle.name=Treated Wood Axle
 tile.bwm:buddy_block.name=Buddy Block
 tile.bwm:creativeGenerator.name=Creative Mechanical Generator
+tile.bwm:light.name=Light Block
 
 item.bwm:material.Gear.name=Wooden Gear
 item.bwm:material.Nethercoal.name=Nethercoal

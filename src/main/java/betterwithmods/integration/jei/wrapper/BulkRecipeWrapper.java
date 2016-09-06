@@ -28,18 +28,8 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper
                 if(stack != null && stack.getItem() != null)
                     inputs.add(stack.copy());
             }
-            else if(obj instanceof OreStack)
-            {
-                OreStack stack = (OreStack)obj;
-                if(stack.getOres() != null && !stack.getOres().isEmpty())
-                {
-                    List<ItemStack> oreStacks = new ArrayList();
-                    for(ItemStack ore : stack.getOres())
-                    {
-                        oreStacks.add(new ItemStack(ore.getItem(), stack.getStackSize(), ore.getItemDamage()));
-                    }
-                    inputs.add(oreStacks);
-                }
+            else if(obj instanceof List) {
+                inputs.add(((List) obj));
             }
         }
         return inputs;

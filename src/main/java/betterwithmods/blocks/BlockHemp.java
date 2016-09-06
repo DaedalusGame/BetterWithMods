@@ -6,6 +6,7 @@ import java.util.Random;
 
 import betterwithmods.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
+import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -42,7 +44,11 @@ public class BlockHemp extends BlockCrops implements IPlantable
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
 	{
-		return (world.getLight(pos) > 12 || world.canSeeSky(pos) || world.canSeeSky(pos.up())) && (canBePlantedHere(world, pos) || canPlantGrowOnBlock(world.getBlockState(pos.down()).getBlock()));
+		return (world.getLight(pos) > 12 || world.canSeeSky(pos) || world.canSeeSky(pos.up()) || isBelowLightBlock(world, pos)) && (canBePlantedHere(world, pos) || canPlantGrowOnBlock(world.getBlockState(pos.down()).getBlock()));
+	}
+
+	private boolean isBelowLightBlock(World world, BlockPos pos) {
+		return world.getBlockState(pos.up()).getBlock() instanceof BlockLight || world.getBlockState(pos.up(2)).getBlock() instanceof BlockLight;
 	}
 	
 	public boolean canBePlantedHere(World world, BlockPos pos)
@@ -55,14 +61,31 @@ public class BlockHemp extends BlockCrops implements IPlantable
 	{
 		checkAndDropBlock(world, pos, state);
 		BlockPos up = pos.up();
-		
+
 		int meta = state.getValue(AGE);
 		boolean isTop = state.getValue(TOP);
+
+		double growthChance = 30D;
+
+		if(world.getBlockState(pos.up(2)).getBlock() instanceof BlockLight && world.isAirBlock(pos.up())) {
+			if(world.getBlockState(pos.up(2)).getValue(BlockLight.ACTIVE))
+				growthChance /= 1.5D;
+		}
+		if(world.getBlockState(pos.down()).getBlock().isFertile(world, pos.down()))
+			growthChance /= 1.33D;
+		else if(world.getBlockState(pos.down()).getBlock().canSustainPlant(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP, this))
+			growthChance /= 1.2D;
+		for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+			IBlockState check = world.getBlockState(pos.offset(facing));
+			if(check.getBlock() instanceof BlockCrops)
+				growthChance /= 1.1D;
+		}
+
 		if(meta < 7)
 		{
 			if(world.getLightFromNeighbors(up) > 12)
 			{
-				if(rand.nextInt(30) == 0)
+				if(rand.nextInt(MathHelper.floor_double(growthChance)) == 0)
 					world.setBlockState(pos, state.withProperty(AGE, meta + 1));
 			}
 		}
@@ -70,7 +93,7 @@ public class BlockHemp extends BlockCrops implements IPlantable
 		{
 			if(world.getLightFromNeighbors(up) > 12)
 			{
-				if(rand.nextInt(30) == 0)
+				if(rand.nextInt(MathHelper.floor_double(growthChance)) == 0)
 					world.setBlockState(up, state.withProperty(AGE, 7).withProperty(TOP, true));
 			}
 		}

@@ -3,6 +3,7 @@ package betterwithmods.craft;
 import java.util.Hashtable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
 public class KilnInteraction 
@@ -11,8 +12,10 @@ public class KilnInteraction
 	
 	public static void addBlockRecipe(Block block, ItemStack output)
 	{
-		for(int i = 0; i < 16; i++)
-			cookables.put(block + ":" + i, output);
+		for(IBlockState state : block.getBlockState().getValidStates()) {
+			if(!contains(block, block.damageDropped(state)))
+				cookables.put(block + ":" + block.damageDropped(state), output);
+		}
 	}
 	
 	public static void addBlockRecipe(Block block, int meta, ItemStack output)

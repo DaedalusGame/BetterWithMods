@@ -85,6 +85,7 @@ public class BWCrafting {
         if (Loader.isModLoaded("immersiveengineering")) {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.treatedAxle), "W", "R", "W", 'W', "plankTreatedWood", 'R', BWRegistry.rope));
         }
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWRegistry.booster), Blocks.RAIL, BWRegistry.rope, "gearWood"));
         GameRegistry.addShapelessRecipe(new ItemStack(BWRegistry.material, 6, 3), BWRegistry.rope);
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWRegistry.material, 9, 30), "ingotIron"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.IRON_INGOT), "III", "III", "III", 'I', "nuggetIron"));

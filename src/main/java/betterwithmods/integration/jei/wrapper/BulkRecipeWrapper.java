@@ -1,6 +1,5 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.OreStack;
 import betterwithmods.craft.bulk.BulkRecipe;
 import net.minecraft.item.ItemStack;
 

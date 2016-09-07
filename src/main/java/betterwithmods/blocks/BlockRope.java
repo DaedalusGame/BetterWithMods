@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.util.math.BlockPos;
+
 import betterwithmods.BWRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,66 +27,60 @@ public class BlockRope extends BTWBlock
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor)
-	{
-		Block blockAbove = world.getBlockState(pos.up()).getBlock();
-		
-		boolean supported = true;
-		
-		if(blockAbove == BWRegistry.anchor)
-		{
-			EnumFacing facing = ((BlockAnchor)BWRegistry.anchor).getFacing(world, pos.up());
-			
-			if(facing == EnumFacing.UP)
-				supported = false;
-		}
-		else if(blockAbove != this && ((blockAbove == BWRegistry.singleMachines && world.getBlockState(pos.up()).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.PULLEY) || blockAbove != BWRegistry.singleMachines))
-			supported = false;
-		
-		if(!supported)
-		{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor) {
+		if (!canBlockStay(world, pos)) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
 	}
 	
-	public boolean canBlockStay(World world, BlockPos pos)
-	{
+	public boolean canBlockStay(World world, BlockPos pos) {
 		Block blockAbove = world.getBlockState(pos.up()).getBlock();
 		
-		boolean supported = true;
+		boolean supported = false;
 		
-		if(blockAbove == BWRegistry.anchor)
-		{
+		if (blockAbove == BWRegistry.anchor) {
 			EnumFacing facing = ((BlockAnchor)BWRegistry.anchor).getFacing(world, pos.up());
-			
-			if(facing == EnumFacing.UP)
-				supported = false;
+			supported = facing != EnumFacing.UP;
 		}
-		else if(blockAbove != this && ((blockAbove == BWRegistry.singleMachines && world.getBlockState(pos.up()).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.PULLEY) || blockAbove != BWRegistry.singleMachines))
-			supported = false;
+		if (blockAbove == this) {
+			supported = true;
+		}
+		if (blockAbove == BWRegistry.singleMachines) {
+			if (world.getBlockState(pos.up()).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.PULLEY) {
+				supported = true;
+			}
+		}
 		
 		return supported;
 	}
 	
-	public void placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player)
-	{
-		if(stack != null)
+	public static boolean placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
+		if(stack != null || player == null)
 		{
+			BlockPos bp = getLowestRopeBlock(world, pos).down();
+			Block block = world.getBlockState(bp).getBlock();
+			if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWRegistry.rope.getDefaultState().getBlock()).canBlockStay(world, bp)) {
+				world.setBlockState(bp, BWRegistry.rope.getDefaultState());
+				if(player != null && !player.capabilities.isCreativeMode) // if this is placed by a pulley, let the pulley manage the stack size
+					stack.stackSize--;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static BlockPos getLowestRopeBlock(World world, BlockPos pos) {
+		if (world != null && pos != null) {
 			BlockPos down = pos.down();
 			Block below = world.getBlockState(down).getBlock();
-			if(below == BWRegistry.rope)
-			{
-				((BlockRope)below).placeRopeUnder(stack, world, down, player);
+			if (below == BWRegistry.rope) {
+				return getLowestRopeBlock(world, down);
+			} else {
+				return pos;
 			}
-			else if(world.isAirBlock(down) || below.isReplaceable(world, down))
-			{
-				world.setBlockState(down, BWRegistry.rope.getDefaultState());
-				if(!player.capabilities.isCreativeMode)
-					stack.stackSize--;
-			}
-			else
-				return;
+		} else {
+			return null;
 		}
 	}
 	

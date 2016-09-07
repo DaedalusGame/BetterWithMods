@@ -5,6 +5,7 @@ import betterwithmods.blocks.tile.TileEntityCauldron;
 import betterwithmods.blocks.tile.TileEntityCrucible;
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.blocks.tile.TileEntityMill;
+import betterwithmods.blocks.tile.TileEntityPulley;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +23,8 @@ public class BWGuiHandler implements IGuiHandler
 		if(ID == 0)
 		{
 			TileEntity tile = world.getTileEntity(pos);
+			if(tile instanceof TileEntityPulley)
+				return new ContainerPulley(player, (TileEntityPulley) tile);
 			if(tile instanceof TileEntityBlockDispenser)
 				return new ContainerBlockDispenser(player, (TileEntityBlockDispenser)tile);
 			if(tile instanceof TileEntityCrucible)
@@ -44,6 +47,8 @@ public class BWGuiHandler implements IGuiHandler
 		if(ID == 0)
 		{
 			TileEntity tile = world.getTileEntity(pos);
+			if(tile instanceof TileEntityPulley)
+				return new GuiPulley(player, (TileEntityPulley) tile);
 			if(tile instanceof TileEntityBlockDispenser)
 				return new GuiBlockDispenser(player, (TileEntityBlockDispenser)tile);
 			if(tile instanceof TileEntityCrucible)

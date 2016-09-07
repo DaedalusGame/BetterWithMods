@@ -3,6 +3,8 @@ package betterwithmods;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityDynamite;
+import betterwithmods.entity.EntityExtendingRope;
+import betterwithmods.entity.EntityMovingPlatform;
 import betterwithmods.event.BucketEvent;
 import betterwithmods.event.LogHarvestEvent;
 import betterwithmods.event.MobDropEvent;
@@ -49,8 +51,11 @@ public class BWMod
 		BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
 		BWRegistry.init();
 		BWCrafting.init();
+		EntityRegistry.registerModEntity(EntityExtendingRope.class, "ExtendingRope", 0, this, 64, 50, true);
 		EntityRegistry.registerModEntity(EntityDynamite.class, "BWMDynamite", 1, this, 10, 50, true);
+		EntityRegistry.registerModEntity(EntityMovingPlatform.class, "MovingPlatform", 2, this, 64, 50, true);
 		proxy.registerRenderInformation();
+		proxy.initRenderers();
 	}
 	
 	@EventHandler
@@ -78,7 +83,6 @@ public class BWMod
 		RecipeUtils.gatherCookableFood();
 		BWRegistry.registerWood();
 		InvUtils.initOreDictGathering();
-		proxy.postRender();
 		ColorUtils.initColors();
 		MinecraftForge.EVENT_BUS.register(new MobDropEvent());
 		MinecraftForge.EVENT_BUS.register(new BucketEvent());

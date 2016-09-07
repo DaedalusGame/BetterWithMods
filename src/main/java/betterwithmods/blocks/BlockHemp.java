@@ -6,21 +6,19 @@ import java.util.Random;
 
 import betterwithmods.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.IPlantable;
 
 public class BlockHemp extends BlockCrops implements IPlantable

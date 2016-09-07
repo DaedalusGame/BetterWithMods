@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import net.minecraft.item.Item;

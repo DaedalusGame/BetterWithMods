@@ -7,7 +7,6 @@ import betterwithmods.craft.bulk.CraftingManagerMill;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;

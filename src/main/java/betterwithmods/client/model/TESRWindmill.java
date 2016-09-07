@@ -1,11 +1,8 @@
 package betterwithmods.client.model;
 
 import betterwithmods.blocks.BlockGen;
-import betterwithmods.blocks.BlockWindmill;
-import net.minecraft.client.renderer.GlStateManager;
-
-import betterwithmods.BWRegistry;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

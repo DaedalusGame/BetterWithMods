@@ -19,7 +19,14 @@
 		}],
 		"machinetype": {
 			"mill": {},
-			"pulley": {},
+			"pulley": {"model": "betterwithmods:pulley",
+				"textures": {
+					"side": "betterwithmods:blocks/pulley_side",
+					"top": "betterwithmods:blocks/pulley_top",
+					"bottom": "betterwithmods:blocks/pulley_bottom",
+					"particle": "#side"
+				}
+			},
 			"crucible": {"model": "betterwithmods:cooking_vat",
 				"textures": {
 					"side": "betterwithmods:blocks/crucible_side",

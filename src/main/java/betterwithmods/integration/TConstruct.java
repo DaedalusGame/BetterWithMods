@@ -15,7 +15,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.MaterialIntegration;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.client.MaterialRenderInfo;
 import slimeknights.tconstruct.library.fluid.FluidMolten;
 import slimeknights.tconstruct.library.materials.ExtraMaterialStats;

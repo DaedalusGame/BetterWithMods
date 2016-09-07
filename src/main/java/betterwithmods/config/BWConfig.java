@@ -13,6 +13,7 @@ public class BWConfig
 	public static boolean slimeSpawn;
 	public static boolean debug;
 	public static boolean produceDung;
+	public static int maxPlatformBlocks;
 	
 	public static void init(File config)
 	{
@@ -27,6 +28,7 @@ public class BWConfig
 			slimeSpawn = cfg.get("Vanilla Tweaks", "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true).getBoolean(true);
 			debug = cfg.get("Debug", "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean(false);
 			produceDung = cfg.get("Vanilla Tweaks", "Animals Produce Dung", true).getBoolean(true);
+			maxPlatformBlocks = cfg.get("Pulley", "Max Platform Blocks", 64).getInt(64);
 		}
 		catch(Exception e)
 		{}

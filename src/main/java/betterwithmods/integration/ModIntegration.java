@@ -4,14 +4,9 @@ import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ModIntegration 
 {

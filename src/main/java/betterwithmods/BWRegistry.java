@@ -141,6 +141,7 @@ public class BWRegistry {
         buddyBlock = new BlockBUD();
         creativeGenerator = new BlockCreativeGenerator();
         light = new BlockLight();
+        platform = new BlockPlatform().setCreativeTab(BWCreativeTabs.BWTAB);
         registerBlock(axle, "axle");
         registerMetaBlock(singleMachines, "single_machine");
         GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
@@ -190,6 +191,7 @@ public class BWRegistry {
         registerMetaBlock(bambooChime, "bamboo_chime");
         registerMetaBlock(metalChime, "metal_chime");
         registerBlock(light, "light");
+        registerBlock(platform, "platform");
 
         if (Loader.isModLoaded("immersiveengineering")) {
             treatedAxle = new BlockImmersiveAxle();

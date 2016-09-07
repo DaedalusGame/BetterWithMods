@@ -139,6 +139,7 @@ tile.bwm:immersive_axle.name=Treated Wood Axle
 tile.bwm:buddy_block.name=Buddy Block
 tile.bwm:creativeGenerator.name=Creative Mechanical Generator
 tile.bwm:light.name=Light Block
+tile.bwm:platform.name=Platform
 
 item.bwm:material.Gear.name=Wooden Gear
 item.bwm:material.Nethercoal.name=Nethercoal
@@ -229,6 +230,7 @@ inv.mill.name=Mill Stone
 inv.bwm.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
+inv.pulley.name=Pulley
 
 itemGroup.bwm:bwTab=Better With Mods
 

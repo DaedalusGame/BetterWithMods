@@ -3,8 +3,6 @@ package betterwithmods.util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class FakeCrafter extends InventoryCrafting
 {

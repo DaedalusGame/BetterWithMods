@@ -1,10 +1,10 @@
 package betterwithmods.blocks;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneDiode;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
@@ -17,9 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem
 {

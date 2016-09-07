@@ -1,6 +1,5 @@
 package betterwithmods.api;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraft.block.Block;

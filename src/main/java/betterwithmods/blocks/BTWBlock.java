@@ -1,7 +1,6 @@
 package betterwithmods.blocks;
 
 import betterwithmods.api.block.IBTWBlock;
-import betterwithmods.blocks.tile.TileEntityDirectional;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

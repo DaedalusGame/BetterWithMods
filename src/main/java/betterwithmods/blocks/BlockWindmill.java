@@ -8,7 +8,6 @@ import betterwithmods.blocks.tile.gen.TileEntityMechGenerator;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.util.ColorUtils;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;

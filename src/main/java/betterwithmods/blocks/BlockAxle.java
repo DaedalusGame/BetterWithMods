@@ -3,7 +3,6 @@ package betterwithmods.blocks;
 import java.util.Random;
 
 import betterwithmods.BWSounds;
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.player.EntityPlayer;

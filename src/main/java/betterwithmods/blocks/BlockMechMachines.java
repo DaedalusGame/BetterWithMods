@@ -77,6 +77,7 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 			meta -= 8;
 		switch(meta)
 		{
+		case 1:
 		case 2:
 		case 3:
 			return 1;
@@ -133,7 +134,7 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 			return true;
 		}
 		else {
-			if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null)) {
+			if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 				player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			else
@@ -230,8 +231,7 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 	{
 	    for (int i = 0; i < 6; i++)
 	    {
-			if(i != 1)
-	      		list.add(new ItemStack(item, 1, i));
+	    	list.add(new ItemStack(item, 1, i));
 	    }
 	}
 

@@ -1,11 +1,8 @@
 package betterwithmods.client.model;
 
-import org.lwjgl.opengl.GL11;
-
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.passive.EntitySheep;
 
 public class ModelVerticalSails extends ModelBase
 {

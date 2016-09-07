@@ -1,10 +1,5 @@
 package betterwithmods.entity;
 
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -15,16 +10,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.IFluidBlock;
 
 public class EntityDynamite extends Entity implements IProjectile

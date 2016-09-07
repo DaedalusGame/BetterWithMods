@@ -16,7 +16,7 @@ public class CommonProxy implements IGuiHandler
 		
 	}
 	
-	public void postRender()
+	public void initRenderers()
 	{
 		
 	}

@@ -1,7 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWRegistry;
-import betterwithmods.blocks.tile.TileEntityPulley;
+import betterwithmods.blocks.BlockMechMachines.EnumType;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -134,7 +134,13 @@ public class BlockAnchor extends BTWBlock
 	@Override
 	public EnumFacing getFacing(IBlockAccess world, BlockPos pos)
 	{
-		return world.getBlockState(pos).getValue(DirUtils.FACING);
+		return getFacingFromBlockState(world.getBlockState(pos));
+	}
+	
+	@Override
+	public EnumFacing getFacingFromBlockState(IBlockState state)
+	{
+		return state.getValue(DirUtils.FACING);
 	}
 	
 	private void retractRope(World world, BlockPos pos, EntityPlayer player)
@@ -185,10 +191,16 @@ public class BlockAnchor extends BTWBlock
 		return world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(DirUtils.FACING) != facing;
 	}
 	
+	private boolean isPulley(IBlockAccess world, BlockPos origin, EnumFacing facing)
+	{
+		BlockPos pos = origin.offset(facing);
+		return world.getBlockState(pos).getBlock() == BWRegistry.singleMachines && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == EnumType.PULLEY;
+	}
+	
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		boolean topRope = isRope(world, pos, EnumFacing.UP) || isAnchor(world, pos, EnumFacing.UP);
+		boolean topRope = isRope(world, pos, EnumFacing.UP) || isAnchor(world, pos, EnumFacing.UP) || isPulley(world, pos, EnumFacing.UP);
 		boolean bottomRope = isRope(world, pos, EnumFacing.DOWN) || isAnchor(world, pos, EnumFacing.DOWN);
 		
 		return state.withProperty(TOPCONNECT, topRope).withProperty(BOTTOMCONNECT, bottomRope);

@@ -18,7 +18,6 @@ import net.minecraft.block.BlockCrops;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -248,6 +247,7 @@ public class BlockDetector extends BTWBlock
 			int z = offset.getZ();
 			AxisAlignedBB collisionBox = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
 			List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, collisionBox);
+			entityList.removeIf(e -> e.isDead); // remove dead entities, prevents dead moving pulley blocks from triggering it
 			if(entityList.size() > 0)
 				return true;
 			BlockPos below = offset.offset(EnumFacing.DOWN);

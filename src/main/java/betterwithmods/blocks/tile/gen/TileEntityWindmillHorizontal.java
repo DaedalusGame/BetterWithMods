@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.util.EnumFacing;
 import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;

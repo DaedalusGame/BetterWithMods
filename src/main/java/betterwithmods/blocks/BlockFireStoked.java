@@ -75,18 +75,14 @@ public class BlockFireStoked extends BlockFire
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(AGE, meta));
 		}
 		
-		boolean flag1 = world.isBlockinHighHumidity(pos);/*
-		byte b0 = 0;
-		if (flag1)
-		{
-			b0 = -50;
-		}*/
-		this.tryCatchFire(world, pos.east(), 300, rand, meta, EnumFacing.WEST);
-		this.tryCatchFire(world, pos.west(), 300, rand, meta, EnumFacing.EAST);
-		this.tryCatchFire(world, pos.down(), 250, rand, meta, EnumFacing.UP);
-		this.tryCatchFire(world, pos.up(), 250, rand, meta, EnumFacing.DOWN);
-		this.tryCatchFire(world, pos.north(), 300, rand, meta, EnumFacing.SOUTH);
-		this.tryCatchFire(world, pos.south(), 300, rand, meta, EnumFacing.NORTH);
+		boolean flag1 = world.isBlockinHighHumidity(pos);
+
+		this.setFire(world, pos.east(), 300, rand, meta, EnumFacing.WEST);
+		this.setFire(world, pos.west(), 300, rand, meta, EnumFacing.EAST);
+		this.setFire(world, pos.down(), 250, rand, meta, EnumFacing.UP);
+		this.setFire(world, pos.up(), 250, rand, meta, EnumFacing.DOWN);
+		this.setFire(world, pos.north(), 300, rand, meta, EnumFacing.SOUTH);
+		this.setFire(world, pos.south(), 300, rand, meta, EnumFacing.NORTH);
 		for (int i1 = - 1; i1 <= 1; ++i1)
 		{
 			for (int j1 = 1; j1 <= 1; ++j1)
@@ -146,8 +142,8 @@ public class BlockFireStoked extends BlockFire
 		}
 		return numBrick > 2;
 	}
-	
-	private void tryCatchFire(World worldIn, BlockPos pos, int chance, Random random, int age, EnumFacing face)
+
+	private void setFire(World worldIn, BlockPos pos, int chance, Random random, int age, EnumFacing face)
     {
         int i = worldIn.getBlockState(pos).getBlock().getFlammability(worldIn, pos, face);
 

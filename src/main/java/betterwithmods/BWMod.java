@@ -34,7 +34,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-@Mod(modid="betterwithmods", name="Better With Mods", version="0.9.2 Beta", dependencies="before:survivalist;after:tcontruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering")
+@Mod(modid="betterwithmods", name="Better With Mods", version="0.10 Beta", dependencies="before:survivalist;after:tcontruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering")
 public class BWMod
 {
 	@SidedProxy(serverSide="betterwithmods.proxy.CommonProxy", clientSide="betterwithmods.proxy.ClientProxy")

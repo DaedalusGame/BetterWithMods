@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,26 +27,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpawnData {
 
-	private int targetY;
 	private boolean up;
 	private IBlockState blockState;
 	private IBlockState onTop;
+	private Vec3i offset;
 
 	public EntityMovingPlatform(World worldIn) {
-		this(worldIn, null, 0, null, null);
+		this(worldIn, null, null, null, null);
 	}
 
-	public EntityMovingPlatform(World worldIn, BlockPos source, int targetY, IBlockState blockState,
+	public EntityMovingPlatform(World worldIn, Vec3i offset, EntityExtendingRope rope, IBlockState blockState,
 			IBlockState onTop) {
 		super(worldIn);
 		this.setSizeAccordingToBlockState(blockState);
-		this.targetY = targetY;
-		if (source != null) {
-			this.up = source.getY() < targetY;
-			this.setPositionAndUpdate(source.getX() + 0.5, source.getY(), source.getZ() + 0.5);
+		if (rope != null) {
+			this.up = rope.getUp();
 		}
 		this.blockState = blockState;
 		this.onTop = onTop;
+		this.offset = offset;
 	}
 
 	private void setSizeAccordingToBlockState(IBlockState blockState) {
@@ -57,10 +57,12 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		targetY = compound.getInteger("targetY");
-		up = compound.getBoolean("up");
+		int[] o = compound.getIntArray("Offset");
+		offset = new Vec3i(o[0], o[1], o[2]);
+		up = compound.getBoolean("Up");
 		int i = compound.getByte("Data") & 255;
 		this.blockState = Block.getBlockFromName(compound.getString("Block")).getStateFromMeta(i);
 		int j = compound.getByte("TopData") & 255;
@@ -70,8 +72,8 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setInteger("targetY", targetY);
-		compound.setBoolean("up", up);
+		compound.setIntArray("Offset", new int[] { offset.getX(), offset.getY(), offset.getZ() });
+		compound.setBoolean("Up", up);
 		Block block = this.blockState != null ? this.blockState.getBlock() : Blocks.AIR;
 		ResourceLocation resourcelocation = (ResourceLocation) Block.REGISTRY.getNameForObject(block);
 		compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
@@ -85,37 +87,17 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 	@Override
 	public void onUpdate() {
 
+		if (getRidingEntity() == null) {
+			this.setDead();
+		}
+
 		this.noClip = true;
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		this.moveEntity(0, this.motionY, 0);
-
-		this.motionY = 0;
-		if (up) {
-			if (posY < targetY) {
-				this.motionY = 0.1;
-			} else {
-				done();
-			}
-		} else {
-			if (posY > targetY) {
-				this.motionY = -0.1;
-			} else {
-				done();
-			}
-		}
-
-		worldObj.getEntitiesWithinAABBExcludingEntity(this,
-				getEntityBoundingBox().offset(0, 0.25, 0).expand(0, 0.25, 0)).forEach(e -> {
-					if (!(e instanceof EntityMovingPlatform) && !(e instanceof EntityExtendingRope)) {
-						e.motionY = this.motionY;
-					}
-				});
-
-		worldObj.getEntitiesWithinAABBExcludingEntity(this,
-				getEntityBoundingBox().offset(0, -0.25, 0).expand(0, -0.25, 0)).forEach(e -> {
+		worldObj.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().offset(0, 0.5, 0).expand(0, 0.5, 0))
+				.forEach(e -> {
 					if (!(e instanceof EntityMovingPlatform) && !(e instanceof EntityExtendingRope)) {
 						e.setPosition(e.posX, getEntityBoundingBox().maxY + 0.01 + (up ? 0.24 : 0), e.posZ);
 					}
@@ -128,7 +110,7 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 		return false;
 	}
 
-	private void done() {
+	public void done(BlockPos target) {
 		for (Entity e : worldObj.getEntitiesWithinAABBExcludingEntity(this,
 				getEntityBoundingBox().offset(0, 0.5, 0).expand(0, 0.25, 0))) {
 			if (!(e instanceof EntityMovingPlatform) && !(e instanceof EntityExtendingRope)) {
@@ -136,7 +118,6 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 			}
 		}
 
-		BlockPos target = new BlockPos(posX - 0.5, targetY, posZ - 0.5);
 		worldObj.setBlockState(target, blockState);
 		if (onTop != null && onTop.getBlock() != Blocks.AIR)
 			worldObj.setBlockState(target.up(), onTop);
@@ -145,7 +126,9 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
-		buffer.writeInt(targetY);
+		buffer.writeInt(offset.getX());
+		buffer.writeInt(offset.getY());
+		buffer.writeInt(offset.getZ());
 		buffer.writeBoolean(up);
 		Block block = this.blockState != null ? this.blockState.getBlock() : Blocks.AIR;
 		ResourceLocation resourcelocation = (ResourceLocation) Block.REGISTRY.getNameForObject(block);
@@ -161,9 +144,10 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 		buffer.writeByte((byte) top.getMetaFromState(this.onTop));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void readSpawnData(ByteBuf additionalData) {
-		targetY = additionalData.readInt();
+		offset = new Vec3i(additionalData.readInt(), additionalData.readInt(), additionalData.readInt());
 		up = additionalData.readBoolean();
 		int len = additionalData.readInt();
 		byte[] bytes = new byte[len];
@@ -178,10 +162,6 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 		int meta2 = additionalData.readByte();
 		this.onTop = Block.getBlockFromName(name2).getStateFromMeta(meta2);
 		setSizeAccordingToBlockState(blockState);
-	}
-
-	public int getTargetY() {
-		return this.targetY;
 	}
 
 	public IBlockState getBlockState() {
@@ -203,6 +183,10 @@ public class EntityMovingPlatform extends Entity implements IEntityAdditionalSpa
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
 		return canBeCollidedWith() ? this.getEntityBoundingBox() : null;
+	}
+
+	public Vec3i getOffset() {
+		return this.offset;
 	}
 
 }

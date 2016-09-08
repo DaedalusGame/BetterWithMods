@@ -52,10 +52,19 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
 		vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
 		BlockPos blockpos = new BlockPos(0, entity.getEntityBoundingBox().maxY, 0);
 		GlStateManager.translate(x - 0.5, (float) (y - (double) blockpos.getY()), z - 0.5);
-		GlStateManager.scale(0.99, 1, 0.99); // prevent z-fighting
+		GlStateManager.translate(-0.005, 0, -0.005);
+		GlStateManager.scale(1.01, 1, 1.01); // prevent z-fighting
 		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		blockrendererdispatcher.getBlockModelRenderer().renderModel(world,
-				blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, vertexbuffer, false, 0);
+		if (entity.getPulleyPosition().getY() - entity.posY > 0.0) {
+			blockrendererdispatcher.getBlockModelRenderer().renderModel(world,
+					blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, vertexbuffer, false,
+					0);
+		}
+		if (entity.getPulleyPosition().getY() - entity.posY > 1) {
+			blockrendererdispatcher.getBlockModelRenderer().renderModel(world,
+					blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos.up(), vertexbuffer,
+					false, 0);
+		}
 		tessellator.draw();
 
 		if (this.renderOutlines) {

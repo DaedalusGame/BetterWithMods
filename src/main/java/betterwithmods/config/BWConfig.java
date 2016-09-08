@@ -14,6 +14,8 @@ public class BWConfig
 	public static boolean debug;
 	public static boolean produceDung;
 	public static int maxPlatformBlocks;
+	public static float upSpeed;
+	public static float downSpeed;
 	
 	public static void init(File config)
 	{
@@ -29,6 +31,8 @@ public class BWConfig
 			debug = cfg.get("Debug", "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean(false);
 			produceDung = cfg.get("Vanilla Tweaks", "Animals Produce Dung", true).getBoolean(true);
 			maxPlatformBlocks = cfg.get("Pulley", "Max Platform Blocks", 64).getInt(64);
+			upSpeed = cfg.getFloat("Vertical speed up", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves up");
+			downSpeed = cfg.getFloat("Vertical speed down", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves down");
 		}
 		catch(Exception e)
 		{}

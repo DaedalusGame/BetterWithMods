@@ -272,7 +272,7 @@ public class BlockMechMachines extends BlockContainer implements IBTWBlock, IMec
 		switch(type)
 		{
 		case MILL: return dir == EnumFacing.UP || dir == EnumFacing.DOWN;
-		case PULLEY: return dir != EnumFacing.DOWN;
+		case PULLEY: return dir != EnumFacing.DOWN && dir != EnumFacing.UP;
 		case CRUCIBLE:
 		case CAULDRON:
 		case HOPPER: return dir != EnumFacing.UP && dir != EnumFacing.DOWN;

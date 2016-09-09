@@ -19,11 +19,13 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -190,8 +192,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 			for (BlockPos blockPos : platformBlocks) {
 				IBlockState blockState = worldObj.getBlockState(blockPos.up());
 				b = blockState.getBlock();
-				blockState = (b == Blocks.REDSTONE_WIRE || b == Blocks.RAIL || b == Blocks.ACTIVATOR_RAIL
-						|| b == Blocks.DETECTOR_RAIL || b == Blocks.GOLDEN_RAIL ? blockState : null);
+				blockState = (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase ? blockState : null);
 				Vec3i offset = blockPos.subtract(anchor.up());
 				EntityMovingPlatform platform = new EntityMovingPlatform(worldObj, offset, rope,
 						worldObj.getBlockState(blockPos), blockState);
@@ -262,8 +263,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
 		b = worldObj.getBlockState(blockCheck).getBlock();
 
-		if (b == Blocks.REDSTONE_WIRE || b == Blocks.RAIL || b == Blocks.ACTIVATOR_RAIL || b == Blocks.DETECTOR_RAIL
-				|| b == Blocks.GOLDEN_RAIL) {
+		if (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase) {
 
 		} else {
 			if (!(worldObj.isAirBlock(blockCheck) || b.isReplaceable(worldObj, blockCheck) || b == PLATFORM)
@@ -346,6 +346,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 		IBlockState state = worldObj.getBlockState(ropePos);
 		if (!up) {
 			if ((worldObj.isAirBlock(ropePos) || state.getBlock().isReplaceable(worldObj, ropePos)) && takeRope(true)) {
+				worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.4F, 1.0F);
 				worldObj.setBlockState(ropePos, BWRegistry.rope.getDefaultState());
 			}
 		}
@@ -353,6 +354,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 			theRope.setTargetY(targetY + (theRope.getUp() ? 1 : -1));
 			if (up) {
 				if (!worldObj.isAirBlock(ropePos.up())) {
+					worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 0.4F + (worldObj.rand.nextFloat() * 0.1F), 1.0F);
 					worldObj.setBlockToAir(ropePos.up());
 					putRope(true);
 				}

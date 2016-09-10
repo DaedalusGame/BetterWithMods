@@ -1,16 +1,18 @@
 package betterwithmods.blocks.tile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 
+import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
 import betterwithmods.blocks.BlockAnchor;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.blocks.BlockRope;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityExtendingRope;
-import betterwithmods.entity.EntityMovingPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -136,6 +138,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 				&& ((BlockAnchor) BWRegistry.anchor).getFacingFromBlockState(state) == EnumFacing.UP;
 		rope = new EntityExtendingRope(worldObj, pos, lowest, lowest.up().getY());
 		if (!flag || movePlatform(lowest.down(), true)) {
+			worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
+					0.4F + (worldObj.rand.nextFloat() * 0.1F), 1.0F);
 			worldObj.spawnEntityInWorld(rope);
 			worldObj.setBlockToAir(lowest);
 			putRope(true);
@@ -194,13 +198,18 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 				b = blockState.getBlock();
 				blockState = (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase ? blockState : null);
 				Vec3i offset = blockPos.subtract(anchor.up());
-				EntityMovingPlatform platform = new EntityMovingPlatform(worldObj, offset, rope,
-						worldObj.getBlockState(blockPos), blockState);
-				platform.setPosition(rope.posX + offset.getX(), rope.posY + offset.getY(), rope.posZ + offset.getZ());
-				worldObj.spawnEntityInWorld(platform);
-				platform.startRiding(rope, true);
-				if (blockState != null)
+				// EntityMovingPlatform platform = new
+				// EntityMovingPlatform(worldObj, offset, rope,
+				// worldObj.getBlockState(blockPos), blockState);
+				// platform.setPosition(rope.posX + offset.getX(), rope.posY +
+				// offset.getY(), rope.posZ + offset.getZ());
+				// worldObj.spawnEntityInWorld(platform);
+				// platform.startRiding(rope, true);
+				rope.addBlock(offset, worldObj.getBlockState(blockPos));
+				if (blockState != null) {
+					rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), blockState);
 					worldObj.setBlockToAir(blockPos.up());
+				}
 				worldObj.setBlockToAir(blockPos);
 			}
 		}
@@ -231,7 +240,9 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 					worldObj.setBlockState(rail, state.withProperty(shape, flatten(currentShape)), 6);
 				}
 			} else {
-				System.err.printf("WARNING: Rail at %s has no shape?", rail);
+				Formatter f = new Formatter();
+				BWMod.logger.warn(f.format("Rail at %s has no shape?", rail));
+				f.close();
 			}
 		}
 	}
@@ -250,9 +261,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	}
 
 	private boolean addToList(HashSet<BlockPos> set, BlockPos p, boolean up) {
-
-		if (set.size() > BWConfig.maxPlatformBlocks)
-			return false;
+//		if (set.size() > BWConfig.maxPlatformBlocks)
+//			return false;
 
 		BlockPos blockCheck = up ? p.up() : p.down();
 
@@ -274,32 +284,16 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
 		set.add(p);
 
-		if (!set.contains(p.up())) {
-			if (!addToList(set, p.up(), up))
-				return false;
-		}
-		if (!set.contains(p.down())) {
-			if (!addToList(set, p.down(), up))
-				return false;
-		}
-		if (!set.contains(p.north())) {
-			if (!addToList(set, p.north(), up))
-				return false;
-		}
-		if (!set.contains(p.south())) {
-			if (!addToList(set, p.south(), up))
-				return false;
-		}
-		if (!set.contains(p.east())) {
-			if (!addToList(set, p.east(), up))
-				return false;
-		}
-		if (!set.contains(p.west())) {
-			if (!addToList(set, p.west(), up))
-				return false;
-		}
+		List<BlockPos> fails = new ArrayList<>();
 
-		return true;
+		Arrays.asList(p.up(), p.down(), p.north(), p.south(), p.east(), p.west()).forEach(q -> {
+			if (fails.isEmpty() && !set.contains(q)) {
+				if (!addToList(set, q, up))
+					fails.add(q);
+			}
+		});
+
+		return fails.isEmpty();
 	}
 
 	private boolean activeOperation() {
@@ -354,7 +348,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 			theRope.setTargetY(targetY + (theRope.getUp() ? 1 : -1));
 			if (up) {
 				if (!worldObj.isAirBlock(ropePos.up())) {
-					worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 0.4F + (worldObj.rand.nextFloat() * 0.1F), 1.0F);
+					worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
+							0.4F + (worldObj.rand.nextFloat() * 0.1F), 1.0F);
 					worldObj.setBlockToAir(ropePos.up());
 					putRope(true);
 				}

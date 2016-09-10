@@ -220,7 +220,7 @@ public class BlockDetector extends BTWBlock
 			if(lens.getFacing(world, offset) == DirUtils.getOpposite(getFacing(world, pos)) && lens.isLit(world, offset))
 				return true;
 		}
-		else if(world.getBlockState(offset).isOpaqueCube())
+		else if(world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWRegistry.platform)
 			return true;
 		else if(!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset))
 		{

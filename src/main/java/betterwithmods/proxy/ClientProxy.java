@@ -23,10 +23,8 @@ import betterwithmods.client.model.TESRVerticalWindmill;
 import betterwithmods.client.model.TESRWaterwheel;
 import betterwithmods.client.model.TESRWindmill;
 import betterwithmods.client.render.RenderExtendingRope;
-import betterwithmods.client.render.RenderMovingPlatform;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
-import betterwithmods.entity.EntityMovingPlatform;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -178,7 +176,6 @@ public class ClientProxy extends CommonProxy
 		//RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, new DynamiteRenderFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), BWRegistry.dynamite, Minecraft.getMinecraft().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityExtendingRope.class, RenderExtendingRope::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityMovingPlatform.class, RenderMovingPlatform::new);
 	}
 	
 	private void registerItemModel(Item item, int meta, String name)

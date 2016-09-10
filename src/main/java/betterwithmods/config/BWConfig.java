@@ -16,6 +16,7 @@ public class BWConfig
 	public static int maxPlatformBlocks;
 	public static float upSpeed;
 	public static float downSpeed;
+	public static boolean dumpBlockData;
 	
 	public static void init(File config)
 	{
@@ -33,6 +34,7 @@ public class BWConfig
 			maxPlatformBlocks = cfg.get("Pulley", "Max Platform Blocks", 64).getInt(64);
 			upSpeed = cfg.getFloat("Vertical speed up", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves up");
 			downSpeed = cfg.getFloat("Vertical speed down", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves down");
+			dumpBlockData = cfg.get("Debug", "Dump Platform Block Data", false, "Dumps the platform entity's block information in xxd format when the world is saved.").getBoolean(false);
 		}
 		catch(Exception e)
 		{}

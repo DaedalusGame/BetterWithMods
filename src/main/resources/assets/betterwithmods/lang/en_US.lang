@@ -140,6 +140,7 @@ tile.bwm:buddy_block.name=Buddy Block
 tile.bwm:creativeGenerator.name=Creative Mechanical Generator
 tile.bwm:light.name=Light Block
 tile.bwm:platform.name=Platform
+tile.bwm:mining_charge.name=Mining Charge
 
 item.bwm:material.Gear.name=Wooden Gear
 item.bwm:material.Nethercoal.name=Nethercoal

@@ -172,6 +172,7 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.knife), new Object[]{"I ", " X", Character.valueOf('X'), "stickWood", Character.valueOf('I'), new ItemStack(BWRegistry.material, 1, 41)}).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.singleMachines, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), "plankWood", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), new ItemStack(BWRegistry.material, 1, 35)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.platform), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), "plankWood", Character.valueOf('W'), new ItemStack(BWRegistry.pane, 1, 2)}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.miningCharge), new Object[] {"RSR", "DDD", "DDD", Character.valueOf('R'), BWRegistry.rope, Character.valueOf('S'), "slimeball", 'D', BWRegistry.dynamite}));
     }
 
     private static void addMillRecipes() {

@@ -10,6 +10,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
+import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.items.*;
 import betterwithmods.items.tools.*;
 import betterwithmods.util.DispenserBehaviorDynamite;
@@ -20,8 +21,10 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
@@ -31,7 +34,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -83,6 +88,7 @@ public class BWRegistry {
     public static Block creativeGenerator;
     public static Block treatedAxle;
     public static Block light;
+    public static Block miningCharge;
 
     public static Item material;
     public static Item windmill;
@@ -99,6 +105,7 @@ public class BWRegistry {
     public static Item steelShovel;
 
     public static final ToolMaterial SOULFORGEDSTEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3, 22);
+
 
 
     public static void init() {
@@ -142,6 +149,7 @@ public class BWRegistry {
         creativeGenerator = new BlockCreativeGenerator();
         light = new BlockLight();
         platform = new BlockPlatform().setCreativeTab(BWCreativeTabs.BWTAB);
+        miningCharge = new BlockMiningCharge();
         registerBlock(axle, "axle");
         registerMetaBlock(singleMachines, "single_machine");
         GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
@@ -227,7 +235,16 @@ public class BWRegistry {
 
         registerOres();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(dynamite, new DispenserBehaviorDynamite());
-
+        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(miningCharge), (source, stack) -> {
+            World worldIn = source.getWorld();
+            EnumFacing facing = source.func_189992_e().getValue(BlockBDispenser.FACING);
+            BlockPos pos = source.getBlockPos().offset(facing);
+            EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), null, facing);
+            miningCharge.func_189654_d(false);
+            worldIn.spawnEntityInWorld(miningCharge);
+            worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            return stack;
+        });
         if (BWConfig.hardcoreBuckets) {
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
                 @Override

@@ -33,6 +33,7 @@ public class BWCrafting {
     }
 
     private static void addHERecipes() {
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.singleMachines, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), new ItemStack(BWRegistry.woodSiding, 1, 32767), Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), new ItemStack(BWRegistry.material, 1, 35)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.platform), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), new ItemStack(BWRegistry.woodMoulding, 1, 32767), Character.valueOf('W'), new ItemStack(BWRegistry.pane, 1, 2)}));
         GameRegistry.addShapedRecipe(new ItemStack(BWRegistry.axle), "M", "R", "M", 'M', new ItemStack(BWRegistry.woodMoulding, 1, OreDictionary.WILDCARD_VALUE), 'R', BWRegistry.rope);
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.gearbox), "SGS", "GLG", "SGS", 'L', new ItemStack(BWRegistry.material, 1, 35), 'S', new ItemStack(BWRegistry.woodSiding, 1, OreDictionary.WILDCARD_VALUE), 'G', "gearWood"));
@@ -169,7 +170,7 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.material, 1, 40), new Object[]{"X ", " X", Character.valueOf('X'), Items.FLINT}).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.material, 1, 41), new Object[]{"I ", " X", Character.valueOf('X'), new ItemStack(BWRegistry.material, 1, 40), Character.valueOf('I'), "ingotIron"}).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.knife), new Object[]{"I ", " X", Character.valueOf('X'), "stickWood", Character.valueOf('I'), new ItemStack(BWRegistry.material, 1, 41)}).setMirrored(true));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.singleMachines, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), new ItemStack(BWRegistry.woodSiding, 1, 32767), Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), new ItemStack(BWRegistry.material, 1, 35)}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.singleMachines, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), "plankWood", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), new ItemStack(BWRegistry.material, 1, 35)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.platform), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), "plankWood", Character.valueOf('W'), new ItemStack(BWRegistry.pane, 1, 2)}));
     }
 

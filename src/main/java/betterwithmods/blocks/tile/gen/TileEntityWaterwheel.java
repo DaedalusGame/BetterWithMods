@@ -140,7 +140,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 				if(worldObj.getBlockState(lowPos).getBlock() instanceof BlockLiquid)
 				{
 					int meta = ((BlockLiquid)worldObj.getBlockState(lowPos).getBlock()).getMetaFromState(worldObj.getBlockState(lowPos));
-					waterMeta[i] = ((BlockLiquid)worldObj.getBlockState(lowPos).getBlock()).getLiquidHeightPercent(meta);
+					waterMeta[i] = BlockLiquid.getLiquidHeightPercent(meta);
 				}
 				else if(worldObj.getBlockState(lowPos).getBlock() instanceof IFluidBlock)
 				{

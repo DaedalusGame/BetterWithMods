@@ -320,7 +320,7 @@ public class BlockBellows extends BTWBlock implements IMechanicalBlock
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		List list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 0.6875F, z, x + 1, y + 1, z + 1));
+		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y + 0.6875F, z, x + 1, y + 1, z + 1));
 		
 		float extendedY = y + 1;
 		

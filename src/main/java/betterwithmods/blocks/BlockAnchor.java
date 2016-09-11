@@ -96,7 +96,7 @@ public class BlockAnchor extends BTWBlock
 					{
 						if(world.getBlockState(down).getBlock() == BWRegistry.rope)
 						{
-							((BlockRope)world.getBlockState(down).getBlock()).placeRopeUnder(stack, world, down, player);
+							BlockRope.placeRopeUnder(stack, world, down, player);
 						}
 						else if(world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down))
 						{

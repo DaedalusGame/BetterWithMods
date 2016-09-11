@@ -4,11 +4,10 @@ import betterwithmods.blocks.BlockGen;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
-public class TESRWaterwheel extends TileEntitySpecialRenderer
+public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwheel>
 {
 	private ModelWaterwheel waterwheel;
 	
@@ -18,7 +17,7 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double x, double y, double z,
+	public void renderTileEntityAt(TileEntityWaterwheel te, double x, double y, double z,
 			float partialTicks, int destroyStage) {
 		TileEntityWaterwheel wheel = (TileEntityWaterwheel)te;
 		GlStateManager.pushMatrix();

@@ -1,6 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.tile.TileEntityImmersiveAxle;
 import betterwithmods.util.MechanicalUtil;

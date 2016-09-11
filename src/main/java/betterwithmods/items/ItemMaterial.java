@@ -42,7 +42,7 @@ public class ItemMaterial extends BWMItem implements ITannin{
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < names.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }

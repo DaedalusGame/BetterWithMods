@@ -155,7 +155,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
 	    for (int i = 0; i < 10; i++)
 	    {

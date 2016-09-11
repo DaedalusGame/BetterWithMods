@@ -15,8 +15,8 @@ public class BulkRecipe
 {
     protected ItemStack output = null;
     protected ItemStack secondary = null;
-    protected ArrayList<Object> input = new ArrayList();
-    protected ArrayList<Object> jeiInput = new ArrayList();
+    protected ArrayList<Object> input = new ArrayList<Object>();
+    protected ArrayList<Object> jeiInput = new ArrayList<Object>();
 
     public BulkRecipe(String type, ItemStack output, Object... input)
     {
@@ -85,7 +85,7 @@ public class BulkRecipe
     private List<ItemStack> getOreList(OreStack stack)
     {
         int stackSize = stack.getStackSize();
-        List<ItemStack> list = new ArrayList();
+        List<ItemStack> list = new ArrayList<ItemStack>();
         if(stack.getOres() != null && !stack.getOres().isEmpty()) {
             for (ItemStack s : stack.getOres()) {
                 list.add(new ItemStack(s.getItem(), stackSize, s.getItemDamage()));

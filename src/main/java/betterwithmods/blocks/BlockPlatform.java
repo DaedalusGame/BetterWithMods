@@ -1,6 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class KilnInteraction 
 {
-	private static Hashtable<String, ItemStack> cookables = new Hashtable();
+	private static Hashtable<String, ItemStack> cookables = new Hashtable<String, ItemStack>();
 	
 	public static void addBlockRecipe(Block block, ItemStack output)
 	{

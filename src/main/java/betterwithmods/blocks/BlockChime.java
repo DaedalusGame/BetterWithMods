@@ -49,7 +49,7 @@ public class BlockChime extends BTWBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list)
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
     {
         for(int i = 0; i < 6; i++)
         {

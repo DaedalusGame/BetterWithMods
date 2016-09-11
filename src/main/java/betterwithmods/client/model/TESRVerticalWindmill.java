@@ -3,17 +3,16 @@ package betterwithmods.client.model;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class TESRVerticalWindmill extends TileEntitySpecialRenderer
+public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWindmillVertical>
 {
 	private ModelVerticalShafts modelShafts = new ModelVerticalShafts();
 	private ModelVerticalSails modelSails = new ModelVerticalSails();
 	private ModelVerticalFrame modelFrame = new ModelVerticalFrame();
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double x, double y, double z,
+	public void renderTileEntityAt(TileEntityWindmillVertical te, double x, double y, double z,
 			float partialTicks, int destroyStage) {
 		TileEntityWindmillVertical windmill = (TileEntityWindmillVertical)te;
 		

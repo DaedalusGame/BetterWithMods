@@ -71,7 +71,7 @@ public class ItemDynamite extends BWMItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool)
 	{
 		list.add(I18n.translateToLocal("lore.bwm:dynamite"));
 		super.addInformation(stack, player, list, bool);

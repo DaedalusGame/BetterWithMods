@@ -26,13 +26,13 @@ public class SawWrapper extends BlankRecipeWrapper {
 
     @Nonnull
     @Override
-    public List getInputs() {
+    public List<ItemStack> getInputs() {
         return inputs;
     }
 
     @Nonnull
     @Override
-    public List getOutputs() {
+    public List<ItemStack> getOutputs() {
         return outputs;
     }
 

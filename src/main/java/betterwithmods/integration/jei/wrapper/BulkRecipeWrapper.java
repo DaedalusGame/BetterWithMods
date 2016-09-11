@@ -16,9 +16,9 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper
 
     @Nonnull
     @Override
-    public List getInputs()
+    public List<Object> getInputs()
     {
-        List<Object> inputs = new ArrayList();
+        List<Object> inputs = new ArrayList<Object>();
         for(Object obj : getRecipe().getInput())
         {
             if(obj instanceof ItemStack)
@@ -28,7 +28,7 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper
                     inputs.add(stack.copy());
             }
             else if(obj instanceof List) {
-                inputs.add(((List) obj));
+                inputs.add(((List<?>) obj));
             }
         }
         return inputs;
@@ -38,7 +38,7 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper
     @Override
     public List<ItemStack> getOutputs()
     {
-        List<ItemStack> outputs = new ArrayList();
+        List<ItemStack> outputs = new ArrayList<ItemStack>();
         outputs.add(getRecipe().getOutput().copy());
         if(getRecipe().getSecondary() != null)
             outputs.add(getRecipe().getSecondary().copy());

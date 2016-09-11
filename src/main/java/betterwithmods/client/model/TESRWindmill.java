@@ -4,17 +4,16 @@ import betterwithmods.blocks.BlockGen;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
-public class TESRWindmill extends TileEntitySpecialRenderer
+public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHorizontal>
 {
 	private ModelWindmillShafts shafts = new ModelWindmillShafts();
 	private ModelWindmillSail sail = new ModelWindmillSail();
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double x, double y, double z,
+	public void renderTileEntityAt(TileEntityWindmillHorizontal te, double x, double y, double z,
 			float partialTicks, int destroyStage) {
 		TileEntityWindmillHorizontal windmill = (TileEntityWindmillHorizontal)te;
 		GlStateManager.pushMatrix();

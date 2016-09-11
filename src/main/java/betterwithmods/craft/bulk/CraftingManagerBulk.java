@@ -18,7 +18,7 @@ public abstract class CraftingManagerBulk
     public CraftingManagerBulk(String craftType)
     {
         this.craftType = craftType;
-        this.recipes = new ArrayList();
+        this.recipes = new ArrayList<BulkRecipe>();
     }
 
     public void addOreRecipe(ItemStack output, Object[] inputs)

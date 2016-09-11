@@ -97,7 +97,7 @@ public class ContainerCookingPot extends Container
 	{
 		super.detectAndSendChanges();
 		
-		Iterator it = this.listeners.iterator();
+		Iterator<?> it = this.listeners.iterator();
 		
 		while(it.hasNext())
 		{

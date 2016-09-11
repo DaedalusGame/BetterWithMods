@@ -203,11 +203,11 @@ item.bwm:bark.4.name=Acacia Bark
 item.bwm:bark.5.name=Dark Oak Bark
 item.bwm:bark.6.name=Bloody Bark
 
-item.bwm:soulforged_axe.name=Soulforged Steel Axe
-item.bwm:soulforged_hoe.name=Soulforged Steel Hoe
-item.bwm:soulforged_pickaxe.name=Soulforged Steel Pickaxe
-item.bwm:soulforged_shovel.name=Soulforged Steel Shovel
-item.bwm:soulforged_sword.name=Soulforged Steel Sword
+item.bwm:steel_axe.name=Soulforged Steel Axe
+item.bwm:steel_hoe.name=Soulforged Steel Hoe
+item.bwm:steel_pickaxe.name=Soulforged Steel Pickaxe
+item.bwm:steel_shovel.name=Soulforged Steel Shovel
+item.bwm:steel_sword.name=Soulforged Steel Sword
 
 lore.bwm:dynamite=Dwarven Fishing Pole
 

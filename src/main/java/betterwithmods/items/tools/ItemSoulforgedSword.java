@@ -18,6 +18,6 @@ public class ItemSoulforgedSword extends ItemSword implements IBWMItem {
 
     @Override
     public String getLocation(int meta) {
-        return "betterwithmods:steel_shovel";
+        return "betterwithmods:steel_sword";
     }
 }

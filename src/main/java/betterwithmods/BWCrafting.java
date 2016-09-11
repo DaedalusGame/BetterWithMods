@@ -98,7 +98,7 @@ public class BWCrafting {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.bambooChime, 1, i), " S ", "SPS", "BMB", 'S', "string", 'P', Blocks.WOODEN_PRESSURE_PLATE, 'B', "sugarcane", 'M', new ItemStack(BWRegistry.woodMoulding, 1, i)));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.metalChime, 1, i), " S ", "SPS", "IMI", 'S', "string", 'P', Blocks.WOODEN_PRESSURE_PLATE, 'I', "ingotIron", 'M', new ItemStack(BWRegistry.woodMoulding, 1, i)));
         }
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.buddyBlock),"SLS","LTL","SLS",'S',"stone",'T',Blocks.REDSTONE_TORCH,'L', ItemMaterial.getMaterial("PolishedLapis")));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.buddyBlock),"SLS","LTL","SLS",'S',"stone",'T',Blocks.REDSTONE_TORCH,'L', ItemMaterial.getMaterial("polished_lapis")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.blockDispenser), "MMM", "MUM", "SRS", 'M', Blocks.MOSSY_COBBLESTONE, 'U', new ItemStack(BWRegistry.urn, 1, 8), 'S', "stone", 'R', "dustRedstone"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.steelAxe), "XX ", "XH ", " H ", 'X', "ingotSoulforgedSteel", 'H', new ItemStack(BWRegistry.material, 1, 38)).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.steelHoe), "XX ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', new ItemStack(BWRegistry.material, 1, 38)).setMirrored(true));

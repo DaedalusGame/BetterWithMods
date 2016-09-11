@@ -19,6 +19,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -36,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -197,6 +199,24 @@ public class BWRegistry {
         });
         MinecraftForge.addGrassSeed(new ItemStack(hemp, 1, 0), 5);
 
+    }
+    
+	private static int availableEntityId = 0;
+	
+	/**
+	 * Registers an entity for this mod. Handles automatic available ID assignment.
+	 * 
+	 * @author Koward
+	 * 
+	 * @param entityClass
+	 * @param entityName
+	 * @param trackingRange
+	 * @param updateFrequency
+	 * @param sendsVelocityUpdates
+	 */
+    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates){
+    	EntityRegistry.registerModEntity(entityClass, entityName, availableEntityId, BWMod.instance, trackingRange, updateFrequency, sendsVelocityUpdates);
+    	availableEntityId++;
     }
 
     public static void registerMiniBlock(Block block, String name) {

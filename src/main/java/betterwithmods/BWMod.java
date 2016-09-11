@@ -5,15 +5,20 @@ import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
+import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.BucketEvent;
+import betterwithmods.event.BuoyancyEventHandler;
+import betterwithmods.event.HungerEventHandler;
 import betterwithmods.event.LogHarvestEvent;
 import betterwithmods.event.MobDropEvent;
 import betterwithmods.event.NetherSpawnEvent;
+import betterwithmods.event.RespawnEventHandler;
 import betterwithmods.integration.ModIntegration;
 import betterwithmods.proxy.CommonProxy;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
+import betterwithmods.util.item.ItemExt;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -24,7 +29,6 @@ import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +51,10 @@ public class BWMod {
         BWRegistry.init();
         ModIntegration.preInit();
         BWCrafting.init();
-        EntityRegistry.registerModEntity(EntityExtendingRope.class, "ExtendingRope", 0, this, 64, 20, true);
-        EntityRegistry.registerModEntity(EntityDynamite.class, "BWMDynamite", 1, this, 10, 50, true);
-        EntityRegistry.registerModEntity(EntityMiningCharge.class, "BWMMiningCharge", 2, this, 10, 50, true);
+        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
+        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
+		BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
         proxy.registerRenderInformation();
         proxy.initRenderers();
     }
@@ -63,6 +68,10 @@ public class BWMod {
         BWRegistry.registerNetherWhitelist();
         ModIntegration.init();
         BWSounds.registerSounds();
+        
+		ItemExt.initBuoyancy();
+		ItemExt.initDesserts();
+		ItemExt.initWeights();
     }
 
     @EventHandler
@@ -76,6 +85,9 @@ public class BWMod {
         BWRegistry.registerWood();
         InvUtils.initOreDictGathering();
         ColorUtils.initColors();
+        MinecraftForge.EVENT_BUS.register(new HungerEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BuoyancyEventHandler());
+        MinecraftForge.EVENT_BUS.register(new RespawnEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobDropEvent());
         MinecraftForge.EVENT_BUS.register(new BucketEvent());
         MinecraftForge.EVENT_BUS.register(new NetherSpawnEvent());

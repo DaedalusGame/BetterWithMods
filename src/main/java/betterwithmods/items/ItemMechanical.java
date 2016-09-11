@@ -24,17 +24,27 @@ import java.util.List;
 
 public class ItemMechanical extends BWMItem
 {
-	public String[] names = {"Windmill", "Waterwheel", "WindmillVertical"};
+	public String[] names = {"Windmill", "Waterwheel", "Windmill_Vertical"};
 	public ItemMechanical()
 	{
 		super("windmill");
 		this.setUnlocalizedName("bwm:powerSource");
 		this.maxStackSize = 1;
 		this.setHasSubtypes(true);
-
+        register();
 	}
-	
-	@Override
+
+    @Override
+    public int getMaxMeta() {
+        return names.length;
+    }
+
+    @Override
+    public String getLocation(int meta) {
+        return "betterwithmods:"+names[meta].toLowerCase();
+    }
+
+    @Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		Block block = world.getBlockState(pos).getBlock();

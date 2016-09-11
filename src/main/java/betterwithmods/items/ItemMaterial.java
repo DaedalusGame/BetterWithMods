@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-public class ItemMaterial extends BWMItem implements ITannin {
+public class ItemMaterial extends BWMItem implements ITannin{
     public static  String[] names = {"gear", "nethercoal", "hemp", "hemp_fibers", "hemp_cloth", "dung", "tanned_leather", "scoured_leather", "leather_strap", "leather_belt", "wood_blade",
             "windmill_blade", "glue", "tallow", "ingot_steel", "ground_netherrack", "hellfire_dust", "concentrated_hellfire", "coal_dust", "filament", "polished_lapis",
             "potash", "sawdust", "soul_dust", "screw", "brimstone", "niter", "element", "fuse", "blasting_oil", "nugget_iron", "nugget_steel", "leather_cut",
@@ -28,6 +28,16 @@ public class ItemMaterial extends BWMItem implements ITannin {
     public ItemMaterial() {
         super("material");
         this.setHasSubtypes(true);
+    }
+
+    @Override
+    public int getMaxMeta() {
+        return names.length;
+    }
+
+    @Override
+    public String getLocation(int meta) {
+        return "betterwithmods:" + ItemMaterial.names[meta];
     }
 
     @Override

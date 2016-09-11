@@ -1,5 +1,6 @@
 package betterwithmods.items;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,15 +11,25 @@ import java.util.List;
 
 public class ItemBark extends BWMItem implements ITannin
 {
-	public String[] names = {"Oak", "Spruce", "Birch", "Jungle", "Acacia", "DarkOak", "BloodWood"};
-	
+
 	public ItemBark()
 	{
 		super("bark");
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
+
 	}
-	
+
+	@Override
+	public int getMaxMeta() {
+		return BlockPlanks.EnumType.values().length;
+	}
+
+	@Override
+	public String getLocation(int meta) {
+		return "betterwithmods:bark_" + BlockPlanks.EnumType.byMetadata(meta).getName();
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list)

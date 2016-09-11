@@ -24,7 +24,12 @@ public class ItemDynamite extends BWMItem
 	{
 		super("dynamite");
 	}
-	
+
+	@Override
+	public String getLocation(int meta) {
+		return "betterwithmods:dynamite";
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{

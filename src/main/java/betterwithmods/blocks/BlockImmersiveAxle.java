@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.tile.TileEntityImmersiveAxle;
 import betterwithmods.util.MechanicalUtil;
@@ -35,6 +36,11 @@ public class BlockImmersiveAxle extends BTWBlock implements IMechanicalBlock,ITi
         this.setHardness(3.5F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(AXLEDIR, 0));
+    }
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"active=false,dir=0"};
     }
 
     @Override

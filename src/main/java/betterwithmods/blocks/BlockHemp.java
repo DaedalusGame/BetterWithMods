@@ -1,7 +1,9 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.items.IBWMItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockHemp extends BlockCrops implements IPlantable
+public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
 {
 	public static final PropertyBool TOP = PropertyBool.create("top");
 	
@@ -34,8 +36,14 @@ public class BlockHemp extends BlockCrops implements IPlantable
 		this.setUnlocalizedName("bwm:hemp");
 		setRegistryName("hemp");
 		GameRegistry.register(this);
-		GameRegistry.register(new ItemBlock(this),getRegistryName());
+		GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
+
+	}
+
+	@Override
+	public String getLocation(int meta) {
+		return "betterwithmods:hemp_seed";
 	}
 
 	@Override

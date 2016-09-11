@@ -1,7 +1,8 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMod;
+import betterwithmods.items.IBWMItem;
 import betterwithmods.util.DirUtils;
-import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.SoundType;
@@ -23,18 +24,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.annotation.Nullable;
-
-public class BlockGearBoostedRail extends BlockRailBase
+public class BlockGearBoostedRail extends BlockRailBase implements IBWMItem
 {
-    public static final PropertyEnum<EnumRailDirection> SHAPE = PropertyEnum.create("shape", BlockRailBase.EnumRailDirection.class, new Predicate<EnumRailDirection>()
-    {
-        @Override
-        public boolean apply(@Nullable BlockRailBase.EnumRailDirection railDirection)
-        {
-            return railDirection != EnumRailDirection.NORTH_EAST && railDirection != EnumRailDirection.NORTH_WEST && railDirection != EnumRailDirection.SOUTH_EAST && railDirection != EnumRailDirection.SOUTH_WEST;
-        }
-    });
+    public static final PropertyEnum<EnumRailDirection> SHAPE = PropertyEnum.create("shape", BlockRailBase.EnumRailDirection.class,  railDirection -> railDirection != EnumRailDirection.NORTH_EAST && railDirection != EnumRailDirection.NORTH_WEST && railDirection != EnumRailDirection.SOUTH_EAST && railDirection != EnumRailDirection.SOUTH_WEST);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
     public BlockGearBoostedRail()
@@ -43,10 +35,15 @@ public class BlockGearBoostedRail extends BlockRailBase
         this.setUnlocalizedName("bwm:booster");
         setRegistryName("booster");
         GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this),getRegistryName());
+        GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
         this.setHardness(0.7F);
         this.setSoundType(SoundType.METAL);
         this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, false));
+    }
+
+    @Override
+    public String getLocation(int meta) {
+        return "betterwithmods:gear_rail";
     }
 
     @Override

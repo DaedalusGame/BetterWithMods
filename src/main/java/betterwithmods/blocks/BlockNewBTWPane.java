@@ -28,17 +28,25 @@ import java.util.List;
 public class BlockNewBTWPane extends BTWBlock
 {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
-	private static String[] names = {"Grate", "Slats"};
-	
+	private static String[] names = {"grate", "slats"};
+    private int type;
 	public BlockNewBTWPane(int typeNum)
 	{
 		super(Material.WOOD,names[typeNum].toLowerCase(),ItemBlockPane.class);
+        this.type = typeNum;
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPES, EnumPaneType.OAK).withProperty(DirUtils.NORTH, false).withProperty(DirUtils.EAST, false).withProperty(DirUtils.SOUTH, false).withProperty(DirUtils.WEST, false));
 		this.setSoundType(SoundType.WOOD);
 	}
-	
+    @Override
+    public String[] getVariants() {
+        String[] var = new String[BlockPlanks.EnumType.values().length];
+        for(int i = 0; i < var.length;i++) {
+            var[i] = "east=false,north=true,south=true,type=" + BlockPlanks.EnumType.byMetadata(i)+",west=false";
+        }
+        return var;
+    }
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{

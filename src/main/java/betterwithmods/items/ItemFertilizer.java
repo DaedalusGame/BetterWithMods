@@ -6,4 +6,9 @@ public class ItemFertilizer extends BWMItem
     {
         super("fertilizer");
     }
+
+    @Override
+    public String getLocation(int meta) {
+        return "betterwithmods:fertilizer";
+    }
 }

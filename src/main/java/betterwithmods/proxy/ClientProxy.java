@@ -18,7 +18,6 @@ import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.items.IBWMItem;
-import betterwithmods.items.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.Minecraft;
@@ -29,32 +28,37 @@ import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
-
-import static betterwithmods.BWRegistry.bark;
 
 public class ClientProxy extends CommonProxy {
 
     public static ArrayList<Item> itemModelRegistry = new ArrayList<>();
 
     @Override
-    public ItemBlock addItemBlockModel(ItemBlock itemBlock) {
+    public Item addItemBlockModel(Item item) {
         if (isClientside()) {
-            itemModelRegistry.add(itemBlock);
+            itemModelRegistry.add(item);
         }
-        return itemBlock;
+        return item;
     }
 
     @Override
     public void registerRenderInformation() {
         int i = 0;
         for (Item item : itemModelRegistry) {
-            if (item instanceof ItemBlock) {
+            if (item instanceof IBWMItem) {
+                for (i = 0; i < ((IBWMItem) item).getMaxMeta(); i++) {
+                    final String location = ((IBWMItem) item).getLocation(i);
+                    if (item instanceof ItemTool)
+                        ModelLoader.setCustomMeshDefinition(item, stack -> new ModelResourceLocation(location, "inventory"));
+                    registerItemModel(item, i, location);
+                }
+            } else if (item instanceof ItemBlock) {
                 String name = item.getRegistryName().toString();
                 Block block = ((ItemBlock) item).getBlock();
                 if (item instanceof ItemBlockMini) {
@@ -65,48 +69,22 @@ public class ClientProxy extends CommonProxy {
                     if (variants != null) {
                         registerBlock(name, block, variants);
                     }
+                } else if (block instanceof IBWMItem) {
+                    for (i = 0; i < ((IBWMItem) block).getMaxMeta(); i++) {
+                        final String location = ((IBWMItem) block).getLocation(i);
+                        registerItemModel(item, i, location);
+                    }
                 } else {
                     this.registerItemModel(item, 0, name);
                 }
-            } else {
-                if (item instanceof IBWMItem) {
-                    for (i = 0; i < ((IBWMItem) item).getMaxMeta(); i++)
-                        registerItemModel(item, i, ((IBWMItem) item).getLocation(i));
-                }
             }
         }
-        for (i = 0; i < ItemMaterial.names.length; ++i) {
-            this.registerItemModel(BWRegistry.material, i, "betterwithmods:" + ItemMaterial.names[i].toLowerCase());
-        }
         ModelLoader.setCustomStateMapper(BWRegistry.stokedFlame, new BWStateMapper("betterwithmods:stoked_flame"));
-        registerItemModel(Item.getItemFromBlock(BWRegistry.pane), 2, "betterwithmods:wicker");
-        registerItemModel(Item.getItemFromBlock(BWRegistry.booster), 0, "betterwithmods:gear_rail");
-        registerItemModel(Item.getItemFromBlock(BWRegistry.hemp), 0, "betterwithmods:hemp_seed");
-
-        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            registerItemModel(bark, type.getMetadata(), "betterwithmods:bark_" + type.getName());
-            registerItemModel(Item.getItemFromBlock(BWRegistry.grate), type.getMetadata(), "betterwithmods:grate_" + type.getName());
-            registerItemModel(Item.getItemFromBlock(BWRegistry.slats), type.getMetadata(), "betterwithmods:slats_" + type.getName());
-        }
-        registerItemModel(BWRegistry.windmill, 0, "betterwithmods:windmill");
-        registerItemModel(BWRegistry.windmill, 1, "betterwithmods:waterwheel");
-        registerItemModel(BWRegistry.windmill, 2, "betterwithmods:windmill_vertical");
-        registerItemModel(BWRegistry.donut, 0, "betterwithmods:donut");
-        registerItemModel(BWRegistry.knife, 0, "betterwithmods:iron_knife");
-        registerItemModel(BWRegistry.dynamite, 0, "betterwithmods:dynamite");
-        registerItemModel(BWRegistry.fertilizer, 0, "betterwithmods:fertilizer");
+        ModelLoader.setCustomStateMapper(BWRegistry.windmillBlock, new BWStateMapper("betterwithmods:windmill_block"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
-        ModelLoader.setCustomStateMapper(BWRegistry.windmillBlock, new BWStateMapper("betterwithmods:windmill_block"));
-        registerTool(BWRegistry.steelSword, "betterwithmods:steel_sword");
-        registerTool(BWRegistry.steelShovel, "betterwithmods:steel_shovel");
-        registerTool(BWRegistry.steelPickaxe, "betterwithmods:steel_pickaxe");
-        registerTool(BWRegistry.steelHoe, "betterwithmods:steel_hoe");
-        registerTool(BWRegistry.steelAxe, "betterwithmods:steel_axe");
 
-        if (Loader.isModLoaded("immersiveengineering"))
-            registerBlock("betterwithmods:immersive_axle", BWRegistry.treatedAxle, "active=false,dir=0");
     }
 
     @Override
@@ -140,7 +118,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     private void registerTool(Item item, final String name) {
-        ModelLoader.setCustomMeshDefinition(item, stack -> new ModelResourceLocation(name, "inventory"));
+
         ModelBakery.registerItemVariants(item, new ModelResourceLocation(name, "inventory"));
     }
 

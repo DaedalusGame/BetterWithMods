@@ -27,8 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBTWPane extends BTWBlock
-{
+public class BlockBTWPane extends BTWBlock {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
 
 	public BlockBTWPane()
@@ -38,8 +37,13 @@ public class BlockBTWPane extends BTWBlock
 		this.setDefaultState(getDefaultState().withProperty(TYPES, EnumPaneType.GRATE));
 		this.setSoundType(SoundType.WOOD);
 	}
-	
-	@Override
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"","","east=false,north=true,south=true,type=wicker,west=false"};
+    }
+
+    @Override
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
@@ -196,7 +200,7 @@ public class BlockBTWPane extends BTWBlock
 	{
 		return new BlockStateContainer(this, TYPES, DirUtils.SOUTH, DirUtils.EAST, DirUtils.NORTH, DirUtils.WEST);
 	}
-	
+
 	public static enum EnumPaneType implements IStringSerializable
 	{
 		GRATE(0, "grate"),

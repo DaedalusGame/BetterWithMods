@@ -4,7 +4,7 @@ import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.SawInteraction;
-import betterwithmods.items.ItemKnife;
+import betterwithmods.items.tools.ItemKnife;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;

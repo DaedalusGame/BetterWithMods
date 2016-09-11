@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvUtils {
-    public static ArrayList dustNames = Lists.newArrayList();
-    public static ArrayList ingotNames = Lists.newArrayList();
-    public static ArrayList cropNames = Lists.newArrayList();
+    public static List<ItemStack> dustNames;
+    public static List<ItemStack> ingotNames;
+    public static List<ItemStack> cropNames;
 
     public static void initOreDictGathering() {
         dustNames = getOreNames("dust");
@@ -29,8 +28,8 @@ public class InvUtils {
         return dest != null && dest.getItem() == source.getItem() && dest.isStackable() && dest.stackSize < dest.getMaxStackSize() && dest.stackSize < sizeLimit && (!dest.getHasSubtypes() || dest.getItemDamage() == source.getItemDamage()) && ItemStack.areItemStackTagsEqual(dest, source);
     }
 
-    private static ArrayList getOreNames(String prefix) {
-        ArrayList list = new ArrayList();
+    private static ArrayList<ItemStack> getOreNames(String prefix) {
+        ArrayList<ItemStack> list = new ArrayList<>();
         String[] var2 = OreDictionary.getOreNames();
         int var3 = var2.length;
 
@@ -201,7 +200,7 @@ public class InvUtils {
         return itemCount;
     }
 
-    public static int countOresInInv(IItemHandler inv, List list) {
+    public static int countOresInInv(IItemHandler inv, List<?> list) {
         int ret = 0;
         if (list != null && !list.isEmpty() && list.size() > 0) {
             for (int i = 0; i < inv.getSlots(); ++i) {
@@ -222,7 +221,7 @@ public class InvUtils {
         return ret;
     }
 
-    public static int countOresInInventory(IItemHandler inv, ArrayList ores) {
+    public static int countOresInInventory(IItemHandler inv, ArrayList<?> ores) {
         int ret = 0;
         if (ores != null && !ores.isEmpty() && ores.size() > 0) {
             for (int i = 0; i < ores.size(); ++i) {
@@ -252,7 +251,7 @@ public class InvUtils {
         return false;
     }
 
-    public static boolean consumeOresInInventory(ItemStackHandler inv, List list, int stackSize) {
+    public static boolean consumeOresInInventory(ItemStackHandler inv, List<?> list, int stackSize) {
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); ++i) {
                 ItemStack tempStack = (ItemStack) list.get(i);

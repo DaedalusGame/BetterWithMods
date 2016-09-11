@@ -6,6 +6,7 @@ import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nonnull;
 
+@SuppressWarnings("rawtypes")
 public abstract class BWMRecipeCategory extends BlankRecipeCategory
 {
     @Nonnull

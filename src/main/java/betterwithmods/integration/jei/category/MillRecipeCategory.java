@@ -61,7 +61,7 @@ public class MillRecipeCategory  extends BWMRecipeCategory
                 if(input[i] instanceof ItemStack)
                     stacks.set(index, ((ItemStack)input[i]).copy());
                 else if(input[i] instanceof List)
-                    stacks.set(index, (List)input[i]);
+                    stacks.set(index, (List<ItemStack>)input[i]);
             }
         }
 

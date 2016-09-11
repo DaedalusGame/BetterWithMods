@@ -41,7 +41,7 @@ public class GuiCookingPot extends GuiContainer {
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
         if (this.tile.isCooking()) {
-            int iconHeight = this.tile.getFireIntensity() > 5 ? this.stokedHeight : this.fireHeight;
+            int iconHeight = this.tile.getFireIntensity() > 5 ? GuiCookingPot.stokedHeight : GuiCookingPot.fireHeight;
             int scaledIconHeight = this.tile.getCookingProgressScaled(12);
 
             drawTexturedModalRect(xPos + 81, yPos + 19 + 12 - scaledIconHeight, 176, iconHeight - scaledIconHeight, 14, scaledIconHeight + 2);

@@ -121,7 +121,7 @@ public class LogHelper {
             sb.append('[');
             for (Object object : objects) {
                 if (object instanceof List) {
-                    sb.append(getListDescription((List) object)).append(", ");
+                    sb.append(getListDescription((List<?>) object)).append(", ");
                 } else if (object instanceof Object[]) {
                     sb.append(getListDescription(Arrays.asList((Object[]) object))).append(", ");
                 } else {

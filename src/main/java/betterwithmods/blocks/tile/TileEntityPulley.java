@@ -11,7 +11,6 @@ import betterwithmods.BWRegistry;
 import betterwithmods.blocks.BlockAnchor;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.blocks.BlockRope;
-import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityExtendingRope;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;

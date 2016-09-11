@@ -110,7 +110,7 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
 
 	public void setRunningState(int i)
 	{
-		boolean oldRun = this.worldObj.getBlockState(this.pos).getValue(((BlockGen)this.worldObj.getBlockState(this.pos).getBlock()).ISACTIVE);
+		boolean oldRun = this.worldObj.getBlockState(this.pos).getValue(BlockGen.ISACTIVE);
 		boolean newRun = oldRun;
 		this.runningState = (byte)i;
 		if(runningState > 0)

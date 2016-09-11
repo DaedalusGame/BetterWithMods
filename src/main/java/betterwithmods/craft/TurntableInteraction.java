@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class TurntableInteraction 
 {
-	private static Hashtable<IBlockState, TurntableCraft> spinnables = new Hashtable();
+	private static Hashtable<IBlockState, TurntableCraft> spinnables = new Hashtable<IBlockState, TurntableCraft>();
 	
 	public static void addBlockRecipe(Block block, IBlockState result, ItemStack... scraps)
 	{

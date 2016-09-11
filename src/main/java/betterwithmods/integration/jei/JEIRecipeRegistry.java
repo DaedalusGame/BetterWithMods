@@ -3,7 +3,6 @@ package betterwithmods.integration.jei;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.bulk.*;
-import betterwithmods.integration.jei.wrapper.KilnWrapper;
 import betterwithmods.integration.jei.wrapper.*;
 
 import java.util.ArrayList;
@@ -41,35 +40,35 @@ public class JEIRecipeRegistry {
     }
 
     private static List<CrucibleRecipeWrapper> getCrucibleRecipes(CraftingManagerCrucible bulk) {
-        List<CrucibleRecipeWrapper> recipes = new ArrayList();
+        List<CrucibleRecipeWrapper> recipes = new ArrayList<CrucibleRecipeWrapper>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new CrucibleRecipeWrapper(recipe));
         return recipes;
     }
 
     private static List<StokedCrucibleRecipeWrapper> getStokedCrucibleRecipes(CraftingManagerCrucibleStoked bulk) {
-        List<StokedCrucibleRecipeWrapper> recipes = new ArrayList();
+        List<StokedCrucibleRecipeWrapper> recipes = new ArrayList<StokedCrucibleRecipeWrapper>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new StokedCrucibleRecipeWrapper(recipe));
         return recipes;
     }
 
     private static List<CauldronRecipeWrapper> getCauldronRecipes(CraftingManagerCauldron bulk) {
-        List<CauldronRecipeWrapper> recipes = new ArrayList();
+        List<CauldronRecipeWrapper> recipes = new ArrayList<CauldronRecipeWrapper>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new CauldronRecipeWrapper(recipe));
         return recipes;
     }
 
     private static List<StokedCauldronRecipeWrapper> getStokedCauldronRecipes(CraftingManagerCauldronStoked bulk) {
-        List<StokedCauldronRecipeWrapper> recipes = new ArrayList();
+        List<StokedCauldronRecipeWrapper> recipes = new ArrayList<StokedCauldronRecipeWrapper>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new StokedCauldronRecipeWrapper(recipe));
         return recipes;
     }
 
     private static List<MillRecipeWrapper> getMillRecipes(CraftingManagerMill bulk) {
-        List<MillRecipeWrapper> recipes = new ArrayList();
+        List<MillRecipeWrapper> recipes = new ArrayList<MillRecipeWrapper>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new MillRecipeWrapper(recipe));
         return recipes;

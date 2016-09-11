@@ -11,7 +11,7 @@ public class ColorUtils
 	public static String[] dyes = {"dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack"};
 	public static int[] reverseMeta = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 	
-	private static Hashtable<String, Integer> colors = new Hashtable();
+	private static Hashtable<String, Integer> colors = new Hashtable<String, Integer>();
 	
 	public static void addColor(ItemStack stack, int color)
 	{

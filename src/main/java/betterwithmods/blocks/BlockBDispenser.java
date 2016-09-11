@@ -38,7 +38,7 @@ import java.util.List;
 
 public class BlockBDispenser extends BlockDispenser implements IBTWBlock
 {
-    public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted(new BehaviorDefaultDispenseBlock());
+    public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<Item, IBehaviorDispenseItem>(new BehaviorDefaultDispenseBlock());
 
     public BlockBDispenser()
     {

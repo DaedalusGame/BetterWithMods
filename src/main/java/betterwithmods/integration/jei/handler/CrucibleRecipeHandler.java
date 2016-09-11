@@ -48,7 +48,7 @@ public class CrucibleRecipeHandler implements IRecipeHandler<CrucibleRecipeWrapp
         for(Object input : recipe.getInput()) {
             if(input instanceof List)
             {
-                if(((List)input).isEmpty())
+                if(((List<?>)input).isEmpty())
                     return false;
             }
             inputCount++;

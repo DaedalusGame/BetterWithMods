@@ -4,10 +4,12 @@ import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.tile.*;
+import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
@@ -34,6 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -55,22 +58,49 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
         GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
         this.setTickRandomly(true);
         this.setHardness(3.5F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(MACHINETYPE, BlockMechMachines.EnumType.MILL).withProperty(SUBTYPE,0).withProperty(FILLEDSLOTS,0).withProperty(ISACTIVE,false));
+        this.setDefaultState(this.blockState.getBaseState()
+                .withProperty(MACHINETYPE, BlockMechMachines.EnumType.MILL)
+                .withProperty(SUBTYPE, 0)
+                .withProperty(FILLEDSLOTS, 0)
+                .withProperty(ISACTIVE, false)
+                .withProperty(DirUtils.FACING, EnumFacing.UP)
+        );
     }
 
     @Override
     public String[] getVariants() {
-        return new String[]{"filledslots=0,ison=false,machinetype=mill,subtype=0",
-                "filledslots=0,ison=false,machinetype=pulley,subtype=0",
-                "filledslots=0,ison=false,machinetype=crucible,subtype=0",
-                "filledslots=0,ison=false,machinetype=cauldron,subtype=0",
-                "filledslots=0,ison=false,machinetype=hopper,subtype=0",
-                "filledslots=0,ison=false,machinetype=turntable,subtype=0", };
+        return new String[]{"facing=up,filledslots=0,ison=false,machinetype=mill,subtype=0",
+                "facing=up,filledslots=0,ison=false,machinetype=pulley,subtype=0",
+                "facing=up,filledslots=0,ison=false,machinetype=crucible,subtype=0",
+                "facing=up,filledslots=0,ison=false,machinetype=cauldron,subtype=0",
+                "facing=up,filledslots=0,ison=false,machinetype=hopper,subtype=0",
+                "facing=up,filledslots=0,ison=false,machinetype=turntable,subtype=0",};
     }
 
     @Override
     public Material getMaterial(IBlockState state) {
-        return state.getValue(MACHINETYPE) == EnumType.HOPPER ? Material.WOOD : super.getMaterial(state);
+        switch (state.getValue(MACHINETYPE)) {
+            case HOPPER:
+            case PULLEY:
+                return Material.WOOD;
+            default:
+                return super.getMaterial(state);
+        }
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        switch (state.getValue(MACHINETYPE)) {
+            case HOPPER:
+            case PULLEY:
+                return SoundType.WOOD;
+            case CRUCIBLE:
+                return SoundType.GLASS;
+            case CAULDRON:
+                return SoundType.METAL;
+            default:
+                return super.getSoundType(state, world, pos, entity);
+        }
     }
 
     @Override
@@ -239,11 +269,10 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     @Override
     public boolean isInputtingMechPower(World world, BlockPos pos) {
         BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
-        if (type == BlockMechMachines.EnumType.MILL || type == BlockMechMachines.EnumType.PULLEY || type == BlockMechMachines.EnumType.HOPPER)
+        if (type != EnumType.TURNTABLE)
             return MechanicalUtil.isBlockPoweredByAxle(world, pos, this) || MechanicalUtil.isPoweredByCrank(world, pos);
-        else if (type == BlockMechMachines.EnumType.TURNTABLE/*isMechCompatible[type.ordinal()]*/)
+        else
             return MechanicalUtil.isBlockPoweredByAxle(world, pos, this);
-        return false;
     }
 
     @Override
@@ -459,19 +488,26 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
         int subType = state.getValue(MACHINETYPE).getSubTypeCount();
         boolean subtypes = false;
         int actualType = 0;
-        if (subType > 0 && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IMechSubtype) {
-            actualType = ((IMechSubtype) world.getTileEntity(pos)).getSubtype();
-        }
         int filledSlots = 0;
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityVisibleInventory) {
-            filledSlots = ((TileEntityVisibleInventory) world.getTileEntity(pos)).filledSlots();
+        int facing = 1;
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null) {
+            if (subType > 0 && tile instanceof IMechSubtype) {
+                actualType = ((IMechSubtype) tile).getSubtype();
+            }
+            if (tile instanceof TileEntityVisibleInventory) {
+                filledSlots = ((TileEntityVisibleInventory) tile).filledSlots();
+            }
+            if (tile instanceof TileEntityCookingPot) {
+                facing = ((TileEntityCookingPot) tile).facing;
+            }
         }
-        return state.withProperty(SUBTYPE, actualType).withProperty(FILLEDSLOTS, filledSlots);
+        return state.withProperty(SUBTYPE, actualType).withProperty(FILLEDSLOTS, filledSlots).withProperty(DirUtils.FACING, EnumFacing.getFront(facing));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE, SUBTYPE, FILLEDSLOTS);
+        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE, SUBTYPE, FILLEDSLOTS, DirUtils.FACING);
     }
 
     @Override

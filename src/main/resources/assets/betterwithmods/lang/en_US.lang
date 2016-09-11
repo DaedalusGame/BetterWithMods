@@ -1,5 +1,5 @@
 tile.bwm:stokedFire.name=Stoked Fire
-tile.bwm:crank.name=Hand Crank
+tile.bwm:hand_crank.name=Hand Crank
 tile.bwm:axle.name=Axle
 tile.bwm:gearbox.name=Gearbox
 tile.bwm:single_machine.0.name=Mill Stone

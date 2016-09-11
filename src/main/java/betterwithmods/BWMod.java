@@ -61,7 +61,6 @@ public class BWMod {
         BWRegistry.registerHeatSources();
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         BWRegistry.registerNetherWhitelist();
-
         ModIntegration.init();
         BWSounds.registerSounds();
     }

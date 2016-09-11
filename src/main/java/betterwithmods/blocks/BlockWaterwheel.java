@@ -1,7 +1,5 @@
 package betterwithmods.blocks;
 
-import java.util.Random;
-
 import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
@@ -18,6 +16,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Random;
 
 public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle
 {
@@ -25,9 +26,10 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle
 
     public BlockWaterwheel()
     {
-        super(Material.WOOD, "waterwheel");
+        super(Material.WOOD, "waterwheel",null);
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 1).withProperty(ISACTIVE, false));
+        GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
     }
 
     public IBlockState getWaterwheelState(int axis)

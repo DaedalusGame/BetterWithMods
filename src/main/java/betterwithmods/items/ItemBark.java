@@ -1,22 +1,21 @@
 package betterwithmods.items;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBark extends Item implements ITannin
+import java.util.List;
+
+public class ItemBark extends BWMItem implements ITannin
 {
 	public String[] names = {"Oak", "Spruce", "Birch", "Jungle", "Acacia", "DarkOak", "BloodWood"};
 	
 	public ItemBark()
 	{
-		super();
+		super("bark");
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName("bwm:bark");
 		this.setMaxDamage(0);
 	}
 	

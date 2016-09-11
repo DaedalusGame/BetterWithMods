@@ -5,6 +5,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -18,10 +19,15 @@ public abstract class BlockGen extends BTWBlock
 {
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
 
+    public BlockGen(Material material, String name, Class<? extends ItemBlock> itemblock)
+    {
+        super(material, name, itemblock);
+        this.setSoundType(SoundType.WOOD);
+    }
+
     public BlockGen(Material material, String name)
     {
-        super(material, name);
-        this.setSoundType(SoundType.WOOD);
+        this(material,name,ItemBlock.class);
     }
 
     public abstract ItemStack getGenStack(IBlockState state);

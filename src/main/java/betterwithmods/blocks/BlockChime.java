@@ -27,18 +27,24 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockChime extends Block
+public class BlockChime extends BTWBlock
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyEnum<BlockPlanks.EnumType> PLANKS = PropertyEnum.create("type", BlockPlanks.EnumType.class);
 
-    public BlockChime(Material material)
+    public BlockChime(Material material,String name)
     {
-        super(material);
+        super(material,name,ItemBlockMeta.class);
+
         this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(PLANKS, BlockPlanks.EnumType.OAK));
         this.setSoundType(SoundType.WOOD);
+    }
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"active=false,type=oak", "active=false,type=spruce", "active=false,type=birch", "active=false,type=jungle", "active=false,type=acacia", "active=false,type=dark_oak"};
     }
 
     @Override

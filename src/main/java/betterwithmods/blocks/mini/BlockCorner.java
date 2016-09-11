@@ -23,7 +23,7 @@ public class BlockCorner extends BlockMini
 
     public BlockCorner(Material mat)
     {
-        super(mat, mat == Material.WOOD ? "woodCorner" : "stoneCorner");
+        super(mat, mat == Material.WOOD ? "wood_corner" : "stone_corner");
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         if(mat == Material.WOOD)
         {

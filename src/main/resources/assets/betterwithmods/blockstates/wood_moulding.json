@@ -23,7 +23,8 @@
       "2": {"textures": {"side": "blocks/planks_birch"}},
       "3": {"textures": {"side": "blocks/planks_jungle"}},
       "4": {"textures": {"side": "blocks/planks_acacia"}},
-      "5": {"textures": {"side": "blocks/planks_big_oak"}}
+      "5": {"textures": {"side": "blocks/planks_big_oak"}},
+      "6": {"textures": {"side": "blocks/planks_big_oak"}}
     },
     "orientation": {
       "0": {"model": "betterwithmods:mini/moulding/down_west"},

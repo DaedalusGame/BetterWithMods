@@ -1,8 +1,7 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.util.DirUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,29 +14,27 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.util.DirUtils;
 
-public class BlockNewBTWPane extends Block
+import java.util.List;
+
+public class BlockNewBTWPane extends BTWBlock
 {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
-	public String paneType;
-	private String[] names = {"Grate", "Slats"};
+	private static String[] names = {"Grate", "Slats"};
 	
 	public BlockNewBTWPane(int typeNum)
 	{
-		super(Material.WOOD);
-		paneType = names[typeNum];
+		super(Material.WOOD,names[typeNum].toLowerCase(),ItemBlockPane.class);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHardness(2.0F);
-		this.setUnlocalizedName("bwm:pane" + names[typeNum]);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPES, EnumPaneType.OAK).withProperty(DirUtils.NORTH, false).withProperty(DirUtils.EAST, false).withProperty(DirUtils.SOUTH, false).withProperty(DirUtils.WEST, false));
 		this.setSoundType(SoundType.WOOD);
 	}

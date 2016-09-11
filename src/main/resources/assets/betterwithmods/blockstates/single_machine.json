@@ -18,12 +18,12 @@
 			"transform": "forge:default-block"
 		}],
 		"machinetype": {
-			"mill": {},
+			"mill": { "model":"betterwithmods:mill"},
 			"pulley": {"model": "betterwithmods:pulley",
 				"textures": {
 					"side": "betterwithmods:blocks/pulley_side",
-					"top": "betterwithmods:blocks/pulley_top",
-					"bottom": "betterwithmods:blocks/pulley_bottom",
+					"up": "betterwithmods:blocks/pulley_top",
+					"down": "betterwithmods:blocks/pulley_bottom",
 					"particle": "#side"
 				}
 			},

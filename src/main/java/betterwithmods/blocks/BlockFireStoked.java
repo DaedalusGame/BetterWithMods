@@ -1,10 +1,5 @@
 package betterwithmods.blocks;
 
-import java.util.Random;
-
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import betterwithmods.BWRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -12,8 +7,13 @@ import net.minecraft.block.BlockTNT;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Random;
 
 public class BlockFireStoked extends BlockFire
 {
@@ -23,6 +23,8 @@ public class BlockFireStoked extends BlockFire
 		this.disableStats();
 		this.setLightLevel(1.0F);
 		this.setUnlocalizedName("bwm:stokedFire");
+		setRegistryName("stoked_flame");
+		GameRegistry.register(this);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
 	}
 	

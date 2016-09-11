@@ -1,29 +1,29 @@
 package betterwithmods.blocks;
 
-import java.util.Random;
-
 import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
+
+import java.util.Random;
 
 public class BlockCrank extends BTWBlock implements IMechanicalBlock
 {
@@ -33,13 +33,18 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	public static float baseHeight = 0.25F;
 	public BlockCrank()
 	{
-		super(Material.ROCK, "crank");
+		super(Material.ROCK, "hand_crank");
 		this.setHardness(0.5F);
 		this.setSoundType(SoundType.WOOD);
 		this.setTickRandomly(true);
 		this.setDefaultState(getDefaultState().withProperty(STAGE, 0));
 	}
-	
+
+	@Override
+	public String[] getVariants() {
+		return new String[]{"stage=0"};
+	}
+
 	@Override
 	public int tickRate(World world)
 	{

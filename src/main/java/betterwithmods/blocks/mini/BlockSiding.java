@@ -14,7 +14,7 @@ public class BlockSiding extends BlockMini
 
     public BlockSiding(Material mat)
     {
-        super(mat, mat == Material.WOOD ? "woodSiding" : "stoneSiding");
+        super(mat, mat == Material.WOOD ? "wood_siding" : "stone_siding");
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         if(mat == Material.WOOD)
         {

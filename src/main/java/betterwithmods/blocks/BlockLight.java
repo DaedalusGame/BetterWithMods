@@ -1,6 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,17 +16,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockLight extends Block
+public class BlockLight extends BTWBlock
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockLight() {
-        super(Material.GLASS);
+        super(Material.GLASS,"light");
         this.setHardness(2.0F);
-        this.setCreativeTab(BWCreativeTabs.BWTAB);
-        this.setUnlocalizedName("bwm:light");
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false));
         this.setSoundType(SoundType.GLASS);
+    }
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"active=true"};
     }
 
     @Override

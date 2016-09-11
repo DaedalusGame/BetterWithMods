@@ -1,19 +1,12 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-import java.util.Random;
-
-import betterwithmods.client.BWCreativeTabs;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.BWRegistry;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -21,24 +14,27 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBTWPane extends Block
+import java.util.List;
+import java.util.Random;
+
+public class BlockBTWPane extends BTWBlock
 {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
-	private String[] names = {"grate", "slats", "wicker"};
-	
+
 	public BlockBTWPane()
 	{
-		super(Material.WOOD);
+		super(Material.WOOD,"pane",ItemBlockPane.class);
 		this.setHardness(2.0F);
-		this.setUnlocalizedName("bwm:pane");
-		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setDefaultState(getDefaultState().withProperty(TYPES, EnumPaneType.GRATE));
 		this.setSoundType(SoundType.WOOD);
 	}

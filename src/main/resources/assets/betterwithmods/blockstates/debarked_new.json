@@ -19,7 +19,7 @@
     "x": {"x": 90, "y": 90},
     "y": {},
     "z": {"x": 90},
-    "none": {"model": "block/cube_all"}
+    "none": {"model": "minecraft:cube_all"}
   }
 }
 }

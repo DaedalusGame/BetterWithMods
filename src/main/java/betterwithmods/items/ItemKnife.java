@@ -1,16 +1,15 @@
 package betterwithmods.items;
 
 import betterwithmods.client.BWCreativeTabs;
-
 import com.google.common.collect.Sets;
-
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemKnife extends ItemTool
 {
@@ -23,6 +22,8 @@ public class ItemKnife extends ItemTool
 		this.setMaxDamage(material.getMaxUses() / 2);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		MinecraftForge.EVENT_BUS.register(this);
+		setRegistryName("knife");
+		GameRegistry.register(this);
 	}
 	
 	@Override

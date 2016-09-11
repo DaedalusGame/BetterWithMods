@@ -1,8 +1,5 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-import java.util.Random;
-
 import betterwithmods.BWRegistry;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
@@ -15,20 +12,22 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
 
 public class BlockInvisibleLight extends BTWBlock
 {
 	public static final PropertyBool SUNLIGHT = PropertyBool.create("sunlight");
 	public BlockInvisibleLight()
 	{
-		super(Material.AIR, "invisibleLight");
+		super(Material.AIR, "invisibleLight", null);
 		this.setLightLevel(1.0F);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SUNLIGHT, false).withProperty(DirUtils.FACING, EnumFacing.UP));

@@ -1,25 +1,25 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockUnfiredPottery extends BTWBlock
 {
@@ -27,13 +27,18 @@ public class BlockUnfiredPottery extends BTWBlock
 	
 	public BlockUnfiredPottery()
 	{
-		super(Material.CLAY, "unfiredPottery");
+		super(Material.CLAY, "unfired_pottery",ItemBlockMeta.class);
 		this.setSoundType(SoundType.GROUND);
 		this.setHardness(0.5F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(POTTERYTYPE, EnumPotteryType.CRUCIBLE));
 	}
-	
-	@Override
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn"};
+    }
+
+    @Override
 	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity)
 	{
 		IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);

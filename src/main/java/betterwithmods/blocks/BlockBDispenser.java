@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
+import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.InvUtils;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -27,12 +29,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBDispenser extends BlockDispenser
+public class BlockBDispenser extends BlockDispenser implements IBTWBlock
 {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted(new BehaviorDefaultDispenseBlock());
 
@@ -40,8 +44,17 @@ public class BlockBDispenser extends BlockDispenser
     {
         super();
         this.setUnlocalizedName("bwm:block_dispenser");
+        setRegistryName("block_dispenser");
+        GameRegistry.register(this);
+        GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
+        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
+    }
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"facing=north,triggered=false"};
     }
 
     @Override
@@ -193,5 +206,45 @@ public class BlockBDispenser extends BlockDispenser
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityBlockDispenser();
+    }
+
+    @Override
+    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
+        return null;
+    }
+
+    @Override
+    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
+
+    }
+
+    @Override
+    public EnumFacing getFacingFromBlockState(IBlockState state) {
+        return null;
+    }
+
+    @Override
+    public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
+        return null;
+    }
+
+    @Override
+    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
+
     }
 }

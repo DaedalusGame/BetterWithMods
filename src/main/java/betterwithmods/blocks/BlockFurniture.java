@@ -1,7 +1,6 @@
 package betterwithmods.blocks;
 
 import betterwithmods.client.BWCreativeTabs;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockFurniture extends Block
+public abstract class BlockFurniture extends BTWBlock
 {
     public static final PropertyBool SUPPORTED = PropertyBool.create("supported");
     protected static final AxisAlignedBB BENCH_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.0D, 1.0D, 0.5D, 1.0D);
@@ -26,12 +25,13 @@ public abstract class BlockFurniture extends Block
     protected static final AxisAlignedBB TABLE_STAND_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 0.875D, 0.625D);
     protected static final AxisAlignedBB HALF_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
 
-    public BlockFurniture(Material material)
+    public BlockFurniture(Material material,String name)
     {
-        super(material);
+        super(material,name,ItemBlockMeta.class);
         this.setHardness(3.5F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
+
 
     @Override
     @SideOnly(Side.CLIENT)

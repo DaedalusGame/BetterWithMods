@@ -2,10 +2,9 @@ package betterwithmods.blocks;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.tile.TileEntityImmersiveAxle;
-import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -20,22 +19,22 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
 
-public class BlockImmersiveAxle extends BlockContainer implements IMechanicalBlock
+public class BlockImmersiveAxle extends BTWBlock implements IMechanicalBlock,ITileEntityProvider
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyInteger AXLEDIR = PropertyInteger.create("dir", 0, 2);
 
     public BlockImmersiveAxle()
     {
-        super(Material.WOOD);
+        super(Material.WOOD,"immersive_axle",ItemBlockImmersive.class);
+        GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
         this.setHardness(3.5F);
         this.setSoundType(SoundType.WOOD);
-        this.setUnlocalizedName("bwm:immersive_axle");
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(AXLEDIR, 0));
-        this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
     @Override

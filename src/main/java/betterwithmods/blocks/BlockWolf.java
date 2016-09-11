@@ -1,8 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,15 +17,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockWolf extends Block
+public class BlockWolf extends BTWBlock
 {
     public BlockWolf()
     {
-        super(Material.CLOTH);
+        super(Material.CLOTH,"companion_cube");
         this.setHardness(2.0F);
-        this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setSoundType(SoundType.CLOTH);
-        this.setUnlocalizedName("bwm:wolf");
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.NORTH));
     }
 

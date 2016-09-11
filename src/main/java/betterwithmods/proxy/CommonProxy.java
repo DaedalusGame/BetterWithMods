@@ -1,11 +1,18 @@
 package betterwithmods.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler
 {
+
+
+	public ItemBlock addItemBlockModel(ItemBlock itemBlock) {
+		return itemBlock;
+	}
+
 	public void registerRenderInformation()
 	{
 		

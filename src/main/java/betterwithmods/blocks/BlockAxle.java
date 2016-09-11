@@ -1,32 +1,32 @@
 package betterwithmods.blocks;
 
-import java.util.Random;
-
-import betterwithmods.BWSounds;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.BWRegistry;
+import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 {
@@ -42,6 +42,11 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 0).withProperty(SIGNAL, 0));
 		this.setSoundType(SoundType.WOOD);
+	}
+
+	@Override
+	public String[] getVariants() {
+		return new String[]{"dir=0,signal=0"};
 	}
 
 	@Override

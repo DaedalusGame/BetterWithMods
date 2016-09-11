@@ -3,10 +3,7 @@ package betterwithmods.blocks;
 import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
-import betterwithmods.blocks.tile.gen.IColor;
-import betterwithmods.blocks.tile.gen.TileEntityMechGenerator;
-import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
-import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.blocks.tile.gen.*;
 import betterwithmods.util.ColorUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -22,6 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
 
@@ -31,9 +29,12 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
 
     public BlockWindmill()
     {
-        super(Material.WOOD, "windmill");
+        super(Material.WOOD, "windmill_block",null);
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 0).withProperty(ISACTIVE, false));
+        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
+        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
+
     }
 
     public IBlockState getWindmillState(int axis)

@@ -1,16 +1,13 @@
 package betterwithmods;
 
 import betterwithmods.blocks.*;
-import betterwithmods.blocks.mini.*;
-import betterwithmods.blocks.tile.*;
-import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
-import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
-import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
-import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.blocks.mini.BlockCorner;
+import betterwithmods.blocks.mini.BlockMoulding;
+import betterwithmods.blocks.mini.BlockSiding;
+import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
-import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.items.*;
 import betterwithmods.items.tools.*;
 import betterwithmods.util.DispenserBehaviorDynamite;
@@ -21,25 +18,19 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -109,27 +100,27 @@ public class BWRegistry {
 
 
     public static void init() {
-        anchor = new BlockAnchor().setCreativeTab(BWCreativeTabs.BWTAB);
-        rope = new BlockRope().setCreativeTab(BWCreativeTabs.BWTAB);
-        singleMachines = new BlockMechMachines().setCreativeTab(BWCreativeTabs.BWTAB);
-        axle = new BlockAxle().setCreativeTab(BWCreativeTabs.BWTAB);
-        gearbox = new BlockGearbox().setCreativeTab(BWCreativeTabs.BWTAB);
-        handCrank = new BlockCrank().setCreativeTab(BWCreativeTabs.BWTAB);
+        anchor = new BlockAnchor();
+        rope = new BlockRope();
+        singleMachines = new BlockMechMachines();
+        axle = new BlockAxle();
+        gearbox = new BlockGearbox();
+        handCrank = new BlockCrank();
         pane = new BlockBTWPane();
         grate = new BlockNewBTWPane(0);
         slats = new BlockNewBTWPane(1);
-        planter = new BlockPlanter().setCreativeTab(BWCreativeTabs.BWTAB);
-        urn = new BlockUrn().setCreativeTab(BWCreativeTabs.BWTAB);
-        unfiredPottery = new BlockUnfiredPottery().setCreativeTab(BWCreativeTabs.BWTAB);
+        planter = new BlockPlanter();
+        urn = new BlockUrn();
+        unfiredPottery = new BlockUnfiredPottery();
         stokedFlame = new BlockFireStoked();
-        hibachi = new BlockHibachi().setCreativeTab(BWCreativeTabs.BWTAB);
-        bellows = new BlockBellows().setCreativeTab(BWCreativeTabs.BWTAB);
+        hibachi = new BlockHibachi();
+        bellows = new BlockBellows();
         kiln = new BlockKiln();
         hemp = new BlockHemp();
         detector = new BlockDetector();
-        lens = new BlockLens().setCreativeTab(BWCreativeTabs.BWTAB);
+        lens = new BlockLens();
         lightSource = new BlockInvisibleLight();
-        saw = new BlockSaw().setCreativeTab(BWCreativeTabs.BWTAB);
+        saw = new BlockSaw();
         aesthetic = new BlockAesthetic();
         booster = new BlockGearBoostedRail();
         windmillBlock = new BlockWindmill();
@@ -143,108 +134,31 @@ public class BWRegistry {
         woodTable = new BlockWoodTable();
         wolf = new BlockWolf();
         blockDispenser = new BlockBDispenser();
-        bambooChime = new BlockChime(Material.WOOD).setUnlocalizedName("bwm:bamboo_chime");
-        metalChime = new BlockChime(Material.IRON).setUnlocalizedName("bwm:metal_chime");
+        bambooChime = new BlockChime(Material.WOOD,"bamboo_chime");
+        metalChime = new BlockChime(Material.IRON,"metal_chime");
         buddyBlock = new BlockBUD();
         creativeGenerator = new BlockCreativeGenerator();
         light = new BlockLight();
-        platform = new BlockPlatform().setCreativeTab(BWCreativeTabs.BWTAB);
+        platform = new BlockPlatform();
         miningCharge = new BlockMiningCharge();
-        registerBlock(axle, "axle");
-        registerMetaBlock(singleMachines, "single_machine");
-        GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
-        GameRegistry.registerTileEntity(TileEntityPulley.class, "bwm.pulley");
-        GameRegistry.registerTileEntity(TileEntityFilteredHopper.class, "bwm.hopper");
-        GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
-        GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
-        GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
-        registerBlock(gearbox, "gearbox");
-        registerBlock(handCrank, "hand_crank");
-        registerBlock(booster, "booster");
-        registerPaneBlock(pane, "pane");
-        registerPaneBlock(grate, "grate");
-        registerPaneBlock(slats, "slats");
-        GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
-        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
-        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
-        registerPlanter(planter, "planter");
-        registerMetaBlock(urn, "urn");
-        registerMetaBlock(unfiredPottery, "unfired_pottery");
-        registerBlock(anchor, "anchor");
-        registerBlock(rope, "rope");
-        registerBlock(stokedFlame, "stoked_flame");
-        registerBlock(hibachi, "hibachi");
-        registerBlock(bellows, "bellows");
-        registerBlock(kiln, "kiln");
-        registerBlock(hemp, "hemp");
-        MinecraftForge.addGrassSeed(new ItemStack(hemp, 1, 0), 5);
-        registerBlock(detector, "detector");
-        registerBlock(lens, "lens");
-        registerBlock(lightSource, "invisible_light");
-        registerBlock(saw, "saw");
-        registerMetaBlock(aesthetic, "aesthetic");
-        registerMetaBlock(windmillBlock, "windmill_block");
-        registerMetaBlock(waterwheel, "waterwheel");
-        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
-        registerMiniBlock(woodSiding, "wood_siding");
-        registerMiniBlock(woodMoulding, "wood_moulding");
-        registerMiniBlock(woodCorner, "wood_corner");
-        registerMetaBlock(debarkedOld, "debarked_old");
-        registerMetaBlock(debarkedNew, "debarked_new");
-        registerMetaBlock(woodBench, "wood_bench");
-        registerMetaBlock(woodTable, "wood_table");
-        registerBlock(wolf, "companion_cube");
-        registerBlock(blockDispenser, "block_dispenser");
-        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
-        registerMetaBlock(bambooChime, "bamboo_chime");
-        registerMetaBlock(metalChime, "metal_chime");
-        registerBlock(light, "light");
-        registerBlock(platform, "platform");
 
-        if (Loader.isModLoaded("immersiveengineering")) {
-            treatedAxle = new BlockImmersiveAxle();
-            registerImmersiveBlock(treatedAxle, "immersive_axle");
-            GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
-        }
 
         material = new ItemMaterial();
-        windmill = new ItemMechanical().setCreativeTab(BWCreativeTabs.BWTAB);
-        bark = new ItemBark().setCreativeTab(BWCreativeTabs.BWTAB);
-        donut = new ItemFood(2, 0.5F, false).setUnlocalizedName("bwm:donut").setCreativeTab(BWCreativeTabs.BWTAB);
-        knife = new ItemKnife(ToolMaterial.IRON).setUnlocalizedName("bwm:iron_knife");
-        dynamite = new ItemDynamite().setCreativeTab(BWCreativeTabs.BWTAB);
-        fertilizer = new ItemFertilizer().setUnlocalizedName("bwm:fertilizer");
+        windmill = new ItemMechanical();
+        bark = new ItemBark();
+        donut = new BWMFood("donut",2, 0.5F, false);
+        knife = new ItemKnife(ToolMaterial.IRON);
+        dynamite = new ItemDynamite();
+        fertilizer = new ItemFertilizer();
         steelAxe = new ItemSoulforgedAxe();
         steelHoe = new ItemSoulforgedHoe();
         steelPickaxe = new ItemSoulforgedPickaxe();
         steelShovel = new ItemSoulforgedShovel();
         steelSword = new ItemSoulforgedSword();
 
-        registerItem(material, "material");
-        registerItem(windmill, "windmill");
-        registerItem(bark, "bark");
-        registerItem(donut, "donut");
-        registerItem(knife, "knife");
-        registerItem(dynamite, "dynamite");
-        registerItem(fertilizer, "fertilizer");
-        registerItem(steelAxe, "steel_axe");
-        registerItem(steelHoe, "steel_hoe");
-        registerItem(steelPickaxe, "steel_pickaxe");
-        registerItem(steelShovel, "steel_shovel");
-        registerItem(steelSword, "steel_sword");
-
         registerOres();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(dynamite, new DispenserBehaviorDynamite());
-        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(miningCharge), (source, stack) -> {
-            World worldIn = source.getWorld();
-            EnumFacing facing = source.func_189992_e().getValue(BlockBDispenser.FACING);
-            BlockPos pos = source.getBlockPos().offset(facing);
-            EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), null, facing);
-            miningCharge.func_189654_d(false);
-            worldIn.spawnEntityInWorld(miningCharge);
-            worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            return stack;
-        });
+
         if (BWConfig.hardcoreBuckets) {
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
                 @Override
@@ -266,6 +180,18 @@ public class BWRegistry {
         }
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.REPEATER, new BehaviorDiodeDispense());
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.COMPARATOR, new BehaviorDiodeDispense());
+//        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(miningCharge), (source, stack) -> {
+//            World worldIn = source.getWorld();
+//            EnumFacing facing = source.func_189992_e().getValue(BlockBDispenser.FACING);
+//            BlockPos pos = source.getBlockPos().offset(facing);
+//            EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), null, facing);
+//            miningCharge.func_189654_d(false);
+//            worldIn.spawnEntityInWorld(miningCharge);
+//            worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+//            return stack;
+//        });
+        MinecraftForge.addGrassSeed(new ItemStack(hemp, 1, 0), 5);
+
     }
 
     public static void registerMiniBlock(Block block, String name) {

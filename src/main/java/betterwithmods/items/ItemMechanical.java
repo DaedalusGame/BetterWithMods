@@ -1,36 +1,37 @@
 package betterwithmods.items;
 
-import java.util.List;
-
-import betterwithmods.blocks.BlockWaterwheel;
-import betterwithmods.blocks.BlockWindmill;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.BWRegistry;
 import betterwithmods.blocks.BlockAxle;
+import betterwithmods.blocks.BlockWaterwheel;
+import betterwithmods.blocks.BlockWindmill;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemMechanical extends Item
+import java.util.List;
+
+public class ItemMechanical extends BWMItem
 {
 	public String[] names = {"Windmill", "Waterwheel", "WindmillVertical"};
 	public ItemMechanical()
 	{
-		super();
+		super("windmill");
+		this.setUnlocalizedName("bwm:powerSource");
 		this.maxStackSize = 1;
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName("bwm:powerSource");
+
 	}
 	
 	@Override

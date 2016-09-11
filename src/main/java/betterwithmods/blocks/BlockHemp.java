@@ -1,9 +1,5 @@
 package betterwithmods.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import betterwithmods.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
@@ -12,6 +8,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +17,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BlockHemp extends BlockCrops implements IPlantable
 {
@@ -30,6 +32,9 @@ public class BlockHemp extends BlockCrops implements IPlantable
 		super();
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setUnlocalizedName("bwm:hemp");
+		setRegistryName("hemp");
+		GameRegistry.register(this);
+		GameRegistry.register(new ItemBlock(this),getRegistryName());
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
 	}
 

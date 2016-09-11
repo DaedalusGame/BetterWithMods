@@ -2,7 +2,6 @@ package betterwithmods.blocks;
 
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
@@ -11,12 +10,10 @@ import net.minecraft.util.BlockRenderLayer;
  * @author mrebhan
  */
 
-public class BlockPlatform extends Block {
+public class BlockPlatform extends BTWBlock {
 
 	public BlockPlatform() {
-		super(Material.WOOD);
-		this.setUnlocalizedName("bwm:platform");
-		setCreativeTab(BWCreativeTabs.BWTAB);
+		super(Material.WOOD,"platform");
 		this.setHardness(2F);
 		this.setSoundType(SoundType.WOOD);
 	}

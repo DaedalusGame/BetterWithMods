@@ -1,18 +1,7 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-import java.util.Random;
-
 import betterwithmods.BWRegistry;
 import betterwithmods.util.InvUtils;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -22,45 +11,59 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockPlanter extends BTWBlock
 {
 	public static final PropertyEnum<EnumPlanterType> planterType = PropertyEnum.create("plantertype", EnumPlanterType.class);
-	
+
 	public BlockPlanter()
 	{
-		super(Material.ROCK, "planter");
+		super(Material.ROCK, "planter", ItemBlockPlanter.class);
 		this.setTickRandomly(true);
 		this.setHardness(1.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(planterType, EnumPlanterType.EMPTY));
 	}
 
-	@SideOnly(Side.CLIENT)
+    @Override
+    public String[] getVariants() {
+        return new String[]{"plantertype=empty", "plantertype=dirt", "plantertype=grass", "plantertype=soul_sand", "plantertype=fertile", "plantertype=sand", "plantertype=water_still", "plantertype=gravel", "plantertype=red_sand"};
+    }
+
+    @SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex)
 	{
-		if(state.getValue(planterType) == EnumPlanterType.GRASS && tintIndex > -1)
-			return world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
-		return -1;
+		return (state.getValue(planterType) == EnumPlanterType.GRASS && tintIndex > -1) ? world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) :-1;
 	}
-	
+
 	@Override
 	public int damageDropped(IBlockState state)
 	{
 		int meta =  state.getValue(planterType).getMeta();
 		return meta;
 	}
-	
+
 	public boolean isValidBlockStack(ItemStack stack)
 	{
 		if(stack.getItem() instanceof ItemBlock)
@@ -70,7 +73,7 @@ public class BlockPlanter extends BTWBlock
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
@@ -100,7 +103,7 @@ public class BlockPlanter extends BTWBlock
 			if(stack != null)
 			{
 				boolean valid = false;
-				
+
 				if(stack.getItem() == Items.WATER_BUCKET)
 				{
 					world.setBlockState(pos, planter.withProperty(planterType, EnumPlanterType.WATER));
@@ -201,7 +204,7 @@ public class BlockPlanter extends BTWBlock
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
@@ -257,19 +260,19 @@ public class BlockPlanter extends BTWBlock
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isFullCube(IBlockState state)
     {
         return false;
     }
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
@@ -281,7 +284,7 @@ public class BlockPlanter extends BTWBlock
 	public boolean isFertile(World world, BlockPos pos) {
 		return world.getBlockState(pos).getValue(planterType) == EnumPlanterType.FERTILE;
 	}
-	
+
 	@Override
 	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing dir, IPlantable plant)
 	{
@@ -306,7 +309,7 @@ public class BlockPlanter extends BTWBlock
 		}
 		return false;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)
@@ -316,27 +319,27 @@ public class BlockPlanter extends BTWBlock
 	      list.add(new ItemStack(item, 1, i));
 	    }
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, planterType);
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		IBlockState state = this.getDefaultState().withProperty(planterType, EnumPlanterType.byMeta(meta));
 		return state;
 	}
-	
+
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		int meta = state.getValue(planterType).getMeta();
 		return meta;
 	}
-	
+
 	public enum EnumPlanterType implements IStringSerializable
 	{
 		EMPTY("empty", null, 0, null),
@@ -367,14 +370,14 @@ public class BlockPlanter extends BTWBlock
 			this.meta = meta;
 			this.type = type;
 		}
-		
+
 		public static EnumPlanterType byMeta(int meta)
 		{
 			if(meta > 8)
 				return EMPTY;
 			return META_LOOKUP[meta];
 		}
-		
+
 		static
 		{
 			for(EnumPlanterType types : values())
@@ -384,11 +387,11 @@ public class BlockPlanter extends BTWBlock
 		}
 
 		@Override
-		public String getName() 
+		public String getName()
 		{
 			return name;
 		}
-		
+
 		public Block getFill()
 		{
 			return fill;
@@ -398,12 +401,12 @@ public class BlockPlanter extends BTWBlock
 		{
 			return blockMeta;
 		}
-		
+
 		public int getMeta()
 		{
 			return meta;
 		}
-		
+
 		public EnumPlantType[] getTypes()
 		{
 			return type;

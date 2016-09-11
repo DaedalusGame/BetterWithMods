@@ -1,11 +1,5 @@
 package betterwithmods.blocks;
 
-import java.util.Random;
-
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import betterwithmods.BWRegistry;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
@@ -13,19 +7,25 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Random;
 
 public class BlockKiln extends BTWBlock
 {
 	public static final PropertyInteger COOK = PropertyInteger.create("cook", 0, 8);
 	public BlockKiln()
 	{
-		super(Material.ROCK, "kiln");
+		super(Material.ROCK, "kiln", null);
 		this.setTickRandomly(true);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);

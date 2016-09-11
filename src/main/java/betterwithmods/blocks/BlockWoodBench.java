@@ -19,8 +19,15 @@ public class BlockWoodBench extends BlockFurniture
 
     public BlockWoodBench()
     {
-        super(Material.WOOD);
-        this.setUnlocalizedName("bwm:woodBench");
+        super(Material.WOOD,"wood_bench");
+    }
+
+    @Override
+    public String[] getVariants() {
+        String[] variants = new String[7];
+        for(int i = 0; i < variants.length;i++)
+            variants[i] = "supported=false,type="+i;
+        return variants;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-import java.util.Random;
-
+import betterwithmods.BWRegistry;
+import betterwithmods.api.block.ISoulSensitive;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -13,18 +13,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.BWRegistry;
-import betterwithmods.api.block.ISoulSensitive;
-import betterwithmods.util.InvUtils;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockUrn extends BTWBlock implements ISoulSensitive
 {
@@ -32,11 +32,16 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
 	public BlockUrn()
 	{
-		super(Material.ROCK, "urn");
+		super(Material.ROCK, "urn", ItemBlockMeta.class);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(urnType, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
 	}
-	
+
+	@Override
+	public String[] getVariants() {
+		return new String[]{"underhopper=false,urntype=empty", "underhopper=false,urntype=12", "underhopper=false,urntype=25", "underhopper=false,urntype=37", "underhopper=false,urntype=50", "underhopper=false,urntype=62", "underhopper=false,urntype=75", "underhopper=false,urntype=87", "underhopper=false,urntype=filled", "underhopper=false,urntype=void"};
+	}
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{

@@ -22,7 +22,7 @@ public class BlockMoulding extends BlockMini
 
     public BlockMoulding(Material mat)
     {
-        super(mat, mat == Material.WOOD ? "woodMoulding" : "stoneMoulding");
+        super(mat, mat == Material.WOOD ? "wood_moulding" : "stone_moulding");
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         if(mat == Material.WOOD)
         {

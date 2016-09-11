@@ -1,11 +1,6 @@
 package betterwithmods.blocks;
 
-import java.util.List;
-
 import betterwithmods.client.BWCreativeTabs;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -14,9 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockAesthetic extends BTWBlock
 {
@@ -24,12 +24,17 @@ public class BlockAesthetic extends BTWBlock
 	//Chopping Block, Chopping Block(dirty), Steel block, Hellfire block, Rope block, Flint block, Barrel (tile entity?) (6 - 11 subtypes)
 	public BlockAesthetic()
 	{
-		super(Material.ROCK, "aesthetic");
+		super(Material.ROCK, "aesthetic", ItemBlockMeta.class);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));
 	}
-	
+
+	@Override
+	public String[] getVariants() {
+		return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint"};
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)

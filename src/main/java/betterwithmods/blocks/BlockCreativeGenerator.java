@@ -7,7 +7,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -22,10 +21,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlockCreativeGenerator extends BlockGen implements IMechanical {
     public BlockCreativeGenerator() {
         super(Material.WOOD, "creativeGenerator");
-        setRegistryName("creativeGenerator");
-        GameRegistry.register(this);
         GameRegistry.registerTileEntity(TileEntityCreativeGen.class,"creativeGenerator");
-        GameRegistry.register(new ItemBlock(this),getRegistryName());
         setCreativeTab(BWCreativeTabs.BWTAB);
         setDefaultState(getDefaultState().withProperty(ISACTIVE, true));
     }

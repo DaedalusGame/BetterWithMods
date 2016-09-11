@@ -1,7 +1,6 @@
 package betterwithmods.items;
 
 import betterwithmods.BWRegistry;
-import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,24 +11,23 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-public class ItemMaterial extends Item implements ITannin {
-    public static String[] names = {"Gear", "Nethercoal", "Hemp", "HempFibers", "HempCloth", "Dung", "TannedLeather", "ScouredLeather", "LeatherStrap", "LeatherBelt", "WoodBlade",
-            "WindmillBlade", "Glue", "Tallow", "IngotSteel", "GroundNetherrack", "HellfireDust", "ConcentratedHellfire", "CoalDust", "Filament", "PolishedLapis",
-            "Potash", "Sawdust", "SoulDust", "Screw", "Brimstone", "Niter", "Element", "Fuse", "BlastingOil", "NuggetIron", "NuggetSteel", "LeatherCut",
-            "TannedLeatherCut", "ScouredLeatherCut", "RedstoneLatch", "NetherSludge", "Flour", "Haft", "CharcoalDust", "SharpeningStone", "KnifeBlade"};
+public class ItemMaterial extends BWMItem implements ITannin {
+    public static  String[] names = {"gear", "nethercoal", "hemp", "hemp_fibers", "hemp_cloth", "dung", "tanned_leather", "scoured_leather", "leather_strap", "leather_belt", "wood_blade",
+            "windmill_blade", "glue", "tallow", "ingot_steel", "ground_netherrack", "hellfire_dust", "concentrated_hellfire", "coal_dust", "filament", "polished_lapis",
+            "potash", "sawdust", "soul_dust", "screw", "brimstone", "niter", "element", "fuse", "blasting_oil", "nugget_iron", "nugget_steel", "leather_cut",
+            "tanned_leather_cut", "scoured_leather_cut", "redstone_latch", "nether_sludge", "flour", "haft", "charcoal_dust", "sharpening_stone", "knife_blade"};
 
     public static ItemStack getMaterial(String material) {
         return getMaterial(material,1);
     }
     public static ItemStack getMaterial(String material,int count) {
-        OptionalInt meta = IntStream.range(0, names.length).filter(n -> material.toLowerCase().equals(names[n].toLowerCase())).findFirst();
+        OptionalInt meta = IntStream.range(0, names.length).filter(n -> material.equals(names[n].toLowerCase())).findFirst();
         return new ItemStack(BWRegistry.material,count, meta.isPresent() ? meta.getAsInt() : 0);
     }
 
     public ItemMaterial() {
+        super("material");
         this.setHasSubtypes(true);
-        this.setUnlocalizedName("bwm:material");
-        this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
     @Override

@@ -10,6 +10,10 @@ import net.minecraftforge.fml.common.Loader;
 
 public class ModIntegration 
 {
+	public static void preInit() {
+		if (Loader.isModLoaded("immersiveengineering"))
+			ImmersiveEngineering.preInit();
+	}
 	public static void init()
 	{
 		if(Loader.isModLoaded("Natura"))
@@ -24,7 +28,8 @@ public class ModIntegration
 			BiomesOPlenty.init();
 		if(Loader.isModLoaded("quark"))
 			NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("quark", "basalt")), 0);
-		//MineChem tannin orename: molecule_tannicacid
+
+			//MineChem tannin orename: molecule_tannicacid
 		if(Loader.isModLoaded("minechem"))
 		{
 			BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[] {new ItemStack(BWRegistry.material, 1, 7), "molecule_tannicacid"});

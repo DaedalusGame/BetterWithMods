@@ -10,17 +10,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
 import java.util.Set;
@@ -35,10 +32,6 @@ public class BlockBUD extends BTWBlock {
     private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWRegistry.light,});
     public BlockBUD() {
         super(Material.ROCK, "buddy_block");
-        setRegistryName("buddy_block");
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());
-        setCreativeTab(CreativeTabs.REDSTONE);
         setHardness(3.5F);
         setSoundType(SoundType.STONE);
         setDefaultState(getDefaultState().withProperty(DirUtils.FACING, UP));

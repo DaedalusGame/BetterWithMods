@@ -20,8 +20,7 @@ public class BlockWoodTable extends BlockFurniture
 
     public BlockWoodTable()
     {
-        super(Material.WOOD);
-        this.setUnlocalizedName("bwm:woodTable");
+        super(Material.WOOD,"wood_table");
     }
 
     @Override
@@ -33,6 +32,13 @@ public class BlockWoodTable extends BlockFurniture
                 return TABLE_AABB;
         }
         return FULL_BLOCK_AABB;
+    }
+    @Override
+    public String[] getVariants() {
+        String[] variants = new String[7];
+        for(int i = 0; i < variants.length;i++)
+            variants[i] = "supported=false,type="+i;
+        return variants;
     }
 
     @Override

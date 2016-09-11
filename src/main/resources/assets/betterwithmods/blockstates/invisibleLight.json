@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "facing": {
+      "north":{},
+      "south":{},
+      "east":{},
+      "west":{},
+      "up":{},
+      "down":{}
+    },
+    "sunlight": {
+      "true":{},
+      "false":{}
+    }
+  }
+}

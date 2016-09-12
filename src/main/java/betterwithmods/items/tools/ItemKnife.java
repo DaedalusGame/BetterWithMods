@@ -22,7 +22,7 @@ public class ItemKnife extends ItemTool implements IBWMItem
 		this.setHarvestLevel("axe", material.getHarvestLevel() - 1);
 		this.setMaxDamage(material.getMaxUses() / 2);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
-		setUnlocalizedName("knife");
+		setUnlocalizedName("bwm:knife");
 		setRegistryName("knife");
 		GameRegistry.register(this);
 		register();

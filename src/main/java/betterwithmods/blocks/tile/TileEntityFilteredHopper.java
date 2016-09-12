@@ -272,9 +272,10 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                     handleSoulCase(item);
                 } else if (this.canFilterProcessItem(stack))
                     flag = putDropInInventoryAllSlots(inventory, item) || flag;
-                this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (flag) {
+                this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.validateInventory()) {
                     IBlockState state = worldObj.getBlockState(pos);
                     int filledSlots = this.filledSlots();

@@ -80,7 +80,7 @@ public class EntityItemBuoy extends EntityItem {
 
 	private int getPickupDelay() {
 		return ReflectionHelper.getPrivateValue(EntityItem.class, this,
-				new String[] { "field_70532_c", "delayBeforeCanPickup" });
+				new String[] { "field_145804_b", "delayBeforeCanPickup" });
 	}
 
 	/**

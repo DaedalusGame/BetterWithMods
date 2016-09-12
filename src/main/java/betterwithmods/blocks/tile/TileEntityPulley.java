@@ -44,7 +44,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 		return worldObj.getBlockState(pos).getBlock() != null && worldObj.isBlockPowered(pos);
 	}
 
-	private boolean isMechanicallyPowered() {
+	public boolean isMechanicallyPowered() {
 		return worldObj.getBlockState(pos).getBlock() != null
 				&& worldObj.getBlockState(pos).getBlock() instanceof BlockMechMachines
 				&& ((BlockMechMachines) worldObj.getBlockState(pos).getBlock()).isMechanicalOn(worldObj, pos);
@@ -198,13 +198,6 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 				b = blockState.getBlock();
 				blockState = (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase ? blockState : null);
 				Vec3i offset = blockPos.subtract(anchor.up());
-				// EntityMovingPlatform platform = new
-				// EntityMovingPlatform(worldObj, offset, rope,
-				// worldObj.getBlockState(blockPos), blockState);
-				// platform.setPosition(rope.posX + offset.getX(), rope.posY +
-				// offset.getY(), rope.posZ + offset.getZ());
-				// worldObj.spawnEntityInWorld(platform);
-				// platform.startRiding(rope, true);
 				rope.addBlock(offset, worldObj.getBlockState(blockPos));
 				if (blockState != null) {
 					rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), blockState);

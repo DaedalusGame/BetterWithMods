@@ -39,7 +39,7 @@ public class BWConfig
 			slimeSpawn = cfg.get("Vanilla Tweaks", "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true).getBoolean(true);
 			debug = cfg.get("Debug", "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean(false);
 			produceDung = cfg.get("Vanilla Tweaks", "Animals Produce Dung", true).getBoolean(true);
-			maxPlatformBlocks = cfg.get("Pulley", "Max Platform Blocks", 64).getInt(64);
+			maxPlatformBlocks = cfg.get("Pulley", "Max Platform Blocks", 128).getInt(128);
 			upSpeed = cfg.getFloat("Vertical speed up", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves up");
 			downSpeed = cfg.getFloat("Vertical speed down", "Pulley", 0.1F, 0.0F, 1.0F, "The speed at which the pulley rope and platform moves down");
 			dumpBlockData = cfg.get("Debug", "Dump Platform Block Data", false, "Dumps the platform entity's block information in xxd format when the world is saved.").getBoolean(false);

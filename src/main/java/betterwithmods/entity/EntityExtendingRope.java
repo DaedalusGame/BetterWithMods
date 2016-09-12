@@ -203,6 +203,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 	}
 
 	public void updatePassengers(double posY, double newPosY, boolean b) {
+		HashSet<Entity> entitiesInBlocks = new HashSet<>();
 		HashSet<Entity> passengers = new HashSet<>();
 		HashMap<Entity, Double> entMaxY = new HashMap<>();
 
@@ -215,7 +216,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 								double targetY = pos.yCoord + getBlockStateHeight(state) - 0.01;
 								if (!entMaxY.containsKey(e) || entMaxY.get(e) < targetY) {
 									if ((!worldObj.isRemote ^ e instanceof EntityPlayer) || b) {
-										passengers.add(e);
+										entitiesInBlocks.add(e);
 										entMaxY.put(e, targetY);
 									}
 								}
@@ -223,12 +224,20 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 						});
 			}
 		});
-		passengers.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
-		passengers.forEach(e -> e.isAirBorne = false);
-		passengers.forEach(e -> e.onGround = true);
-		worldObj.getEntitiesWithinAABBExcludingEntity(this, AABBArray.toAABB(this.getEntityBoundingBox()))
-				.forEach(e -> e.fallDistance = 0);
-		passengers.forEach(e -> e.motionY = Math.max(up ? 0 : -BWConfig.downSpeed, e.motionY));
+
+		worldObj.getEntitiesWithinAABBExcludingEntity(this,
+				AABBArray.toAABB(this.getEntityBoundingBox()).expand(0, 0.5, 0).offset(0, 0.5, 0)).forEach(e -> {
+					if (!(e instanceof EntityExtendingRope)
+							&& (!(e instanceof EntityPlayer) || !((EntityPlayer) e).capabilities.isFlying))
+						passengers.add(e);
+				});
+
+		passengers.forEach(e -> e.setPosition(e.posX, e.posY + newPosY - posY, e.posZ));
+		passengers.forEach(e -> e.fallDistance = 0);
+		entitiesInBlocks.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
+		entitiesInBlocks.forEach(e -> e.isAirBorne = false);
+		entitiesInBlocks.forEach(e -> e.onGround = true);
+		entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -BWConfig.downSpeed, e.motionY));
 
 	}
 

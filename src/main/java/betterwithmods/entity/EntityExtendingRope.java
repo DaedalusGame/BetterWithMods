@@ -211,7 +211,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 			if (getBlockStateHeight(state) > 0) {
 				Vec3d pos = new Vec3d(pulley.getX(), posY, pulley.getZ()).addVector(vec.getX(), vec.getY(), vec.getZ());
 				worldObj.getEntitiesWithinAABBExcludingEntity(this,
-						new AxisAlignedBB(pos, pos.addVector(1, getBlockStateHeight(state), 1))).forEach(e -> {
+						createAABB(pos, pos.addVector(1, getBlockStateHeight(state), 1))).forEach(e -> {
 							if (!(e instanceof EntityExtendingRope)) {
 								double targetY = pos.yCoord + getBlockStateHeight(state) - 0.01;
 								if (!entMaxY.containsKey(e) || entMaxY.get(e) < targetY) {
@@ -239,6 +239,10 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 		entitiesInBlocks.forEach(e -> e.onGround = true);
 		entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -BWConfig.downSpeed, e.motionY));
 
+	}
+	
+	private static AxisAlignedBB createAABB(Vec3d part1, Vec3d part2) {
+		return new AxisAlignedBB(part1.xCoord, part1.yCoord, part1.zCoord, part2.xCoord, part2.yCoord, part2.zCoord);
 	}
 
 	private double getBlockStateHeight(IBlockState blockState) {

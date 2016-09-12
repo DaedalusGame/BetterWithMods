@@ -19,16 +19,14 @@ public class AABBArray extends AxisAlignedBB {
 
 	private AxisAlignedBB[] boundingBoxes;
 
-	/**
-	 * Do not use - used for initializing only
-	 */
-
-	private static HashMap<AxisAlignedBB[], AxisAlignedBB> joined = new HashMap<>();
-
 	public AABBArray(AxisAlignedBB... boundingBoxes) {
-		super(part1(boundingBoxes), part2(boundingBoxes));
+		this(join(boundingBoxes));
 		this.boundingBoxes = boundingBoxes;
 		this.boundingBoxes = getParts(this);
+	}
+	
+	private AABBArray(AxisAlignedBB full) {
+		super(full.minX, full.minY, full.minZ, full.maxX, full.maxY, full.maxZ);
 	}
 
 	private static AxisAlignedBB join(AxisAlignedBB[] in) {
@@ -42,22 +40,7 @@ public class AABBArray extends AxisAlignedBB {
 		}
 		return aabb1;
 	}
-
-	private static Vec3d part1(AxisAlignedBB[] in) {
-		AxisAlignedBB joined = join(in);
-		AABBArray.joined.put(in, joined);
-		return new Vec3d(joined.minX, joined.minY, joined.minZ);
-	}
-
-	private static Vec3d part2(AxisAlignedBB[] in) {
-		AxisAlignedBB joined = AABBArray.joined.get(in);
-		AABBArray.joined.remove(in);
-		if (joined == null) {
-			joined = join(in);
-		}
-		return new Vec3d(joined.maxX, joined.maxY, joined.maxZ);
-	}
-
+	
 	public static AxisAlignedBB[] getParts(AxisAlignedBB source) {
 		if (source instanceof AABBArray) {
 			HashSet<AxisAlignedBB> bbs = new HashSet<>();

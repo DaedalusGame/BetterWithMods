@@ -1,5 +1,8 @@
 package betterwithmods.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,9 +10,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 
 /**
  * Food mechanics.
+ * 
  * @author Koward
  *
  */
@@ -20,23 +25,23 @@ public class BWMFoodStats extends FoodStats {
 	private static final float EXHAUSTION_WITH_TIME_AMOUNT = 0.5F;
 	/** Reference to the player to edit exhaustion */
 	private final EntityPlayer player;
-	
+
 	public BWMFoodStats(EntityPlayer playerIn) {
 		super();
 		player = playerIn;
 	}
-	
-    /**
-     * Adds input to foodExhaustionLevel to a max of 40
-     */
+
+	/**
+	 * Adds input to foodExhaustionLevel to a max of 40
+	 */
 	@Override
-    public void addExhaustion(float exhaustion)
-    {
-		super.addExhaustion(exhaustion*EntityPlayerExt.getArmorExhaustionModifier(player));
-    }
-	
+	public void addExhaustion(float exhaustion) {
+		super.addExhaustion(exhaustion * EntityPlayerExt.getArmorExhaustionModifier(player));
+	}
+
 	/**
 	 * Passing time also exhausts the player.
+	 * 
 	 * @param player
 	 */
 	private void updateExhaustionWithTime(EntityPlayer player) {
@@ -53,6 +58,7 @@ public class BWMFoodStats extends FoodStats {
 
 	/**
 	 * Should the player burn fat (saturation) instead of hunger (level) ?
+	 * 
 	 * @return true if food level lower than fat level
 	 */
 	private boolean shouldBurnFat() {
@@ -69,9 +75,8 @@ public class BWMFoodStats extends FoodStats {
 
 		int overWeight = foodLevelIn - (this.getFoodLevel() - currentFoodLevel);
 		if (overWeight > 0) {
-			setFoodSaturationLevel(Math
-					.min(this.getSaturationLevel() + (float) overWeight
-							* foodSaturationModifier / 3.0F, 20.0F));
+			setSaturation(
+					Math.min(this.getSaturationLevel() + (float) overWeight * foodSaturationModifier / 3.0F, 20.0F));
 		}
 
 	}
@@ -82,28 +87,24 @@ public class BWMFoodStats extends FoodStats {
 	@Override
 	public void onUpdate(EntityPlayer player) {
 		EnumDifficulty enumdifficulty = player.worldObj.getDifficulty();
-        setPrevFoodLevel(getFoodLevel());
+		setPrevFoodLevel(getFoodLevel());
 
 		if (enumdifficulty != EnumDifficulty.PEACEFUL) {
 			updateExhaustionWithTime(player);
-			while (this.getFoodLevel() > 0 && getExhaustion() >= 1.33F
-					&& !this.shouldBurnFat()) {
+			while (this.getFoodLevel() > 0 && getExhaustion() >= 1.33F && !this.shouldBurnFat()) {
 				setExhaustion(getExhaustion() - 1);
 				setFoodLevel(Math.max(this.getFoodLevel() - 1, 0));
 			}
 
-			while (getExhaustion() >= 0.5F
-					&& this.shouldBurnFat()) {
+			while (getExhaustion() >= 0.5F && this.shouldBurnFat()) {
 				setExhaustion(getExhaustion() - 0.5F);
-				setFoodSaturationLevel(Math.max(
-						this.getSaturationLevel() - 0.125F, 0.0F));
+				setSaturation(Math.max(this.getSaturationLevel() - 0.125F, 0.0F));
 			}
 		} else
 			setExhaustion(0.0F);
 
-		if (player.worldObj.getGameRules().getBoolean(
-				"naturalRegeneration")
-				&& this.getFoodLevel() >= 24 && player.shouldHeal()) {
+		if (player.worldObj.getGameRules().getBoolean("naturalRegeneration") && this.getFoodLevel() >= 24
+				&& player.shouldHeal()) {
 			setFoodTimer(getFoodTimer() + 1);
 
 			if (this.getFoodTimer() >= 600) {
@@ -138,10 +139,12 @@ public class BWMFoodStats extends FoodStats {
 		}
 		if (!compound.hasKey("bwmAdjustedFoodStats")) {
 			setFoodLevel(getFoodLevel() * 3);
-			setFoodSaturationLevel(0);
+			setSaturation(0);
 		}
-		if(getFoodLevel() > 60) setFoodLevel(60);
-		if(getSaturationLevel() > 20) setFoodSaturationLevel(20);
+		if (getFoodLevel() > 60)
+			setFoodLevel(60);
+		if (getSaturationLevel() > 20)
+			setSaturation(20);
 	}
 
 	/**
@@ -165,7 +168,7 @@ public class BWMFoodStats extends FoodStats {
 	public float getExhaustion() {
 		return ReflectionHelper.getPrivateValue(FoodStats.class, this, "field_75126_c", "foodExhaustionLevel");
 	}
-	
+
 	public void setExhaustion(float exhaustionIn) {
 		ReflectionHelper.setPrivateValue(FoodStats.class, this, exhaustionIn, "field_75126_c", "foodExhaustionLevel");
 	}
@@ -173,16 +176,20 @@ public class BWMFoodStats extends FoodStats {
 	public int getFoodTimer() {
 		return ReflectionHelper.getPrivateValue(FoodStats.class, this, "field_75123_d", "foodTimer");
 	}
-	
+
 	public void setFoodTimer(int foodTimerIn) {
 		ReflectionHelper.setPrivateValue(FoodStats.class, this, foodTimerIn, "field_75123_d", "foodTimer");
 	}
-	
+
 	public int getPrevFoodLevel() {
 		return ReflectionHelper.getPrivateValue(FoodStats.class, this, "field_75124_e", "prevFoodLevel");
 	}
-	
+
 	public void setPrevFoodLevel(int prevFoodLevel) {
 		ReflectionHelper.setPrivateValue(FoodStats.class, this, prevFoodLevel, "field_75124_e", "prevFoodLevel");
+	}
+
+	private void setSaturation(float saturation) {
+		ReflectionHelper.setPrivateValue(FoodStats.class, this, saturation, "field_75125_b", "foodSaturationLevel");
 	}
 }

@@ -3,6 +3,7 @@ package betterwithmods.util.player;
 import java.util.UUID;
 
 import betterwithmods.util.item.ItemExt;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -79,6 +80,17 @@ public final class EntityPlayerExt {
 
 	public static boolean canSwim(EntityPlayer player) {
 		return (!isWeighted(player)) && player.getHealth() > 4;
+	}
+
+	/**
+	 * This will at least keep players from sticking to the bottom of a pool.
+	 * @param player
+	 * @return
+     */
+	public static boolean isNearBottom(EntityPlayer player) {
+		Block toCheck = player.getEntityWorld().getBlockState(player.getPosition().down()).getBlock();
+		Block toCheck2 = player.getEntityWorld().getBlockState(player.getPosition().down(2)).getBlock();
+		return !toCheck.isReplaceable(player.getEntityWorld(), player.getPosition().down()) || !toCheck2.isReplaceable(player.getEntityWorld(), player.getPosition().down(2));
 	}
 	
 	/**

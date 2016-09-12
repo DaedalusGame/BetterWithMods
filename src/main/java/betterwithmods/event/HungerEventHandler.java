@@ -179,7 +179,7 @@ public class HungerEventHandler {
 
 	/**
 	 * Disable swimming if needed.
-	 * TODO FIXME Not able to jump at the bottom. New hook may be required.
+	 * TODO FIXME Not able to jump at the bottom. New hook may be required. (Probable workaround implemented)
 	 * @param event
 	 */
 	@SubscribeEvent
@@ -188,7 +188,7 @@ public class HungerEventHandler {
 		if (!(event.getEntityLiving() instanceof EntityPlayer)) return; 
 		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 		if(!EntityPlayerExt.isSurvival(player)) return;
-		if (player.isInWater() && !EntityPlayerExt.canSwim(player)) {
+		if (player.isInWater() && !EntityPlayerExt.canSwim(player) && !EntityPlayerExt.isNearBottom(player)) {
 			player.motionY -= 0.02;
 		}
 	}

@@ -116,7 +116,7 @@ public final class ItemExt {
 		buoyancy.put("leather", 1.0F);
 		buoyancy.put(Items.PAPER, 1.0F);
 		buoyancy.put(Items.BOOK, 1.0F);
-		buoyancy.put("slimeBall", 1.0F);
+		buoyancy.put("slimeball", 1.0F);
 		buoyancy.put(Items.FISHING_ROD, OreDictionary.WILDCARD_VALUE, 1.0F);
 		buoyancy.put(Items.FISH, 1.0F);
 		buoyancy.put(Items.COOKED_FISH, 1.0F);

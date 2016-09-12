@@ -56,7 +56,7 @@ public class RespawnEventHandler {
 	 * Find a random position to respawn. Tries 20 times maximum to find a
 	 * suitable place. Else, the previous SP will remain unchanged.
 	 * 
-	 * @param worldObj
+	 * @param player
 	 * @param spawnFuzz
 	 *            A "size coefficient" variable. Proportional to distance
 	 *            between spawn points.

@@ -11,6 +11,7 @@ import betterwithmods.BWRegistry;
 import betterwithmods.blocks.BlockAnchor;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.blocks.BlockRope;
+import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityExtendingRope;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -260,8 +261,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	}
 
 	private boolean addToList(HashSet<BlockPos> set, BlockPos p, boolean up) {
-//		if (set.size() > BWConfig.maxPlatformBlocks)
-//			return false;
+		if (set.size() > BWConfig.maxPlatformBlocks)
+			return false;
 
 		BlockPos blockCheck = up ? p.up() : p.down();
 

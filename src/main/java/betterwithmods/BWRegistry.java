@@ -87,6 +87,7 @@ public class BWRegistry {
     public static Block treatedAxle;
     public static Block light;
     public static Block miningCharge;
+    public static Block fertileFarmland;
 
     public static Item material;
     public static Item windmill;
@@ -148,6 +149,7 @@ public class BWRegistry {
         light = new BlockLight();
         platform = new BlockPlatform();
         miningCharge = new BlockMiningCharge();
+        fertileFarmland = new BlockFertileFarmland();
 
 
         material = new ItemMaterial();

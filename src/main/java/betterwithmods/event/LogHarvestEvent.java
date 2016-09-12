@@ -55,7 +55,7 @@ public class LogHarvestEvent {
                     playerStack.damageItem(1, evt.getEntityPlayer());
                 } else {
                     IBlockState state = evt.getWorld().getBlockState(evt.getPos());
-                    if (SawInteraction.contains(block, block.getMetaFromState(state))) {
+                    if (SawInteraction.contains(block, block.getMetaFromState(state)) && InvUtils.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
                         InvUtils.ejectStackWithOffset(evt.getWorld(), playerPos, new ItemStack(bark, 1, 0));
                         IBlockState dbl = BWRegistry.debarkedOld.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
                         evt.getWorld().setBlockState(evt.getPos(), dbl);

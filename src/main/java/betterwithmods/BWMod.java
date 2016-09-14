@@ -6,13 +6,7 @@ import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.entity.item.EntityItemBuoy;
-import betterwithmods.event.BucketEvent;
-import betterwithmods.event.BuoyancyEventHandler;
-import betterwithmods.event.HungerEventHandler;
-import betterwithmods.event.LogHarvestEvent;
-import betterwithmods.event.MobDropEvent;
-import betterwithmods.event.NetherSpawnEvent;
-import betterwithmods.event.RespawnEventHandler;
+import betterwithmods.event.*;
 import betterwithmods.integration.ModIntegration;
 import betterwithmods.proxy.CommonProxy;
 import betterwithmods.util.ColorUtils;
@@ -20,6 +14,8 @@ import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -28,6 +24,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-@Mod(modid = "betterwithmods", name = "Better With Mods", version = "0.11 Beta hotfix 1", dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering")
+@Mod(modid = "betterwithmods", name = "Better With Mods", version = "0.11 Beta hotfix 1", dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     @SidedProxy(serverSide = "betterwithmods.proxy.CommonProxy", clientSide = "betterwithmods.proxy.ClientProxy")
     public static CommonProxy proxy;
@@ -47,7 +44,8 @@ public class BWMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        BWConfig.cfg = new Configuration(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        BWConfig.init();
         BWRegistry.init();
         ModIntegration.preInit();
         BWCrafting.init();
@@ -92,6 +90,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BucketEvent());
         MinecraftForge.EVENT_BUS.register(new NetherSpawnEvent());
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
+        MinecraftForge.EVENT_BUS.register(this);
         RecipeUtils.refreshRecipes();
     }
 
@@ -109,7 +108,11 @@ public class BWMod {
 //			}
 //		}
     }
-
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+        if(eventArgs.getModID().equals("betterwithmods"))
+            BWConfig.init();
+    }
     private String convertToLowercase(String name) {
         char[] chars = name.toCharArray();
         StringBuilder build = new StringBuilder();

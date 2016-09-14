@@ -200,7 +200,7 @@ item.bwm:fertilizer.name=Fertilizer
 
 item.bwm:powerSource.Windmill.name=Windmill
 item.bwm:powerSource.Waterwheel.name=Water Wheel
-item.bwm:powerSource.WindmillVertical.name=Vertical Windmill
+item.bwm:powerSource.Windmill_Vertical.name=Vertical Windmill
 
 item.bwm:bark.0.name=Oak Bark
 item.bwm:bark.1.name=Spruce Bark

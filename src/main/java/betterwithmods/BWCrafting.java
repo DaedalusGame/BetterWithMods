@@ -1,5 +1,6 @@
 package betterwithmods;
 
+import betterwithmods.config.BWConfig;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
 import betterwithmods.craft.SawInteraction;
@@ -173,6 +174,8 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.singleMachines, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), "plankWood", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), new ItemStack(BWRegistry.material, 1, 35)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.platform), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), "plankWood", Character.valueOf('W'), new ItemStack(BWRegistry.pane, 1, 2)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWRegistry.miningCharge), new Object[] {"RSR", "DDD", "DDD", Character.valueOf('R'), BWRegistry.rope, Character.valueOf('S'), "slimeball", 'D', BWRegistry.dynamite}));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWRegistry.aesthetic,1,8), new Object[]{"enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl",}));
+        GameRegistry.addShapelessRecipe(new ItemStack(Items.ENDER_PEARL,9), new Object[]{new ItemStack(BWRegistry.aesthetic,1,8)});
     }
 
     private static void addMillRecipes() {
@@ -249,6 +252,7 @@ public class BWCrafting {
         addStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 13), new ItemStack[]{new ItemStack(Items.MUTTON, 6)});
         addStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 13), new ItemStack[]{new ItemStack(Items.COOKED_MUTTON, 6)});
         addStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 13), new ItemStack[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
+        addStokedCauldronRecipe(ItemMaterial.getMaterial("ender_slag"), new ItemStack[]{ItemMaterial.getMaterial("brimstone"), BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial("soul_flux") : null});
         addOreStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 21), new Object[]{"logWood"});
         addOreStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 21), new Object[]{new OreStack("plankWood", 6)});
         addOreStokedCauldronRecipe(new ItemStack(BWRegistry.material, 1, 21), new Object[]{new OreStack("dustWood", 16)});
@@ -267,6 +271,7 @@ public class BWCrafting {
         addKilnRecipe(BWRegistry.unfiredPottery, 1, new ItemStack(BWRegistry.planter));
         addKilnRecipe(BWRegistry.unfiredPottery, 2, new ItemStack(BWRegistry.urn));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
+        addKilnRecipe(Blocks.END_STONE,0, new ItemStack(BWRegistry.aesthetic,1,7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" :"brimstone") );
     }
 
     private static void addKilnWood() {
@@ -323,10 +328,11 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7), new ItemStack[]{new ItemStack(BWRegistry.singleMachines, 1, 3)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 31), new ItemStack[]{new ItemStack(Blocks.ANVIL, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack[]{new ItemStack(Blocks.TRIPWIRE_HOOK)});
-        addOreStokedCrucibleRecipe(new ItemStack(BWRegistry.material, 1, 14), new ItemStack(BWRegistry.urn, 1, 0), new Object[]{"dustCoal", new ItemStack(BWRegistry.urn, 1, 8), "ingotIron"});
+        addOreStokedCrucibleRecipe(new ItemStack(BWRegistry.material, 1, 14), new ItemStack(BWRegistry.urn, 1, 0), new Object[]{"dustCoal", new ItemStack(BWRegistry.urn, 1, 8), "ingotIron", BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial("soul_flux") : null});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new ItemStack[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new ItemStack[]{new ItemStack(Blocks.GLASS_PANE, 8)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new ItemStack[]{new ItemStack(Blocks.COBBLESTONE)});
+        addStokedCrucibleRecipe(new ItemStack(BWRegistry.aesthetic,6), new ItemStack[]{new ItemStack(BWRegistry.aesthetic,7)});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
@@ -433,7 +439,7 @@ public class BWCrafting {
         TurntableInteraction.addBlockRecipe(input, output, scrap);
     }
 
-    public static void addKilnRecipe(Block inputBlock, int inputMeta, ItemStack output) {
+    public static void addKilnRecipe(Block inputBlock, int inputMeta, ItemStack... output) {
         KilnInteraction.addBlockRecipe(inputBlock, inputMeta, output);
     }
 }

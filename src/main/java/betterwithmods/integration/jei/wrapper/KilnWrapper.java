@@ -18,11 +18,10 @@ public class KilnWrapper extends BlankRecipeWrapper {
     public List<ItemStack> inputs = Lists.newArrayList(), outputs = Lists.newArrayList();
     public ItemStack input,output;
 
-    public KilnWrapper(String string, ItemStack output) {
+    public KilnWrapper(String string, List<ItemStack> output) {
         this.input = fromString(string);
-        this.output = output;
         inputs.add(input);
-        outputs.add(output);
+        outputs.addAll(output);
     }
 
     @Nonnull

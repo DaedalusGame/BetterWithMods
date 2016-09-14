@@ -34,6 +34,9 @@ tile.bwm:aesthetic.2.name=Soulforged Steel Block
 tile.bwm:aesthetic.3.name=Concentrated Hellfire Block
 tile.bwm:aesthetic.4.name=Rope Block
 tile.bwm:aesthetic.5.name=Flint Block
+tile.bwm:aesthetic.6.name=White Stone
+tile.bwm:aesthetic.7.name=White Cobble
+tile.bwm:aesthetic.8.name=Ender Block
 
 tile.bwm:powerSource.0.name=Windmill
 tile.bwm:powerSource.1.name=Waterwheel
@@ -143,6 +146,7 @@ tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge
 tile.bwm:fertile_farmland.name=Fertile Farmland
 
+
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
 item.bwm:material.hemp.name=Hemp
@@ -186,6 +190,8 @@ item.bwm:material.soul_dust.name=Soul Dust
 item.bwm:material.charcoal_dust.name=Charcoal Dust
 item.bwm:material.sharpening_stone.name=Sharpening Stone
 item.bwm:material.knife_blade.name=Knife Blade
+item.bwm:material.ender_slag.name=Ender Slag
+item.bwm:material.soul_flux.name=Soul Flux
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife

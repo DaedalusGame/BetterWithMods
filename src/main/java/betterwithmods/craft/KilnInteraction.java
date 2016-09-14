@@ -1,24 +1,33 @@
 package betterwithmods.craft;
 
-import java.util.Hashtable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.List;
+
 public class KilnInteraction 
 {
-	private static Hashtable<String, ItemStack> cookables = new Hashtable<String, ItemStack>();
-	
-	public static void addBlockRecipe(Block block, ItemStack output)
+	private static Hashtable<String, List<ItemStack>> cookables = new Hashtable<>();
+
+	public static void addBlockRecipe(Block block, ItemStack... output) {
+		addBlockRecipe(block, Arrays.asList(output));
+	}
+
+	public static void addBlockRecipe(Block block, List<ItemStack> output)
 	{
 		for(IBlockState state : block.getBlockState().getValidStates()) {
 			if(!contains(block, block.damageDropped(state)))
 				cookables.put(block + ":" + block.damageDropped(state), output);
 		}
 	}
-	
-	public static void addBlockRecipe(Block block, int meta, ItemStack output)
+
+	public static void addBlockRecipe(Block block, int meta, ItemStack... output) {
+		addBlockRecipe(block,meta, Arrays.asList(output));
+	}
+	public static void addBlockRecipe(Block block, int meta, List<ItemStack> output)
 	{
 		cookables.put(block + ":" + meta, output);
 	}
@@ -28,12 +37,12 @@ public class KilnInteraction
 		return cookables.containsKey(block + ":" + meta);
 	}
 	
-	public static ItemStack getProduct(Block block, int meta)
+	public static List<ItemStack> getProduct(Block block, int meta)
 	{
 		return cookables.get(block + ":" + meta);
 	}
 
-	public static Hashtable<String, ItemStack> getCookables()
+	public static Hashtable<String, List<ItemStack>> getCookables()
 	{
 		return cookables;
 	}

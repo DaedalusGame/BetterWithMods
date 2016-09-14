@@ -52,9 +52,9 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, false, 20, 31);
         guiItemStacks.setFromRecipe(0, wrapper.getInputs());
-        for (int i = 0; i < wrapper.getOutputs().size(); i++) {
-            guiItemStacks.init(i + 1, true, 94 + i * 22, 31);
-            guiItemStacks.setFromRecipe(i + 1, wrapper.getOutputs().get(i));
-        }
+
+        guiItemStacks.init(1, true, 94, 31);
+        guiItemStacks.setFromRecipe(1, wrapper.getOutputs());
+
     }
 }

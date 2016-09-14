@@ -1,8 +1,8 @@
 package betterwithmods.config;
 
-import java.io.File;
-
 import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
 
 public class BWConfig 
 {
@@ -13,6 +13,7 @@ public class BWConfig
 	public static boolean hardcoreBuoy;
 	public static boolean hardcoreSpawn;
 	public static boolean hardcoreBeds;
+	public static boolean steelRequiresEnd;
 	public static boolean netherSpawn;
 	public static boolean slimeSpawn;
 	public static boolean debug;
@@ -35,6 +36,7 @@ public class BWConfig
 			hardcoreBuoy = cfg.get("Hardcore", "Hardcore Buoy", true).getBoolean(true);
 			hardcoreSpawn = cfg.get("Hardcore", "Hardcore Spawn", true).getBoolean(true);
 			hardcoreBeds = cfg.get("Hardcore", "Hardcore Beds", true).getBoolean(true);
+            steelRequiresEnd = cfg.get("Hardcore", "Steel Requires End", true).getBoolean(true);
 			netherSpawn = cfg.get("Vanilla Tweaks", "Prevent Nether Spawns on Non-Nether Materials", true).getBoolean(true);
 			slimeSpawn = cfg.get("Vanilla Tweaks", "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true).getBoolean(true);
 			debug = cfg.get("Debug", "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean(false);

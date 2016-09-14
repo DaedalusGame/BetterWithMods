@@ -32,14 +32,14 @@ public class BlockAesthetic extends BTWBlock
 
 	@Override
 	public String[] getVariants() {
-		return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint"};
+		return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock"};
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
-	    for (int i = 0; i < 6; i++)
+	    for (int i = 0; i <= EnumType.META_LOOKUP.length; i++)
 	    {
 	    	list.add(new ItemStack(item, 1, i));
 	    }
@@ -83,7 +83,10 @@ public class BlockAesthetic extends BTWBlock
 		STEEL(2, "steel", MapColor.IRON),
 		HELLFIRE(3, "hellfire", MapColor.ADOBE),
 		ROPE(4, "rope", MapColor.DIRT),
-		FLINT(5, "flint", MapColor.STONE);
+		FLINT(5, "flint", MapColor.STONE),
+		WHITESTONE(6,"whitestone",MapColor.CLOTH),
+		WHITECOBBLE(7,"whitecobble",MapColor.CLOTH),
+        ENDERBLOCK(8,"enderblock",MapColor.CYAN);
 		
 		private static final BlockAesthetic.EnumType[] META_LOOKUP = new BlockAesthetic.EnumType[values().length];
 		private final int meta;

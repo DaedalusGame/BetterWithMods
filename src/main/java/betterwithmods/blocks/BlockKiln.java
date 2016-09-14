@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.List;
 import java.util.Random;
 
 public class BlockKiln extends BTWBlock
@@ -227,7 +228,7 @@ public class BlockKiln extends BTWBlock
 		{
 			if(KilnInteraction.contains(block, meta))
 			{
-				ItemStack result = KilnInteraction.getProduct(block, meta).copy();
+				List<ItemStack> result = KilnInteraction.getProduct(block, meta);
 				InvUtils.ejectStackWithOffset(world, pos, result);
 				world.setBlockToAir(pos);
 			}

@@ -313,8 +313,8 @@ public class BWRegistry {
             }
             name = type.getName();
             Block block = ((ItemBlock) log.getItem()).getBlock();
-            ItemStack bark = BWConfig.hardcoreLumber ? new ItemStack(BWRegistry.bark,2,type.getMetadata()): null;
-            ItemStack sawdust = BWConfig.hardcoreLumber ? ItemMaterial.getMaterial("sawdust",2) : null;
+            ItemStack bark = new ItemStack(BWRegistry.bark,2,type.getMetadata());
+            ItemStack sawdust = ItemMaterial.getMaterial("sawdust",2);
             SawInteraction.addBlock(block,log.getMetadata(),plank,bark,sawdust);
             SawInteraction.addBlock(Blocks.PLANKS,type.getMetadata(),new ItemStack(BWRegistry.woodSiding,2,type.getMetadata()));
         }
@@ -328,10 +328,8 @@ public class BWRegistry {
                     if(planks != null) {
                         ItemStack[] output = new ItemStack[3];
                         output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-                        if (BWConfig.hardcoreLumber) {
-                            output[1] = new ItemStack(BWRegistry.bark, 2, 0);
-                            output[2] = ItemMaterial.getMaterial("sawdust");
-                        }
+                         output[1] = new ItemStack(BWRegistry.bark, 2, 0);
+                        output[2] = ItemMaterial.getMaterial("sawdust");
                         SawInteraction.addBlock(block, log.getMetadata(), output);
                         SawInteraction.addBlock(planks, new ItemStack(BWRegistry.woodSiding,2, 0));
                     }

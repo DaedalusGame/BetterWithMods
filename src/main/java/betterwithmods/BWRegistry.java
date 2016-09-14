@@ -324,14 +324,29 @@ public class BWRegistry {
                 Block block = ((ItemBlock) log.getItem()).getBlock();
                 //only if not vanilla
                 if (!block.getRegistryName().getResourceDomain().equals("minecraft")) {
-                    ItemStack planks = getRecipeOutput(log);
-                    if(planks != null) {
-                        ItemStack[] output = new ItemStack[3];
-                        output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-                         output[1] = new ItemStack(BWRegistry.bark, 2, 0);
-                        output[2] = ItemMaterial.getMaterial("sawdust");
-                        SawInteraction.addBlock(block, log.getMetadata(), output);
-                        SawInteraction.addBlock(planks, new ItemStack(BWRegistry.woodSiding,2, 0));
+                    if(log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                        for(int i = 0; i < 4; i++) {
+                            ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
+                            if(planks != null) {
+                                ItemStack[] output = new ItemStack[3];
+                                output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
+                                output[1] = new ItemStack(BWRegistry.bark, 2, 0);
+                                output[2] = ItemMaterial.getMaterial("sawdust");
+                                SawInteraction.addBlock(block, i, output);
+                                SawInteraction.addBlock(planks, new ItemStack(BWRegistry.woodSiding, 2, 0));
+                            }
+                        }
+                    }
+                    else {
+                        ItemStack planks = getRecipeOutput(log);
+                        if (planks != null) {
+                            ItemStack[] output = new ItemStack[3];
+                            output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
+                            output[1] = new ItemStack(BWRegistry.bark, 2, 0);
+                            output[2] = ItemMaterial.getMaterial("sawdust");
+                            SawInteraction.addBlock(block, log.getMetadata(), output);
+                            SawInteraction.addBlock(planks, new ItemStack(BWRegistry.woodSiding, 2, 0));
+                        }
                     }
                 }
             }
@@ -349,6 +364,13 @@ public class BWRegistry {
                 }
             } else if (recipe instanceof ShapelessOreRecipe) {
                 ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
+                if(shapeless.getRecipeSize() == 1) {
+                    if(shapeless.getInput().get(0) instanceof ItemStack) {
+                        if(((ItemStack)shapeless.getInput().get(0)).isItemEqual(input)) {
+                            return shapeless.getRecipeOutput();
+                        }
+                    }
+                }
             }
         }
         return null;

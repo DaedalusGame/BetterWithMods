@@ -169,7 +169,7 @@ public class BlockNewBTWPane extends BTWBlock
 	
 	public final boolean isCompatibleBlock(Block block)
 	{
-		return block.isFullBlock(block.getDefaultState()) || block == this;
+		return block.getDefaultState().isFullBlock() || block == this;
 	}
 	
 	public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir)

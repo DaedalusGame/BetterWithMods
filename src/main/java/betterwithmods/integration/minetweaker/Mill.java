@@ -48,7 +48,7 @@ public class Mill {
 
         protected Add(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
             super("mill", Mill.recipes);
-            recipes.add(new BulkRecipe(this.name,output,secondary,inputs));
+            recipes.add(new BulkRecipe(this.name,output,secondary,(Object[]) inputs));
         }
 
         @Override

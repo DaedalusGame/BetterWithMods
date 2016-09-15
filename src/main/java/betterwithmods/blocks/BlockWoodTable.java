@@ -23,7 +23,7 @@ public class BlockWoodTable extends BlockFurniture
         super(Material.WOOD,"wood_table");
     }
 
-    @Override
+	@Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         if(state.getBlock() instanceof BlockWoodTable) {

@@ -1,15 +1,17 @@
 package betterwithmods.integration;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import betterwithmods.util.NetherSpawnWhitelist;
 
 public class Natura 
 {
 	public static void whitelistNetherBlocks()
 	{
-		if(GameRegistry.findBlock("Natura", "soil.tainted") != null)
-			NetherSpawnWhitelist.addBlock(GameRegistry.findBlock("Natura", "soil.tainted"));
-		if(GameRegistry.findBlock("Natura", "heatsand") != null)
-			NetherSpawnWhitelist.addBlock(GameRegistry.findBlock("Natura", "heatsand"));
+
+		if(Block.REGISTRY.getObject(new ResourceLocation("Natura", "soil.tainted")) != null)
+			NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("Natura", "soil.tainted")));
+		if(Block.REGISTRY.getObject(new ResourceLocation("Natura", "heatsand")) != null)
+			NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("Natura", "heatsand")));
 	}
 }

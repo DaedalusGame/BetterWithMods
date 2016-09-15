@@ -48,7 +48,7 @@ public class StokedCauldron {
 
         protected Add(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
             super("cauldronStoked", StokedCauldron.recipes);
-            recipes.add(new BulkRecipe(this.name,output,secondary,inputs));
+            recipes.add(new BulkRecipe(this.name,output,secondary,(Object[]) inputs));
         }
 
         @Override

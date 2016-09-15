@@ -48,7 +48,7 @@ public class StokedCrucible {
 
         protected Add(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
             super("crucibleStoked", StokedCrucible.recipes);
-            recipes.add(new BulkRecipe(this.name,output,secondary,inputs));
+            recipes.add(new BulkRecipe(this.name,output,secondary, (Object[]) inputs));
         }
 
         @Override

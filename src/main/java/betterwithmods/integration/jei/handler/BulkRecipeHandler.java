@@ -21,7 +21,7 @@ public abstract class BulkRecipeHandler implements IRecipeHandler<BulkRecipeWrap
     @Override
     public String getRecipeCategoryUid(@Nonnull BulkRecipeWrapper recipe)
     {
-        return getRecipeCategoryUid();
+        return getRecipeCategoryUid(recipe);
     }
 
     @Nonnull

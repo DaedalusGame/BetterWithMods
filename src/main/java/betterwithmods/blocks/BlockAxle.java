@@ -59,7 +59,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 		else if(!world.isRemote && emptyHands)
 		{
 			int dir = state.getValue(AXLEDIR) == 2 ? 0 : state.getValue(AXLEDIR) + 1;
-			world.playSound(null, pos, this.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 			world.setBlockState(pos, state.withProperty(SIGNAL, 0).withProperty(AXLEDIR, dir));
 			world.notifyNeighborsOfStateChange(pos, this);
 			world.scheduleBlockUpdate(pos, this, 10, 5);

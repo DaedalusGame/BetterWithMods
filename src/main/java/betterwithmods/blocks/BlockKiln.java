@@ -12,12 +12,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.List;
 import java.util.Random;
 
@@ -157,7 +156,7 @@ public class BlockKiln extends BTWBlock
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		if(Loader.isModLoaded("terrafirmacraft"))
-			return Item.getItemFromBlock(GameRegistry.findBlock("terrafirmacraft", "FireBrick"));
+			return Item.getItemFromBlock(Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")));
 		return Item.getItemFromBlock(Blocks.BRICK_BLOCK);
 	}
 	
@@ -244,7 +243,7 @@ public class BlockKiln extends BTWBlock
 			
 			if(block == Blocks.BRICK_BLOCK || block == BWRegistry.kiln)
 				brickCount++;
-			else if(Loader.isModLoaded("terrafirmacraft") && block == GameRegistry.findBlock("terrafirmacraft", "FireBrick"))
+			else if(Loader.isModLoaded("terrafirmacraft") && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")))
 				brickCount++;
 		}
 		return brickCount > 2;

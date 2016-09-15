@@ -5,19 +5,15 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiMill extends GuiContainer
 {
 	private TileEntityMill mill;
-	private IItemHandler playerInv;
 	
 	public GuiMill(EntityPlayer player, TileEntityMill mill)
 	{
 		super(new ContainerMill(player, mill));
-		this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 		this.ySize = 158;
 		this.mill = mill;
 	}

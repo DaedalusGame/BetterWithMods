@@ -36,14 +36,14 @@ import java.util.Random;
 
 public class BlockPlanter extends BTWBlock
 {
-	public static final PropertyEnum<EnumPlanterType> planterType = PropertyEnum.create("plantertype", EnumPlanterType.class);
+	public static final PropertyEnum<EnumPlanterType> TYPE = PropertyEnum.create("plantertype", EnumPlanterType.class);
 
 	public BlockPlanter()
 	{
 		super(Material.ROCK, "planter", ItemBlockPlanter.class);
 		this.setTickRandomly(true);
 		this.setHardness(1.0F);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(planterType, EnumPlanterType.EMPTY));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumPlanterType.EMPTY));
 	}
 
     @Override
@@ -54,13 +54,13 @@ public class BlockPlanter extends BTWBlock
     @SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex)
 	{
-		return (state.getValue(planterType) == EnumPlanterType.GRASS && tintIndex > -1) ? world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) :-1;
+		return (state.getValue(TYPE) == EnumPlanterType.GRASS && tintIndex > -1) ? world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) :-1;
 	}
 
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		int meta =  state.getValue(planterType).getMeta();
+		int meta =  state.getValue(TYPE).getMeta();
 		return meta;
 	}
 
@@ -78,7 +78,7 @@ public class BlockPlanter extends BTWBlock
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		IBlockState planter = world.getBlockState(pos);
-		int meta = world.getBlockState(pos).getValue(planterType).getMeta();
+		int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 		if(world.isRemote)
 		{
 			ItemStack item = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
@@ -106,7 +106,7 @@ public class BlockPlanter extends BTWBlock
 
 				if(stack.getItem() == Items.WATER_BUCKET)
 				{
-					world.setBlockState(pos, planter.withProperty(planterType, EnumPlanterType.WATER));
+					world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.WATER));
 					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 					ItemStack replacement = stack.getItem().getContainerItem(stack);
 					if(stack.stackSize == 1 && !player.capabilities.isCreativeMode) {
@@ -138,7 +138,7 @@ public class BlockPlanter extends BTWBlock
 								break;
 							if(type.getFill() != null && type.getFill() == block && stack.getItemDamage() == type.getBlockMeta())
 							{
-								world.setBlockState(pos, state.withProperty(planterType, type));
+								world.setBlockState(pos, state.withProperty(TYPE, type));
 								valid = true;
 							}
 						}
@@ -156,7 +156,7 @@ public class BlockPlanter extends BTWBlock
 				ItemStack stack = heldItem;
 				if(stack.getItem() == Items.DYE && stack.getItemDamage() == 15)
 				{
-					world.setBlockState(pos, planter.withProperty(planterType, EnumPlanterType.FERTILE));
+					world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.FERTILE));
 					if(!player.capabilities.isCreativeMode)
 						stack.stackSize--;
 					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -166,19 +166,19 @@ public class BlockPlanter extends BTWBlock
 		}
 		if(meta != 6 && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1)
 		{
-			EnumPlanterType type = state.getValue(planterType);
+			EnumPlanterType type = state.getValue(TYPE);
 			if(!player.capabilities.isCreativeMode)
 			{
 				if (!player.inventory.addItemStackToInventory(new ItemStack(type.getFill(), 1, type.getBlockMeta())))
 					player.dropItem(new ItemStack(type.getFill(), 1, type.getBlockMeta()), false);
 			}
 			world.playSound(null, pos, type.getFill().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-			world.setBlockState(pos, state.withProperty(planterType, EnumPlanterType.EMPTY));
+			world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.EMPTY));
 			return true;
 		}
 		else if(meta == 2 && heldItem.getItem() instanceof ItemHoe) {
 			world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-			world.setBlockState(pos, state.withProperty(planterType, EnumPlanterType.DIRT));
+			world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.DIRT));
 			return true;
 		}
 		else if(meta == 6 && heldItem.getItem() == Items.BUCKET)
@@ -199,7 +199,7 @@ public class BlockPlanter extends BTWBlock
 				}
 			}
 			world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-			world.setBlockState(pos, state.withProperty(planterType, EnumPlanterType.EMPTY));
+			world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.EMPTY));
 			return true;
 		}
 		return false;
@@ -210,7 +210,7 @@ public class BlockPlanter extends BTWBlock
 	{
 		if(!world.isRemote)
 		{
-			int meta = world.getBlockState(pos).getValue(planterType).getMeta();
+			int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 			BlockPos up = pos.up();
 			if(world.isAirBlock(up))
 			{
@@ -223,7 +223,7 @@ public class BlockPlanter extends BTWBlock
 						int zP = rand.nextInt(3) - 1;
 						BlockPos checkPos = pos.add(xP, yP, zP);
 						if(world.getBlockState(checkPos).getBlock() == Blocks.GRASS)
-							world.setBlockState(pos, this.getDefaultState().withProperty(planterType, EnumPlanterType.GRASS));
+							world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumPlanterType.GRASS));
 					}
 				}
 				else if(meta == 2 && rand.nextInt(30) == 0)
@@ -254,7 +254,7 @@ public class BlockPlanter extends BTWBlock
 					{
 						world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
 						if(rand.nextInt(100) == 0)
-							world.setBlockState(pos, this.getDefaultState().withProperty(planterType, EnumPlanterType.DIRT));
+							world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumPlanterType.DIRT));
 					}
 				}
 			}
@@ -282,7 +282,7 @@ public class BlockPlanter extends BTWBlock
 
 	@Override
 	public boolean isFertile(World world, BlockPos pos) {
-		return world.getBlockState(pos).getValue(planterType) == EnumPlanterType.FERTILE;
+		return world.getBlockState(pos).getValue(TYPE) == EnumPlanterType.FERTILE;
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class BlockPlanter extends BTWBlock
 	{
 		BlockPos up = pos.up();
 		EnumPlantType plantType = plant.getPlantType(world, up);
-		int meta = world.getBlockState(pos).getValue(planterType).getMeta();
+		int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 		switch(plantType)
 		{
 		case Desert:
@@ -323,20 +323,20 @@ public class BlockPlanter extends BTWBlock
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, planterType);
+		return new BlockStateContainer(this, TYPE);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		IBlockState state = this.getDefaultState().withProperty(planterType, EnumPlanterType.byMeta(meta));
+		IBlockState state = this.getDefaultState().withProperty(TYPE, EnumPlanterType.byMeta(meta));
 		return state;
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		int meta = state.getValue(planterType).getMeta();
+		int meta = state.getValue(TYPE).getMeta();
 		return meta;
 	}
 

@@ -5,21 +5,16 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiCookingPot extends GuiContainer {
     private static final int fireHeight = 12;
     private static final int stokedHeight = 28;
-    private IItemHandler playerInv;
     private TileEntityCookingPot tile;
 
 
     public GuiCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
         super(new ContainerCookingPot(player, tile));
-        this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        ;
         this.ySize = 193;
         this.tile = tile;
     }

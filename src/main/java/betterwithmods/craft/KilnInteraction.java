@@ -24,9 +24,11 @@ public class KilnInteraction
 		}
 	}
 
+	//TODO IBlockState version instead of block + meta
 	public static void addBlockRecipe(Block block, int meta, ItemStack... output) {
 		addBlockRecipe(block,meta, Arrays.asList(output));
 	}
+
 	public static void addBlockRecipe(Block block, int meta, List<ItemStack> output)
 	{
 		cookables.put(block + ":" + meta, output);

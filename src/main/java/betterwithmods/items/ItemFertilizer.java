@@ -1,7 +1,10 @@
 package betterwithmods.items;
 
 import betterwithmods.BWRegistry;
+import betterwithmods.blocks.BlockPlanter;
+import betterwithmods.blocks.BlockPlanter.EnumPlanterType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -42,13 +45,12 @@ public class ItemFertilizer extends BWMItem
     private boolean processBlock(Block block, World world, BlockPos pos)
     {
         if(block == Blocks.FARMLAND) {
-            int meta = block.getMetaFromState(world.getBlockState(pos));
-            world.setBlockState(pos, BWRegistry.fertileFarmland.getStateFromMeta(meta));
+            world.setBlockState(pos, BWRegistry.fertileFarmland.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
             world.playEvent(2005, pos.up(), 0);
             return true;
         }
         else if(block == BWRegistry.planter && block.getMetaFromState(world.getBlockState(pos)) == 1) {
-            world.setBlockState(pos, BWRegistry.planter.getStateFromMeta(4));
+            world.setBlockState(pos, BWRegistry.planter.getDefaultState().withProperty(BlockPlanter.TYPE, EnumPlanterType.FERTILE));
             world.playEvent(2005, pos.up(), 0);
             return true;
         }

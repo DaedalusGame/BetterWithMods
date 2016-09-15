@@ -5,17 +5,13 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiPulley extends GuiContainer {
 	private TileEntityPulley tile;
-	private IItemHandler playerInv;
 
 	public GuiPulley(EntityPlayer player, TileEntityPulley tile) {
 		super(new ContainerPulley(player, tile));
-		this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		this.ySize = 193;
 		this.tile = tile;
 	}

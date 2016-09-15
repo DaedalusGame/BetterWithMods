@@ -9,13 +9,9 @@ import net.minecraft.item.EnumDyeColor;
 
 public class ModelRendererChild extends ModelRenderer
 {
-	private int childPosition;
-	private int color = 0;
-	private float[] colors = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(color));
 	public ModelRendererChild(ModelBase model, int x, int y, int position)
 	{
 		super(model, x, y);
-		this.childPosition = position;
 	}
 	
 	public void renderWithColor(float scale, int color)
@@ -30,10 +26,5 @@ public class ModelRendererChild extends ModelRenderer
 	public void render(float scale)
 	{
 		super.render(scale);
-	}
-	
-	public void setColor(int color)
-	{
-		this.color = color;
 	}
 }

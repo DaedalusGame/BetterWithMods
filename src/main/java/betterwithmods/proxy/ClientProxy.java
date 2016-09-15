@@ -117,11 +117,6 @@ public class ClientProxy extends CommonProxy {
             }
     }
 
-    private void registerTool(Item item, final String name) {
-
-        ModelBakery.registerItemVariants(item, new ModelResourceLocation(name, "inventory"));
-    }
-
     private void registerMiniBlockNBT(Block block, final String name) {
         Item item = Item.getItemFromBlock(block);
         ModelLoader.setCustomMeshDefinition(item, stack -> (stack.hasTagCompound() && stack.getTagCompound().hasKey("type")) ? new ModelResourceLocation(name + "_" + BlockPlanks.EnumType.byMetadata(stack.getTagCompound().getInteger("type")).getName(), "inventory") : stack.getItemDamage() < 6 ? new ModelResourceLocation(name + "_" + BlockPlanks.EnumType.byMetadata(stack.getItemDamage()).getName(), "inventory") : new ModelResourceLocation(name + "_oak", "inventory"));

@@ -492,7 +492,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                     shouldResetEjectCount = attemptToEjectXPIntoHopper(down);
                 else if (block.isReplaceable(this.worldObj, down))
                     canEjectIntoWorld = true;
-                else if (!block.getMaterial(worldObj.getBlockState(down)).isSolid())
+                else if (!worldObj.getBlockState(down).getMaterial().isSolid())
                     canEjectIntoWorld = true;
             }
 

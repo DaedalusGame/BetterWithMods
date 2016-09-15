@@ -84,7 +84,6 @@ public class BlockDetector extends BTWBlock
 		
 		EnumFacing facing = getFacing(world, pos);
 		BlockPos offset = pos.offset(facing);
-		Block offsetBlock = world.getBlockState(offset).getBlock();
 		
 		if(world.isAirBlock(offset))
 		{

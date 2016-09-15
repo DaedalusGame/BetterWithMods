@@ -83,9 +83,9 @@ public class BlockTemporaryWater extends BlockLiquid {
 		Block block = worldIn.getBlockState(pos).getBlock();
 		return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER
 				&& block != Blocks.REEDS
-						? (block.getMaterial(state) != Material.PORTAL
-								&& block.getMaterial(state) != Material.field_189963_J
-										? block.getMaterial(state).blocksMovement() : true)
+						? (state.getMaterial() != Material.PORTAL
+								&& state.getMaterial() != Material.field_189963_J
+										? state.getMaterial().blocksMovement() : true)
 						: true;
 	}
 

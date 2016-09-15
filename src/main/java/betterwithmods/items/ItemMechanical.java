@@ -222,7 +222,6 @@ public class ItemMechanical extends BWMItem
 				{
 					if(!clear)
 						break;
-					int x = pos.getX(); int y = pos.getY(); int z = pos.getZ();
 					int xPos = i;
 					int yPos = j;
 					int zPos = k;

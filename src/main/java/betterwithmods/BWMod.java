@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -94,36 +93,9 @@ public class BWMod {
         RecipeUtils.refreshRecipes();
     }
 
-    @EventHandler
-    public void onMissingMapping(FMLMissingMappingsEvent evt) {
-//		for(FMLMissingMappingsEvent.MissingMapping mapping : evt.get())
-//		{
-//			if(mapping.name.contains("betterwithmods:"))
-//			{
-//				logger.warn("Converting " + mapping.name + " to " + convertToLowercase(mapping.name) + " to conform to future standards. Downgrading Better With Mods may remove this item!");
-//				if(mapping.type == GameRegistry.Type.BLOCK)
-//					mapping.remap(Block.REGISTRY.getObject(new ResourceLocation(convertToLowercase(mapping.name))));
-//				if(mapping.type == GameRegistry.Type.ITEM)
-//					mapping.remap(Item.REGISTRY.getObject(new ResourceLocation(convertToLowercase(mapping.name))));
-//			}
-//		}
-    }
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
         if(eventArgs.getModID().equals("betterwithmods"))
             BWConfig.init();
-    }
-    private String convertToLowercase(String name) {
-        char[] chars = name.toCharArray();
-        StringBuilder build = new StringBuilder();
-
-        for (char ch : chars) {
-            if (ch >= 65 && ch <= 90) {
-                ch = (char) (ch + 32);
-                build.append('_');
-            }
-            build.append(ch);
-        }
-        return build.toString();
     }
 }

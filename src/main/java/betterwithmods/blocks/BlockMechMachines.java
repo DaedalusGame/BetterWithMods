@@ -342,9 +342,6 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     }
 
     private void breakPulley(World world, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS, 2, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT));
@@ -354,9 +351,6 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     }
 
     public void breakHopper(World world, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
@@ -364,9 +358,6 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     }
 
     private void breakTurntable(World world, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.REDSTONE));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 4, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
@@ -486,7 +477,6 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         int subType = state.getValue(MACHINETYPE).getSubTypeCount();
-        boolean subtypes = false;
         int actualType = 0;
         int filledSlots = 0;
         int facing = 1;

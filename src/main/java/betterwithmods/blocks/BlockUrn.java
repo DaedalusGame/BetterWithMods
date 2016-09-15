@@ -28,13 +28,13 @@ import java.util.Random;
 
 public class BlockUrn extends BTWBlock implements ISoulSensitive
 {
-	public static final PropertyEnum<EnumUrnType> urnType = PropertyEnum.create("urntype", EnumUrnType.class);
+	public static final PropertyEnum<EnumUrnType> TYPE = PropertyEnum.create("urntype", EnumUrnType.class);
 	public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
 	public BlockUrn()
 	{
 		super(Material.ROCK, "urn", ItemBlockMeta.class);
 		this.setHardness(2.0F);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(urnType, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	@Override
 	public int getMaximumSoulIntake(IBlockAccess world, BlockPos pos)
 	{
-		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 		if(meta < 8)
 			return 8 - meta;
 		else if(meta == 9)
@@ -82,7 +82,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	@Override
 	public int getMaximumSoulIntake(IBlockState state)
 	{
-		int meta = state.getValue(urnType).getMeta();
+		int meta = state.getValue(TYPE).getMeta();
 		if(meta < 8)
 			return 8 - meta;
 		else if(meta == 9)
@@ -100,7 +100,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	@Override
 	public boolean consumeSouls(World world, BlockPos pos, int souls)
 	{
-		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 		if(souls > 1 && meta != 9)
 		{
 			int newMeta = meta + souls;
@@ -110,7 +110,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 				return world.setBlockToAir(pos);
 			}
 			else
-				return world.setBlockState(pos, BWRegistry.urn.getStateFromMeta(newMeta));
+				return world.setBlockState(pos, getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta)));
 		}
 		else if(meta == 9)
 			return true;
@@ -121,7 +121,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
-		int meta = world.getBlockState(pos).getValue(urnType).getMeta();
+		int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
 		if(meta > 0)
 		{
 			int[] souls = {1, 2, 3, 4, 5, 6, 7, 8, 64};
@@ -166,20 +166,20 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, urnType, UNDERHOPPER);
+		return new BlockStateContainer(this, TYPE, UNDERHOPPER);
 	}
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		IBlockState state = this.getDefaultState().withProperty(urnType, EnumUrnType.byMeta(meta));
+		IBlockState state = getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta));
 		return state;
 	}
 	
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		int meta = state.getValue(urnType).getMeta();
+		int meta = state.getValue(TYPE).getMeta();
 		return meta;
 	}
 	

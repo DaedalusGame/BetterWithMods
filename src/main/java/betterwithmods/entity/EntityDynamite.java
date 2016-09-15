@@ -27,7 +27,6 @@ public class EntityDynamite extends Entity implements IProjectile
 {
 	private static final float pi = 3.141593F;
 	private int fuse;
-	private EntityLivingBase owner;
 	public ItemStack stack;
 	
 	public EntityDynamite(World world)
@@ -51,7 +50,6 @@ public class EntityDynamite extends Entity implements IProjectile
 	public EntityDynamite(World world, EntityLivingBase owner, ItemStack stack, boolean isLit)
 	{
 		this(world);
-		this.owner = owner;
 		this.setLocationAndAngles(owner.posX, owner.posY + owner.getEyeHeight(), owner.posZ, owner.rotationYaw, owner.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * pi) * 0.16F;
 		this.posY -= 0.1D;
@@ -99,8 +97,8 @@ public class EntityDynamite extends Entity implements IProjectile
 			}
 			if(this.worldObj.isRemote) {
 				float smokeOffset = 0.25F;
-				if ((block instanceof BlockLiquid && block.getMaterial(this.worldObj.getBlockState(new BlockPos(x, y, z))) == Material.WATER) ||
-						(block instanceof IFluidBlock && block.getMaterial(this.worldObj.getBlockState(new BlockPos(x, y, z))) == Material.WATER)) {
+				if ((block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER) ||
+						(block instanceof IFluidBlock && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)) {
 					this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
 				} else
 					this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
@@ -186,7 +184,7 @@ public class EntityDynamite extends Entity implements IProjectile
 		int y = MathHelper.floor_double(this.posY);
 		int z = MathHelper.floor_double(this.posZ);
 		Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-		if(block instanceof BlockLiquid && block.getMaterial(this.worldObj.getBlockState(new BlockPos(x, y, z))) == Material.WATER)
+		if(block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)
 			redneckFishing(x, y, z);
 	}
 	
@@ -211,7 +209,7 @@ public class EntityDynamite extends Entity implements IProjectile
 	private boolean isWaterBlock(int x, int y, int z)
 	{
 		Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-		return block instanceof BlockLiquid && block.getMaterial(this.worldObj.getBlockState(new BlockPos(x, y, z))) == Material.WATER;
+		return block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER;
 	}
 	
 	private void spawnDeadFish(int x, int y, int z)

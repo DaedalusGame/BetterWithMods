@@ -5,19 +5,15 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiFilteredHopper extends GuiContainer
 {
 	private TileEntityFilteredHopper tile;
-	private IItemHandler playerInv;
 	
 	public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile)
 	{
 		super(new ContainerFilteredHopper(player, tile));
-		this.playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 		this.ySize = 193;
 		this.tile = tile;
 	}

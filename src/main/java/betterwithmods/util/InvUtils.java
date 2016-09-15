@@ -24,10 +24,6 @@ public class InvUtils {
         cropNames = getOreNames("crop");
     }
 
-    private static boolean canStacksMerge(ItemStack source, ItemStack dest, int sizeLimit) {
-        return dest != null && dest.getItem() == source.getItem() && dest.isStackable() && dest.stackSize < dest.getMaxStackSize() && dest.stackSize < sizeLimit && (!dest.getHasSubtypes() || dest.getItemDamage() == source.getItemDamage()) && ItemStack.areItemStackTagsEqual(dest, source);
-    }
-
     private static ArrayList<ItemStack> getOreNames(String prefix) {
         ArrayList<ItemStack> list = new ArrayList<>();
         String[] var2 = OreDictionary.getOreNames();
@@ -120,22 +116,6 @@ public class InvUtils {
     public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta) {
         ItemStack stack = new ItemStack(item, 1, meta);
         return attemptToInsertStack(inv,stack,0,inv.getSlots());
-    }
-
-    private static boolean canStacksMerge(ItemStack source, ItemStack dest) {
-        return dest != null && dest.getItem() == source.getItem() && dest.isStackable() && dest.stackSize < dest.getMaxStackSize() && (!dest.getHasSubtypes() || dest.getItemDamage() == source.getItemDamage()) && ItemStack.areItemStackTagsEqual(dest, source);
-    }
-
-    private static int findSlotToMergeStackInRange(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-
-        for (int i = minSlot; i <= maxSlot; ++i) {
-            ItemStack tempStack = inv.getStackInSlot(i);
-            if (canStacksMerge(stack, tempStack)) {
-                return i;
-            }
-        }
-
-        return -1;
     }
 
     private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {

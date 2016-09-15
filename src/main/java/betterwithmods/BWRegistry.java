@@ -244,11 +244,6 @@ public class BWRegistry {
         GameRegistry.register(new ItemBlockPane(block).setRegistryName(name));
     }
 
-    private static void registerImmersiveBlock(Block block, String name) {
-        GameRegistry.register(block.setRegistryName(name));
-        GameRegistry.register(new ItemBlockImmersive(block).setRegistryName(name));
-    }
-
     public static void registerBlock(Block block, String name) {
         GameRegistry.register(block.setRegistryName(name));
         GameRegistry.register(new ItemBlock(block).setRegistryName(name));
@@ -307,14 +302,12 @@ public class BWRegistry {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             ItemStack log = null;
             ItemStack plank = new ItemStack(Blocks.PLANKS, 6, type.getMetadata());
-            String name;
             if (type.getMetadata() < 4) {
                 log = new ItemStack(Blocks.LOG, 1, type.getMetadata());
 
             } else {
                 log = new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
             }
-            name = type.getName();
             Block block = ((ItemBlock) log.getItem()).getBlock();
             ItemStack bark = new ItemStack(BWRegistry.bark,2,type.getMetadata());
             ItemStack sawdust = ItemMaterial.getMaterial("sawdust",2);

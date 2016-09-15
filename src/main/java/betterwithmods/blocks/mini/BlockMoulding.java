@@ -12,7 +12,6 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockMoulding extends BlockMini
 {
-    private Material mat;
     public static final PropertyInteger ORIENTATION = createOrientation();
 
     public static PropertyInteger createOrientation()
@@ -33,7 +32,6 @@ public class BlockMoulding extends BlockMini
             this.setHardness(3.0F);
             this.setResistance(5.0F);
         }
-        this.mat = mat;
     }
 
     @Override

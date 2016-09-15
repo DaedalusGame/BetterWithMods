@@ -28,9 +28,9 @@ import java.util.Random;
 public class BlockCrank extends BTWBlock implements IMechanicalBlock
 {
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
-	private static int tickRate = 3;
-	private static int delayBeforeReset = 15;
-	public static float baseHeight = 0.25F;
+	private static final int TICK_RATE = 3;
+	private static final int DELAY_BEFORE_RESET = 15;
+	public static final float BASE_HEIGHT = 0.25F;
 	public BlockCrank()
 	{
 		super(Material.ROCK, "hand_crank");
@@ -39,6 +39,11 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 		this.setTickRandomly(true);
 		this.setDefaultState(getDefaultState().withProperty(STAGE, 0));
 	}
+	
+	@Override
+	public int tickRate(World worldIn) {
+		return TICK_RATE;
+	}
 
 	@Override
 	public String[] getVariants() {
@@ -46,17 +51,8 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	}
 
 	@Override
-	public int tickRate(World world)
-	{
-		return 3;
-	}
-	
-	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos)
 	{
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
 		return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
 	}
 	
@@ -181,7 +177,7 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	@Override
 	public void overpower(World world, BlockPos pos) 
 	{
-		
+		//TODO
 	}
 
 	@Override
@@ -193,7 +189,7 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	@Override
 	public void setMechanicalOn(World world, BlockPos pos, boolean isOn) 
 	{
-		
+		//TODO
 	}
 
 	@Override
@@ -205,26 +201,26 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
-		int meta = state.getValue(STAGE).intValue();
+		int stage = state.getValue(STAGE).intValue();
 		
-		if(meta > 0)
+		if(stage > 0)
 		{
-			if(meta < 7)
+			if(stage < 7)
 			{
-				if(meta <= 6)
+				if(stage <= 6)
 					world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-				if(meta <= 5)
-					world.scheduleBlockUpdate(pos, this, tickRate(world) + meta, 5);
+				if(stage <= 5)
+					world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
 				else
-					world.scheduleBlockUpdate(pos, this, 15, 5);
+					world.scheduleBlockUpdate(pos, this, DELAY_BEFORE_RESET, 5);
 				
-				world.setBlockState(pos, state.withProperty(STAGE, meta + 1));
+				world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
 			}
 			else
 			{
 				world.setBlockState(pos, state.withProperty(STAGE, 0));
 				world.markBlockRangeForRenderUpdate(pos, pos);
-				world.scheduleBlockUpdate(pos, this, tickRate(world), 5);//world.markBlockForUpdate(pos);
+				world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
 				world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.7F);
 			}
 		}

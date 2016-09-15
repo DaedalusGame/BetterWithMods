@@ -379,7 +379,6 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		
 		IBlockState state = worldObj.getBlockState(pos);
 		Block target = state.getBlock();
-		int meta = target.getMetaFromState(state);
 		Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
 		if(TurntableInteraction.contains(state) && TurntableInteraction.getProduct(state) != null)

@@ -36,7 +36,7 @@ public class BlockFertileFarmland extends BlockFarmland
             world.scheduleBlockUpdate(pos.up(), above.getBlock(), above.getBlock().tickRate(world), 5);
             if(rand.nextInt(150) == 0) {
                 int meta = this.getMetaFromState(state);
-                world.setBlockState(pos, Blocks.FARMLAND.getStateFromMeta(meta));
+                world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().withProperty(MOISTURE, meta & 7));
             }
         }
     }

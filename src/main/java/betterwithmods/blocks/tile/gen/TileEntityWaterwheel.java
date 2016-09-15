@@ -50,7 +50,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 					int zPos = (axis == 2 ? i : 0);
 					BlockPos offset = pos.add(xPos, yPos, zPos);
 					if(j == -2)
-						hasWater =  (worldObj.getBlockState(offset).getBlock() instanceof BlockLiquid && worldObj.getBlockState(offset).getBlock().getMaterial(worldObj.getBlockState(offset)) == Material.WATER) || (worldObj.getBlockState(offset).getBlock() instanceof IFluidBlock && worldObj.getBlockState(offset).getBlock().getMaterial(worldObj.getBlockState(offset)) == Material.WATER);// == Blocks.water || worldObj.getBlock(xPos, yPos, zPos) == Blocks.flowing_water;//worldObj.isMaterialInBB(AxisAlignedBB.getBoundingBox(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.water);
+						hasWater =  (worldObj.getBlockState(offset).getBlock() instanceof BlockLiquid && worldObj.getBlockState(offset).getMaterial() == Material.WATER) || (worldObj.getBlockState(offset).getBlock() instanceof IFluidBlock && worldObj.getBlockState(offset).getMaterial() == Material.WATER);// == Blocks.water || worldObj.getBlock(xPos, yPos, zPos) == Blocks.flowing_water;//worldObj.isMaterialInBB(AxisAlignedBB.getBoundingBox(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.water);
 					if(!hasWater)
 					{
 						hasWater = sidesHaveWater();
@@ -63,7 +63,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 					{
 						if(j != -2 && (i == -2 || i == 2))
 						{
-							isAir = worldObj.isAirBlock(offset) || ((worldObj.getBlockState(offset).getBlock() instanceof BlockLiquid && worldObj.getBlockState(offset).getBlock().getMaterial(worldObj.getBlockState(offset)) == Material.WATER) || (worldObj.getBlockState(offset).getBlock() instanceof IFluidBlock && worldObj.getBlockState(offset).getBlock().getMaterial(worldObj.getBlockState(offset)) == Material.WATER));
+							isAir = worldObj.isAirBlock(offset) || ((worldObj.getBlockState(offset).getBlock() instanceof BlockLiquid && worldObj.getBlockState(offset).getMaterial() == Material.WATER) || (worldObj.getBlockState(offset).getBlock() instanceof IFluidBlock && worldObj.getBlockState(offset).getMaterial() == Material.WATER));
 							//if(!hasWater)
 								//hasWater = (worldObj.getBlock(xPos, yPos, zPos) instanceof BlockLiquid && worldObj.getBlock(xPos, yPos, zPos).getMaterial() == Material.water) || (worldObj.getBlock(xPos, yPos, zPos) instanceof IFluidBlock && worldObj.getBlock(xPos, yPos, zPos).getMaterial() == Material.water);
 						}
@@ -111,7 +111,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 			int yP = -2;
 			int zP = axis == 2 ? i : 0;
 			BlockPos bPos = pos.add(xP, yP, zP);
-			bottomIsUnobstructed = worldObj.isAirBlock(bPos) || ((worldObj.getBlockState(bPos).getBlock() instanceof BlockLiquid && worldObj.getBlockState(bPos).getBlock().getMaterial(worldObj.getBlockState(bPos)) == Material.WATER) || (worldObj.getBlockState(bPos).getBlock() instanceof IFluidBlock && worldObj.getBlockState(bPos).getBlock().getMaterial(worldObj.getBlockState(bPos)) == Material.WATER));
+			bottomIsUnobstructed = worldObj.isAirBlock(bPos) || ((worldObj.getBlockState(bPos).getBlock() instanceof BlockLiquid && worldObj.getBlockState(bPos).getMaterial() == Material.WATER) || (worldObj.getBlockState(bPos).getBlock() instanceof IFluidBlock && worldObj.getBlockState(bPos).getMaterial() == Material.WATER));
 			if(!bottomIsUnobstructed)
 				break;
 		}

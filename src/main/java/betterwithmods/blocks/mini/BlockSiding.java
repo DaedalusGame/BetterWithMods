@@ -10,8 +10,6 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockSiding extends BlockMini
 {
-    private Material mat;
-
     public BlockSiding(Material mat)
     {
         super(mat, mat == Material.WOOD ? "wood_siding" : "stone_siding");
@@ -25,7 +23,6 @@ public class BlockSiding extends BlockMini
             this.setHardness(3.0F);
             this.setResistance(5.0F);
         }
-        this.mat = mat;
     }
 
     @Override

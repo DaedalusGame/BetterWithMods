@@ -1,5 +1,7 @@
 package betterwithmods;
 
+import betterwithmods.blocks.BlockUnfiredPottery;
+import betterwithmods.blocks.BlockUnfiredPottery.EnumPotteryType;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
@@ -261,10 +263,13 @@ public class BWCrafting {
     }
 
     private static void addTurntableRecipes() {
-        addTurntableRecipe(Blocks.CLAY, BWRegistry.unfiredPottery.getStateFromMeta(0), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWRegistry.unfiredPottery.getStateFromMeta(0), BWRegistry.unfiredPottery.getStateFromMeta(1), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWRegistry.unfiredPottery.getStateFromMeta(1), BWRegistry.unfiredPottery.getStateFromMeta(2), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWRegistry.unfiredPottery.getStateFromMeta(2), Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(Blocks.CLAY, BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE),
+        		BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER),
+        		BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWRegistry.unfiredPottery.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN),
+        		Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
     }
 
     private static void addKilnRecipes() {

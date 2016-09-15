@@ -29,11 +29,9 @@ public class BlockNewBTWPane extends BTWBlock
 {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
 	private static String[] names = {"grate", "slats"};
-    private int type;
 	public BlockNewBTWPane(int typeNum)
 	{
 		super(Material.WOOD,names[typeNum].toLowerCase(),ItemBlockPane.class);
-        this.type = typeNum;
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPES, EnumPaneType.OAK).withProperty(DirUtils.NORTH, false).withProperty(DirUtils.EAST, false).withProperty(DirUtils.SOUTH, false).withProperty(DirUtils.WEST, false));

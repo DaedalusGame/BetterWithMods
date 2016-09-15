@@ -117,7 +117,7 @@ public class BlockHibachi extends BTWBlock
 		if(world.getBlockState(pos).getBlock().isFlammable(world, pos, EnumFacing.DOWN))
 			return true;
 		Block block = world.getBlockState(pos).getBlock();
-		Material material = block.getMaterial(world.getBlockState(pos));
+		Material material = world.getBlockState(pos).getMaterial();
 		
 		if(!material.blocksMovement() && material != Material.LAVA && material != Material.WATER)
 		{

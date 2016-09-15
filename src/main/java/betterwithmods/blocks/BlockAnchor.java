@@ -148,8 +148,6 @@ public class BlockAnchor extends BTWBlock
 		for(int i = pos.getY() - 1; i >= 0; i--)
 		{
 			BlockPos pos2 = new BlockPos(pos.getX(), i, pos.getZ());
-			Block block = world.getBlockState(pos2).getBlock();
-			
 			if(world.getBlockState(pos2).getBlock() != BWRegistry.rope && world.getBlockState(pos2.up()).getBlock() == BWRegistry.rope)
 			{
 				if(!player.capabilities.isCreativeMode)

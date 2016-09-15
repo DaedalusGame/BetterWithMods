@@ -172,7 +172,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
         if (items.size() > 0) {
             boolean flag = false;
             for (EntityItem item : items) {
-                ItemStack stack = item.getEntityItem();
                 flag = putDropInInventoryAllSlots(inventory, item) || flag;
                 //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
@@ -209,8 +208,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
             } else if (this.worldObj.getBlockState(target).getBlock().isReplaceable(this.worldObj, target)) {
                 ejectIntoWorld = true;
             } else {
-                Block block = this.worldObj.getBlockState(target).getBlock();
-                if (!block.getMaterial(this.worldObj.getBlockState(target)).isSolid()) {
+                if (!this.worldObj.getBlockState(target).getMaterial().isSolid()) {
                     ejectIntoWorld = true;
                 }
             }

@@ -55,7 +55,6 @@ public class BlockKiln extends BTWBlock
 			Block block = world.getBlockState(down).getBlock();
 			int meta = block.damageDropped(world.getBlockState(down));
 		
-			int auxFlames = 0;
 			boolean intenseFlame = BWMHeatRegistry.contains(block, meta) && BWMHeatRegistry.get(block, meta).value > 4;
 			
 			if(!intenseFlame)
@@ -122,9 +121,6 @@ public class BlockKiln extends BTWBlock
 	private int calculateTickRate(IBlockAccess world, BlockPos pos)
 	{
 		int secondaryFire = 0;
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
 		for(int xP = -1; xP < 2; xP++)
 		{
 			for(int zP = -1; zP < 2; zP++)

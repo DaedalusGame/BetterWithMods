@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
@@ -56,40 +57,11 @@ public class NetherSpawnEvent
 			IBlockState state = evt.getWorld().getBlockState(check);
 			if((state.getBlock() == Blocks.COBBLESTONE || (state.getBlock() == Blocks.STONEBRICK && state.getBlock().getMetaFromState(state) == 0)) && rand.nextInt(30) == 0)
 			{
-				IBlockState changeState = state.getBlock() == Blocks.COBBLESTONE ? Blocks.MOSSY_COBBLESTONE.getDefaultState() : Blocks.STONEBRICK.getStateFromMeta(1);
+				IBlockState changeState = state.getBlock() == Blocks.COBBLESTONE ? Blocks.MOSSY_COBBLESTONE.getDefaultState() : Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
 				evt.getWorld().setBlockState(check, changeState);
 			}
 		}
 	}
-
-	/*
-	@SubscribeEvent
-	public void generateMossNearSpawner(TickEvent.WorldTickEvent evt)
-	{
-		if(evt.side == Side.SERVER && evt.phase == TickEvent.Phase.START) {
-			World world = evt.world;
-
-			if (!world.isRemote) {
-				ChunkProviderServer provider = (ChunkProviderServer) world.getChunkProvider();
-				for (Chunk chunk : provider.getLoadedChunks()) {
-					BlockPos pos = new BlockPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
-					IBlockState state = world.getBlockState(pos);
-					if (state.getBlock() == Blocks.MOB_SPAWNER) {
-						int x = rand.nextInt(9) - 4;
-						int y = rand.nextInt(5) - 1;
-						int z = rand.nextInt(9) - 4;
-						BlockPos check = pos.add(x, y, z);
-						IBlockState toCheck = world.getBlockState(check);
-						if ((toCheck.getBlock() == Blocks.COBBLESTONE || (toCheck.getBlock() == Blocks.STONEBRICK && toCheck.getBlock().getMetaFromState(toCheck) == 0)) {
-	IBlockState changeState = toCheck.getBlock() == Blocks.COBBLESTONE ? Blocks.MOSSY_COBBLESTONE.getDefaultState() : Blocks.STONEBRICK.getStateFromMeta(1);
-	world.setBlockState(check, changeState);
-}
-}
-}
-		}
-		}
-		}
-	 */
 
 	@SubscribeEvent
 	public void denySlimeSpawns(CheckSpawn evt)

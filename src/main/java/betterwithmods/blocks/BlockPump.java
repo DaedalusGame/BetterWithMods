@@ -159,7 +159,7 @@ public class BlockPump extends BTWBlock implements IMechanicalBlock {
 		world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
 	}
 
-	public boolean hasWaterToPump(World world, BlockPos pos) {
+	public static boolean hasWaterToPump(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing direction = state.getValue(DirUtils.HORIZONTAL);
 		BlockPos source = DirUtils.movePos(pos, direction);

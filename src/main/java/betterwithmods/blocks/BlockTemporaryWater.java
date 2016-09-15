@@ -32,7 +32,7 @@ public class BlockTemporaryWater extends BlockLiquid {
 
 		IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
 
-		if (!(iblockstate1.getBlock() == BWRegistry.pump && iblockstate1.getValue(BlockPump.ACTIVE))) {
+		if (!(iblockstate1.getBlock() == BWRegistry.pump && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}

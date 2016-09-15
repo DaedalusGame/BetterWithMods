@@ -81,7 +81,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 			{
 				if(worldObj.getBlockState(pos).getValue(BlockMechMachines.SUBTYPE) != this.getSubtype())
 					worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockMechMachines.SUBTYPE, this.getSubtype()));
-				if(!asynchronous && worldObj.getWorldTime() % (long)ticksToRotate[timerPos] == 0)
+				if(!asynchronous && worldObj.getTotalWorldTime() % (long)ticksToRotate[timerPos] == 0)
 				{
 					this.worldObj.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.05F, 1.0F);
 					rotateTurntable();

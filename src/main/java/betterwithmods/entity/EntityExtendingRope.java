@@ -232,7 +232,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 						passengers.add(e);
 				});
 
-		passengers.forEach(e -> e.setPosition(e.posX, e.posY + newPosY - posY, e.posZ));
+		passengers.forEach(e -> e.moveEntity(0, newPosY - posY, 0));
 		passengers.forEach(e -> e.fallDistance = 0);
 		entitiesInBlocks.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
 		entitiesInBlocks.forEach(e -> e.isAirBorne = false);

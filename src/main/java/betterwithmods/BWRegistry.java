@@ -15,6 +15,7 @@ import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -88,6 +89,8 @@ public class BWRegistry {
     public static Block light;
     public static Block miningCharge;
     public static Block fertileFarmland;
+    public static Block pump;
+    public static BlockLiquid tempLiquidSource;
 
     public static Item material;
     public static Item windmill;
@@ -104,8 +107,6 @@ public class BWRegistry {
     public static Item steelShovel;
 
     public static final ToolMaterial SOULFORGEDSTEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3, 22);
-
-
 
     public static void init() {
         anchor = new BlockAnchor();
@@ -150,7 +151,7 @@ public class BWRegistry {
         platform = new BlockPlatform();
         miningCharge = new BlockMiningCharge();
         fertileFarmland = new BlockFertileFarmland();
-
+        pump = new BlockPump();
 
         material = new ItemMaterial();
         windmill = new ItemMechanical();
@@ -164,6 +165,8 @@ public class BWRegistry {
         steelPickaxe = new ItemSoulforgedPickaxe();
         steelShovel = new ItemSoulforgedShovel();
         steelSword = new ItemSoulforgedSword();
+        
+        tempLiquidSource = new BlockTemporaryWater();
 
         registerOres();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(dynamite, new DispenserBehaviorDynamite());

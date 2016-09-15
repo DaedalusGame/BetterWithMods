@@ -77,7 +77,7 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
 		}
 		if(this.currentRotation >= 360.0F)
 			this.currentRotation -= 360.0F;
-		if(this.worldObj.getWorldTime() % 20L == 0L && worldObj.getBlockState(pos).getBlock() instanceof BlockGen)
+		if(this.worldObj.getTotalWorldTime() % 20L == 0L && worldObj.getBlockState(pos).getBlock() instanceof BlockGen)
 		{
 			verifyIntegrity();
 			updateSpeed();

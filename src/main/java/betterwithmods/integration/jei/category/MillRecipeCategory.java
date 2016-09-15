@@ -43,7 +43,8 @@ public class MillRecipeCategory  extends BWMRecipeCategory
         gear.draw(minecraft, 80, 19);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull IRecipeWrapper wrapper)
     {
         IGuiItemStackGroup stacks = layout.getItemStacks();
@@ -59,9 +60,9 @@ public class MillRecipeCategory  extends BWMRecipeCategory
             if(input.length > i && input[i] != null)
             {
                 if(input[i] instanceof ItemStack)
-                    stacks.set(index, ((ItemStack)input[i]).copy());
+                    stacks.set(index, ((ItemStack) input[i]).copy());
                 else if(input[i] instanceof List)
-                    stacks.set(index, (List<ItemStack>)input[i]);
+                    stacks.set(index, (List<ItemStack>) input[i]);
             }
         }
 

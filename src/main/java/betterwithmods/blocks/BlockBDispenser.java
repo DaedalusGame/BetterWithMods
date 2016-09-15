@@ -124,7 +124,7 @@ public class BlockBDispenser extends BlockDispenser implements IBTWBlock
                         for (ItemStack stack : stacks)
                             tile.addStackToInventory(stack, check);
                     }
-                    world.playSound(null, check, state.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
+                    world.playSound(null, check, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
                     state.getBlock().breakBlock(world, check, state);
                     world.setBlockToAir(check);
                     return;

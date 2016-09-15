@@ -89,7 +89,7 @@ public class BlockPlanter extends BTWBlock
 					return true;
 				else if(meta == 2 && item.getItem() instanceof ItemHoe)
 					return true;
-				else if (meta != 0 && meta != 6 && item.getItem().getHarvestLevel(heldItem, "shovel") > -1)
+				else if (meta != 0 && meta != 6 && item.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1)
 					return true;
 				else if (meta == 6 && item.getItem() == Items.BUCKET)
 					return true;
@@ -144,7 +144,7 @@ public class BlockPlanter extends BTWBlock
 						}
 					}
 					if(valid)
-						world.playSound(null, pos, block.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+						world.playSound(null, pos, block.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 				}
 				return valid;
 			}
@@ -164,7 +164,7 @@ public class BlockPlanter extends BTWBlock
 				}
 			}
 		}
-		if(meta != 6 && heldItem.getItem().getHarvestLevel(heldItem, "shovel") > -1)
+		if(meta != 6 && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1)
 		{
 			EnumPlanterType type = state.getValue(planterType);
 			if(!player.capabilities.isCreativeMode)
@@ -172,7 +172,7 @@ public class BlockPlanter extends BTWBlock
 				if (!player.inventory.addItemStackToInventory(new ItemStack(type.getFill(), 1, type.getBlockMeta())))
 					player.dropItem(new ItemStack(type.getFill(), 1, type.getBlockMeta()), false);
 			}
-			world.playSound(null, pos, type.getFill().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound(null, pos, type.getFill().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 			world.setBlockState(pos, state.withProperty(planterType, EnumPlanterType.EMPTY));
 			return true;
 		}

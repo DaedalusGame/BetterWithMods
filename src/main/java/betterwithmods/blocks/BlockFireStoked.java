@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
@@ -64,7 +65,7 @@ public class BlockFireStoked extends BlockFire
 			if(this.isValidKiln(world, above))
 				world.setBlockState(above, BWRegistry.kiln.getDefaultState());
 		}
-		else if(Loader.isModLoaded("terrafirmacraft") && world.getBlockState(above).getBlock() == GameRegistry.findBlock("terrafirmacraft", "FireBrick")) {
+		else if(Loader.isModLoaded("terrafirmacraft") && world.getBlockState(above).getBlock() == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))) {
 			if(this.isValidKiln(world, above))
 				world.setBlockState(above, BWRegistry.kiln.getDefaultState());
 		}
@@ -139,7 +140,7 @@ public class BlockFireStoked extends BlockFire
 		{
 			if(face == EnumFacing.DOWN) continue;
 			Block block = world.getBlockState(center.offset(face)).getBlock();
-			if(block == Blocks.BRICK_BLOCK || (Loader.isModLoaded("terrafirmacraft") && block == GameRegistry.findBlock("terrafirmacraft", "FireBrick")))
+			if(block == Blocks.BRICK_BLOCK || (Loader.isModLoaded("terrafirmacraft") && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))))
 				numBrick++;
 		}
 		return numBrick > 2;

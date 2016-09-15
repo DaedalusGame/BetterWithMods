@@ -163,7 +163,7 @@ public class BlockBTWPane extends BTWBlock {
 	
 	public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir)
 	{
-		return world.getBlockState(pos).getBlock().isOpaqueCube(world.getBlockState(pos)) || world.getBlockState(pos).getBlock().isBlockSolid(world, pos, dir.getOpposite());
+		return world.getBlockState(pos).isOpaqueCube() || world.getBlockState(pos).getBlock().isBlockSolid(world, pos, dir.getOpposite());
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO Probably this should implement some recipe interface, at the very least.
 public class BulkRecipe
 {
     protected ItemStack output = null;

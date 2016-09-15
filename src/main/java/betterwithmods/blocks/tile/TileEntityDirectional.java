@@ -11,11 +11,6 @@ public abstract class TileEntityDirectional extends TileEntity implements ITicka
 {
 	private int facing;
 	
-	public void update()
-	{
-		
-	}
-
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
 	{

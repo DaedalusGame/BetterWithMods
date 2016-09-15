@@ -389,8 +389,8 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 				if(block.canRotateOnTurntable(worldObj, pos))
 					block.rotateAroundYAxis(worldObj, pos, reverse);
 			}
-			else if(state != target.withRotation(state, rot))
-				worldObj.setBlockState(pos, target.withRotation(state, rot));
+			else if(state != state.withRotation(rot))
+				worldObj.setBlockState(pos, state.withRotation(rot));
 			rotateCraftable(state, TurntableInteraction.getProduct(state), pos, reverse);
 			this.potteryRotated = true;
 		}
@@ -403,7 +403,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		}
 		else
 		{
-			IBlockState newState = target.withRotation(state, rot);
+			IBlockState newState = state.withRotation(rot);
 			if(!(target instanceof BlockRailBase) && state != newState)
 				worldObj.setBlockState(pos, newState);
 			else if(target instanceof BlockRailBase)
@@ -425,7 +425,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		this.potteryRotation++;
 		if(this.potteryRotation > 7)
 		{
-			this.worldObj.playSound(null, pos, block.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
+			this.worldObj.playSound(null, pos, block.getSoundType(input, this.worldObj, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
 			if(!craft.getScrap().isEmpty() && craft.getScrap().size() > 0) {
 				for(ItemStack scrap : craft.getScrap()) {
 					InvUtils.ejectStackWithOffset(worldObj, pos.up(), scrap.copy());

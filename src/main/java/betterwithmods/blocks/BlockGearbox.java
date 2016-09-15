@@ -75,7 +75,7 @@ public class BlockGearbox extends BTWBlock implements IMechanicalBlock, IMechani
 		else if(!world.isRemote && emptyHands)
 		{
 			EnumFacing facing = DirUtils.cycleFacing(state.getValue(DirUtils.FACING), false);
-			world.playSound(null, pos, this.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
 			world.setBlockState(pos, state.withProperty(ISACTIVE, false).withProperty(DirUtils.FACING, facing));
 			world.notifyNeighborsOfStateChange(pos, this);
 			world.scheduleBlockUpdate(pos, this, 10, 5);

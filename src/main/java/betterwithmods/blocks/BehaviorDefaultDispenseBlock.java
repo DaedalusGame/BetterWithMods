@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -32,18 +33,19 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem
         IPosition pos = BlockBDispenser.getDispensePosition(source);
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         ItemStack stack1 = stack.splitStack(1);
-        FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer)source.getWorld());
+        World world = source.getWorld();
+        FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) world);
         DirUtils.setEntityOrientationFacing(fake, facing.getOpposite());
         if(BWConfig.debug)
             Logger.getLogger("betterwithmods").log(Level.SEVERE, "Better With Mods FakePlayer ID: " + fake.getUniqueID());
-        if(stack.getItem() instanceof ItemBlock && (source.getWorld().isAirBlock(check) || source.getWorld().getBlockState(check).getBlock().isReplaceable(source.getWorld(), check)))
+        if(stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)))
         {
             Block block = ((ItemBlock)stack.getItem()).getBlock();
-            boolean blockAcross = !source.getWorld().isAirBlock(check.offset(facing));
-            IBlockState state = block.onBlockPlaced(source.getWorld(), check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake);
-            if(block.canPlaceBlockAt(source.getWorld(), check)) {
-                if (((ItemBlock) stack.getItem()).placeBlockAt(stack1, fake, source.getWorld(), check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), state)) {
-                    source.getWorld().playSound(null, check, state.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
+            boolean blockAcross = !world.isAirBlock(check.offset(facing));
+            IBlockState state = block.onBlockPlaced(world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake);
+            if(block.canPlaceBlockAt(world, check)) {
+                if (((ItemBlock) stack.getItem()).placeBlockAt(stack1, fake, world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), state)) {
+                    world.playSound(null, check, state.getBlock().getSoundType(state, world, check, fake).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
                     return stack;
                 }
             }
@@ -55,7 +57,7 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem
         }
         else if(stack.getItem() instanceof ItemBlockSpecial)
         {
-            if(stack.getItem().onItemUse(stack1, fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if(stack.getItem().onItemUse(stack1, fake, world, check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             }
             else {
@@ -65,7 +67,7 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem
         }
         else if(stack.getItem() instanceof ItemSeeds)
         {
-            if(stack.getItem().onItemUse(stack1, fake, source.getWorld(), check.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if(stack.getItem().onItemUse(stack1, fake, world, check.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             }
             else {

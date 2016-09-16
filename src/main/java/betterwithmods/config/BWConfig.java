@@ -27,7 +27,6 @@ public class BWConfig {
 
     public static void init() {
         try {
-            cfg.load();
             hardcoreGunpowder = cfg.get(HARDCORE, "Hardcore Gunpowder", true).getBoolean(true);
             hardcoreLumber = cfg.get(HARDCORE, "Hardcore Lumberjack", true).getBoolean(true);
             hardcoreBuckets = cfg.get(HARDCORE, "Hardcore Buckets", true).getBoolean(true);

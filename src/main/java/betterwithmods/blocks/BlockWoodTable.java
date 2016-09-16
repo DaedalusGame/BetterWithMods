@@ -1,7 +1,7 @@
 package betterwithmods.blocks;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -12,12 +12,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockWoodTable extends BlockFurniture
 {
-    public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
-
     public BlockWoodTable()
     {
         super(Material.WOOD,"wood_table");
@@ -35,10 +35,11 @@ public class BlockWoodTable extends BlockFurniture
     }
     @Override
     public String[] getVariants() {
-        String[] variants = new String[7];
-        for(int i = 0; i < variants.length;i++)
-            variants[i] = "supported=false,type="+i;
-        return variants;
+    	ArrayList<String> variants = new ArrayList<>();
+        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
+        	variants.add("supported=false,variant=" + blockplanks$enumtype.getName());
+        }
+        return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
     }
 
     @Override
@@ -61,24 +62,24 @@ public class BlockWoodTable extends BlockFurniture
     @Override
     public int damageDropped(IBlockState state)
     {
-        return state.getValue(TYPE);
+        return ((BlockPlanks.EnumType)state.getValue(BlockPlanks.VARIANT)).getMetadata();
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(TYPE);
+        return state.getValue(BlockPlanks.VARIANT).getMetadata();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(TYPE, meta);
+        return this.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.byMetadata(meta));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, SUPPORTED, TYPE);
+        return new BlockStateContainer(this, SUPPORTED, BlockPlanks.VARIANT);
     }
 }

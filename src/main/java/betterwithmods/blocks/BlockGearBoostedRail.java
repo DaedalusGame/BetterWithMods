@@ -4,41 +4,30 @@ import betterwithmods.BWMod;
 import betterwithmods.items.IBWMItem;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockGearBoostedRail extends BlockRailBase implements IBWMItem
+public class BlockGearBoostedRail extends BlockRailPowered implements IBWMItem
 {
-    public static final PropertyEnum<EnumRailDirection> SHAPE = PropertyEnum.create("shape", BlockRailBase.EnumRailDirection.class,  railDirection -> railDirection != EnumRailDirection.NORTH_EAST && railDirection != EnumRailDirection.NORTH_WEST && railDirection != EnumRailDirection.SOUTH_EAST && railDirection != EnumRailDirection.SOUTH_WEST);
-    public static final PropertyBool POWERED = PropertyBool.create("powered");
-
     public BlockGearBoostedRail()
     {
-        super(false);
+    	super();
         this.setUnlocalizedName("bwm:booster");
         setRegistryName("booster");
         GameRegistry.register(this);
         GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
         this.setHardness(0.7F);
         this.setSoundType(SoundType.METAL);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, false));
     }
 
     @Override
@@ -47,29 +36,22 @@ public class BlockGearBoostedRail extends BlockRailBase implements IBWMItem
     }
 
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        super.onBlockAdded(world, pos, state);
-        if(!world.isRemote)
-            state.neighborChanged(world, pos, this);
-    }
-
-    @Override
     protected void updateState(IBlockState state, World world, BlockPos pos, Block block)
     {
-        boolean pow = state.getValue(POWERED);
-        boolean gear = world.getBlockState(pos.down()).getBlock() instanceof BlockGearbox && isGearboxOn(state, world, pos);
-        if(pow != gear)
+        boolean poweredProperty = state.getValue(POWERED);
+        boolean isOnPoweredGearbox = isOnActiveGearbox(state, world, pos);
+        if(poweredProperty != isOnPoweredGearbox)
         {
-            world.setBlockState(pos, state.withProperty(POWERED, gear), 3);
+            world.setBlockState(pos, state.withProperty(POWERED, isOnPoweredGearbox), 3);
             world.notifyNeighborsOfStateChange(pos.down(), this);
             if(state.getValue(SHAPE).isAscending())
                 world.notifyNeighborsOfStateChange(pos.up(), this);
         }
     }
 
-    private boolean isGearboxOn(IBlockState state, World world, BlockPos pos)
+    private boolean isOnActiveGearbox(IBlockState state, World world, BlockPos pos)
     {
+    	if(!(world.getBlockState(pos.down()).getBlock() instanceof BlockGearbox)) return false;
         EnumRailDirection dir = state.getValue(SHAPE);
         IBlockState below = world.getBlockState(pos.down());
         EnumFacing face = below.getValue(DirUtils.FACING);
@@ -90,207 +72,118 @@ public class BlockGearBoostedRail extends BlockRailBase implements IBWMItem
     {
         return false;
     }
+    
+    private void accelerateMinecart(World world, EntityMinecart cart, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
+		EnumFacing gearboxFace = world.getBlockState(pos.down()).getValue(DirUtils.FACING);
+		switch(state.getValue(SHAPE)) {
+		case ASCENDING_NORTH:
+		case ASCENDING_SOUTH:
+		case NORTH_SOUTH:			
+			if(planarMotion > 0.01D) {
+				if((gearboxFace == EnumFacing.EAST && cart.motionZ > 0.0D) ||
+				(gearboxFace == EnumFacing.WEST && cart.motionZ < 0.0D))
+				{
+					cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
+					if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
+						world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
+				}
+				else
+					cart.motionZ += cart.motionZ / planarMotion * 0.06D;
+			}
+			else {
+				if(gearboxFace == EnumFacing.EAST && !world.getBlockState(pos.west()).isOpaqueCube())
+					cart.motionZ = -0.02D;
+				else if(gearboxFace == EnumFacing.WEST && !world.getBlockState(pos.east()).isOpaqueCube())
+					cart.motionZ = 0.02D;
+				else if(gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.west()).isOpaqueCube())
+					cart.motionZ = 0.02D;
+				else if(gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.east()).isOpaqueCube())
+					cart.motionZ = -0.02D;
+			}
+			break;
+		case ASCENDING_EAST:
+		case ASCENDING_WEST:
+		case EAST_WEST:
+			if(planarMotion > 0.01D) {
+				if((gearboxFace == EnumFacing.SOUTH && cart.motionX > 0.0D) ||
+				(gearboxFace == EnumFacing.NORTH && cart.motionX < 0.0D))
+				{
+					cart.motionX -= cart.motionX / planarMotion * 0.06D;
+					if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
+						world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
+				}
+				else
+					cart.motionX += cart.motionX / planarMotion * 0.06D;
+			}
+			else {
+				if(gearboxFace == EnumFacing.SOUTH && !world.getBlockState(pos.west()).isOpaqueCube())
+					cart.motionX = -0.02D;
+				else if(gearboxFace == EnumFacing.NORTH && !world.getBlockState(pos.east()).isOpaqueCube())
+					cart.motionX = 0.02D;
+				else if(gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.west()).isOpaqueCube())
+					cart.motionX = 0.02D;
+				else if(gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.east()).isOpaqueCube())
+					cart.motionX = -0.02D;
+			}
+			break;
+		default:
+			break;
+		}
+    }
 
-    @Override
-    public IProperty<EnumRailDirection> getShapeProperty()
-    {
-        return SHAPE;
+    private void decelerateMinecart(World world, EntityMinecart cart, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
+		if (planarMotion > 0.01D) {
+			double zMotion = Math.sqrt(cart.motionZ * cart.motionZ);
+			double xMotion = Math.sqrt(cart.motionX * cart.motionX);
+			if (xMotion > 0.0D) {
+				cart.motionX -= cart.motionX / planarMotion * 0.06D;
+			} else if (zMotion > 0.0D) {
+				cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
+			}
+			playBoosterSound(world, pos, planarMotion);
+		} else if(state.getValue(SHAPE) == EnumRailDirection.EAST_WEST || state.getValue(SHAPE) == EnumRailDirection.NORTH_SOUTH)
+		{
+			cart.motionX = 0.0D;
+			cart.motionZ = 0.0D;
+		}
+    }
+    
+    /**
+     * Plays a sound according to cart's motion.
+     * @param world World.
+     * @param pos Position in the world.
+     * @param planarMotion Motion of the cart.
+     */
+    private void playBoosterSound(World world, BlockPos pos, double planarMotion) {
+		if (!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
+				world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
     }
 
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos)
     {
-        BlockPos down = pos.down();
-        Block block = world.getBlockState(down).getBlock();
-        if(block instanceof BlockGearbox)
+		IBlockState state = world.getBlockState(pos);
+		if(!(state.getBlock() == this)) return;
+        Block blockUnder = world.getBlockState(pos.down()).getBlock();
+        if(blockUnder instanceof BlockGearbox)
         {
-            boolean isRedstonePowered = world.isBlockPowered(down);
-            if(!isRedstonePowered)
-            {
-                BlockGearbox gear = (BlockGearbox)block;
-                EnumFacing face = world.getBlockState(down).getValue(DirUtils.FACING);
-                if(face != EnumFacing.UP)
-                {
-                    if(gear.isGearboxOn(world, down))
-                    {
-                        IBlockState state = world.getBlockState(pos);
-                        if(state.getBlock() == this)
-                        {
-                            double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
-                            if(state.getValue(SHAPE) == EnumRailDirection.ASCENDING_NORTH || state.getValue(SHAPE) == EnumRailDirection.ASCENDING_SOUTH || state.getValue(SHAPE) == EnumRailDirection.NORTH_SOUTH)
-                            {
-                                if(face == EnumFacing.EAST || face == EnumFacing.WEST)
-                                {
-                                    if(face == EnumFacing.EAST)
-                                    {
-                                        if(planarMotion > 0.01D)
-                                        {
-                                            if(cart.motionZ > 0.0D)
-                                            {
-                                                cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
-                                                if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                                                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                                            }
-                                            else
-                                                cart.motionZ += cart.motionZ / planarMotion * 0.06D;
-                                        }
-                                        else if(!world.getBlockState(pos.west()).isOpaqueCube())
-                                            cart.motionZ = -0.02D;
-                                    }
-                                    else if(face == EnumFacing.WEST)
-                                    {
-                                        if(planarMotion > 0.01D)
-                                        {
-                                            if(cart.motionZ < 0.0D)
-                                            {
-                                                cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
-                                                if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                                                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                                            }
-                                            else
-                                                cart.motionZ += cart.motionZ / planarMotion * 0.06D;
-                                        }
-                                        else if(!world.getBlockState(pos.east()).isOpaqueCube())
-                                            cart.motionZ = 0.02D;
-                                    }
-                                }
-                                else if(face == EnumFacing.DOWN)
-                                {
-                                    if(planarMotion > 0.01D)
-                                        cart.motionZ += cart.motionZ / planarMotion * 0.06D;
-                                    else
-                                    {
-                                        if(world.getBlockState(pos.west()).isOpaqueCube())
-                                            cart.motionZ = 0.02D;
-                                        else if(world.getBlockState(pos.east()).isOpaqueCube())
-                                            cart.motionZ = -0.02D;
-                                    }
-                                }
-                            }
-                            else if(state.getValue(SHAPE) == EnumRailDirection.ASCENDING_EAST || state.getValue(SHAPE) == EnumRailDirection.ASCENDING_WEST || state.getValue(SHAPE) == EnumRailDirection.EAST_WEST)
-                            {
-                                if(face == EnumFacing.NORTH || face == EnumFacing.SOUTH)
-                                {
-                                    if(face == EnumFacing.SOUTH)
-                                    {
-                                        if(planarMotion > 0.01D)
-                                        {
-                                            if(cart.motionX > 0.0D)
-                                            {
-                                                cart.motionX -= cart.motionX / planarMotion * 0.06D;
-                                                if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                                                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                                            }
-                                            else
-                                                cart.motionX += cart.motionX / planarMotion * 0.06D;
-                                        }
-                                        else if(!world.getBlockState(pos.west()).isOpaqueCube())
-                                            cart.motionX = -0.02D;
-                                    }
-                                    else if(face == EnumFacing.NORTH)
-                                    {
-                                        if(planarMotion > 0.01D)
-                                        {
-                                            if(cart.motionX < 0.0D)
-                                            {
-                                                cart.motionX -= cart.motionX / planarMotion * 0.06D;
-                                                if(!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                                                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                                            }
-                                            else
-                                                cart.motionX += cart.motionX / planarMotion * 0.06D;
-                                        }
-                                        else if(!world.getBlockState(pos.east()).isOpaqueCube())
-                                            cart.motionX = 0.02D;
-                                    }
-                                }
-                                else if(face == EnumFacing.DOWN)
-                                {
-                                    if(planarMotion > 0.01D)
-                                        cart.motionX += cart.motionX / planarMotion * 0.06D;
-                                    else
-                                    {
-                                        if(world.getBlockState(pos.west()).isOpaqueCube())
-                                            cart.motionX = 0.02D;
-                                        else if(world.getBlockState(pos.east()).isOpaqueCube())
-                                            cart.motionX = -0.02D;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        IBlockState state = world.getBlockState(pos);
-                        if(state.getBlock() == this) {
-                            double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
-                            if (planarMotion > 0.01D) {
-                                double zMotion = Math.sqrt(cart.motionZ * cart.motionZ);
-                                double xMotion = Math.sqrt(cart.motionX * cart.motionX);
-                                if (xMotion > 0.0D) {
-                                    cart.motionX -= cart.motionX / planarMotion * 0.06D;
-                                } else if (zMotion > 0.0D) {
-                                    cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
-                                }
-                                if (!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                            } else if(state.getValue(SHAPE) == EnumRailDirection.EAST_WEST || state.getValue(SHAPE) == EnumRailDirection.NORTH_SOUTH)
-                            {
-                                cart.motionX = 0.0D;
-                                cart.motionZ = 0.0D;
-                            }
-                        }
-                    }
-                }
-
-            }
+            BlockGearbox gearbox = (BlockGearbox) blockUnder;
+			EnumFacing face = world.getBlockState(pos.down()).getValue(DirUtils.FACING);
+			if(face == EnumFacing.UP) return;
+            if(world.isBlockPowered(pos.down())) return;//=> No deceleration or acceleration if the block under the rail is powered.
+			if(gearbox.isGearboxOn(world, pos.down()))
+				accelerateMinecart(world, cart, pos);
+			else
+				decelerateMinecart(world, cart, pos);
         }
         else
         {
-            if(!world.isRemote)
-            {
-                double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
-                if(planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-            }
+            double planarMotion = Math.sqrt(cart.motionX * cart.motionX + cart.motionZ * cart.motionZ);
+			playBoosterSound(world, pos, planarMotion);
         }
-    }
-
-    @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot)
-    {
-        return Blocks.GOLDEN_RAIL.withRotation(state, rot);
-    }
-
-    @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-    {
-        return Blocks.GOLDEN_RAIL.withMirror(state, mirrorIn);
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        int i = 0;
-        i = i | state.getValue(SHAPE).getMetadata();
-
-        if (state.getValue(POWERED))
-        {
-            i |= 8;
-        }
-
-        return i;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {SHAPE, POWERED});
     }
 }

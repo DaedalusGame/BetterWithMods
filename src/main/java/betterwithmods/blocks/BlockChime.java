@@ -5,7 +5,6 @@ import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,36 +23,40 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class BlockChime extends BTWBlock
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    public static final PropertyEnum<BlockPlanks.EnumType> PLANKS = PropertyEnum.create("type", BlockPlanks.EnumType.class);
-
     public BlockChime(Material material,String name)
     {
         super(material,name,ItemBlockMeta.class);
 
         this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(PLANKS, BlockPlanks.EnumType.OAK));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK));
         this.setSoundType(SoundType.WOOD);
     }
 
     @Override
     public String[] getVariants() {
-        return new String[]{"active=false,type=oak", "active=false,type=spruce", "active=false,type=birch", "active=false,type=jungle", "active=false,type=acacia", "active=false,type=dark_oak"};
+    	ArrayList<String> variants = new ArrayList<>();
+        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
+        	variants.add("active=false,variant=" + blockplanks$enumtype.getName());
+        }
+        return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for(int i = 0; i < 6; i++)
+        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
         {
-            list.add(new ItemStack(this, 1, i));
+            list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
         }
     }
 
@@ -77,7 +80,7 @@ public class BlockChime extends BTWBlock
     @Override
     public int damageDropped(IBlockState state)
     {
-        return state.getValue(PLANKS).getMetadata();
+        return state.getValue(BlockPlanks.VARIANT).getMetadata();
     }
 
     @Override
@@ -228,7 +231,7 @@ public class BlockChime extends BTWBlock
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        int meta = state.getValue(PLANKS).getMetadata();
+        int meta = state.getValue(BlockPlanks.VARIANT).getMetadata();
         return meta + (state.getValue(ACTIVE) ? 8 : 0);
     }
 
@@ -238,12 +241,12 @@ public class BlockChime extends BTWBlock
         boolean active = meta > 7;
         if(active)
             meta -= 8;
-        return this.getDefaultState().withProperty(ACTIVE, active).withProperty(PLANKS, BlockPlanks.EnumType.byMetadata(meta));
+        return this.getDefaultState().withProperty(ACTIVE, active).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.byMetadata(meta));
     }
 
     @Override
     public BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, ACTIVE, PLANKS);
+        return new BlockStateContainer(this, ACTIVE, BlockPlanks.VARIANT);
     }
 }

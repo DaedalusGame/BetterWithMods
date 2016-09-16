@@ -15,7 +15,7 @@
     "inventory": [{
       "transform": "forge:default-block"
     }],
-    "type": {
+    "variant": {
       "oak": {},
       "spruce": {"textures": {"wood": "betterwithmods:blocks/wood_side_spruce"}},
       "birch": {"textures": {"wood": "betterwithmods:blocks/wood_side_birch"}},

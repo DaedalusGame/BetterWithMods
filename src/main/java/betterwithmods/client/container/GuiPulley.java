@@ -1,5 +1,6 @@
 package betterwithmods.client.container;
 
+import betterwithmods.BWMod;
 import betterwithmods.blocks.tile.TileEntityPulley;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -25,7 +26,7 @@ public class GuiPulley extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(new ResourceLocation("betterwithmods", "textures/gui/pulley.png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/pulley.png"));
 
 		int xPos = (this.width - this.xSize) / 2;
 		int yPos = (this.height - this.ySize) / 2;

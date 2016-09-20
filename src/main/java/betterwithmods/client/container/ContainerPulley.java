@@ -1,6 +1,6 @@
 package betterwithmods.client.container;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.tile.TileEntityPulley;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -21,7 +21,7 @@ public class ContainerPulley extends Container {
 			addSlotToContainer(new SlotItemHandler(tile.inventory, i, 53 + i * 18, 52) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWRegistry.rope);
+					return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWMBlocks.rope);
 				}
 			});
 		}

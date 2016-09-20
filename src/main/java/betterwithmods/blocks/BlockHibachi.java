@@ -6,7 +6,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
@@ -53,7 +53,7 @@ public class BlockHibachi extends BTWBlock
 			else
 			{
 				Block above = world.getBlockState(pos.up()).getBlock();
-				if(above != Blocks.FIRE && above != BWRegistry.stokedFlame)
+				if(above != Blocks.FIRE && above != BWMBlocks.stokedFlame)
 				{
 					if(shouldIgnite(world, pos.up()))
 					{
@@ -69,7 +69,7 @@ public class BlockHibachi extends BTWBlock
 		{
 			Block above = world.getBlockState(pos.up()).getBlock();
 			
-			if(above == Blocks.FIRE || above == BWRegistry.stokedFlame)
+			if(above == Blocks.FIRE || above == BWMBlocks.stokedFlame)
 				world.setBlockToAir(pos);
 		}
 	}
@@ -96,7 +96,7 @@ public class BlockHibachi extends BTWBlock
 		{
 			Block block = world.getBlockState(pos).getBlock();
 			
-			if(block != Blocks.FIRE && block != BWRegistry.stokedFlame)
+			if(block != Blocks.FIRE && block != BWMBlocks.stokedFlame)
 			{
 				if(shouldIgnite(world, pos.up()))
 					return false;
@@ -142,7 +142,7 @@ public class BlockHibachi extends BTWBlock
 		
 		world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 		
-		boolean isFire = world.getBlockState(pos.up()).getBlock() == Blocks.FIRE || world.getBlockState(pos.up()).getBlock() == BWRegistry.stokedFlame;
+		boolean isFire = world.getBlockState(pos.up()).getBlock() == Blocks.FIRE || world.getBlockState(pos.up()).getBlock() == BWMBlocks.stokedFlame;
 		
 		if(isFire)
 			world.setBlockToAir(pos.up());

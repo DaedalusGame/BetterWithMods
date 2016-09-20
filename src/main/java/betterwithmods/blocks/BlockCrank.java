@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -139,7 +139,7 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	{
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
 		//world.playAuxSFX(2235, x, y, z, 0);
 		world.setBlockToAir(pos);
 	}

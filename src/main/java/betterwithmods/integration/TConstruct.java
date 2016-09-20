@@ -101,7 +101,7 @@ public class TConstruct
 
     private static <T extends Fluid> T registerFluid(T fluid)
     {
-        fluid.setUnlocalizedName("betterwithmods:" + fluid.getName());
+        fluid.setUnlocalizedName(BWMod.MODID + ":" + fluid.getName());
         FluidRegistry.registerFluid(fluid);
         return fluid;
     }

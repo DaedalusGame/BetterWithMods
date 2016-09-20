@@ -1,6 +1,6 @@
 package betterwithmods.util;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.BlockAxle;
@@ -62,7 +62,7 @@ public class MechanicalUtil
 		BlockPos offset = pos.offset(dir);
 		Block block = world.getBlockState(offset).getBlock();
 		
-		if(block == BWRegistry.handCrank)
+		if(block == BWMBlocks.handCrank)
 		{
 			IMechanicalBlock mech = (IMechanicalBlock)block;
 			

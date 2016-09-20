@@ -1,5 +1,6 @@
 package betterwithmods.integration.jei.category;
 
+import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
@@ -14,7 +15,7 @@ public class CauldronRecipeCategory extends BWMRecipeCategory
     private static final int inputSlots = 2;
     private static final int outputSlots = 0;
 
-    private static final ResourceLocation guiTexture = new ResourceLocation("betterwithmods", "textures/gui/jei/cooking.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(BWMod.MODID, "textures/gui/jei/cooking.png");
     @Nonnull
     private final ICraftingGridHelper craftingGrid;
     @Nonnull

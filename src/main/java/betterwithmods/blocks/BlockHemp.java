@@ -1,7 +1,8 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMBlocks;
+import betterwithmods.BWMItems;
 import betterwithmods.BWMod;
-import betterwithmods.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.items.IBWMItem;
 import net.minecraft.block.Block;
@@ -10,7 +11,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -19,8 +19,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,17 +31,21 @@ public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
 	{
 		super();
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
-		this.setUnlocalizedName("bwm:hemp");
-		setRegistryName("hemp");
-		GameRegistry.register(this);
-		GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
 
 	}
 
 	@Override
 	public String getLocation(int meta) {
-		return "betterwithmods:hemp_seed";
+		//TODO consistency with registry name. 
+		//Note there's already a "hemp" item (the mature hemp)
+		return BWMod.MODID + ":hemp_seed";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		// TODO Auto-generated method stub
+		return 1;
 	}
 
 	@Override
@@ -153,13 +155,13 @@ public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
 	@Override
 	protected Item getSeed()
     {
-        return Item.getItemFromBlock(BWRegistry.hemp);
+        return Item.getItemFromBlock(BWMBlocks.hemp);
     }
 
 	@Override
     protected Item getCrop()
     {
-        return BWRegistry.material;
+        return BWMItems.material;
     }
 	
 	@Override

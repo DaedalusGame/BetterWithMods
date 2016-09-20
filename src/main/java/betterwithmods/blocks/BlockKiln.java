@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.util.InvUtils;
@@ -50,7 +50,7 @@ public class BlockKiln extends BTWBlock
 		int oldCookTime = getCookCounter(world, pos);
 		BlockPos down = pos.down();
 		BlockPos up = pos.up();
-		if(world.getBlockState(down).getBlock() != BWRegistry.stokedFlame)
+		if(world.getBlockState(down).getBlock() != BWMBlocks.stokedFlame)
 		{
 			Block block = world.getBlockState(down).getBlock();
 			int meta = block.damageDropped(world.getBlockState(down));
@@ -237,7 +237,7 @@ public class BlockKiln extends BTWBlock
 		{
 			Block block = world.getBlockState(pos).getBlock();
 			
-			if(block == Blocks.BRICK_BLOCK || block == BWRegistry.kiln)
+			if(block == Blocks.BRICK_BLOCK || block == BWMBlocks.kiln)
 				brickCount++;
 			else if(Loader.isModLoaded("terrafirmacraft") && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")))
 				brickCount++;

@@ -13,7 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraftforge.fluids.IFluidBlock;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IAxle;
 
 public class TileEntityWaterwheel extends TileEntityMechGenerator
@@ -37,7 +37,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 	{
 		boolean isAir = true;
 		boolean hasWater = true;
-		if(worldObj.getBlockState(pos) != null && worldObj.getBlockState(pos).getBlock() == BWRegistry.waterwheel)
+		if(worldObj.getBlockState(pos) != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.waterwheel)
 		{
 			IAxle axle = (IAxle)worldObj.getBlockState(pos).getBlock();
 			int axis = axle.getAxisAlignment(worldObj, pos);

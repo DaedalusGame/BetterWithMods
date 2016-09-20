@@ -1,7 +1,7 @@
 package betterwithmods.integration;
 
 import betterwithmods.BWCrafting;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +33,6 @@ public class Harvestcraft
         BWCrafting.addCauldronRecipe(new ItemStack(boiledEgg), new ItemStack[] {new ItemStack(Items.EGG)});
         Item dough = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "doughItem"));
         BWCrafting.addCauldronRecipe(new ItemStack(Items.BREAD), new ItemStack[] {new ItemStack(dough)});
-        OreDictionary.registerOre("foodDonut", new ItemStack(BWRegistry.donut));
+        OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.donut));
     }
 }

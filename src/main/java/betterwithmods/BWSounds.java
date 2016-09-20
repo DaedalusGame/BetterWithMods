@@ -21,7 +21,7 @@ public class BWSounds
 
     public static SoundEvent registerSound(String soundName)
     {
-        ResourceLocation soundID = new ResourceLocation("betterwithmods", soundName);
+        ResourceLocation soundID = new ResourceLocation(BWMod.MODID, soundName);
         return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
     }
 }

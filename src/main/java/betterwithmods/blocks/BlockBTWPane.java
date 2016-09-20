@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -132,10 +132,10 @@ public class BlockBTWPane extends BTWBlock {
 	{
 		switch(state.getValue(TYPES))
 		{
-		case SLATS: return Item.getItemFromBlock(BWRegistry.slats);
+		case SLATS: return Item.getItemFromBlock(BWMBlocks.slats);
 		case WICKER: return Item.getItemFromBlock(this);
 		default:
-			return Item.getItemFromBlock(BWRegistry.grate);
+			return Item.getItemFromBlock(BWMBlocks.grate);
 		}
 	}
 	

@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -211,13 +211,13 @@ public class BlockDetector extends BTWBlock
 			return true;
 		}
 
-		if(target == BWRegistry.lens)
+		if(target == BWMBlocks.lens)
 		{
 			BlockLens lens = (BlockLens)target;
 			if(lens.getFacing(world, offset) == DirUtils.getOpposite(getFacing(world, pos)) && lens.isLit(world, offset))
 				return true;
 		}
-		else if(world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWRegistry.platform)
+		else if(world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.platform)
 			return true;
 		else if(!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset))
 		{
@@ -252,7 +252,7 @@ public class BlockDetector extends BTWBlock
 			{
 				return true;
 			}
-			else if(world.getBlockState(offset).getBlock() == BWRegistry.lightSource && ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset) == getFacing(world, pos))
+			else if(world.getBlockState(offset).getBlock() == BWMBlocks.lightSource && ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset) == getFacing(world, pos))
 			{
 				return true;
 			}

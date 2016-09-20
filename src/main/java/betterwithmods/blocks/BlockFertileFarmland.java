@@ -10,8 +10,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Random;
 
 public class BlockFertileFarmland extends BlockFarmland
@@ -19,11 +17,8 @@ public class BlockFertileFarmland extends BlockFarmland
     public BlockFertileFarmland()
     {
         super();
-        this.setRegistryName("fertile_farmland");
-        this.setUnlocalizedName("bwm:fertile_farmland");
         this.setHardness(0.6F);
         this.setSoundType(SoundType.GROUND);
-        GameRegistry.register(this);
     }
 
     @Override

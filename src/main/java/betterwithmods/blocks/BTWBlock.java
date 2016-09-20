@@ -1,6 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWMod;
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
@@ -11,30 +10,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public abstract class BTWBlock extends Block implements IBTWBlock {
     public BTWBlock(Material material, String name, Class<? extends ItemBlock> itemBlock) {
         super(material);
-        this.setUnlocalizedName("bwm:" + name);
-        setRegistryName(name);
-        GameRegistry.register(this);
         setCreativeTab(BWCreativeTabs.BWTAB);
-        if (itemBlock != null) {
-            try {
-                Constructor<?> ctor = itemBlock.getConstructor(Block.class);
-                GameRegistry.register(BWMod.proxy.addItemBlockModel((ItemBlock) ctor.newInstance(this)), getRegistryName());
-            } catch (NoSuchMethodException | IllegalAccessException |
-                    InstantiationException |
-                    InvocationTargetException e) {
-                e.printStackTrace();
-                FMLLog.bigWarning("[betterwithmods] Registry failed for %s", itemBlock.getName());
-            }
-        }
     }
 
     public BTWBlock(Material material, String name) {

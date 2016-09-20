@@ -1,25 +1,14 @@
 package betterwithmods.items.tools;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.items.IBWMItem;
 import net.minecraft.item.ItemHoe;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ItemSoulforgedHoe extends ItemHoe implements IBWMItem
+public class ItemSoulforgedHoe extends ItemHoe
 {
     public ItemSoulforgedHoe()
     {
-        super(BWRegistry.SOULFORGEDSTEEL);
+        super(BWMItems.SOULFORGED_STEEL);
         setCreativeTab(BWCreativeTabs.BWTAB);
-        setUnlocalizedName("bwm:steel_hoe");
-        setRegistryName("steel_hoe");
-        GameRegistry.register(this);
-        register();
-    }
-
-    @Override
-    public String getLocation(int meta) {
-        return "betterwithmods:steel_hoe";
     }
 }

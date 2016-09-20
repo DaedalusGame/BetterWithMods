@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
@@ -16,8 +16,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Random;
 
 public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
@@ -27,7 +25,6 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 		super(Material.WOOD, "waterwheel", null);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 1).withProperty(ISACTIVE, false));
-		GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
 	}
 
 	public IBlockState getWaterwheelState(int axis) {
@@ -41,7 +38,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		return new ItemStack(BWRegistry.windmill, 1, 1);
+		return new ItemStack(BWMItems.windmill, 1, 1);
 	}
 
 	@Override
@@ -83,7 +80,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return BWRegistry.windmill;
+		return BWMItems.windmill;
 	}
 
 	@Override
@@ -171,7 +168,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public ItemStack getGenStack(IBlockState state) {
-		return new ItemStack(BWRegistry.windmill, 1, 1);
+		return new ItemStack(BWMItems.windmill, 1, 1);
 	}
 
 }

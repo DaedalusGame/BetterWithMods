@@ -13,7 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Created by tyler on 8/5/16.
@@ -21,7 +20,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlockCreativeGenerator extends BlockGen implements IMechanical {
     public BlockCreativeGenerator() {
         super(Material.WOOD, "creativeGenerator");
-        GameRegistry.registerTileEntity(TileEntityCreativeGen.class,"creativeGenerator");
         setCreativeTab(BWCreativeTabs.BWTAB);
         setDefaultState(getDefaultState().withProperty(ISACTIVE, true));
     }

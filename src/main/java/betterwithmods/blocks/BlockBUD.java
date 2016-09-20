@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
@@ -29,7 +29,7 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class BlockBUD extends BTWBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWRegistry.light,});
+    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWMBlocks.light,});
     public BlockBUD() {
         super(Material.ROCK, "buddy_block");
         setHardness(3.5F);

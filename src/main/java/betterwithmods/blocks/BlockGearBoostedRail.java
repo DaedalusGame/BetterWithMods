@@ -1,7 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWMod;
-import betterwithmods.items.IBWMItem;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailPowered;
@@ -9,30 +7,19 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockGearBoostedRail extends BlockRailPowered implements IBWMItem
+public class BlockGearBoostedRail extends BlockRailPowered
 {
     public BlockGearBoostedRail()
     {
     	super();
-        this.setUnlocalizedName("bwm:booster");
-        setRegistryName("booster");
-        GameRegistry.register(this);
-        GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
         this.setHardness(0.7F);
         this.setSoundType(SoundType.METAL);
-    }
-
-    @Override
-    public String getLocation(int meta) {
-        return "betterwithmods:gear_rail";
     }
 
     @Override

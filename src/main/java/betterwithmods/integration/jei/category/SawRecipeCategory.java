@@ -1,6 +1,7 @@
 package betterwithmods.integration.jei.category;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
+import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.SawWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -24,7 +25,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
     @Nonnull
     private final String localizedName;
     public SawRecipeCategory(IGuiHelper helper) {
-        ResourceLocation location = new ResourceLocation("betterwithmods", "textures/gui/jei/saw.png");
+        ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/saw.png");
         background = helper.createDrawable(location, 0, 0, width, height);
         localizedName = Translator.translateToLocal("inv.saw.name");
     }
@@ -54,7 +55,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
         guiItemStacks.init(1, true, 57, 9);
         guiItemStacks.init(3, false, 32, 27);
 
-        guiItemStacks.set(3, new ItemStack(BWRegistry.saw));
+        guiItemStacks.set(3, new ItemStack(BWMBlocks.saw));
         guiItemStacks.setFromRecipe(0, wrapper.getInputs());
         guiItemStacks.setFromRecipe(1, wrapper.getOutputs());
     }

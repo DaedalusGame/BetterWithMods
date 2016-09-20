@@ -2,6 +2,7 @@ package betterwithmods.api;
 
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import betterwithmods.BWMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -135,11 +136,11 @@ public class InterModCommsHelper
 	
 	public static void sendMessage(String message, NBTTagCompound tag)
 	{
-		if(!Loader.isModLoaded("betterwithmods") || Loader.instance().activeModContainer() == null)
+		if(!Loader.isModLoaded(BWMod.MODID) || Loader.instance().activeModContainer() == null)
 			return;
 		try
 		{
-			FMLInterModComms.sendMessage("betterwithmods", message, tag);
+			FMLInterModComms.sendMessage(BWMod.MODID, message, tag);
 		}
 		catch(Exception e)
 		{

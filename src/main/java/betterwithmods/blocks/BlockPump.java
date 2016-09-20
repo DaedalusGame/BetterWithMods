@@ -3,7 +3,7 @@ package betterwithmods.blocks;
 import java.util.Arrays;
 import java.util.Random;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
@@ -168,7 +168,7 @@ public class BlockPump extends BTWBlock implements IMechanicalBlock {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (isMechanicalOnFromState(state)) {
 			if (world.isAirBlock(pos.up()) && hasWaterToPump(world, pos)) {
-				world.setBlockState(pos.up(), BWRegistry.tempLiquidSource.getDefaultState());
+				world.setBlockState(pos.up(), BWMBlocks.tempLiquidSource.getDefaultState());
 			}
 		}
 

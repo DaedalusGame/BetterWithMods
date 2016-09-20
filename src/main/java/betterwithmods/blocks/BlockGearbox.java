@@ -11,7 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
@@ -276,8 +276,8 @@ public class BlockGearbox extends BTWBlock implements IMechanicalBlock, IMechani
 	public void breakGearbox(World world, BlockPos pos)
 	{
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 3, 22));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 2, 0));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 2, 0));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));
 		world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
 		world.setBlockToAir(pos);

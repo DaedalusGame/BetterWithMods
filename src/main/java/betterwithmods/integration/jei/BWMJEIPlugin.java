@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.client.container.GuiCauldron;
 import betterwithmods.client.container.GuiCrucible;
 import betterwithmods.client.container.GuiMill;
@@ -38,7 +38,7 @@ public class BWMJEIPlugin extends BlankModPlugin
         reg.addRecipes(JEIRecipeRegistry.getSawRecipes());
         reg.addRecipes(JEIRecipeRegistry.getKilnRecipes());
 
-        reg.addRecipeCategoryCraftingItem(new ItemStack(BWRegistry.saw),"bwm.saw");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.saw),"bwm.saw");
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, "bwm.cauldron", "bwm.cauldron.stoked");
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, "bwm.crucible", "bwm.crucible.stoked");
         reg.addRecipeClickArea(GuiMill.class, 81, 19, 14, 14, "bwm.mill");

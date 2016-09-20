@@ -1,6 +1,5 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockTNT;
@@ -12,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Random;
+
+import betterwithmods.BWMBlocks;
 
 public class BlockFireStoked extends BlockFire
 {
@@ -23,9 +22,6 @@ public class BlockFireStoked extends BlockFire
 		super();
 		this.disableStats();
 		this.setLightLevel(1.0F);
-		this.setUnlocalizedName("bwm:stokedFire");
-		setRegistryName("stoked_flame");
-		GameRegistry.register(this);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
 	}
 	
@@ -50,7 +46,7 @@ public class BlockFireStoked extends BlockFire
 		BlockPos below = pos.down();
 		Block belowBlock = world.getBlockState(below).getBlock();
 		
-		if(belowBlock == BWRegistry.hibachi)
+		if(belowBlock == BWMBlocks.hibachi)
 		{
 			if(!belowBlock.isFireSource(world, below, EnumFacing.UP))
 				world.setBlockToAir(pos);
@@ -63,11 +59,11 @@ public class BlockFireStoked extends BlockFire
 		BlockPos above = pos.up();
 		if(world.getBlockState(above).getBlock() == Blocks.BRICK_BLOCK) {
 			if(this.isValidKiln(world, above))
-				world.setBlockState(above, BWRegistry.kiln.getDefaultState());
+				world.setBlockState(above, BWMBlocks.kiln.getDefaultState());
 		}
 		else if(Loader.isModLoaded("terrafirmacraft") && world.getBlockState(above).getBlock() == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))) {
 			if(this.isValidKiln(world, above))
-				world.setBlockState(above, BWRegistry.kiln.getDefaultState());
+				world.setBlockState(above, BWMBlocks.kiln.getDefaultState());
 		}
 		
 		int meta = world.getBlockState(pos).getValue(AGE);

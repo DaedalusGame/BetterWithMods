@@ -1,6 +1,8 @@
 package betterwithmods.items;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
+import betterwithmods.BWMod;
+import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-public class ItemMaterial extends BWMItem implements ITannin{
+public class ItemMaterial extends Item implements ITannin, IBWMItem {
     public static  String[] names = {"gear", "nethercoal", "hemp", "hemp_fibers", "hemp_cloth", "dung", "tanned_leather", "scoured_leather", "leather_strap", "leather_belt", "wood_blade",
             "windmill_blade", "glue", "tallow", "ingot_steel", "ground_netherrack", "hellfire_dust", "concentrated_hellfire", "coal_dust", "filament", "polished_lapis",
             "potash", "sawdust", "soul_dust", "screw", "brimstone", "niter", "element", "fuse", "blasting_oil", "nugget_iron", "nugget_steel", "leather_cut",
@@ -22,11 +24,12 @@ public class ItemMaterial extends BWMItem implements ITannin{
     }
     public static ItemStack getMaterial(String material,int count) {
         OptionalInt meta = IntStream.range(0, names.length).filter(n -> material.equals(names[n].toLowerCase())).findFirst();
-        return new ItemStack(BWRegistry.material,count, meta.isPresent() ? meta.getAsInt() : 0);
+        return new ItemStack(BWMItems.material,count, meta.isPresent() ? meta.getAsInt() : 0);
     }
 
     public ItemMaterial() {
-        super("material");
+    	super();
+    	this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHasSubtypes(true);
     }
 
@@ -37,7 +40,7 @@ public class ItemMaterial extends BWMItem implements ITannin{
 
     @Override
     public String getLocation(int meta) {
-        return "betterwithmods:" + ItemMaterial.names[meta];
+        return BWMod.MODID + ":" + ItemMaterial.names[meta];
     }
 
     @Override

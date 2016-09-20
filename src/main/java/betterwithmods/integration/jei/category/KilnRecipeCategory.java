@@ -1,6 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 
+import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.KilnWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -24,7 +25,7 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
     private final String localizedName;
 
     public KilnRecipeCategory(IGuiHelper guiHelper) {
-        ResourceLocation location = new ResourceLocation("betterwithmods", "textures/gui/jei/kiln.png");
+        ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/kiln.png");
         background = guiHelper.createDrawable(location, 0, 0, width, height);
         localizedName = Translator.translateToLocal("inv.kiln.name");
     }

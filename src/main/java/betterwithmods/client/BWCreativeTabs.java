@@ -1,6 +1,6 @@
 package betterwithmods.client;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,7 +14,7 @@ public class BWCreativeTabs
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem()
         {
-            return BWRegistry.windmill;
+            return BWMItems.windmill;
         }
     };
 }

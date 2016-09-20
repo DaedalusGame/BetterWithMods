@@ -1,5 +1,6 @@
 package betterwithmods.network;
 
+import betterwithmods.BWMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +14,7 @@ public class BWNetwork extends NetWrapper
 
     public BWNetwork()
     {
-        super("betterwithmods");
+        super(BWMod.MODID);
     }
 
     public void init()

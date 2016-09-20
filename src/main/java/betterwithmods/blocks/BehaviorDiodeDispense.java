@@ -1,8 +1,6 @@
 package betterwithmods.blocks;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -32,7 +30,7 @@ public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem
             FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer)source.getWorld());
             DirUtils.setEntityOrientationFacing(fake, facing);
             if(BWConfig.debug)
-                Logger.getLogger("betterwithmods").log(Level.SEVERE, "Better With Mods FakePlayer ID: " + fake.getUniqueID());
+            	BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
             if(stack.getItem().onItemUse(stack1, fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             }

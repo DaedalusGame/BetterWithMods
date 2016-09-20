@@ -1,6 +1,6 @@
 package betterwithmods.blocks.tile;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.bulk.CraftingManagerBulk;
 import betterwithmods.craft.heat.BWMHeatRegistry;
@@ -301,7 +301,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     protected boolean containsExplosives() {
-        return containsItem(BWRegistry.material, 16) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(BWRegistry.material, 29);
+        return containsItem(BWMItems.material, 16) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(BWMItems.material, 29);
     }
 
     private boolean containsItem(Item item) {
@@ -313,10 +313,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     private void explode() {
-        int hellfire = InvUtils.countItemsInInventory(inventory, BWRegistry.material, 16);
+        int hellfire = InvUtils.countItemsInInventory(inventory, BWMItems.material, 16);
         float expSize = hellfire * 10.0F / 64.0F;
         expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, BWRegistry.material, 29) * 10.0F / 64.0F;
+        expSize += InvUtils.countItemsInInventory(inventory, BWMItems.material, 29) * 10.0F / 64.0F;
         if (InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0) {
             if (expSize < 4.0F)
                 expSize = 4.0F;

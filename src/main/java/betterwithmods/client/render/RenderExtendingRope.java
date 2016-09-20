@@ -1,6 +1,6 @@
 package betterwithmods.client.render;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.util.AABBArray;
 import net.minecraft.block.state.IBlockState;
@@ -39,7 +39,7 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
 	public void doRender(EntityExtendingRope entity, double x, double y, double z, float entityYaw,
 			float partialTicks) {
 		World world = entity.getEntityWorld();
-		IBlockState iblockstate = BWRegistry.rope.getDefaultState();
+		IBlockState iblockstate = BWMBlocks.rope.getDefaultState();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();

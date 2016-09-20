@@ -13,7 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.util.EnumFacing;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.BlockAxle;
 
@@ -136,7 +136,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
 	public boolean isValid() 
 	{
 		boolean valid = true;
-		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWRegistry.windmillBlock)
+		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.windmillBlock)
 		{
 			BlockWindmill axle = (BlockWindmill)this.worldObj.getBlockState(pos).getBlock();
 			int axis = axle.getAxisAlignment(this.worldObj, pos);

@@ -1,7 +1,7 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.client.BWCreativeTabs;
@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -31,8 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -43,11 +40,6 @@ public class BlockBDispenser extends BlockDispenser implements IBTWBlock
     public BlockBDispenser()
     {
         super();
-        this.setUnlocalizedName("bwm:block_dispenser");
-        setRegistryName("block_dispenser");
-        GameRegistry.register(this);
-        GameRegistry.register(BWMod.proxy.addItemBlockModel(new ItemBlock(this)),getRegistryName());
-        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
     }
@@ -136,7 +128,7 @@ public class BlockBDispenser extends BlockDispenser implements IBTWBlock
                     {
                         if(creature instanceof EntityWolf)
                         {
-                            tile.addStackToInventory(new ItemStack(BWRegistry.wolf), check);
+                            tile.addStackToInventory(new ItemStack(BWMBlocks.wolf), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(3)));
                             //InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.DYE, 1 + rand.nextInt(2), 1));
                             world.playSound(null, check, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);

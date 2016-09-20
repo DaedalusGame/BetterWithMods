@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -36,7 +36,7 @@ public abstract class BlockGen extends BTWBlock
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         List<ItemStack> drops = new ArrayList<ItemStack>();
-        drops.add(new ItemStack(BWRegistry.axle));
+        drops.add(new ItemStack(BWMBlocks.axle));
         drops.add(getGenStack(state));
         return drops;
     }

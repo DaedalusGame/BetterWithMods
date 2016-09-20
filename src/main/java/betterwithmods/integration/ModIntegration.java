@@ -1,7 +1,7 @@
 package betterwithmods.integration;
 
 import betterwithmods.BWCrafting;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -32,8 +32,8 @@ public class ModIntegration
 			//MineChem tannin orename: molecule_tannicacid
 		if(Loader.isModLoaded("minechem"))
 		{
-			BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[] {new ItemStack(BWRegistry.material, 1, 7), "molecule_tannicacid"});
-			BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[] {new ItemStack(BWRegistry.material, 2, 34), "molecule_tannicacid"});
+			BWCrafting.addOreCauldronRecipe(new ItemStack(BWMItems.material, 1, 6), new Object[] {new ItemStack(BWMItems.material, 1, 7), "molecule_tannicacid"});
+			BWCrafting.addOreCauldronRecipe(new ItemStack(BWMItems.material, 2, 33), new Object[] {new ItemStack(BWMItems.material, 2, 34), "molecule_tannicacid"});
 		}/*
 		if(Loader.isModLoaded("immersiveengineering")) {
 			Item material = Item.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "material"));

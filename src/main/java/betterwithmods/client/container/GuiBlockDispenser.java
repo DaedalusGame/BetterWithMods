@@ -1,5 +1,6 @@
 package betterwithmods.client.container;
 
+import betterwithmods.BWMod;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -31,7 +32,7 @@ public class GuiBlockDispenser extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation("betterwithmods", "textures/gui/dispenser.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/dispenser.png"));
 
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;

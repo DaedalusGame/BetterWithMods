@@ -9,12 +9,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemBark extends BWMItem implements ITannin
+import betterwithmods.BWMod;
+import betterwithmods.client.BWCreativeTabs;
+
+public class ItemBark extends Item implements ITannin, IBWMItem
 {
 
 	public ItemBark()
 	{
-		super("bark");
+		super();
+    	this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 
@@ -27,7 +31,7 @@ public class ItemBark extends BWMItem implements ITannin
 
 	@Override
 	public String getLocation(int meta) {
-		return "betterwithmods:bark_" + BlockPlanks.EnumType.byMetadata(meta).getName();
+		return BWMod.MODID + ":bark_" + BlockPlanks.EnumType.byMetadata(meta).getName();
 	}
 
 	@Override

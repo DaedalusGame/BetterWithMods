@@ -2,7 +2,7 @@ package betterwithmods.event;
 
 import java.util.Random;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.config.BWConfig;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.item.EntityItem;
@@ -42,7 +42,7 @@ public class MobDropEvent
 						int light = animal.worldObj.getLight(animal.getPosition());
 						if(animal.getGrowingAge() == fearLevel[light])
 						{
-							evt.getEntityLiving().entityDropItem(new ItemStack(BWRegistry.material, 1, 5), 0.0F);
+							evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.material, 1, 5), 0.0F);
 							animal.setGrowingAge(99);
 						}
 					}
@@ -50,10 +50,10 @@ public class MobDropEvent
 			}
 			if(!(animal instanceof EntityRabbit)) {
 				if (animal.getGrowingAge() == 100) {
-					evt.getEntityLiving().entityDropItem(new ItemStack(BWRegistry.material, 1, 5), 0.0F);
+					evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.material, 1, 5), 0.0F);
 				} else if (animal.isInLove()) {
 					if (rand.nextInt(1200) == 0) {
-						evt.getEntityLiving().entityDropItem(new ItemStack(BWRegistry.material, 1, 5), 0.0F);
+						evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.material, 1, 5), 0.0F);
 					}
 				}
 			}
@@ -73,7 +73,7 @@ public class MobDropEvent
 				}
 			}
 			if(evt.getEntityLiving() instanceof EntityAgeable)
-				addDrop(evt, new ItemStack(BWRegistry.material, 1, 5));
+				addDrop(evt, new ItemStack(BWMItems.material, 1, 5));
 			int headChance = evt.getEntityLiving().worldObj.rand.nextInt(12);
 			if(evt.getSource().damageType.equals("choppingBlock") && headChance < 5)
 			{
@@ -113,9 +113,9 @@ public class MobDropEvent
 				if(stack.getItem() == Items.GUNPOWDER)
 				{
 					if(rand.nextBoolean())
-						item.setEntityItemStack(new ItemStack(BWRegistry.material, stack.stackSize, 26));
+						item.setEntityItemStack(new ItemStack(BWMItems.material, stack.stackSize, 26));
 					else
-						item.setEntityItemStack(new ItemStack(BWRegistry.material, stack.stackSize, 25));
+						item.setEntityItemStack(new ItemStack(BWMItems.material, stack.stackSize, 25));
 				}
 			}
 		}

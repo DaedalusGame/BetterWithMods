@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.blocks.tile.gen.*;
@@ -19,8 +19,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Random;
 
 public class BlockWindmill extends BlockGen implements IMechanical, IAxle
@@ -32,8 +30,6 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
         super(Material.WOOD, "windmill_block",null);
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 0).withProperty(ISACTIVE, false));
-        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
-        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
 
     }
 
@@ -51,7 +47,7 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(BWRegistry.windmill, 1, state.getValue(AXLEDIR) == 0 ? 2 : 0);
+        return new ItemStack(BWMItems.windmill, 1, state.getValue(AXLEDIR) == 0 ? 2 : 0);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return BWRegistry.windmill;
+        return BWMItems.windmill;
     }
 
     @Override
@@ -228,6 +224,6 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public ItemStack getGenStack(IBlockState state)
     {
-        return state.getValue(AXLEDIR) == 0 ? new ItemStack(BWRegistry.windmill, 1, 2) : new ItemStack(BWRegistry.windmill, 1, 0);
+        return state.getValue(AXLEDIR) == 0 ? new ItemStack(BWMItems.windmill, 1, 2) : new ItemStack(BWMItems.windmill, 1, 0);
     }
 }

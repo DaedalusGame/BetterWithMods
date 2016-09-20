@@ -12,7 +12,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.TurntableInteraction;
@@ -191,7 +191,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		if(!potteryRotated)
 			potteryRotation = 0;
 		
-		worldObj.notifyBlockOfStateChange(pos, BWRegistry.singleMachines);
+		worldObj.notifyBlockOfStateChange(pos, BWMBlocks.singleMachines);
 	}
 	
 	public byte getTimerPos()

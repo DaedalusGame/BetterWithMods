@@ -1,6 +1,6 @@
 package betterwithmods.client.render;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +24,7 @@ public class RenderMiningCharge extends Render<EntityMiningCharge> {
 
     @Override
     public void doRender(EntityMiningCharge entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        IBlockState state = BWRegistry.miningCharge.getDefaultState().withProperty(DirUtils.FACING,entity.getFacing());
+        IBlockState state = BWMBlocks.miningCharge.getDefaultState().withProperty(DirUtils.FACING,entity.getFacing());
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);

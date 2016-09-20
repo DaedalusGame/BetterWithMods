@@ -31,20 +31,29 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-@Mod(modid = "betterwithmods", name = "Better With Mods", version = "0.11 Beta hotfix 1", dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
+@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     @SidedProxy(serverSide = "betterwithmods.proxy.CommonProxy", clientSide = "betterwithmods.proxy.ClientProxy")
     public static CommonProxy proxy;
 
-    @Mod.Instance("betterwithmods")
+	public static final String MODID = "betterwithmods";
+	public static final String VERSION = "0.11 Beta hotfix 1";
+	public static final String NAME = "Better With Mods";
+
+    @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
 
-    public static final Logger logger = LogManager.getLogger("betterwithmods");
+    public static final Logger logger = LogManager.getLogger(BWMod.MODID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         BWConfig.cfg = new Configuration(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
         BWConfig.init();
+
+        BWMBlocks.registerBlocks();
+        BWMItems.registerItems();
+        BWMBlocks.registerTileEntities();
+
         BWRegistry.init();
         ModIntegration.preInit();
         BWCrafting.init();
@@ -95,7 +104,7 @@ public class BWMod {
 
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        if(eventArgs.getModID().equals("betterwithmods"))
+        if(eventArgs.getModID().equals(BWMod.MODID))
             BWConfig.init();
     }
 }

@@ -49,8 +49,6 @@ public class Kiln {
     }
 
     private static class Add extends BaseMapAddition<String, List<ItemStack>> {
-
-        @SuppressWarnings("unchecked")
 		protected Add(Block block, int meta, ItemStack... product) {
             super("kiln", cookables);
             recipes.put(block+":"+meta, Arrays.asList(product));

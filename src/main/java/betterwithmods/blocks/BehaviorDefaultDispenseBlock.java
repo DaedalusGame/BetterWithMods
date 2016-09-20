@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
@@ -21,9 +22,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem
 {
     @Override
@@ -37,7 +35,7 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem
         FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) world);
         DirUtils.setEntityOrientationFacing(fake, facing.getOpposite());
         if(BWConfig.debug)
-            Logger.getLogger("betterwithmods").log(Level.SEVERE, "Better With Mods FakePlayer ID: " + fake.getUniqueID());
+            BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
         if(stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)))
         {
             Block block = ((ItemBlock)stack.getItem()).getBlock();

@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMItems;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -85,7 +85,7 @@ public class BlockPlanter extends BTWBlock
 			if(item != null) {
 				if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
 					return true;
-				else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWRegistry.fertilizer))
+				else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.fertilizer))
 					return true;
 				else if(meta == 2 && item.getItem() instanceof ItemHoe)
 					return true;

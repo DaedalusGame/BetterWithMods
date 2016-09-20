@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -106,7 +106,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 			int newMeta = meta + souls;
 			if(newMeta == 8)
 			{
-				InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.urn, 1, 8));
+				InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMBlocks.urn, 1, 8));
 				return world.setBlockToAir(pos);
 			}
 			else
@@ -143,7 +143,7 @@ public class BlockUrn extends BTWBlock implements ISoulSensitive
 	{
 		BlockPos up = pos.up();
 		Block block = world.getBlockState(up).getBlock();
-		if(block != null && block == BWRegistry.singleMachines)
+		if(block != null && block == BWMBlocks.singleMachines)
 		{
 			if(world.getBlockState(up).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER)
 			{

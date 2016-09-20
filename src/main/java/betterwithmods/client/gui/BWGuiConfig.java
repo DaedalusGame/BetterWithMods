@@ -1,5 +1,6 @@
 package betterwithmods.client.gui;
 
+import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -16,7 +17,7 @@ import java.util.List;
 public class BWGuiConfig extends GuiConfig {
     public BWGuiConfig(GuiScreen parentScreen) {
         super(parentScreen,
-                getConfigElements(), "betterwithmods", false, false, GuiConfig.getAbridgedConfigPath(BWConfig.cfg.toString()));
+                getConfigElements(), BWMod.MODID, false, false, GuiConfig.getAbridgedConfigPath(BWConfig.cfg.toString()));
     }
 
     /** Compiles a list of config elements */

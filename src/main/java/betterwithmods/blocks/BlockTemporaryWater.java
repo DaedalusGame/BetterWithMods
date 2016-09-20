@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockLiquid;
@@ -14,17 +14,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockTemporaryWater extends BlockLiquid {
 
 	public BlockTemporaryWater() {
 		super(Material.WATER);
-		this.setUnlocalizedName("bwm:temporary_water");
-		this.setRegistryName("temporary_water");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 4));
 		this.setTickRandomly(true);
-		GameRegistry.register(this);
 	}
 
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
@@ -32,7 +28,7 @@ public class BlockTemporaryWater extends BlockLiquid {
 
 		IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
 
-		if (!(iblockstate1.getBlock() == BWRegistry.pump && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
+		if (!(iblockstate1.getBlock() == BWMBlocks.pump && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}

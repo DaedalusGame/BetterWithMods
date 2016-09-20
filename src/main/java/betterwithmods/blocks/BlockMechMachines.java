@@ -1,7 +1,7 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMItems;
 import betterwithmods.BWMod;
-import betterwithmods.BWRegistry;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.tile.*;
 import betterwithmods.util.DirUtils;
@@ -31,7 +31,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -50,12 +49,6 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
 
     public BlockMechMachines() {
         super(Material.ROCK, "single_machine", ItemBlockMeta.class);
-        GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
-        GameRegistry.registerTileEntity(TileEntityPulley.class, "bwm.pulley");
-        GameRegistry.registerTileEntity(TileEntityFilteredHopper.class, "bwm.hopper");
-        GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
-        GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
-        GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
         this.setTickRandomly(true);
         this.setHardness(3.5F);
         this.setDefaultState(this.blockState.getBaseState()
@@ -343,7 +336,7 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
 
     private void breakPulley(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
@@ -352,7 +345,7 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
 
     public void breakHopper(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

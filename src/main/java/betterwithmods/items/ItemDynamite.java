@@ -1,5 +1,6 @@
 package betterwithmods.items;
 
+import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.entity.EntityDynamite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,18 +19,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemDynamite extends BWMItem
+public class ItemDynamite extends Item
 {
-	public ItemDynamite()
-	{
-		super("dynamite");
+	public ItemDynamite() {
+		super();
+    	this.setCreativeTab(BWCreativeTabs.BWTAB);
 	}
-
-	@Override
-	public String getLocation(int meta) {
-		return "betterwithmods:dynamite";
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{

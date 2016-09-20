@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -107,7 +107,7 @@ public class BlockInvisibleLight extends BTWBlock
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
 	{
-		if(world.getBlockState(pos).getBlock() == BWRegistry.lightSource)
+		if(world.getBlockState(pos).getBlock() == BWMBlocks.lightSource)
 			world.setBlockToAir(pos);
 	}
 	
@@ -178,9 +178,9 @@ public class BlockInvisibleLight extends BTWBlock
 			List<Entity> entity = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
 			if(entity.size() > 0)
 				clear = false;
-			else if(world.getBlockState(bPos).getBlock() == BWRegistry.lightSource)
+			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.lightSource)
 				clear = false;
-			else if(world.getBlockState(bPos).getBlock() == BWRegistry.lens)
+			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.lens)
 			{
 				BlockLens lens = (BlockLens)world.getBlockState(bPos).getBlock();
 				return lens.getFacing(world, bPos) == DirUtils.getOpposite(getFacing(world, bPos));

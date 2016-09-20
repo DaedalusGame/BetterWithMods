@@ -1,6 +1,6 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
@@ -226,7 +226,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 	{
 		if(!world.isRemote)
 		{
-			InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.axle, 1, 0));
+			InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMBlocks.axle, 1, 0));
 			world.setBlockToAir(pos);
 		}
 	}
@@ -279,7 +279,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 		
 		Block block = world.getBlockState(pos2).getBlock();
 		
-		if((block == BWRegistry.axle))
+		if((block == BWMBlocks.axle))
 		{
 			int axis = ((BlockAxle)world.getBlockState(pos2).getBlock()).getAxisAlignment(world, pos2);
 			

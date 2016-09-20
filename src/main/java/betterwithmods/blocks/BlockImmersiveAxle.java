@@ -19,8 +19,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Random;
 
 public class BlockImmersiveAxle extends BTWBlock implements IMechanicalBlock,ITileEntityProvider
@@ -31,7 +29,6 @@ public class BlockImmersiveAxle extends BTWBlock implements IMechanicalBlock,ITi
     public BlockImmersiveAxle()
     {
         super(Material.WOOD,"immersive_axle",ItemBlockImmersive.class);
-        GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
         this.setHardness(3.5F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(AXLEDIR, 0));

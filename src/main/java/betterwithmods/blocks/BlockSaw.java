@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.damagesource.BWDamageSource;
@@ -102,7 +103,7 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
-        if (block == BWRegistry.axle || block == BWRegistry.handCrank)
+        if (block == BWMBlocks.axle || block == BWMBlocks.handCrank)
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         else
             world.scheduleBlockUpdate(pos, this, tickRate(world) + world.rand.nextInt(6), 5);
@@ -138,11 +139,11 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
                 BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() - i, pos.getZ()).offset(dir);
                 Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
-                if (block == BWRegistry.aesthetic && blockState.getValue(BlockAesthetic.blockType).getMeta() < 2) {
+                if (block == BWMBlocks.aesthetic && blockState.getValue(BlockAesthetic.blockType).getMeta() < 2) {
                     source = BWDamageSource.choppingBlock;
                     damage *= 3;
                     if (blockState.getValue(BlockAesthetic.blockType).getMeta() == 0 && unobstructed)
-                        world.setBlockState(pos2, BWRegistry.aesthetic.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
+                        world.setBlockState(pos2, BWMBlocks.aesthetic.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
                     break;
                 } else if (!world.isAirBlock(pos2) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock))
                     break;
@@ -236,12 +237,12 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
     }
 
     public void breakSaw(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 1, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 3, 22));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 4, 30));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWRegistry.material, 3, 8));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 4, 30));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 8));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

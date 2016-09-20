@@ -11,7 +11,8 @@ import net.minecraft.world.DimensionType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.BWRegistry;
+import betterwithmods.BWMBlocks;
+import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.blocks.BlockAxle;
 import net.minecraft.block.Block;
@@ -118,7 +119,7 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 	public boolean isMasterValid()
 	{
 		boolean valid = true;
-		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWRegistry.windmillBlock)
+		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.windmillBlock)
 		{
 			for(int i = -3; i < 4; i++)
 			{
@@ -160,16 +161,16 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 
 	private void invalidateWindmill()
 	{
-		this.worldObj.setBlockState(this.pos, BWRegistry.windmillBlock.getDefaultState());
+		this.worldObj.setBlockState(this.pos, BWMBlocks.windmillBlock.getDefaultState());
 		for(int i = -3; i < 4; i++)
 		{
 			BlockPos pos = this.pos.add(0, i, 0);
 			if(worldObj.getBlockState(pos).getBlock() instanceof BlockAxle)
-				this.worldObj.setBlockState(pos, BWRegistry.axle.getDefaultState());
+				this.worldObj.setBlockState(pos, BWMBlocks.axle.getDefaultState());
 		}
 		if(!this.worldObj.isRemote)
-			InvUtils.ejectStackWithOffset(worldObj, pos, new ItemStack(BWRegistry.windmill, 1, 2));
-		this.worldObj.setBlockState(this.pos, BWRegistry.axle.getDefaultState());
+			InvUtils.ejectStackWithOffset(worldObj, pos, new ItemStack(BWMItems.windmill, 1, 2));
+		this.worldObj.setBlockState(this.pos, BWMBlocks.axle.getDefaultState());
 	}
 	
 	@Override

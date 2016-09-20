@@ -26,6 +26,7 @@ import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.traits.ITrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.tools.TinkerMaterials;
+import slimeknights.tconstruct.tools.TinkerTraits;
 
 import java.util.List;
 
@@ -53,28 +54,7 @@ public class TConstruct
         hellfireFluid = fluidMetal("hellfire", 14426647);
         hellfireFluid.setTemperature(850);
         hellfire.addItem("ingotHellfire", 1, Material.VALUE_Ingot);
-        //hellfire.addTrait(TinkerMaterials.autosmelt);
-        Object autosmelt = null;
-        try {
-            try { // try loading the new API class
-                autosmelt = TinkerMaterials.class.getClassLoader().loadClass("slimeknights.tconstruct.tools.TinkerTraits").getField("autosmelt").get(null);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } catch (ClassNotFoundException | NoSuchFieldException e) {
-            try { // fallback
-                autosmelt = TinkerMaterials.class.getField("autosmelt").get(null);
-            } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e1) {
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-        if (autosmelt != null) {
-            hellfire.addTrait((ITrait) autosmelt);
-        }
+        hellfire.addTrait(TinkerTraits.autosmelt);
 
         TinkerRegistry.addMaterialStats(soulforgedSteel, new HeadMaterialStats(875, 12.0F, 6.0F, HarvestLevels.OBSIDIAN), new HandleMaterialStats(1.0F, 225), new ExtraMaterialStats(50));
         TinkerRegistry.addMaterialStats(hellfire, new HeadMaterialStats(325, 8.0F, 4.0F, HarvestLevels.DIAMOND), new HandleMaterialStats(0.75F, 75), new ExtraMaterialStats(25));

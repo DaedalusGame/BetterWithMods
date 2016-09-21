@@ -13,9 +13,11 @@ import betterwithmods.client.model.TESRWaterwheel;
 import betterwithmods.client.model.TESRWindmill;
 import betterwithmods.client.render.RenderExtendingRope;
 import betterwithmods.client.render.RenderMiningCharge;
+import betterwithmods.client.render.RenderShearedCreeper;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
+import betterwithmods.entity.EntityShearedCreeper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -68,6 +70,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<EntityDynamite>(manager, BWMItems.dynamite, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityMiningCharge.class, RenderMiningCharge::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityExtendingRope.class, RenderExtendingRope::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityShearedCreeper.class, RenderShearedCreeper::new);
     }
 
     @Override

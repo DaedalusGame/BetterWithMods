@@ -1,20 +1,29 @@
 package betterwithmods.event;
 
-import java.util.Random;
-
 import betterwithmods.BWMItems;
 import betterwithmods.config.BWConfig;
+import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.util.InvUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityRabbit;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.Random;
 
 public class MobDropEvent 
 {
@@ -120,11 +129,33 @@ public class MobDropEvent
 			}
 		}
 	}
-	
+
 	public void addDrop(LivingDropsEvent evt, ItemStack drop)
 	{
 		EntityItem item = new EntityItem(evt.getEntityLiving().worldObj, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
 		item.setDefaultPickupDelay();
 		evt.getDrops().add(item);
+	}
+
+	@SubscribeEvent
+	public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
+		Entity creeper = e.getTarget();
+		if(creeper instanceof EntityCreeper) {
+			if(e.getSide().isServer() && creeper.isEntityAlive()) {
+				InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.creeperOyster));
+				EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
+				creeper.attackEntityFrom(new DamageSource(""),0);
+				copyEntityInfo(creeper,shearedCreeper);
+				e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.HOSTILE, 1, 0.3F);
+				e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.HOSTILE, 1, 1F);
+				creeper.setDead();
+				e.getWorld().spawnEntityInWorld(shearedCreeper);
+			}
+		}
+	}
+
+	public void copyEntityInfo(Entity copyFrom, Entity copyTo) {
+		copyTo.setPositionAndRotation(copyFrom.posX, copyFrom.posY, copyFrom.posZ,copyFrom.rotationYaw,copyFrom.rotationPitch);
+		copyTo.setRotationYawHead(copyFrom.getRotationYawHead());
 	}
 }

@@ -10,10 +10,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.common.util.EnumHelper;
@@ -38,6 +40,7 @@ public final class BWMItems {
 	public static final Item steelPickaxe = new ItemSoulforgedPickaxe().setRegistryName("steel_pickaxe");
 	public static final Item steelShovel = new ItemSoulforgedShovel().setRegistryName("steel_shovel");
 	public static final Item steelSword = new ItemSoulforgedSword().setRegistryName("steel_sword");
+	public static final Item creeperOyster = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON,5,0),1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
 
 	public static void registerItems() {
 		registerItem(material);
@@ -52,6 +55,7 @@ public final class BWMItems {
 		registerItem(steelPickaxe);
 		registerItem(steelShovel);
 		registerItem(steelSword);
+        registerItem(creeperOyster);
 	}
 
 	public static void linkItemModels() {
@@ -67,6 +71,7 @@ public final class BWMItems {
 		setInventoryModel(steelPickaxe);
 		setInventoryModel(steelShovel);
 		setInventoryModel(steelSword);
+        setInventoryModel(creeperOyster);
 	}
 
 	/**

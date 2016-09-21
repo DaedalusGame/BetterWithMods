@@ -1,15 +1,21 @@
 package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
+import betterwithmods.entity.ai.EntityAISearchFood;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -24,6 +30,15 @@ import java.util.Random;
 public class NetherSpawnEvent 
 {
 	private static Random rand = new Random();
+
+	@SubscribeEvent
+	public void addEntityAI(LivingSpawnEvent evt)
+	{
+		EntityLivingBase entity = evt.getEntityLiving();
+		if(entity instanceof EntityAnimal) {
+			((EntityAnimal)entity).tasks.addTask(3, new EntityAISearchFood((EntityAnimal)entity));
+		}
+	}
 
 	@SubscribeEvent
 	public void giveEndermenEndStone(LivingSpawnEvent evt)

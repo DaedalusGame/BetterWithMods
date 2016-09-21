@@ -91,7 +91,7 @@ public final class BWMBlocks {
 		registerBlock(lens);
 		registerBlock(lightSource, null);
 		registerBlock(saw);
-		registerBlock(aesthetic);
+		registerBlock(aesthetic, new ItemBlockMeta(aesthetic));
 		registerBlock(booster);
 		registerBlock(windmillBlock, null);
 		registerBlock(waterwheel, null);

@@ -190,6 +190,10 @@ public final class ItemExt {
 		return buoyancy.get(stack);
 	}
 
+	public static ItemStackMap<Float> getBuoyancyRegistry() {
+		return buoyancy;
+	}
+
 	public static float getWeight(ItemStack stack) {
 		return weights.get(stack);
 	}

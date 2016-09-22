@@ -47,8 +47,8 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInformation() {
     	BWMBlocks.linkBlockModels();
     	BWMItems.linkItemModels();
-        ModelLoader.setCustomStateMapper(BWMBlocks.stokedFlame, new BWStateMapper(BWMBlocks.stokedFlame.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.windmillBlock, new BWStateMapper(BWMBlocks.windmillBlock.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
@@ -59,15 +59,15 @@ public class ClientProxy extends CommonProxy {
     public void registerColors() {
         final BlockColors col = Minecraft.getMinecraft().getBlockColors();
         col.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->
-                state.getBlock() instanceof BlockPlanter ? ((BlockPlanter) state.getBlock()).colorMultiplier(state, worldIn, pos, tintIndex) : -1, new Block[]{BWMBlocks.planter});
+                state.getBlock() instanceof BlockPlanter ? ((BlockPlanter) state.getBlock()).colorMultiplier(state, worldIn, pos, tintIndex) : -1, new Block[]{BWMBlocks.PLANTER});
         final ItemColors itCol = Minecraft.getMinecraft().getItemColors();
         itCol.registerItemColorHandler((stack, tintIndex) ->
-                (stack.getItem() instanceof ItemBlock && stack.getItem() instanceof ItemBlockPlanter) ? ((ItemBlockPlanter) stack.getItem()).getColorFromItemstack(stack, tintIndex) : -1, new Block[]{BWMBlocks.planter});
+                (stack.getItem() instanceof ItemBlock && stack.getItem() instanceof ItemBlockPlanter) ? ((ItemBlockPlanter) stack.getItem()).getColorFromItemstack(stack, tintIndex) : -1, new Block[]{BWMBlocks.PLANTER});
     }
 
     @Override
     public void initRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<EntityDynamite>(manager, BWMItems.dynamite, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<EntityDynamite>(manager, BWMItems.DYNAMITE, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityMiningCharge.class, RenderMiningCharge::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityExtendingRope.class, RenderExtendingRope::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShearedCreeper.class, RenderShearedCreeper::new);

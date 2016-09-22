@@ -1,7 +1,6 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.damagesource.BWDamageSource;
@@ -17,8 +16,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -34,11 +31,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSaw extends BTWBlock implements IMechanicalBlock {
+public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     public static final PropertyBool ISACTIVE = PropertyBool.create("isactive");
 
     public BlockSaw() {
-        super(Material.WOOD, "saw");
+        super(Material.WOOD);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.UP));
@@ -100,7 +97,7 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
-        if (block == BWMBlocks.axle || block == BWMBlocks.handCrank)
+        if (block == BWMBlocks.AXLE || block == BWMBlocks.HAND_CRANK)
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         else
             world.scheduleBlockUpdate(pos, this, tickRate(world) + world.rand.nextInt(6), 5);
@@ -136,11 +133,11 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
                 BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() - i, pos.getZ()).offset(dir);
                 Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
-                if (block == BWMBlocks.aesthetic && blockState.getValue(BlockAesthetic.blockType).getMeta() < 2) {
+                if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.blockType).getMeta() < 2) {
                     source = BWDamageSource.choppingBlock;
                     damage *= 3;
                     if (blockState.getValue(BlockAesthetic.blockType).getMeta() == 0 && unobstructed)
-                        world.setBlockState(pos2, BWMBlocks.aesthetic.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
+                        world.setBlockState(pos2, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
                     break;
                 } else if (!world.isAirBlock(pos2) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock))
                     break;
@@ -235,12 +232,14 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
 
     public void breakSaw(World world, BlockPos pos) {
         InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 4, 30));
-        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 8));
+		/*
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 4, 30));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 8));
+        */
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

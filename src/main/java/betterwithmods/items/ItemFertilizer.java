@@ -46,12 +46,12 @@ public class ItemFertilizer extends Item
     private boolean processBlock(Block block, World world, BlockPos pos)
     {
         if(block == Blocks.FARMLAND) {
-            world.setBlockState(pos, BWMBlocks.fertileFarmland.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
+            world.setBlockState(pos, BWMBlocks.FERTILE_FARMLAND.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
             world.playEvent(2005, pos.up(), 0);
             return true;
         }
-        else if(block == BWMBlocks.planter && block.getMetaFromState(world.getBlockState(pos)) == 1) {
-            world.setBlockState(pos, BWMBlocks.planter.getDefaultState().withProperty(BlockPlanter.TYPE, EnumPlanterType.FERTILE));
+        else if(block == BWMBlocks.PLANTER && block.getMetaFromState(world.getBlockState(pos)) == 1) {
+            world.setBlockState(pos, BWMBlocks.PLANTER.getDefaultState().withProperty(BlockPlanter.TYPE, EnumPlanterType.FERTILE));
             world.playEvent(2005, pos.up(), 0);
             return true;
         }

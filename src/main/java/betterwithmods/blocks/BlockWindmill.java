@@ -47,7 +47,7 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(BWMItems.windmill, 1, state.getValue(AXLEDIR) == 0 ? 2 : 0);
+        return new ItemStack(BWMItems.WINDMILL, 1, state.getValue(AXLEDIR) == 0 ? 2 : 0);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return BWMItems.windmill;
+        return BWMItems.WINDMILL;
     }
 
     @Override
@@ -224,6 +224,6 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
     @Override
     public ItemStack getGenStack(IBlockState state)
     {
-        return state.getValue(AXLEDIR) == 0 ? new ItemStack(BWMItems.windmill, 1, 2) : new ItemStack(BWMItems.windmill, 1, 0);
+        return state.getValue(AXLEDIR) == 0 ? new ItemStack(BWMItems.WINDMILL, 1, 2) : new ItemStack(BWMItems.WINDMILL, 1, 0);
     }
 }

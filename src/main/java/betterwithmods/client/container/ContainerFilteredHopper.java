@@ -1,7 +1,7 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.BlockBTWPane;
-import betterwithmods.blocks.BlockNewBTWPane;
+import betterwithmods.blocks.BlockBWMPane;
+import betterwithmods.blocks.BlockBWMNewPane;
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
@@ -98,7 +98,7 @@ public class ContainerFilteredHopper extends Container
 		if(stack.getItem() instanceof ItemBlock)
 		{
 			Block block = ((ItemBlock)stack.getItem()).getBlock();
-			if(block instanceof BlockLadder || block instanceof BlockTrapDoor || stack.getItem() == Item.getItemFromBlock(Blocks.SOUL_SAND) || stack.getItem() == Item.getItemFromBlock(Blocks.IRON_BARS) || block instanceof BlockBTWPane || block instanceof BlockNewBTWPane)
+			if(block instanceof BlockLadder || block instanceof BlockTrapDoor || stack.getItem() == Item.getItemFromBlock(Blocks.SOUL_SAND) || stack.getItem() == Item.getItemFromBlock(Blocks.IRON_BARS) || block instanceof BlockBWMPane || block instanceof BlockBWMNewPane)
 				return true;
 		}
 		return false;

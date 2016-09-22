@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.TileEntityImmersiveAxle;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
@@ -21,14 +22,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import java.util.Random;
 
-public class BlockImmersiveAxle extends BTWBlock implements IMechanicalBlock,ITileEntityProvider
+public class BlockImmersiveAxle extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyInteger AXLEDIR = PropertyInteger.create("dir", 0, 2);
 
     public BlockImmersiveAxle()
     {
-        super(Material.WOOD,"immersive_axle",ItemBlockImmersive.class);
+        super(Material.WOOD);
         this.setHardness(3.5F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(AXLEDIR, 0));

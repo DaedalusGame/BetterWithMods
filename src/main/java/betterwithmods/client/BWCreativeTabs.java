@@ -14,7 +14,7 @@ public class BWCreativeTabs
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem()
         {
-            return BWMItems.windmill;
+            return BWMItems.WINDMILL;
         }
     };
 }

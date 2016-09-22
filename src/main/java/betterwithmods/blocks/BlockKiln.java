@@ -20,12 +20,12 @@ import net.minecraftforge.fml.common.Loader;
 import java.util.List;
 import java.util.Random;
 
-public class BlockKiln extends BTWBlock
+public class BlockKiln extends BWMBlock
 {
 	public static final PropertyInteger COOK = PropertyInteger.create("cook", 0, 8);
 	public BlockKiln()
 	{
-		super(Material.ROCK, "kiln", null);
+		super(Material.ROCK);
 		this.setTickRandomly(true);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
@@ -50,7 +50,7 @@ public class BlockKiln extends BTWBlock
 		int oldCookTime = getCookCounter(world, pos);
 		BlockPos down = pos.down();
 		BlockPos up = pos.up();
-		if(world.getBlockState(down).getBlock() != BWMBlocks.stokedFlame)
+		if(world.getBlockState(down).getBlock() != BWMBlocks.STOKED_FLAME)
 		{
 			Block block = world.getBlockState(down).getBlock();
 			int meta = block.damageDropped(world.getBlockState(down));
@@ -237,7 +237,7 @@ public class BlockKiln extends BTWBlock
 		{
 			Block block = world.getBlockState(pos).getBlock();
 			
-			if(block == Blocks.BRICK_BLOCK || block == BWMBlocks.kiln)
+			if(block == Blocks.BRICK_BLOCK || block == BWMBlocks.KILN)
 				brickCount++;
 			else if(Loader.isModLoaded("terrafirmacraft") && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")))
 				brickCount++;

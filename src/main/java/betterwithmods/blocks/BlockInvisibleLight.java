@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockInvisibleLight extends BTWBlock
+public class BlockInvisibleLight extends BWMBlock
 {
 	public static final PropertyBool SUNLIGHT = PropertyBool.create("sunlight");
 	public BlockInvisibleLight()
 	{
-		super(Material.AIR, "invisibleLight", null);
+		super(Material.AIR);
 		this.setLightLevel(1.0F);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SUNLIGHT, false).withProperty(DirUtils.FACING, EnumFacing.UP));
@@ -107,7 +107,7 @@ public class BlockInvisibleLight extends BTWBlock
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
 	{
-		if(world.getBlockState(pos).getBlock() == BWMBlocks.lightSource)
+		if(world.getBlockState(pos).getBlock() == BWMBlocks.LIGHT_SOURCE)
 			world.setBlockToAir(pos);
 	}
 	
@@ -178,9 +178,9 @@ public class BlockInvisibleLight extends BTWBlock
 			List<Entity> entity = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
 			if(entity.size() > 0)
 				clear = false;
-			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.lightSource)
+			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE)
 				clear = false;
-			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.lens)
+			else if(world.getBlockState(bPos).getBlock() == BWMBlocks.LENS)
 			{
 				BlockLens lens = (BlockLens)world.getBlockState(bPos).getBlock();
 				return lens.getFacing(world, bPos) == DirUtils.getOpposite(getFacing(world, bPos));

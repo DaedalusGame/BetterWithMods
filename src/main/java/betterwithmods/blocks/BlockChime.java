@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWSounds;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -28,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockChime extends BTWBlock
+public class BlockChime extends BWMBlock implements IMultiVariants
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    public BlockChime(Material material,String name)
+    public BlockChime(Material material)
     {
-        super(material,name,ItemBlockMeta.class);
+        super(material);
 
         this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
@@ -104,7 +105,7 @@ public class BlockChime extends BTWBlock
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
-        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof BlockPane || world.getBlockState(pos.up()).getBlock() instanceof BlockNewBTWPane || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
+        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof BlockPane || world.getBlockState(pos.up()).getBlock() instanceof BlockBWMNewPane || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
     }
 
     @Override

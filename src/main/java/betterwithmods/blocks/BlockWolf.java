@@ -17,11 +17,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockWolf extends BTWBlock
+public class BlockWolf extends BWMBlock
 {
     public BlockWolf()
     {
-        super(Material.CLOTH,"companion_cube");
+        super(Material.CLOTH);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.CLOTH);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.NORTH));

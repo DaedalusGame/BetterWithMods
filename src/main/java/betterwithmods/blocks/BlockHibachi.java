@@ -17,13 +17,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
 
-public class BlockHibachi extends BTWBlock
+public class BlockHibachi extends BWMBlock
 {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 	
 	public BlockHibachi()
 	{
-		super(Material.ROCK, "hibachi");
+		super(Material.ROCK);
 		this.setTickRandomly(true);
 		this.setHardness(3.5F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
@@ -53,7 +53,7 @@ public class BlockHibachi extends BTWBlock
 			else
 			{
 				Block above = world.getBlockState(pos.up()).getBlock();
-				if(above != Blocks.FIRE && above != BWMBlocks.stokedFlame)
+				if(above != Blocks.FIRE && above != BWMBlocks.STOKED_FLAME)
 				{
 					if(shouldIgnite(world, pos.up()))
 					{
@@ -69,7 +69,7 @@ public class BlockHibachi extends BTWBlock
 		{
 			Block above = world.getBlockState(pos.up()).getBlock();
 			
-			if(above == Blocks.FIRE || above == BWMBlocks.stokedFlame)
+			if(above == Blocks.FIRE || above == BWMBlocks.STOKED_FLAME)
 				world.setBlockToAir(pos);
 		}
 	}
@@ -96,7 +96,7 @@ public class BlockHibachi extends BTWBlock
 		{
 			Block block = world.getBlockState(pos).getBlock();
 			
-			if(block != Blocks.FIRE && block != BWMBlocks.stokedFlame)
+			if(block != Blocks.FIRE && block != BWMBlocks.STOKED_FLAME)
 			{
 				if(shouldIgnite(world, pos.up()))
 					return false;
@@ -142,7 +142,7 @@ public class BlockHibachi extends BTWBlock
 		
 		world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 		
-		boolean isFire = world.getBlockState(pos.up()).getBlock() == Blocks.FIRE || world.getBlockState(pos.up()).getBlock() == BWMBlocks.stokedFlame;
+		boolean isFire = world.getBlockState(pos.up()).getBlock() == Blocks.FIRE || world.getBlockState(pos.up()).getBlock() == BWMBlocks.STOKED_FLAME;
 		
 		if(isFire)
 			world.setBlockToAir(pos.up());

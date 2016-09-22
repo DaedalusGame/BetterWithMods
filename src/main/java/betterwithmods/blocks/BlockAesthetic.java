@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,13 +19,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockAesthetic extends BTWBlock
+public class BlockAesthetic extends BWMBlock implements IMultiVariants
 {
 	public static final PropertyEnum<BlockAesthetic.EnumType> blockType = PropertyEnum.create("blocktype", BlockAesthetic.EnumType.class);
 	//Chopping Block, Chopping Block(dirty), Steel block, Hellfire block, Rope block, Flint block, Barrel (tile entity?) (6 - 11 subtypes)
 	public BlockAesthetic()
 	{
-		super(Material.ROCK, "aesthetic", ItemBlockMeta.class);
+		super(Material.ROCK);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));

@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMItems;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,13 +35,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockPlanter extends BTWBlock
+public class BlockPlanter extends BWMBlock implements IMultiVariants
 {
 	public static final PropertyEnum<EnumPlanterType> TYPE = PropertyEnum.create("plantertype", EnumPlanterType.class);
 
 	public BlockPlanter()
 	{
-		super(Material.ROCK, "planter", ItemBlockPlanter.class);
+		super(Material.ROCK);
 		this.setTickRandomly(true);
 		this.setHardness(1.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumPlanterType.EMPTY));
@@ -85,7 +86,7 @@ public class BlockPlanter extends BTWBlock
 			if(item != null) {
 				if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
 					return true;
-				else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.fertilizer))
+				else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.FERTILIZER))
 					return true;
 				else if(meta == 2 && item.getItem() instanceof ItemHoe)
 					return true;

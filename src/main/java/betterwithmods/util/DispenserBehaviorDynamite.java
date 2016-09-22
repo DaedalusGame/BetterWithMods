@@ -14,7 +14,7 @@ public class DispenserBehaviorDynamite extends BehaviorProjectileDispense
 	@Override
 	protected IProjectile getProjectileEntity(World world, IPosition pos, ItemStack stack)
 	{
-		return new EntityDynamite(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BWMItems.dynamite, 1));
+		return new EntityDynamite(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BWMItems.DYNAMITE, 1));
 	}
 
 }

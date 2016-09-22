@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -27,12 +28,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBTWPane extends BTWBlock {
+public class BlockBWMPane extends BWMBlock implements IMultiVariants{
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
 
-	public BlockBTWPane()
+	public BlockBWMPane()
 	{
-		super(Material.WOOD,"pane",ItemBlockPane.class);
+		super(Material.WOOD);
 		this.setHardness(2.0F);
 		this.setDefaultState(getDefaultState().withProperty(TYPES, EnumPaneType.GRATE));
 		this.setSoundType(SoundType.WOOD);
@@ -132,10 +133,10 @@ public class BlockBTWPane extends BTWBlock {
 	{
 		switch(state.getValue(TYPES))
 		{
-		case SLATS: return Item.getItemFromBlock(BWMBlocks.slats);
+		case SLATS: return Item.getItemFromBlock(BWMBlocks.SLATS);
 		case WICKER: return Item.getItemFromBlock(this);
 		default:
-			return Item.getItemFromBlock(BWMBlocks.grate);
+			return Item.getItemFromBlock(BWMBlocks.GRATE);
 		}
 	}
 	
@@ -158,7 +159,7 @@ public class BlockBTWPane extends BTWBlock {
 	{
 		BlockPos neighbor = pos.offset(dir);
 		Block block = world.getBlockState(neighbor).getBlock();
-		return block instanceof BlockBTWPane;
+		return block instanceof BlockBWMPane;
 	}
 	
 	public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir)

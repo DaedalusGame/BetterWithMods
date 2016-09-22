@@ -35,7 +35,7 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
 
-	public static final Block PLATFORM = BWMBlocks.platform;
+	public static final Block PLATFORM = BWMBlocks.PLATFORM;
 
 	private EntityExtendingRope rope;
 	private NBTTagCompound ropeTag = null;
@@ -120,8 +120,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 			if (takeRope(false)) {
 				BlockPos newPos = BlockRope.getLowestRopeBlock(worldObj, pos).down();
 				IBlockState state = worldObj.getBlockState(newPos);
-				boolean flag = !isMoving && state.getBlock() == BWMBlocks.anchor
-						&& ((BlockAnchor) BWMBlocks.anchor).getFacingFromBlockState(state) == EnumFacing.UP;
+				boolean flag = !isMoving && state.getBlock() == BWMBlocks.ANCHOR
+						&& ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
 				if ((worldObj.isAirBlock(newPos) || state.getBlock().isReplaceable(worldObj, newPos) || flag)
 						&& newPos.up().getY() > 0) {
 					return true;
@@ -134,8 +134,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	private void goUp() {
 		BlockPos lowest = BlockRope.getLowestRopeBlock(worldObj, pos);
 		IBlockState state = worldObj.getBlockState(lowest.down());
-		boolean flag = state.getBlock() == BWMBlocks.anchor
-				&& ((BlockAnchor) BWMBlocks.anchor).getFacingFromBlockState(state) == EnumFacing.UP;
+		boolean flag = state.getBlock() == BWMBlocks.ANCHOR
+				&& ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
 		rope = new EntityExtendingRope(worldObj, pos, lowest, lowest.up().getY());
 		if (!flag || movePlatform(lowest.down(), true)) {
 			worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
@@ -151,8 +151,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	private void goDown() {
 		BlockPos newPos = BlockRope.getLowestRopeBlock(worldObj, pos).down();
 		IBlockState state = worldObj.getBlockState(newPos);
-		boolean flag = state.getBlock() == BWMBlocks.anchor
-				&& ((BlockAnchor) BWMBlocks.anchor).getFacingFromBlockState(state) == EnumFacing.UP;
+		boolean flag = state.getBlock() == BWMBlocks.ANCHOR
+				&& ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
 		rope = new EntityExtendingRope(worldObj, pos, newPos.up(), newPos.getY());
 		if (!flag || movePlatform(newPos, false)) {
 			worldObj.spawnEntityInWorld(rope);
@@ -167,7 +167,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
 	private boolean movePlatform(BlockPos anchor, boolean up) {
 		IBlockState state = worldObj.getBlockState(anchor);
-		if (state.getBlock() != BWMBlocks.anchor)
+		if (state.getBlock() != BWMBlocks.ANCHOR)
 			return false;
 
 		HashSet<BlockPos> platformBlocks = new HashSet<>();
@@ -296,7 +296,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	private boolean takeRope(boolean flag) {
 		for (int i = 0; i < 4; i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null && stack.getItem() == Item.getItemFromBlock(BWMBlocks.rope) && stack.stackSize > 0) {
+			if (stack != null && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.stackSize > 0) {
 				if (flag) {
 					stack.stackSize--;
 					if (stack.stackSize < 1) {
@@ -313,10 +313,10 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 	private boolean putRope(boolean flag) {
 		for (int i = 0; i < 4; i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack == null || stack.getItem() == Item.getItemFromBlock(BWMBlocks.rope) && stack.stackSize < 64) {
+			if (stack == null || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.stackSize < 64) {
 				if (flag) {
 					if (stack == null) {
-						inventory.setStackInSlot(i, stack = new ItemStack(BWMBlocks.rope, 1));
+						inventory.setStackInSlot(i, stack = new ItemStack(BWMBlocks.ROPE, 1));
 					} else {
 						stack.stackSize++;
 					}
@@ -334,7 +334,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 		if (!up) {
 			if ((worldObj.isAirBlock(ropePos) || state.getBlock().isReplaceable(worldObj, ropePos)) && takeRope(true)) {
 				worldObj.playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.4F, 1.0F);
-				worldObj.setBlockState(ropePos, BWMBlocks.rope.getDefaultState());
+				worldObj.setBlockState(ropePos, BWMBlocks.ROPE.getDefaultState());
 			}
 		}
 		if ((theRope.getUp() ? canGoUp() : canGoDown(true)) && !theRope.isPathBlocked()) {

@@ -247,7 +247,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 
 	private double getBlockStateHeight(IBlockState blockState) {
 		return (blockState == null ? 1
-				: (blockState.getBlock() == BWMBlocks.anchor ? 0.375F
+				: (blockState.getBlock() == BWMBlocks.ANCHOR ? 0.375F
 						: (blockState.getBlock() instanceof BlockRailBase ? 0 : 1)));
 	}
 
@@ -329,7 +329,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 	public boolean isPathBlocked() {
 		HashSet<BlockPos> blocked = new HashSet<>();
 		blocks.forEach((vec, state) -> {
-			if (blocked.isEmpty() && !up || state.getBlock() != BWMBlocks.anchor) {
+			if (blocked.isEmpty() && !up || state.getBlock() != BWMBlocks.ANCHOR) {
 				BlockPos pos = this.pulley.down(this.pulley.getY() - targetY).add(vec);
 				if (up)
 					pos = pos.up();

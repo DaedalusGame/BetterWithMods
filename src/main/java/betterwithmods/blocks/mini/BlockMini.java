@@ -1,6 +1,6 @@
 package betterwithmods.blocks.mini;
 
-import betterwithmods.blocks.BTWBlock;
+import betterwithmods.blocks.BWMBlock;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,13 +18,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockMini extends BTWBlock
+public abstract class BlockMini extends BWMBlock
 {
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
     public static final PropertyInteger ORIENTATION = createOrientation();
@@ -33,12 +32,9 @@ public abstract class BlockMini extends BTWBlock
     {
         return PropertyInteger.create("orientation", 0, 5);
     }
-    static {
-        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
-    }
     public BlockMini(Material material, String name)
     {
-        super(material, name,ItemBlockMini.class);
+        super(material);
         //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         this.setSoundType(material == Material.WOOD ? SoundType.WOOD : SoundType.STONE);
     }

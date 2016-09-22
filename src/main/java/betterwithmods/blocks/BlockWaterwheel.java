@@ -38,7 +38,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		return new ItemStack(BWMItems.windmill, 1, 1);
+		return new ItemStack(BWMItems.WINDMILL, 1, 1);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return BWMItems.windmill;
+		return BWMItems.WINDMILL;
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 
 	@Override
 	public ItemStack getGenStack(IBlockState state) {
-		return new ItemStack(BWMItems.windmill, 1, 1);
+		return new ItemStack(BWMItems.WINDMILL, 1, 1);
 	}
 
 }

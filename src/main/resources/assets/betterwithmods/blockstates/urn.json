@@ -23,7 +23,7 @@
 		"urntype":
 		{
 			"void": {"textures": {"side": "betterwithmods:blocks/soulforged_steel"}},
-			"filled": {"textures": {"side": "betterwithmods:blocks/soulforged_steel"}},
+			"full": {"textures": {"side": "betterwithmods:blocks/soulforged_steel"}},
 			"87": {},
 			"75": {},
 			"62": {},

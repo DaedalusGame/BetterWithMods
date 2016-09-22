@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -25,12 +26,12 @@ import java.util.Random;
  * @author mrebhan
  */
 
-public class BlockPump extends BTWBlock implements IMechanicalBlock {
+public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVariants {
 
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
 	public BlockPump() {
-		super(Material.WOOD, "screw_pump");
+		super(Material.WOOD);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setTickRandomly(true);
 		this.setHardness(3.5F);
@@ -175,7 +176,7 @@ public class BlockPump extends BTWBlock implements IMechanicalBlock {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (isMechanicalOnFromState(state)) {
 			if (world.isAirBlock(pos.up()) && hasWaterToPump(world, pos)) {
-				world.setBlockState(pos.up(), BWMBlocks.tempLiquidSource.getDefaultState());
+				world.setBlockState(pos.up(), BWMBlocks.TEMP_LIQUID_SOURCE.getDefaultState());
 			}
 		}
 

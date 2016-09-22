@@ -1,27 +1,28 @@
 package betterwithmods.blocks;
 
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BTWBlock extends Block implements IBTWBlock {
-    public BTWBlock(Material material, String name, Class<? extends ItemBlock> itemBlock) {
+public abstract class BWMBlock extends Block implements IBWMBlock {
+    public BWMBlock(Material material) {
         super(material);
         setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
-    public BTWBlock(Material material, String name) {
-        this(material, name, ItemBlock.class);
+    /*
+    @Override
+    public String[] getVariants() {
+    	return new String[]{"inventory"};
     }
-
-
+    */
+    
     @Override
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
         // TODO Auto-generated method stub
@@ -69,6 +70,4 @@ public abstract class BTWBlock extends Block implements IBTWBlock {
         // TODO Auto-generated method stub
 
     }
-
-
 }

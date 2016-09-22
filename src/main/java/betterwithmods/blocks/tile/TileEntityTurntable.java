@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.BWMBlocks;
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.util.DirUtils;
@@ -191,7 +191,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 		if(!potteryRotated)
 			potteryRotation = 0;
 		
-		worldObj.notifyBlockOfStateChange(pos, BWMBlocks.singleMachines);
+		worldObj.notifyBlockOfStateChange(pos, BWMBlocks.SINGLE_MACHINES);
 	}
 	
 	public byte getTimerPos()
@@ -215,9 +215,9 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 	{
 		Block target = worldObj.getBlockState(pos).getBlock();
 		
-		if(target instanceof IBTWBlock)
+		if(target instanceof IBWMBlock)
 		{
-			return ((IBTWBlock)target).canRotateHorizontally(worldObj, pos);
+			return ((IBWMBlock)target).canRotateHorizontally(worldObj, pos);
 		}
 		if(target == Blocks.GLASS || target == Blocks.STAINED_GLASS)
 			return true;
@@ -239,9 +239,9 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 	{
 		Block target = worldObj.getBlockState(pos).getBlock();
 		
-		if(target instanceof IBTWBlock)
+		if(target instanceof IBWMBlock)
 		{
-			return ((IBTWBlock)target).canRotateVertically(worldObj, pos);
+			return ((IBWMBlock)target).canRotateVertically(worldObj, pos);
 		}
 		if(target == Blocks.GLASS)
 			return true;
@@ -383,8 +383,8 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 
 		if(TurntableInteraction.contains(state) && TurntableInteraction.getProduct(state) != null)
 		{
-			if(target instanceof IBTWBlock) {
-				IBTWBlock block = (IBTWBlock)target;
+			if(target instanceof IBWMBlock) {
+				IBWMBlock block = (IBWMBlock)target;
 				if(block.canRotateOnTurntable(worldObj, pos))
 					block.rotateAroundYAxis(worldObj, pos, reverse);
 			}
@@ -393,9 +393,9 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 			rotateCraftable(state, TurntableInteraction.getProduct(state), pos, reverse);
 			this.potteryRotated = true;
 		}
-		else if(target instanceof IBTWBlock)
+		else if(target instanceof IBWMBlock)
 		{
-			IBTWBlock block = (IBTWBlock)target;
+			IBWMBlock block = (IBWMBlock)target;
 			
 			if(block.canRotateOnTurntable(worldObj, pos))
 				block.rotateAroundYAxis(worldObj, pos, reverse);

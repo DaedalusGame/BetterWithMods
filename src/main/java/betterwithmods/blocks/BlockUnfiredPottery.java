@@ -21,13 +21,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockUnfiredPottery extends BTWBlock
+import betterwithmods.api.block.IMultiVariants;
+
+public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants
 {
 	public static final PropertyEnum<EnumPotteryType> POTTERYTYPE = PropertyEnum.create("potterytype", BlockUnfiredPottery.EnumPotteryType.class);
 	
 	public BlockUnfiredPottery()
 	{
-		super(Material.CLAY, "unfired_pottery",ItemBlockMeta.class);
+		super(Material.CLAY);
 		this.setSoundType(SoundType.GROUND);
 		this.setHardness(0.5F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(POTTERYTYPE, EnumPotteryType.CRUCIBLE));

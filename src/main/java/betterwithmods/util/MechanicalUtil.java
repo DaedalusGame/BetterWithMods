@@ -62,7 +62,7 @@ public class MechanicalUtil
 		BlockPos offset = pos.offset(dir);
 		Block block = world.getBlockState(offset).getBlock();
 		
-		if(block == BWMBlocks.handCrank)
+		if(block == BWMBlocks.HAND_CRANK)
 		{
 			IMechanicalBlock mech = (IMechanicalBlock)block;
 			

@@ -119,7 +119,7 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 	public boolean isMasterValid()
 	{
 		boolean valid = true;
-		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.windmillBlock)
+		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK)
 		{
 			for(int i = -3; i < 4; i++)
 			{
@@ -161,16 +161,16 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 
 	private void invalidateWindmill()
 	{
-		this.worldObj.setBlockState(this.pos, BWMBlocks.windmillBlock.getDefaultState());
+		this.worldObj.setBlockState(this.pos, BWMBlocks.WINDMILL_BLOCK.getDefaultState());
 		for(int i = -3; i < 4; i++)
 		{
 			BlockPos pos = this.pos.add(0, i, 0);
 			if(worldObj.getBlockState(pos).getBlock() instanceof BlockAxle)
-				this.worldObj.setBlockState(pos, BWMBlocks.axle.getDefaultState());
+				this.worldObj.setBlockState(pos, BWMBlocks.AXLE.getDefaultState());
 		}
 		if(!this.worldObj.isRemote)
-			InvUtils.ejectStackWithOffset(worldObj, pos, new ItemStack(BWMItems.windmill, 1, 2));
-		this.worldObj.setBlockState(this.pos, BWMBlocks.axle.getDefaultState());
+			InvUtils.ejectStackWithOffset(worldObj, pos, new ItemStack(BWMItems.WINDMILL, 1, 2));
+		this.worldObj.setBlockState(this.pos, BWMBlocks.AXLE.getDefaultState());
 	}
 	
 	@Override

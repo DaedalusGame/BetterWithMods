@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.*;
@@ -25,13 +26,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockNewBTWPane extends BTWBlock
+public class BlockBWMNewPane extends BWMBlock implements IMultiVariants
 {
 	public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
-	private static String[] names = {"grate", "slats"};
-	public BlockNewBTWPane(int typeNum)
+	public BlockBWMNewPane()
 	{
-		super(Material.WOOD,names[typeNum].toLowerCase(),ItemBlockPane.class);
+		super(Material.WOOD);
 		this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPES, EnumPaneType.OAK).withProperty(DirUtils.NORTH, false).withProperty(DirUtils.EAST, false).withProperty(DirUtils.SOUTH, false).withProperty(DirUtils.WEST, false));

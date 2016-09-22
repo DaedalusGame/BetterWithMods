@@ -6,9 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public interface IBTWBlock {
-    default int getMaxMeta() { return 1; }
-    default String[] getVariants() { return new String[]{"inventory"}; }
+public interface IBWMBlock {
+    //public String[] getVariants();
 
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos);
 

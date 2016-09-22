@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockFurniture extends BTWBlock
+public abstract class BlockFurniture extends BWMBlock
 {
     public static final PropertyBool SUPPORTED = PropertyBool.create("supported");
     protected static final AxisAlignedBB BENCH_AABB = new AxisAlignedBB(0.0D, 0.375D, 0.0D, 1.0D, 0.5D, 1.0D);
@@ -27,7 +27,7 @@ public abstract class BlockFurniture extends BTWBlock
 
     public BlockFurniture(Material material,String name)
     {
-        super(material,name,ItemBlockMeta.class);
+        super(material);
         this.setHardness(3.5F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
     }

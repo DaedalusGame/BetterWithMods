@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
 
-public class BlockAnchor extends BTWBlock
+public class BlockAnchor extends BWMBlock
 {
 	public static final PropertyBool TOPCONNECT = PropertyBool.create("topconnect");
 	public static final PropertyBool BOTTOMCONNECT = PropertyBool.create("bottomconnect");
@@ -30,7 +30,7 @@ public class BlockAnchor extends BTWBlock
 	
 	public BlockAnchor()
 	{
-		super(Material.ROCK, "anchor");
+		super(Material.ROCK);
 		this.setHardness(2.0F);
 	}
 	
@@ -90,17 +90,17 @@ public class BlockAnchor extends BTWBlock
 			if(stack.getItem() instanceof ItemBlock)
 			{
 				Block block = ((ItemBlock)stack.getItem()).getBlock();
-				if(block == BWMBlocks.rope)
+				if(block == BWMBlocks.ROPE)
 				{
 					if(!world.isRemote)
 					{
-						if(world.getBlockState(down).getBlock() == BWMBlocks.rope)
+						if(world.getBlockState(down).getBlock() == BWMBlocks.ROPE)
 						{
 							BlockRope.placeRopeUnder(stack, world, down, player);
 						}
 						else if(world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down))
 						{
-							world.setBlockState(down, BWMBlocks.rope.getDefaultState());
+							world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
 							if(!player.capabilities.isCreativeMode)
 								stack.stackSize--;
 						}
@@ -148,7 +148,7 @@ public class BlockAnchor extends BTWBlock
 		for(int i = pos.getY() - 1; i >= 0; i--)
 		{
 			BlockPos pos2 = new BlockPos(pos.getX(), i, pos.getZ());
-			if(world.getBlockState(pos2).getBlock() != BWMBlocks.rope && world.getBlockState(pos2.up()).getBlock() == BWMBlocks.rope)
+			if(world.getBlockState(pos2).getBlock() != BWMBlocks.ROPE && world.getBlockState(pos2.up()).getBlock() == BWMBlocks.ROPE)
 			{
 				if(!player.capabilities.isCreativeMode)
 					addRopeToInv(world, pos, player);
@@ -156,14 +156,14 @@ public class BlockAnchor extends BTWBlock
 				break;
 			}
 
-			else if(world.getBlockState(pos2).getBlock() != BWMBlocks.rope)
+			else if(world.getBlockState(pos2).getBlock() != BWMBlocks.ROPE)
 				break;
 		}
 	}
 	
 	private void addRopeToInv(World world, BlockPos pos, EntityPlayer player)
 	{
-		ItemStack rope = new ItemStack(BWMBlocks.rope);
+		ItemStack rope = new ItemStack(BWMBlocks.ROPE);
 		
 		if(player.inventory.addItemStackToInventory(rope))
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -180,7 +180,7 @@ public class BlockAnchor extends BTWBlock
 	private boolean isRope(IBlockAccess world, BlockPos origin, EnumFacing facing)
 	{
 		BlockPos pos = origin.offset(facing);
-		return world.getBlockState(pos).getBlock() == BWMBlocks.rope;
+		return world.getBlockState(pos).getBlock() == BWMBlocks.ROPE;
 	}
 	
 	private boolean isAnchor(IBlockAccess world, BlockPos origin, EnumFacing facing)
@@ -192,7 +192,7 @@ public class BlockAnchor extends BTWBlock
 	private boolean isPulley(IBlockAccess world, BlockPos origin, EnumFacing facing)
 	{
 		BlockPos pos = origin.offset(facing);
-		return world.getBlockState(pos).getBlock() == BWMBlocks.singleMachines && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == EnumType.PULLEY;
+		return world.getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == EnumType.PULLEY;
 	}
 	
 	@Override

@@ -158,7 +158,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
             if (this.inventory.getStackInSlot(i) != null) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
-                    if (item == Item.getItemFromBlock(BWMBlocks.wolf))
+                    if (item == Item.getItemFromBlock(BWMBlocks.WOLF))
                         return true;
                 }
             }
@@ -176,7 +176,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
                     ItemStack stack = ((ItemStack) ingredients.get(i)).copy();
                     if (stack != null) {
                         Item item = stack.getItem();
-                        if (item == Item.getItemFromBlock(BWMBlocks.wolf)) {
+                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
                             this.worldObj.playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
                             break;
                         }
@@ -211,7 +211,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
                     ItemStack stack = ((ItemStack) ingredients.get(i)).copy();
                     if (stack != null) {
                         Item item = stack.getItem();
-                        if (item == Item.getItemFromBlock(BWMBlocks.wolf)) {
+                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
                             newGrindType = 3;
                             break;
                         }

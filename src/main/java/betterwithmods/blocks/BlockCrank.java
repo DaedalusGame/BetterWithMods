@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockCrank extends BTWBlock implements IMechanicalBlock
+public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVariants
 {
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
 	private static final int TICK_RATE = 3;
@@ -33,7 +34,7 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	public static final float BASE_HEIGHT = 0.25F;
 	public BlockCrank()
 	{
-		super(Material.ROCK, "hand_crank");
+		super(Material.ROCK);
 		this.setHardness(0.5F);
 		this.setSoundType(SoundType.WOOD);
 		this.setTickRandomly(true);
@@ -139,7 +140,7 @@ public class BlockCrank extends BTWBlock implements IMechanicalBlock
 	{
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
 		//world.playAuxSFX(2235, x, y, z, 0);
 		world.setBlockToAir(pos);
 	}

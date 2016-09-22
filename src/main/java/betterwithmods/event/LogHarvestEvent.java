@@ -31,7 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-import static betterwithmods.BWMItems.bark;
+import static betterwithmods.BWMItems.BARK;
 
 public class LogHarvestEvent {
     @SubscribeEvent
@@ -46,14 +46,14 @@ public class LogHarvestEvent {
             if (playerStack != null && playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) {
                 if (block == Blocks.LOG) {
                     IBlockState state = world.getBlockState(pos);
-                    IBlockState dbl = BWMBlocks.debarkedOld.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));
+                    IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));
                     InvUtils.ejectStackWithOffset(world, playerPos, ((IDebarkable) dbl.getBlock()).getBark(dbl));
                     world.setBlockState(pos, dbl);
                     world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 0.5F, 2.5F);
                     playerStack.damageItem(1, player);
                 } else if (block == Blocks.LOG2) {
                     IBlockState state = world.getBlockState(pos);
-                    IBlockState dbl = BWMBlocks.debarkedOld.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockNewLog.VARIANT, state.getValue(BlockNewLog.VARIANT));
+                    IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockNewLog.VARIANT, state.getValue(BlockNewLog.VARIANT));
                     InvUtils.ejectStackWithOffset(world, playerPos, ((IDebarkable) dbl.getBlock()).getBark(dbl));
                     world.setBlockState(pos, dbl);
                     world.playSound(null, pos, dbl.getBlock().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -61,8 +61,8 @@ public class LogHarvestEvent {
                 } else {
                     IBlockState state = world.getBlockState(pos);
                     if (SawInteraction.contains(block, block.getMetaFromState(state)) && InvUtils.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
-                        InvUtils.ejectStackWithOffset(world, playerPos, new ItemStack(bark, 1, 0));
-                        IBlockState dbl = BWMBlocks.debarkedOld.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+                        InvUtils.ejectStackWithOffset(world, playerPos, new ItemStack(BARK, 1, 0));
+                        IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
                         world.setBlockState(pos, dbl);
                         world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 0.5F, 2.5F);
                         playerStack.damageItem(1, player);
@@ -113,12 +113,12 @@ public class LogHarvestEvent {
                                     int plankStack = (planks.stackSize / 2) + (fort ? world.rand.nextInt(2) : 0);
                                     planks.stackSize = plankStack;
                                     int barkStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack bark = new ItemStack(BWMItems.bark, barkStack, 0);
+                                    ItemStack bark = new ItemStack(BWMItems.BARK, barkStack, 0);
                                     barkStack = fort ? outputs.get(1).stackSize + world.rand.nextInt(fortune) : outputs.get(1).stackSize;
 
                                     bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack sawdust = new ItemStack(BWMItems.material, sawdustStack, 22);
+                                    ItemStack sawdust = new ItemStack(BWMItems.MATERIAL, sawdustStack, 22);
                                     newOutputs.add(planks);
                                     newOutputs.add(bark);
                                     newOutputs.add(sawdust);

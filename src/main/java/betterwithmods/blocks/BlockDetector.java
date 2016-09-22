@@ -24,12 +24,12 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockDetector extends BTWBlock
+public class BlockDetector extends BWMBlock
 {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	public BlockDetector()
 	{
-		super(Material.ROCK, "detector");
+		super(Material.ROCK);
 		this.setHardness(3.5F);
 		this.setSoundType(SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
@@ -211,13 +211,13 @@ public class BlockDetector extends BTWBlock
 			return true;
 		}
 
-		if(target == BWMBlocks.lens)
+		if(target == BWMBlocks.LENS)
 		{
 			BlockLens lens = (BlockLens)target;
 			if(lens.getFacing(world, offset) == DirUtils.getOpposite(getFacing(world, pos)) && lens.isLit(world, offset))
 				return true;
 		}
-		else if(world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.platform)
+		else if(world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM)
 			return true;
 		else if(!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset))
 		{
@@ -252,7 +252,7 @@ public class BlockDetector extends BTWBlock
 			{
 				return true;
 			}
-			else if(world.getBlockState(offset).getBlock() == BWMBlocks.lightSource && ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset) == getFacing(world, pos))
+			else if(world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset) == getFacing(world, pos))
 			{
 				return true;
 			}

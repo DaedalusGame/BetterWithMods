@@ -14,13 +14,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
 
-public class BlockRope extends BTWBlock
+public class BlockRope extends BWMBlock
 {
 	public static final float width = 0.125F;
 	
 	public BlockRope()
 	{
-		super(Material.CIRCUITS, "rope");
+		super(Material.CIRCUITS);
 		setSoundType(SoundType.PLANT);
 		this.setHardness(0.5F);
 	}
@@ -38,14 +38,14 @@ public class BlockRope extends BTWBlock
 		
 		boolean supported = false;
 		
-		if (blockAbove == BWMBlocks.anchor) {
-			EnumFacing facing = ((BlockAnchor)BWMBlocks.anchor).getFacing(world, pos.up());
+		if (blockAbove == BWMBlocks.ANCHOR) {
+			EnumFacing facing = ((BlockAnchor)BWMBlocks.ANCHOR).getFacing(world, pos.up());
 			supported = facing != EnumFacing.UP;
 		}
 		if (blockAbove == this) {
 			supported = true;
 		}
-		if (blockAbove == BWMBlocks.singleMachines) {
+		if (blockAbove == BWMBlocks.SINGLE_MACHINES) {
 			if (world.getBlockState(pos.up()).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.PULLEY) {
 				supported = true;
 			}
@@ -59,8 +59,8 @@ public class BlockRope extends BTWBlock
 		{
 			BlockPos bp = getLowestRopeBlock(world, pos).down();
 			Block block = world.getBlockState(bp).getBlock();
-			if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.rope.getDefaultState().getBlock()).canBlockStay(world, bp)) {
-				world.setBlockState(bp, BWMBlocks.rope.getDefaultState());
+			if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.ROPE.getDefaultState().getBlock()).canBlockStay(world, bp)) {
+				world.setBlockState(bp, BWMBlocks.ROPE.getDefaultState());
 				if(player != null && !player.capabilities.isCreativeMode) // if this is placed by a pulley, let the pulley manage the stack size
 					stack.stackSize--;
 				return true;
@@ -73,7 +73,7 @@ public class BlockRope extends BTWBlock
 		if (world != null && pos != null) {
 			BlockPos down = pos.down();
 			Block below = world.getBlockState(down).getBlock();
-			if (below == BWMBlocks.rope) {
+			if (below == BWMBlocks.ROPE) {
 				return getLowestRopeBlock(world, down);
 			} else {
 				return pos;

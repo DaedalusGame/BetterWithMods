@@ -38,7 +38,7 @@ public class BWMJEIPlugin extends BlankModPlugin
         reg.addRecipes(JEIRecipeRegistry.getSawRecipes());
         reg.addRecipes(JEIRecipeRegistry.getKilnRecipes());
 
-        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.saw),"bwm.saw");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SAW),"bwm.saw");
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, "bwm.cauldron", "bwm.cauldron.stoked");
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, "bwm.crucible", "bwm.crucible.stoked");
         reg.addRecipeClickArea(GuiMill.class, 81, 19, 14, 14, "bwm.mill");

@@ -46,7 +46,7 @@ public class BlockFireStoked extends BlockFire
 		BlockPos below = pos.down();
 		Block belowBlock = world.getBlockState(below).getBlock();
 		
-		if(belowBlock == BWMBlocks.hibachi)
+		if(belowBlock == BWMBlocks.HIBACHI)
 		{
 			if(!belowBlock.isFireSource(world, below, EnumFacing.UP))
 				world.setBlockToAir(pos);
@@ -59,11 +59,11 @@ public class BlockFireStoked extends BlockFire
 		BlockPos above = pos.up();
 		if(world.getBlockState(above).getBlock() == Blocks.BRICK_BLOCK) {
 			if(this.isValidKiln(world, above))
-				world.setBlockState(above, BWMBlocks.kiln.getDefaultState());
+				world.setBlockState(above, BWMBlocks.KILN.getDefaultState());
 		}
 		else if(Loader.isModLoaded("terrafirmacraft") && world.getBlockState(above).getBlock() == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))) {
 			if(this.isValidKiln(world, above))
-				world.setBlockState(above, BWMBlocks.kiln.getDefaultState());
+				world.setBlockState(above, BWMBlocks.KILN.getDefaultState());
 		}
 		
 		int meta = world.getBlockState(pos).getValue(AGE);

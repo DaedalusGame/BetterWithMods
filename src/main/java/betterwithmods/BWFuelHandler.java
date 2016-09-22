@@ -12,9 +12,9 @@ public class BWFuelHandler implements IFuelHandler
 	{
 		Item item = fuel.getItem();
 		int meta = fuel.getItemDamage();
-		if(item == BWMItems.material && meta == 1)
+		if(item == BWMItems.MATERIAL && meta == 1)
 			return 3200;
-		else if(item == BWMItems.bark)
+		else if(item == BWMItems.BARK)
 			return 100;
 		return 0;
 	}

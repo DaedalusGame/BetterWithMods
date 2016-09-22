@@ -7,40 +7,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import betterwithmods.BWMod;
+import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 
-public class ItemBark extends Item implements ITannin, IBWMItem
+public class ItemBark extends Item implements IMultiLocations
 {
-
 	public ItemBark()
 	{
 		super();
     	this.setCreativeTab(BWCreativeTabs.BWTAB);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
-
 	}
 
 	@Override
-	public int getMaxMeta() {
-		return BlockPlanks.EnumType.values().length;
-	}
-
-	@Override
-	public String getLocation(int meta) {
-		return BWMod.MODID + ":bark_" + BlockPlanks.EnumType.byMetadata(meta).getName();
+	public String[] getLocations() {
+		ArrayList<String> locations = new ArrayList<>();
+		for(BlockPlanks.EnumType enumType : BlockPlanks.EnumType.values()) {
+			locations.add("bark_" + enumType.getName());
+		}
+		return locations.toArray(new String[locations.size()]);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
-		for(int i = 0; i < 6; i++)
-		{
-			list.add(new ItemStack(item, 1, i));
+		for(BlockPlanks.EnumType enumType : BlockPlanks.EnumType.values()) {
+			list.add(new ItemStack(item, 1, enumType.getMetadata()));
 		}
 	}
 	
@@ -50,23 +47,28 @@ public class ItemBark extends Item implements ITannin, IBWMItem
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
 	}
 
-	@Override
-	public int getStackSizeForTanning(int meta) 
-	{
-		switch(meta)
-		{
-		case 0:
-			return 5;
-		case 1:
-			return 3;
-		case 3:
-			return 2;
-		case 4:
-			return 4;
-		case 5:
-			return 2;
-			default: return 8;
+	public static int getTanningStackSize(int meta) {
+		//TODO fix values for faithful mode
+		if(meta < BlockPlanks.EnumType.values().length) {
+			switch(BlockPlanks.EnumType.byMetadata(meta)) {
+			case OAK:
+				return 5;
+			case SPRUCE:
+				return 3;
+			case BIRCH:
+				return 2;
+			case JUNGLE:
+				return 4;
+			case ACACIA:
+				return 2;
+			case DARK_OAK:
+				return 8;
+			default:
+				return 8;
+			}
+		}
+		else {
+			return 8;
 		}
 	}
-
 }

@@ -37,7 +37,7 @@ public class TileEntityWaterwheel extends TileEntityMechGenerator
 	{
 		boolean isAir = true;
 		boolean hasWater = true;
-		if(worldObj.getBlockState(pos) != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.waterwheel)
+		if(worldObj.getBlockState(pos) != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL)
 		{
 			IAxle axle = (IAxle)worldObj.getBlockState(pos).getBlock();
 			int axis = axle.getAxisAlignment(worldObj, pos);

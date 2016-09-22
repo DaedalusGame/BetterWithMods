@@ -2,9 +2,8 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
-import betterwithmods.BWMod;
+import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.items.IBWMItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
+public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 {
 	public static final PropertyBool TOP = PropertyBool.create("top");
 	
@@ -34,18 +33,9 @@ public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
 
 	}
-
 	@Override
-	public String getLocation(int meta) {
-		//TODO consistency with registry name. 
-		//Note there's already a "hemp" item (the mature hemp)
-		return BWMod.MODID + ":hemp_seed";
-	}
-
-	@Override
-	public int getMaxMeta() {
-		// TODO Auto-generated method stub
-		return 1;
+	public String[] getLocations() {
+		return new String[]{"hemp_seed"};
 	}
 
 	@Override
@@ -155,13 +145,13 @@ public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
 	@Override
 	protected Item getSeed()
     {
-        return Item.getItemFromBlock(BWMBlocks.hemp);
+        return Item.getItemFromBlock(BWMBlocks.HEMP);
     }
 
 	@Override
     protected Item getCrop()
     {
-        return BWMItems.material;
+        return BWMItems.MATERIAL;
     }
 	
 	@Override
@@ -214,4 +204,5 @@ public class BlockHemp extends BlockCrops implements IPlantable, IBWMItem
 		int meta = state.getValue(AGE);
         return meta > 6 ? this.getCrop() : this.getSeed();
     }
+
 }

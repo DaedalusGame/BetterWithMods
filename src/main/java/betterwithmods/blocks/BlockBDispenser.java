@@ -2,7 +2,8 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.block.IBWMBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.InvUtils;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBDispenser extends BlockDispenser implements IBTWBlock
+public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMultiVariants
 {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<Item, IBehaviorDispenseItem>(new BehaviorDefaultDispenseBlock());
 
@@ -128,7 +129,7 @@ public class BlockBDispenser extends BlockDispenser implements IBTWBlock
                     {
                         if(creature instanceof EntityWolf)
                         {
-                            tile.addStackToInventory(new ItemStack(BWMBlocks.wolf), check);
+                            tile.addStackToInventory(new ItemStack(BWMBlocks.WOLF), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(3)));
                             //InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.DYE, 1 + rand.nextInt(2), 1));
                             world.playSound(null, check, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);

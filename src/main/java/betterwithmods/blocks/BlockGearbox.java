@@ -10,7 +10,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
@@ -23,18 +22,16 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockGearbox extends BTWBlock implements IMechanicalBlock, IMechanical
+public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechanical
 {
 	public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
 	public BlockGearbox()
 	{
-		super(Material.WOOD, "gearbox");
+		super(Material.WOOD);
 		this.setHardness(2.0F);
 		this.setTickRandomly(true);
 		this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.UP).withProperty(ISACTIVE, false));
@@ -275,9 +272,10 @@ public class BlockGearbox extends BTWBlock implements IMechanicalBlock, IMechani
 		InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/gearbox"));
 		/*
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 2, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));*/
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 0));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));
+		*/
 		world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
 		world.setBlockToAir(pos);
 	}

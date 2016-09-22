@@ -1,8 +1,8 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWMItems;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.*;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -21,8 +21,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,7 +37,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITileEntityProvider {
+public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
     public static final PropertyEnum<BlockMechMachines.EnumType> MACHINETYPE = PropertyEnum.create("machinetype", BlockMechMachines.EnumType.class);
     public static final PropertyInteger SUBTYPE = PropertyInteger.create("subtype", 0, 11);
@@ -48,7 +46,7 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     private static boolean keepInv;
 
     public BlockMechMachines() {
-        super(Material.ROCK, "single_machine", ItemBlockMeta.class);
+        super(Material.ROCK);
         this.setTickRandomly(true);
         this.setHardness(3.5F);
         this.setDefaultState(this.blockState.getBaseState()

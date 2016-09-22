@@ -5,6 +5,7 @@ import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -28,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockAxle extends BTWBlock implements IMechanical, IAxle
+public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVariants
 {
 	public static final PropertyInteger AXLEDIR = PropertyInteger.create("dir", 0, 2);
 	public static final PropertyInteger SIGNAL = PropertyInteger.create("signal", 0, 4);
@@ -38,7 +39,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 	//TODO: Make a reinforced axle with a max power of 5
 	public BlockAxle()
 	{
-		super(Material.WOOD, "axle");
+		super(Material.WOOD);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 0).withProperty(SIGNAL, 0));
 		this.setSoundType(SoundType.WOOD);
@@ -226,7 +227,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 	{
 		if(!world.isRemote)
 		{
-			InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMBlocks.axle, 1, 0));
+			InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMBlocks.AXLE, 1, 0));
 			world.setBlockToAir(pos);
 		}
 	}
@@ -279,7 +280,7 @@ public class BlockAxle extends BTWBlock implements IMechanical, IAxle
 		
 		Block block = world.getBlockState(pos2).getBlock();
 		
-		if((block == BWMBlocks.axle))
+		if((block == BWMBlocks.AXLE))
 		{
 			int axis = ((BlockAxle)world.getBlockState(pos2).getBlock()).getAxisAlignment(world, pos2);
 			

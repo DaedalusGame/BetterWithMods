@@ -15,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+//TODO fix errors "Exception loading blockstate for the variant betterwithmods:temporary_water"
 public class BlockTemporaryWater extends BlockLiquid {
 
 	public BlockTemporaryWater() {
@@ -22,13 +23,13 @@ public class BlockTemporaryWater extends BlockLiquid {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 4));
 		this.setTickRandomly(true);
 	}
-
+	
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		int i = ((Integer) state.getValue(LEVEL)).intValue();
 
 		IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
 
-		if (!(iblockstate1.getBlock() == BWMBlocks.pump && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
+		if (!(iblockstate1.getBlock() == BWMBlocks.PUMP && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}

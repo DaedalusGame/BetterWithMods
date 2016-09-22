@@ -39,7 +39,7 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
 	public void doRender(EntityExtendingRope entity, double x, double y, double z, float entityYaw,
 			float partialTicks) {
 		World world = entity.getEntityWorld();
-		IBlockState iblockstate = BWMBlocks.rope.getDefaultState();
+		IBlockState iblockstate = BWMBlocks.ROPE.getDefaultState();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();

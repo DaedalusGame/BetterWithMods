@@ -45,7 +45,7 @@ public class BWRegistry {
 
 	public static void init() {
 		registerOres();
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.dynamite, new DispenserBehaviorDynamite());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
 
 		if (BWConfig.hardcoreBuckets) {
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
@@ -70,7 +70,7 @@ public class BWRegistry {
 		}
 		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.REPEATER, new BehaviorDiodeDispense());
 		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.COMPARATOR, new BehaviorDiodeDispense());
-		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.miningCharge), (source, stack) -> {
+		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE), (source, stack) -> {
 			World worldIn = source.getWorld();
 			EnumFacing facing = source.func_189992_e().getValue(BlockDispenser.FACING);
 			BlockPos pos = source.getBlockPos().offset(facing);
@@ -82,8 +82,7 @@ public class BWRegistry {
 					SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			return stack;
 		});
-		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.hemp, 1, 0), 5);
-
+		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
 	}
 
 	private static int availableEntityId = 0;
@@ -109,40 +108,40 @@ public class BWRegistry {
 
 
 	public static void registerOres() {
-		OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.material, 1, 0));
-		OreDictionary.registerOre("cropHemp", new ItemStack(BWMItems.material, 1, 2));
-		OreDictionary.registerOre("dyeBrown", new ItemStack(BWMItems.material, 1, 5));
-		OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.material, 1, 12));
-		OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.material, 1, 14));
-		OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.material, 1, 15));
-		OreDictionary.registerOre("powderedHellfire", new ItemStack(BWMItems.material, 1, 16));
-		OreDictionary.registerOre("ingotHellfire", new ItemStack(BWMItems.material, 1, 17));
-		OreDictionary.registerOre("dustCoal", new ItemStack(BWMItems.material, 1, 18));
-		OreDictionary.registerOre("dustPotash", new ItemStack(BWMItems.material, 1, 21));
-		OreDictionary.registerOre("dustWood", new ItemStack(BWMItems.material, 1, 22));
-		OreDictionary.registerOre("dustSulfur", new ItemStack(BWMItems.material, 1, 25));
-		OreDictionary.registerOre("dustSaltpeter", new ItemStack(BWMItems.material, 1, 26));
-		OreDictionary.registerOre("nuggetIron", new ItemStack(BWMItems.material, 1, 30));
-		OreDictionary.registerOre("nuggetSoulforgedSteel", new ItemStack(BWMItems.material, 1, 31));
-		OreDictionary.registerOre("foodFlour", new ItemStack(BWMItems.material, 1, 37));
-		OreDictionary.registerOre("dustCharcoal", new ItemStack(BWMItems.material, 1, 39));
+		OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.MATERIAL, 1, 0));
+		OreDictionary.registerOre("cropHemp", new ItemStack(BWMItems.MATERIAL, 1, 2));
+		OreDictionary.registerOre("dyeBrown", new ItemStack(BWMItems.MATERIAL, 1, 5));
+		OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.MATERIAL, 1, 12));
+		OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 14));
+		OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.MATERIAL, 1, 15));
+		OreDictionary.registerOre("powderedHellfire", new ItemStack(BWMItems.MATERIAL, 1, 16));
+		OreDictionary.registerOre("ingotHellfire", new ItemStack(BWMItems.MATERIAL, 1, 17));
+		OreDictionary.registerOre("dustCoal", new ItemStack(BWMItems.MATERIAL, 1, 18));
+		OreDictionary.registerOre("dustPotash", new ItemStack(BWMItems.MATERIAL, 1, 21));
+		OreDictionary.registerOre("dustWood", new ItemStack(BWMItems.MATERIAL, 1, 22));
+		OreDictionary.registerOre("dustSulfur", new ItemStack(BWMItems.MATERIAL, 1, 25));
+		OreDictionary.registerOre("dustSaltpeter", new ItemStack(BWMItems.MATERIAL, 1, 26));
+		OreDictionary.registerOre("nuggetIron", new ItemStack(BWMItems.MATERIAL, 1, 30));
+		OreDictionary.registerOre("nuggetSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 31));
+		OreDictionary.registerOre("foodFlour", new ItemStack(BWMItems.MATERIAL, 1, 37));
+		OreDictionary.registerOre("dustCharcoal", new ItemStack(BWMItems.MATERIAL, 1, 39));
 
-		OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.aesthetic, 1, 2));
-		OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.aesthetic, 1, 3));
+		OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+		OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
 
-		OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.bark, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("craftingToolKnife", new ItemStack(BWMItems.knife, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.woodSiding, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("craftingToolKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
 		// TFC compatibility
-		OreDictionary.registerOre("itemKnife", new ItemStack(BWMItems.knife, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("string", new ItemStack(BWMItems.material, 1, 3));
-		OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.material, 1, 3));
-		OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.material, 1, 4));
+		OreDictionary.registerOre("itemKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("string", new ItemStack(BWMItems.MATERIAL, 1, 3));
+		OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
+		OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
 	}
 
 	public static void registerHeatSources() {
 		BWMHeatRegistry.setBlockHeatRegistry(Blocks.FIRE, 3);
-		BWMHeatRegistry.setBlockHeatRegistry(BWMBlocks.stokedFlame, 8);
+		BWMHeatRegistry.setBlockHeatRegistry(BWMBlocks.STOKED_FLAME, 8);
 	}
 
 	public static void registerNetherWhitelist() {
@@ -164,11 +163,11 @@ public class BWRegistry {
 				log = new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
 			}
 			Block block = ((ItemBlock) log.getItem()).getBlock();
-			ItemStack bark = new ItemStack(BWMItems.bark, 2, type.getMetadata());
+			ItemStack bark = new ItemStack(BWMItems.BARK, 2, type.getMetadata());
 			ItemStack sawdust = ItemMaterial.getMaterial("sawdust", 2);
 			SawInteraction.addBlock(block, log.getMetadata(), plank, bark, sawdust);
 			SawInteraction.addBlock(Blocks.PLANKS, type.getMetadata(),
-					new ItemStack(BWMBlocks.woodSiding, 2, type.getMetadata()));
+					new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
 		}
 		List<ItemStack> logs = OreDictionary.getOres("logWood");
 		for (ItemStack log : logs) {
@@ -182,10 +181,10 @@ public class BWRegistry {
 							if (planks != null) {
 								ItemStack[] output = new ItemStack[3];
 								output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-								output[1] = new ItemStack(BWMItems.bark, 2, 0);
+								output[1] = new ItemStack(BWMItems.BARK, 2, 0);
 								output[2] = ItemMaterial.getMaterial("sawdust");
 								SawInteraction.addBlock(block, i, output);
-								SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.woodSiding, 2, 0));
+								SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
 							}
 						}
 					} else {
@@ -193,10 +192,10 @@ public class BWRegistry {
 						if (planks != null) {
 							ItemStack[] output = new ItemStack[3];
 							output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-							output[1] = new ItemStack(BWMItems.bark, 2, 0);
+							output[1] = new ItemStack(BWMItems.BARK, 2, 0);
 							output[2] = ItemMaterial.getMaterial("sawdust");
 							SawInteraction.addBlock(block, log.getMetadata(), output);
-							SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.woodSiding, 2, 0));
+							SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
 						}
 					}
 				}

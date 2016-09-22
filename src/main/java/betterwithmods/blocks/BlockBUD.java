@@ -27,11 +27,11 @@ import static net.minecraft.util.EnumFacing.UP;
 /**
  * Created by tyler on 9/4/16.
  */
-public class BlockBUD extends BTWBlock {
+public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWMBlocks.light,});
+    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWMBlocks.LIGHT,});
     public BlockBUD() {
-        super(Material.ROCK, "buddy_block");
+        super(Material.ROCK);
         setHardness(3.5F);
         setSoundType(SoundType.STONE);
         setDefaultState(getDefaultState().withProperty(DirUtils.FACING, UP));

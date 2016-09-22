@@ -1,7 +1,7 @@
 package betterwithmods.items;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMod;
+import betterwithmods.api.IMultiLocations;
 import betterwithmods.blocks.BlockAxle;
 import betterwithmods.blocks.BlockWaterwheel;
 import betterwithmods.blocks.BlockWindmill;
@@ -24,9 +24,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemMechanical extends Item implements IBWMItem
+public class ItemMechanical extends Item implements IMultiLocations
 {
-	public String[] names = {"Windmill", "Waterwheel", "Windmill_Vertical"};
+	public String[] names = {"windmill", "waterwheel", "windmill_vertical"};
 	public ItemMechanical()
 	{
 		super();
@@ -35,22 +35,17 @@ public class ItemMechanical extends Item implements IBWMItem
 		this.setHasSubtypes(true);
 	}
 
-    @Override
-    public int getMaxMeta() {
-        return names.length;
-    }
-
-    @Override
-    public String getLocation(int meta) {
-        return BWMod.MODID + ":"+names[meta].toLowerCase();
-    }
+	@Override
+	public String[] getLocations() {
+		return names;
+	}
 
     @Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		Block block = world.getBlockState(pos).getBlock();
 		
-		if(block == BWMBlocks.axle)
+		if(block == BWMBlocks.AXLE)
 		{
 			int axis = ((BlockAxle)block).getAxisAlignment(world, pos);
 			
@@ -76,7 +71,7 @@ public class ItemMechanical extends Item implements IBWMItem
 		{
 			if(axis > 0)
 			{
-				world.setBlockState(pos, ((BlockWaterwheel)BWMBlocks.waterwheel).getWaterwheelState(axis));
+				world.setBlockState(pos, ((BlockWaterwheel)BWMBlocks.WATERWHEEL).getWaterwheelState(axis));
 				valid = true;
 			}
 		}
@@ -89,7 +84,7 @@ public class ItemMechanical extends Item implements IBWMItem
 		{
 			if(axis > 0)
 			{
-				world.setBlockState(pos, ((BlockWindmill)BWMBlocks.windmillBlock).getWindmillState(axis));
+				world.setBlockState(pos, ((BlockWindmill)BWMBlocks.WINDMILL_BLOCK).getWindmillState(axis));
 				valid = true;
 			}
 		}
@@ -166,7 +161,7 @@ public class ItemMechanical extends Item implements IBWMItem
 		{
 			if(validateArea(player, world, target))
 			{
-				world.setBlockState(target, BWMBlocks.windmillBlock.getDefaultState());//BlockPowerSource.setProxies(world, x, yPos, z);
+				world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState());//BlockPowerSource.setProxies(world, x, yPos, z);
 				valid = true;
 			}
 			else if(world.isRemote)
@@ -269,7 +264,7 @@ public class ItemMechanical extends Item implements IBWMItem
 			int yPos = i;
 			BlockPos target = pos.add(0, yPos, 0);
 			Block targetBlock = world.getBlockState(target).getBlock();
-			if(targetBlock == BWMBlocks.axle)
+			if(targetBlock == BWMBlocks.AXLE)
 			{
 				int axis = ((BlockAxle)targetBlock).getAxisAlignment(world, target);
 				if(axis != 0)

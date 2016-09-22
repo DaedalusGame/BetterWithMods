@@ -39,9 +39,9 @@ tile.bwm:aesthetic.6.name=White Stone
 tile.bwm:aesthetic.7.name=White Cobble
 tile.bwm:aesthetic.8.name=Ender Block
 
-tile.bwm:windmill.Windmill.name=Windmill
-tile.bwm:windmill.Waterwheel.name=Waterwheel
-tile.bwm:windmill.Windmill_Vertical.name=Vertical Windmill
+tile.bwm:windmill.windmill.name=Windmill
+tile.bwm:windmill.waterwheel.name=Waterwheel
+tile.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
 tile.bwm:planter.0.name=Planter
 tile.bwm:planter.1.name=Dirt Planter
@@ -203,9 +203,9 @@ item.bwm:creeper_oyster.name=Creeper Oyster
 item.bwm:ender_spectacles.name=Ender Spectacles
 
 
-item.bwm:windmill.Windmill.name=Windmill
-item.bwm:windmill.Waterwheel.name=Water Wheel
-item.bwm:windmill.Windmill_Vertical.name=Vertical Windmill
+item.bwm:windmill.windmill.name=Windmill
+item.bwm:windmill.waterwheel.name=Water Wheel
+item.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
 item.bwm:bark.0.name=Oak Bark
 item.bwm:bark.1.name=Spruce Bark

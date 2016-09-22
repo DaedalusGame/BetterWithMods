@@ -9,10 +9,10 @@ import net.minecraft.util.BlockRenderLayer;
  * @author mrebhan
  */
 
-public class BlockPlatform extends BTWBlock {
+public class BlockPlatform extends BWMBlock {
 
 	public BlockPlatform() {
-		super(Material.WOOD,"platform");
+		super(Material.WOOD);
 		this.setHardness(2F);
 		this.setSoundType(SoundType.WOOD);
 	}

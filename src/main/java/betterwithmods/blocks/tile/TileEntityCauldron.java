@@ -42,7 +42,7 @@ public class TileEntityCauldron extends TileEntityCookingPot
 		
 		if(this.fireIntensity > 0 && this.fireIntensity < 5)
 		{
-			if(InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.material, 5) > -1 && hasNonFoulFood())
+			if(InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood())
 			{
 				this.containsValidIngredients = true;
 			}
@@ -70,7 +70,7 @@ public class TileEntityCauldron extends TileEntityCookingPot
 	@Override
 	protected boolean attemptToCookNormal()
 	{
-		int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.material, 5);
+		int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5);
 		if(dung > -1 && this.hasNonFoulFood())
 		{
 			return spoilFood();
@@ -108,10 +108,10 @@ public class TileEntityCauldron extends TileEntityCookingPot
 				Item item = this.inventory.getStackInSlot(i).getItem();
 				if(item != null)
 				{
-					if(item != BWMItems.fertilizer && item instanceof ItemFood)
+					if(item != BWMItems.FERTILIZER && item instanceof ItemFood)
 					{
 						int stackSize = this.inventory.getStackInSlot(i).stackSize;
-						ItemStack spoiled = new ItemStack(BWMItems.fertilizer, stackSize);
+						ItemStack spoiled = new ItemStack(BWMItems.FERTILIZER, stackSize);
 						this.inventory.setStackInSlot(i, spoiled);
 						foodSpoiled = true;
 					}

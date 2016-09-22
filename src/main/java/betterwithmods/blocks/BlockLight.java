@@ -16,12 +16,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockLight extends BTWBlock
+import betterwithmods.api.block.IMultiVariants;
+
+public class BlockLight extends BWMBlock implements IMultiVariants
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockLight() {
-        super(Material.GLASS,"light");
+        super(Material.GLASS);
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false));
         this.setSoundType(SoundType.GLASS);

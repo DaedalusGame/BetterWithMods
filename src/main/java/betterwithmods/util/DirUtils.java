@@ -1,6 +1,6 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.block.IBWMBlock;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
@@ -99,7 +99,7 @@ public class DirUtils {
 		return facing;
 	}
 
-	public static boolean rotateAroundY(IBTWBlock block, World world, BlockPos pos, boolean reverse) {
+	public static boolean rotateAroundY(IBWMBlock block, World world, BlockPos pos, boolean reverse) {
 		IBlockState state = world.getBlockState(pos);
 		IBlockState newState = rotateStateAroundY(block, state, reverse);
 		if (newState != state) {
@@ -110,7 +110,7 @@ public class DirUtils {
 		return false;
 	}
 
-	public static IBlockState rotateStateAroundY(IBTWBlock block, IBlockState state, boolean reverse) {
+	public static IBlockState rotateStateAroundY(IBWMBlock block, IBlockState state, boolean reverse) {
 		EnumFacing facing = block.getFacingFromBlockState(state);
 		EnumFacing newFacing = rotateFacingAroundY(facing, reverse);
 		state = block.setFacingInBlock(state, newFacing);

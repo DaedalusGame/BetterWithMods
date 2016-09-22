@@ -136,7 +136,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
 	public boolean isValid() 
 	{
 		boolean valid = true;
-		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.windmillBlock)
+		if(worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK)
 		{
 			BlockWindmill axle = (BlockWindmill)this.worldObj.getBlockState(pos).getBlock();
 			int axis = axle.getAxisAlignment(this.worldObj, pos);

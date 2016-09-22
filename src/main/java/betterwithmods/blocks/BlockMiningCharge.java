@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 /**
  * Created by tyler on 9/5/16.
  */
-public class BlockMiningCharge extends BTWBlock {
+public class BlockMiningCharge extends BWMBlock {
     public static final PropertyBool EXPLODE = PropertyBool.create("explode");
 
 
@@ -38,7 +38,7 @@ public class BlockMiningCharge extends BTWBlock {
 
 
     public BlockMiningCharge() {
-        super(Material.TNT, "mining_charge");
+        super(Material.TNT);
         this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.valueOf(false)));
         setSoundType(SoundType.PLANT);
     }

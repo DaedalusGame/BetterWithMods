@@ -3,7 +3,7 @@ package betterwithmods.blocks.tile;
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
 import betterwithmods.api.block.ISoulSensitive;
-import betterwithmods.blocks.BlockBTWPane;
+import betterwithmods.blocks.BlockBWMPane;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;
@@ -95,7 +95,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
         boolean isOn = false;
         if (worldObj.getBlockState(pos).getBlock() instanceof BlockMechMachines)
-            isOn = ((BlockMechMachines) BWMBlocks.singleMachines).isMechanicalOn(this.worldObj, pos);
+            isOn = ((BlockMechMachines) BWMBlocks.SINGLE_MACHINES).isMechanicalOn(this.worldObj, pos);
         entityCollision();
         if (isOn) {
             attemptToEjectXPFromInv();
@@ -170,7 +170,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                     return 1;
                 if (block instanceof BlockTrapDoor)
                     return 2;
-                if (block instanceof BlockBTWPane) {
+                if (block instanceof BlockBWMPane) {
                     switch (filter.getItemDamage()) {
                         case 0:
                             return 3;
@@ -180,9 +180,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                             return 4;
                     }
                 }
-                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.grate))
+                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.GRATE))
                     return 3;
-                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.slats))
+                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.SLATS))
                     return 5;
                 if (filter.getItem() == Item.getItemFromBlock(Blocks.SOUL_SAND))
                     return 6;
@@ -214,24 +214,24 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         if (this.filterType == 4)
                             return false;
 
-                        if (!InvUtils.listContains(stack, OreDictionary.getOres("string")) && item != Items.PAPER && (item == BWMItems.material && stack.getItemDamage() != 28) && item != Item.getItemFromBlock(Blocks.WOOL)) {
+                        if (!InvUtils.listContains(stack, OreDictionary.getOres("string")) && item != Items.PAPER && (item == BWMItems.MATERIAL && stack.getItemDamage() != 28) && item != Item.getItemFromBlock(Blocks.WOOL)) {
                             int meta = stack.getItemDamage();
                             if (this.filterType == 5) {
-                                return item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || (item == BWMItems.material && (meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35)));
+                                return item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || (item == BWMItems.MATERIAL && (meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35)));
                             }
 
                             if (item != Item.getItemFromBlock(Blocks.RED_FLOWER) && item != Item.getItemFromBlock(Blocks.YELLOW_FLOWER) && (!(item instanceof ItemBlock) && (stack.getMaxStackSize() > 1 && item != Items.FISHING_ROD && item != Items.CARROT_ON_A_STICK))) {
                                 if (this.filterType == 3)
                                     return false;
 
-                                if (item != Items.BONE && item != Items.ARROW && !InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) && !InvUtils.listContains(stack, InvUtils.cropNames) && item != Items.REEDS && item != Items.BLAZE_ROD && (item == BWMItems.material && (meta != 8 && meta != 9)))
+                                if (item != Items.BONE && item != Items.ARROW && !InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) && !InvUtils.listContains(stack, InvUtils.cropNames) && item != Items.REEDS && item != Items.BLAZE_ROD && (item == BWMItems.MATERIAL && (meta != 8 && meta != 9)))
                                     return false;
                             }
                         }
                     }
                 }
             } else if (this.filterType == 6) {
-                return stack.getItem() == BWMItems.material && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23);
+                return stack.getItem() == BWMItems.MATERIAL && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23);
             } else if (this.filterType == 7) {
                 if (stack.getMaxStackSize() < 2)
                     return false;
@@ -269,7 +269,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 ItemStack stack = item.getEntityItem();
                 if (filterType() == 4 && stack.getItem() == Item.getItemFromBlock(Blocks.GRAVEL)) {
                     handleGravelCase(item);
-                } else if (filterType() == 6 && stack.getItem() == BWMItems.material && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23)) {
+                } else if (filterType() == 6 && stack.getItem() == BWMItems.MATERIAL && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23)) {
                     handleSoulCase(item);
                 } else if (this.canFilterProcessItem(stack))
                     flag = putDropInInventoryAllSlots(inventory, item) || flag;
@@ -375,7 +375,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private void handleSoulCase(EntityItem item) {
         this.increaseSoulCount(item.getEntityItem().stackSize);
-        EntityItem hellfire = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(BWMItems.material, item.getEntityItem().stackSize, 16));
+        EntityItem hellfire = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(BWMItems.MATERIAL, item.getEntityItem().stackSize, 16));
         hellfire.setDefaultPickupDelay();
         if (!this.getWorld().isRemote) {
             this.getWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, this.getWorld().rand.nextFloat() * 0.1F + 0.45F);
@@ -591,7 +591,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     private void processSouls() {
-        boolean isOn = ((BlockMechMachines) BWMBlocks.singleMachines).isMechanicalOn(this.worldObj, this.pos);
+        boolean isOn = ((BlockMechMachines) BWMBlocks.SINGLE_MACHINES).isMechanicalOn(this.worldObj, this.pos);
         BlockPos down = pos.down();
         if (this.filterType == 6) {
             Block blockBelow = this.worldObj.getBlockState(down).getBlock();
@@ -604,7 +604,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             else if (soulsRetained > 7) {
                 if (spawnGhast())
                     this.worldObj.playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
-                if (worldObj.getBlockState(pos).getBlock() == BWMBlocks.singleMachines)
+                if (worldObj.getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)
                     ((BlockMechMachines) worldObj.getBlockState(pos).getBlock()).breakHopper(worldObj, pos);
             }
         } else

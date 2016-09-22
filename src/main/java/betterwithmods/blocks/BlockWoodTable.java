@@ -13,10 +13,12 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
+import betterwithmods.api.block.IMultiVariants;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockWoodTable extends BlockFurniture
+public class BlockWoodTable extends BlockFurniture implements IMultiVariants
 {
     public BlockWoodTable()
     {
@@ -39,7 +41,7 @@ public class BlockWoodTable extends BlockFurniture
         for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
         	variants.add("supported=false,variant=" + blockplanks$enumtype.getName());
         }
-        return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
+        return variants.toArray(new String[variants.size()]);
     }
 
     @Override

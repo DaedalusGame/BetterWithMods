@@ -28,14 +28,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
 
-public class BlockBellows extends BTWBlock implements IMechanicalBlock
+public class BlockBellows extends BWMBlock implements IMechanicalBlock
 {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	public static final PropertyBool TRIGGER = PropertyBool.create("trigger");
 	
 	public BlockBellows()
 	{
-		super(Material.WOOD, "bellows");
+		super(Material.WOOD);
 		this.setTickRandomly(true);
 		this.setHardness(2.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, false).withProperty(TRIGGER, false));
@@ -279,7 +279,7 @@ public class BlockBellows extends BTWBlock implements IMechanicalBlock
 			
 			Block target = world.getBlockState(dirPos).getBlock();
 			
-			if(target == Blocks.FIRE || target == BWMBlocks.stokedFlame)
+			if(target == Blocks.FIRE || target == BWMBlocks.STOKED_FLAME)
 				stokeFire(world, dirPos);
 			else if(!world.isAirBlock(dirPos))
 				break;
@@ -287,13 +287,13 @@ public class BlockBellows extends BTWBlock implements IMechanicalBlock
 			BlockPos posLeft = dirPos.offset(dirLeft);
 			
 			Block targetLeft = world.getBlockState(posLeft).getBlock();
-			if(targetLeft == Blocks.FIRE || targetLeft == BWMBlocks.stokedFlame)
+			if(targetLeft == Blocks.FIRE || targetLeft == BWMBlocks.STOKED_FLAME)
 				stokeFire(world, posLeft);
 			
 			BlockPos posRight = dirPos.offset(dirRight);
 			
 			Block targetRight = world.getBlockState(posRight).getBlock();
-			if(targetRight == Blocks.FIRE || targetRight == BWMBlocks.stokedFlame)
+			if(targetRight == Blocks.FIRE || targetRight == BWMBlocks.STOKED_FLAME)
 				stokeFire(world, posRight);
 		}
 	}
@@ -302,12 +302,12 @@ public class BlockBellows extends BTWBlock implements IMechanicalBlock
 	{
 		BlockPos down = pos.down();
 		BlockPos up = pos.up();
-		if(world.getBlockState(down).getBlock() == BWMBlocks.hibachi)
+		if(world.getBlockState(down).getBlock() == BWMBlocks.HIBACHI)
 		{
-			if(world.getBlockState(pos).getBlock() == BWMBlocks.stokedFlame)
-				world.setBlockState(pos, BWMBlocks.stokedFlame.getDefaultState());
+			if(world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME)
+				world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
 			else
-				world.setBlockState(pos, BWMBlocks.stokedFlame.getDefaultState());
+				world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
 			
 			if(world.isAirBlock(up))
 				world.setBlockState(pos, Blocks.FIRE.getDefaultState());
@@ -348,8 +348,8 @@ public class BlockBellows extends BTWBlock implements IMechanicalBlock
 	public void breakBellows(World world, BlockPos pos)
 	{
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 2, 6));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 6));
 		world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
 		world.setBlockToAir(pos);
 	}

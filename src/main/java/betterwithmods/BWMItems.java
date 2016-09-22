@@ -1,6 +1,7 @@
 package betterwithmods;
 
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.IMultiLocations;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
@@ -28,53 +29,53 @@ public final class BWMItems {
 	public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3,
 			22);
 
-	public static final Item material = new ItemMaterial().setRegistryName("material");
-	public static final Item windmill = new ItemMechanical().setRegistryName("windmill");
-	public static final Item bark = new ItemBark().setRegistryName("bark");
-	public static final Item donut = new ItemFood(2, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
-	public static final Item knife = new ItemKnife(ToolMaterial.IRON).setRegistryName("knife");
-	public static final Item dynamite = new ItemDynamite().setRegistryName("dynamite");
-	public static final Item fertilizer = new ItemFertilizer().setRegistryName("fertilizer");
-	public static final Item steelAxe = new ItemSoulforgedAxe().setRegistryName("steel_axe");
-	public static final Item steelHoe = new ItemSoulforgedHoe().setRegistryName("steel_hoe");
-	public static final Item steelPickaxe = new ItemSoulforgedPickaxe().setRegistryName("steel_pickaxe");
-	public static final Item steelShovel = new ItemSoulforgedShovel().setRegistryName("steel_shovel");
-	public static final Item steelSword = new ItemSoulforgedSword().setRegistryName("steel_sword");
-	public static final Item creeperOyster = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON,5,0),1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
-	public static final Item enderSpectacles = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
+	public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
+	public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
+	public static final Item BARK = new ItemBark().setRegistryName("bark");
+	public static final Item DONUT = new ItemFood(2, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
+	public static final Item KNIFE = new ItemKnife(ToolMaterial.IRON).setRegistryName("knife");
+	public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
+	public static final Item FERTILIZER = new ItemFertilizer().setRegistryName("fertilizer");
+	public static final Item STEEL_AXE = new ItemSoulforgedAxe().setRegistryName("steel_axe");
+	public static final Item STEEL_HOE = new ItemSoulforgedHoe().setRegistryName("steel_hoe");
+	public static final Item STEEL_PICKAXE = new ItemSoulforgedPickaxe().setRegistryName("steel_pickaxe");
+	public static final Item STEEL_SHOVEL = new ItemSoulforgedShovel().setRegistryName("steel_shovel");
+	public static final Item STEEL_SWORD = new ItemSoulforgedSword().setRegistryName("steel_sword");
+	public static final Item CREEPER_OYSTER = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON,5,0),1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
+	public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
 
 	public static void registerItems() {
-		registerItem(material);
-		registerItem(windmill);
-		registerItem(bark);
-		registerItem(donut);
-		registerItem(knife);
-		registerItem(dynamite);
-		registerItem(fertilizer);
-		registerItem(steelAxe);
-		registerItem(steelHoe);
-		registerItem(steelPickaxe);
-		registerItem(steelShovel);
-		registerItem(steelSword);
-        registerItem(creeperOyster);
-		registerItem(enderSpectacles);
+		registerItem(MATERIAL);
+		registerItem(WINDMILL);
+		registerItem(BARK);
+		registerItem(DONUT);
+		registerItem(KNIFE);
+		registerItem(DYNAMITE);
+		registerItem(FERTILIZER);
+		registerItem(STEEL_AXE);
+		registerItem(STEEL_HOE);
+		registerItem(STEEL_PICKAXE);
+		registerItem(STEEL_SHOVEL);
+		registerItem(STEEL_SWORD);
+        registerItem(CREEPER_OYSTER);
+		registerItem(ENDER_SPECTACLES);
 	}
 
 	public static void linkItemModels() {
-		setInventoryModel(material);
-		setInventoryModel(windmill);
-		setInventoryModel(bark);
-		setInventoryModel(donut);
-		setInventoryModel(knife);
-		setInventoryModel(dynamite);
-		setInventoryModel(fertilizer);
-		setInventoryModel(steelAxe);
-		setInventoryModel(steelHoe);
-		setInventoryModel(steelPickaxe);
-		setInventoryModel(steelShovel);
-		setInventoryModel(steelSword);
-        setInventoryModel(creeperOyster);
-		setInventoryModel(enderSpectacles);
+		setInventoryModel(MATERIAL);
+		setInventoryModel(WINDMILL);
+		setInventoryModel(BARK);
+		setInventoryModel(DONUT);
+		setInventoryModel(KNIFE);
+		setInventoryModel(DYNAMITE);
+		setInventoryModel(FERTILIZER);
+		setInventoryModel(STEEL_AXE);
+		setInventoryModel(STEEL_HOE);
+		setInventoryModel(STEEL_PICKAXE);
+		setInventoryModel(STEEL_SHOVEL);
+		setInventoryModel(STEEL_SWORD);
+        setInventoryModel(CREEPER_OYSTER);
+		setInventoryModel(ENDER_SPECTACLES);
 	}
 
 	/**
@@ -84,6 +85,7 @@ public final class BWMItems {
 	 * @return Registered item.
 	 */
 	public static Item registerItem(Item item) {
+		//betterwithmods:name => bwm:name
         item.setUnlocalizedName("bwm"+ item.getRegistryName().toString().substring(BWMod.MODID.length()));
 		return GameRegistry.register(item);
 	}
@@ -107,16 +109,17 @@ public final class BWMItems {
 		if (item instanceof ItemBlockMini) {
 			registerMiniBlockNBT((ItemBlockMini) item);
 			ModelLoader.setCustomStateMapper(block, new BWStateMapper(block.getRegistryName().toString()));
-		} else if (block instanceof IBTWBlock) {
+		} else if (block instanceof IMultiVariants) {
 			ModelLoader.setCustomStateMapper(block, new BWStateMapper(block.getRegistryName().toString()));
-			String[] variants = ((IBTWBlock) block).getVariants();
+			String[] variants = ((IMultiVariants) block).getVariants();
 			for (int meta = 0; meta < variants.length; meta++) {
-				setModelLocation(item, meta, variants[meta]);
+				if(variants[meta] != "") setModelLocation(item, meta, variants[meta]);
 			}
-		} else if (block instanceof IBWMItem) {// TODO A block that implements IBWMItem sounds weird.
-			for (int i = 0; i < ((IBWMItem) block).getMaxMeta(); i++) {
-				final String location = ((IBWMItem) block).getLocation(i);
-				setModelLocation(item, i, location, "inventory");
+		} else if (block instanceof IMultiLocations) {
+			String[] locations = ((IMultiLocations) block).getLocations();
+			for (int meta = 0; meta < locations.length; meta++) {
+				String location = locations[meta];
+				setModelLocation(item, meta, BWMod.MODID + ":" + location, "inventory");
 			}
 		} else {
 			setModelLocation(item, OreDictionary.WILDCARD_VALUE, "inventory");
@@ -126,11 +129,12 @@ public final class BWMItems {
 	public static void setInventoryModel(Item item) {
 		if (item.isDamageable()) {
 			setModelLocation(item, OreDictionary.WILDCARD_VALUE, "inventory");
-		} else if (item instanceof IBWMItem) {
-			IBWMItem bwmItem = (IBWMItem) item;
-			for (int i = 0; i < bwmItem.getMaxMeta(); i++) {
-				String location = bwmItem.getLocation(i);
-				setModelLocation(item, i, location, "inventory");
+		} else if (item instanceof IMultiLocations) {
+			IMultiLocations bwmItem = (IMultiLocations) item;
+			String[] locations = bwmItem.getLocations();
+			for (int meta = 0; meta < locations.length; meta++) {
+				String location = locations[meta];
+				setModelLocation(item, meta, BWMod.MODID + ":" + location, "inventory");
 			}
 		} else if (item instanceof ItemBlock) {
 			ItemBlock itemBlock = (ItemBlock) item;

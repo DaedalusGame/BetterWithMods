@@ -20,12 +20,12 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockLens extends BTWBlock
+public class BlockLens extends BWMBlock
 {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 	public BlockLens()
 	{
-		super(Material.IRON, "lens");
+		super(Material.IRON);
 		this.setHardness(3.5F);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.NORTH));
@@ -90,12 +90,12 @@ public class BlockLens extends BTWBlock
 			EnumFacing expectedFacing = DirUtils.getOpposite(getFacing(world, pos));
 			
 			BlockPos offset = pos.offset(dir);
-			if(isLit(world, pos) && (world.isAirBlock(offset) || world.getBlockState(offset).getBlock() == BWMBlocks.lightSource))
+			if(isLit(world, pos) && (world.isAirBlock(offset) || world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE))
 			{
 				for(int i = 1; i < 32; i++)
 				{
 					BlockPos bPos = pos.offset(dir, i);
-					IBlockState lightState = BWMBlocks.lightSource.getDefaultState();
+					IBlockState lightState = BWMBlocks.LIGHT_SOURCE.getDefaultState();
 					if(world.isAirBlock(bPos))
 					{
 						List<Entity> entity = world.getEntitiesWithinAABB(Entity.class, FULL_BLOCK_AABB.offset(bPos));
@@ -104,7 +104,7 @@ public class BlockLens extends BTWBlock
 							world.setBlockState(bPos, lightState.withProperty(DirUtils.FACING, expectedFacing).withProperty(BlockInvisibleLight.SUNLIGHT, sunlight));
 							break;
 						}
-						else if(world.getBlockState(bPos).getBlock() == BWMBlocks.lightSource && world.getBlockState(bPos).getValue(DirUtils.FACING).ordinal() < expectedFacing.ordinal())
+						else if(world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE && world.getBlockState(bPos).getValue(DirUtils.FACING).ordinal() < expectedFacing.ordinal())
 						{
 							if(world.getBlockState(bPos).getValue(BlockInvisibleLight.SUNLIGHT))
 								lightState = lightState.withProperty(BlockInvisibleLight.SUNLIGHT, true);
@@ -113,7 +113,7 @@ public class BlockLens extends BTWBlock
 						else if(!world.isAirBlock(bPos))
 						{
 							bPos = bPos.offset(dir.getOpposite());
-							if(world.getBlockState(bPos).getBlock() != BWMBlocks.lightSource || (world.getBlockState(bPos).getBlock() == BWMBlocks.lightSource && world.getBlockState(bPos).getValue(DirUtils.FACING).ordinal() < expectedFacing.ordinal()))
+							if(world.getBlockState(bPos).getBlock() != BWMBlocks.LIGHT_SOURCE || (world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE && world.getBlockState(bPos).getValue(DirUtils.FACING).ordinal() < expectedFacing.ordinal()))
 								world.setBlockState(bPos, lightState.withProperty(DirUtils.FACING, expectedFacing).withProperty(BlockInvisibleLight.SUNLIGHT, sunlight));
 							break;
 						}
@@ -122,9 +122,9 @@ public class BlockLens extends BTWBlock
 					else if(!world.isAirBlock(bPos))
 					{
 						BlockPos dPos = bPos.offset(dir.getOpposite());
-						if(world.getBlockState(dPos).getBlock() != BWMBlocks.lightSource || (world.getBlockState(dPos).getBlock() == BWMBlocks.lightSource && world.getBlockState(dPos).getValue(DirUtils.FACING).ordinal() <= expectedFacing.ordinal()))
+						if(world.getBlockState(dPos).getBlock() != BWMBlocks.LIGHT_SOURCE || (world.getBlockState(dPos).getBlock() == BWMBlocks.LIGHT_SOURCE && world.getBlockState(dPos).getValue(DirUtils.FACING).ordinal() <= expectedFacing.ordinal()))
 						{
-							if(world.getBlockState(dPos).getBlock() == BWMBlocks.lightSource && world.getBlockState(dPos).getValue(BlockInvisibleLight.SUNLIGHT))
+							if(world.getBlockState(dPos).getBlock() == BWMBlocks.LIGHT_SOURCE && world.getBlockState(dPos).getValue(BlockInvisibleLight.SUNLIGHT))
 								lightState = lightState.withProperty(BlockInvisibleLight.SUNLIGHT, sunlight);
 							world.setBlockState(dPos, lightState.withProperty(DirUtils.FACING, expectedFacing));
 						}
@@ -138,7 +138,7 @@ public class BlockLens extends BTWBlock
 				{
 					BlockPos bPos = pos.offset(dir, i);
 					
-					if(world.getBlockState(bPos).getBlock() == BWMBlocks.lightSource)
+					if(world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE)
 					{
 						world.setBlockToAir(bPos);
 					}
@@ -232,7 +232,7 @@ public class BlockLens extends BTWBlock
 		BlockPos offset = pos.offset(facing);
 		Block block = world.getBlockState(offset).getBlock();
 		
-		if(block == BWMBlocks.detector)
+		if(block == BWMBlocks.DETECTOR)
 		{
 			EnumFacing detFacing = ((BlockDetector)block).getFacing(world, offset);
 			
@@ -248,7 +248,7 @@ public class BlockLens extends BTWBlock
 		BlockPos offset = pos.offset(facing);
 		if(world.isAirBlock(offset) && world.canBlockSeeSky(offset))
 			return true;
-		else if(world.getBlockState(offset).getBlock() == BWMBlocks.lightSource && world.getBlockState(offset).getValue(BlockInvisibleLight.SUNLIGHT))
+		else if(world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && world.getBlockState(offset).getValue(BlockInvisibleLight.SUNLIGHT))
 			return true;
 		return false;
 	}
@@ -259,7 +259,7 @@ public class BlockLens extends BTWBlock
 		for(int i = 1; i < 32; i++)
 		{
 			BlockPos offset = pos.offset(facing, i);
-			if(world.getBlockState(offset).getBlock() == BWMBlocks.lightSource)
+			if(world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE)
 			{
 				EnumFacing lightFace = ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset);
 				if(lightFace == opp)
@@ -282,7 +282,7 @@ public class BlockLens extends BTWBlock
 		{
 			BlockPos offset = pos.offset(facing, i);
 			
-			if(world.getBlockState(offset).getBlock() == BWMBlocks.lightSource)
+			if(world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE)
 			{
 				EnumFacing lightFace = ((BlockInvisibleLight)world.getBlockState(offset).getBlock()).getFacing(world, offset);
 				if(lightFace == oppFacing)

@@ -1,8 +1,9 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMItems;
-import betterwithmods.api.block.IBTWBlock;
+import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.api.block.IDebarkable;
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, IBTWBlock {
+public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, IBWMBlock, IMultiVariants {
     public BlockDebarkedNew() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
@@ -20,7 +21,7 @@ public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, IBTWBl
 
     @Override
     public ItemStack getBark(IBlockState state) {
-        return new ItemStack(BWMItems.bark, 1, 4 + this.damageDropped(state));
+        return new ItemStack(BWMItems.BARK, 1, 4 + this.damageDropped(state));
     }
 
     @Override

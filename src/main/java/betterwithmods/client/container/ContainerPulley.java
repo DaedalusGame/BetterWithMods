@@ -21,7 +21,7 @@ public class ContainerPulley extends Container {
 			addSlotToContainer(new SlotItemHandler(tile.inventory, i, 53 + i * 18, 52) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWMBlocks.rope);
+					return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE);
 				}
 			});
 		}

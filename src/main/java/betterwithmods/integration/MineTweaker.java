@@ -15,5 +15,6 @@ public class MineTweaker {
         MineTweakerAPI.registerClass(Crucible.class);
         MineTweakerAPI.registerClass(StokedCrucible.class);
         MineTweakerAPI.registerClass(Mill.class);
+        MineTweakerAPI.registerClass(Bouyancy.class);
     }
 }

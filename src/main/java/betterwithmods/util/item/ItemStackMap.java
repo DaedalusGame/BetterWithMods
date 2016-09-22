@@ -1,16 +1,17 @@
 package betterwithmods.util.item;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Map to handle ItemStacks. Maybe should be replaced with just an item that hashcodes well ItemStacks.
@@ -21,7 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ItemStackMap<T> {
 	private final HashMap<Item, HashMap<Integer, T>> map = new HashMap<Item, HashMap<Integer, T>>();
 	private final T defaultValue;
-	
+
 	public ItemStackMap(T defaultValueIn) {
 		defaultValue = defaultValueIn;
 	}
@@ -64,9 +65,9 @@ public class ItemStackMap<T> {
 	}
 
 	public T put(Item item, int meta, T value) {
-		if(map.containsKey(item)) {
-			map.get(item).put(meta, value);
-		}
+        if(map.containsKey(item)) {
+            map.get(item).put(meta, value);
+        }
 		else {
 			HashMap<Integer, T> metaToValue = new HashMap<Integer, T>();
 			metaToValue.put(meta, value);
@@ -78,7 +79,7 @@ public class ItemStackMap<T> {
 	public T put(Item item, T value) {
 		return put(item, 0, value);
 	}
-	
+
 	public T put(Block block, int meta, T value) {
 		try {
 			ItemStack stack = new ItemStack(block);
@@ -105,7 +106,19 @@ public class ItemStackMap<T> {
 	}
 
 	public void putAll(Map<? extends ItemStack, ? extends T> arg0) {
-		for(Entry<? extends ItemStack, ? extends T> entry : arg0.entrySet()) 
+		for(Entry<? extends ItemStack, ? extends T> entry : arg0.entrySet())
 			put(entry.getKey(), entry.getValue());
+	}
+
+	public Set<Entry<Item, HashMap<Integer, T>>> entrySet() {
+		return map.entrySet();
+	}
+
+	public T remove(Item item, int meta) {
+		if(containsKey(item,meta)) {
+			HashMap<Integer, T> prev = map.remove(item);
+			return prev.get(meta);
+		}
+		return null;
 	}
 }

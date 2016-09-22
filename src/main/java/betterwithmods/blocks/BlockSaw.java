@@ -21,10 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -237,12 +234,13 @@ public class BlockSaw extends BTWBlock implements IMechanicalBlock {
     }
 
     public void breakSaw(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 4, 30));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 8));
+        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 22));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 4, 30));
+        //InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 3, 8));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

@@ -329,31 +329,25 @@ public class BlockMechMachines extends BTWBlock implements IMechanicalBlock, ITi
     }
 
     private void breakMill(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE));
+        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakPulley(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));
+        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     public void breakHopper(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.material, 1, 0));
+        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakTurntable(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.REDSTONE));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 4, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
+        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

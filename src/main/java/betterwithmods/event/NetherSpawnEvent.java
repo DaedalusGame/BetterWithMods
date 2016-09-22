@@ -1,21 +1,23 @@
 package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
+import betterwithmods.entity.ai.EntityAIFlee;
 import betterwithmods.entity.ai.EntityAISearchFood;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DimensionType;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -32,11 +34,21 @@ public class NetherSpawnEvent
 	private static Random rand = new Random();
 
 	@SubscribeEvent
-	public void addEntityAI(LivingSpawnEvent evt)
+	public void addEntityAI(EntityJoinWorldEvent evt)
 	{
-		EntityLivingBase entity = evt.getEntityLiving();
-		if(entity instanceof EntityAnimal) {
-			((EntityAnimal)entity).tasks.addTask(3, new EntityAISearchFood((EntityAnimal)entity));
+		if(evt.getEntity() instanceof EntityLivingBase) {
+			EntityLivingBase entity = (EntityLivingBase)evt.getEntity();
+			if (entity instanceof EntityAnimal) {
+				((EntityAnimal) entity).tasks.addTask(3, new EntityAISearchFood((EntityAnimal) entity));
+				if(!(entity instanceof EntityTameable)) {
+					float speed = 1.25F;
+					if(entity instanceof EntityCow)
+						speed = 2.0F;
+					else if(entity instanceof EntityChicken)
+						speed = 1.4F;
+					((EntityAnimal) entity).tasks.addTask(0, new EntityAIFlee((EntityCreature) entity, speed));
+				}
+			}
 		}
 	}
 

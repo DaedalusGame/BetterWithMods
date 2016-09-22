@@ -4,8 +4,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -329,5 +332,15 @@ public class InvUtils {
 
     public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack) {
         return attemptToInsertStack(inventory,stack,0,inventory.getSlots());
+    }
+
+    public static void ejectBrokenItems(World world, BlockPos pos, ResourceLocation lootLocation) {
+        if(!world.isRemote) {
+            LootContext.Builder build = new LootContext.Builder((WorldServer) world);
+            List<ItemStack> stacks = world.getLootTableManager().getLootTableFromLocation(lootLocation).generateLootForPools(world.rand, build.build());
+            if(!stacks.isEmpty()) {
+                ejectStackWithOffset(world, pos, stacks);
+            }
+        }
     }
 }

@@ -100,6 +100,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BucketEvent());
         MinecraftForge.EVENT_BUS.register(new NetherSpawnEvent());
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
+        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(this);
         RecipeUtils.refreshRecipes();
     }

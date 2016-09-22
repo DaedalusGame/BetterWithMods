@@ -41,6 +41,7 @@ public final class BWMItems {
 	public static final Item steelShovel = new ItemSoulforgedShovel().setRegistryName("steel_shovel");
 	public static final Item steelSword = new ItemSoulforgedSword().setRegistryName("steel_sword");
 	public static final Item creeperOyster = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON,5,0),1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
+	public static final Item enderSpectacles = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
 
 	public static void registerItems() {
 		registerItem(material);
@@ -56,6 +57,7 @@ public final class BWMItems {
 		registerItem(steelShovel);
 		registerItem(steelSword);
         registerItem(creeperOyster);
+		registerItem(enderSpectacles);
 	}
 
 	public static void linkItemModels() {
@@ -72,6 +74,7 @@ public final class BWMItems {
 		setInventoryModel(steelShovel);
 		setInventoryModel(steelSword);
         setInventoryModel(creeperOyster);
+		setInventoryModel(enderSpectacles);
 	}
 
 	/**

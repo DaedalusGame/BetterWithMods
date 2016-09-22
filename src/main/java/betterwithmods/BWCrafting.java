@@ -181,6 +181,8 @@ public class BWCrafting {
         GameRegistry.addShapelessRecipe(new ItemStack(Items.ENDER_PEARL,9), new Object[]{new ItemStack(BWMBlocks.aesthetic,1,8)});
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.material, 1, 24), new Object[] {"II ", " II", "II ", Character.valueOf('I'), "ingotIron"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.pump), new Object[] {"xGx", "SsS", "SgS", Character.valueOf('x'), new ItemStack(BWMItems.material, 1, 12), Character.valueOf('G'), new ItemStack(BWMBlocks.grate, 1, 32767), Character.valueOf('S'), new ItemStack(BWMBlocks.woodSiding, 1, 32767), Character.valueOf('s'), new ItemStack(BWMItems.material, 1, 24), Character.valueOf('g'), new ItemStack(BWMItems.material, 1, 0)}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("ender_ocular"), new Object[]{ "GGG","GEG","GGG", 'G', "nuggetGold", 'E', "enderpearl"}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.enderSpectacles), new Object[]{ "OSO", 'O', ItemMaterial.getMaterial("ender_ocular"),'S', ItemMaterial.getMaterial("leather_strap") }));
     }
 
     private static void addMillRecipes() {

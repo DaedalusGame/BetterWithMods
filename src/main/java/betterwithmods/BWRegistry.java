@@ -7,6 +7,7 @@ import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.items.ItemMaterial;
+import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
@@ -25,18 +26,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.List;
 
 public class BWRegistry {
+
+	public static Potion POTION_TRUESIGHT = new BWPotion(false, 14270531,"true_sight",4,1);
+
 	public static void init() {
 		registerOres();
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.dynamite, new DispenserBehaviorDynamite());
@@ -77,6 +83,7 @@ public class BWRegistry {
 			return stack;
 		});
 		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.hemp, 1, 0), 5);
+
 	}
 
 	private static int availableEntityId = 0;
@@ -217,5 +224,9 @@ public class BWRegistry {
 			}
 		}
 		return null;
+	}
+
+	private static void registerPotions() {
+		GameRegistry.register(POTION_TRUESIGHT);
 	}
 }

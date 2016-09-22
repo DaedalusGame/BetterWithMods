@@ -39,7 +39,7 @@ public class BlockAesthetic extends BTWBlock
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
-	    for (int i = 0; i <= EnumType.META_LOOKUP.length; i++)
+	    for (int i = 0; i < EnumType.META_LOOKUP.length; i++)
 	    {
 	    	list.add(new ItemStack(item, 1, i));
 	    }

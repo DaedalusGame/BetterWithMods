@@ -1,13 +1,11 @@
 package betterwithmods.blocks;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,6 +17,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * @author mrebhan
@@ -35,6 +36,12 @@ public class BlockPump extends BTWBlock implements IMechanicalBlock {
 		this.setHardness(3.5F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.NORTH)
 				.withProperty(ACTIVE, false));
+		setSoundType(SoundType.WOOD);
+	}
+
+	@Override
+	public String[] getVariants() {
+		return new String[]{"active=false,facing=north"};
 	}
 
 	@Override

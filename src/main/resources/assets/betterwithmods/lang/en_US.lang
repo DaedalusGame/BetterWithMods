@@ -193,12 +193,15 @@ item.bwm:material.sharpening_stone.name=Sharpening Stone
 item.bwm:material.knife_blade.name=Knife Blade
 item.bwm:material.ender_slag.name=Ender Slag
 item.bwm:material.soul_flux.name=Soul Flux
+item.bwm:material.ender_ocular.name=Ocular of Ender
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife
 item.bwm:dynamite.name=Dynamite
 item.bwm:fertilizer.name=Fertilizer
 item.bwm:creeper_oyster.name=Creeper Oyster
+item.bwm:ender_spectacles.name=Ender Spectacles
+
 
 item.bwm:windmill.Windmill.name=Windmill
 item.bwm:windmill.Waterwheel.name=Water Wheel
@@ -266,3 +269,5 @@ bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
 bwm.config.pulley.tooltip=Limitations of the platforms of the pulley 
+
+bwm.effect.true_sight=True Sight

@@ -37,7 +37,7 @@ public class ItemMapModification<T> extends BaseUndoable {
         if(!recipes.isEmpty())
         {
             StringBuilder sb = new StringBuilder();
-            for(Map.Entry recipe : recipes.entrySet()) {
+            for(Map.Entry<Item, HashMap<Integer, T>> recipe : recipes.entrySet()) {
                 if(recipe != null) {
                     sb.append(getRecipeInfo(recipe)).append(", ");
                 }

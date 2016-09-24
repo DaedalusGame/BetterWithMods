@@ -15,6 +15,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -186,6 +187,11 @@ public class BWCrafting {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PUMP), new Object[] {"xGx", "SsS", "SgS", Character.valueOf('x'), new ItemStack(BWMItems.MATERIAL, 1, 12), Character.valueOf('G'), new ItemStack(BWMBlocks.GRATE, 1, 32767), Character.valueOf('S'), new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), Character.valueOf('s'), new ItemStack(BWMItems.MATERIAL, 1, 24), Character.valueOf('g'), new ItemStack(BWMItems.MATERIAL, 1, 0)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("ender_ocular"), new Object[]{ "GGG","GEG","GGG", 'G', "nuggetGold", 'E', "enderpearl"}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.ENDER_SPECTACLES), new Object[]{ "OSO", 'O', ItemMaterial.getMaterial("ender_ocular"),'S', ItemMaterial.getMaterial("leather_strap") }));
+        String[] dyes = {"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
+
+        for(int i = 0; i < 16; i++) {
+            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new Object[]{new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]}));
+        }
     }
 
     private static void addMillRecipes() {
@@ -275,7 +281,9 @@ public class BWCrafting {
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE),
         		BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER),
-        		BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN), new ItemStack(Items.CLAY_BALL));
+        		BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE),
+                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN),
         		Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
     }
@@ -285,6 +293,7 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 2));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, new ItemStack(BWMBlocks.PLANTER));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
+        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
     	addKilnRecipe(Blocks.END_STONE,0, new ItemStack(BWMBlocks.AESTHETIC,1,7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" :"brimstone") );
     }

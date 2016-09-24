@@ -27,6 +27,7 @@ public final class BWMBlocks {
 	public static final Block GRATE = new BlockBWMNewPane().setRegistryName("grate");
 	public static final Block SLATS = new BlockBWMNewPane().setRegistryName("slats");
 	public static final Block PLANTER = new BlockPlanter().setRegistryName("planter");
+	public static final Block VASE = new BlockVase().setRegistryName("vase");
 	public static final Block URN = new BlockUrn().setRegistryName("urn");
 	public static final Block UNFIRED_POTTERY = new BlockUnfiredPottery().setRegistryName("unfired_pottery");
 	public static final Block STOKED_FLAME = new BlockFireStoked().setRegistryName("stoked_flame");
@@ -77,6 +78,7 @@ public final class BWMBlocks {
 		registerBlock(GRATE, new ItemBlockPane(GRATE));
 		registerBlock(SLATS, new ItemBlockPane(SLATS));
 		registerBlock(PLANTER, new ItemBlockPlanter(PLANTER));
+		registerBlock(VASE, new ItemBlockMeta(VASE));
 		registerBlock(URN, new ItemBlockMeta(URN));
 		registerBlock(UNFIRED_POTTERY, new ItemBlockMeta(UNFIRED_POTTERY));
 		registerBlock(STOKED_FLAME, null);
@@ -122,6 +124,8 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
 		GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
 
+		GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
+
 		GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
 		GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
 
@@ -144,6 +148,7 @@ public final class BWMBlocks {
 		setInventoryModel(SLATS);
 		setInventoryModel(PLANTER);
 		setInventoryModel(URN);
+		setInventoryModel(VASE);
 		setInventoryModel(UNFIRED_POTTERY);
 		setInventoryModel(HIBACHI);
 		setInventoryModel(BELLOWS);

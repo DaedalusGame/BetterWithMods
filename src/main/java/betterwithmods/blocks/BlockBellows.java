@@ -304,13 +304,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock
 		BlockPos up = pos.up();
 		if(world.getBlockState(down).getBlock() == BWMBlocks.HIBACHI)
 		{
-			if(world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME)
-				world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
-			else
-				world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
-			
-			if(world.isAirBlock(up))
-				world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+			world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
 		}
 		else
 			world.setBlockToAir(pos);

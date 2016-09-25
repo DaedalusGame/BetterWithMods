@@ -12,11 +12,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
+
 import java.util.List;
 import java.util.Random;
 
@@ -233,9 +235,10 @@ public class BlockKiln extends BWMBlock
 	private boolean checkKilnIntegrity(IBlockAccess world, BlockPos pos)
 	{
 		int brickCount = 0;
-		for(int i = 1; i < 6; i++)
-		{
-			Block block = world.getBlockState(pos).getBlock();
+		for(int i = 1; i <= 5; i++)
+		{	
+			BlockPos toCheck = pos;
+			Block block = world.getBlockState(pos.up().offset(EnumFacing.getFront(i))).getBlock();
 			
 			if(block == Blocks.BRICK_BLOCK || block == BWMBlocks.KILN)
 				brickCount++;

@@ -1,6 +1,5 @@
-package betterwithmods.blocks.tile;
+package betterwithmods.integration.immersiveengineering;
 
-import betterwithmods.blocks.BlockImmersiveAxle;
 import blusunrize.immersiveengineering.common.blocks.metal.TileEntityDynamo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;

@@ -137,6 +137,8 @@ public class BWRegistry {
 		OreDictionary.registerOre("string", new ItemStack(BWMItems.MATERIAL, 1, 3));
 		OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
 		OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
+
+
 	}
 
 	public static void registerHeatSources() {

@@ -1,7 +1,7 @@
-package betterwithmods.integration;
+package betterwithmods.integration.tcon;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.tcon.TraitMending;
+import betterwithmods.integration.ModIntegration;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -29,26 +29,25 @@ import slimeknights.tconstruct.tools.TinkerTraits;
 
 import java.util.List;
 
-public class TConstruct
-{
-    public static final Material soulforgedSteel = mat("soulforgedSteel", 5066061);
-    public static final Material hellfire = mat("hellfire", 14426647);
+public class TConstruct extends ModIntegration {
 
-    public static AbstractTrait mending;
+    public final Material soulforgedSteel = mat("soulforgedSteel", 5066061);
+    public final Material hellfire = mat("hellfire", 14426647);
 
-    public static FluidMolten soulforgeFluid;
-    public static FluidMolten hellfireFluid;
+    public AbstractTrait mending;
 
-    public static void init()
-    {
+    public FluidMolten soulforgeFluid;
+    public FluidMolten hellfireFluid;
+
+    public void init() {
         mending = new TraitMending();
-        if(BWMod.proxy.isClientside())
+        if (BWMod.proxy.isClientside())
             registerRenderInfo(soulforgedSteel, 5066061, 0.1F, 0.3F, 0.1F);
         soulforgeFluid = fluidMetal("soulforged_steel", 5066061);
         soulforgeFluid.setTemperature(681);
         soulforgedSteel.addItem("ingotSoulforgedSteel", 1, Material.VALUE_Ingot);
         soulforgedSteel.addTrait(mending);
-        if(BWMod.proxy.isClientside())
+        if (BWMod.proxy.isClientside())
             registerRenderInfo(hellfire, 14426647, 0.0F, 0.2F, 0.0F);
         hellfireFluid = fluidMetal("hellfire", 14426647);
         hellfireFluid.setTemperature(850);
@@ -63,8 +62,7 @@ public class TConstruct
         netherWhitelist();
     }
 
-    private static void netherWhitelist()
-    {
+    private void netherWhitelist() {
         Block ore = Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "ore"));
         NetherSpawnWhitelist.addBlock(ore, 0);
         NetherSpawnWhitelist.addBlock(ore, 1);
@@ -77,42 +75,36 @@ public class TConstruct
         NetherSpawnWhitelist.addBlock(slimeGrass, 14);
     }
 
-    private static void registerMaterial(Material material, Fluid fluid, String oreSuffix)
-    {
+    private void registerMaterial(Material material, Fluid fluid, String oreSuffix) {
         MaterialIntegration mat = new MaterialIntegration(material, fluid, oreSuffix).setRepresentativeItem("ingot" + oreSuffix);
         mat.integrate();
         mat.integrateRecipes();
         mat.registerRepresentativeItem();
     }
 
-    private static Material mat(String name, int color)
-    {
+    private Material mat(String name, int color) {
         Material mat = new Material(name, color);
         TinkerMaterials.materials.add(mat);
         return mat;
     }
 
-    private static FluidMolten fluidMetal(String name, int color)
-    {
+    private FluidMolten fluidMetal(String name, int color) {
         FluidMolten fluid = new FluidMolten(name, color);
         return registerFluid(fluid);
     }
 
-    private static <T extends Fluid> T registerFluid(T fluid)
-    {
+    private <T extends Fluid> T registerFluid(T fluid) {
         fluid.setUnlocalizedName(BWMod.MODID + ":" + fluid.getName());
         FluidRegistry.registerFluid(fluid);
         return fluid;
     }
 
     @SideOnly(Side.CLIENT)
-    private static void registerRenderInfo(Material material, int color, float shininess, float brightness, float hueshift)
-    {
+    private void registerRenderInfo(Material material, int color, float shininess, float brightness, float hueshift) {
         material.setRenderInfo(new MaterialRenderInfo.Metal(color, shininess, brightness, hueshift));
     }
 
-    private static void fixHellfireDust()
-    {
+    private void fixHellfireDust() {
         Pair<List<ItemStack>, Integer> dustOre = Pair.of(OreDictionary.getOres("powderedHellfire"), Material.VALUE_Ingot / 8);
         TinkerRegistry.registerMelting(new MeltingRecipe(RecipeMatch.of(dustOre.getLeft(), dustOre.getRight()), hellfireFluid));
     }

@@ -7,6 +7,7 @@ public class BWConfig {
     public static final String VANILLA_TWEAKS = "Vanilla Tweaks";
     public static final String DEBUG = "Debug";
     public static final String PULLEY = "Pulley";
+    public static final String MOD_COMPAT = "Mod Compat";
     public static boolean hardcoreGunpowder;
     public static boolean hardcoreLumber;
     public static boolean hardcoreBuckets;

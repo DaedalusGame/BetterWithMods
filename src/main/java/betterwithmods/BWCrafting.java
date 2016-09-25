@@ -15,11 +15,9 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -89,9 +87,7 @@ public class BWCrafting {
     }
 
     private static void addVanillaRecipes() {
-        if (Loader.isModLoaded("immersiveengineering")) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.TREATED_AXLE), "W", "R", "W", 'W', "plankTreatedWood", 'R', BWMBlocks.ROPE));
-        }
+
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.LIGHT), " P ", "PFP", " R ", 'P', "paneGlass", 'R', "dustRedstone", 'F', new ItemStack(BWMItems.MATERIAL, 1, 19)));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.BOOSTER), Blocks.RAIL, BWMBlocks.ROPE, "gearWood"));
         GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.MATERIAL, 6, 3), BWMBlocks.ROPE);
@@ -226,6 +222,10 @@ public class BWCrafting {
         addMillRecipe(new ItemStack(Items.DYE, 6, 13), new ItemStack(Blocks.DOUBLE_PLANT, 1, 1));
         addMillRecipe(new ItemStack(Items.DYE, 6, 1), new ItemStack(Blocks.DOUBLE_PLANT, 1, 4));
         addMillRecipe(new ItemStack(Items.DYE, 6, 9), new ItemStack(Blocks.DOUBLE_PLANT, 1, 5));
+        addOreMillRecipe(new ItemStack(BWMItems.MATERIAL, 1, 37), "cropBarley");
+        addOreMillRecipe(new ItemStack(BWMItems.MATERIAL, 1, 37), "cropOats");
+        addOreMillRecipe(new ItemStack(BWMItems.MATERIAL, 1, 37), "cropRye");
+        addOreMillRecipe(new ItemStack(BWMItems.MATERIAL, 1, 37), "cropRice");
     }
 
     private static void addCauldronRecipes() {

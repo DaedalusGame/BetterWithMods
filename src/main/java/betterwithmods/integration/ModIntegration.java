@@ -1,52 +1,63 @@
 package betterwithmods.integration;
 
-import betterwithmods.BWCrafting;
-import betterwithmods.BWMItems;
-import betterwithmods.util.NetherSpawnWhitelist;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import betterwithmods.BWMod;
+import betterwithmods.config.BWConfig;
+import betterwithmods.integration.immersiveengineering.ImmersiveEngineering;
+import betterwithmods.integration.minetweaker.MineTweaker;
+import betterwithmods.integration.tcon.TConstruct;
 import net.minecraftforge.fml.common.Loader;
 
-public class ModIntegration 
-{
-	public static void preInit() {
-		if (Loader.isModLoaded("immersiveengineering"))
-			ImmersiveEngineering.preInit();
-	}
-	public static void init()
-	{
-		if(Loader.isModLoaded("Natura"))
-		{
-			Natura.whitelistNetherBlocks();
-		}
-		if(Loader.isModLoaded("harvestcraft"))
-			Harvestcraft.init();
-		if(Loader.isModLoaded("tconstruct"))
-			TConstruct.init();
-		if(Loader.isModLoaded("biomesoplenty"))
-			BiomesOPlenty.init();
-		if(Loader.isModLoaded("quark"))
-			NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("quark", "basalt")), 0);
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-			//MineChem tannin orename: molecule_tannicacid
-		if(Loader.isModLoaded("minechem"))
-		{
-			BWCrafting.addOreCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 6), new Object[] {new ItemStack(BWMItems.MATERIAL, 1, 7), "molecule_tannicacid"});
-			BWCrafting.addOreCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 2, 33), new Object[] {new ItemStack(BWMItems.MATERIAL, 2, 34), "molecule_tannicacid"});
-		}/*
-		if(Loader.isModLoaded("immersiveengineering")) {
-			Item material = Item.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "material"));
-			OreDictionary.registerOre("fiberHemp", new ItemStack(material, 1, 4));
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(material, 1, 5), "FFF", "FSF", "FFF", 'F', "fiberHemp", 'S', "stickWood"));
-			Block woodDevice = Block.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "woodenDevice0"));
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(woodDevice, 1, 4), " F ", "GBG", "GGG", 'F', "fiberHemp", 'G', "gunpowder", 'B', new ItemStack(woodDevice, 1, 1)));
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "stoneDecoration")), 6, 4), "CCC", "FFF", "CCC", 'C', Items.CLAY_BALL, 'F', "fiberHemp"));
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("immersiveengineering", "wirecoil")), 4, 3), " F ", "FSF", " F ", 'F', "fiberHemp", 'S', "stickWood"));
-		}*/
-		if(Loader.isModLoaded("MineTweaker3")) {
-			MineTweaker.init();
-		}
-		OreDict.init();
-	}
+public abstract class ModIntegration {
+    public static Map<String, Class<? extends ModIntegration>> compatClasses = new HashMap<>();
+    public static Set<ModIntegration> loadedModules = new HashSet<>();
+
+    static {
+        compatClasses.put("biomesoplenty", BiomesOPlenty.class);
+        compatClasses.put("harvestcraft", Harvestcraft.class);
+        compatClasses.put("immersiveengineering", ImmersiveEngineering.class);
+        compatClasses.put("MineTweaker3", MineTweaker.class);
+        compatClasses.put("quark", Quark.class);
+        compatClasses.put("tconstruct", TConstruct.class);
+    }
+
+    public static void loadPreInit() {
+        compatClasses.entrySet().stream().filter(e -> isLoaded(e.getKey())).forEach( e -> {
+            try {
+                ModIntegration mod = e.getValue().newInstance();
+                loadedModules.add(mod);
+                mod.preInit();
+            } catch(Exception ex) {
+                BWMod.logger.error("Compat module for "+e.getKey()+" could not be preInitialized. Report this!");
+            }
+        });
+    }
+
+    public static void loadInit() {
+        loadedModules.stream().forEach(ModIntegration::init);
+    }
+
+    public static void loadPostInit() {
+        loadedModules.stream().forEach(ModIntegration::postInit);
+    }
+
+    public void preInit() {
+    }
+
+    public void init() {
+    }
+
+    public void postInit() {
+    }
+
+    public static boolean isLoaded(String modid) {
+        boolean loaded = Loader.isModLoaded(modid) && BWConfig.cfg.get(BWConfig.MOD_COMPAT, modid.toLowerCase() + "_compat", true).getBoolean();
+        BWMod.logger.info("Compat for %s is %s", modid, loaded ? "loaded" : "not loaded");
+        BWConfig.cfg.save();
+        return loaded;
+    }
 }

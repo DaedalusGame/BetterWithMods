@@ -29,6 +29,7 @@ public class BWGuiConfig extends GuiConfig {
         list.add(categoryElement(BWConfig.DEBUG, "Debug", "bwm.config.debug"));
         list.add(categoryElement(BWConfig.VANILLA_TWEAKS, "Vanilla Tweaks", "bwm.config.vanilla_tweaks"));
         list.add(categoryElement(BWConfig.PULLEY, "Pulley", "bwm.config.pulley"));
+        list.add(categoryElement(BWConfig.MOD_COMPAT, "Mod Compat", "bwm.config.mod_compat"));
 
         return list;
     }

@@ -1,17 +1,20 @@
 package betterwithmods;
 
-import javax.annotation.Nullable;
-
 import betterwithmods.blocks.*;
 import betterwithmods.blocks.mini.*;
 import betterwithmods.blocks.tile.*;
-import betterwithmods.blocks.tile.gen.*;
+import betterwithmods.blocks.tile.gen.TileEntityCreativeGen;
+import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
+import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
+import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import javax.annotation.Nullable;
 
 public final class BWMBlocks {
 	private BWMBlocks() {
@@ -62,8 +65,6 @@ public final class BWMBlocks {
 	public static final Block FERTILE_FARMLAND = new BlockFertileFarmland().setRegistryName("fertile_farmland");
 	public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
 
-	public static final Block TREATED_AXLE = new BlockImmersiveAxle().setRegistryName("immersive_axle");
-
 	public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater()
 			.setRegistryName("temporary_water");
 
@@ -103,8 +104,8 @@ public final class BWMBlocks {
 		registerBlock(WOOD_TABLE, new ItemBlockMeta(WOOD_TABLE));
 		registerBlock(WOLF);
 		registerBlock(BLOCK_DISPENSER);
-		registerBlock(BAMBOO_CHIME);
-		registerBlock(METAL_CHIME);
+		registerBlock(BAMBOO_CHIME,new ItemBlockMeta(BAMBOO_CHIME));
+		registerBlock(METAL_CHIME, new ItemBlockMeta(METAL_CHIME));
 		registerBlock(BUDDY_BLOCK);
 		registerBlock(CREATIVE_GENERATOR);
 		registerBlock(LIGHT);
@@ -112,7 +113,7 @@ public final class BWMBlocks {
 		registerBlock(MINING_CHARGE);
 		registerBlock(FERTILE_FARMLAND);
 		registerBlock(PUMP);
-		registerBlock(TREATED_AXLE);
+
 		registerBlock(TEMP_LIQUID_SOURCE, null);
 	}
 
@@ -132,7 +133,6 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
 		GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
 		GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
-		GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
 	}
 
@@ -176,7 +176,7 @@ public final class BWMBlocks {
 		setInventoryModel(MINING_CHARGE);
 		setInventoryModel(FERTILE_FARMLAND);
 		setInventoryModel(PUMP);
-		setInventoryModel(TREATED_AXLE);
+
 	}
 
 	/**
@@ -192,7 +192,7 @@ public final class BWMBlocks {
 	 *            as the block. If is null, then no item will be linked to the
 	 *            block.
 	 */
-	private static Block registerBlock(Block block, @Nullable Item item) {
+	public static Block registerBlock(Block block, @Nullable Item item) {
 		block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
 		Block registeredBlock = GameRegistry.register(block);
 		if (item != null)
@@ -207,11 +207,11 @@ public final class BWMBlocks {
 	 *            Block instance to register.
 	 * @return Registered block.
 	 */
-	private static Block registerBlock(Block block) {
+	public static Block registerBlock(Block block) {
 		return registerBlock(block, new ItemBlock(block));
 	}
 
-	private static void setInventoryModel(Block block) {
+	public static void setInventoryModel(Block block) {
 		BWMItems.setInventoryModel(Item.getItemFromBlock(block));
 	}
 }

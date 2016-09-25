@@ -56,7 +56,7 @@ public class BWMod {
         BWMBlocks.registerTileEntities();
 
         BWRegistry.init();
-        ModIntegration.preInit();
+        ModIntegration.loadPreInit();
         BWCrafting.init();
         BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
         BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
@@ -74,9 +74,8 @@ public class BWMod {
         BWRegistry.registerHeatSources();
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         BWRegistry.registerNetherWhitelist();
-        ModIntegration.init();
+        ModIntegration.loadInit();
         BWSounds.registerSounds();
-        
 		ItemExt.initBuoyancy();
 		ItemExt.initDesserts();
 		ItemExt.initWeights();
@@ -104,6 +103,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
         MinecraftForge.EVENT_BUS.register(this);
         RecipeUtils.refreshRecipes();
+        ModIntegration.loadPostInit();
     }
 
     @SubscribeEvent

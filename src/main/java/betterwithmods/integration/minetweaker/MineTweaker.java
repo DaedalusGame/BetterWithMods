@@ -1,13 +1,15 @@
-package betterwithmods.integration;
+package betterwithmods.integration.minetweaker;
 
-import betterwithmods.integration.minetweaker.*;
+import betterwithmods.integration.ModIntegration;
 import minetweaker.MineTweakerAPI;
 
 /**
  * Created by tyler on 9/4/16.
  */
-public class MineTweaker {
-    public static void init() {
+public class MineTweaker extends ModIntegration {
+
+
+    public  void init() {
         MineTweakerAPI.registerClass(Saw.class);
         MineTweakerAPI.registerClass(Kiln.class);
         MineTweakerAPI.registerClass(Cauldron.class);

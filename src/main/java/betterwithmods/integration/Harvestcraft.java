@@ -8,10 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class Harvestcraft
-{
-    public static void init()
-    {
+public class Harvestcraft extends ModIntegration {
+
+    @Override
+    public void init() {
         Item corn = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "cornItem"));
         Item cornmeal = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "cornmealItem"));
         BWCrafting.addMillRecipe(new ItemStack(cornmeal), new ItemStack(corn));
@@ -30,9 +30,10 @@ public class Harvestcraft
         Item curryPowder = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "currypowderItem"));
         BWCrafting.addMillRecipe(new ItemStack(curryPowder), new ItemStack(curry));
         Item boiledEgg = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "boiledeggItem"));
-        BWCrafting.addCauldronRecipe(new ItemStack(boiledEgg), new ItemStack[] {new ItemStack(Items.EGG)});
+        BWCrafting.addCauldronRecipe(new ItemStack(boiledEgg), new ItemStack[]{new ItemStack(Items.EGG)});
         Item dough = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "doughItem"));
-        BWCrafting.addCauldronRecipe(new ItemStack(Items.BREAD), new ItemStack[] {new ItemStack(dough)});
+        BWCrafting.addCauldronRecipe(new ItemStack(Items.BREAD), new ItemStack[]{new ItemStack(dough)});
         OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
+
     }
 }

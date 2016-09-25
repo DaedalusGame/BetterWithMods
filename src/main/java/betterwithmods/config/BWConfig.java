@@ -14,6 +14,7 @@ public class BWConfig {
     public static boolean hardcoreBuoy;
     public static boolean hardcoreSpawn;
     public static boolean hardcoreBeds;
+    public static boolean hardcoreVillagers;
     public static boolean steelRequiresEnd;
     public static boolean netherSpawn;
     public static boolean slimeSpawn;
@@ -34,6 +35,7 @@ public class BWConfig {
             hardcoreBuoy = cfg.get(HARDCORE, "Hardcore Buoy", true).getBoolean(true);
             hardcoreSpawn = cfg.get(HARDCORE, "Hardcore Spawn", true).getBoolean(true);
             hardcoreBeds = cfg.get(HARDCORE, "Hardcore Beds", true).getBoolean(true);
+            hardcoreVillagers = cfg.get(HARDCORE, "Hardcore Villagers", true).getBoolean(true);
             steelRequiresEnd = cfg.get(HARDCORE, "Steel Requires End", true).getBoolean(true);
             netherSpawn = cfg.get(VANILLA_TWEAKS, "Prevent Nether Spawns on Non-Nether Materials", true).getBoolean(true);
             slimeSpawn = cfg.get(VANILLA_TWEAKS, "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true).getBoolean(true);

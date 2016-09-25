@@ -37,7 +37,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants
 
     @Override
     public String[] getVariants() {
-        return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn"};
+        return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn", "potterytype=vase"};
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
-	    for (int i = 0; i < 3; i++)
+	    for (int i = 0; i < 4; i++)
 	    {
 	      list.add(new ItemStack(item, 1, i));
 	    }
@@ -86,6 +86,8 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants
 			return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		case 2:
 			return new AxisAlignedBB(0.3125D, 0.0F, 0.3125D, 0.6875D, 0.625D, 0.6875D);
+		case 3:
+			return new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 			default: return super.getBoundingBox(state, world, pos);
 		}
 	}
@@ -128,7 +130,8 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants
 	{
 		CRUCIBLE(0, "crucible"),
 		PLANTER(1, "planter"),
-		URN(2, "urn");
+		URN(2, "urn"),
+		VASE(3, "vase");
 		private String name;
 		private int meta;
 		private static final EnumPotteryType[] META_LOOKUP = new EnumPotteryType[values().length];

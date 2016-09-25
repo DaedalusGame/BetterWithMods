@@ -18,7 +18,8 @@
 		"potterytype": {
 			"crucible": {"model": "betterwithmods:cooking_vat"},
 			"planter": {"model": "betterwithmods:planter"},
-			"urn": {"model": "betterwithmods:urn"}
+			"urn": {"model": "betterwithmods:urn"},
+			"vase": {"model": "betterwithmods:vase"}
 		}
 	}
 }

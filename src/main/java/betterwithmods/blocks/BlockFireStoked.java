@@ -1,19 +1,20 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
-import java.util.Random;
 
-import betterwithmods.BWMBlocks;
+import java.util.Random;
 
 public class BlockFireStoked extends BlockFire
 {
@@ -24,7 +25,12 @@ public class BlockFireStoked extends BlockFire
 		this.setLightLevel(1.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
 	}
-	
+
+	@Override
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		entityIn.setFire(40);
+	}
+
 	@Override
 	public int tickRate(World world)
 	{

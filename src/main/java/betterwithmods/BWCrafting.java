@@ -269,7 +269,7 @@ public class BWCrafting {
         addStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 13), new ItemStack[]{new ItemStack(Items.MUTTON, 6)});
         addStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 13), new ItemStack[]{new ItemStack(Items.COOKED_MUTTON, 6)});
         addStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 13), new ItemStack[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial("ender_slag"), new ItemStack[]{ItemMaterial.getMaterial("brimstone"), BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial("soul_flux") : null});
+        if (BWConfig.steelRequiresEnd) addStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 25), new ItemStack(BWMItems.MATERIAL, 1, 42),new ItemStack[]{ItemMaterial.getMaterial("ender_slag")});
         addOreStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 21), new Object[]{"logWood"});
         addOreStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 21), new Object[]{new OreStack("plankWood", 6)});
         addOreStokedCauldronRecipe(new ItemStack(BWMItems.MATERIAL, 1, 21), new Object[]{new OreStack("dustWood", 16)});

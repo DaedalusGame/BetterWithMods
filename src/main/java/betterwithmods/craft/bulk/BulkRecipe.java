@@ -64,7 +64,7 @@ public class BulkRecipe
                     this.jeiInput.add(getOreList(new OreStack((String)in, 1)));
                 }
             }
-            else if(in instanceof Integer)
+            else if(in instanceof Integer || in == null)
                 continue;
             else if(in instanceof OreStack) {
                 this.input.add(((OreStack) in).copy());

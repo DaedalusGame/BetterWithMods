@@ -4,13 +4,12 @@ import net.minecraft.potion.Potion;
 
 public class BWPotion extends Potion {
 
-    public BWPotion(boolean isBadEffectIn, int liquidColorIn,String name, int x, int y) {
-        this(isBadEffectIn,liquidColorIn);
-        setRegistryName(name);
-        setPotionName("bwm.effect."+name);
-        setIconIndex(x,y);
-    }
-    public BWPotion(boolean isBadEffectIn, int liquidColorIn) {
-        super(isBadEffectIn, liquidColorIn);
-    }
+	public BWPotion(boolean isBadEffectIn, int liquidColorIn, int x, int y) {
+		this(isBadEffectIn, liquidColorIn);
+		setIconIndex(x, y);
+	}
+
+	public BWPotion(boolean isBadEffectIn, int liquidColorIn) {
+		super(isBadEffectIn, liquidColorIn);
+	}
 }

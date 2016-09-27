@@ -25,12 +25,12 @@ import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
 public class Crucible {
     private final static List<BulkRecipe> recipes = CraftingManagerCrucible.getInstance().getRecipes();
     @ZenMethod
-    public static void add(IItemStack output, IItemStack secondary, IItemStack[] inputs) {
-        MineTweakerAPI.apply(new Add(toStack(output),toStack(secondary),toStacks(inputs)));
+    public static void add(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
+        MineTweakerAPI.apply(new Add(toStack(output),toStack(secondary),toInputs(inputs)));
     }
 
     @ZenMethod
-    public static void remove(IIngredient output) {
+    public static void remove(IItemStack output) {
         List<BulkRecipe> toRemove = new ArrayList<>();
         for(BulkRecipe recipe: recipes) {
             if(StackHelper.matches(output,toIItemStack(recipe.getOutput()))) {
@@ -40,13 +40,13 @@ public class Crucible {
         if(!toRemove.isEmpty()) {
             MineTweakerAPI.apply(new Remove(toRemove));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "saw", output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "crucible", output.toString()));
         }
     }
 
     public static class Add extends BaseListAddition<BulkRecipe> {
 
-        protected Add(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
+        protected Add(ItemStack output, ItemStack secondary, Object[] inputs) {
             super("crucible", Crucible.recipes);
         }
 

@@ -1,5 +1,6 @@
 package betterwithmods.craft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ public class OreStack
 {
 	private String oreName;
 	private int stackSize;
+	private List<ItemStack> oreStacks;
 	
 	public OreStack(String name)
 	{
@@ -19,6 +21,15 @@ public class OreStack
 	{
 		this.oreName = name;
 		this.stackSize = stack;
+		oreStacks = generateOreStacks(name, stack);
+	}
+	//convenience for MineTweaker
+	public OreStack(String name, int stack, ItemStack[] ores) {
+		this.oreName = name;
+		this.stackSize = stack;
+		this.oreStacks = new ArrayList<>();
+		for(ItemStack ore : ores)
+			this.oreStacks.add(ore.copy());
 	}
 
 	public OreStack copy()
@@ -36,6 +47,18 @@ public class OreStack
 		if(OreDictionary.getOres(oreName).size() > 0)
 			return OreDictionary.getOres(oreName);
 		return null;
+	}
+
+	private List<ItemStack> generateOreStacks(String name, int amount) {
+		List<ItemStack> items = new ArrayList<>();
+		for(ItemStack stack : OreDictionary.getOres(name)) {
+			items.add(new ItemStack(stack.getItem(), amount, stack.getMetadata()));
+		}
+		return items;
+	}
+
+	public List<ItemStack> getOreStacks() {
+		return oreStacks;
 	}
 	
 	public int getStackSize()

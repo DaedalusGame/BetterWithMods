@@ -139,13 +139,13 @@ public class BlockRope extends BWMBlock
 	
 	@Override
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	{/*
 		if(side.ordinal() < 2)
 		{
 			EnumFacing dir = EnumFacing.getFront(side.ordinal());
 			BlockPos offPos = side.ordinal() == 0 ? pos.down() : pos.up();
 			return !world.isSideSolid(offPos, dir.getOpposite(), true);
-		}
+		}*/
 		return true;
 	}
 }

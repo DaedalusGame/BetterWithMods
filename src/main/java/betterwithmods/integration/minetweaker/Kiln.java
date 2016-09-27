@@ -36,7 +36,7 @@ public class Kiln {
     @ZenMethod
     public static void remove(IIngredient output) {
         Map<String,List<ItemStack>> toRemove = new Hashtable<>();
-        for(Map.Entry<String,List<ItemStack>> sawRecipe : toRemove.entrySet()) {
+        for(Map.Entry<String,List<ItemStack>> sawRecipe : cookables.entrySet()) {
             if(sawRecipe != null && matches(output, toIItemStack(sawRecipe.getValue().get(0)))) {
                 toRemove.put(sawRecipe.getKey(), sawRecipe.getValue());
             }
@@ -44,7 +44,7 @@ public class Kiln {
         if(!toRemove.isEmpty()) {
             MineTweakerAPI.apply(new Remove(toRemove));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "saw", output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "kiln", output.toString()));
         }
     }
 
@@ -62,7 +62,7 @@ public class Kiln {
 
     private static class Remove extends BaseMapRemoval<String, List<ItemStack>> {
         protected Remove(Map<String,List<ItemStack>> map) {
-            super("saw", map, cookables);
+            super("kiln", map, cookables);
         }
 
         @Override

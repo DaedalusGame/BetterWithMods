@@ -1,5 +1,6 @@
 package betterwithmods.integration.minetweaker.utils;
 
+import betterwithmods.craft.OreStack;
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -16,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
@@ -101,6 +103,35 @@ public class InputHelper {
 	    }
 	    
 	    return new MCLiquidStack(stack);
+	}
+
+	public static Object[] toInputs(IIngredient[] ing) {
+		if(ing == null)
+			return null;
+		else {
+			Object[] obj = new Object[ing.length];
+			for(int i = 0; i < ing.length; i++) {
+				int amount = ing[i].getAmount();
+				if(ing[i] instanceof IItemStack)
+					obj[i] = toStack((IItemStack)ing[i]);
+				else if(ing[i] instanceof IOreDictEntry) {
+					obj[i] = toOreStack(new StackOreDictEntry(((IOreDictEntry)ing[i]).getName(), amount));
+				}
+			}
+			return obj;
+		}
+	}
+
+	public static OreStack toOreStack(StackOreDictEntry entry) {
+		return new OreStack(toString(entry), entry.getAmount());
+	}
+
+	public static ItemStack[] toStacks(List<IItemStack> ingredients) {
+		ArrayList<IItemStack> stacks = new ArrayList<>();
+		for(IItemStack stack : ingredients) {
+			stacks.add(stack.amount(stack.getAmount()));
+		}
+		return (ItemStack[])stacks.toArray();
 	}
 
 	public static ItemStack[] toStacks(IItemStack[] iStack) {

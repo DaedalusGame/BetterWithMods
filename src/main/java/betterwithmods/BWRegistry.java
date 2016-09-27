@@ -40,11 +40,11 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import java.util.List;
 
 public class BWRegistry {
-
-	public static Potion POTION_TRUESIGHT = new BWPotion(false, 14270531,"true_sight",4,1);
+	public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
 
 	public static void init() {
 		registerOres();
+		registerPotions();// TODO experimental
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
 
 		if (BWConfig.hardcoreBuckets) {
@@ -70,22 +70,24 @@ public class BWRegistry {
 		}
 		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.REPEATER, new BehaviorDiodeDispense());
 		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.COMPARATOR, new BehaviorDiodeDispense());
-		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE), (source, stack) -> {
-			World worldIn = source.getWorld();
-			EnumFacing facing = source.func_189992_e().getValue(BlockDispenser.FACING);
-			BlockPos pos = source.getBlockPos().offset(facing);
-			EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
-					pos.getZ() + 0.5F, null, facing);
-			miningCharge.func_189654_d(false);
-			worldIn.spawnEntityInWorld(miningCharge);
-			worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ,
-					SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			return stack;
-		});
+		BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE),
+				(source, stack) -> {
+					World worldIn = source.getWorld();
+					EnumFacing facing = source.func_189992_e().getValue(BlockDispenser.FACING);
+					BlockPos pos = source.getBlockPos().offset(facing);
+					EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
+							pos.getZ() + 0.5F, null, facing);
+					miningCharge.func_189654_d(false);
+					worldIn.spawnEntityInWorld(miningCharge);
+					worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ,
+							SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return stack;
+				});
 		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
 	}
 
 	private static int availableEntityId = 0;
+
 	/**
 	 * Registers an entity for this mod. Handles automatic available ID
 	 * assignment.
@@ -104,8 +106,6 @@ public class BWRegistry {
 				updateFrequency, sendsVelocityUpdates);
 		availableEntityId++;
 	}
-
-
 
 	public static void registerOres() {
 		OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.MATERIAL, 1, 0));
@@ -137,7 +137,6 @@ public class BWRegistry {
 		OreDictionary.registerOre("string", new ItemStack(BWMItems.MATERIAL, 1, 3));
 		OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
 		OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
-
 
 	}
 
@@ -228,6 +227,12 @@ public class BWRegistry {
 	}
 
 	private static void registerPotions() {
-		GameRegistry.register(POTION_TRUESIGHT);
+		registerPotion(POTION_TRUESIGHT);
+	}
+
+	private static void registerPotion(Potion potion) {
+		String potionName = potion.getRegistryName().toString().substring(BWMod.MODID.length() + ":".length());
+		potion.setPotionName("bwm.effect." + potionName);
+		GameRegistry.register(potion);
 	}
 }

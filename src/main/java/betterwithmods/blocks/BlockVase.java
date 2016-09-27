@@ -1,9 +1,7 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.TileEntityVase;
-import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;

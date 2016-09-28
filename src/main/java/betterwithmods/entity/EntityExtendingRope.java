@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.tile.TileEntityPulley;
@@ -15,8 +16,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -240,7 +243,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 		entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -BWConfig.downSpeed, e.motionY));
 
 	}
-	
+
 	private static AxisAlignedBB createAABB(Vec3d part1, Vec3d part2) {
 		return new AxisAlignedBB(part1.xCoord, part1.yCoord, part1.zCoord, part2.xCoord, part2.yCoord, part2.zCoord);
 	}
@@ -248,7 +251,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 	private double getBlockStateHeight(IBlockState blockState) {
 		return (blockState == null ? 1
 				: (blockState.getBlock() == BWMBlocks.ANCHOR ? 0.375F
-						: (blockState.getBlock() instanceof BlockRailBase ? 0 : 1)));
+						: (blockState.getBlock() instanceof BlockRailBase || blockState.getBlock() instanceof BlockRedstoneWire ? 0 : 1)));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -264,16 +267,44 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 				if (!pulley.onJobCompleted(up, targetY, this)) {
 					BlockPos pos = this.pulley.down(this.pulley.getY() - targetY);
 					// rails need to be placed after all the other blocks
-					blocks.forEach((vec, state) -> {
-						if (!(state.getBlock() instanceof BlockRailBase)) {
-							worldObj.setBlockState(pos.add(vec), state, 3);
+					// blocks.forEach((vec, state) -> {
+					// if (!(state.getBlock() instanceof BlockRailBase)) {
+					// if (state.getBlock().)
+					// worldObj.setBlockState(pos.add(vec), state, 3);
+					// }
+					// });
+					// blocks.forEach((vec, state) -> {
+					// if (state.getBlock() instanceof BlockRailBase) {
+					// worldObj.setBlockState(pos.add(vec), state, 3);
+					// }
+					// });
+
+					int retries = 0;
+					while (!blocks.isEmpty() && retries < 10) {
+						retries++;
+						int skipped = 0;
+						for (Entry<Vec3i, IBlockState> entry : blocks.entrySet()) {
+							BlockPos blockPos = pos.add(entry.getKey());
+							if (entry.getValue().getBlock().canPlaceBlockAt(worldObj, blockPos)) {
+								worldObj.setBlockState(blockPos, entry.getValue(), 3);
+								blocks.remove(entry.getKey());
+								skipped = 0;
+								break;
+							}
+							skipped++;
 						}
-					});
-					blocks.forEach((vec, state) -> {
-						if (state.getBlock() instanceof BlockRailBase) {
-							worldObj.setBlockState(pos.add(vec), state, 3);
+						if (skipped == 0) {
+							retries = 0;
 						}
-					});
+					}
+
+					if (retries > 0) {
+						blocks.forEach((vec, state) -> {
+							state.getBlock().getDrops(worldObj, pos, state, 0).forEach(stack -> worldObj
+									.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack)));
+						});
+					}
+
 					updatePassengers(posY, targetY + 0.25, true);
 					return true;
 				}

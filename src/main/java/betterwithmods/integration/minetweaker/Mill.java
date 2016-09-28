@@ -59,7 +59,7 @@ public class Mill {
     public static class Remove extends BaseListRemoval<BulkRecipe> {
 
         protected Remove(List<BulkRecipe> list) {
-            super("mill", list, Mill.recipes);
+            super("mill", Mill.recipes, list);
         }
 
         @Override

@@ -61,7 +61,7 @@ public class Cauldron {
     public static class Remove extends BaseListRemoval<BulkRecipe> {
 
         protected Remove(List<BulkRecipe> list) {
-            super("cauldron", list, Cauldron.recipes);
+            super("cauldron", Cauldron.recipes, list);
         }
 
         @Override

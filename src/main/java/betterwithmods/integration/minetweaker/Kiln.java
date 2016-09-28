@@ -62,7 +62,7 @@ public class Kiln {
 
     private static class Remove extends BaseMapRemoval<String, List<ItemStack>> {
         protected Remove(Map<String,List<ItemStack>> map) {
-            super("kiln", map, cookables);
+            super("kiln", cookables, map);
         }
 
         @Override

@@ -59,7 +59,7 @@ public class StokedCrucible {
     public static class Remove extends BaseListRemoval<BulkRecipe> {
 
         protected Remove(List<BulkRecipe> list) {
-            super("crucibleStoked", list, StokedCrucible.recipes);
+            super("crucibleStoked", StokedCrucible.recipes, list);
         }
 
         @Override

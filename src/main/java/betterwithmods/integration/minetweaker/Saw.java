@@ -67,7 +67,7 @@ public class Saw {
 
     private static class Remove extends BaseMapRemoval<String, List<ItemStack>> {
         protected Remove(Map<String, List<ItemStack>> map) {
-            super("saw", map, woodProduct);
+            super("saw", woodProduct, map);
         }
 
         @Override

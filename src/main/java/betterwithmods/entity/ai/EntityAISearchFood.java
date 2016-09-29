@@ -48,7 +48,7 @@ public class EntityAISearchFood extends EntityAIBase
             }
             if(targetItem != null) {
                 BlockPos targetPos = targetItem.getPosition();
-                if(entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D) {
+                if(entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().stackSize > 0) {
                     processItemEating();
                     return false;
                 }
@@ -80,7 +80,7 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public boolean continueExecuting() {
-        if(targetItem.isDead)
+        if(targetItem.isDead || targetItem.getEntityItem().stackSize < 1)
             return false;
         if(entity.getGrowingAge() < 1 && !entity.isInLove()) {
             if(entity instanceof EntityWolf) {
@@ -103,7 +103,7 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public void updateTask() {
-        if(entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D) {
+        if(entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().stackSize > 0) {
             processItemEating();
         }
         else {

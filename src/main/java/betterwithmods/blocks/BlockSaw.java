@@ -333,7 +333,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         if (isMechanicalOn(world, pos)) {
             emitSawParticles(world, pos, rand);
 
-            List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.offset(getFacing(world, pos)), pos.offset(getFacing(world, pos)).add(1, 1, 1)));
+            List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
             if (!entities.isEmpty() && entities.size() > 0)
                 emitBloodParticles(world, pos);
         }

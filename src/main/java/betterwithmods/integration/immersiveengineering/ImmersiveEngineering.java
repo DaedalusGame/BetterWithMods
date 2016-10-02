@@ -1,6 +1,7 @@
 package betterwithmods.integration.immersiveengineering;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.BWMod;
 import betterwithmods.integration.ModIntegration;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,8 @@ public class ImmersiveEngineering extends ModIntegration {
     @Override
     public void preInit() {
         BWMBlocks.registerBlock(TREATED_AXLE);
-        BWMBlocks.setInventoryModel(TREATED_AXLE);
+        if(BWMod.proxy.isClientside())
+            BWMBlocks.setInventoryModel(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
     }
 

@@ -18,6 +18,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -90,10 +92,12 @@ public final class BWMItems {
 		return GameRegistry.register(item);
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static void setModelLocation(Item item, int meta, String variantSettings) {
 		setModelLocation(item, meta, item.getRegistryName().toString(), variantSettings);
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static void setModelLocation(Item item, int meta, String location, String variantSettings) {
 		if (meta == OreDictionary.WILDCARD_VALUE) {
 			ModelLoader.setCustomMeshDefinition(item,
@@ -104,6 +108,7 @@ public final class BWMItems {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static void setInventoryModel(ItemBlock item) {
 		Block block = item.getBlock();
 		if (item instanceof ItemBlockMini) {
@@ -126,6 +131,7 @@ public final class BWMItems {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void setInventoryModel(Item item) {
 		if (item.isDamageable()) {
 			setModelLocation(item, OreDictionary.WILDCARD_VALUE, "inventory");
@@ -144,6 +150,7 @@ public final class BWMItems {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static void registerMiniBlockNBT(ItemBlockMini item) {
 		//TODO use more of the BlockPlanks.EnumType instead of metadata
 		ModelLoader.setCustomMeshDefinition(item,

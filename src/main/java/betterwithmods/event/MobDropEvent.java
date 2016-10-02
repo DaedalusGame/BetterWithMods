@@ -14,6 +14,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -141,15 +142,17 @@ public class MobDropEvent
 	public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
 		Entity creeper = e.getTarget();
 		if(creeper instanceof EntityCreeper) {
-			if(e.getSide().isServer() && creeper.isEntityAlive()) {
-				InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
-				EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
-				creeper.attackEntityFrom(new DamageSource(""),0);
-				copyEntityInfo(creeper,shearedCreeper);
-				e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.HOSTILE, 1, 0.3F);
-				e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.HOSTILE, 1, 1F);
-				creeper.setDead();
-				e.getWorld().spawnEntityInWorld(shearedCreeper);
+			if(e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != null) {
+				if (e.getItemStack().getItem() instanceof ItemShears) {
+					InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
+					EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
+					creeper.attackEntityFrom(new DamageSource(""), 0);
+					copyEntityInfo(creeper, shearedCreeper);
+					e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.HOSTILE, 1, 0.3F);
+					e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.HOSTILE, 1, 1F);
+					creeper.setDead();
+					e.getWorld().spawnEntityInWorld(shearedCreeper);
+				}
 			}
 		}
 	}

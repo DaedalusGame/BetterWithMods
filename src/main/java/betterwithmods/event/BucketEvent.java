@@ -1,11 +1,20 @@
 package betterwithmods.event;
 
+import betterwithmods.util.DispenserBehaviorFiniteWater;
 import net.minecraft.block.*;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.fluids.DispenseFluidContainer;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import betterwithmods.config.BWConfig;
@@ -17,17 +26,85 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class BucketEvent 
 {
+    @SuppressWarnings("deprecation")
+    public static void editModdedFluidDispenseBehavior() {
+        if(!BWConfig.hardcoreFluidContainer)
+            return;
+        RegistryDefaulted<Item, IBehaviorDispenseItem> reg = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY;
+        for(Item item : Item.REGISTRY) {
+            if(item instanceof IFluidContainerItem) {
+                if(reg.getObject(item) instanceof DispenseFluidContainer)
+                    BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, new DispenserBehaviorFiniteWater());
+            }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @SubscribeEvent
+    public void fluidContainerUse(PlayerInteractEvent.RightClickBlock evt) {
+        if(!BWConfig.hardcoreFluidContainer)
+            return;
+
+        ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
+        if(toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !(toCheck.getItem() instanceof IFluidContainerItem))
+            return;
+
+        if(!evt.getWorld().isRemote) {
+            if(containsWater(toCheck))
+                evt.setUseBlock(Event.Result.DENY);
+
+            Block block = evt.getWorld().getBlockState(evt.getPos()).getBlock();
+
+            boolean replaceable = block.isReplaceable(evt.getWorld(), evt.getPos());
+            BlockPos pos = replaceable ? evt.getPos() : evt.getPos().offset(evt.getFace());
+
+            if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
+                ItemStack equip = evt.getEntityPlayer().getHeldItem(evt.getHand());
+                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getEntityPlayer().getHeldItem(evt.getHand()), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != null && containsWater(equip)) {
+                    if (evt.getWorld().getBlockState(pos).getBlock().isAir(evt.getWorld().getBlockState(pos), evt.getWorld(), pos) || evt.getWorld().getBlockState(pos).getBlock().isReplaceable(evt.getWorld(), pos)) {
+                        Item item = equip.getItem();
+                        if (item instanceof IFluidContainerItem && item.getItemUseAction(equip) == EnumAction.NONE) {
+                            if(((IFluidContainerItem)item).getCapacity(equip) == Fluid.BUCKET_VOLUME) {
+                                evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
+                                for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                                    BlockPos p2 = pos.offset(facing);
+                                    if (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2))
+                                        evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+                                }
+                                if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
+                                    if (equip.stackSize == 1) {
+                                        EnumHand hand = evt.getHand();
+                                        evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : null);
+                                    } else if (equip.stackSize > 1) {
+                                        equip.stackSize -= 1;
+                                        if (item.hasContainerItem(equip))
+                                            evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());
+                                        evt.setUseItem(Event.Result.DENY);
+                                    }
+                                }
+                                evt.setCanceled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void bucketUse(PlayerInteractEvent.RightClickBlock evt)
     {
         if(!BWConfig.hardcoreBuckets)
             return;
 
-        if(evt.getEntityPlayer().getHeldItem(evt.getHand()) == null || evt.getEntityPlayer().getHeldItem(evt.getHand()).getItem() != Items.WATER_BUCKET)
+        ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
+
+        if(toCheck == null || toCheck.getItem() != Items.WATER_BUCKET)
             return;
 
         if(!evt.getWorld().isRemote) {
-            if (evt.getEntityPlayer().getHeldItem(evt.getHand()).getItem() == Items.WATER_BUCKET)
+            if (toCheck.getItem() == Items.WATER_BUCKET)
                 evt.setUseBlock(Event.Result.DENY);
 
             Block block = evt.getWorld().getBlockState(evt.getPos()).getBlock();
@@ -63,6 +140,15 @@ public class BucketEvent
                 }
             }
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean containsWater(ItemStack stack) {
+        if(stack.getItem() instanceof IFluidContainerItem) {
+            if(((IFluidContainerItem)stack.getItem()).getFluid(stack).getFluid() == FluidRegistry.WATER)
+                return true;
+        }
+        return false;
     }
     /*
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

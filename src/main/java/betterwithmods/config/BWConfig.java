@@ -11,6 +11,7 @@ public class BWConfig {
     public static boolean hardcoreGunpowder;
     public static boolean hardcoreLumber;
     public static boolean hardcoreBuckets;
+    public static boolean hardcoreFluidContainer;
     public static boolean hardcoreHunger;
     public static boolean hardcoreBuoy;
     public static boolean hardcoreSpawn;
@@ -32,6 +33,7 @@ public class BWConfig {
             hardcoreGunpowder = cfg.get(HARDCORE, "Hardcore Gunpowder", true).getBoolean(true);
             hardcoreLumber = cfg.get(HARDCORE, "Hardcore Lumberjack", true).getBoolean(true);
             hardcoreBuckets = cfg.get(HARDCORE, "Hardcore Buckets", true).getBoolean(true);
+            hardcoreFluidContainer = cfg.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean(true);
             hardcoreHunger = cfg.get(HARDCORE, "Hardcore Hunger", true).getBoolean(true);
             hardcoreBuoy = cfg.get(HARDCORE, "Hardcore Buoy", true).getBoolean(true);
             hardcoreSpawn = cfg.get(HARDCORE, "Hardcore Spawn", true).getBoolean(true);

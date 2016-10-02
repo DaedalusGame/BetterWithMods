@@ -91,7 +91,6 @@ public class BucketEvent
         }
     }
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void bucketUse(PlayerInteractEvent.RightClickBlock evt)
     {

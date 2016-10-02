@@ -25,7 +25,8 @@ public class BWGuiFactory implements IModGuiFactory {
         return null;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
     }

@@ -17,7 +17,7 @@ import java.util.List;
 public class BWGuiConfig extends GuiConfig {
     public BWGuiConfig(GuiScreen parentScreen) {
         super(parentScreen,
-                getConfigElements(), BWMod.MODID, false, false, GuiConfig.getAbridgedConfigPath(BWConfig.cfg.toString()));
+                getConfigElements(), BWMod.MODID, false, false, GuiConfig.getAbridgedConfigPath(BWConfig.config.toString()));
     }
 
     /** Compiles a list of config elements */
@@ -37,6 +37,6 @@ public class BWGuiConfig extends GuiConfig {
     /** Creates a button linking to another screen where all options of the category are available */
     private static IConfigElement categoryElement(String category, String name, String tooltip_key) {
         return new DummyConfigElement.DummyCategoryElement(name, tooltip_key,
-                new ConfigElement(BWConfig.cfg.getCategory(category)).getChildElements());
+                new ConfigElement(BWConfig.config.getCategory(category)).getChildElements());
     }
 }

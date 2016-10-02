@@ -68,14 +68,15 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
                 "facing=up,filledslots=0,ison=false,machinetype=turntable,subtype=0",};
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public Material getMaterial(IBlockState state) {
         switch (state.getValue(MACHINETYPE)) {
             case HOPPER:
             case PULLEY:
                 return Material.WOOD;
             default:
-                return super.getMaterial(state);
+            	return super.getMaterial(state);
         }
     }
 

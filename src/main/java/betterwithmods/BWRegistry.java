@@ -44,7 +44,7 @@ public class BWRegistry {
 
 	public static void init() {
 		registerOres();
-		registerPotions();// TODO experimental
+		registerPotions();
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
 
 		if (BWConfig.hardcoreBuckets) {

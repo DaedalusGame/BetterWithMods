@@ -15,8 +15,6 @@ import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -24,7 +22,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -48,8 +45,7 @@ public class BWMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        BWConfig.cfg = new Configuration(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
-        BWConfig.init();
+        BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
@@ -92,6 +88,14 @@ public class BWMod {
         BWRegistry.registerWood();
         InvUtils.initOreDictGathering();
         ColorUtils.initColors();
+        registerEventHandlers();
+        RecipeUtils.refreshRecipes();
+        ModIntegration.loadPostInit();
+        BucketEvent.editModdedFluidDispenseBehavior();
+    }
+    
+	private static void registerEventHandlers() {
+        MinecraftForge.EVENT_BUS.register(new BWConfig());
         MinecraftForge.EVENT_BUS.register(new HungerEventHandler());
         MinecraftForge.EVENT_BUS.register(new BuoyancyEventHandler());
         MinecraftForge.EVENT_BUS.register(new RespawnEventHandler());
@@ -101,15 +105,5 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
-        MinecraftForge.EVENT_BUS.register(this);
-        RecipeUtils.refreshRecipes();
-        ModIntegration.loadPostInit();
-        BucketEvent.editModdedFluidDispenseBehavior();
-    }
-
-    @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        if(eventArgs.getModID().equals(BWMod.MODID))
-            BWConfig.init();
     }
 }

@@ -2,6 +2,7 @@ package betterwithmods.items;
 
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.entity.EntityDynamite;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -12,7 +13,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,7 +68,7 @@ public class ItemDynamite extends Item
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool)
 	{
-		list.add(I18n.translateToLocal("lore.bwm:dynamite"));
+		list.add(I18n.format("lore.bwm:dynamite"));
 		super.addInformation(stack, player, list, bool);
 	}
 	

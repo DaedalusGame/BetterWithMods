@@ -1,12 +1,14 @@
 package betterwithmods.blocks.tile;
 
 import betterwithmods.items.ItemMaterial;
+import betterwithmods.util.InvUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
@@ -41,6 +43,10 @@ public class TileEntityVase extends TileBasicInventory {
 		if (vaseitem != null && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
 			float intensity = 1.5f; // TODO: fiddle with this.
 			worldObj.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
+		}
+		else
+		{
+			InvUtils.ejectInventoryContents(worldObj, pos, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
 		}
 	}
 

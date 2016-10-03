@@ -109,14 +109,9 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
 
-        if (tile != null) {
-            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-                InvUtils.ejectInventoryContents(world, pos, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
-                world.updateComparatorOutputLevel(pos, this);
-            }
-
-            if(tile instanceof TileEntityVase)
-                ((TileEntityVase)tile).onBreak();
+        if (tile != null && tile instanceof TileEntityVase) {
+            ((TileEntityVase)tile).onBreak();
+            world.updateComparatorOutputLevel(pos, this);
         }
 
         super.breakBlock(world, pos, state);

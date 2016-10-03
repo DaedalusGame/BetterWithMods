@@ -176,18 +176,19 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 	@Override
 	public void overpower() 
 	{
-		BlockWindmill block = (BlockWindmill)this.worldObj.getBlockState(pos).getBlock();
-		{
-			int align = block.getAxisAlignment(this.worldObj, pos);
-			EnumFacing[] dir = BlockAxle.facings[align];
-			for(int i = 0; i < 2; i++)
+		if(this.getBlockType() instanceof BlockWindmill) {
+			BlockWindmill block = (BlockWindmill) this.worldObj.getBlockState(pos).getBlock();
 			{
-				BlockPos offset = pos.offset(dir[i]);
-				Block axle = this.worldObj.getBlockState(offset).getBlock();
-				if(axle instanceof BlockAxle)
-					((BlockAxle)axle).overpower(this.worldObj, offset);
-				else if(axle instanceof IMechanicalBlock && ((IMechanicalBlock)axle).canInputPowerToSide(worldObj, offset, dir[i].getOpposite()))
-					((IMechanicalBlock)axle).overpower(this.worldObj, offset);
+				int align = block.getAxisAlignment(this.worldObj, pos);
+				EnumFacing[] dir = BlockAxle.facings[align];
+				for (int i = 0; i < 2; i++) {
+					BlockPos offset = pos.offset(dir[i]);
+					Block axle = this.worldObj.getBlockState(offset).getBlock();
+					if (axle instanceof BlockAxle)
+						((BlockAxle) axle).overpower(this.worldObj, offset);
+					else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir[i].getOpposite()))
+						((IMechanicalBlock) axle).overpower(this.worldObj, offset);
+				}
 			}
 		}
 	}

@@ -48,6 +48,7 @@ public class Crucible {
 
         protected Add(ItemStack output, ItemStack secondary, Object[] inputs) {
             super("crucible", Crucible.recipes);
+            recipes.add(new BulkRecipe(this.name,output,secondary, inputs));
         }
 
         @Override

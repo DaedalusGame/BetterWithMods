@@ -144,7 +144,7 @@ public class BucketEvent
     @SuppressWarnings("deprecation")
     private boolean containsWater(ItemStack stack) {
         if(stack.getItem() instanceof IFluidContainerItem) {
-            if(((IFluidContainerItem)stack.getItem()).getFluid(stack).getFluid() == FluidRegistry.WATER)
+            if(((IFluidContainerItem)stack.getItem()).getFluid(stack) != null && ((IFluidContainerItem)stack.getItem()).getFluid(stack).getFluid() == FluidRegistry.WATER)
                 return true;
         }
         return false;

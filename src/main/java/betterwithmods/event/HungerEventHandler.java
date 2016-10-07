@@ -301,7 +301,7 @@ public class HungerEventHandler {
 
 		event.setNewfov(f);
 	}
-
+/*
 	@SubscribeEvent
 	public void onFoodConfigChanged(OnConfigChangedEvent event) {
 		if (!event.getModID().equals(BWMod.MODID))
@@ -318,5 +318,5 @@ public class HungerEventHandler {
 		// TODO find solution for issue #71
 		// FIXME Apply/Revert has no effect on this player instance.
 		// We need a synced client&server config system.
-	}
+	}*/
 }

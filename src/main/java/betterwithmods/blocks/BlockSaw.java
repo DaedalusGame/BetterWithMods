@@ -4,6 +4,7 @@ import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.damagesource.BWDamageSource;
+import betterwithmods.event.MobDropEvent;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -16,6 +17,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -144,12 +146,20 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
                 else if (!world.isAirBlock(pos2))
                     unobstructed = false;
             }
-
-            if (entity.attackEntityFrom(source, damage)) {
+            if(entity instanceof EntityMob && ((EntityLivingBase) entity).getHealth() <= damage) {
+                ((EntityLivingBase) entity).recentlyHit = 60;
+                if(world instanceof WorldServer)
+                    performLastHit(entity, damage);
+            }
+            else if (entity.attackEntityFrom(source, damage)) {
                 ((EntityLivingBase) entity).recentlyHit = 60;
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
             }
         }
+    }
+
+    private void performLastHit(Entity entity, float damage) {
+        entity.attackEntityFrom(DamageSource.causePlayerDamage(MobDropEvent.player), damage);
     }
 
     @Override

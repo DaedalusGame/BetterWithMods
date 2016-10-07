@@ -13,9 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -56,23 +56,21 @@ public class MobAIEvent {
                 ItemStack stack = e.getItemStack();
                 boolean isDiamond = stack == null ? false : OreDictionary.getOres("gemDiamond").stream().anyMatch(gem -> stack.isItemEqual(gem));
                 if (isDiamond && !villager.isChild() && !isWillingToMate(villager) && villager.getGrowingAge() == 0) {
-                    stack.stackSize--;
+                    if(e.getEntityPlayer().capabilities.isCreativeMode)
+                        stack.stackSize--;
                     e.getWorld().setEntityState(villager, (byte) 12);
                     ((EntityVillager) e.getTarget()).setIsWillingToMate(true);
+                    if(stack.stackSize < 1)
+                        e.getEntityPlayer().setHeldItem(e.getHand(), null);
                 }
             }
         }
     }
 
     public static boolean isWillingToMate(EntityVillager villager) {
-        try {
-            Field field = villager.getClass().getDeclaredField("isWillingToMate");
-            field.setAccessible(true);
-            return (boolean) field.get(villager);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if(villager != null) {
+            boolean field = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, "isWillingToMate", "field_175565_bs");
+            return field;
         }
         return false;
     }

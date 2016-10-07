@@ -1,9 +1,13 @@
 package betterwithmods.event;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.item.EntityItem;
@@ -18,10 +22,17 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
@@ -30,6 +41,26 @@ public class MobDropEvent
 {
 	private static int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
 	private static Random rand = new Random();
+
+	public static FakePlayer player;
+
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load evt) {
+		if(evt.getWorld() instanceof WorldServer) {
+			player = FakePlayerFactory.getMinecraft((WorldServer)evt.getWorld());
+			ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+			sword.addEnchantment(Enchantment.getEnchantmentByLocation("looting"), 2);
+			player.setHeldItem(EnumHand.MAIN_HAND, sword);
+		}
+	}
+
+	@SubscribeEvent
+	public void onWorldUnload(WorldEvent.Unload evt) {
+		if(evt.getWorld() instanceof WorldServer) {
+			player.setHeldItem(EnumHand.MAIN_HAND, null);
+			player = null;
+		}
+	}
 
 	@SubscribeEvent
 	public void mobDungProduction(LivingEvent.LivingUpdateEvent evt)
@@ -73,7 +104,8 @@ public class MobDropEvent
 	@SubscribeEvent
 	public void mobDiesBySaw(LivingDropsEvent evt)
 	{
-		if(evt.getSource().damageType.equals("saw") || evt.getSource().damageType.equals("choppingBlock"))
+		BlockPos pos = evt.getEntityLiving().getPosition().down();
+		if(isChoppingBlock(evt.getEntityLiving().worldObj, pos))
 		{
 			if(!(evt.getEntityLiving() instanceof EntityPlayer)) {
 				for (EntityItem item : evt.getDrops()) {
@@ -85,7 +117,7 @@ public class MobDropEvent
 			if(evt.getEntityLiving() instanceof EntityAgeable)
 				addDrop(evt, new ItemStack(BWMItems.MATERIAL, 1, 5));
 			int headChance = evt.getEntityLiving().worldObj.rand.nextInt(12);
-			if(evt.getSource().damageType.equals("choppingBlock") && headChance < 5)
+			if(headChance < 5)
 			{
 				if(evt.getEntityLiving() instanceof EntitySkeleton)
 				{
@@ -108,6 +140,14 @@ public class MobDropEvent
 				}
 			}
 		}
+	}
+
+	private boolean isChoppingBlock(World world, BlockPos pos) {
+		if(world.getBlockState(pos).getBlock() == BWMBlocks.AESTHETIC) {
+			IBlockState state = world.getBlockState(pos);
+			return state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCK || state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCKBLOOD;
+		}
+		return false;
 	}
 
 	@SubscribeEvent

@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -138,7 +139,10 @@ public class EntityMiningCharge extends Entity {
         IBlockState state = world.getBlockState(pos);
         float resistance = state.getBlock().getExplosionResistance(world,pos,null,null);
         if(resistance < 100) {
-            state.getBlock().dropBlockAsItem(world, pos, state, 0);
+            if(state.getBlock() == Blocks.COBBLESTONE) //TODO: Possible charge registry to blast a block into an item.
+                Blocks.GRAVEL.dropBlockAsItem(world, pos, state, 0);
+            else
+                state.getBlock().dropBlockAsItem(world, pos, state, 0);
             state.getBlock().onBlockExploded(world, pos, new Explosion(world,igniter,posX,posY,posZ,0, Collections.emptyList()));
             world.setBlockToAir(pos);
         }

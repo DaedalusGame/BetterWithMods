@@ -44,6 +44,7 @@ public class MobDropEvent
 
 	public static FakePlayer player;
 
+	//Initializing a static fake player for saws, so spawn isn't flooded with player equipping sounds when mobs hit the saw.
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load evt) {
 		if(evt.getWorld() instanceof WorldServer) {
@@ -54,11 +55,14 @@ public class MobDropEvent
 		}
 	}
 
+	//Not sure if this would be needed, but can't be too safe.
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload evt) {
 		if(evt.getWorld() instanceof WorldServer) {
-			player.setHeldItem(EnumHand.MAIN_HAND, null);
-			player = null;
+			if(player != null) {
+				player.setHeldItem(EnumHand.MAIN_HAND, null);
+				player = null;
+			}
 		}
 	}
 

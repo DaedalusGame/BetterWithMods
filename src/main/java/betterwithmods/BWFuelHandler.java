@@ -16,6 +16,12 @@ public class BWFuelHandler implements IFuelHandler
 			return 3200;
 		else if(item == BWMItems.BARK)
 			return 100;
+		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_SIDING))
+			return 150;
+		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_MOULDING))
+			return 75;
+		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_CORNER))
+			return 38;
 		return 0;
 	}
 

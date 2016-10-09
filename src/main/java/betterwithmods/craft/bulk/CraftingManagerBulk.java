@@ -160,8 +160,12 @@ public abstract class CraftingManagerBulk
         {
             if(obj instanceof ItemStack)
             {
-                if(ItemStack.areItemsEqual((ItemStack)obj, stack) || (((ItemStack)obj).getItemDamage() == OreDictionary.WILDCARD_VALUE && stack.getItem() == ((ItemStack)obj).getItem()))
-                    return true;
+                if(ItemStack.areItemsEqual((ItemStack)obj, stack) || (((ItemStack)obj).getItemDamage() == OreDictionary.WILDCARD_VALUE && stack.getItem() == ((ItemStack)obj).getItem())) {
+                    if(((ItemStack)obj).hasTagCompound())
+                        return ItemStack.areItemStackTagsEqual(stack, (ItemStack)obj);
+                    else
+                        return true;
+                }
             }
             else if(obj instanceof OreStack)
             {

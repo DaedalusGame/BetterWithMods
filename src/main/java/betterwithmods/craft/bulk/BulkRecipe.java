@@ -127,7 +127,7 @@ public class BulkRecipe
                     ItemStack stack = (ItemStack)obj;
                     if(stack != null)
                     {
-                        if(InvUtils.countItemsInInventory(inv, stack.getItem(), stack.getItemDamage()) < stack.stackSize)
+                        if(InvUtils.countItemStacksInInventory(inv, stack) < stack.stackSize)
                             return false;
                     }
                 }
@@ -177,7 +177,7 @@ public class BulkRecipe
 
                     if(stack != null)
                     {
-                        if(!InvUtils.consumeItemsInInventory(inv, stack.getItem(), stack.getItemDamage(), stack.stackSize))
+                        if(!InvUtils.consumeItemsInInventory(inv, stack))
                             success = false;
                     }
                 }

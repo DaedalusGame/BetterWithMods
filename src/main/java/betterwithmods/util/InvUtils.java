@@ -45,8 +45,12 @@ public class InvUtils {
         if (list != null) {
             if (list.isEmpty()) return false;
             for (ItemStack item : list) {
-                if (ItemStack.areItemsEqual(check, item))
-                    return true;
+                if (ItemStack.areItemsEqual(check, item)) {
+                    if(check.hasTagCompound())
+                        return ItemStack.areItemStackTagsEqual(check, item);
+                    else
+                        return true;
+                }
             }
         }
         return false;
@@ -164,6 +168,24 @@ public class InvUtils {
         return count;
     }
 
+    public static int countItemStacksInInventory(IItemHandler inv, ItemStack toCheck) {
+        int itemCount = 0;
+        for(int i = 0; i < inv.getSlots(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if(stack != null) {
+                if(ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if(toCheck.hasTagCompound()) {
+                        if (ItemStack.areItemStackTagsEqual(toCheck, stack))
+                            itemCount += stack.stackSize;
+                    }
+                    else
+                        itemCount += stack.stackSize;
+                }
+            }
+        }
+        return itemCount;
+    }
+
     public static int countItemsInInventory(IItemHandler inv, Item item) {
         return countItemsInInventory(inv, item, OreDictionary.WILDCARD_VALUE);
     }
@@ -193,8 +215,16 @@ public class InvUtils {
                         Item oreItem = ((ItemStack) list.get(o)).getItem();
                         int oreMeta = ((ItemStack) list.get(o)).getItemDamage();
                         if (OreDictionary.itemMatches(new ItemStack(stack.getItem(), 1, stack.getItemDamage()), new ItemStack(oreItem, 1, oreMeta), false)) {
-                            ret += stack.stackSize;
-                            break;
+                            if(((ItemStack)list.get(o)).hasTagCompound()) {
+                                if(ItemStack.areItemStackTagsEqual(stack, (ItemStack)list.get(o))) {
+                                    ret += stack.stackSize;
+                                    break;
+                                }
+                            }
+                            else {
+                                ret += stack.stackSize;
+                                break;
+                            }
                         }
                     }
                 }
@@ -215,6 +245,36 @@ public class InvUtils {
         }
 
         return ret;
+    }
+
+    public static boolean consumeItemsInInventory(ItemStackHandler inv, ItemStack toCheck) {
+        int stackSize = toCheck.stackSize;
+        for(int i = 0; i < inv.getSlots(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if(stack != null) {
+                if(ItemStack.areItemStacksEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if(toCheck.hasTagCompound()) {
+                        if(ItemStack.areItemStackTagsEqual(toCheck, stack)) {
+                            if(stack.stackSize >= stackSize) {
+                                decrStackSize(inv, i, stackSize);
+                                return false;
+                            }
+                            stackSize -= stack.stackSize;
+                            inv.setStackInSlot(i, null);
+                        }
+                    }
+                    else {
+                        if(stack.stackSize >= stackSize) {
+                            decrStackSize(inv, i, stackSize);
+                            return false;
+                        }
+                        stackSize -= stack.stackSize;
+                        inv.setStackInSlot(i, null);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static boolean consumeItemsInInventory(ItemStackHandler inv, Item item, int meta, int stackSize) {
@@ -244,13 +304,26 @@ public class InvUtils {
                 for (int j = 0; j < inv.getSlots(); ++j) {
                     ItemStack stack = inv.getStackInSlot(j);
                     if (stack != null && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
-                        if (stack.stackSize >= stackSize) {
-                            decrStackSize(inv, j, stackSize);
-                            return false;
-                        }
+                        if(tempStack.hasTagCompound()) {
+                            if(ItemStack.areItemStackTagsEqual(tempStack, stack)) {
+                                if (stack.stackSize >= stackSize) {
+                                    decrStackSize(inv, j, stackSize);
+                                    return false;
+                                }
 
-                        stackSize -= stack.stackSize;
-                        inv.setStackInSlot(j, (ItemStack) null);
+                                stackSize -= stack.stackSize;
+                                inv.setStackInSlot(j, (ItemStack) null);
+                            }
+                        }
+                        else {
+                            if (stack.stackSize >= stackSize) {
+                                decrStackSize(inv, j, stackSize);
+                                return false;
+                            }
+
+                            stackSize -= stack.stackSize;
+                            inv.setStackInSlot(j, (ItemStack) null);
+                        }
                     }
                 }
             }

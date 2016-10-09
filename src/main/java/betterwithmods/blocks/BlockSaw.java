@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.config.BWConfig;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.damagesource.BWDamageSource;
 import betterwithmods.event.MobDropEvent;
@@ -241,7 +242,8 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     public void breakSaw(World world, BlockPos pos) {
-        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
+		if (BWConfig.dropsSaw)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
 		/*
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));

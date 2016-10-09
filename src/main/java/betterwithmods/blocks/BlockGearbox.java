@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -269,7 +270,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 	
 	public void breakGearbox(World world, BlockPos pos)
 	{
-		InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/gearbox"));
+		if (BWConfig.dropsGearbox)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/gearbox"));
 		/*
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));

@@ -26,6 +26,14 @@ public class BWConfig {
 	public static boolean netherSpawn;
 	public static boolean slimeSpawn;
 	public static boolean produceDung;
+	
+	public static final String MODPACK_TWEAKS = "Modpack Tweaks";
+	public static boolean dropsGearbox;
+	public static boolean dropsSaw;
+	public static boolean dropsHopper;
+	public static boolean dropsPulley;
+	public static boolean dropsMill;
+	public static boolean dropsTurntable;
 
 	public static final String DEBUG = "Debug";
 	public static boolean debug;
@@ -68,6 +76,14 @@ public class BWConfig {
 		slimeSpawn = config.get(VANILLA_TWEAKS, "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true)
 				.getBoolean(true);
 		produceDung = config.get(VANILLA_TWEAKS, "Animals Produce Dung", true).getBoolean(true);
+		
+		//config.addCustomCategoryComment(MODPACK_TWEAKS, "Tweaks for modpack makers");
+		dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean(true);
+		dropsSaw = config.get(MODPACK_TWEAKS, "Saw generating drops when overpowered", true).getBoolean(true);
+		dropsHopper = config.get(MODPACK_TWEAKS, "Hopper generating drops when overpowered", true).getBoolean(true);
+		dropsPulley = config.get(MODPACK_TWEAKS, "Pulley generating drops when overpowered", true).getBoolean(true);
+		dropsMill = config.get(MODPACK_TWEAKS, "Mill generating drops when overpowered", true).getBoolean(true);
+		dropsTurntable = config.get(MODPACK_TWEAKS, "Turntable generating drops when overpowered", true).getBoolean(true);
 
 		//config.addCustomCategoryComment(DEBUG, "Debug settings");
 		debug = config.get(DEBUG, "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean(false);

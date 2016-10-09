@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.*;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -328,25 +329,29 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     private void breakMill(World world, BlockPos pos) {
-        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
+		if (BWConfig.dropsMill)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakPulley(World world, BlockPos pos) {
-        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
+		if (BWConfig.dropsPulley)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     public void breakHopper(World world, BlockPos pos) {
-        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
+		if (BWConfig.dropsHopper)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakTurntable(World world, BlockPos pos) {
-        InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
+		if (BWConfig.dropsTurntable)
+			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

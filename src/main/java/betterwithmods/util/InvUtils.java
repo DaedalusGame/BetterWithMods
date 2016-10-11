@@ -45,8 +45,8 @@ public class InvUtils {
         if (list != null) {
             if (list.isEmpty()) return false;
             for (ItemStack item : list) {
-                if (ItemStack.areItemsEqual(check, item)) {
-                    if(check.hasTagCompound())
+                if (ItemStack.areItemsEqual(check, item) || (check.getItem() == item.getItem() && item.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if(item.hasTagCompound())
                         return ItemStack.areItemStackTagsEqual(check, item);
                     else
                         return true;
@@ -205,59 +205,26 @@ public class InvUtils {
         return itemCount;
     }
 
-    public static int countOresInInv(IItemHandler inv, List<?> list) {
+    public static int countOresInInventory(IItemHandler inv, List<ItemStack> list) {
         int ret = 0;
-        if (list != null && !list.isEmpty() && list.size() > 0) {
-            for (int i = 0; i < inv.getSlots(); ++i) {
-                ItemStack stack = inv.getStackInSlot(i);
-                if (stack != null) {
-                    for (int o = 0; o < list.size(); ++o) {
-                        Item oreItem = ((ItemStack) list.get(o)).getItem();
-                        int oreMeta = ((ItemStack) list.get(o)).getItemDamage();
-                        if (OreDictionary.itemMatches(new ItemStack(stack.getItem(), 1, stack.getItemDamage()), new ItemStack(oreItem, 1, oreMeta), false)) {
-                            if(((ItemStack)list.get(o)).hasTagCompound()) {
-                                if(ItemStack.areItemStackTagsEqual(stack, (ItemStack)list.get(o))) {
-                                    ret += stack.stackSize;
-                                    break;
-                                }
-                            }
-                            else {
-                                ret += stack.stackSize;
-                                break;
-                            }
-                        }
-                    }
-                }
+        if(list != null && !list.isEmpty() && list.size() > 0) {
+            for(ItemStack oreStack : list) {
+                ret += countItemStacksInInventory(inv, oreStack);
             }
         }
-
         return ret;
     }
 
-    public static int countOresInInventory(IItemHandler inv, ArrayList<?> ores) {
-        int ret = 0;
-        if (ores != null && !ores.isEmpty() && ores.size() > 0) {
-            for (int i = 0; i < ores.size(); ++i) {
-                Item item = ((ItemStack) ores.get(i)).getItem();
-                int meta = ((ItemStack) ores.get(i)).getItemDamage();
-                ret += countItemsInInventory(inv, item, meta);
-            }
-        }
-
-        return ret;
-    }
-
-    public static boolean consumeItemsInInventory(ItemStackHandler inv, ItemStack toCheck) {
-        int stackSize = toCheck.stackSize;
+    public static boolean consumeItemsInInventory(ItemStackHandler inv, ItemStack toCheck, int stackSize) {
         for(int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if(stack != null) {
-                if(ItemStack.areItemStacksEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                if(ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if(toCheck.hasTagCompound()) {
                         if(ItemStack.areItemStackTagsEqual(toCheck, stack)) {
                             if(stack.stackSize >= stackSize) {
                                 decrStackSize(inv, i, stackSize);
-                                return false;
+                                return true;
                             }
                             stackSize -= stack.stackSize;
                             inv.setStackInSlot(i, null);
@@ -266,7 +233,7 @@ public class InvUtils {
                     else {
                         if(stack.stackSize >= stackSize) {
                             decrStackSize(inv, i, stackSize);
-                            return false;
+                            return true;
                         }
                         stackSize -= stack.stackSize;
                         inv.setStackInSlot(i, null);

@@ -136,7 +136,7 @@ public class BulkRecipe
                     OreStack stack = (OreStack)obj;
                     if(stack != null)
                     {
-                        if(InvUtils.countOresInInv(inv, stack.getOres()) < stack.getStackSize())
+                        if(InvUtils.countOresInInventory(inv, stack.getOres()) < stack.getStackSize())
                             return false;
                     }
                 }
@@ -177,7 +177,7 @@ public class BulkRecipe
 
                     if(stack != null)
                     {
-                        if(!InvUtils.consumeItemsInInventory(inv, stack))
+                        if(!InvUtils.consumeItemsInInventory(inv, stack, stack.stackSize))
                             success = false;
                     }
                 }

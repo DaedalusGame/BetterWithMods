@@ -30,20 +30,20 @@ public class BulkRecipe
         if(secondaryOutput != null)
             this.secondary = secondaryOutput.copy();
         int place = -1;
+        ArrayList<Object> inputs = new ArrayList<>();
         for(Object in : input)
         {
+            if(in instanceof Integer || in == null)
+                continue;
             place++;
             if(in instanceof ItemStack) {
-                this.input.add(((ItemStack) in).copy());
-                this.jeiInput.add(((ItemStack) in).copy());
+                inputs.add(((ItemStack) in).copy());
             }
             else if(in instanceof Item) {
-                this.input.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
-                this.jeiInput.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
+                inputs.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
             }
             else if(in instanceof Block) {
-                this.input.add(new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
-                this.jeiInput.add(new ItemStack((Block)in, 1, OreDictionary.WILDCARD_VALUE));
+                inputs.add(new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             }
             else if(in instanceof String)
             {
@@ -51,24 +51,18 @@ public class BulkRecipe
                 {
                     if(input[place + 1] instanceof Integer)
                     {
-                        this.input.add(new OreStack((String)in, (Integer)input[place + 1]));
-                        this.jeiInput.add(getOreList(new OreStack((String)in, (Integer)input[place + 1])));
+                        inputs.add(new OreStack((String)in, (Integer)input[place + 1]));
                     }
                     else {
-                        this.input.add(new OreStack((String) in, 1));
-                        this.jeiInput.add(getOreList(new OreStack((String)in, 1)));
+                        inputs.add(new OreStack((String) in, 1));
                     }
                 }
                 else {
-                    this.input.add(new OreStack((String) in, 1));
-                    this.jeiInput.add(getOreList(new OreStack((String)in, 1)));
+                    inputs.add(new OreStack((String) in, 1));
                 }
             }
-            else if(in instanceof Integer || in == null)
-                continue;
             else if(in instanceof OreStack) {
-                this.input.add(((OreStack) in).copy());
-                this.jeiInput.add(getOreList(((OreStack)in).copy()));
+                inputs.add(((OreStack) in).copy());
             }
             else
             {
@@ -81,6 +75,34 @@ public class BulkRecipe
                 throw new RuntimeException(ret);
             }
         }
+        condenseInputs(inputs);
+    }
+
+    private void condenseInputs(ArrayList<Object> list) {
+        ArrayList<Object> inputs = new ArrayList<>();
+        ArrayList<Object> jeiInputs = new ArrayList<>();
+        for(Object obj : list) {
+            int contain = InvUtils.listContains(obj, inputs);
+            if(contain > -1) {
+                if(obj instanceof ItemStack) {
+                    ((ItemStack)inputs.get(contain)).stackSize += ((ItemStack)obj).stackSize;
+                }
+                else if(obj instanceof OreStack) {
+                    ((OreStack)inputs.get(contain)).addToStack(((OreStack)obj).getStackSize());
+                }
+            }
+            else {
+                inputs.add(obj);
+            }
+        }
+        for(Object obj : inputs) {
+            if(obj instanceof ItemStack)
+                jeiInputs.add(obj);
+            else if(obj instanceof OreStack)
+                jeiInputs.add(getOreList((OreStack)obj));
+        }
+        input = inputs;
+        jeiInput = jeiInputs;
     }
 
     private List<ItemStack> getOreList(OreStack stack)

@@ -57,6 +57,10 @@ public class OreStack
 		return items;
 	}
 
+	public void addToStack(int amount) {
+		this.stackSize += amount;
+	}
+
 	public List<ItemStack> getOreStacks() {
 		return oreStacks;
 	}

@@ -112,18 +112,19 @@ public class InputHelper {
 			Object[] obj = new Object[ing.length];
 			for(int i = 0; i < ing.length; i++) {
 				int amount = ing[i].getAmount();
-				if(ing[i] instanceof IItemStack)
-					obj[i] = toStack((IItemStack)ing[i]);
+				if(ing[i] instanceof IItemStack) {
+					obj[i] = toStack((IItemStack) ing[i]);
+				}
 				else if(ing[i] instanceof IOreDictEntry) {
-					obj[i] = toOreStack(new StackOreDictEntry(((IOreDictEntry)ing[i]).getName(), amount));
+					obj[i] = toOreStack((IOreDictEntry)ing[i], amount);
 				}
 			}
 			return obj;
 		}
 	}
 
-	public static OreStack toOreStack(StackOreDictEntry entry) {
-		return new OreStack(toString(entry), entry.getAmount());
+	public static OreStack toOreStack(IOreDictEntry entry, int amount) {
+		return new OreStack(toString(entry), amount);
 	}
 
 	public static ItemStack[] toStacks(List<IItemStack> ingredients) {

@@ -1,5 +1,6 @@
 package betterwithmods.util;
 
+import betterwithmods.craft.OreStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,6 +40,35 @@ public class InvUtils {
             }
         }
         return list;
+    }
+
+    public static int listContains(Object obj, ArrayList<Object> list) {
+        if(list != null && list.size() > 0 && !list.isEmpty()) {
+            for(int i = 0; i < list.size(); i++) {
+                if(obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
+                    ItemStack stack = (ItemStack)obj;
+                    ItemStack toCheck = (ItemStack)list.get(i);
+                    if(ItemStack.areItemsEqual(stack, toCheck)) {
+                        if(toCheck.hasTagCompound()) {
+                            if(ItemStack.areItemStackTagsEqual(stack, toCheck))
+                                return i;
+                        }
+                        else if(stack.hasTagCompound()) {
+                            return -1;
+                        }
+                        else
+                            return i;
+                    }
+                }
+                else if(obj instanceof OreStack && list.get(i) instanceof OreStack) {
+                    OreStack stack = (OreStack)obj;
+                    OreStack toCheck = (OreStack)list.get(i);
+                    if(stack.getOreName().equals(toCheck.getOreName()))
+                        return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public static boolean listContains(ItemStack check, List<ItemStack> list) {

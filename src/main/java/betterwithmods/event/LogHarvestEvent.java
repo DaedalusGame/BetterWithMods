@@ -53,10 +53,10 @@ public class LogHarvestEvent {
                     playerStack.damageItem(1, player);
                 } else if (block == Blocks.LOG2) {
                     IBlockState state = world.getBlockState(pos);
-                    IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockNewLog.VARIANT, state.getValue(BlockNewLog.VARIANT));
+                    IBlockState dbl = BWMBlocks.DEBARKED_NEW.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockNewLog.VARIANT, state.getValue(BlockNewLog.VARIANT));
                     InvUtils.ejectStackWithOffset(world, playerPos, ((IDebarkable) dbl.getBlock()).getBark(dbl));
                     world.setBlockState(pos, dbl);
-                    world.playSound(null, pos, dbl.getBlock().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 0.5F, 2.5F);
                     playerStack.damageItem(1, player);
                 } else {
                     IBlockState state = world.getBlockState(pos);

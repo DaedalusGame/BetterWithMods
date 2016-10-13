@@ -11,6 +11,7 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -38,7 +39,11 @@ public class BWMJEIPlugin extends BlankModPlugin
         reg.addRecipes(JEIRecipeRegistry.getSawRecipes());
         reg.addRecipes(JEIRecipeRegistry.getKilnRecipes());
 
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 0), "bwm.mill");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 2), "bwm.crucible", "bwm.crucible.stoked");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 3), "bwm.cauldron", "bwm.cauldron.stoked");
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SAW),"bwm.saw");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(Blocks.BRICK_BLOCK), "bwm.kiln");
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, "bwm.cauldron", "bwm.cauldron.stoked");
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, "bwm.crucible", "bwm.crucible.stoked");
         reg.addRecipeClickArea(GuiMill.class, 81, 19, 14, 14, "bwm.mill");

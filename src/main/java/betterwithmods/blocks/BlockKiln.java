@@ -128,7 +128,7 @@ public class BlockKiln extends BWMBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		if (getCookCounterFromMeta(world.getBlockState(pos).getValue(COOK)) > 0)
 			world.sendBlockBreakProgress(0, pos.up(), -1);
-		super.breakBlock(world, pos, state);
+		Blocks.BRICK_BLOCK.dropBlockAsItem(world, pos, state, 0);
 	}
 
 	@Override

@@ -262,7 +262,7 @@ public class BWCrafting {
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue", 2), new ItemStack[]{new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue", 2), new ItemStack[]{new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue", 3), new ItemStack[]{new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial("glue", 2), new ItemStack[]{new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getMaterial("glue", 4), new ItemStack[]{new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("tallow"), new ItemStack[]{new ItemStack(Items.COOKED_PORKCHOP)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("tallow"), new ItemStack[]{new ItemStack(Items.PORKCHOP)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("tallow"), new ItemStack[]{new ItemStack(Items.COOKED_BEEF, 4)});
@@ -290,7 +290,6 @@ public class BWCrafting {
     }
 
     private static void addKilnRecipes() {
-        addKilnWood();
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 2));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, new ItemStack(BWMBlocks.PLANTER));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
@@ -299,21 +298,21 @@ public class BWCrafting {
     	addKilnRecipe(Blocks.END_STONE,0, new ItemStack(BWMBlocks.AESTHETIC,1,7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" :"brimstone") );
     }
 
-    private static void addKilnWood() {
+    public static void addKilnWood() {
         for (ItemStack stack : OreDictionary.getOres("logWood")) {
             if (stack.getItem() instanceof ItemBlock) {
                 Item item = stack.getItem();
                 Block block = ((ItemBlock) item).getBlock();
                 int meta = stack.getItemDamage();
                 if (meta == OreDictionary.WILDCARD_VALUE)
-                    KilnInteraction.addBlockRecipe(block, new ItemStack(Items.COAL, 2, 1));
+                    addKilnRecipe(block, new ItemStack(Items.COAL, 2, 1));
                 else {
                     addKilnRecipe(block, meta, new ItemStack(Items.COAL, 2, 1));
                 }
             }
         }
-        KilnInteraction.addBlockRecipe(BWMBlocks.DEBARKED_OLD, new ItemStack(Items.COAL, 2, 1));
-        KilnInteraction.addBlockRecipe(BWMBlocks.DEBARKED_NEW, new ItemStack(Items.COAL, 2, 1));
+        addKilnRecipe(BWMBlocks.DEBARKED_OLD, new ItemStack(Items.COAL, 2, 1));
+        addKilnRecipe(BWMBlocks.DEBARKED_NEW, new ItemStack(Items.COAL, 2, 1));
     }
 
     private static void addCrucibleRecipes() {
@@ -359,6 +358,7 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new ItemStack[]{new ItemStack(Blocks.GLASS_PANE, 8)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new ItemStack[]{new ItemStack(Blocks.COBBLESTONE)});
     	addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC,1,6), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC,1,7)});
+        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack[] {new ItemStack(Blocks.SPONGE, 1, 1)});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
@@ -463,6 +463,10 @@ public class BWCrafting {
 
     public static void addTurntableRecipe(IBlockState input, IBlockState output, ItemStack... scrap) {
         TurntableInteraction.addBlockRecipe(input, output, scrap);
+    }
+
+    public static void addKilnRecipe(Block inputBlock, ItemStack... output) {
+        KilnInteraction.addBlockRecipe(inputBlock, output);
     }
 
     public static void addKilnRecipe(Block inputBlock, int inputMeta, ItemStack... output) {

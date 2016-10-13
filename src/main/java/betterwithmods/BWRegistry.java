@@ -169,6 +169,15 @@ public class BWRegistry {
 			SawInteraction.addBlock(block, log.getMetadata(), plank, bark, sawdust);
 			SawInteraction.addBlock(Blocks.PLANKS, type.getMetadata(),
 					new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
+			plank = new ItemStack(Blocks.PLANKS, 5, type.getMetadata());
+			if(type.getMetadata() < 4) {
+				log = new ItemStack(BWMBlocks.DEBARKED_OLD, 1, type.getMetadata());
+			}
+			else {
+				log = new ItemStack(BWMBlocks.DEBARKED_NEW, 1, type.getMetadata() - 4);
+			}
+			block = ((ItemBlock)log.getItem()).getBlock();
+			SawInteraction.addBlock(block, log.getMetadata(), plank, sawdust);
 		}
 		List<ItemStack> logs = OreDictionary.getOres("logWood");
 		for (ItemStack log : logs) {
@@ -202,6 +211,7 @@ public class BWRegistry {
 				}
 			}
 		}
+		BWCrafting.addKilnWood();
 	}
 
 	private static ItemStack getRecipeOutput(ItemStack input) {

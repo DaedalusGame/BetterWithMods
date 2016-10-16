@@ -59,16 +59,16 @@ public class BWConfig {
 
 	public static void syncConfig() {
 		//config.addCustomCategoryComment(HARDCORE, "Hardcore settings");
-		hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true).getBoolean(true);
-		hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true).getBoolean(true);
-		hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true).getBoolean(true);
+		hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true, "Creepers and Ghasts will drop brimstone or niter instead of gunpowder").getBoolean(true);
+		hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe").getBoolean(true);
+		hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean(true);
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean(true);
-		hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true).getBoolean(true);
-		hardcoreBuoy = config.get(HARDCORE, "Hardcore Buoy", true).getBoolean(true);
-		hardcoreSpawn = config.get(HARDCORE, "Hardcore Spawn", true).getBoolean(true);
-		hardcoreBeds = config.get(HARDCORE, "Hardcore Beds", true).getBoolean(true);
-		hardcoreVillagers = config.get(HARDCORE, "Hardcore Villagers", true).getBoolean(true);
-		steelRequiresEnd = config.get(HARDCORE, "Steel Requires End", true).getBoolean(true);
+		hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement").getBoolean(true);
+		hardcoreBuoy = config.get(HARDCORE, "Hardcore Buoy", true, "Buoyant items will float").getBoolean(true);
+		hardcoreSpawn = config.get(HARDCORE, "Hardcore Spawn", true, "Your spawn point will be randomized").getBoolean(true);
+		hardcoreBeds = config.get(HARDCORE, "Hardcore Beds", true, "You will be unable to sleep in a bed").getBoolean(true);
+		hardcoreVillagers = config.get(HARDCORE, "Hardcore Villagers", true, "Villagers can be manually bred").getBoolean(true);
+		steelRequiresEnd = config.get(HARDCORE, "Steel Requires End", true, "Soulforged Steel will require Ender Flux").getBoolean(true);
 
 		//config.addCustomCategoryComment(VANILLA_TWEAKS, "Vanilla tweaks settings");
 		netherSpawn = config.get(VANILLA_TWEAKS, "Prevent Nether Spawns on Non-Nether Materials", true)

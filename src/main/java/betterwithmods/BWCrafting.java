@@ -359,6 +359,7 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new ItemStack[]{new ItemStack(Blocks.COBBLESTONE)});
     	addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC,1,6), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC,1,7)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack[] {new ItemStack(Blocks.SPONGE, 1, 1)});
+        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new ItemStack[] {new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {

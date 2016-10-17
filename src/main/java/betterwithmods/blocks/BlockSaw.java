@@ -165,7 +165,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return side == getFacing(world, pos).getOpposite();
+        return side != getFacingFromBlockState(state);
     }
 
     @Override

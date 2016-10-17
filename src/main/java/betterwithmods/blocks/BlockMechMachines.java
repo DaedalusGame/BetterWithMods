@@ -57,6 +57,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
                 .withProperty(ISACTIVE, false)
                 .withProperty(DirUtils.FACING, EnumFacing.UP)
         );
+        this.useNeighborBrightness = true;
     }
 
     @Override

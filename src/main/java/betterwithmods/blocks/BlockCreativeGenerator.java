@@ -29,6 +29,11 @@ public class BlockCreativeGenerator extends BlockGen implements IMechanical {
     }
 
     @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityCreativeGen();
     }
@@ -61,5 +66,10 @@ public class BlockCreativeGenerator extends BlockGen implements IMechanical {
     @Override
     public EnumFacing getAxleDirection(World var1, BlockPos var2) {
         return null;
+    }
+
+    @Override
+    public boolean isMechanicalJunction() {
+        return true;
     }
 }

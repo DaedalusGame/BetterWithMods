@@ -1,18 +1,23 @@
 package betterwithmods.blocks.tile.gen;
 
 import betterwithmods.BWSounds;
+import betterwithmods.api.block.IMechanical;
+import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.blocks.BlockGen;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityMechGenerator extends TileEntity implements ITickable
+public abstract class TileEntityMechGenerator extends TileEntity implements ITickable, IMechanicalPower
 {
 	//Every generator will take up a single block with no extended bounding box
 	public int radius;
@@ -136,5 +141,54 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
 	public double getMaxRenderDistanceSquared()
 	{
 		return super.getMaxRenderDistanceSquared() * 3.0D;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if(capability == MechanicalCapability.MECHANICAL_POWER)
+			return true;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if(capability == MechanicalCapability.MECHANICAL_POWER) {
+			return MechanicalCapability.MECHANICAL_POWER.cast(this);
+		}
+		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public int getMechanicalOutput(EnumFacing facing) {
+		if(getBlockType() instanceof IMechanical) {
+			if(((IMechanical)getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0)
+				return 20;
+		}
+		return 0;
+	}
+
+	@Override
+	public int getMechanicalInput(EnumFacing facing) {
+		return 0;
+	}
+
+	@Override
+	public int getMinimumInput(EnumFacing facing) {
+		return 0;
+	}
+
+	@Override
+	public int getMaximumInput(EnumFacing facing) {
+		return 0;
+	}
+
+	@Override
+	public void readFromTag(NBTTagCompound tag) {
+
+	}
+
+	@Override
+	public NBTTagCompound writeToTag(NBTTagCompound tag) {
+		return new NBTTagCompound();
 	}
 }

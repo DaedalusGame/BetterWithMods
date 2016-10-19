@@ -2,9 +2,12 @@ package betterwithmods.util;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.IAxle;
+import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.blocks.BlockAxle;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
@@ -20,6 +23,28 @@ public class MechanicalUtil
 				isPowered = ((IMechanicalBlock)block).isOutputtingMechPower(world, pos.offset(dir));
 		}
 		return isPowered;
+	}
+
+	public static int searchForAdvMechanical(World world, BlockPos pos, EnumFacing dir) {
+		int power = isBlockPoweredOnSide(world, pos, dir) ? 1 : 0;
+		if(power > 0) {
+			for(int i = 2; i < 5; i++) {
+				BlockPos off = pos.offset(dir, i);
+				Block block = world.getBlockState(off).getBlock();
+				if(block instanceof IMechanical) {
+					if(((IMechanical)block).isMechanicalJunction()) {
+						if(world.getTileEntity(off) != null) {
+							TileEntity tile = world.getTileEntity(off);
+							if(tile.hasCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite())) {
+								power = tile.getCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(dir.getOpposite());
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		return power;
 	}
 
 	public static boolean isBlockPoweredByAxleOnSide(World world, BlockPos pos, EnumFacing dir)

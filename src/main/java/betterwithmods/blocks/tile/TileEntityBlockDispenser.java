@@ -44,6 +44,10 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         for (int i = 0; i < 16; i++) {
             ItemStack check = this.inventory.getStackInSlot(i);
             if (ItemStack.areItemsEqual(stack, check) && check.stackSize < check.getMaxStackSize()) {
+                if(check.hasTagCompound() || stack.hasTagCompound()) {
+                    if(!ItemStack.areItemStackTagsEqual(stack, check))
+                        continue;
+                }
                 check.stackSize++;
                 this.inventory.setStackInSlot(i, check);
                 return;

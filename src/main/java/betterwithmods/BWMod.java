@@ -1,5 +1,7 @@
 package betterwithmods;
 
+import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityDynamite;
@@ -15,6 +17,7 @@ import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -35,7 +38,7 @@ public class BWMod {
     public static CommonProxy proxy;
 
 	public static final String MODID = "betterwithmods";
-	public static final String VERSION = "0.12.3 Beta hotfix 3";
+	public static final String VERSION = "0.13 Beta";
 	public static final String NAME = "Better With Mods";
 
     @Mod.Instance(BWMod.MODID)
@@ -61,6 +64,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         proxy.registerRenderInformation();
         proxy.initRenderers();
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower<IMechanicalPower>(), MechanicalCapability.DefaultMechanicalPower.class);
     }
 
     @EventHandler

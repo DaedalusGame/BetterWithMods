@@ -318,6 +318,11 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 	{
 		return getMechPowerProvidedToAxle(world, pos, dir);
 	}
+
+	@Override
+	public boolean isMechanicalJunction() {
+		return true;
+	}
 	
 	private boolean isAxle(IBlockAccess world, BlockPos origin, EnumFacing facing)
 	{

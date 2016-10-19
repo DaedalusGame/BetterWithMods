@@ -11,10 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
-import net.minecraftforge.fluids.DispenseFluidContainer;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import betterwithmods.config.BWConfig;
@@ -47,6 +44,9 @@ public class BucketEvent
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
         if(toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !(toCheck.getItem() instanceof IFluidContainerItem))
+            return;
+
+        if(!((IFluidContainerItem)toCheck.getItem()).getFluid(toCheck).containsFluid(new FluidStack(FluidRegistry.WATER, 1000)))
             return;
 
         if(!evt.getWorld().isRemote) {

@@ -117,6 +117,11 @@ public class BlockWaterwheel extends BlockGen implements IMechanical, IAxle {
 	}
 
 	@Override
+	public boolean isMechanicalJunction() {
+		return true;
+	}
+
+	@Override
 	public EnumFacing getAxleDirection(World world, BlockPos pos) {
 		int meta = this.getAxisAlignment(world, pos);
 		if (meta == 0)

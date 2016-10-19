@@ -63,7 +63,7 @@ public class BWCrafting {
         GameRegistry.addShapelessRecipe(new ItemStack(Items.STICK), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.BOOK), new Object[]{ItemMaterial.getMaterial("leather_cut"), "paper", "paper", "paper"}));
         GameRegistry.addShapedRecipe(new ItemStack(Items.ITEM_FRAME), "MMM", "MLM", "MMM", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE), 'L', ItemMaterial.getMaterial("leather_cut"));
-        GameRegistry.addShapedRecipe(new ItemStack(Items.BOWL, 6), "S S", " S ", 'S', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
+        GameRegistry.addShapedRecipe(new ItemStack(Items.BOWL, 6), "S S", " S ", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SAW), new Object[]{"III", "GBG", "WGW", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('W'), BWMBlocks.WOOD_SIDING, Character.valueOf('B'), ItemMaterial.getMaterial("leather_belt")}));
 
         ItemStack[] doors = {new ItemStack(Items.OAK_DOOR, 3), new ItemStack(Items.SPRUCE_DOOR, 3), new ItemStack(Items.BIRCH_DOOR, 3), new ItemStack(Items.JUNGLE_DOOR, 3), new ItemStack(Items.ACACIA_DOOR, 3), new ItemStack(Items.DARK_OAK_DOOR, 3)};

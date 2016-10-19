@@ -6,6 +6,7 @@ import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.event.MobDropEvent;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -112,7 +114,17 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
                     IBlockState state = world.getBlockState(check);
                     List<ItemStack> stacks = state.getBlock().getDrops(world, check, state, 0);
                     if(stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
-                        stacks.add(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
+                        stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
+                        //stacks.add(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
+                    else if(!stacks.isEmpty()) {
+                        for(ItemStack stack : stacks) {
+                            if(ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player))) {
+                                stacks.remove(stack);
+                                stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
+                                break;
+                            }
+                        }
+                    }
                     if(!stacks.isEmpty()) {
                         for (ItemStack stack : stacks)
                             tile.addStackToInventory(stack, check);

@@ -164,7 +164,7 @@ tile.bwm:light.name=Light Block
 tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge
 tile.bwm:fertile_farmland.name=Fertile Farmland
-
+tile.bwm:advanced_gearbox.name=Advanced Gearbox
 
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal

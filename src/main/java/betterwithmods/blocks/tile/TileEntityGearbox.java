@@ -1,0 +1,130 @@
+package betterwithmods.blocks.tile;
+
+import betterwithmods.api.block.IMechanical;
+import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.blocks.BlockAdvGearbox;
+import betterwithmods.util.MechanicalUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+
+public class TileEntityGearbox extends TileEntity implements ITickable, IMechanicalPower
+{
+    private int powerLevel;
+    private byte outputs;
+    private int refreshTime = 0;
+
+    @Override
+    public void update() {
+        if(getBlockType() instanceof BlockAdvGearbox) {
+            if(((BlockAdvGearbox)getBlockType()).isGearboxOn(worldObj, pos)) {
+                if(refreshTime == 20) {
+                    outputs = 0;
+                    findOutputs();
+                }
+                else {
+                    refreshTime++;
+                }
+            }
+            else if(powerLevel != 0)
+                powerLevel = 0;
+        }
+    }
+
+    private void findOutputs() {
+        for(EnumFacing facing : EnumFacing.VALUES) {
+            if(((BlockAdvGearbox)getBlockType()).canInputPowerToSide(worldObj, pos, facing)) {
+                if(powerLevel != getMechanicalInput(facing))
+                    powerLevel = getMechanicalInput(facing);
+            }
+            else if(MechanicalUtil.isAxle(worldObj.getBlockState(pos.offset(facing)).getBlock())) {
+                outputs++;
+            }
+        }
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if(capability == MechanicalCapability.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if(capability == MechanicalCapability.MECHANICAL_POWER)
+            return MechanicalCapability.MECHANICAL_POWER.cast(this);
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        if(getBlockType() instanceof IMechanical) {
+            if(((IMechanical)getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0) {
+                if(outputs > 0)
+                    return powerLevel / outputs;
+                else
+                    return powerLevel;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        int power = powerLevel;
+        if(getBlockType() instanceof IMechanicalBlock) {
+            if(((IMechanicalBlock)getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
+                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(),getPos(), facing), getMaximumInput(facing));
+            }
+        }
+        return power;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 100;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        readFromTag(tag);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        writeToTag(tag);
+        return tag;
+    }
+
+    @Override
+    public void readFromTag(NBTTagCompound tag) {
+        powerLevel = tag.getInteger("Power");
+        outputs = tag.getByte("Outputs");
+    }
+
+    @Override
+    public NBTTagCompound writeToTag(NBTTagCompound tag) {
+        tag.setInteger("Power", powerLevel);
+        tag.setByte("Outputs", outputs);
+        return tag;
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
+}

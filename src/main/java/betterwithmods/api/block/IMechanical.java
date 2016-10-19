@@ -7,4 +7,6 @@ import net.minecraft.util.EnumFacing;
 public interface IMechanical 
 {
 	public int getMechPowerLevelToFacing(World world, BlockPos pos, EnumFacing dir);
+
+	boolean isMechanicalJunction();
 }

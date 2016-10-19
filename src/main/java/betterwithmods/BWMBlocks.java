@@ -66,6 +66,7 @@ public final class BWMBlocks {
 	public static final Block MINING_CHARGE = new BlockMiningCharge().setRegistryName("mining_charge");
 	public static final Block FERTILE_FARMLAND = new BlockFertileFarmland().setRegistryName("fertile_farmland");
 	public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
+	public static final Block ADVANCED_GEARBOX = new BlockAdvGearbox().setRegistryName("advanced_gearbox");
 
 	public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater()
 			.setRegistryName("temporary_water");
@@ -115,6 +116,7 @@ public final class BWMBlocks {
 		registerBlock(MINING_CHARGE);
 		registerBlock(FERTILE_FARMLAND);
 		registerBlock(PUMP);
+		registerBlock(ADVANCED_GEARBOX);
 
 		registerBlock(TEMP_LIQUID_SOURCE, null);
 	}
@@ -136,6 +138,8 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
 		GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
+
+		GameRegistry.registerTileEntity(TileEntityGearbox.class, "bwm.gearbox");
 	}
 
 	public static void linkBlockModels() {
@@ -178,6 +182,7 @@ public final class BWMBlocks {
 		setInventoryModel(MINING_CHARGE);
 		setInventoryModel(FERTILE_FARMLAND);
 		setInventoryModel(PUMP);
+		setInventoryModel(ADVANCED_GEARBOX);
 
 	}
 

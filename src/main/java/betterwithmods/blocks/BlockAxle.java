@@ -242,6 +242,11 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
 	}
 
 	@Override
+	public boolean isMechanicalJunction() {
+		return false;
+	}
+
+	@Override
 	public int getPowerLevel(IBlockAccess world, BlockPos pos) 
 	{
 		return getPowerLevelFromState(world.getBlockState(pos));

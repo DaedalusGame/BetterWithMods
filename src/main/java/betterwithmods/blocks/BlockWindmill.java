@@ -183,6 +183,11 @@ public class BlockWindmill extends BlockGen implements IMechanical, IAxle
         return getAxisAlignmentFromState(world.getBlockState(pos));
     }
 
+    @Override
+    public boolean isMechanicalJunction() {
+        return true;
+    }
+
     private int getAxisAlignmentFromState(IBlockState state)
     {
         if(state.getBlock() == this)

@@ -46,6 +46,9 @@ public class BucketEvent
         if(toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !(toCheck.getItem() instanceof IFluidContainerItem))
             return;
 
+        if(((IFluidContainerItem)toCheck.getItem()).getFluid(toCheck) == null)
+            return;
+
         if(!((IFluidContainerItem)toCheck.getItem()).getFluid(toCheck).containsFluid(new FluidStack(FluidRegistry.WATER, 1000)))
             return;
 

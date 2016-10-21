@@ -189,6 +189,8 @@ public class BWCrafting {
         for(int i = 0; i < 16; i++) {
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new Object[]{new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]}));
         }
+
+        GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP,1), "VVV", 'V', new ItemStack(Blocks.VINE));
     }
 
     private static void addMillRecipes() {

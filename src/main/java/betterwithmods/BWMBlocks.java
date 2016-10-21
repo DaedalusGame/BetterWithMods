@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public final class BWMBlocks {
 	private BWMBlocks() {
@@ -67,6 +68,7 @@ public final class BWMBlocks {
 	public static final Block FERTILE_FARMLAND = new BlockFertileFarmland().setRegistryName("fertile_farmland");
 	public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
 	public static final Block ADVANCED_GEARBOX = new BlockAdvGearbox().setRegistryName("advanced_gearbox");
+	public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
 
 	public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater()
 			.setRegistryName("temporary_water");
@@ -117,6 +119,7 @@ public final class BWMBlocks {
 		registerBlock(FERTILE_FARMLAND);
 		registerBlock(PUMP);
 		registerBlock(ADVANCED_GEARBOX);
+		registerBlock(VINE_TRAP);
 
 		registerBlock(TEMP_LIQUID_SOURCE, null);
 	}
@@ -183,7 +186,7 @@ public final class BWMBlocks {
 		setInventoryModel(FERTILE_FARMLAND);
 		setInventoryModel(PUMP);
 		setInventoryModel(ADVANCED_GEARBOX);
-
+		setInventoryModel(VINE_TRAP);
 	}
 
 	/**

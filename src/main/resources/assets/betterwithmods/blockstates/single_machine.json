@@ -18,7 +18,6 @@
 			"transform": "forge:default-block"
 		}],
 		"facing": {
-          "down": {},
           "up": {},
           "north": {
             "x": 90,
@@ -75,123 +74,6 @@
 		{
 			"true": {},
 			"false": {}
-		},
-		"filledslots": {
-			"0": {
-				"submodel": {
-					"fill": {
-						"model": "betterwithmods:fill_zero"
-					}
-				}
-			},
-			"1": {
-				"submodel": {
-					"fill": {
-						"model": "betterwithmods:fill_one"
-					}
-				}
-			},
-			"2": {
-				"submodel": {
-					"fill": {
-						"model": "betterwithmods:fill_two"
-					}
-				}
-			},
-			"3": {
-				"submodel": {
-					"fill": {
-						"model": "betterwithmods:fill_three"
-					}
-				}
-			}
-		},
-		"subtype": {
-			"0": {
-			},
-			"1": {
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"2": {
-				"textures": {"filter": "blocks/trapdoor"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"3": {
-				"textures": {"filter": "betterwithmods:blocks/grate"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"4": {
-				"textures": {"filter": "betterwithmods:blocks/wicker"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"5": {
-				"textures": {"filter": "betterwithmods:blocks/slats"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"6": {
-				"textures": {"filter": "blocks/soul_sand"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"7": {
-				"textures": {"filter": "blocks/iron_bars"},
-				"submodel": {
-					"filter": {
-						"model": "betterwithmods:filter"
-					}
-				}
-			},
-			"8": {
-				"submodel": {
-					"switch": {
-						"model": "betterwithmods:switch_zero"
-					}
-				}
-			},
-			"9": {
-				"submodel": {
-					"switch": {
-						"model": "betterwithmods:switch_one"
-					}
-				}
-			},
-			"10": {
-				"submodel": {
-					"switch": {
-						"model": "betterwithmods:switch_two"
-					}
-				}
-			},
-			"11": {
-				"submodel": {
-					"switch": {
-						"model": "betterwithmods:switch_three"
-					}
-				}
-			}
 		}
 
 	}

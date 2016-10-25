@@ -83,7 +83,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                 worldObj.scheduleBlockUpdate(pos, block, block.tickRate(worldObj), 5);
             }
             IBlockState state = this.worldObj.getBlockState(this.pos);
-            boolean stateChanged = state.getValue(DirUtils.FACING) != EnumFacing.getFront(facing);
+            boolean stateChanged = state.getValue(DirUtils.TILTING) != EnumFacing.getFront(facing);
             if (this.worldObj != null && stateChanged) {
                 this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
             }
@@ -180,8 +180,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                 if (this.validateInventory()) {
                     IBlockState state = worldObj.getBlockState(pos);
                     int filledSlots = this.filledSlots();
-                    if (filledSlots != state.getValue(BlockMechMachines.FILLEDSLOTS))
-                        worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
+                    //if (filledSlots != state.getValue(BlockMechMachines.FILLEDSLOTS))
+                        //worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
                     worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//worldObj.markBlockForUpdate(pos);
                 }
                 return true;
@@ -371,7 +371,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
 
     private boolean validateInventory() {
         boolean stateChanged = false;
-        short currentSlots = (short) InvUtils.getOccupiedStacks(inventory);
+        byte currentSlots = (byte)InvUtils.getOccupiedStacks(inventory);
         if (currentSlots != this.occupiedSlots) {
             this.occupiedSlots = currentSlots;
             stateChanged = true;

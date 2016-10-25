@@ -28,7 +28,7 @@
         },
 		"isactive": {
 			"false": {},
-			"true": {"textures": {"sawState": "#sawon"}}
+			"true": {"textures": {"sawstate": "#sawon"}}
         }
 	}
 }

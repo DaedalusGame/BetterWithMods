@@ -1,6 +1,7 @@
 package betterwithmods.util;
 
 import betterwithmods.api.block.IBWMBlock;
+import com.google.common.base.Predicate;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +13,12 @@ import net.minecraft.world.World;
 public class DirUtils {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection TILTING = PropertyDirection.create("facing", new Predicate<EnumFacing>() {
+			@Override
+			public boolean apply(EnumFacing facing) {
+				return facing != EnumFacing.DOWN;
+			}
+	});
 	public static final PropertyBool UP = PropertyBool.create("up");
 	public static final PropertyBool DOWN = PropertyBool.create("down");
 	public static final PropertyBool NORTH = PropertyBool.create("north");

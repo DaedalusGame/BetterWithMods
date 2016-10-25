@@ -41,8 +41,6 @@ import java.util.Random;
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
     public static final PropertyEnum<BlockMechMachines.EnumType> MACHINETYPE = PropertyEnum.create("machinetype", BlockMechMachines.EnumType.class);
-    public static final PropertyInteger SUBTYPE = PropertyInteger.create("subtype", 0, 11);
-    public static final PropertyInteger FILLEDSLOTS = PropertyInteger.create("filledslots", 0, 3);
     //Mill, Pulley, Crucible, Cauldron, Hopper, Turntable
     private static boolean keepInv;
 
@@ -52,22 +50,20 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         this.setHardness(3.5F);
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(MACHINETYPE, BlockMechMachines.EnumType.MILL)
-                .withProperty(SUBTYPE, 0)
-                .withProperty(FILLEDSLOTS, 0)
                 .withProperty(ISACTIVE, false)
-                .withProperty(DirUtils.FACING, EnumFacing.UP)
+                .withProperty(DirUtils.TILTING, EnumFacing.UP)
         );
         this.useNeighborBrightness = true;
     }
 
     @Override
     public String[] getVariants() {
-        return new String[]{"facing=up,filledslots=0,ison=false,machinetype=mill,subtype=0",
-                "facing=up,filledslots=0,ison=false,machinetype=pulley,subtype=0",
-                "facing=up,filledslots=0,ison=false,machinetype=crucible,subtype=0",
-                "facing=up,filledslots=0,ison=false,machinetype=cauldron,subtype=0",
-                "facing=up,filledslots=0,ison=false,machinetype=hopper,subtype=0",
-                "facing=up,filledslots=0,ison=false,machinetype=turntable,subtype=0",};
+        return new String[]{"facing=up,ison=false,machinetype=mill",
+                "facing=up,ison=false,machinetype=pulley",
+                "facing=up,ison=false,machinetype=crucible",
+                "facing=up,ison=false,machinetype=cauldron",
+                "facing=up,ison=false,machinetype=hopper",
+                "facing=up,ison=false,machinetype=turntable",};
     }
 
     @SuppressWarnings("deprecation")
@@ -188,8 +184,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
         if (world.getTileEntity(pos) instanceof IMechSubtype) {
             IMechSubtype sub = (IMechSubtype) world.getTileEntity(pos);
-            if (sub.getSubtype() != state.getValue(SUBTYPE))
-                world.setBlockState(pos, state.withProperty(SUBTYPE, sub.getSubtype()));
+            //if (sub.getSubtype() != state.getValue(SUBTYPE))
+                //world.setBlockState(pos, state.withProperty(SUBTYPE, sub.getSubtype()));
         }
         if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
             if (!world.getGameRules().getBoolean("doDaylightCycle"))
@@ -484,12 +480,12 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
                 facing = ((TileEntityCookingPot) tile).facing;
             }
         }
-        return state.withProperty(SUBTYPE, actualType).withProperty(FILLEDSLOTS, filledSlots).withProperty(DirUtils.FACING, EnumFacing.getFront(facing));
+        return state.withProperty(DirUtils.TILTING, EnumFacing.getFront(facing));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE, SUBTYPE, FILLEDSLOTS, DirUtils.FACING);
+        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE, DirUtils.TILTING);
     }
 
     @Override

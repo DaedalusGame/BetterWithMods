@@ -2,14 +2,17 @@ package betterwithmods.proxy;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.blocks.tile.TileEntityCauldron;
+import betterwithmods.blocks.tile.TileEntityCrucible;
+import betterwithmods.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.blocks.tile.TileEntityTurntable;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ColorHandlers;
-import betterwithmods.client.model.TESRVerticalWindmill;
-import betterwithmods.client.model.TESRWaterwheel;
-import betterwithmods.client.model.TESRWindmill;
+import betterwithmods.client.model.*;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.RenderExtendingRope;
 import betterwithmods.client.render.RenderMiningCharge;
 import betterwithmods.client.render.RenderShearedCreeper;
@@ -45,11 +48,16 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInformation() {
     	BWMBlocks.linkBlockModels();
     	BWMItems.linkItemModels();
+        RenderUtils.registerFilters();
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFilteredHopper.class, new TESRFilteredHopper());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurntable.class, new TESRTurntable());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TESRCrucible());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new TESRCauldron());
 
     }
 

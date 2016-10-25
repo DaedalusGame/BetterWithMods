@@ -1,6 +1,8 @@
 package betterwithmods.integration.tcon;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.model.filters.ModelTransparent;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.integration.ModIntegration;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
@@ -60,6 +62,13 @@ public class TConstruct extends ModIntegration {
         registerMaterial(hellfire, hellfireFluid, "Hellfire");
         fixHellfireDust();
         netherWhitelist();
+        if(BWMod.proxy.isClientside())
+            registerClientRendering();
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void registerClientRendering() {
+        RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "stone_ladder"))), new ModelTransparent(new ResourceLocation("tconstruct", "textures/blocks/stone_ladder.png")));
     }
 
     private void netherWhitelist() {

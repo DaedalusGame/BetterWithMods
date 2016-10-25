@@ -5,6 +5,8 @@ import betterwithmods.BWMItems;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.blocks.BlockBWMPane;
 import betterwithmods.blocks.BlockMechMachines;
+import betterwithmods.client.model.filters.ModelWithResource;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -46,6 +48,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public boolean outputBlocked;
     private int soulsRetained;
     public byte power;
+    private ItemStack filterStack;
+    private String filter;
 
     public TileEntityFilteredHopper() {
 
@@ -55,6 +59,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         this.outputBlocked = false;
         this.filterType = 0;
         this.soulsRetained = 0;
+        this.occupiedSlots = 0;
+        this.filterStack = null;
+        this.filter = "";
     }
 
     @Override
@@ -71,6 +78,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             this.soulsRetained = tag.getInteger("Souls");
         if (tag.hasKey("IsPowered"))
             this.power = tag.getBoolean("IsPowered") ? (byte) 1 : 0;
+        if(tag.hasKey("FilterType"))
+            this.filter = tag.getString("FilterType");
 
         validateInventory();
     }
@@ -83,6 +92,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         t.setShort("FilterType", this.filterType);
         t.setInteger("Souls", this.soulsRetained);
         t.setBoolean("IsPowered", power > 1);
+        t.setString("FilterType", filter);
         return t;
     }
 
@@ -146,9 +156,23 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         if (currentFilter != this.filterType) {
             this.filterType = currentFilter;
             stateChanged = true;
+            if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                ItemStack stack = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(18);
+                if(stack != null) {
+                    String check = stack.getItem().toString() + stack.getMetadata();
+                    if (!filter.equals(check)) {
+                        filter = check;
+                        markDirty();
+                    }
+                }
+                else {
+                    filter = "";
+                    markDirty();
+                }
+            }
         }
 
-        short slotsOccupied = (short) InvUtils.getOccupiedStacks(inventory, 0, 17);
+        byte slotsOccupied = (byte)InvUtils.getOccupiedStacks(inventory, 0, 17);
         if (slotsOccupied != this.occupiedSlots) {
             this.occupiedSlots = slotsOccupied;
             stateChanged = true;
@@ -280,8 +304,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 if (this.validateInventory()) {
                     IBlockState state = worldObj.getBlockState(pos);
                     int filledSlots = this.filledSlots();
-                    if (filledSlots != state.getValue(BlockMechMachines.FILLEDSLOTS))
-                        worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
                     worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//worldObj.markBlockForUpdate(pos);
                 }
                 return true;
@@ -665,5 +687,14 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public int getMaxVisibleSlots()
     {
         return 18;
+    }
+
+    public ItemStack getFilterStack() {
+        return filterStack;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ModelWithResource getModel() {
+        return RenderUtils.getModelFromStack(filter);
     }
 }

@@ -1,49 +1,70 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-        "textures": {
-			"side": "blocks/stone_slab_top",
-			"knob": "blocks/iron_block",
-			"particle": "#side"
-        },
-        "model": "betterwithmods:anchor",
-		"uvlock": false
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "blocks/stone_slab_top",
+      "knob": "blocks/iron_block",
+      "particle": "#side"
     },
-    "variants": {
-        "normal": [{}],
-        "inventory": [{
-			"transform": "forge:default-block",
-			"model": "betterwithmods:anchor_inv"
-		}],
-		"facing": {
-			"down": {},
-			"up": {"model": "betterwithmods:anchor_bottom"},
-			"north": {"model": "betterwithmods:anchor_side"},
-			"south": {"model": "betterwithmods:anchor_side", "y": 180},
-			"west": {"model": "betterwithmods:anchor_side", "y": 270},
-			"east": {"model": "betterwithmods:anchor_side", "y": 90}
-        },
-		"topconnect": {
-			"false": {},
-			"true": {
-				"submodel": {
-					"toprope": {
-						"model": "betterwithmods:half_rope_top",
-						"textures": {"side": "betterwithmods:blocks/rope"}
-					}
-				}
-			}
-		},
-		"bottomconnect": {
-			"false": {},
-			"true": {
-				"submodel": {
-					"bottomrope": {
-						"model": "betterwithmods:half_rope_bottom",
-						"textures": {"side": "betterwithmods:blocks/rope"}
-					}
-				}
-			}
-		}
-	}
+    "model": "betterwithmods:anchor",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block",
+        "model": "betterwithmods:anchor_inv"
+      }
+    ],
+    "facing": {
+      "down": {},
+      "up": {
+        "model": "betterwithmods:anchor_bottom"
+      },
+      "north": {
+        "model": "betterwithmods:anchor_side"
+      },
+      "south": {
+        "model": "betterwithmods:anchor_side",
+        "y": 180
+      },
+      "west": {
+        "model": "betterwithmods:anchor_side",
+        "y": 270
+      },
+      "east": {
+        "model": "betterwithmods:anchor_side",
+        "y": 90
+      }
+    },
+    "topconnect": {
+      "false": {},
+      "true": {
+        "submodel": {
+          "toprope": {
+            "model": "betterwithmods:half_rope_top",
+            "textures": {
+              "side": "betterwithmods:blocks/rope"
+            }
+          }
+        }
+      }
+    },
+    "bottomconnect": {
+      "false": {},
+      "true": {
+        "submodel": {
+          "bottomrope": {
+            "model": "betterwithmods:half_rope_bottom",
+            "textures": {
+              "side": "betterwithmods:blocks/rope"
+            }
+          }
+        }
+      }
+    }
+  }
 }

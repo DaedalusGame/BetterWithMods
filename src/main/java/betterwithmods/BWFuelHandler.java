@@ -4,25 +4,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
-public class BWFuelHandler implements IFuelHandler
-{
+public class BWFuelHandler implements IFuelHandler {
 
-	@Override
-	public int getBurnTime(ItemStack fuel) 
-	{
-		Item item = fuel.getItem();
-		int meta = fuel.getItemDamage();
-		if(item == BWMItems.MATERIAL && meta == 1)
-			return 3200;
-		else if(item == BWMItems.BARK)
-			return 100;
-		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_SIDING))
-			return 150;
-		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_MOULDING))
-			return 75;
-		else if(item == Item.getItemFromBlock(BWMBlocks.WOOD_CORNER))
-			return 38;
-		return 0;
-	}
+    @Override
+    public int getBurnTime(ItemStack fuel) {
+        Item item = fuel.getItem();
+        int meta = fuel.getItemDamage();
+        if (item == BWMItems.MATERIAL && meta == 1)
+            return 3200;
+        else if (item == BWMItems.BARK)
+            return 100;
+        else if (item == Item.getItemFromBlock(BWMBlocks.WOOD_SIDING))
+            return 150;
+        else if (item == Item.getItemFromBlock(BWMBlocks.WOOD_MOULDING))
+            return 75;
+        else if (item == Item.getItemFromBlock(BWMBlocks.WOOD_CORNER))
+            return 38;
+        return 0;
+    }
 
 }

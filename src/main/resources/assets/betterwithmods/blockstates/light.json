@@ -8,12 +8,20 @@
     "uvlock": false
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "transform": "forge:default-block"
-    }],
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
     "active": {
-      "true": {"textures": {"all": "betterwithmods:blocks/lamp_on"}},
+      "true": {
+        "textures": {
+          "all": "betterwithmods:blocks/lamp_on"
+        }
+      },
       "false": {}
     }
   }

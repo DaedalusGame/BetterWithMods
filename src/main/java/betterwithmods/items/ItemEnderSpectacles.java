@@ -20,8 +20,8 @@ public class ItemEnderSpectacles extends ItemArmor {
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-    	//TODO add a proper permanent effect when worn.
-        player.addPotionEffect(new PotionEffect(BWRegistry.POTION_TRUESIGHT,20));
+        //TODO add a proper permanent effect when worn.
+        player.addPotionEffect(new PotionEffect(BWRegistry.POTION_TRUESIGHT, 20));
     }
 
     @Override

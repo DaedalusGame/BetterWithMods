@@ -1,16 +1,13 @@
 package betterwithmods.craft.bulk;
 
-public class CraftingManagerMill extends CraftingManagerBulk
-{
+public class CraftingManagerMill extends CraftingManagerBulk {
     private static final CraftingManagerMill instance = new CraftingManagerMill();
 
-    public CraftingManagerMill()
-    {
+    public CraftingManagerMill() {
         super("mill");
     }
 
-    public static final CraftingManagerMill getInstance()
-    {
+    public static final CraftingManagerMill getInstance() {
         return instance;
     }
 }

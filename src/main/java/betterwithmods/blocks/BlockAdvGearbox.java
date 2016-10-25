@@ -5,8 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockAdvGearbox extends BlockGearbox
-{
+public class BlockAdvGearbox extends BlockGearbox {
     public BlockAdvGearbox() {
         super();
     }

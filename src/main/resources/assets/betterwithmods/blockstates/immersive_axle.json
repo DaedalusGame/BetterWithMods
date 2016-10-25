@@ -10,18 +10,33 @@
     "uvlock": false
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "transform": "forge:default-block"
-    }],
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
     "active": {
-      "true": {"textures": {"side": "betterwithmods:blocks/treated_axle_side_on"}},
+      "true": {
+        "textures": {
+          "side": "betterwithmods:blocks/treated_axle_side_on"
+        }
+      },
       "false": {}
     },
     "dir": {
-      "0": {"model": "betterwithmods:axle"},
-      "1": {"model": "betterwithmods:axle_side"},
-      "2": {"model": "betterwithmods:axle_side", "y": 90}
+      "0": {
+        "model": "betterwithmods:axle"
+      },
+      "1": {
+        "model": "betterwithmods:axle_side"
+      },
+      "2": {
+        "model": "betterwithmods:axle_side",
+        "y": 90
+      }
     }
   }
 }

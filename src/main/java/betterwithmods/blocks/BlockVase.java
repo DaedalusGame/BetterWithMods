@@ -2,7 +2,6 @@ package betterwithmods.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.tile.TileEntityVase;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.ITileEntityProvider;
@@ -75,9 +74,9 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
         EnumDyeColor[] dyes = EnumDyeColor.values();
         String[] variants = new String[dyes.length];
 
-        for(int i = 0; i < dyes.length; ++i) {
+        for (int i = 0; i < dyes.length; ++i) {
             EnumDyeColor dye = dyes[i];
-            variants[i] = "color="+dye.getName();
+            variants[i] = "color=" + dye.getName();
         }
 
         return variants;
@@ -87,9 +86,8 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity te = worldIn.getTileEntity(pos);
 
-        if(te != null && playerIn != null && !playerIn.isSneaking() && heldItem != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
-        {
-            return ((TileEntityVase)te).onActivated(playerIn,hand,heldItem);
+        if (te != null && playerIn != null && !playerIn.isSneaking() && heldItem != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            return ((TileEntityVase) te).onActivated(playerIn, hand, heldItem);
         }
 
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
@@ -110,7 +108,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
         TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntityVase) {
-            ((TileEntityVase)tile).onBreak();
+            ((TileEntityVase) tile).onBreak();
             world.updateComparatorOutputLevel(pos, this);
         }
 
@@ -128,36 +126,30 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     }
 
     @Override
-    public int damageDropped(IBlockState state)
-    {
+    public int damageDropped(IBlockState state) {
         return (state.getValue(Color)).getMetadata();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
-    {
-        for (int i = 0; i < EnumDyeColor.values().length; i++)
-        {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        for (int i = 0; i < EnumDyeColor.values().length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(Color, EnumDyeColor.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
-    {
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(Color).getMetadata();
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, Color);
     }
 }

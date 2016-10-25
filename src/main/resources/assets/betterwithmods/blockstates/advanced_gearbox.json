@@ -1,5 +1,5 @@
 {
-  "forge_marker" : 1,
+  "forge_marker": 1,
   "defaults": {
     "textures": {
       "blank": "blocks/planks_oak",
@@ -8,19 +8,55 @@
     }
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "transform": "forge:default-block",
-      "model": "betterwithmods:gearbox",
-      "textures": {"up": "#input"}
-    }],
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block",
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "up": "#input"
+        }
+      }
+    ],
     "facing": {
-      "down": {"model": "betterwithmods:gearbox", "textures": {"down": "#input"}},
-      "up": {"model": "betterwithmods:gearbox", "textures": {"up": "#input"}},
-      "north": {"model": "betterwithmods:gearbox", "textures": {"north": "#input"}},
-      "south": {"model": "betterwithmods:gearbox", "textures": {"south": "#input"}},
-      "west": {"model": "betterwithmods:gearbox", "textures": {"west": "#input"}},
-      "east": {"model": "betterwithmods:gearbox", "textures": {"east": "#input"}}
+      "down": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "down": "#input"
+        }
+      },
+      "up": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "up": "#input"
+        }
+      },
+      "north": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "north": "#input"
+        }
+      },
+      "south": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "south": "#input"
+        }
+      },
+      "west": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "west": "#input"
+        }
+      },
+      "east": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "east": "#input"
+        }
+      }
     },
     "ison": {
       "false": {},
@@ -28,27 +64,51 @@
     },
     "up": {
       "false": {},
-      "true": {"textures": {"up": "#output"}}
+      "true": {
+        "textures": {
+          "up": "#output"
+        }
+      }
     },
     "down": {
       "false": {},
-      "true": {"textures": {"down": "#output"}}
+      "true": {
+        "textures": {
+          "down": "#output"
+        }
+      }
     },
     "north": {
       "false": {},
-      "true": {"textures": {"north": "#output"}}
+      "true": {
+        "textures": {
+          "north": "#output"
+        }
+      }
     },
     "south": {
       "false": {},
-      "true": {"textures": {"south": "#output"}}
+      "true": {
+        "textures": {
+          "south": "#output"
+        }
+      }
     },
     "west": {
       "false": {},
-      "true": {"textures": {"west": "#output"}}
+      "true": {
+        "textures": {
+          "west": "#output"
+        }
+      }
     },
     "east": {
       "false": {},
-      "true": {"textures": {"east": "#output"}}
+      "true": {
+        "textures": {
+          "east": "#output"
+        }
+      }
     }
   }
 }

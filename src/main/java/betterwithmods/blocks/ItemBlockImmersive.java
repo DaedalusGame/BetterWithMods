@@ -10,17 +10,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemBlockImmersive extends ItemBlock
-{
-    public ItemBlockImmersive(Block block)
-    {
+public class ItemBlockImmersive extends ItemBlock {
+    public ItemBlockImmersive(Block block) {
         super(block);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
-    {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("bwm.message.immersive.0"));
         tooltip.add(I18n.format("bwm.message.immersive.1"));
     }

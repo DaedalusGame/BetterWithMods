@@ -1,36 +1,36 @@
 package betterwithmods.event;
 
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import betterwithmods.config.BWConfig;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBucket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class BucketEvent 
-{
+public class BucketEvent {
     @SuppressWarnings("deprecation")
     public static void editModdedFluidDispenseBehavior() {
-        if(!BWConfig.hardcoreFluidContainer)
+        if (!BWConfig.hardcoreFluidContainer)
             return;
         RegistryDefaulted<Item, IBehaviorDispenseItem> reg = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY;
-        for(Item item : Item.REGISTRY) {
-            if(item instanceof IFluidContainerItem) {
-                if(reg.getObject(item) instanceof DispenseFluidContainer)
+        for (Item item : Item.REGISTRY) {
+            if (item instanceof IFluidContainerItem) {
+                if (reg.getObject(item) instanceof DispenseFluidContainer)
                     BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, new DispenserBehaviorFiniteWater());
             }
         }
@@ -39,21 +39,21 @@ public class BucketEvent
     @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void fluidContainerUse(PlayerInteractEvent.RightClickBlock evt) {
-        if(!BWConfig.hardcoreFluidContainer)
+        if (!BWConfig.hardcoreFluidContainer)
             return;
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
-        if(toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !(toCheck.getItem() instanceof IFluidContainerItem))
+        if (toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !(toCheck.getItem() instanceof IFluidContainerItem))
             return;
 
-        if(((IFluidContainerItem)toCheck.getItem()).getFluid(toCheck) == null)
+        if (((IFluidContainerItem) toCheck.getItem()).getFluid(toCheck) == null)
             return;
 
-        if(!((IFluidContainerItem)toCheck.getItem()).getFluid(toCheck).containsFluid(new FluidStack(FluidRegistry.WATER, 1000)))
+        if (!((IFluidContainerItem) toCheck.getItem()).getFluid(toCheck).containsFluid(new FluidStack(FluidRegistry.WATER, 1000)))
             return;
 
-        if(!evt.getWorld().isRemote) {
-            if(containsWater(toCheck))
+        if (!evt.getWorld().isRemote) {
+            if (containsWater(toCheck))
                 evt.setUseBlock(Event.Result.DENY);
 
             Block block = evt.getWorld().getBlockState(evt.getPos()).getBlock();
@@ -67,7 +67,7 @@ public class BucketEvent
                     if (evt.getWorld().getBlockState(pos).getBlock().isAir(evt.getWorld().getBlockState(pos), evt.getWorld(), pos) || evt.getWorld().getBlockState(pos).getBlock().isReplaceable(evt.getWorld(), pos)) {
                         Item item = equip.getItem();
                         if (item instanceof IFluidContainerItem && item.getItemUseAction(equip) == EnumAction.NONE) {
-                            if(((IFluidContainerItem)item).getCapacity(equip) == Fluid.BUCKET_VOLUME) {
+                            if (((IFluidContainerItem) item).getCapacity(equip) == Fluid.BUCKET_VOLUME) {
                                 evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
                                 for (EnumFacing facing : EnumFacing.HORIZONTALS) {
                                     BlockPos p2 = pos.offset(facing);
@@ -95,17 +95,16 @@ public class BucketEvent
     }
 
     @SubscribeEvent
-    public void bucketUse(PlayerInteractEvent.RightClickBlock evt)
-    {
-        if(!BWConfig.hardcoreBuckets)
+    public void bucketUse(PlayerInteractEvent.RightClickBlock evt) {
+        if (!BWConfig.hardcoreBuckets)
             return;
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
 
-        if(toCheck == null || toCheck.getItem() != Items.WATER_BUCKET)
+        if (toCheck == null || toCheck.getItem() != Items.WATER_BUCKET)
             return;
 
-        if(!evt.getWorld().isRemote) {
+        if (!evt.getWorld().isRemote) {
             if (toCheck.getItem() == Items.WATER_BUCKET)
                 evt.setUseBlock(Event.Result.DENY);
 
@@ -146,14 +145,14 @@ public class BucketEvent
 
     @SuppressWarnings("deprecation")
     private boolean containsWater(ItemStack stack) {
-        if(stack.getItem() instanceof IFluidContainerItem) {
-            if(((IFluidContainerItem)stack.getItem()).getFluid(stack) != null && ((IFluidContainerItem)stack.getItem()).getFluid(stack).getFluid() == FluidRegistry.WATER)
+        if (stack.getItem() instanceof IFluidContainerItem) {
+            if (((IFluidContainerItem) stack.getItem()).getFluid(stack) != null && ((IFluidContainerItem) stack.getItem()).getFluid(stack).getFluid() == FluidRegistry.WATER)
                 return true;
         }
         return false;
     }
     /*
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void bucketUse(PlayerInteractEvent evt)
 	{
 		if(!BWConfig.hardcoreBuckets)
@@ -192,7 +191,7 @@ public class BucketEvent
 									evt.entityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
 								}
 							}*//*
-							deny(evt, false);
+                            deny(evt, false);
 						}
 					}
 				}

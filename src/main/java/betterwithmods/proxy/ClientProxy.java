@@ -46,8 +46,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderInformation() {
-    	BWMBlocks.linkBlockModels();
-    	BWMItems.linkItemModels();
+        BWMBlocks.linkBlockModels();
+        BWMItems.linkItemModels();
         RenderUtils.registerFilters();
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));

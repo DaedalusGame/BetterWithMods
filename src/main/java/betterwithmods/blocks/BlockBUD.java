@@ -29,26 +29,29 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this,Blocks.REDSTONE_WIRE,Blocks.POWERED_REPEATER,Blocks.UNPOWERED_REPEATER,Blocks.REDSTONE_TORCH,Blocks.UNLIT_REDSTONE_TORCH,BWMBlocks.LIGHT,});
+    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT,});
+
     public BlockBUD() {
         super(Material.ROCK);
         setHardness(3.5F);
         setSoundType(SoundType.STONE);
         setDefaultState(getDefaultState().withProperty(DirUtils.FACING, UP));
     }
+
     public int tickRate(World var1) {
         return 5;
     }
+
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{DirUtils.FACING,REDSTONE});
+        return new BlockStateContainer(this, new IProperty[]{DirUtils.FACING, REDSTONE});
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         int facing = (meta >> 1);
         boolean redstone = (meta & 1) == 1;
-        return getDefaultState().withProperty(REDSTONE,redstone).withProperty(DirUtils.FACING,EnumFacing.getFront(facing));
+        return getDefaultState().withProperty(REDSTONE, redstone).withProperty(DirUtils.FACING, EnumFacing.getFront(facing));
     }
 
     @Override
@@ -60,7 +63,7 @@ public class BlockBUD extends BWMBlock {
 
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(DirUtils.FACING,DirUtils.convertEntityOrientationToFacing(placer,UP));
+        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, UP));
     }
 
     @Override
@@ -71,7 +74,7 @@ public class BlockBUD extends BWMBlock {
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
-        worldIn.scheduleUpdate(pos,state.getBlock(),1);
+        worldIn.scheduleUpdate(pos, state.getBlock(), 1);
 
     }
 
@@ -82,48 +85,51 @@ public class BlockBUD extends BWMBlock {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
-        if(!isRedstoneOn(world, pos) && !BLACKLIST.contains(blockIn)) {
-            world.scheduleUpdate(pos,state.getBlock(),tickRate(world));
+        if (!isRedstoneOn(world, pos) && !BLACKLIST.contains(blockIn)) {
+            world.scheduleUpdate(pos, state.getBlock(), tickRate(world));
         }
     }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if(isRedstoneOn(worldIn,pos)) {
-            setRedstone(worldIn,pos,false);
+        if (isRedstoneOn(worldIn, pos)) {
+            setRedstone(worldIn, pos, false);
         } else {
-            setRedstone(worldIn,pos,true);
-            worldIn.scheduleUpdate(pos,state.getBlock(),tickRate(worldIn));
+            setRedstone(worldIn, pos, true);
+            worldIn.scheduleUpdate(pos, state.getBlock(), tickRate(worldIn));
         }
     }
+
     public void setRedstone(World world, BlockPos pos, boolean newState) {
-        if(newState != isRedstoneOn(world, pos)) {
-            if(newState) {
-                world.playSound(null,pos, SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS,1,.5f);
+        if (newState != isRedstoneOn(world, pos)) {
+            if (newState) {
+                world.playSound(null, pos, SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS, 1, .5f);
             }
 
-            BlockPos facing = pos.offset(getFacing(world,pos));
-            if(!world.isAirBlock(facing)) {
-                world.getBlockState(facing).getBlock().onNeighborChange(world,facing,pos);
+            BlockPos facing = pos.offset(getFacing(world, pos));
+            if (!world.isAirBlock(facing)) {
+                world.getBlockState(facing).getBlock().onNeighborChange(world, facing, pos);
             }
-            world.setBlockState(pos, world.getBlockState(pos).withProperty(REDSTONE,newState));
+            world.setBlockState(pos, world.getBlockState(pos).withProperty(REDSTONE, newState));
         }
     }
+
     public boolean isRedstoneOn(IBlockAccess world, BlockPos pos) {
         return world.getBlockState(pos).getValue(REDSTONE);
     }
 
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-       return  getPower(blockAccess,pos,side);
+        return getPower(blockAccess, pos, side);
     }
 
     @Override
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return getPower(blockAccess,pos,side);
+        return getPower(blockAccess, pos, side);
     }
-    public int getPower(IBlockAccess world, BlockPos pos,EnumFacing side) {
-        return side.getOpposite() == getFacing(world,pos) && isRedstoneOn(world,pos) ? 15:0;
+
+    public int getPower(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return side.getOpposite() == getFacing(world, pos) && isRedstoneOn(world, pos) ? 15 : 0;
     }
 
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
@@ -131,7 +137,7 @@ public class BlockBUD extends BWMBlock {
     }
 
     public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos),facing));
+        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), facing));
     }
 
     public EnumFacing getFacingFromBlockState(IBlockState state) {
@@ -139,7 +145,7 @@ public class BlockBUD extends BWMBlock {
     }
 
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
-        return state.withProperty(DirUtils.FACING,facing);
+        return state.withProperty(DirUtils.FACING, facing);
     }
 
     public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
@@ -155,6 +161,6 @@ public class BlockBUD extends BWMBlock {
     }
 
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        setFacing(world,pos,DirUtils.rotateFacingAroundY(getFacing(world,pos),reverse));
+        setFacing(world, pos, DirUtils.rotateFacingAroundY(getFacing(world, pos), reverse));
     }
 }

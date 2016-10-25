@@ -43,27 +43,24 @@ public class InvUtils {
     }
 
     public static int listContains(Object obj, ArrayList<Object> list) {
-        if(list != null && list.size() > 0 && !list.isEmpty()) {
-            for(int i = 0; i < list.size(); i++) {
-                if(obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
-                    ItemStack stack = (ItemStack)obj;
-                    ItemStack toCheck = (ItemStack)list.get(i);
-                    if(ItemStack.areItemsEqual(stack, toCheck)) {
-                        if(toCheck.hasTagCompound()) {
-                            if(ItemStack.areItemStackTagsEqual(stack, toCheck))
+        if (list != null && list.size() > 0 && !list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                if (obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
+                    ItemStack stack = (ItemStack) obj;
+                    ItemStack toCheck = (ItemStack) list.get(i);
+                    if (ItemStack.areItemsEqual(stack, toCheck)) {
+                        if (toCheck.hasTagCompound()) {
+                            if (ItemStack.areItemStackTagsEqual(stack, toCheck))
                                 return i;
-                        }
-                        else if(stack.hasTagCompound()) {
+                        } else if (stack.hasTagCompound()) {
                             return -1;
-                        }
-                        else
+                        } else
                             return i;
                     }
-                }
-                else if(obj instanceof OreStack && list.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack)obj;
-                    OreStack toCheck = (OreStack)list.get(i);
-                    if(stack.getOreName().equals(toCheck.getOreName()))
+                } else if (obj instanceof OreStack && list.get(i) instanceof OreStack) {
+                    OreStack stack = (OreStack) obj;
+                    OreStack toCheck = (OreStack) list.get(i);
+                    if (stack.getOreName().equals(toCheck.getOreName()))
                         return i;
                 }
             }
@@ -76,7 +73,7 @@ public class InvUtils {
             if (list.isEmpty()) return false;
             for (ItemStack item : list) {
                 if (ItemStack.areItemsEqual(check, item) || (check.getItem() == item.getItem() && item.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if(item.hasTagCompound())
+                    if (item.hasTagCompound())
                         return ItemStack.areItemStackTagsEqual(check, item);
                     else
                         return true;
@@ -152,12 +149,12 @@ public class InvUtils {
 
     public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta) {
         ItemStack stack = new ItemStack(item, 1, meta);
-        return attemptToInsertStack(inv,stack,0,inv.getSlots());
+        return attemptToInsertStack(inv, stack, 0, inv.getSlots());
     }
 
     private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-        for(int slot = minSlot; slot<maxSlot;slot++) {
-            if(inv.insertItem(slot,stack,false) == null)
+        for (int slot = minSlot; slot < maxSlot; slot++) {
+            if (inv.insertItem(slot, stack, false) == null)
                 return true;
         }
         return false;
@@ -200,15 +197,14 @@ public class InvUtils {
 
     public static int countItemStacksInInventory(IItemHandler inv, ItemStack toCheck) {
         int itemCount = 0;
-        for(int i = 0; i < inv.getSlots(); i++) {
+        for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if(stack != null) {
-                if(ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if(toCheck.hasTagCompound()) {
+            if (stack != null) {
+                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
                             itemCount += stack.stackSize;
-                    }
-                    else
+                    } else
                         itemCount += stack.stackSize;
                 }
             }
@@ -237,8 +233,8 @@ public class InvUtils {
 
     public static int countOresInInventory(IItemHandler inv, List<ItemStack> list) {
         int ret = 0;
-        if(list != null && !list.isEmpty() && list.size() > 0) {
-            for(ItemStack oreStack : list) {
+        if (list != null && !list.isEmpty() && list.size() > 0) {
+            for (ItemStack oreStack : list) {
                 ret += countItemStacksInInventory(inv, oreStack);
             }
         }
@@ -246,22 +242,21 @@ public class InvUtils {
     }
 
     public static boolean consumeItemsInInventory(ItemStackHandler inv, ItemStack toCheck, int stackSize) {
-        for(int i = 0; i < inv.getSlots(); i++) {
+        for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if(stack != null) {
-                if(ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if(toCheck.hasTagCompound()) {
-                        if(ItemStack.areItemStackTagsEqual(toCheck, stack)) {
-                            if(stack.stackSize >= stackSize) {
+            if (stack != null) {
+                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if (toCheck.hasTagCompound()) {
+                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
+                            if (stack.stackSize >= stackSize) {
                                 decrStackSize(inv, i, stackSize);
                                 return true;
                             }
                             stackSize -= stack.stackSize;
                             inv.setStackInSlot(i, null);
                         }
-                    }
-                    else {
-                        if(stack.stackSize >= stackSize) {
+                    } else {
+                        if (stack.stackSize >= stackSize) {
                             decrStackSize(inv, i, stackSize);
                             return true;
                         }
@@ -301,8 +296,8 @@ public class InvUtils {
                 for (int j = 0; j < inv.getSlots(); ++j) {
                     ItemStack stack = inv.getStackInSlot(j);
                     if (stack != null && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
-                        if(tempStack.hasTagCompound()) {
-                            if(ItemStack.areItemStackTagsEqual(tempStack, stack)) {
+                        if (tempStack.hasTagCompound()) {
+                            if (ItemStack.areItemStackTagsEqual(tempStack, stack)) {
                                 if (stack.stackSize >= stackSize) {
                                     decrStackSize(inv, j, stackSize);
                                     return false;
@@ -311,8 +306,7 @@ public class InvUtils {
                                 stackSize -= stack.stackSize;
                                 inv.setStackInSlot(j, (ItemStack) null);
                             }
-                        }
-                        else {
+                        } else {
                             if (stack.stackSize >= stackSize) {
                                 decrStackSize(inv, j, stackSize);
                                 return false;
@@ -401,14 +395,14 @@ public class InvUtils {
     }
 
     public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack) {
-        return attemptToInsertStack(inventory,stack,0,inventory.getSlots());
+        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots());
     }
 
     public static void ejectBrokenItems(World world, BlockPos pos, ResourceLocation lootLocation) {
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             LootContext.Builder build = new LootContext.Builder((WorldServer) world);
             List<ItemStack> stacks = world.getLootTableManager().getLootTableFromLocation(lootLocation).generateLootForPools(world.rand, build.build());
-            if(!stacks.isEmpty()) {
+            if (!stacks.isEmpty()) {
                 ejectStackWithOffset(world, pos, stacks);
             }
         }

@@ -8,47 +8,40 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CauldronRecipeHandler implements IRecipeHandler<CauldronRecipeWrapper>
-{
+public class CauldronRecipeHandler implements IRecipeHandler<CauldronRecipeWrapper> {
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
-    {
+    public String getRecipeCategoryUid() {
         return "bwm.cauldron";
     }
 
     @Nonnull
     @Override
-    public Class<CauldronRecipeWrapper> getRecipeClass()
-    {
+    public Class<CauldronRecipeWrapper> getRecipeClass() {
         return CauldronRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull CauldronRecipeWrapper recipe)
-    {
+    public String getRecipeCategoryUid(@Nonnull CauldronRecipeWrapper recipe) {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull CauldronRecipeWrapper recipe)
-    {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull CauldronRecipeWrapper recipe) {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull CauldronRecipeWrapper wrapper)
-    {
+    public boolean isRecipeValid(@Nonnull CauldronRecipeWrapper wrapper) {
         BulkRecipe recipe = wrapper.getRecipe();
-        if(recipe.getOutput() == null)
+        if (recipe.getOutput() == null)
             return false;
         int inputCount = 0;
-        for(Object input : recipe.getInput()) {
-            if(input instanceof List)
-            {
-                if(((List<?>)input).isEmpty())
+        for (Object input : recipe.getInput()) {
+            if (input instanceof List) {
+                if (((List<?>) input).isEmpty())
                     return false;
             }
             inputCount++;

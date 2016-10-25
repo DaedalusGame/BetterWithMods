@@ -53,7 +53,7 @@ public class EntityMiningCharge extends Entity {
         this.prevPosY = y;
         this.prevPosZ = z;
         this.igniter = igniter;
-        func_189654_d(true);
+        setNoGravity(true);
     }
 
     protected void entityInit() {
@@ -83,8 +83,7 @@ public class EntityMiningCharge extends Entity {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        if (!this.func_189652_ae())
-        {
+        if (!this.hasNoGravity()) {
             this.motionY -= 0.03999999910593033D;
         }
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -109,38 +108,38 @@ public class EntityMiningCharge extends Entity {
         this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
         BlockPos pos = getPosition();
         EnumFacing facing = this.facing.getOpposite();
-        for(int k = 0; k<=3;k++) {
+        for (int k = 0; k <= 3; k++) {
             int dir = facing.getAxisDirection() == AxisDirection.POSITIVE ? 1 : -1;
-            if(k < 3) {
+            if (k < 3) {
                 for (int i = -1; i <= 1; i++) {
                     for (int j = -1; j <= 1; j++) {
                         if (facing == UP || facing == DOWN)
-                            explodeBlock(worldObj, pos.add(i, dir*k, j));
+                            explodeBlock(worldObj, pos.add(i, dir * k, j));
                         else if (facing == NORTH || facing == SOUTH)
-                            explodeBlock(worldObj, pos.add(i, j, dir*k));
+                            explodeBlock(worldObj, pos.add(i, j, dir * k));
                         else if (facing == EAST || facing == WEST)
-                            explodeBlock(worldObj, pos.add(dir*k, i, j));
+                            explodeBlock(worldObj, pos.add(dir * k, i, j));
                     }
                 }
             } else {
                 if (facing == UP || facing == DOWN)
-                    explodeBlock(worldObj, pos.add(0,dir*k,0));
+                    explodeBlock(worldObj, pos.add(0, dir * k, 0));
                 else if (facing == NORTH || facing == SOUTH)
-                    explodeBlock(worldObj, pos.add(0,0, dir*k));
+                    explodeBlock(worldObj, pos.add(0, 0, dir * k));
                 else if (facing == EAST || facing == WEST)
-                    explodeBlock(worldObj, pos.add(dir*k, 0, 0));
+                    explodeBlock(worldObj, pos.add(dir * k, 0, 0));
             }
         }
-        List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,new AxisAlignedBB(pos).expand(5,5,5));
-        entities.stream().forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter),45f));
+        List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).expand(5, 5, 5));
+        entities.stream().forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
     }
 
     private void explodeBlock(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        float resistance = state.getBlock().getExplosionResistance(world,pos,null,null);
-        if(resistance < 100) {
+        float resistance = state.getBlock().getExplosionResistance(world, pos, null, null);
+        if (resistance < 100) {
             Explosion explosion = new Explosion(world, igniter, posX, posY, posZ, 0, Collections.emptyList());
-            if(state.getBlock().canDropFromExplosion(explosion)) {
+            if (state.getBlock().canDropFromExplosion(explosion)) {
                 if (state.getBlock() == Blocks.COBBLESTONE) //TODO: Possible charge registry to blast a block into an item.
                     Blocks.GRAVEL.dropBlockAsItem(world, pos, state, 0);
                 else
@@ -178,11 +177,6 @@ public class EntityMiningCharge extends Entity {
         return 0.0F;
     }
 
-    public void setFuse(int fuseIn) {
-        this.dataManager.set(FUSE, Integer.valueOf(fuseIn));
-        this.fuse = fuseIn;
-    }
-
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (FUSE.equals(key)) {
             this.fuse = this.getFuseDM();
@@ -197,9 +191,6 @@ public class EntityMiningCharge extends Entity {
         this.facing = facing;
     }
 
-    public void setFacing(int facing ) {
-        setFacing(EnumFacing.getFront(facing));
-    }
     public int getFuseDM() {
         return ((Integer) this.dataManager.get(FUSE)).intValue();
     }
@@ -211,7 +202,17 @@ public class EntityMiningCharge extends Entity {
     public EnumFacing getFacing() {
         return facing;
     }
+
+    public void setFacing(int facing) {
+        setFacing(EnumFacing.getFront(facing));
+    }
+
     public int getFuse() {
         return this.fuse;
+    }
+
+    public void setFuse(int fuseIn) {
+        this.dataManager.set(FUSE, Integer.valueOf(fuseIn));
+        this.fuse = fuseIn;
     }
 }

@@ -5,11 +5,9 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public abstract class AbstractPacketSided extends AbstractPacket
-{
+public abstract class AbstractPacketSided extends AbstractPacket {
     @Override
-    public final IMessage handleClient(final NetHandlerPlayClient client)
-    {
+    public final IMessage handleClient(final NetHandlerPlayClient client) {
         FMLCommonHandler.instance().getWorldThread(client).addScheduledTask(new Runnable() {
             @Override
             public void run() {
@@ -20,8 +18,7 @@ public abstract class AbstractPacketSided extends AbstractPacket
     }
 
     @Override
-    public final IMessage handleServer(final NetHandlerPlayServer server)
-    {
+    public final IMessage handleServer(final NetHandlerPlayServer server) {
         FMLCommonHandler.instance().getWorldThread(server).addScheduledTask(new Runnable() {
             @Override
             public void run() {

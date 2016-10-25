@@ -11,20 +11,20 @@ import net.minecraft.util.BlockRenderLayer;
 
 public class BlockPlatform extends BWMBlock {
 
-	public BlockPlatform() {
-		super(Material.WOOD);
-		this.setHardness(2F);
-		this.setSoundType(SoundType.WOOD);
-	}
+    public BlockPlatform() {
+        super(Material.WOOD);
+        this.setHardness(2F);
+        this.setSoundType(SoundType.WOOD);
+    }
 
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
 }

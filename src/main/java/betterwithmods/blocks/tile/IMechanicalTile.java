@@ -1,6 +1,5 @@
 package betterwithmods.blocks.tile;
 
-public interface IMechanicalTile 
-{
-	public boolean isActive();
+public interface IMechanicalTile {
+    public boolean isActive();
 }

@@ -36,9 +36,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     public int stokedCooldownCounter;
     public int scaledCookCounter;
     public boolean containsValidIngredients;
-    private boolean forceValidation;
     public int fireIntensity;
     public int facing;
+    private boolean forceValidation;
 
     public TileEntityCookingPot() {
         this.cookCounter = 0;
@@ -122,8 +122,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                 EnumFacing power = EnumFacing.UP;
                 if (worldObj.getBlockState(pos).getValue(BlockMechMachines.ISACTIVE)) {
                     for (EnumFacing f : EnumFacing.HORIZONTALS) {
-                        if(power != EnumFacing.UP) {
-                            MechanicalUtil.destoryHorizontalAxles(worldObj,getPos().offset(f));
+                        if (power != EnumFacing.UP) {
+                            MechanicalUtil.destoryHorizontalAxles(worldObj, getPos().offset(f));
                         }
                         if (MechanicalUtil.isBlockPoweredByAxleOnSide(worldObj, pos, f) || MechanicalUtil.isPoweredByCrankOnSide(worldObj, pos, f)) {
                             power = f;
@@ -176,12 +176,12 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                 //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (flag) {
-                this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.validateInventory()) {
                     IBlockState state = worldObj.getBlockState(pos);
                     int filledSlots = this.filledSlots();
                     //if (filledSlots != state.getValue(BlockMechMachines.FILLEDSLOTS))
-                        //worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
+                    //worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
                     worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//worldObj.markBlockForUpdate(pos);
                 }
                 return true;
@@ -371,7 +371,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
 
     private boolean validateInventory() {
         boolean stateChanged = false;
-        byte currentSlots = (byte)InvUtils.getOccupiedStacks(inventory);
+        byte currentSlots = (byte) InvUtils.getOccupiedStacks(inventory);
         if (currentSlots != this.occupiedSlots) {
             this.occupiedSlots = currentSlots;
             stateChanged = true;

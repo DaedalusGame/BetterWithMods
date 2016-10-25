@@ -8,47 +8,40 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CrucibleRecipeHandler implements IRecipeHandler<CrucibleRecipeWrapper>
-{
+public class CrucibleRecipeHandler implements IRecipeHandler<CrucibleRecipeWrapper> {
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
-    {
+    public String getRecipeCategoryUid() {
         return "bwm.crucible";
     }
 
     @Nonnull
     @Override
-    public Class<CrucibleRecipeWrapper> getRecipeClass()
-    {
+    public Class<CrucibleRecipeWrapper> getRecipeClass() {
         return CrucibleRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull CrucibleRecipeWrapper recipe)
-    {
+    public String getRecipeCategoryUid(@Nonnull CrucibleRecipeWrapper recipe) {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull CrucibleRecipeWrapper recipe)
-    {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull CrucibleRecipeWrapper recipe) {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull CrucibleRecipeWrapper wrapper)
-    {
+    public boolean isRecipeValid(@Nonnull CrucibleRecipeWrapper wrapper) {
         BulkRecipe recipe = wrapper.getRecipe();
-        if(recipe.getOutput() == null)
+        if (recipe.getOutput() == null)
             return false;
         int inputCount = 0;
-        for(Object input : recipe.getInput()) {
-            if(input instanceof List)
-            {
-                if(((List<?>)input).isEmpty())
+        for (Object input : recipe.getInput()) {
+            if (input instanceof List) {
+                if (((List<?>) input).isEmpty())
                     return false;
             }
             inputCount++;

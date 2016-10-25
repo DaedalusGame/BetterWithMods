@@ -6,14 +6,11 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BWCreativeTabs
-{
-    public static final CreativeTabs BWTAB = new CreativeTabs("bwm:bwTab")
-    {
+public class BWCreativeTabs {
+    public static final CreativeTabs BWTAB = new CreativeTabs("bwm:bwTab") {
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem()
-        {
+        public Item getTabIconItem() {
             return BWMItems.WINDMILL;
         }
     };

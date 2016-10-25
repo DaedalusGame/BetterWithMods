@@ -7,19 +7,17 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurntableCraft
-{
+public class TurntableCraft {
     private IBlockState outputState;
     private List<ItemStack> scrap;
 
-    public TurntableCraft(IBlockState output, ItemStack... scraps)
-    {
+    public TurntableCraft(IBlockState output, ItemStack... scraps) {
         this.scrap = new ArrayList<ItemStack>();
-        if(scraps.length > 0 && scraps != null){
-            for(ItemStack scrap : scraps)
+        if (scraps.length > 0 && scraps != null) {
+            for (ItemStack scrap : scraps)
                 this.scrap.add(scrap);
         }
-        if(output != null)
+        if (output != null)
             this.outputState = output;
         else
             this.outputState = Blocks.AIR.getDefaultState();

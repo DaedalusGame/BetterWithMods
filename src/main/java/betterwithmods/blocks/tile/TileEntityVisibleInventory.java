@@ -25,7 +25,7 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return (T) inventory;
@@ -74,8 +74,8 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
 
     public int filledSlots() {
         int fill = 0;
-        for(int i = 0; i < this.getMaxVisibleSlots(); i++) {
-            if(inventory.getStackInSlot(i) != null)
+        for (int i = 0; i < this.getMaxVisibleSlots(); i++) {
+            if (inventory.getStackInSlot(i) != null)
                 fill++;
         }
         return fill;

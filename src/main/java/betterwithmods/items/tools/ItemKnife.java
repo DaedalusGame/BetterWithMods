@@ -10,41 +10,36 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-public class ItemKnife extends ItemTool
-{
-	private boolean repair = false;
-	
-	public ItemKnife(ToolMaterial material)
-	{
-		super(material, Sets.newHashSet(new Block[] {Blocks.CRAFTING_TABLE}));
-		this.setHarvestLevel("axe", material.getHarvestLevel() - 1);
-		this.setMaxDamage(material.getMaxUses() / 2);
-		this.setCreativeTab(BWCreativeTabs.BWTAB);
+public class ItemKnife extends ItemTool {
+    private boolean repair = false;
+
+    public ItemKnife(ToolMaterial material) {
+        super(material, Sets.newHashSet(new Block[]{Blocks.CRAFTING_TABLE}));
+        this.setHarvestLevel("axe", material.getHarvestLevel() - 1);
+        this.setMaxDamage(material.getMaxUses() / 2);
+        this.setCreativeTab(BWCreativeTabs.BWTAB);
         MinecraftForge.EVENT_BUS.register(this);
-	}
+    }
 
-	@Override
-	public boolean hasContainerItem(ItemStack stack)
-	{
-		return !repair;
-	}
-	
-	@SubscribeEvent
-	public void onCrafting(ItemCraftedEvent evt)
-	{
-		repair = this == evt.crafting.getItem();
-	}
-	
-	@Override
-	public ItemStack getContainerItem(ItemStack stack)
-	{
-		if(!hasContainerItem(stack))
-			return null;
+    @Override
+    public boolean hasContainerItem(ItemStack stack) {
+        return !repair;
+    }
 
-		ItemStack newStack = new ItemStack(this);
-		if(stack != null && stack.getItem() == this) {
-			newStack.setItemDamage(stack.getItemDamage() + 1);
-		}
-		return newStack;
-	}
+    @SubscribeEvent
+    public void onCrafting(ItemCraftedEvent evt) {
+        repair = this == evt.crafting.getItem();
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack) {
+        if (!hasContainerItem(stack))
+            return null;
+
+        ItemStack newStack = new ItemStack(this);
+        if (stack != null && stack.getItem() == this) {
+            newStack.setItemDamage(stack.getItemDamage() + 1);
+        }
+        return newStack;
+    }
 }

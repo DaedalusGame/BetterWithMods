@@ -1,13 +1,19 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"textures": {
-			"side": "betterwithmods:blocks/wicker"
-		},
-		"model": "betterwithmods:wicker_inv"
-	},
-    "variants": {
-		"normal": [{}],
-        "inventory": [{"transform": "forge:default-block"}]
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "betterwithmods:blocks/wicker"
+    },
+    "model": "betterwithmods:wicker_inv"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ]
+  }
 }

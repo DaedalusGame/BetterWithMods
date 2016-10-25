@@ -17,9 +17,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toIItemStack;
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStack;
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStacks;
+import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
 import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
 
 /**

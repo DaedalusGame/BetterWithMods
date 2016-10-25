@@ -1,102 +1,105 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-        "textures": {
-			"particle": "blocks/hardened_clay",
-			"side": "blocks/hardened_clay",
-			"filltop": "blocks/farmland"
-        },
-        "model": "betterwithmods:planter",
-		"uvlock": false
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/hardened_clay",
+      "side": "blocks/hardened_clay",
+      "filltop": "blocks/farmland"
     },
-    "variants": {
-        "normal": [{}],
-        "inventory": [{
-			"transform": "forge:default-block"
-		}],
-		"plantertype": 
-		{
-			"empty": {},
-			"dirt": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/farmland_wet"
-						}
-					}
-				}
-			},
-			"grass": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill_grass",
-						"textures": {
-							"filltop": "blocks/grass_top"
-						}
-					}
-				}
-			},
-			"soul_sand": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/soul_sand"
-						}
-					}
-				}
-			},
-			"fertile": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "betterwithmods:blocks/fertilized_farmland_wet"
-						}
-					}
-				}
-			},
-			"sand": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/sand"
-						}
-					}
-				}
-			},
-			"water_still": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/water_still"
-						}
-					}
-				}
-			},
-			"gravel": {
-				"submodel": {
-				"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/gravel"
-						}
-					}
-				}
-			},
-			"red_sand": {
-				"submodel" : {
-					"fill": {
-						"model": "betterwithmods:planter_fill",
-						"textures": {
-							"filltop": "blocks/red_sand"
-						}
-					}
-				}
-			}
-		}
-	}
+    "model": "betterwithmods:planter",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "plantertype": {
+      "empty": {},
+      "dirt": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/farmland_wet"
+            }
+          }
+        }
+      },
+      "grass": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill_grass",
+            "textures": {
+              "filltop": "blocks/grass_top"
+            }
+          }
+        }
+      },
+      "soul_sand": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/soul_sand"
+            }
+          }
+        }
+      },
+      "fertile": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "betterwithmods:blocks/fertilized_farmland_wet"
+            }
+          }
+        }
+      },
+      "sand": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/sand"
+            }
+          }
+        }
+      },
+      "water_still": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/water_still"
+            }
+          }
+        }
+      },
+      "gravel": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/gravel"
+            }
+          }
+        }
+      },
+      "red_sand": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/red_sand"
+            }
+          }
+        }
+      }
+    }
+  }
 }

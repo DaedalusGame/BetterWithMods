@@ -2,9 +2,7 @@ package betterwithmods.blocks.tile;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWSounds;
-import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.bulk.CraftingManagerMill;
@@ -25,7 +23,6 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,10 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower {
+    public int grindCounter;
     private int grindType = 0;
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
-    public int grindCounter;
     private int powerLevel;
     private int counter;
 
@@ -62,12 +59,11 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
         BlockMechMachines mill = (BlockMechMachines) block;
 
-        if(counter == 20) {
+        if (counter == 20) {
             powerLevel = getMechanicalInput(EnumFacing.DOWN);
             powerLevel = Math.min(powerLevel + getMechanicalInput(EnumFacing.UP), getMaximumInput(EnumFacing.UP));
             counter = 0;
-        }
-        else
+        } else
             counter++;
 
         if (this.validateContents)
@@ -140,22 +136,22 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     private void ejectStack(ItemStack stack) {
         List<EnumFacing> validDirections = new ArrayList<>();
-        for(EnumFacing facing : EnumFacing.HORIZONTALS) {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             IBlockState check = worldObj.getBlockState(pos.offset(facing));
-            if(check.getBlock().isReplaceable(worldObj, pos.offset(facing)) || worldObj.isAirBlock(pos.offset(facing)))
+            if (check.getBlock().isReplaceable(worldObj, pos.offset(facing)) || worldObj.isAirBlock(pos.offset(facing)))
                 validDirections.add(facing);
         }
 
-        if(validDirections.isEmpty()) {
+        if (validDirections.isEmpty()) {
             IBlockState down = worldObj.getBlockState(pos.offset(EnumFacing.DOWN));
-            if(down.getBlock().isReplaceable(worldObj, pos.offset(EnumFacing.DOWN)) || worldObj.isAirBlock(pos.offset(EnumFacing.DOWN)))
+            if (down.getBlock().isReplaceable(worldObj, pos.offset(EnumFacing.DOWN)) || worldObj.isAirBlock(pos.offset(EnumFacing.DOWN)))
                 validDirections.add(EnumFacing.DOWN);
         }
 
         BlockPos offset;
-        if(validDirections.size() > 1)
+        if (validDirections.size() > 1)
             offset = pos.offset(validDirections.get(worldObj.rand.nextInt(validDirections.size())));
-        else if(validDirections.isEmpty())
+        else if (validDirections.isEmpty())
             offset = pos.offset(EnumFacing.UP);
         else
             offset = pos.offset(validDirections.get(0));
@@ -186,18 +182,16 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     private boolean grindContents() {
         CraftingManagerMill mill = CraftingManagerMill.getInstance();
-        List<Object> ingredients = mill.getValidCraftingIngredients(inventory);
+        List<ItemStack> ingredients = mill.getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
             for (int i = 0; i < ingredients.size(); i++) {
-                if (ingredients.get(i) instanceof ItemStack) {
-                    ItemStack stack = ((ItemStack) ingredients.get(i)).copy();
-                    if (stack != null) {
-                        Item item = stack.getItem();
-                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
-                            this.worldObj.playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            break;
-                        }
+                ItemStack stack = (ingredients.get(i)).copy();
+                if (stack != null) {
+                    Item item = stack.getItem();
+                    if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
+                        this.worldObj.playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        break;
                     }
                 }
             }
@@ -219,24 +213,22 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private void validateContents() {
         int oldGrindType = getGrindType();
         int newGrindType = 0;
-        List<Object> ingredients = CraftingManagerMill.getInstance().getValidCraftingIngredients(inventory);
+        List<ItemStack> ingredients = CraftingManagerMill.getInstance().getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
             this.containsIngredientsToGrind = true;
             newGrindType = 1;
             for (int i = 0; i < ingredients.size(); i++) {
-                if (ingredients.get(i) instanceof ItemStack) {
-                    ItemStack stack = ((ItemStack) ingredients.get(i)).copy();
-                    if (stack != null) {
-                        Item item = stack.getItem();
-                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
-                            newGrindType = 3;
-                            break;
-                        }
-                        if (item == Item.getItemFromBlock(Blocks.NETHERRACK)) {
-                            newGrindType = 2;
-                            break;
-                        }
+                ItemStack stack = (ingredients.get(i)).copy();
+                if (stack != null) {
+                    Item item = stack.getItem();
+                    if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
+                        newGrindType = 3;
+                        break;
+                    }
+                    if (item == Item.getItemFromBlock(Blocks.NETHERRACK)) {
+                        newGrindType = 2;
+                        break;
                     }
                 }
             }
@@ -283,9 +275,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         int power = 0;
-        if(getBlockType() instanceof IMechanicalBlock) {
-            if(((IMechanicalBlock)getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
-                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(),getPos(), facing), getMaximumInput(facing));
+        if (getBlockType() instanceof IMechanicalBlock) {
+            if (((IMechanicalBlock) getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
+                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(), getPos(), facing), getMaximumInput(facing));
             }
         }
         return power;

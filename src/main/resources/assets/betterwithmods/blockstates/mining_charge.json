@@ -7,7 +7,7 @@
       "bottom": "betterwithmods:blocks/mining_charge_bottom",
       "particle": "#side"
     },
-    "model":"betterwithmods:mining_charge",
+    "model": "betterwithmods:mining_charge",
     "uvlock": false
   },
   "variants": {
@@ -20,16 +20,40 @@
       }
     ],
     "explode": {
-      "true":{},
-      "false":{}
+      "true": {},
+      "false": {}
     },
     "facing": {
-      "north": {"x":90,"textures": { "bottom":"betterwithmods:blocks/mining_charge_top", "top":"betterwithmods:blocks/mining_charge_bottom"}},
-      "south": {"x":-90},
-      "east": {"x":90,"y":90,"textures": { "bottom":"betterwithmods:blocks/mining_charge_top", "top":"betterwithmods:blocks/mining_charge_bottom"}},
-      "west": { "x":90,"y":-90,"textures": { "bottom":"betterwithmods:blocks/mining_charge_top", "top":"betterwithmods:blocks/mining_charge_bottom"}},
+      "north": {
+        "x": 90,
+        "textures": {
+          "bottom": "betterwithmods:blocks/mining_charge_top",
+          "top": "betterwithmods:blocks/mining_charge_bottom"
+        }
+      },
+      "south": {
+        "x": -90
+      },
+      "east": {
+        "x": 90,
+        "y": 90,
+        "textures": {
+          "bottom": "betterwithmods:blocks/mining_charge_top",
+          "top": "betterwithmods:blocks/mining_charge_bottom"
+        }
+      },
+      "west": {
+        "x": 90,
+        "y": -90,
+        "textures": {
+          "bottom": "betterwithmods:blocks/mining_charge_top",
+          "top": "betterwithmods:blocks/mining_charge_bottom"
+        }
+      },
       "up": {},
-      "down": {"x":180}
+      "down": {
+        "x": 180
+      }
     }
   }
 }

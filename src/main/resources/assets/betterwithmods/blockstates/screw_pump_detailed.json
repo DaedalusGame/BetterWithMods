@@ -1,42 +1,66 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-        "textures": {
-			"side": "minecraft:blocks/planks_oak",
-			"side_grate": "betterwithmods:blocks/pump_detailed_grate",
-			"top": "betterwithmods:blocks/pump_detailed_top",
-			"bottom": "betterwithmods:blocks/pump_bottom",
-			"north": "#side",
-			"north_inner": "#inner2",
-			"south": "#side",
-			"south_inner": "#inner2",
-			"east": "#side",
-			"east_inner": "#inner2",
-			"west": "#side",
-			"west_inner": "#inner2",
-			"inner": "betterwithmods:blocks/pump_detailed_grate_inner",
-			"inner2": "betterwithmods:blocks/pump_detailed_grate_inner2",
-			"corner": "betterwithmods:blocks/pump_detailed_grate_corners",
-			"grate": "betterwithmods:blocks/grate",
-			"particle": "minecraft:blocks/planks_oak"
-        },
-        "model": "betterwithmods:screw_pump_detailed",
-		"uvlock": true
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "minecraft:blocks/planks_oak",
+      "side_grate": "betterwithmods:blocks/pump_detailed_grate",
+      "top": "betterwithmods:blocks/pump_detailed_top",
+      "bottom": "betterwithmods:blocks/pump_bottom",
+      "north": "#side",
+      "north_inner": "#inner2",
+      "south": "#side",
+      "south_inner": "#inner2",
+      "east": "#side",
+      "east_inner": "#inner2",
+      "west": "#side",
+      "west_inner": "#inner2",
+      "inner": "betterwithmods:blocks/pump_detailed_grate_inner",
+      "inner2": "betterwithmods:blocks/pump_detailed_grate_inner2",
+      "corner": "betterwithmods:blocks/pump_detailed_grate_corners",
+      "grate": "betterwithmods:blocks/grate",
+      "particle": "minecraft:blocks/planks_oak"
     },
-    "variants": {
-        "normal": [{}],
-        "inventory": [{
-			"transform": "forge:default-block"
-		}],
-		"active": {
-			"false": {},
-			"true": {}
-		},
-		"facing": {
-			"north": {"textures": {"north": "#side_grate", "north_inner": "#inner"}},
-			"south": {"textures": {"south": "#side_grate", "south_inner": "#inner"}},
-			"west": {"textures": {"west": "#side_grate", "west_inner": "#inner"}},
-			"east": {"textures": {"east": "#side_grate", "east_inner": "#inner"}}
-		}
-	}
+    "model": "betterwithmods:screw_pump_detailed",
+    "uvlock": true
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "active": {
+      "false": {},
+      "true": {}
+    },
+    "facing": {
+      "north": {
+        "textures": {
+          "north": "#side_grate",
+          "north_inner": "#inner"
+        }
+      },
+      "south": {
+        "textures": {
+          "south": "#side_grate",
+          "south_inner": "#inner"
+        }
+      },
+      "west": {
+        "textures": {
+          "west": "#side_grate",
+          "west_inner": "#inner"
+        }
+      },
+      "east": {
+        "textures": {
+          "east": "#side_grate",
+          "east_inner": "#inner"
+        }
+      }
+    }
+  }
 }

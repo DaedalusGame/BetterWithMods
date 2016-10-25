@@ -42,12 +42,12 @@ import java.util.List;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
     public short filterType;
+    public boolean outputBlocked;
+    public byte power;
     private int ejectCounter;
     private int containedXP;
     private int xpDropDelay;
-    public boolean outputBlocked;
     private int soulsRetained;
-    public byte power;
     private ItemStack filterStack;
     private String filter;
 
@@ -64,6 +64,37 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         this.filter = "";
     }
 
+    public static ItemStack attemptToInsert(IItemHandler inv, ItemStack stack) {
+        ItemStack leftover = null;
+        for (int slot = 0; slot < inv.getSlots() - 1; slot++) {
+            leftover = inv.insertItem(slot, stack, false);
+            if (leftover == null)
+                break;
+        }
+        return leftover;
+    }
+
+    public static boolean putDropInInventoryAllSlots(IItemHandler inv, EntityItem entityItem) {
+        boolean putAll = false;
+        if (entityItem == null) {
+            return false;
+        } else {
+            ItemStack itemstack = entityItem.getEntityItem().copy();
+            ItemStack leftovers = attemptToInsert(inv, itemstack);
+            if (leftovers != null && leftovers.stackSize != 0) {
+                entityItem.setEntityItemStack(leftovers);
+            } else {
+                putAll = true;
+                entityItem.setDead();
+            }
+            return putAll;
+        }
+    }
+
+    private static List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
+        return world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D));
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -78,7 +109,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             this.soulsRetained = tag.getInteger("Souls");
         if (tag.hasKey("IsPowered"))
             this.power = tag.getBoolean("IsPowered") ? (byte) 1 : 0;
-        if(tag.hasKey("FilterType"))
+        if (tag.hasKey("FilterType"))
             this.filter = tag.getString("FilterType");
 
         validateInventory();
@@ -156,23 +187,22 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         if (currentFilter != this.filterType) {
             this.filterType = currentFilter;
             stateChanged = true;
-            if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+            if (hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
                 ItemStack stack = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(18);
-                if(stack != null) {
+                if (stack != null) {
                     String check = stack.getItem().toString() + stack.getMetadata();
                     if (!filter.equals(check)) {
                         filter = check;
                         markDirty();
                     }
-                }
-                else {
+                } else {
                     filter = "";
                     markDirty();
                 }
             }
         }
 
-        byte slotsOccupied = (byte)InvUtils.getOccupiedStacks(inventory, 0, 17);
+        byte slotsOccupied = (byte) InvUtils.getOccupiedStacks(inventory, 0, 17);
         if (slotsOccupied != this.occupiedSlots) {
             this.occupiedSlots = slotsOccupied;
             stateChanged = true;
@@ -300,7 +330,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (flag) {
-                this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.validateInventory()) {
                     IBlockState state = worldObj.getBlockState(pos);
                     int filledSlots = this.filledSlots();
@@ -310,33 +340,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
         return false;
-    }
-
-    public static ItemStack attemptToInsert(IItemHandler inv, ItemStack stack) {
-        ItemStack leftover = null;
-        for (int slot = 0; slot < inv.getSlots() - 1; slot++) {
-            leftover = inv.insertItem(slot, stack, false);
-            if (leftover == null)
-                break;
-        }
-        return leftover;
-    }
-
-    public static boolean putDropInInventoryAllSlots(IItemHandler inv, EntityItem entityItem) {
-        boolean putAll = false;
-        if (entityItem == null) {
-            return false;
-        } else {
-            ItemStack itemstack = entityItem.getEntityItem().copy();
-            ItemStack leftovers = attemptToInsert(inv, itemstack);
-            if (leftovers != null && leftovers.stackSize != 0) {
-                entityItem.setEntityItemStack(leftovers);
-            } else {
-                putAll = true;
-                entityItem.setDead();
-            }
-            return putAll;
-        }
     }
 
     private boolean captureXP() {
@@ -440,7 +443,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         for (int slot = 0; slot < below.getSlots(); slot++) {
                             leftover = below.insertItem(slot, ejectStack, false);
                             if (leftover == null) {
-                                inventory.extractItem(stackIndex,ejectStackSize,false);
+                                inventory.extractItem(stackIndex, ejectStackSize, false);
                                 break;
                             }
                         }
@@ -670,8 +673,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return this.filterType;
     }
 
-    private static List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
-        return world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D));
+    @Override
+    public void setSubtype(int type) {
+        this.filterType = (short) Math.min(type, 7);
     }
 
     public int filterType() {
@@ -679,13 +683,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public void setSubtype(int type) {
-        this.filterType = (short) Math.min(type, 7);
-    }
-
-    @Override
-    public int getMaxVisibleSlots()
-    {
+    public int getMaxVisibleSlots() {
         return 18;
     }
 

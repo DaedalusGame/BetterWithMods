@@ -14,8 +14,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.List;
 
-public class EntityAISearchFood extends EntityAIBase
-{
+public class EntityAISearchFood extends EntityAIBase {
     private final EntityAnimal entity;
     private EntityItem targetItem;
     private int timeoutCounter;
@@ -29,15 +28,15 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public boolean shouldExecute() {
-        if(entity.getGrowingAge() < 1 && !entity.isInLove()) {
-            if(entity instanceof EntityWolf) {
-                if(!((EntityWolf)entity).isTamed())
+        if (entity.getGrowingAge() < 1 && !entity.isInLove()) {
+            if (entity instanceof EntityWolf) {
+                if (!((EntityWolf) entity).isTamed())
                     return false;
             }
             BlockPos entityPos = entity.getPosition();
-            if(targetItem == null) {
+            if (targetItem == null) {
                 List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
-                if(!entityItems.isEmpty()) {
+                if (!entityItems.isEmpty()) {
                     for (EntityItem item : entityItems) {
                         if (entity.isBreedingItem(item.getEntityItem())) {
                             targetItem = item;
@@ -46,13 +45,12 @@ public class EntityAISearchFood extends EntityAIBase
                     }
                 }
             }
-            if(targetItem != null) {
+            if (targetItem != null) {
                 BlockPos targetPos = targetItem.getPosition();
-                if(entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().stackSize > 0) {
+                if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().stackSize > 0) {
                     processItemEating();
                     return false;
-                }
-                else {
+                } else {
                     //targetX = targetItem.posX; targetY = targetItem.posY; targetZ = targetItem.posZ;
                     return true;
                 }
@@ -66,9 +64,9 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public void startExecuting() {
-        if(entity.getGrowingAge() < 1 && !entity.isInLove()) {
-            if(entity instanceof EntityWolf) {
-                if(((EntityWolf)entity).isSitting())
+        if (entity.getGrowingAge() < 1 && !entity.isInLove()) {
+            if (entity instanceof EntityWolf) {
+                if (((EntityWolf) entity).isSitting())
                     return;
             }
             this.entity.getNavigator().tryMoveToXYZ(targetItem.posX, targetItem.posY, targetItem.posZ, 1.0F);
@@ -80,16 +78,16 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public boolean continueExecuting() {
-        if(targetItem.isDead || targetItem.getEntityItem().stackSize < 1)
+        if (targetItem.isDead || targetItem.getEntityItem().stackSize < 1)
             return false;
-        if(entity.getGrowingAge() < 1 && !entity.isInLove()) {
-            if(entity instanceof EntityWolf) {
-                if(((EntityWolf)entity).isSitting())
+        if (entity.getGrowingAge() < 1 && !entity.isInLove()) {
+            if (entity instanceof EntityWolf) {
+                if (((EntityWolf) entity).isSitting())
                     return false;
             }
-            if(timeoutCounter > 1200)
+            if (timeoutCounter > 1200)
                 return false;
-            if(!this.entity.getNavigator().noPath()) {
+            if (!this.entity.getNavigator().noPath()) {
                 double sqDistToPos = this.entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ);
                 if (sqDistToPos > 2.0D)
                     return true;
@@ -103,19 +101,18 @@ public class EntityAISearchFood extends EntityAIBase
      */
     @Override
     public void updateTask() {
-        if(entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().stackSize > 0) {
+        if (entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().stackSize > 0) {
             processItemEating();
-        }
-        else {
+        } else {
             ++timeoutCounter;
-            if(timeoutCounter % 40 == 0) {
+            if (timeoutCounter % 40 == 0) {
                 this.entity.getNavigator().tryMoveToXYZ(targetItem.posX, targetItem.posY, targetItem.posZ, 1.0F);
             }
         }
     }
 
     private void processItemEating() {
-        if(!entity.getEntityWorld().isRemote) {
+        if (!entity.getEntityWorld().isRemote) {
             FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) entity.getEntityWorld());
             ItemStack foodStack = targetItem.getEntityItem().splitStack(1);
             entity.processInteract(player, EnumHand.MAIN_HAND, foodStack);

@@ -29,19 +29,17 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMultiVariants
-{
+public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMultiVariants {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<Item, IBehaviorDispenseItem>(new BehaviorDefaultDispenseBlock());
 
-    public BlockBDispenser()
-    {
+    public BlockBDispenser() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
@@ -53,28 +51,22 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if(world.isRemote)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote)
             return true;
-        else
-        {
-            if(world.getTileEntity(pos) != null)
-            {
+        else {
+            if (world.getTileEntity(pos) != null) {
                 player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             }
             return true;
         }
     }
 
-    private boolean isRedstonePowered(IBlockState state, World world, BlockPos pos)
-    {
-        for(EnumFacing facing : EnumFacing.VALUES)
-        {
-            if(facing != state.getValue(BlockDirectional.FACING))
-            {
+    private boolean isRedstonePowered(IBlockState state, World world, BlockPos pos) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if (facing != state.getValue(BlockDirectional.FACING)) {
                 BlockPos check = pos.offset(facing);
-                if(world.getRedstonePower(check, facing) > 0)
+                if (world.getRedstonePower(check, facing) > 0)
                     return true;
             }
         }
@@ -82,50 +74,41 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn)
-    {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
         boolean flag = isRedstonePowered(state, world, pos);
         boolean flag1 = state.getValue(TRIGGERED);
 
-        if (flag && !flag1)
-        {
+        if (flag && !flag1) {
             world.scheduleUpdate(pos, this, this.tickRate(world));
             world.setBlockState(pos, state.withProperty(TRIGGERED, true), 5);
-        }
-        else if (!flag && flag1)
-        {
+        } else if (!flag && flag1) {
             world.scheduleUpdate(pos, this, this.tickRate(world));
             world.setBlockState(pos, state.withProperty(TRIGGERED, false), 5);
         }
     }
 
     @Override
-    protected void dispense(World world, BlockPos pos)
-    {
+    protected void dispense(World world, BlockPos pos) {
         BlockSourceImpl impl = new BlockSourceImpl(world, pos);
         TileEntityBlockDispenser tile = impl.getBlockTileEntity();
-        if(tile != null)
-        {
-            if(!world.getBlockState(pos).getValue(TRIGGERED))
-            {
-                BlockPos check = pos.offset(impl.func_189992_e().getValue(FACING));
-                if(!world.isAirBlock(check) && !world.getBlockState(check).getBlock().isReplaceable(world, check) && world.getBlockState(check).getBlockHardness(world, check) != -1.0F)
-                {
+        if (tile != null) {
+            if (!world.getBlockState(pos).getValue(TRIGGERED)) {
+                BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
+                if (!world.isAirBlock(check) && !world.getBlockState(check).getBlock().isReplaceable(world, check) && world.getBlockState(check).getBlockHardness(world, check) != -1.0F) {
                     IBlockState state = world.getBlockState(check);
                     List<ItemStack> stacks = state.getBlock().getDrops(world, check, state, 0);
-                    if(stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
+                    if (stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
                         stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
-                        //stacks.add(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state)));
-                    else if(!stacks.isEmpty()) {
-                        for(ItemStack stack : stacks) {
-                            if(ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player))) {
+                    else if (!stacks.isEmpty()) {
+                        for (ItemStack stack : stacks) {
+                            if (ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player))) {
                                 stacks.remove(stack);
                                 stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
                                 break;
                             }
                         }
                     }
-                    if(!stacks.isEmpty()) {
+                    if (!stacks.isEmpty()) {
                         for (ItemStack stack : stacks)
                             tile.addStackToInventory(stack, check);
                     }
@@ -135,33 +118,23 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
                     return;
                 }
                 List<EntityLivingBase> creatures = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(check, check.add(1, 1, 1)), entity -> !entity.isDead && (entity instanceof EntityWolf || entity instanceof EntitySheep || entity instanceof EntityChicken));
-                if(!creatures.isEmpty() && creatures.size() > 0)
-                {
-                    for(EntityLivingBase creature : creatures)
-                    {
-                        if(creature instanceof EntityWolf)
-                        {
+                if (!creatures.isEmpty() && creatures.size() > 0) {
+                    for (EntityLivingBase creature : creatures) {
+                        if (creature instanceof EntityWolf) {
                             tile.addStackToInventory(new ItemStack(BWMBlocks.WOLF), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(3)));
-                            //InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.DYE, 1 + rand.nextInt(2), 1));
                             world.playSound(null, check, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
                             creature.setDead();
-                        }
-                        else if(creature instanceof EntitySheep)
-                        {
-                            EntitySheep sheep = (EntitySheep)creature;
-                            if(!sheep.getSheared() && sheep.getGrowingAge() > -1)
-                            {
+                        } else if (creature instanceof EntitySheep) {
+                            EntitySheep sheep = (EntitySheep) creature;
+                            if (!sheep.getSheared() && sheep.getGrowingAge() > -1) {
                                 List<ItemStack> shear = sheep.onSheared(new ItemStack(Items.SHEARS), world, check, 0);
-                                for(ItemStack wool : shear)
-                                {
+                                for (ItemStack wool : shear) {
                                     tile.addStackToInventory(wool, check);
                                 }
                                 InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(2)));
                             }
-                        }
-                        else if(creature instanceof EntityChicken)
-                        {
+                        } else if (creature instanceof EntityChicken) {
                             tile.addStackToInventory(new ItemStack(Items.EGG), check);
                             InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.FEATHER, 1 + rand.nextInt(2)));
                             world.playSound(null, check, SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
@@ -169,18 +142,14 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 int index = tile.nextIndex;
                 ItemStack stack = tile.getNextStackFromInv();
-                if(index == -1 || stack == null)
+                if (index == -1 || stack == null)
                     world.playEvent(1001, pos, 0);
-                else
-                {
+                else {
                     IBehaviorDispenseItem item = this.getBehavior(stack);
-                    if(item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR)
-                    {
+                    if (item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR) {
                         ItemStack stack1 = item.dispense(impl, stack);
                         tile.inventory.setStackInSlot(index, stack1.stackSize <= 0 ? null : stack1);
                     }
@@ -190,11 +159,9 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state)
-    {
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof TileEntityBlockDispenser)
-        {
+        if (te instanceof TileEntityBlockDispenser) {
             InvUtils.ejectInventoryContents(world, pos, ((TileEntityBlockDispenser) te).inventory);
             world.updateComparatorOutputLevel(pos, this);
         }
@@ -202,14 +169,12 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
     }
 
     @Override
-    protected IBehaviorDispenseItem getBehavior(@Nullable ItemStack stack)
-    {
+    protected IBehaviorDispenseItem getBehavior(@Nullable ItemStack stack) {
         return BLOCK_DISPENSER_REGISTRY.getObject(stack == null ? null : stack.getItem());
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
-    {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityBlockDispenser();
     }
 

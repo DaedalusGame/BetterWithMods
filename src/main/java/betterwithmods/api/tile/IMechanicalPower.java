@@ -3,8 +3,7 @@ package betterwithmods.api.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
-public interface IMechanicalPower
-{
+public interface IMechanicalPower {
     int getMechanicalOutput(EnumFacing facing);
 
     int getMechanicalInput(EnumFacing facing);

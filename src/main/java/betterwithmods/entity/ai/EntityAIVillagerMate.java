@@ -14,7 +14,6 @@ import static betterwithmods.event.MobAIEvent.isWillingToMate;
 public class EntityAIVillagerMate extends EntityAIBase {
     private final EntityVillager villager;
     World world;
-    private EntityVillager mate;
     /**
      * Delay preventing a baby from spawning immediately when two mate-able animals find each other.
      */
@@ -23,6 +22,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
      * The speed the creature moves at during mating behavior.
      */
     double moveSpeed;
+    private EntityVillager mate;
 
     public EntityAIVillagerMate(EntityVillager villager, double speedIn) {
         this.villager = villager;
@@ -35,15 +35,14 @@ public class EntityAIVillagerMate extends EntityAIBase {
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute() {
-        if (this.villager.getGrowingAge() != 0 || this.villager.getRNG().nextInt(500) != 0)
-        {
+        if (this.villager.getGrowingAge() != 0 || this.villager.getRNG().nextInt(500) != 0) {
             return false;
         }
         if (!isWillingToMate(villager)) {
             return false;
         } else {
             this.mate = this.getNearbyMate();
-            return this.mate != null &&  this.mate.getGrowingAge() == 0;
+            return this.mate != null && this.mate.getGrowingAge() == 0;
         }
     }
 
@@ -83,7 +82,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
         double d0 = Double.MAX_VALUE;
         EntityVillager mate = null;
         for (EntityVillager current : list) {
-            if (canMateWith(this.villager, current)  && this.villager.getDistanceSqToEntity(current) < d0) {
+            if (canMateWith(this.villager, current) && this.villager.getDistanceSqToEntity(current) < d0) {
                 mate = current;
                 d0 = this.villager.getDistanceSqToEntity(current);
             }
@@ -126,8 +125,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
         }
     }
 
-    public boolean canMateWith(EntityVillager village, EntityVillager mate)
-    {
+    public boolean canMateWith(EntityVillager village, EntityVillager mate) {
         return village == mate ? false : isWillingToMate(villager) && isWillingToMate(mate);
     }
 }

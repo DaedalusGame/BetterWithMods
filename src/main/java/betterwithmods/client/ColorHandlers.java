@@ -20,6 +20,6 @@ public class ColorHandlers {
     public static final IItemColor ItemPlanterColor = (stack, tintIndex) ->
             (stack.getItem() instanceof ItemBlock && stack.getItem() instanceof ItemBlockPlanter) ? ((ItemBlockPlanter) stack.getItem()).getColorFromItemstack(stack, tintIndex) : -1;
     public static final IItemColor ItemFoliageColor = (stack, tintIndex) ->
-            BlockFoliageColor.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getDefaultState(),null,null,tintIndex);
+            BlockFoliageColor.colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getDefaultState(), null, null, tintIndex);
 
 }

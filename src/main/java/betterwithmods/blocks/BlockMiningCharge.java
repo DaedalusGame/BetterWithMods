@@ -34,14 +34,12 @@ public class BlockMiningCharge extends BWMBlock {
     public static final PropertyBool EXPLODE = PropertyBool.create("explode");
 
 
-
-
-
     public BlockMiningCharge() {
         super(Material.TNT);
         this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.valueOf(false)));
         setSoundType(SoundType.PLANT);
     }
+
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;

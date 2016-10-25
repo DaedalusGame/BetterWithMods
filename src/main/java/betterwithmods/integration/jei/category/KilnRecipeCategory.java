@@ -7,6 +7,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.util.ResourceLocation;
@@ -56,6 +57,11 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
 
         guiItemStacks.init(1, true, 94, 31);
         guiItemStacks.setFromRecipe(1, wrapper.getOutputs());
+    }
 
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper, IIngredients ingredients) {
+        setRecipe(layout, wrapper);
+        //TODO Ingredients
     }
 }

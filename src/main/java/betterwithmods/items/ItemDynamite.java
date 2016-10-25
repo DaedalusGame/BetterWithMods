@@ -19,62 +19,55 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemDynamite extends Item
-{
-	public ItemDynamite() {
-		super();
-    	this.setCreativeTab(BWCreativeTabs.BWTAB);
-	}
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
-	{
-		int flintIndex = -1;
-		
-		for(int i = 0; i < player.inventory.mainInventory.length; i++)
-		{
-			if(player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == Items.FLINT_AND_STEEL)
-			{
-				flintIndex = i;
-				break;
-			}
-		}
-		
-		if(!world.isRemote)
-		{
-			boolean lit = false;
-			
-			if(flintIndex > -1)
-			{
-				lit = true;
-				ItemStack steelStack = player.inventory.getStackInSlot(flintIndex);
-				steelStack.damageItem(1, player);
-				if(steelStack.stackSize < 1)
-					player.inventory.mainInventory[flintIndex] = null;
-			}
-			
-			stack.stackSize--;
-			EntityDynamite dynamite = new EntityDynamite(world, player, new ItemStack(this, 1), lit);
-			world.spawnEntityInWorld(dynamite);
-			
-			if(lit)
-				world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.AMBIENT, 1.0F, 1.0F);
-			else
-				world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.AMBIENT, 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
-		}
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool)
-	{
-		list.add(I18n.format("lore.bwm:dynamite"));
-		super.addInformation(stack, player, list, bool);
-	}
-	
-	@Override
-	public int getEntityLifespan(ItemStack stack, World world)
-	{
-		return 6000;
-	}
+public class ItemDynamite extends Item {
+    public ItemDynamite() {
+        super();
+        this.setCreativeTab(BWCreativeTabs.BWTAB);
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        int flintIndex = -1;
+
+        for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+            if (player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == Items.FLINT_AND_STEEL) {
+                flintIndex = i;
+                break;
+            }
+        }
+
+        if (!world.isRemote) {
+            boolean lit = false;
+
+            if (flintIndex > -1) {
+                lit = true;
+                ItemStack steelStack = player.inventory.getStackInSlot(flintIndex);
+                steelStack.damageItem(1, player);
+                if (steelStack.stackSize < 1)
+                    player.inventory.mainInventory[flintIndex] = null;
+            }
+
+            stack.stackSize--;
+            EntityDynamite dynamite = new EntityDynamite(world, player, new ItemStack(this, 1), lit);
+            world.spawnEntityInWorld(dynamite);
+
+            if (lit)
+                world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            else
+                world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.AMBIENT, 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
+        }
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool) {
+        list.add(I18n.format("lore.bwm:dynamite"));
+        super.addInformation(stack, player, list, bool);
+    }
+
+    @Override
+    public int getEntityLifespan(ItemStack stack, World world) {
+        return 6000;
+    }
 }

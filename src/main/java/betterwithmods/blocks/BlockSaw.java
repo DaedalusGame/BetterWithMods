@@ -147,12 +147,11 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
                 else if (!world.isAirBlock(pos2))
                     unobstructed = false;
             }
-            if(entity instanceof EntityMob && ((EntityLivingBase) entity).getHealth() <= damage) {
+            if (entity instanceof EntityMob && ((EntityLivingBase) entity).getHealth() <= damage) {
                 ((EntityLivingBase) entity).recentlyHit = 60;
-                if(world instanceof WorldServer)
+                if (world instanceof WorldServer)
                     performLastHit(entity, damage);
-            }
-            else if (entity.attackEntityFrom(source, damage)) {
+            } else if (entity.attackEntityFrom(source, damage)) {
                 ((EntityLivingBase) entity).recentlyHit = 60;
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
             }
@@ -242,9 +241,9 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     public void breakSaw(World world, BlockPos pos) {
-		if (BWConfig.dropsSaw)
-			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
-		/*
+        if (BWConfig.dropsSaw)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/saw"));
+        /*
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));

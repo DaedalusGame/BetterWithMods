@@ -1,41 +1,41 @@
 {
-	"block.wood.creak": {
-		"category": "block",
-		"sounds": [
-			"betterwithmods:wood/wood_creak_0",
-			"betterwithmods:wood/wood_creak_1",
-			"betterwithmods:wood/wood_creak_2",
-			"betterwithmods:wood/wood_creak_3"
-		],
-		"subtitle": "subtitles.bwm.wood.creak"
-	},
-	"block.stone.grind": {
-		"category": "block",
-		"sounds": [
-			"betterwithmods:stone/stone_grind_0",
-			"betterwithmods:stone/stone_grind_1",
-			"betterwithmods:stone/stone_grind_2",
-			"betterwithmods:stone/stone_grind_3"
-		],
-		"subtitle": "subtitles.bwm.stone.grind"
-	},
-	"block.wood.chime": {
-		"category": "block",
-		"sounds": [
-			"betterwithmods:wood/bamboo_chime_0",
-			"betterwithmods:wood/bamboo_chime_1",
-			"betterwithmods:wood/bamboo_chime_2",
-			"betterwithmods:wood/bamboo_chime_3"
-		],
-		"subtitle": "subtitles.bwm.wood.chime"
-	},
-	"block.metal.chime": {
-		"category": "block",
-		"sounds": [
-			"betterwithmods:metal/metal_chime_0",
-			"betterwithmods:metal/metal_chime_1",
-			"betterwithmods:metal/metal_chime_2"
-		],
-		"subtitle": "subtitles.bwm.metal.chime"
-	}
+  "block.wood.creak": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:wood/wood_creak_0",
+      "betterwithmods:wood/wood_creak_1",
+      "betterwithmods:wood/wood_creak_2",
+      "betterwithmods:wood/wood_creak_3"
+    ],
+    "subtitle": "subtitles.bwm.wood.creak"
+  },
+  "block.stone.grind": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:stone/stone_grind_0",
+      "betterwithmods:stone/stone_grind_1",
+      "betterwithmods:stone/stone_grind_2",
+      "betterwithmods:stone/stone_grind_3"
+    ],
+    "subtitle": "subtitles.bwm.stone.grind"
+  },
+  "block.wood.chime": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:wood/bamboo_chime_0",
+      "betterwithmods:wood/bamboo_chime_1",
+      "betterwithmods:wood/bamboo_chime_2",
+      "betterwithmods:wood/bamboo_chime_3"
+    ],
+    "subtitle": "subtitles.bwm.wood.chime"
+  },
+  "block.metal.chime": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:metal/metal_chime_0",
+      "betterwithmods:metal/metal_chime_1",
+      "betterwithmods:metal/metal_chime_2"
+    ],
+    "subtitle": "subtitles.bwm.metal.chime"
+  }
 }

@@ -28,7 +28,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler()  {
+    public SimpleItemStackHandler createItemStackHandler() {
         return new SimpleItemStackHandler(this, true, 16);
     }
 
@@ -44,8 +44,8 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         for (int i = 0; i < 16; i++) {
             ItemStack check = this.inventory.getStackInSlot(i);
             if (ItemStack.areItemsEqual(stack, check) && check.stackSize < check.getMaxStackSize()) {
-                if(check.hasTagCompound() || stack.hasTagCompound()) {
-                    if(!ItemStack.areItemStackTagsEqual(stack, check))
+                if (check.hasTagCompound() || stack.hasTagCompound()) {
+                    if (!ItemStack.areItemStackTagsEqual(stack, check))
                         continue;
                 }
                 check.stackSize++;
@@ -55,7 +55,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         }
         int firstSlot = findFirstNullStack();
         if (firstSlot > -1) {
-            this.inventory.setStackInSlot(firstSlot,stack);
+            this.inventory.setStackInSlot(firstSlot, stack);
         } else {
             EntityItem item = new EntityItem(worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
             item.setDefaultPickupDelay();
@@ -65,7 +65,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
 
     private int findFirstNullStack() {
         for (int i = 0; i < 16; i++) {
-            if (this.inventory.getStackInSlot(i)== null)
+            if (this.inventory.getStackInSlot(i) == null)
                 return i;
         }
         return -1;
@@ -74,7 +74,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     public ItemStack getNextStackFromInv() {
         ItemStack nextStack;
 
-        if (this.nextIndex >= this.inventory.getSlots()|| this.inventory.getStackInSlot(this.nextIndex) == null) {
+        if (this.nextIndex >= this.inventory.getSlots() || this.inventory.getStackInSlot(this.nextIndex) == null) {
             int slot = findNextValidSlot(this.nextIndex);
 
             if (slot < 0)
@@ -112,8 +112,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         return -1;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return "inv.bwm.dispenser.name";
     }
 }

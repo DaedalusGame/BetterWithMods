@@ -78,7 +78,6 @@ public class HungerEventHandler {
     /**
      * Revert player's food system to vanilla {@link FoodStats}.
      *
-     * @param player
      */
     private void revertFoodSystem(EntityPlayer player) {
         if (!(player.getFoodStats() instanceof BWMFoodStats))
@@ -99,7 +98,6 @@ public class HungerEventHandler {
     /**
      * The FoodStats must be manually saved with event. Why is not known.
      *
-     * @param event
      */
     @SubscribeEvent
     public void saveFoodSystem(PlayerLoggedOutEvent event) {
@@ -111,7 +109,6 @@ public class HungerEventHandler {
     /**
      * Eating is not allowed when food poisoned.
      *
-     * @param event
      */
     @SubscribeEvent
     public void onFood(LivingEntityUseItemEvent.Start event) {
@@ -132,7 +129,6 @@ public class HungerEventHandler {
      * of EntityPlayer.getDigSpeed() to also check if using right item to
      * harvest.
      *
-     * @param event
      */
     @SubscribeEvent
     public void breakSpeedPenalty(PlayerEvent.BreakSpeed event) {
@@ -200,7 +196,6 @@ public class HungerEventHandler {
     /**
      * Walking speed changed according to health/exhaustion/fat
      *
-     * @param event
      */
     @SubscribeEvent
     public void walkingPenalty(LivingUpdateEvent event) {
@@ -220,7 +215,6 @@ public class HungerEventHandler {
      * Disable swimming if needed. TODO FIXME Not able to jump at the bottom.
      * New hook may be required. (Probable workaround implemented)
      *
-     * @param event
      */
     @SubscribeEvent
     public void swimmingPenalty(LivingUpdateEvent event) {
@@ -258,7 +252,6 @@ public class HungerEventHandler {
      * from scratch 1.0F value. Edited from
      * AbstractClientPlayer.getFovModifier()
      *
-     * @param event
      */
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent event) {
@@ -314,7 +307,5 @@ public class HungerEventHandler {
 		else
 			revertFoodSystem(player);
 		// TODO find solution for issue #71
-		// FIXME Apply/Revert has no effect on this player instance.
-		// We need a synced client&server config system.
 	}*/
 }

@@ -141,7 +141,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             buf.writeInt(vec.getY());
             buf.writeInt(vec.getZ());
             Block block = state != null ? state.getBlock() : Blocks.AIR;
-            ResourceLocation resourcelocation = (ResourceLocation) Block.REGISTRY.getNameForObject(block);
+            ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
             String blockName = resourcelocation == null ? "" : resourcelocation.toString();
             buf.writeInt(blockName.length());
             buf.writeBytes(blockName.getBytes(Charset.forName("UTF-8")));

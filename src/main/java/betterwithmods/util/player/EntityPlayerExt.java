@@ -2,7 +2,6 @@ package betterwithmods.util.player;
 
 import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -54,7 +53,7 @@ public final class EntityPlayerExt {
         else return HungerPenalty.DYING;
     }
 
-    public static FatPenalty getFatPenalty(EntityPlayer player) {
+    private static FatPenalty getFatPenalty(EntityPlayer player) {
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 12) return FatPenalty.NO_PENALTY;
         else if (level < 14) return FatPenalty.PLUMP;
@@ -63,7 +62,7 @@ public final class EntityPlayerExt {
         else return FatPenalty.OBESE;
     }
 
-    public static HealthPenalty getHealthPenalty(EntityPlayer player) {
+    private static HealthPenalty getHealthPenalty(EntityPlayer player) {
         int level = (int) player.getHealth();
         if (level > 10) return HealthPenalty.NO_PENALTY;
         else if (level > 8) return HealthPenalty.HURT;
@@ -86,8 +85,8 @@ public final class EntityPlayerExt {
     /**
      * This will at least keep players from sticking to the bottom of a pool.
      *
-     * @param player
-     * @return
+     * @param player The swimming player.
+     * @return Whether the player is near the bottom of the pool or not.
      */
     public static boolean isNearBottom(EntityPlayer player) {
         Block toCheck = player.getEntityWorld().getBlockState(player.getPosition().down()).getBlock();
@@ -98,7 +97,7 @@ public final class EntityPlayerExt {
     /**
      * Edit the speed of an entity.
      *
-     * @param entity
+     * @param entity The entity whose speed will be changed.
      * @param speedModifierUUID Unique UUID for modification
      * @param name              Unique name for easier debugging
      * @param modifier          The speed will be multiplied by this number
@@ -127,11 +126,11 @@ public final class EntityPlayerExt {
         return weight;
     }
 
-    public static boolean isWeighted(EntityPlayer player) {
+    private static boolean isWeighted(EntityPlayer player) {
         return getWornArmorWeight(player) >= 10 || hasHeadCrab(player);
     }
 
-    public static boolean hasHeadCrab(EntityPlayer player) {
+    private static boolean hasHeadCrab(EntityPlayer player) {
         return player.isRiding() && player.getRidingEntity() instanceof EntitySquid;
     }
 
@@ -144,39 +143,5 @@ public final class EntityPlayerExt {
         }
 
         return modifier;
-    }
-
-    public static boolean isWearingSoulforgedArmor(Entity entity) {
-        boolean helmet = false;
-        boolean chestplate = false;
-        boolean boots = false;
-        boolean leggings = false;
-           /*TODO add Items
-        for(ItemStack stack : entity.getEquipmentAndArmor()) {
-    		if(stack.getItem() == ModItems.) helmet = true;
-    		else if(stack.getItem() == ModItems.) chestplate = true;
-    		else if(stack.getItem() == ModItems.) boots = true;
-    		else if(stack.getItem() == ModItems.) leggings = true;
-    	}
-    	*/
-        return helmet && chestplate && boots && leggings;
-    }
-
-    public static boolean isWearingSoulforgedHelm(Entity entity) {
-          /*TODO add Item
-    	for(ItemStack stack : entity.getEquipmentAndArmor()) {
-    		if(stack.getItem() == ModItems.) return true;
-    	}
-    	*/
-        return false;
-    }
-
-    public static boolean isWearingSoulforgedBoots(Entity entity) {
-  		/*TODO add Item
-    	for(ItemStack stack : entity.getEquipmentAndArmor()) {
-    		if(stack.getItem() == ModItems.) return true;
-    	}
-    	*/
-        return false;
     }
 }

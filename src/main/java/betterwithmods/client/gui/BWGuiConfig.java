@@ -24,7 +24,7 @@ public class BWGuiConfig extends GuiConfig {
      * Compiles a list of config elements
      */
     private static List<IConfigElement> getConfigElements() {
-        List<IConfigElement> list = new ArrayList<IConfigElement>();
+        List<IConfigElement> list = new ArrayList<>();
 
         //Add categories to config GUI
         list.add(categoryElement(BWConfig.HARDCORE, "Hardcore", "bwm.config.hardcore"));

@@ -74,7 +74,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         proxy.registerRenderInformation();
         proxy.initRenderers();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower<IMechanicalPower>(), MechanicalCapability.DefaultMechanicalPower.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower<>(), MechanicalCapability.DefaultMechanicalPower.class);
     }
 
     @EventHandler

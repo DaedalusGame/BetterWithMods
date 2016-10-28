@@ -16,6 +16,6 @@ public class RenderShearedCreeper extends RenderLiving<EntityShearedCreeper> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityShearedCreeper entity) {
-        return new ResourceLocation(BWMod.MODID,"textures/entity/sheared_creeper.png");
+        return new ResourceLocation(BWMod.MODID, "textures/entity/sheared_creeper.png");
     }
 }

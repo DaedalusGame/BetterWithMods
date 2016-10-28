@@ -3,8 +3,7 @@ package betterwithmods.client.model.filters;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class ModelGrate extends ModelWithResource
-{
+public class ModelGrate extends ModelWithResource {
     private ModelRenderer grate;
 
     public ModelGrate(ResourceLocation location) {

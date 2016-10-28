@@ -22,7 +22,7 @@ public abstract class BWMBlock extends Block implements IBWMBlock {
     	return new String[]{"inventory"};
     }
     */
-    
+
     @Override
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
         // TODO Auto-generated method stub

@@ -1,47 +1,45 @@
 package betterwithmods.integration.jei.wrapper;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BulkRecipeWrapper extends BWMRecipeWrapper
-{
-    public BulkRecipeWrapper(@Nonnull BulkRecipe recipe)
-    {
+public class BulkRecipeWrapper extends BWMRecipeWrapper {
+    public BulkRecipeWrapper(@Nonnull BulkRecipe recipe) {
         super(recipe);
     }
 
     @Nonnull
+    @Deprecated
     @Override
-    public List<Object> getInputs()
-    {
-        List<Object> inputs = new ArrayList<Object>();
-        for(Object obj : getRecipe().getInput())
-        {
-            if(obj instanceof ItemStack)
-            {
-                ItemStack stack = (ItemStack)obj;
-                if(stack != null && stack.getItem() != null)
-                    inputs.add(stack.copy());
-            }
-            else if(obj instanceof List) {
-                inputs.add(((List<?>) obj));
-            }
+    public List<ItemStack> getInputs() {
+        List<ItemStack> inputs = new ArrayList<>();
+        for (ItemStack stack : getRecipe().getInput()) {
+            if (stack != null && stack.getItem() != null)
+                inputs.add(stack.copy());
         }
         return inputs;
     }
 
     @Nonnull
+    @Deprecated
     @Override
-    public List<ItemStack> getOutputs()
-    {
-        List<ItemStack> outputs = new ArrayList<ItemStack>();
+    public List<ItemStack> getOutputs() {
+        List<ItemStack> outputs = new ArrayList<>();
         outputs.add(getRecipe().getOutput().copy());
-        if(getRecipe().getSecondary() != null)
+        if (getRecipe().getSecondary() != null)
             outputs.add(getRecipe().getSecondary().copy());
         return outputs;
+    }
+
+    @Nonnull
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, getInputs());
+        ingredients.setOutputs(ItemStack.class, getOutputs());
     }
 }

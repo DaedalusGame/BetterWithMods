@@ -16,30 +16,25 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem
-{
+public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem {
     @Override
-    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack)
-    {
-        EnumFacing facing = source.func_189992_e().getValue(BlockBDispenser.FACING);
+    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+        EnumFacing facing = source.getBlockState().getValue(BlockBDispenser.FACING);
         IPosition pos = BlockBDispenser.getDispensePosition(source);
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         ItemStack stack1 = stack.splitStack(1);
-        if(facing != EnumFacing.DOWN && facing != EnumFacing.UP && stack.getItem() instanceof ItemBlockSpecial)
-        {
-            FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer)source.getWorld());
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && stack.getItem() instanceof ItemBlockSpecial) {
+            FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) source.getWorld());
             DirUtils.setEntityOrientationFacing(fake, facing);
-            if(BWConfig.debug)
-            	BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
-            if(stack.getItem().onItemUse(stack1, fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if (BWConfig.debug)
+                BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
+            if (stack.getItem().onItemUse(stack1, fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
-            }
-            else {
+            } else {
                 stack.stackSize += 1;
                 return stack;
             }
-        }
-        else {
+        } else {
             stack.stackSize += 1;
             return stack;
         }

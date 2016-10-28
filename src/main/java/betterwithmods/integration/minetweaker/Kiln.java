@@ -26,22 +26,24 @@ import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
  */
 @ZenClass("mods.betterwithmods.Kiln")
 public class Kiln {
-    public static Hashtable<String,List<ItemStack>> cookables = KilnInteraction.getCookables();
+    public static Hashtable<String, List<ItemStack>> cookables = KilnInteraction.getCookables();
+
     @ZenMethod
-    public static void add(IItemStack input,  IItemStack[] output) {
+    public static void add(IItemStack input, IItemStack[] output) {
         ItemStack stack = toStack(input);
         Block block = Block.getBlockFromItem(stack.getItem());
-        MineTweakerAPI.apply(new Add(block,stack.getMetadata(),toStacks(output)));
+        MineTweakerAPI.apply(new Add(block, stack.getMetadata(), toStacks(output)));
     }
+
     @ZenMethod
     public static void remove(IIngredient output) {
-        Map<String,List<ItemStack>> toRemove = new Hashtable<>();
-        for(Map.Entry<String,List<ItemStack>> sawRecipe : cookables.entrySet()) {
-            if(sawRecipe != null && matches(output, toIItemStack(sawRecipe.getValue().get(0)))) {
+        Map<String, List<ItemStack>> toRemove = new Hashtable<>();
+        for (Map.Entry<String, List<ItemStack>> sawRecipe : cookables.entrySet()) {
+            if (sawRecipe != null && matches(output, toIItemStack(sawRecipe.getValue().get(0)))) {
                 toRemove.put(sawRecipe.getKey(), sawRecipe.getValue());
             }
         }
-        if(!toRemove.isEmpty()) {
+        if (!toRemove.isEmpty()) {
             MineTweakerAPI.apply(new Remove(toRemove));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "kiln", output.toString()));
@@ -49,9 +51,9 @@ public class Kiln {
     }
 
     private static class Add extends BaseMapAddition<String, List<ItemStack>> {
-		protected Add(Block block, int meta, ItemStack... product) {
+        protected Add(Block block, int meta, ItemStack... product) {
             super("kiln", cookables);
-            recipes.put(block+":"+meta, Arrays.asList(product));
+            recipes.put(block + ":" + meta, Arrays.asList(product));
         }
 
         @Override
@@ -61,7 +63,7 @@ public class Kiln {
     }
 
     private static class Remove extends BaseMapRemoval<String, List<ItemStack>> {
-        protected Remove(Map<String,List<ItemStack>> map) {
+        protected Remove(Map<String, List<ItemStack>> map) {
             super("kiln", cookables, map);
         }
 

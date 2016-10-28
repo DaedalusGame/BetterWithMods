@@ -12,9 +12,14 @@
     "normal": [
       {}
     ],
-    "inventory": [{}],
+    "inventory": [
+      {}
+    ],
     "half": {
-      "top": {"y": 180, "x": 180},
+      "top": {
+        "y": 180,
+        "x": 180
+      },
       "bottom": {}
     }
   }

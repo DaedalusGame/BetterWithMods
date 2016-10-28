@@ -15,26 +15,22 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BlockGen extends BWMBlock
-{
+public abstract class BlockGen extends BWMBlock {
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
 
-    public BlockGen(Material material, String name, Class<? extends ItemBlock> itemblock)
-    {
+    public BlockGen(Material material, String name, Class<? extends ItemBlock> itemblock) {
         super(material);
         this.setSoundType(SoundType.WOOD);
     }
 
-    public BlockGen(Material material, String name)
-    {
-        this(material,name,ItemBlock.class);
+    public BlockGen(Material material, String name) {
+        this(material, name, ItemBlock.class);
     }
 
     public abstract ItemStack getGenStack(IBlockState state);
 
     @Override
-    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<ItemStack>();
         drops.add(new ItemStack(BWMBlocks.AXLE));
         drops.add(getGenStack(state));

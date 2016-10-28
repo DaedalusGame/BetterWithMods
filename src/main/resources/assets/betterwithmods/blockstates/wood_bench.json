@@ -19,16 +19,48 @@
       }
     ],
     "supported": {
-      "true": {"model": "betterwithmods:bench_unsupported"},
+      "true": {
+        "model": "betterwithmods:bench_unsupported"
+      },
       "false": {}
     },
     "variant": {
-      "oak": {"textures": {"bottom": "blocks/planks_oak", "side": "betterwithmods:blocks/wood_side_oak"}},
-      "spruce": {"textures": {"bottom": "blocks/planks_spruce", "side": "betterwithmods:blocks/wood_side_spruce"}},
-      "birch": {"textures": {"bottom": "blocks/planks_birch", "side": "betterwithmods:blocks/wood_side_birch"}},
-      "jungle": {"textures": {"bottom": "blocks/planks_jungle", "side": "betterwithmods:blocks/wood_side_jungle"}},
-      "acacia": {"textures": {"bottom": "blocks/planks_acacia", "side": "betterwithmods:blocks/wood_side_acacia"}},
-      "dark_oak": {"textures": {"bottom": "blocks/planks_big_oak", "side": "betterwithmods:blocks/wood_side_dark_oak"}}
+      "oak": {
+        "textures": {
+          "bottom": "blocks/planks_oak",
+          "side": "betterwithmods:blocks/wood_side_oak"
+        }
+      },
+      "spruce": {
+        "textures": {
+          "bottom": "blocks/planks_spruce",
+          "side": "betterwithmods:blocks/wood_side_spruce"
+        }
+      },
+      "birch": {
+        "textures": {
+          "bottom": "blocks/planks_birch",
+          "side": "betterwithmods:blocks/wood_side_birch"
+        }
+      },
+      "jungle": {
+        "textures": {
+          "bottom": "blocks/planks_jungle",
+          "side": "betterwithmods:blocks/wood_side_jungle"
+        }
+      },
+      "acacia": {
+        "textures": {
+          "bottom": "blocks/planks_acacia",
+          "side": "betterwithmods:blocks/wood_side_acacia"
+        }
+      },
+      "dark_oak": {
+        "textures": {
+          "bottom": "blocks/planks_big_oak",
+          "side": "betterwithmods:blocks/wood_side_dark_oak"
+        }
+      }
     }
   }
 }

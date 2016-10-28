@@ -62,7 +62,7 @@ public class TConstruct extends ModIntegration {
         registerMaterial(hellfire, hellfireFluid, "Hellfire");
         fixHellfireDust();
         netherWhitelist();
-        if(BWMod.proxy.isClientside())
+        if (BWMod.proxy.isClientside())
             registerClientRendering();
     }
 

@@ -17,7 +17,7 @@ public class ImmersiveEngineering extends ModIntegration {
     @Override
     public void preInit() {
         BWMBlocks.registerBlock(TREATED_AXLE);
-        if(BWMod.proxy.isClientside())
+        if (BWMod.proxy.isClientside())
             BWMBlocks.setInventoryModel(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
     }

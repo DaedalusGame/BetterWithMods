@@ -3,8 +3,7 @@ package betterwithmods.client.model.filters;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class ModelOpaque extends ModelWithResource
-{
+public class ModelOpaque extends ModelWithResource {
     public ModelRenderer model;
 
     public ModelOpaque(ResourceLocation location) {

@@ -9,7 +9,7 @@ import minetweaker.MineTweakerAPI;
 public class MineTweaker extends ModIntegration {
 
 
-    public  void init() {
+    public void init() {
         MineTweakerAPI.registerClass(Saw.class);
         MineTweakerAPI.registerClass(Kiln.class);
         MineTweakerAPI.registerClass(Cauldron.class);

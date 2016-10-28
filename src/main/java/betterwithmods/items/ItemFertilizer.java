@@ -17,40 +17,36 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-public class ItemFertilizer extends Item
-{
-	public ItemFertilizer() {
-		super();
-		this.setCreativeTab(BWCreativeTabs.BWTAB);
-	}
+public class ItemFertilizer extends Item {
+    public ItemFertilizer() {
+        super();
+        this.setCreativeTab(BWCreativeTabs.BWTAB);
+    }
+
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         Block block = world.getBlockState(pos).getBlock();
-        if(block != null && block instanceof IPlantable) {
+        if (block != null && block instanceof IPlantable) {
             Block below = world.getBlockState(pos.down()).getBlock();
-            if(processBlock(below, world, pos.down())) {
-                if(!player.capabilities.isCreativeMode)
+            if (processBlock(below, world, pos.down())) {
+                if (!player.capabilities.isCreativeMode)
                     stack.stackSize--;
                 return EnumActionResult.SUCCESS;
             }
-        }
-        else if(processBlock(block, world, pos)) {
-            if(!player.capabilities.isCreativeMode)
+        } else if (processBlock(block, world, pos)) {
+            if (!player.capabilities.isCreativeMode)
                 stack.stackSize--;
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;
     }
 
-    private boolean processBlock(Block block, World world, BlockPos pos)
-    {
-        if(block == Blocks.FARMLAND) {
+    private boolean processBlock(Block block, World world, BlockPos pos) {
+        if (block == Blocks.FARMLAND) {
             world.setBlockState(pos, BWMBlocks.FERTILE_FARMLAND.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
             world.playEvent(2005, pos.up(), 0);
             return true;
-        }
-        else if(block == BWMBlocks.PLANTER && block.getMetaFromState(world.getBlockState(pos)) == 1) {
+        } else if (block == BWMBlocks.PLANTER && block.getMetaFromState(world.getBlockState(pos)) == 1) {
             world.setBlockState(pos, BWMBlocks.PLANTER.getDefaultState().withProperty(BlockPlanter.TYPE, EnumPlanterType.FERTILE));
             world.playEvent(2005, pos.up(), 0);
             return true;

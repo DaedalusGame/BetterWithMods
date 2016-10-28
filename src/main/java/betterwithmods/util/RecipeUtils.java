@@ -9,20 +9,15 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 import java.util.Map;
 
-public class RecipeUtils
-{
-    public static void gatherCookableFood()
-    {
+public class RecipeUtils {
+    public static void gatherCookableFood() {
         Map<ItemStack, ItemStack> furnace = FurnaceRecipes.instance().getSmeltingList();
 
-        for(ItemStack input : furnace.keySet())
-        {
-            if(input != null)
-            {
-                if(input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD)
-                {
+        for (ItemStack input : furnace.keySet()) {
+            if (input != null) {
+                if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
-                    if(output != null) {
+                    if (output != null) {
                         BWCrafting.addCauldronRecipe(output.copy(), new ItemStack[]{input.copy()});
                     }
                 }
@@ -30,8 +25,7 @@ public class RecipeUtils
         }
     }
 
-    public static void refreshRecipes()
-    {
+    public static void refreshRecipes() {
         CraftingManagerCauldron.getInstance().refreshRecipes();
         CraftingManagerCauldronStoked.getInstance().refreshRecipes();
         CraftingManagerCrucible.getInstance().refreshRecipes();

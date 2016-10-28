@@ -26,7 +26,7 @@ public abstract class BaseListRemoval<T> extends BaseListModification<T> {
                 if (this.list.remove(recipe)) {
                     successful.add(recipe);
                 } else {
-                   LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
                 }
             } else {
                 LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
@@ -42,7 +42,7 @@ public abstract class BaseListRemoval<T> extends BaseListModification<T> {
         for (T recipe : successful) {
             if (recipe != null) {
                 if (!list.add(recipe)) {
-                   LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
                 }
             } else {
                 LogHelper.logError(String.format("Error restoring %s Recipe: null object", name));

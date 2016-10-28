@@ -2,16 +2,19 @@ package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.CrucibleRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CrucibleRecipeCategory extends BWMRecipeCategory
-{
+public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrapper> {
     private static final int inputSlots = 2;
     private static final int outputSlots = 0;
 
@@ -21,8 +24,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory
     @Nonnull
     private final IDrawableAnimated flame;
 
-    public CrucibleRecipeCategory(IGuiHelper helper)
-    {
+    public CrucibleRecipeCategory(IGuiHelper helper) {
         super(helper.createDrawable(guiTexture, 5, 6, 158, 60), "inv.crucible.name");
         craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlots);
         IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 176, 0, 14, 14);
@@ -31,39 +33,42 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory
 
     @Nonnull
     @Override
-    public String getUid()
-    {
+    public String getUid() {
         return "bwm.crucible";
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
-    {
+    public void drawAnimations(@Nonnull Minecraft minecraft) {
         flame.draw(minecraft, 80, 19);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull IRecipeWrapper wrapper)
-    {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
         stacks.init(outputSlots + 1, false, 118 + 18, 18);
 
-        for(int i = 0; i < 3; i++)
-        {
-            for(int j = 0; j < 3; j++)
-            {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 int index = inputSlots + i + (j * 3);
                 stacks.init(index, true, 2 + i * 18, j * 18);
             }
         }
 
-        BulkRecipeWrapper recipe = (BulkRecipeWrapper)wrapper;
+        BulkRecipeWrapper recipe = (BulkRecipeWrapper) wrapper;
         //craftingGrid.setOutput(stacks, recipe.getOutputs());
         stacks.set(outputSlots, recipe.getRecipe().getOutput());
-        if(recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
+        if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
-        craftingGrid.setInput(stacks, recipe.getRecipe().getInput());
+        List<List<ItemStack>> inputList = new ArrayList<>();//TODO adapted for JEI 3.11.2. May not be correct.
+        inputList.add(recipe.getRecipe().getInput());
+        craftingGrid.setInputStacks(stacks, inputList);
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper, IIngredients ingredients) {
+        setRecipe(layout, wrapper);
+        //TODO Ingredients
     }
 }

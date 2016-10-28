@@ -9,8 +9,8 @@
       "south": "#side",
       "west": "#side",
       "east": "#side",
-      "up":"#side",
-      "down":"#side",
+      "up": "#side",
+      "down": "#side",
       "particle": "#side"
     }
   },
@@ -33,12 +33,31 @@
       "false": {}
     },
     "facing": {
-      "down": {"textures": {"side": "betterwithmods:blocks/buddy_side_off", "down": "#front", "north": "#side"}},
-      "up": {"textures": {"side": "betterwithmods:blocks/buddy_side_off", "down": "#front", "north": "#side"}, "x": 180},
+      "down": {
+        "textures": {
+          "side": "betterwithmods:blocks/buddy_side_off",
+          "down": "#front",
+          "north": "#side"
+        }
+      },
+      "up": {
+        "textures": {
+          "side": "betterwithmods:blocks/buddy_side_off",
+          "down": "#front",
+          "north": "#side"
+        },
+        "x": 180
+      },
       "north": {},
-      "south": {"y": 180},
-      "west": {"y": 270},
-      "east": {"y": 90}
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
     }
   }
 }

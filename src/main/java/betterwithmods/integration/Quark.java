@@ -15,7 +15,7 @@ public class Quark extends ModIntegration {
     @Override
     public void init() {
         NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("quark", "basalt")), 0);
-        if(BWMod.proxy.isClientside()) {
+        if (BWMod.proxy.isClientside()) {
             registerClientRendering();
         }
     }
@@ -23,7 +23,7 @@ public class Quark extends ModIntegration {
     @SideOnly(Side.CLIENT)
     private void registerClientRendering() {
         String[] trapdoors = {"spruce", "birch", "jungle", "acacia", "dark_oak"};
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
             RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("quark", trapdoors[i] + "_trapdoor"))), new ModelTransparent(new ResourceLocation("quark", "textures/blocks/trapdoor_" + trapdoors[i] + ".png")));
     }
 }

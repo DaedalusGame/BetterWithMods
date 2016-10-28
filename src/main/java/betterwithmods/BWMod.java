@@ -30,25 +30,42 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
+    public static final String MODID = "betterwithmods";
+    public static final String VERSION = "0.13.1 Beta";
+    public static final String NAME = "Better With Mods";
+    public static final Logger logger = LogManager.getLogger(BWMod.MODID);
     @SidedProxy(serverSide = "betterwithmods.proxy.CommonProxy", clientSide = "betterwithmods.proxy.ClientProxy")
     public static CommonProxy proxy;
-
-	public static final String MODID = "betterwithmods";
-	public static final String VERSION = "0.13.1 Beta";
-	public static final String NAME = "Better With Mods";
-
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
 
-    public static final Logger logger = LogManager.getLogger(BWMod.MODID);
+    private static void registerEventHandlers() {
+        MinecraftForge.EVENT_BUS.register(new BWConfig());
+        MinecraftForge.EVENT_BUS.register(new HungerEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BuoyancyEventHandler());
+        MinecraftForge.EVENT_BUS.register(new RespawnEventHandler());
+        MinecraftForge.EVENT_BUS.register(new MobDropEvent());
+        MinecraftForge.EVENT_BUS.register(new BucketEvent());
+        MinecraftForge.EVENT_BUS.register(new NetherSpawnEvent());
+        MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
+        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
+        MinecraftForge.EVENT_BUS.register(new MobAIEvent());
+    }
+
+    private static void registerEntities() {
+        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
+        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
+        BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
+        BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
+    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        //BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        BWConfig.init(evt.getSuggestedConfigurationFile());
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
@@ -57,14 +74,10 @@ public class BWMod {
         BWRegistry.init();
         ModIntegration.loadPreInit();
         BWCrafting.init();
-        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
-        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
-        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
-		BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
-        BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
+        registerEntities();
         proxy.registerRenderInformation();
         proxy.initRenderers();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower<IMechanicalPower>(), MechanicalCapability.DefaultMechanicalPower.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
     }
 
     @EventHandler
@@ -76,9 +89,9 @@ public class BWMod {
         BWRegistry.registerNetherWhitelist();
         ModIntegration.loadInit();
         BWSounds.registerSounds();
-		ItemExt.initBuoyancy();
-		ItemExt.initDesserts();
-		ItemExt.initWeights();
+        ItemExt.initBuoyancy();
+        ItemExt.initDesserts();
+        ItemExt.initWeights();
     }
 
     @EventHandler
@@ -96,18 +109,5 @@ public class BWMod {
         RecipeUtils.refreshRecipes();
         ModIntegration.loadPostInit();
         BucketEvent.editModdedFluidDispenseBehavior();
-    }
-    
-	private static void registerEventHandlers() {
-        MinecraftForge.EVENT_BUS.register(new BWConfig());
-        MinecraftForge.EVENT_BUS.register(new HungerEventHandler());
-        MinecraftForge.EVENT_BUS.register(new BuoyancyEventHandler());
-        MinecraftForge.EVENT_BUS.register(new RespawnEventHandler());
-        MinecraftForge.EVENT_BUS.register(new MobDropEvent());
-        MinecraftForge.EVENT_BUS.register(new BucketEvent());
-        MinecraftForge.EVENT_BUS.register(new NetherSpawnEvent());
-        MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
-        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
-        MinecraftForge.EVENT_BUS.register(new MobAIEvent());
     }
 }

@@ -12,8 +12,8 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiBlockDispenser extends GuiContainer {
     private static final int guiHeight = 182;
-    private TileEntityBlockDispenser tile;
     IItemHandler playerInv;
+    private TileEntityBlockDispenser tile;
 
     public GuiBlockDispenser(EntityPlayer player, TileEntityBlockDispenser tile) {
 

@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.api.block.IMultiVariants;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,71 +12,60 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-
-import betterwithmods.api.block.IMultiVariants;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockWoodBench extends BlockFurniture implements IMultiVariants
-{
-    public BlockWoodBench()
-    {
-        super(Material.WOOD,"wood_bench");
+public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
+    public BlockWoodBench() {
+        super(Material.WOOD, "wood_bench");
     }
 
     @Override
     public String[] getVariants() {
-    	ArrayList<String> variants = new ArrayList<>();
+        ArrayList<String> variants = new ArrayList<>();
         for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
-        	variants.add("supported=false,variant=" + blockplanks$enumtype.getName());
+            variants.add("supported=false,variant=" + blockplanks$enumtype.getName());
         }
         return variants.toArray(new String[variants.size()]);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        if(state.getBlock() instanceof BlockWoodBench) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if (state.getBlock() instanceof BlockWoodBench) {
             state = state.getBlock().getActualState(state, source, pos);
             if (state.getValue(SUPPORTED))
-               return BENCH_AABB;
+                return BENCH_AABB;
         }
         return HALF_BLOCK_AABB;
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity)
-    {
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BENCH_AABB);
-        if(state.getBlock() instanceof BlockWoodBench) {
+        if (state.getBlock() instanceof BlockWoodBench) {
             state = state.getBlock().getActualState(state, world, pos);
             if (!state.getValue(SUPPORTED))
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, BENCH_STAND_AABB);
         }
     }
-    
+
     @Override
-    public int damageDropped(IBlockState state)
-    {
-        return ((BlockPlanks.EnumType)state.getValue(BlockPlanks.VARIANT)).getMetadata();
+    public int damageDropped(IBlockState state) {
+        return ((BlockPlanks.EnumType) state.getValue(BlockPlanks.VARIANT)).getMetadata();
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
-    {
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(BlockPlanks.VARIANT).getMetadata();
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.byMetadata(meta));
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, SUPPORTED, BlockPlanks.VARIANT);
     }
 }

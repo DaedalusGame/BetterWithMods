@@ -12,68 +12,68 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerPulley extends Container {
-	private TileEntityPulley tile;
+    private TileEntityPulley tile;
 
-	public ContainerPulley(EntityPlayer player, TileEntityPulley tile) {
-		this.tile = tile;
+    public ContainerPulley(EntityPlayer player, TileEntityPulley tile) {
+        this.tile = tile;
 
-		for (int i = 0; i < 4; i++) {
-			addSlotToContainer(new SlotItemHandler(tile.inventory, i, 53 + i * 18, 52) {
-				@Override
-				public boolean isItemValid(ItemStack stack) {
-					return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE);
-				}
-			});
-		}
+        for (int i = 0; i < 4; i++) {
+            addSlotToContainer(new SlotItemHandler(tile.inventory, i, 53 + i * 18, 52) {
+                @Override
+                public boolean isItemValid(ItemStack stack) {
+                    return super.isItemValid(stack) && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE);
+                }
+            });
+        }
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(
-						new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null),
-								j + i * 9 + 9, 8 + j * 18, 93 + i * 18));
-			}
-		}
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                addSlotToContainer(
+                        new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null),
+                                j + i * 9 + 9, 8 + j * 18, 93 + i * 18));
+            }
+        }
 
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new SlotItemHandler(
-					player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), i, 8 + i * 18, 151));
-		}
-	}
+        for (int i = 0; i < 9; i++) {
+            addSlotToContainer(new SlotItemHandler(
+                    player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), i, 8 + i * 18, 151));
+        }
+    }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return tile.isUseableByPlayer(player);
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        return tile.isUseableByPlayer(player);
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-		ItemStack clickedStack = null;
-		Slot slot = this.inventorySlots.get(index);
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        ItemStack clickedStack = null;
+        Slot slot = this.inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack processedStack = slot.getStack();
-			clickedStack = processedStack.copy();
+        if (slot != null && slot.getHasStack()) {
+            ItemStack processedStack = slot.getStack();
+            clickedStack = processedStack.copy();
 
-			if (index < 4) {
-				if (!mergeItemStack(processedStack, 4, this.inventorySlots.size(), true))
-					return null;
-			} else if (!mergeItemStack(processedStack, 0, 3, false)) {
-				return null;
-			}
+            if (index < 4) {
+                if (!mergeItemStack(processedStack, 4, this.inventorySlots.size(), true))
+                    return null;
+            } else if (!mergeItemStack(processedStack, 0, 3, false)) {
+                return null;
+            }
 
-			if (processedStack.stackSize == 0) {
-				slot.putStack(null);
-			} else {
-				slot.onSlotChanged();
-			}
-		}
-		return clickedStack;
-	}
+            if (processedStack.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+        return clickedStack;
+    }
 
-	@Override
-	public void addListener(IContainerListener listener) {
-		super.addListener(listener);
-	}
+    @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+    }
 
 //	@Override
 //	public void detectAndSendChanges() {

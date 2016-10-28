@@ -8,47 +8,40 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper>
-{
+public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper> {
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
-    {
+    public String getRecipeCategoryUid() {
         return "bwm.mill";
     }
 
     @Nonnull
     @Override
-    public Class<MillRecipeWrapper> getRecipeClass()
-    {
+    public Class<MillRecipeWrapper> getRecipeClass() {
         return MillRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull MillRecipeWrapper recipe)
-    {
+    public String getRecipeCategoryUid(@Nonnull MillRecipeWrapper recipe) {
         return getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull MillRecipeWrapper recipe)
-    {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull MillRecipeWrapper recipe) {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull MillRecipeWrapper wrapper)
-    {
+    public boolean isRecipeValid(@Nonnull MillRecipeWrapper wrapper) {
         BulkRecipe recipe = wrapper.getRecipe();
-        if(recipe.getOutput() == null)
+        if (recipe.getOutput() == null)
             return false;
         int inputCount = 0;
-        for(Object input : recipe.getInput()) {
-            if(input instanceof List)
-            {
-                if(((List<?>)input).isEmpty())
+        for (Object input : recipe.getInput()) {
+            if (input instanceof List) {
+                if (((List<?>) input).isEmpty())
                     return false;
             }
             inputCount++;

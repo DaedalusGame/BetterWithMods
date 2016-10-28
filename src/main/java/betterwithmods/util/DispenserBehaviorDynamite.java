@@ -8,13 +8,11 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorDynamite extends BehaviorProjectileDispense
-{
+public class DispenserBehaviorDynamite extends BehaviorProjectileDispense {
 
-	@Override
-	protected IProjectile getProjectileEntity(World world, IPosition pos, ItemStack stack)
-	{
-		return new EntityDynamite(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BWMItems.DYNAMITE, 1));
-	}
+    @Override
+    protected IProjectile getProjectileEntity(World world, IPosition pos, ItemStack stack) {
+        return new EntityDynamite(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BWMItems.DYNAMITE, 1));
+    }
 
 }

@@ -17,10 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockWolf extends BWMBlock
-{
-    public BlockWolf()
-    {
+public class BlockWolf extends BWMBlock {
+    public BlockWolf() {
         super(Material.CLOTH);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.CLOTH);
@@ -29,27 +27,22 @@ public class BlockWolf extends BWMBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        if(world.isRemote)
-        {
-            for(int i = 0; i < 15; i++)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        if (world.isRemote) {
+            for (int i = 0; i < 15; i++)
                 world.spawnParticle(EnumParticleTypes.HEART, pos.getX() + world.rand.nextFloat(), pos.getY() + 1.0F, pos.getZ() + world.rand.nextFloat(), 0.0F, 0.1F, 0.0F);
         }
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if(player.getHeldItemMainhand() == null && player.getHeldItemOffhand() == null)
-        {
-            if(world.isRemote)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (player.getHeldItemMainhand() == null && player.getHeldItemOffhand() == null) {
+            if (world.isRemote)
                 world.spawnParticle(EnumParticleTypes.HEART, pos.getX() + world.rand.nextFloat(), pos.getY() + 1.0F, pos.getZ() + world.rand.nextFloat(), 0.0F, 0.1F, 0.0F);
             return true;
         }
@@ -57,18 +50,16 @@ public class BlockWolf extends BWMBlock
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer)
-    {
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
         IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, placer);
         return state.withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, side));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
-    {
-        if(rand.nextInt(200) == 0) {
-            if(rand.nextBoolean())
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+        if (rand.nextInt(200) == 0) {
+            if (rand.nextBoolean())
                 world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_WOLF_AMBIENT, SoundCategory.BLOCKS, 0.7F, 1.0F, false);
             else
                 world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_WOLF_PANT, SoundCategory.BLOCKS, 0.7F, 1.0F, false);
@@ -76,20 +67,17 @@ public class BlockWolf extends BWMBlock
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
-    {
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(DirUtils.FACING).ordinal();
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.getFront(meta));
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING);
     }
 }

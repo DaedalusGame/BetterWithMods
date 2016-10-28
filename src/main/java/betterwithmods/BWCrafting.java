@@ -35,8 +35,8 @@ public class BWCrafting {
     }
 
     private static void addHERecipes() {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), ItemMaterial.getMaterial("redstone_latch")}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), Character.valueOf('W'), new ItemStack(BWMBlocks.PANE, 1, 2)}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), new Object[]{"PIP", "GLG", "PIP", Character.valueOf('P'), new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), ItemMaterial.getMaterial("redstone_latch")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), new Object[]{"MWM", " M ", "MWM", Character.valueOf('M'), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), Character.valueOf('W'), new ItemStack(BWMBlocks.PANE, 1, 2)}));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.AXLE), "M", "R", "M", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE), 'R', BWMBlocks.ROPE);
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.GEARBOX), "SGS", "GLG", "SGS", 'L', ItemMaterial.getMaterial("redstone_latch"), 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'G', "gearWood"));
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
@@ -72,7 +72,7 @@ public class BWCrafting {
         ItemStack[] gates = {new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.DARK_OAK_FENCE_GATE)};
         ItemStack[] stairs = {new ItemStack(Blocks.OAK_STAIRS), new ItemStack(Blocks.SPRUCE_STAIRS), new ItemStack(Blocks.BIRCH_STAIRS), new ItemStack(Blocks.JUNGLE_STAIRS), new ItemStack(Blocks.ACACIA_STAIRS), new ItemStack(Blocks.DARK_OAK_STAIRS)};
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-        	int meta = type.getMetadata();
+            int meta = type.getMetadata();
             GameRegistry.addShapedRecipe(doors[meta], "SS", "SS", "SS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, meta));
             GameRegistry.addShapedRecipe(boats[meta], "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, meta));
             GameRegistry.addShapedRecipe(fences[meta], "MMM", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, meta));
@@ -100,7 +100,7 @@ public class BWCrafting {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.BAMBOO_CHIME, 1, type.getMetadata()), " S ", "SPS", "BMB", 'S', "string", 'P', Blocks.WOODEN_PRESSURE_PLATE, 'B', "sugarcane", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata())));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.METAL_CHIME, 1, type.getMetadata()), " S ", "SPS", "IMI", 'S', "string", 'P', Blocks.WOODEN_PRESSURE_PLATE, 'I', "ingotIron", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata())));
         }
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.BUDDY_BLOCK),"SLS","LTL","SLS",'S',"stone",'T',Blocks.REDSTONE_TORCH,'L', ItemMaterial.getMaterial("polished_lapis")));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.BUDDY_BLOCK), "SLS", "LTL", "SLS", 'S', "stone", 'T', Blocks.REDSTONE_TORCH, 'L', ItemMaterial.getMaterial("polished_lapis")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.BLOCK_DISPENSER), "MMM", "MUM", "SRS", 'M', Blocks.MOSSY_COBBLESTONE, 'U', new ItemStack(BWMBlocks.URN, 1, 8), 'S', "stone", 'R', "dustRedstone"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.STEEL_AXE), "XX ", "XH ", " H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft")).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.STEEL_HOE), "XX ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft")).setMirrored(true));
@@ -156,7 +156,7 @@ public class BWCrafting {
         //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.grate, 4, 0), new Object[] {"WSW", "WSW", Character.valueOf('S'), "stickWood", Character.valueOf('W'), new ItemStack(BWMBlocks.woodMoulding, 1, OreDictionary.WILDCARD_VALUE)}));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SLATS, 4, 0), new Object[]{"SS", "SS", Character.valueOf('S'), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE)}));
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-        	int meta = type.getMetadata();
+            int meta = type.getMetadata();
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.GRATE, 4, meta), new Object[]{"WSW", "WSW", Character.valueOf('S'), "stickWood", Character.valueOf('W'), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, meta)}));
             //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.grate, 4, i), new Object[] {"WSW", "WSW", Character.valueOf('S'), new ItemStack(BWMItems.material, 1, 38), Character.valueOf('W'), new ItemStack(Blocks.planks, 1, i)}));
             ItemStack moulding = new ItemStack(BWMBlocks.WOOD_MOULDING, 1, meta);
@@ -175,22 +175,22 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("sharpening_stone"), new Object[]{"X ", " X", Character.valueOf('X'), Items.FLINT}).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("knife_blade"), new Object[]{"I ", " X", Character.valueOf('X'), ItemMaterial.getMaterial("sharpening_stone"), Character.valueOf('I'), "ingotIron"}).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.KNIFE), new Object[]{"I ", " X", Character.valueOf('X'), "stickWood", Character.valueOf('I'), ItemMaterial.getMaterial("knife_blade")}).setMirrored(true));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), new Object[] {"PIP", "GLG", "PIP", Character.valueOf('P'), "plankWood", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), ItemMaterial.getMaterial("redstone_latch")}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), new Object[] {"MWM", " M ", "MWM", Character.valueOf('M'), "plankWood", Character.valueOf('W'), new ItemStack(BWMBlocks.PANE, 1, 2)}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.MINING_CHARGE), new Object[] {"RSR", "DDD", "DDD", Character.valueOf('R'), BWMBlocks.ROPE, Character.valueOf('S'), "slimeball", 'D', BWMItems.DYNAMITE}));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.AESTHETIC,1,8), new Object[]{"enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl","enderpearl",}));
-        GameRegistry.addShapelessRecipe(new ItemStack(Items.ENDER_PEARL,9), new Object[]{new ItemStack(BWMBlocks.AESTHETIC,1,8)});
-		GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("screw"), new Object[] {"II ", " II", "II ", Character.valueOf('I'), "ingotIron"}));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PUMP), new Object[] {"xGx", "SsS", "SgS", Character.valueOf('x'), ItemMaterial.getMaterial("glue"), Character.valueOf('G'), new ItemStack(BWMBlocks.GRATE, 1, 32767), Character.valueOf('S'), new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), Character.valueOf('s'), ItemMaterial.getMaterial("screw"), Character.valueOf('g'), "gearWood"}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("ender_ocular"), new Object[]{ "GGG","GEG","GGG", 'G', "nuggetGold", 'E', "enderpearl"}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.ENDER_SPECTACLES), new Object[]{ "OSO", 'O', ItemMaterial.getMaterial("ender_ocular"),'S', ItemMaterial.getMaterial("leather_strap") }));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), new Object[]{"PIP", "GLG", "PIP", Character.valueOf('P'), "plankWood", Character.valueOf('I'), "ingotIron", Character.valueOf('G'), "gearWood", Character.valueOf('L'), ItemMaterial.getMaterial("redstone_latch")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), new Object[]{"MWM", " M ", "MWM", Character.valueOf('M'), "plankWood", Character.valueOf('W'), new ItemStack(BWMBlocks.PANE, 1, 2)}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.MINING_CHARGE), new Object[]{"RSR", "DDD", "DDD", Character.valueOf('R'), BWMBlocks.ROPE, Character.valueOf('S'), "slimeball", 'D', BWMItems.DYNAMITE}));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 8), new Object[]{"enderpearl", "enderpearl", "enderpearl", "enderpearl", "enderpearl", "enderpearl", "enderpearl", "enderpearl", "enderpearl",}));
+        GameRegistry.addShapelessRecipe(new ItemStack(Items.ENDER_PEARL, 9), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 8)});
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("screw"), new Object[]{"II ", " II", "II ", Character.valueOf('I'), "ingotIron"}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PUMP), new Object[]{"xGx", "SsS", "SgS", Character.valueOf('x'), ItemMaterial.getMaterial("glue"), Character.valueOf('G'), new ItemStack(BWMBlocks.GRATE, 1, 32767), Character.valueOf('S'), new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), Character.valueOf('s'), ItemMaterial.getMaterial("screw"), Character.valueOf('g'), "gearWood"}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("ender_ocular"), new Object[]{"GGG", "GEG", "GGG", 'G', "nuggetGold", 'E', "enderpearl"}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.ENDER_SPECTACLES), new Object[]{"OSO", 'O', ItemMaterial.getMaterial("ender_ocular"), 'S', ItemMaterial.getMaterial("leather_strap")}));
         String[] dyes = {"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
 
-        for(int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++) {
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new Object[]{new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]}));
         }
 
-        GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP,1), "VVV", 'V', new ItemStack(Blocks.VINE));
+        GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP, 1), "VVV", 'V', new ItemStack(Blocks.VINE));
     }
 
     private static void addMillRecipes() {
@@ -243,7 +243,7 @@ public class BWCrafting {
         addOreCauldronRecipe(ItemMaterial.getMaterial("element"), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
 
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-        	int meta = type.getMetadata();
+            int meta = type.getMetadata();
             addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather"), new Object[]{ItemMaterial.getMaterial("scoured_leather"), new ItemStack(BWMItems.BARK, ItemBark.getTanningStackSize(meta), meta)});
             addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), new Object[]{ItemMaterial.getMaterial("scoured_leather_cut", 2), new ItemStack(BWMItems.BARK, ItemBark.getTanningStackSize(meta), meta)});
         }
@@ -282,13 +282,13 @@ public class BWCrafting {
     private static void addTurntableRecipes() {
         addTurntableRecipe(Blocks.CLAY, BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE),
-        		BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER), new ItemStack(Items.CLAY_BALL));
+                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER),
-        		BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE), new ItemStack(Items.CLAY_BALL));
+                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE),
                 BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN),
-        		Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
+                Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
     }
 
     private static void addKilnRecipes() {
@@ -297,7 +297,7 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
-    	addKilnRecipe(Blocks.END_STONE,0, new ItemStack(BWMBlocks.AESTHETIC,1,7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" :"brimstone") );
+        addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" : "brimstone"));
     }
 
     public static void addKilnWood() {
@@ -359,9 +359,9 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new ItemStack[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new ItemStack[]{new ItemStack(Blocks.GLASS_PANE, 8)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new ItemStack[]{new ItemStack(Blocks.COBBLESTONE)});
-    	addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC,1,6), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC,1,7)});
-        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack[] {new ItemStack(Blocks.SPONGE, 1, 1)});
-        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new ItemStack[] {new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
+        addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 6), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 7)});
+        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack[]{new ItemStack(Blocks.SPONGE, 1, 1)});
+        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new ItemStack[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {

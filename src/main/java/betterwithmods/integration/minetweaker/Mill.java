@@ -24,20 +24,21 @@ import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
 @ZenClass("mods.betterwithmods.Mill")
 public class Mill {
     private final static List<BulkRecipe> recipes = CraftingManagerMill.getInstance().getRecipes();
+
     @ZenMethod
     public static void add(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
-        MineTweakerAPI.apply(new Add(toStack(output),toStack(secondary),toInputs(inputs)));
+        MineTweakerAPI.apply(new Add(toStack(output), toStack(secondary), toInputs(inputs)));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
         List<BulkRecipe> toRemove = new ArrayList<>();
-        for(BulkRecipe recipe: recipes) {
-            if(StackHelper.matches(output,toIItemStack(recipe.getOutput()))) {
+        for (BulkRecipe recipe : recipes) {
+            if (StackHelper.matches(output, toIItemStack(recipe.getOutput()))) {
                 toRemove.add(recipe);
             }
         }
-        if(!toRemove.isEmpty()) {
+        if (!toRemove.isEmpty()) {
             MineTweakerAPI.apply(new Remove(toRemove));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "mill", output.toString()));
@@ -48,7 +49,7 @@ public class Mill {
 
         protected Add(ItemStack output, ItemStack secondary, Object[] inputs) {
             super("mill", Mill.recipes);
-            recipes.add(new BulkRecipe(this.name,output,secondary,inputs));
+            recipes.add(new BulkRecipe(this.name, output, secondary, inputs));
         }
 
         @Override
@@ -56,6 +57,7 @@ public class Mill {
             return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
+
     public static class Remove extends BaseListRemoval<BulkRecipe> {
 
         protected Remove(List<BulkRecipe> list) {

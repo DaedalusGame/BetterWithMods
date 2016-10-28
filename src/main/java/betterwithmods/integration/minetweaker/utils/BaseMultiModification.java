@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class BaseMultiModification extends BaseUndoable {
 
     protected final LinkedList<IUndoableAction> actions;
-    
+
     protected BaseMultiModification(String name) {
         super(name);
         this.actions = new LinkedList<IUndoableAction>();
@@ -15,15 +15,15 @@ public class BaseMultiModification extends BaseUndoable {
 
     @Override
     public void apply() {
-        for(IUndoableAction action : actions) {
+        for (IUndoableAction action : actions) {
             action.apply();
         }
     }
 
     @Override
     public boolean canUndo() {
-        for(IUndoableAction action : actions) {
-            if(!action.canUndo())
+        for (IUndoableAction action : actions) {
+            if (!action.canUndo())
                 return false;
         }
 
@@ -42,7 +42,7 @@ public class BaseMultiModification extends BaseUndoable {
 
     @Override
     public void undo() {
-        for(IUndoableAction action : actions) {
+        for (IUndoableAction action : actions) {
             action.undo();
         }
     }

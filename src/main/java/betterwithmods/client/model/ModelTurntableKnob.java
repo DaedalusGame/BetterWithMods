@@ -3,12 +3,10 @@ package betterwithmods.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelTurntableKnob extends ModelBase
-{
+public class ModelTurntableKnob extends ModelBase {
     public ModelRenderer knobs;
 
-    public ModelTurntableKnob(int position)
-    {
+    public ModelTurntableKnob(int position) {
         float off = -4 + (position * 2);
         knobs = new ModelRenderer(this, 0, 0);
         knobs.setTextureSize(16, 16);
@@ -18,8 +16,7 @@ public class ModelTurntableKnob extends ModelBase
         knobs.addBox(8F, -3F, -2F - off, 1, 2, 2);
     }
 
-    public void render(float scale)
-    {
+    public void render(float scale) {
         knobs.render(scale);
     }
 }

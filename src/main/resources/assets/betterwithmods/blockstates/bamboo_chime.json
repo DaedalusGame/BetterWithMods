@@ -11,21 +11,45 @@
     "uvlock": false
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "transform": "forge:default-block"
-    }],
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
     "active": {
       "true": {},
       "false": {}
     },
     "variant": {
       "oak": {},
-      "spruce": {"textures": {"wood": "betterwithmods:blocks/wood_side_spruce"}},
-      "birch": {"textures": {"wood": "betterwithmods:blocks/wood_side_birch"}},
-      "jungle": {"textures": {"wood": "betterwithmods:blocks/wood_side_jungle"}},
-      "acacia": {"textures": {"wood": "betterwithmods:blocks/wood_side_acacia"}},
-      "dark_oak": {"textures": {"wood": "betterwithmods:blocks/wood_side_dark_oak"}}
+      "spruce": {
+        "textures": {
+          "wood": "betterwithmods:blocks/wood_side_spruce"
+        }
+      },
+      "birch": {
+        "textures": {
+          "wood": "betterwithmods:blocks/wood_side_birch"
+        }
+      },
+      "jungle": {
+        "textures": {
+          "wood": "betterwithmods:blocks/wood_side_jungle"
+        }
+      },
+      "acacia": {
+        "textures": {
+          "wood": "betterwithmods:blocks/wood_side_acacia"
+        }
+      },
+      "dark_oak": {
+        "textures": {
+          "wood": "betterwithmods:blocks/wood_side_dark_oak"
+        }
+      }
     }
   }
 }

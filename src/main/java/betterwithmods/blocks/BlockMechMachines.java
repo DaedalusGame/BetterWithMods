@@ -14,7 +14,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -67,14 +66,14 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public Material getMaterial(IBlockState state) {
         switch (state.getValue(MACHINETYPE)) {
             case HOPPER:
             case PULLEY:
                 return Material.WOOD;
             default:
-            	return super.getMaterial(state);
+                return super.getMaterial(state);
         }
     }
 
@@ -185,7 +184,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         if (world.getTileEntity(pos) instanceof IMechSubtype) {
             IMechSubtype sub = (IMechSubtype) world.getTileEntity(pos);
             //if (sub.getSubtype() != state.getValue(SUBTYPE))
-                //world.setBlockState(pos, state.withProperty(SUBTYPE, sub.getSubtype()));
+            //world.setBlockState(pos, state.withProperty(SUBTYPE, sub.getSubtype()));
         }
         if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
             if (!world.getGameRules().getBoolean("doDaylightCycle"))
@@ -326,29 +325,29 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     private void breakMill(World world, BlockPos pos) {
-		if (BWConfig.dropsMill)
-			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
+        if (BWConfig.dropsMill)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakPulley(World world, BlockPos pos) {
-		if (BWConfig.dropsPulley)
-			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
+        if (BWConfig.dropsPulley)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     public void breakHopper(World world, BlockPos pos) {
-		if (BWConfig.dropsHopper)
-			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
+        if (BWConfig.dropsHopper)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakTurntable(World world, BlockPos pos) {
-		if (BWConfig.dropsTurntable)
-			InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
+        if (BWConfig.dropsTurntable)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
@@ -514,6 +513,13 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         TURNTABLE(5, "turntable", 3, true);
 
         private static final BlockMechMachines.EnumType[] META_LOOKUP = new BlockMechMachines.EnumType[values().length];
+
+        static {
+            for (BlockMechMachines.EnumType machineTypes : values()) {
+                META_LOOKUP[machineTypes.getMeta()] = machineTypes;
+            }
+        }
+
         private int meta;
         private String name;
         private int subTypes;
@@ -534,6 +540,14 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
             this.solidity = solid;
         }
 
+        public static BlockMechMachines.EnumType byMeta(int meta) {
+            if (meta > 7)
+                meta -= 8;
+            if (meta < 0 || meta >= META_LOOKUP.length)
+                meta = 0;
+            return META_LOOKUP[meta];
+        }
+
         @Override
         public String getName() {
             return name;
@@ -549,20 +563,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
         public boolean getSolidity() {
             return solidity;
-        }
-
-        public static BlockMechMachines.EnumType byMeta(int meta) {
-            if (meta > 7)
-                meta -= 8;
-            if (meta < 0 || meta >= META_LOOKUP.length)
-                meta = 0;
-            return META_LOOKUP[meta];
-        }
-
-        static {
-            for (BlockMechMachines.EnumType machineTypes : values()) {
-                META_LOOKUP[machineTypes.getMeta()] = machineTypes;
-            }
         }
     }
 }

@@ -23,52 +23,46 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockMini extends BWMBlock
-{
+public abstract class BlockMini extends BWMBlock {
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
     public static final PropertyInteger ORIENTATION = createOrientation();
 
-    public static PropertyInteger createOrientation()
-    {
-        return PropertyInteger.create("orientation", 0, 5);
-    }
-    public BlockMini(Material material, String name)
-    {
+    public BlockMini(Material material, String name) {
         super(material);
         //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         this.setSoundType(material == Material.CIRCUITS ? SoundType.WOOD : SoundType.STONE);
-        if(material == Material.CIRCUITS)
+        if (material == Material.CIRCUITS)
             this.setHarvestLevel("axe", 0);
     }
 
+    public static PropertyInteger createOrientation() {
+        return PropertyInteger.create("orientation", 0, 5);
+    }
+
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer)
-    {
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
         return metaBlockPlace(facing, flX, flY, flZ);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack)
-    {
-        if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
-        {/*
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {/*
             if(stack.hasTagCompound()) {
                 ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(stack.getTagCompound().getInteger("type"));
                 world.setBlockState(pos, state.withProperty(TYPE, stack.getTagCompound().getInteger("type")));
             }
-            else */{
+            else */
+            {
                 int meta = stack.getItemDamage();
                 ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
                 world.setBlockState(pos, state.withProperty(TYPE, meta));
@@ -77,21 +71,17 @@ public abstract class BlockMini extends BWMBlock
     }
 
     @Override
-    public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-    {
-        if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
-        {
-            return new ItemStack(this, 1, ((TileEntityMultiType)world.getTileEntity(pos)).getCosmeticType());
+    public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
+            return new ItemStack(this, 1, ((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType());
         }
         return new ItemStack(this, 1, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
-    {
-        for(int i = 0; i < 6; i++)
-        {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        for (int i = 0; i < 6; i++) {
             ItemStack stack = new ItemStack(this, 1, i);/*
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("type", i);
@@ -101,8 +91,7 @@ public abstract class BlockMini extends BWMBlock
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
-    {
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
         player.addStat(StatList.getBlockStats(this));
         player.addExhaustion(0.025F);
 
@@ -113,47 +102,40 @@ public abstract class BlockMini extends BWMBlock
     public abstract IBlockState metaBlockPlace(EnumFacing facing, float flX, float flY, float flZ);
 
     @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityMultiType();
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         int type = 0;
-        if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
-            type = ((TileEntityMultiType)world.getTileEntity(pos)).getCosmeticType();
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
+            type = ((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType();
         return state.withProperty(TYPE, type);
     }
 
     @Override
-    public int damageDropped(IBlockState state)
-    {
+    public int damageDropped(IBlockState state) {
         return state.getValue(TYPE);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(ORIENTATION, meta);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
-    {
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(ORIENTATION);
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, TYPE, ORIENTATION);
     }
 }

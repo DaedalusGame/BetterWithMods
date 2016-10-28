@@ -1,6 +1,7 @@
 package betterwithmods.integration.jei.wrapper;
 
 import com.google.common.collect.Lists;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class KilnWrapper extends BlankRecipeWrapper {
     public List<ItemStack> inputs = Lists.newArrayList(), outputs = Lists.newArrayList();
-    public ItemStack input,output;
+    public ItemStack input, output;
 
     public KilnWrapper(String string, List<ItemStack> output) {
         this.input = fromString(string);
@@ -25,12 +26,20 @@ public class KilnWrapper extends BlankRecipeWrapper {
     }
 
     @Nonnull
+    @Deprecated
     @Override
     public List<ItemStack> getInputs() {
         return inputs;
     }
 
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, inputs);
+        ingredients.setOutputs(ItemStack.class, outputs);
+    }
+
     @Nonnull
+    @Deprecated
     @Override
     public List<ItemStack> getOutputs() {
         return outputs;
@@ -38,10 +47,10 @@ public class KilnWrapper extends BlankRecipeWrapper {
 
     public ItemStack fromString(String string) {
         Pattern pattern = Pattern.compile("Block\\{(.*)\\}");
-        String b = string.substring(0,string.lastIndexOf(':'));
-        String m = string.substring(string.lastIndexOf(':')+1);
+        String b = string.substring(0, string.lastIndexOf(':'));
+        String m = string.substring(string.lastIndexOf(':') + 1);
         Matcher matcher = pattern.matcher(b);
         matcher.find();
-        return new ItemStack( Block.REGISTRY.getObject(new ResourceLocation(matcher.group(1))),1,Integer.parseInt(m));
+        return new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(matcher.group(1))), 1, Integer.parseInt(m));
     }
 }

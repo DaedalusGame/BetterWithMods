@@ -34,12 +34,23 @@ import java.util.List;
 import static betterwithmods.BWMItems.BARK;
 
 public class LogHarvestEvent {
+    public static IRecipe findMatchingRecipe(InventoryCrafting inv, World world) {
+        for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
+            IRecipe recipe = CraftingManager.getInstance().getRecipeList().get(i);
+
+            if (recipe.matches(inv, world)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
     @SubscribeEvent
     public void debarkLog(PlayerInteractEvent.RightClickBlock evt) {
-       	World world = evt.getWorld();
+        World world = evt.getWorld();
         if (!world.isRemote) {
-        	BlockPos pos = evt.getPos();
-        	EntityPlayer player = evt.getEntityPlayer();
+            BlockPos pos = evt.getPos();
+            EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
             BlockPos playerPos = pos.offset(evt.getFace());
@@ -75,7 +86,7 @@ public class LogHarvestEvent {
 
     @SubscribeEvent
     public void harvestLog(BlockEvent.HarvestDropsEvent evt) {
-    	EntityPlayer player = evt.getHarvester();
+        EntityPlayer player = evt.getHarvester();
         if (!BWConfig.hardcoreLumber || player == null)
             return;
         if (player.isEntityInvulnerable(DamageSource.cactus)) //Checking invulnerability because checking for instances of FakePlayer doesn't work.
@@ -83,7 +94,7 @@ public class LogHarvestEvent {
         IBlockState state = evt.getState();
         Block block = state.getBlock();
         int harvestMeta = state.getBlock().damageDropped(state);
-       	World world = evt.getWorld();
+        World world = evt.getWorld();
         if (!world.isRemote && !evt.isSilkTouching()) {
             boolean harvest = false;
             if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != null) {
@@ -133,17 +144,5 @@ public class LogHarvestEvent {
             }
         }
 
-    }
-
-
-    public static IRecipe findMatchingRecipe(InventoryCrafting inv, World world) {
-        for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
-            IRecipe recipe = CraftingManager.getInstance().getRecipeList().get(i);
-
-            if (recipe.matches(inv, world)) {
-                return recipe;
-            }
-        }
-        return null;
     }
 }

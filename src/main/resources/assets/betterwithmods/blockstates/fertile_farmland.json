@@ -10,12 +10,20 @@
     "uvlock": false
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "transform": "forge:default-block"
-    }],
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
     "moisture": {
-      "0": {"textures": {"top": "betterwithmods:blocks/fertilized_farmland_dry"}},
+      "0": {
+        "textures": {
+          "top": "betterwithmods:blocks/fertilized_farmland_dry"
+        }
+      },
       "1": {},
       "2": {},
       "3": {},

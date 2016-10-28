@@ -10,52 +10,44 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMultiType extends TileEntity
-{
+public class TileEntityMultiType extends TileEntity {
     private int type = 0;
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag)
-    {
+    public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         type = tag.getInteger("BlockType");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
         t.setInteger("BlockType", type);
         return t;
     }
 
-    public int getCosmeticType()
-    {
+    public int getCosmeticType() {
         return type;
     }
 
-    public void setCosmeticType(int type)
-    {
+    public void setCosmeticType(int type) {
         this.type = type;
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = this.getUpdateTag();
         return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt)
-    {
+    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         this.readFromNBT(tag);
         IBlockState state = worldObj.getBlockState(this.pos);
@@ -63,8 +55,7 @@ public class TileEntityMultiType extends TileEntity
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
-    {
+    public NBTTagCompound getUpdateTag() {
         return writeToNBT(new NBTTagCompound());
     }
 }

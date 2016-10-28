@@ -19,27 +19,27 @@ import java.util.List;
 import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
 
 
-
 /**
  * Created by tyler on 9/3/16.
  */
 @ZenClass("mods.betterwithmods.Cauldron")
 public class Cauldron {
     private final static List<BulkRecipe> recipes = CraftingManagerCauldron.getInstance().getRecipes();
+
     @ZenMethod
     public static void add(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
-        MineTweakerAPI.apply(new Add(toStack(output),toStack(secondary),toInputs(inputs)));
+        MineTweakerAPI.apply(new Add(toStack(output), toStack(secondary), toInputs(inputs)));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
         List<BulkRecipe> toRemove = new ArrayList<>();
-        for(BulkRecipe recipe: recipes) {
-            if(StackHelper.matches(output,toIItemStack(recipe.getOutput()))) {
+        for (BulkRecipe recipe : recipes) {
+            if (StackHelper.matches(output, toIItemStack(recipe.getOutput()))) {
                 toRemove.add(recipe);
             }
         }
-        if(!toRemove.isEmpty()) {
+        if (!toRemove.isEmpty()) {
             MineTweakerAPI.apply(new Remove(toRemove));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "cauldron", output.toString()));
@@ -49,8 +49,8 @@ public class Cauldron {
     public static class Add extends BaseListAddition<BulkRecipe> {
 
         protected Add(ItemStack output, ItemStack secondary, Object[] inputs) {
-            super("cauldron",Cauldron.recipes);
-            recipes.add(new BulkRecipe(this.name,output,secondary, inputs));
+            super("cauldron", Cauldron.recipes);
+            recipes.add(new BulkRecipe(this.name, output, secondary, inputs));
         }
 
         @Override
@@ -58,6 +58,7 @@ public class Cauldron {
             return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
+
     public static class Remove extends BaseListRemoval<BulkRecipe> {
 
         protected Remove(List<BulkRecipe> list) {

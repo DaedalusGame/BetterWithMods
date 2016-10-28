@@ -15,60 +15,58 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
-public class TileEntityGearbox extends TileEntity implements ITickable, IMechanicalPower
-{
+import javax.annotation.Nonnull;
+
+public class TileEntityGearbox extends TileEntity implements ITickable, IMechanicalPower {
     private int powerLevel;
     private byte outputs;
     private int refreshTime = 0;
 
     @Override
     public void update() {
-        if(getBlockType() instanceof BlockAdvGearbox) {
-            if(((BlockAdvGearbox)getBlockType()).isGearboxOn(worldObj, pos)) {
-                if(refreshTime == 20) {
+        if (getBlockType() instanceof BlockAdvGearbox) {
+            if (((BlockAdvGearbox) getBlockType()).isGearboxOn(worldObj, pos)) {
+                if (refreshTime == 20) {
                     outputs = 0;
                     findOutputs();
-                }
-                else {
+                } else {
                     refreshTime++;
                 }
-            }
-            else if(powerLevel != 0)
+            } else if (powerLevel != 0)
                 powerLevel = 0;
         }
     }
 
     private void findOutputs() {
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            if(((BlockAdvGearbox)getBlockType()).canInputPowerToSide(worldObj, pos, facing)) {
-                if(powerLevel != getMechanicalInput(facing))
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(worldObj, pos, facing)) {
+                if (powerLevel != getMechanicalInput(facing))
                     powerLevel = getMechanicalInput(facing);
-            }
-            else if(MechanicalUtil.isAxle(worldObj.getBlockState(pos.offset(facing)).getBlock())) {
+            } else if (MechanicalUtil.isAxle(worldObj.getBlockState(pos.offset(facing)).getBlock())) {
                 outputs++;
             }
         }
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if(capability == MechanicalCapability.MECHANICAL_POWER)
-            return true;
-        return super.hasCapability(capability, facing);
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        return capability == MechanicalCapability.MECHANICAL_POWER
+                || super.hasCapability(capability, facing);
     }
 
+    @Nonnull
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if(capability == MechanicalCapability.MECHANICAL_POWER)
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (capability == MechanicalCapability.MECHANICAL_POWER)
             return MechanicalCapability.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
     }
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        if(getBlockType() instanceof IMechanical) {
-            if(((IMechanical)getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0) {
-                if(outputs > 0)
+        if (getBlockType() instanceof IMechanical) {
+            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0) {
+                if (outputs > 0)
                     return powerLevel / outputs;
                 else
                     return powerLevel;
@@ -80,9 +78,9 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         int power = powerLevel;
-        if(getBlockType() instanceof IMechanicalBlock) {
-            if(((IMechanicalBlock)getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
-                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(),getPos(), facing), getMaximumInput(facing));
+        if (getBlockType() instanceof IMechanicalBlock) {
+            if (((IMechanicalBlock) getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
+                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(), getPos(), facing), getMaximumInput(facing));
             }
         }
         return power;
@@ -103,6 +101,7 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
         readFromTag(tag);
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
@@ -124,7 +123,7 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
     }
 }

@@ -23,7 +23,7 @@ public abstract class TileBasicInventory extends TileEntity {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return (T) inventory;

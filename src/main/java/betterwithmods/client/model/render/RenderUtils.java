@@ -19,26 +19,25 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
-public class RenderUtils
-{
+public class RenderUtils {
     protected static Minecraft minecraft = Minecraft.getMinecraft();
 
     private static HashMap<String, ModelWithResource> filterLocations;
 
     public static boolean filterContains(ItemStack stack) {
-        if(stack == null)
+        if (stack == null)
             return false;
         return filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata()); //false;
     }
 
     public static ModelWithResource getModelFromStack(ItemStack stack) {
-        if(filterContains(stack))
+        if (filterContains(stack))
             return filterLocations.get(stack.getItem().toString() + stack.getMetadata());
         return null;
     }
 
     public static ModelWithResource getModelFromStack(String stack) {
-        if(filterLocations.containsKey(stack))
+        if (filterLocations.containsKey(stack))
             return filterLocations.get(stack);
         return null;
     }
@@ -51,7 +50,7 @@ public class RenderUtils
     public static void registerFilters() {
         String[] woodTypes = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"};
         filterLocations = new HashMap<>();
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation("betterwithmods", "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
             addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation("betterwithmods", "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
         }
@@ -92,10 +91,9 @@ public class RenderUtils
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        if(Minecraft.isAmbientOcclusionEnabled()) {
+        if (Minecraft.isAmbientOcclusionEnabled()) {
             GL11.glShadeModel(GL11.GL_SMOOTH);
-        }
-        else
+        } else
             GL11.glShadeModel(GL11.GL_FLAT);
         GlStateManager.translate(x, y, z);
     }
@@ -107,7 +105,7 @@ public class RenderUtils
     }
 
     private static void drawTexturedQuad(VertexBuffer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, int brightness, EnumFacing facing) {
-        if(sprite == null) {
+        if (sprite == null) {
             sprite = minecraft.getTextureMapBlocks().getMissingSprite();
         }
         int light1 = brightness >> 0x10 & 0xFFFF;
@@ -130,17 +128,17 @@ public class RenderUtils
         double z1 = z;
         double z2 = z + d;
 
-        double xt1 = x1%1D;
+        double xt1 = x1 % 1D;
         double xt2 = xt1 + w;
-        while(xt2 > 1D) xt2 -= 1D;
-        double yt1 = y1%1D;
+        while (xt2 > 1D) xt2 -= 1D;
+        double yt1 = y1 % 1D;
         double yt2 = yt1 + h;
-        while(yt2 > 1D) yt2 -= 1D;
-        double zt1 = z1%1D;
+        while (yt2 > 1D) yt2 -= 1D;
+        double zt1 = z1 % 1D;
         double zt2 = zt1 + d;
-        while(zt2 > 1D) zt2 -= 1D;
+        while (zt2 > 1D) zt2 -= 1D;
 
-        switch(facing) {
+        switch (facing) {
             case DOWN:
             case UP:
                 minU = sprite.getInterpolatedU(xt1 * size);
@@ -169,7 +167,7 @@ public class RenderUtils
                 maxV = sprite.getMaxV();
         }
 
-        switch(facing) {
+        switch (facing) {
             case DOWN:
                 renderer.pos(x1, y1, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
                 renderer.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();

@@ -13,22 +13,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockDebarkedOld extends BlockOldLog implements IDebarkable, IBWMBlock, IMultiVariants
-{
-    public BlockDebarkedOld()
-    {
+public class BlockDebarkedOld extends BlockOldLog implements IDebarkable, IBWMBlock, IMultiVariants {
+    public BlockDebarkedOld() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
     @Override
     public String[] getVariants() {
-        return  new String[]{"axis=y,variant=oak", "axis=y,variant=spruce", "axis=y,variant=birch", "axis=y,variant=jungle"};
+        return new String[]{"axis=y,variant=oak", "axis=y,variant=spruce", "axis=y,variant=birch", "axis=y,variant=jungle"};
     }
 
     @Override
-    public ItemStack getBark(IBlockState state)
-    {
+    public ItemStack getBark(IBlockState state) {
         return new ItemStack(BWMItems.BARK, 1, this.damageDropped(state));
     }
 

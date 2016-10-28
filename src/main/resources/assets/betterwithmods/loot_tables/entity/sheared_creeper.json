@@ -2,7 +2,7 @@
   "pools": [
     {
       "rolls": 1,
-      "name":"main",
+      "name": "main",
       "entries": [
         {
           "type": "item",
@@ -15,7 +15,6 @@
                 "min": 0,
                 "max": 1
               }
-
             },
             {
               "function": "set_data",

@@ -12,16 +12,16 @@
       }
     ],
     "facing": {
-      "north":{},
-      "south":{},
-      "east":{},
-      "west":{},
-      "up":{},
-      "down":{}
+      "north": {},
+      "south": {},
+      "east": {},
+      "west": {},
+      "up": {},
+      "down": {}
     },
     "sunlight": {
-      "true":{},
-      "false":{}
+      "true": {},
+      "false": {}
     }
   }
 }

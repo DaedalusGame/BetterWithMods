@@ -17,6 +17,10 @@ out
 build
 .gradle
 
+# profiling
+*.hprof
+classes
+
 # other
 eclipse
 run*

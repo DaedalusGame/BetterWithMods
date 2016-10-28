@@ -1,6 +1,7 @@
 package betterwithmods.event;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.BWMod;
 import betterwithmods.BWRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -37,12 +38,8 @@ public class PotionEventHandler {
             } else if (world.getWorldTime() < 11615 && world.getLightFor(EnumSkyBlock.SKY, pos) >= 15) {
                 return false;
             } else {
-                int lightlevel = world.getLightFor(EnumSkyBlock.BLOCK, pos);
-                if (lightlevel >= 8) {
-                    return false;
-                } else {
-                    return world.isAirBlock(pos) || state.getCollisionBoundingBox(world, pos) == null;
-                }
+                int lightLevel = world.getLightFor(EnumSkyBlock.BLOCK, pos);
+                return lightLevel < 8 && (world.isAirBlock(pos) || state.getCollisionBoundingBox(world, pos) == null);
             }
         } else {
             return false;
@@ -54,14 +51,14 @@ public class PotionEventHandler {
     public void onRenderFireOverlay(RenderBlockOverlayEvent e) {
         if (e.getOverlayType() == RenderBlockOverlayEvent.OverlayType.FIRE) {
             if (e.getPlayer().getEntityWorld().getBlockState(e.getBlockPos()).getBlock() == BWMBlocks.STOKED_FLAME) {
-                renderFireInFirstPerson(e.getRenderPartialTicks());
+                renderFireInFirstPerson();
                 e.setCanceled(true);
             }
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderFireInFirstPerson(float partialTicks) {
+    private void renderFireInFirstPerson() {
         Minecraft mc = Minecraft.getMinecraft();
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vertexbuffer = tessellator.getBuffer();
@@ -76,7 +73,7 @@ public class PotionEventHandler {
         for (int i = 0; i < 2; ++i) {
             GlStateManager.pushMatrix();
             TextureAtlasSprite textureatlassprite = mc.getTextureMapBlocks()
-                    .getTextureExtry("betterwithmods:blocks/stoked_fire_layer_0");
+                    .getTextureExtry(BWMod.MODID+":blocks/stoked_fire_layer_0");
             if (textureatlassprite == null)
                 textureatlassprite = mc.getTextureMapBlocks().getMissingSprite();
             mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -120,13 +117,9 @@ public class PotionEventHandler {
                         int var5 = MathHelper.floor_double(player.posY);
                         int var6 = MathHelper.floor_double(player.posZ);
                         int radius = 10;
-                        int x = var4;
-                        int y = var5;
-                        int z = var6;
-                        for (x = var4 - radius; x <= var4 + radius; ++x) {
-                            for (y = var5 - radius; y <= var5 + radius; ++y) {
-                                for (z = var6 - radius; z <= var6 + radius; ++z) {
-
+                        for (int x = var4 - radius; x <= var4 + radius; ++x) {
+                            for (int y = var5 - radius; y <= var5 + radius; ++y) {
+                                for (int z = var6 - radius; z <= var6 + radius; ++z) {
                                     if (canMobsSpawnHere(world, new BlockPos(x, y, z))
                                             && (var3 == 0 || world.rand.nextInt(12) <= 2 - var3 << 1)) {
 
@@ -134,7 +127,6 @@ public class PotionEventHandler {
                                         double j = (double) y + world.rand.nextDouble() * 0.25D;
                                         double k = (double) z + world.rand.nextDouble();
                                         world.spawnParticle(EnumParticleTypes.SPELL_MOB, i, j, k, 0, 0, 0);
-
                                     }
                                 }
                             }

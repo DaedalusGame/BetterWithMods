@@ -1,5 +1,7 @@
 package betterwithmods.api;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+
 /**
  * Used by Items and Blocks with a model location relative to their metadata.
  *
@@ -11,5 +13,5 @@ public interface IMultiLocations {
      *
      * @return String array with all locations, WITHOUT modid.
      */
-    public String[] getLocations();
+    String[] getLocations();
 }

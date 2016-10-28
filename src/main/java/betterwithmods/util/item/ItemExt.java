@@ -12,8 +12,8 @@ import net.minecraftforge.oredict.OreDictionary;
  * @author Koward
  */
 public final class ItemExt {
-    private static final ItemStackMap<Float> buoyancy = new ItemStackMap<Float>(-1.0F);
-    private static final ItemStackMap<Integer> weights = new ItemStackMap<Integer>(0);
+    private static final ItemStackMap<Float> buoyancy = new ItemStackMap<>(-1.0F);
+    private static final ItemStackMap<Integer> weights = new ItemStackMap<>(0);
 
     private ItemExt() {
     }

@@ -11,5 +11,5 @@ public interface IMultiVariants {
      *
      * @return String array with all variants settings.
      */
-    public String[] getVariants();
+    String[] getVariants();
 }

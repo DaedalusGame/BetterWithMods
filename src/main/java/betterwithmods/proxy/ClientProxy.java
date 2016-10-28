@@ -20,7 +20,6 @@ import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.entity.EntityShearedCreeper;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -64,11 +63,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerColors() {
         final BlockColors col = Minecraft.getMinecraft().getBlockColors();
-        col.registerBlockColorHandler(ColorHandlers.BlockPlanterColor, new Block[]{BWMBlocks.PLANTER});
-        col.registerBlockColorHandler(ColorHandlers.BlockFoliageColor, new Block[]{BWMBlocks.VINE_TRAP});
+        col.registerBlockColorHandler(ColorHandlers.BlockPlanterColor, BWMBlocks.PLANTER);
+        col.registerBlockColorHandler(ColorHandlers.BlockFoliageColor, BWMBlocks.VINE_TRAP);
         final ItemColors itCol = Minecraft.getMinecraft().getItemColors();
-        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor, new Block[]{BWMBlocks.PLANTER});
-        itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, new Block[]{BWMBlocks.VINE_TRAP});
+        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor, BWMBlocks.PLANTER);
+        itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, BWMBlocks.VINE_TRAP);
     }
 
     @Override

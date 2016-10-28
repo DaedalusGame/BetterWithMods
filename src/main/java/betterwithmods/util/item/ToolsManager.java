@@ -21,9 +21,9 @@ public final class ToolsManager {
     private static final ItemAxe[] AXES = new ItemAxe[]{(ItemAxe) Items.DIAMOND_AXE, (ItemAxe) Items.GOLDEN_AXE, (ItemAxe) Items.IRON_AXE, (ItemAxe) Items.STONE_AXE, (ItemAxe) Items.WOODEN_AXE};
     private static final ItemPickaxe[] PICKAXES = new ItemPickaxe[]{(ItemPickaxe) Items.DIAMOND_PICKAXE, (ItemPickaxe) Items.GOLDEN_PICKAXE, (ItemPickaxe) Items.IRON_PICKAXE, (ItemPickaxe) Items.STONE_PICKAXE, (ItemPickaxe) Items.WOODEN_PICKAXE};
     private static final ItemSpade[] SHOVELS = new ItemSpade[]{(ItemSpade) Items.DIAMOND_SHOVEL, (ItemSpade) Items.GOLDEN_SHOVEL, (ItemSpade) Items.IRON_SHOVEL, (ItemSpade) Items.STONE_SHOVEL, (ItemSpade) Items.WOODEN_SHOVEL};
-    private static final Set<Material> AXES_MATERIALS = new HashSet<Material>();
-    private static final Set<Material> PICKAXES_MATERIALS = new HashSet<Material>();
-    private static final Set<Material> SHOVELS_MATERIALS = new HashSet<Material>();
+    private static final Set<Material> AXES_MATERIALS = new HashSet<>();
+    private static final Set<Material> PICKAXES_MATERIALS = new HashSet<>();
+    private static final Set<Material> SHOVELS_MATERIALS = new HashSet<>();
 
     private ToolsManager() {
     }

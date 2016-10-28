@@ -7,21 +7,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public interface IBWMBlock {
-    //public String[] getVariants();
+    //String[] getVariants();
 
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos);
+    EnumFacing getFacing(IBlockAccess world, BlockPos pos);
 
-    public void setFacing(World world, BlockPos pos, EnumFacing facing);
+    void setFacing(World world, BlockPos pos, EnumFacing facing);
 
-    public EnumFacing getFacingFromBlockState(IBlockState state);
+    EnumFacing getFacingFromBlockState(IBlockState state);
 
-    public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing);
+    IBlockState setFacingInBlock(IBlockState state, EnumFacing facing);
 
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos);
+    boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos);
 
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos);
+    boolean canRotateHorizontally(IBlockAccess world, BlockPos pos);
 
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos);
+    boolean canRotateVertically(IBlockAccess world, BlockPos pos);
 
-    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse);
+    void rotateAroundYAxis(World world, BlockPos pos, boolean reverse);
 }

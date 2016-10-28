@@ -11,7 +11,7 @@ public class MechanicalCapability {
     @CapabilityInject(IMechanicalPower.class)
     public static Capability<IMechanicalPower> MECHANICAL_POWER = null;
 
-    public static class CapabilityMechanicalPower<T extends IMechanicalPower> implements Capability.IStorage<IMechanicalPower> {
+    public static class CapabilityMechanicalPower implements Capability.IStorage<IMechanicalPower> {
         @Override
         public NBTBase writeNBT(Capability<IMechanicalPower> capability, IMechanicalPower mechanical, EnumFacing side) {
             return null;
@@ -19,7 +19,6 @@ public class MechanicalCapability {
 
         @Override
         public void readNBT(Capability<IMechanicalPower> capability, IMechanicalPower mechanical, EnumFacing side, NBTBase nbt) {
-
         }
     }
 
@@ -46,7 +45,6 @@ public class MechanicalCapability {
 
         @Override
         public void readFromTag(NBTTagCompound tag) {
-
         }
 
         @Override

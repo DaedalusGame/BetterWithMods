@@ -68,7 +68,6 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         return state.getValue(POTTERYTYPE).getMeta();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         int meta = state.getValue(POTTERYTYPE).getMeta();
@@ -113,7 +112,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         return new BlockStateContainer(this, POTTERYTYPE);
     }
 
-    public static enum EnumPotteryType implements IStringSerializable {
+    public enum EnumPotteryType implements IStringSerializable {
         CRUCIBLE(0, "crucible"), PLANTER(1, "planter"), URN(2, "urn"), VASE(3, "vase");
         private static final EnumPotteryType[] META_LOOKUP = new EnumPotteryType[values().length];
 
@@ -126,7 +125,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         private String name;
         private int meta;
 
-        private EnumPotteryType(int meta, String name) {
+        EnumPotteryType(int meta, String name) {
             this.meta = meta;
             this.name = name;
         }
@@ -143,6 +142,5 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         public String getName() {
             return name;
         }
-
     }
 }

@@ -30,8 +30,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
@@ -56,9 +54,18 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
     }
 
+    private static void registerEntities() {
+        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
+        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
+        BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
+        BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
+    }
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        //BWConfig.init(new File(evt.getModConfigurationDirectory() + "/betterwithmods.cfg"));
+        BWConfig.init(evt.getSuggestedConfigurationFile());
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
@@ -67,14 +74,10 @@ public class BWMod {
         BWRegistry.init();
         ModIntegration.loadPreInit();
         BWCrafting.init();
-        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
-        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
-        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
-        BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
-        BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
+        registerEntities();
         proxy.registerRenderInformation();
         proxy.initRenderers();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower<>(), MechanicalCapability.DefaultMechanicalPower.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
     }
 
     @EventHandler

@@ -14,13 +14,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * Map to handle ItemStacks. Maybe should be replaced with just an item that hashcodes well ItemStacks.
+ * Map to handle ItemStacks. Maybe should be replaced with just a class that hashcodes well ItemStacks.
  *
  * @param <T>
  * @author Koward
  */
 public class ItemStackMap<T> {
-    private final HashMap<Item, HashMap<Integer, T>> map = new HashMap<Item, HashMap<Integer, T>>();
+    private final HashMap<Item, HashMap<Integer, T>> map = new HashMap<>();
     private final T defaultValue;
 
     public ItemStackMap(T defaultValueIn) {
@@ -33,7 +33,6 @@ public class ItemStackMap<T> {
 
     public boolean containsKey(ItemStack stack) {
         return containsKey(stack.getItem(), stack.getMetadata());
-
     }
 
     public boolean containsKey(Item item, int meta) {
@@ -69,7 +68,7 @@ public class ItemStackMap<T> {
         if (map.containsKey(item)) {
             map.get(item).put(meta, value);
         } else {
-            HashMap<Integer, T> metaToValue = new HashMap<Integer, T>();
+            HashMap<Integer, T> metaToValue = new HashMap<>();
             metaToValue.put(meta, value);
             map.put(item, metaToValue);
         }
@@ -82,7 +81,7 @@ public class ItemStackMap<T> {
 
     public T put(Block block, int meta, T value) {
         try {
-            ItemStack stack = new ItemStack(block);
+            ItemStack stack = new ItemStack(block, meta);
             return put(stack, value);
         } catch (NullPointerException e) {
             CrashReport report = new CrashReport("The block " + block.getRegistryName() + " cannot be converted into an item.", e);

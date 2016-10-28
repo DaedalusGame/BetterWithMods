@@ -7,21 +7,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public interface IMechanicalBlock {
-    public boolean canOutputMechanicalPower();
+    boolean canOutputMechanicalPower();
 
-    public boolean canInputMechanicalPower();
+    boolean canInputMechanicalPower();
 
-    public boolean isInputtingMechPower(World world, BlockPos pos);
+    boolean isInputtingMechPower(World world, BlockPos pos);
 
-    public boolean isOutputtingMechPower(World world, BlockPos pos);
+    boolean isOutputtingMechPower(World world, BlockPos pos);
 
-    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir);
+    boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir);
 
-    public void overpower(World world, BlockPos pos);
+    void overpower(World world, BlockPos pos);
 
-    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos);
+    boolean isMechanicalOn(IBlockAccess world, BlockPos pos);
 
-    public void setMechanicalOn(World world, BlockPos pos, boolean isOn);
+    void setMechanicalOn(World world, BlockPos pos, boolean isOn);
 
-    public boolean isMechanicalOnFromState(IBlockState state);
+    boolean isMechanicalOnFromState(IBlockState state);
 }

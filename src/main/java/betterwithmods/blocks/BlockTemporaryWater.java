@@ -25,22 +25,22 @@ public class BlockTemporaryWater extends BlockLiquid {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = ((Integer) state.getValue(LEVEL)).intValue();
+        int i = state.getValue(LEVEL).intValue();
 
-        IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
+        IBlockState stateBelow = worldIn.getBlockState(pos.down());
 
-        if (!(iblockstate1.getBlock() == BWMBlocks.PUMP && iblockstate1.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
+        if (!(stateBelow.getBlock() == BWMBlocks.PUMP && stateBelow.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
             worldIn.setBlockToAir(pos);
             return;
         }
 
-        if (this.canFlowInto(worldIn, pos.down(), iblockstate1)) {
+        if (this.canFlowInto(worldIn, pos.down(), stateBelow)) {
             if (i >= 8) {
-                this.tryFlowInto(worldIn, pos.down(), iblockstate1, i);
+                this.tryFlowInto(worldIn, pos.down(), stateBelow, i);
             } else {
-                this.tryFlowInto(worldIn, pos.down(), iblockstate1, i + 8);
+                this.tryFlowInto(worldIn, pos.down(), stateBelow, i + 8);
             }
-        } else if (i >= 0 && (i == 0 || this.isBlocked(worldIn, pos.down(), iblockstate1))) {
+        } else if (i >= 0 && (i == 0 || this.isBlocked(worldIn, pos.down(), stateBelow))) {
             Set<EnumFacing> set = this.getPossibleFlowDirections(worldIn, pos);
             int k1 = i + 1;
 
@@ -52,8 +52,8 @@ public class BlockTemporaryWater extends BlockLiquid {
                 return;
             }
 
-            for (EnumFacing enumfacing1 : set) {
-                this.tryFlowInto(worldIn, pos.offset(enumfacing1), worldIn.getBlockState(pos.offset(enumfacing1)), k1);
+            for (EnumFacing facing : set) {
+                this.tryFlowInto(worldIn, pos.offset(facing), worldIn.getBlockState(pos.offset(facing)), k1);
             }
         }
 
@@ -78,12 +78,9 @@ public class BlockTemporaryWater extends BlockLiquid {
 
     private boolean isBlocked(World worldIn, BlockPos pos, IBlockState state) {
         Block block = worldIn.getBlockState(pos).getBlock();
-        return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER
-                && block != Blocks.REEDS
-                ? (state.getMaterial() != Material.PORTAL
-                && state.getMaterial() != Material.STRUCTURE_VOID
-                ? state.getMaterial().blocksMovement() : true)
-                : true;
+        return !(!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER
+                && block != Blocks.REEDS) || (!(state.getMaterial() != Material.PORTAL
+                && state.getMaterial() != Material.STRUCTURE_VOID) || state.getMaterial().blocksMovement());
     }
 
     private Set<EnumFacing> getPossibleFlowDirections(World worldIn, BlockPos pos) {
@@ -127,7 +124,7 @@ public class BlockTemporaryWater extends BlockLiquid {
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
                 if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.blockMaterial
-                        || ((Integer) iblockstate.getValue(LEVEL)).intValue() > 0)) {
+                        || iblockstate.getValue(LEVEL).intValue() > 0)) {
                     if (!this.isBlocked(worldIn, blockpos.down(), iblockstate)) {
                         return distance;
                     }

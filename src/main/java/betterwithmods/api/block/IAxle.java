@@ -5,9 +5,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public interface IAxle {
-    public int getAxisAlignment(IBlockAccess world, BlockPos pos);
+    int getAxisAlignment(IBlockAccess world, BlockPos pos);
 
-    public boolean isAxleOrientedToFacing(IBlockAccess world, BlockPos pos, EnumFacing dir);
+    boolean isAxleOrientedToFacing(IBlockAccess world, BlockPos pos, EnumFacing dir);
 
-    public int getPowerLevel(IBlockAccess world, BlockPos pos);
+    int getPowerLevel(IBlockAccess world, BlockPos pos);
 }

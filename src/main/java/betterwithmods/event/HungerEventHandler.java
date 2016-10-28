@@ -212,7 +212,7 @@ public class HungerEventHandler {
     }
 
     /**
-     * Disable swimming if needed. TODO FIXME Not able to jump at the bottom.
+     * Disable swimming if needed. FIXME Not able to jump at the bottom.
      * New hook may be required. (Probable workaround implemented)
      *
      */

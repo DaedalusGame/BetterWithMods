@@ -192,7 +192,7 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
     public void updateSpeed() {
         byte speed = 0;
         if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
-            if (this.worldObj.isRaining() || this.worldObj.isThundering())
+            if ((this.worldObj.isRaining() || this.worldObj.isThundering()) && this.worldObj.provider.getDimensionType() != DimensionType.NETHER)
                 speed = 2;
             else
                 speed = 1;

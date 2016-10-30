@@ -78,7 +78,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
             else
                 speed = 1;
         }
-        if (speed != this.runningState) {
+        if (speed != this.runningState || (speed == 0 && this.worldObj.getBlockState(pos).getValue(BlockWindmill.ISACTIVE))) {
             this.setRunningState(speed);
             this.worldObj.setBlockState(pos, this.worldObj.getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
             worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//this.worldObj.markBlockForUpdate(pos);

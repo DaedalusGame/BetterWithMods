@@ -167,7 +167,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (!keepInv) {
+        if (!keepInv && tile != null) {
             if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                 InvUtils.ejectInventoryContents(world, pos, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
                 world.updateComparatorOutputLevel(pos, this);

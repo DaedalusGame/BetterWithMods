@@ -1,6 +1,7 @@
 package betterwithmods.config;
 
 import betterwithmods.BWMod;
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 
 public class BWConfig {
+    public static ConfigCategory HARDCORE_CAT;
     public static final String HARDCORE = "Hardcore";
     public static final String VANILLA_TWEAKS = "Vanilla Tweaks";
     public static final String MODPACK_TWEAKS = "Modpack Tweaks";
@@ -47,12 +49,13 @@ public class BWConfig {
 
     private static void syncConfig() {
         //config.addCustomCategoryComment(HARDCORE, "Hardcore settings");
+        HARDCORE_CAT = config.getCategory(HARDCORE);
         hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true, "Creepers and Ghasts will drop brimstone or niter instead of gunpowder").getBoolean(true);
         hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe").getBoolean(true);
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean(true);
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean(true);
         // FIXME See issue #71
-        hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement").getBoolean(true);
+        hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement").setRequiresMcRestart(true).getBoolean(true);
         hardcoreBuoy = config.get(HARDCORE, "Hardcore Buoy", true, "Buoyant items will float").getBoolean(true);
         hardcoreSpawn = config.get(HARDCORE, "Hardcore Spawn", true, "Your spawn point will be randomized").getBoolean(true);
         hardcoreBeds = config.get(HARDCORE, "Hardcore Beds", true, "You will be unable to sleep in a bed").getBoolean(true);

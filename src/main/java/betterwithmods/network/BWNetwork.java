@@ -1,6 +1,7 @@
 package betterwithmods.network;
 
 import betterwithmods.BWMod;
+import betterwithmods.config.ConfigSyncPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -47,6 +48,7 @@ public class BWNetwork extends NetWrapper {
     }
 
     public void init() {
-        this.registerClientPacket(TileUpdatePacket.class);
+        //this.registerClientPacket(TileUpdatePacket.class);
+        this.registerClientPacket(ConfigSyncPacket.class);
     }
 }

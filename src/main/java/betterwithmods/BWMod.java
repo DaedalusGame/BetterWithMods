@@ -4,6 +4,7 @@ import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
+import betterwithmods.config.ConfigSyncHandler;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
@@ -11,6 +12,7 @@ import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.*;
 import betterwithmods.integration.ModIntegration;
+import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.CommonProxy;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.InvUtils;
@@ -33,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
-    public static final String VERSION = "0.13.1 Beta";
+    public static final String VERSION = "0.13.1 Beta hotfix 1";
     public static final String NAME = "Better With Mods";
     public static final Logger logger = LogManager.getLogger(BWMod.MODID);
     @SidedProxy(serverSide = "betterwithmods.proxy.CommonProxy", clientSide = "betterwithmods.proxy.ClientProxy")
@@ -78,6 +80,7 @@ public class BWMod {
         proxy.registerRenderInformation();
         proxy.initRenderers();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
+        BWNetwork.INSTANCE.init();
     }
 
     @EventHandler
@@ -109,5 +112,7 @@ public class BWMod {
         RecipeUtils.refreshRecipes();
         ModIntegration.loadPostInit();
         BucketEvent.editModdedFluidDispenseBehavior();
+        if(evt.getSide().isServer())
+            MinecraftForge.EVENT_BUS.register(new ConfigSyncHandler());
     }
 }

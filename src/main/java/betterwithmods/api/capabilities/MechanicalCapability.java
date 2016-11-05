@@ -19,6 +19,7 @@ public class MechanicalCapability {
 
         @Override
         public void readNBT(Capability<IMechanicalPower> capability, IMechanicalPower mechanical, EnumFacing side, NBTBase nbt) {
+
         }
     }
 

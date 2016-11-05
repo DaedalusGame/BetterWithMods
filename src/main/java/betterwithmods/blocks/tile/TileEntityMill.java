@@ -99,7 +99,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
         if (tag.hasKey("GrindCounter"))
             this.grindCounter = tag.getInteger("GrindCounter");
-        readFromTag(tag);
     }
 
     @Override
@@ -111,7 +110,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("GrindCounter", this.grindCounter);
-        writeToTag(tag);
         return tag;
     }
 
@@ -182,16 +180,18 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     private boolean grindContents() {
         CraftingManagerMill mill = CraftingManagerMill.getInstance();
-        List<ItemStack> ingredients = mill.getValidCraftingIngredients(inventory);
+        List<Object> ingredients = mill.getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
             for (int i = 0; i < ingredients.size(); i++) {
-                ItemStack stack = (ingredients.get(i)).copy();
-                if (stack != null) {
-                    Item item = stack.getItem();
-                    if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
-                        this.worldObj.playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                        break;
+                if (ingredients.get(i) instanceof ItemStack) {
+                    ItemStack stack = ((ItemStack)ingredients.get(i)).copy();
+                    if (stack != null) {
+                        Item item = stack.getItem();
+                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
+                            this.worldObj.playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            break;
+                        }
                     }
                 }
             }
@@ -213,22 +213,24 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private void validateContents() {
         int oldGrindType = getGrindType();
         int newGrindType = 0;
-        List<ItemStack> ingredients = CraftingManagerMill.getInstance().getValidCraftingIngredients(inventory);
+        List<Object> ingredients = CraftingManagerMill.getInstance().getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
             this.containsIngredientsToGrind = true;
             newGrindType = 1;
             for (int i = 0; i < ingredients.size(); i++) {
-                ItemStack stack = (ingredients.get(i)).copy();
-                if (stack != null) {
-                    Item item = stack.getItem();
-                    if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
-                        newGrindType = 3;
-                        break;
-                    }
-                    if (item == Item.getItemFromBlock(Blocks.NETHERRACK)) {
-                        newGrindType = 2;
-                        break;
+                if(ingredients.get(i) instanceof ItemStack) {
+                    ItemStack stack = ((ItemStack)ingredients.get(i)).copy();
+                    if (stack != null) {
+                        Item item = stack.getItem();
+                        if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
+                            newGrindType = 3;
+                            break;
+                        }
+                        if (item == Item.getItemFromBlock(Blocks.NETHERRACK)) {
+                            newGrindType = 2;
+                            break;
+                        }
                     }
                 }
             }

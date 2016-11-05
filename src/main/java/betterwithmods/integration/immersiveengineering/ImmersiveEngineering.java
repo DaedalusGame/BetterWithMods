@@ -3,8 +3,12 @@ package betterwithmods.integration.immersiveengineering;
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.integration.ModIntegration;
+import blusunrize.immersiveengineering.api.crafting.SqueezerRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -25,5 +29,7 @@ public class ImmersiveEngineering extends ModIntegration {
     @Override
     public void init() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(TREATED_AXLE), "W", "R", "W", 'W', "plankTreatedWood", 'R', BWMBlocks.ROPE));
+        Fluid seedOil = FluidRegistry.getFluid("plantoil");
+        SqueezerRecipe.addRecipe(new FluidStack(seedOil, 120), null, new ItemStack(BWMBlocks.HEMP, 1, 0), 6400);
     }
 }

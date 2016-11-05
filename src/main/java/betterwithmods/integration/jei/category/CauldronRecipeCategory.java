@@ -67,8 +67,7 @@ public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrap
         stacks.set(outputSlots, recipe.getRecipe().getOutput());
         if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = new ArrayList<>();//TODO adapted for JEI 3.11.2. May not be correct.
-        inputList.add(recipe.getRecipe().getInput());
+        List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
     }
 }

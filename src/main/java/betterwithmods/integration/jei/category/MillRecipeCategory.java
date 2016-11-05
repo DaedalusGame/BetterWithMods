@@ -49,12 +49,12 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
         stacks.init(outputSlots, false, 118, 18);
         stacks.init(outputSlots + 1, false, 118 + 18, 18);
         BulkRecipeWrapper recipe = wrapper;
-        List<ItemStack> input = recipe.getRecipe().getInput();
+        List<List<ItemStack>> input = wrapper.getInputs();
         for (int i = 0; i < 3; i++) {
             int index = inputSlots + i;
             stacks.init(index, true, 2 + i * 18, 18);
             if (input.size() > i && input.get(i) != null) {
-                stacks.set(index, input.get(i).copy());
+                stacks.set(index, input.get(i));
             }
         }
 

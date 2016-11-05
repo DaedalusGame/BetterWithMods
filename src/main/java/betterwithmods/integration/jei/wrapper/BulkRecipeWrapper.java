@@ -1,28 +1,29 @@
 package betterwithmods.integration.jei.wrapper;
 
 import betterwithmods.craft.bulk.BulkRecipe;
+import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.item.ItemStack;
+import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BulkRecipeWrapper extends BWMRecipeWrapper {
-    public BulkRecipeWrapper(@Nonnull BulkRecipe recipe) {
+
+    private final IJeiHelpers helpers;
+    public BulkRecipeWrapper(IJeiHelpers helpers, @Nonnull BulkRecipe recipe) {
         super(recipe);
+        this.helpers = helpers;
     }
 
     @Nonnull
     @Deprecated
     @Override
-    public List<ItemStack> getInputs() {
-        List<ItemStack> inputs = new ArrayList<>();
-        for (ItemStack stack : getRecipe().getInput()) {
-            if (stack != null && stack.getItem() != null)
-                inputs.add(stack.copy());
-        }
-        return inputs;
+    public List getInputs() {
+        return getRecipe().getInput();
     }
 
     @Nonnull
@@ -39,7 +40,13 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper {
     @Nonnull
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, getInputs());
-        ingredients.setOutputs(ItemStack.class, getOutputs());
+        IStackHelper stackHelper = helpers.getStackHelper();
+        List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.getInput());
+        ingredients.setInputLists(ItemStack.class, inputs);
+        List<ItemStack> outputs = new ArrayList<>();
+        outputs.add(getRecipe().getOutput().copy());
+        if(getRecipe().getSecondary() != null)
+            outputs.add(getRecipe().getSecondary().copy());
+        ingredients.setOutputs(ItemStack.class, outputs);
     }
 }

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 public abstract class BWMRecipeWrapper extends BlankRecipeWrapper {
     @Nonnull
-    private final BulkRecipe recipe;
+    protected final BulkRecipe recipe;
 
     public BWMRecipeWrapper(@Nonnull BulkRecipe recipe) {
         this.recipe = recipe;

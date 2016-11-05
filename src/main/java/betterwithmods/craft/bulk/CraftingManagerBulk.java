@@ -153,10 +153,10 @@ public abstract class CraftingManagerBulk {
         return false;
     }
 
-    public List<ItemStack> getValidCraftingIngredients(ItemStackHandler inv) {
+    public List<Object> getValidCraftingIngredients(ItemStackHandler inv) {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if (recipe != null)
-            return recipe.getInput();
+            return recipe.getRecipeInput();
         return null;
     }
 

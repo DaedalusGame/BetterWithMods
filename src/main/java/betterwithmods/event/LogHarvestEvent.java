@@ -54,7 +54,7 @@ public class LogHarvestEvent {
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
             BlockPos playerPos = pos.offset(evt.getFace());
-            if (playerStack != null && playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) {
+            if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
                 if (block == Blocks.LOG) {
                     IBlockState state = world.getBlockState(pos);
                     IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));
@@ -101,7 +101,7 @@ public class LogHarvestEvent {
                 Item item = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem();
 
                 if (item != null) {
-                    if ((item.getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, state) >= 0) && !(item instanceof ItemKnife)) {
+                    if ((item.getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, state) >= 0 || item.getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe")) && !(item instanceof ItemKnife)) {
                         harvest = true;
                     }
                 }

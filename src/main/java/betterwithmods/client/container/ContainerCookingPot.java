@@ -76,6 +76,7 @@ public class ContainerCookingPot extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
+        listener.sendProgressBarUpdate(this, 0, this.tile.scaledCookCounter);
     }
 
     @Override

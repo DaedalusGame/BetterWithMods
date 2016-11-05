@@ -16,7 +16,7 @@ public class BulkRecipe {
     protected ItemStack output = null;
     protected ItemStack secondary = null;
     protected ArrayList<Object> input = new ArrayList<>();//Either ItemStack or OreStack
-    protected ArrayList<ItemStack> jeiInput = new ArrayList<>();
+    protected ArrayList<List<ItemStack>> jeiInput = new ArrayList<>();
 
     public BulkRecipe(String type, ItemStack output, Object... input) {
         this(type, output, null, input);
@@ -65,7 +65,7 @@ public class BulkRecipe {
 
     private void condenseInputs(ArrayList<Object> list) {
         ArrayList<Object> inputs = new ArrayList<>();
-        ArrayList<ItemStack> jeiInputs = new ArrayList<>();
+        ArrayList<List<ItemStack>> jeiInputs = new ArrayList<>();
         for (Object obj : list) {
             int contain = InvUtils.listContains(obj, inputs);
             if (contain > -1) {
@@ -79,10 +79,12 @@ public class BulkRecipe {
             }
         }
         for (Object obj : inputs) {
+            List<ItemStack> in = new ArrayList<>();
             if (obj instanceof ItemStack)
-                jeiInputs.add((ItemStack) obj);
+                in.add((ItemStack) obj);
             else if (obj instanceof OreStack)
-                jeiInputs.addAll(getOreList((OreStack) obj));
+                in.addAll(getOreList((OreStack) obj));
+            jeiInputs.add(in);
         }
         input = inputs;
         jeiInput = jeiInputs;
@@ -107,7 +109,7 @@ public class BulkRecipe {
         return this.secondary;
     }
 
-    public ArrayList<ItemStack> getInput() {
+    public ArrayList<List<ItemStack>> getInput() {
         return this.jeiInput;
     }
 

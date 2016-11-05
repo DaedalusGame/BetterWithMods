@@ -463,18 +463,9 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        int subType = state.getValue(MACHINETYPE).getSubTypeCount();
-        int actualType = 0;
-        int filledSlots = 0;
         int facing = 1;
         TileEntity tile = world.getTileEntity(pos);
         if (tile != null) {
-            if (subType > 0 && tile instanceof IMechSubtype) {
-                actualType = ((IMechSubtype) tile).getSubtype();
-            }
-            if (tile instanceof TileEntityVisibleInventory) {
-                filledSlots = ((TileEntityVisibleInventory) tile).filledSlots();
-            }
             if (tile instanceof TileEntityCookingPot) {
                 facing = ((TileEntityCookingPot) tile).facing;
             }
@@ -509,8 +500,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         PULLEY(1, "pulley", true),
         CRUCIBLE(2, "crucible"),
         CAULDRON(3, "cauldron"),
-        HOPPER(4, "hopper", 7, false),
-        TURNTABLE(5, "turntable", 3, true);
+        HOPPER(4, "hopper"),
+        TURNTABLE(5, "turntable", true);
 
         private static final BlockMechMachines.EnumType[] META_LOOKUP = new BlockMechMachines.EnumType[values().length];
 
@@ -522,21 +513,15 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
         private int meta;
         private String name;
-        private int subTypes;
         private boolean solidity;
 
         private EnumType(int meta, String name) {
-            this(meta, name, 0, false);
+            this(meta, name, false);
         }
 
         private EnumType(int meta, String name, boolean solid) {
-            this(meta, name, 0, solid);
-        }
-
-        private EnumType(int meta, String name, int numSubTypes, boolean solid) {
             this.meta = meta;
             this.name = name;
-            this.subTypes = numSubTypes;
             this.solidity = solid;
         }
 
@@ -555,10 +540,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
         public int getMeta() {
             return meta;
-        }
-
-        public int getSubTypeCount() {
-            return this.subTypes;
         }
 
         public boolean getSolidity() {

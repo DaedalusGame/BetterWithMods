@@ -171,6 +171,6 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
 
     @Override
     public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        return new NBTTagCompound();
+        return null;
     }
 }

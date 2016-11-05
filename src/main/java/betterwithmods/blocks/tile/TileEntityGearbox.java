@@ -27,7 +27,6 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
         if (getBlockType() instanceof BlockAdvGearbox) {
             if (((BlockAdvGearbox) getBlockType()).isGearboxOn(worldObj, pos)) {
                 if (refreshTime == 20) {
-                    outputs = 0;
                     findOutputs();
                 } else {
                     refreshTime++;
@@ -38,6 +37,7 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     }
 
     private void findOutputs() {
+        outputs = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(worldObj, pos, facing)) {
                 if (powerLevel != getMechanicalInput(facing))
@@ -98,15 +98,16 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
         readFromTag(tag);
     }
 
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        writeToTag(tag);
-        return tag;
+        NBTTagCompound t = super.writeToNBT(tag);
+        writeToTag(t);
+        return t;
     }
 
     @Override

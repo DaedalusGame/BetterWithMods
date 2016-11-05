@@ -28,11 +28,11 @@ public class BWMJEIPlugin extends BlankModPlugin {
         reg.addRecipeHandlers(new CauldronRecipeHandler(), new StokedCauldronRecipeHandler(), new CrucibleRecipeHandler(),
                 new StokedCrucibleRecipeHandler(), new MillRecipeHandler(), new SawRecipeHandler(), new KilnRecipeHandler());
 
-        reg.addRecipes(JEIRecipeRegistry.getCauldronRecipes());
-        reg.addRecipes(JEIRecipeRegistry.getStokedCauldronRecipes());
-        reg.addRecipes(JEIRecipeRegistry.getCrucibleRecipes());
-        reg.addRecipes(JEIRecipeRegistry.getStokedCrucibleRecipes());
-        reg.addRecipes(JEIRecipeRegistry.getMillRecipes());
+        reg.addRecipes(JEIRecipeRegistry.getCauldronRecipes(helper));
+        reg.addRecipes(JEIRecipeRegistry.getStokedCauldronRecipes(helper));
+        reg.addRecipes(JEIRecipeRegistry.getCrucibleRecipes(helper));
+        reg.addRecipes(JEIRecipeRegistry.getStokedCrucibleRecipes(helper));
+        reg.addRecipes(JEIRecipeRegistry.getMillRecipes(helper));
         reg.addRecipes(JEIRecipeRegistry.getSawRecipes());
         reg.addRecipes(JEIRecipeRegistry.getKilnRecipes());
 

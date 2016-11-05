@@ -61,14 +61,31 @@ public class StokedCrucibleRecipeCategory extends BWMRecipeCategory<StokedCrucib
         stacks.set(outputSlots, recipe.getRecipe().getOutput());
         if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = new ArrayList<>();//TODO adapted for JEI 3.11.2. May not be correct.
-        inputList.add(recipe.getRecipe().getInput());
+        List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
     }
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull StokedCrucibleRecipeWrapper wrapper, IIngredients ingredients) {
-        setRecipe(layout, wrapper);
-        //TODO Ingredients
+        IGuiItemStackGroup stacks = layout.getItemStacks();
+
+        stacks.init(outputSlots, false, 118, 18);
+        stacks.init(outputSlots + 1, false, 118 + 18, 18);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int index = inputSlots + i + (j * 3);
+                stacks.init(index, true, 2 + i * 18, j * 18);
+            }
+        }
+
+        List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+        List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+
+        stacks.set(outputSlots, outputs.get(0));
+        if(outputs.size() > 1)
+            stacks.set(outputSlots + 1, outputs.get(1));
+
+        craftingGrid.setInputStacks(stacks, inputs);
     }
 }

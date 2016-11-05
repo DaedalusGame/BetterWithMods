@@ -1,6 +1,7 @@
 package betterwithmods.craft.heat;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 import java.util.Hashtable;
 
@@ -18,8 +19,16 @@ public class BWMHeatRegistry {
         }
     }
 
+    public static boolean contains(IBlockState state) {
+        return contains(state.getBlock(), state.getBlock().getMetaFromState(state));
+    }
+
     public static boolean contains(Block block, int meta) {
         return heatSources.containsKey(block + ":" + meta);
+    }
+
+    public static BWMHeatSource get(IBlockState state) {
+        return get(state.getBlock(), state.getBlock().getMetaFromState(state));
     }
 
     public static BWMHeatSource get(Block block, int meta) {

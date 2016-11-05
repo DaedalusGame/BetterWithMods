@@ -53,6 +53,8 @@ public class LogHarvestEvent {
             EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
+            if(playerStack == null)
+                return;
             BlockPos playerPos = pos.offset(evt.getFace());
             if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
                 if (block == Blocks.LOG) {

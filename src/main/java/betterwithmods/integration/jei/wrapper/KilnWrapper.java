@@ -16,8 +16,9 @@ import java.util.regex.Pattern;
  * Created by tyler on 9/4/16.
  */
 public class KilnWrapper extends BlankRecipeWrapper {
-    public List<ItemStack> inputs = Lists.newArrayList(), outputs = Lists.newArrayList();
-    public ItemStack input, output;
+    public final ItemStack input;
+    private final List<ItemStack> inputs = Lists.newArrayList();
+    private final List<ItemStack> outputs = Lists.newArrayList();
 
     public KilnWrapper(String string, List<ItemStack> output) {
         this.input = fromString(string);

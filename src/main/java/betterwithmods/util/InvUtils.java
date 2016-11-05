@@ -4,7 +4,6 @@ import betterwithmods.craft.OreStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,10 +30,8 @@ public class InvUtils {
     private static ArrayList<ItemStack> getOreNames(String prefix) {
         ArrayList<ItemStack> list = new ArrayList<>();
         String[] var2 = OreDictionary.getOreNames();
-        int var3 = var2.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            String name = var2[var4];
+        for (String name : var2) {
             if (name.startsWith(prefix) && OreDictionary.getOres(name).size() > 0) {
                 list.addAll(OreDictionary.getOres(name));
             }
@@ -73,10 +70,7 @@ public class InvUtils {
             if (list.isEmpty()) return false;
             for (ItemStack item : list) {
                 if (ItemStack.areItemsEqual(check, item) || (check.getItem() == item.getItem() && item.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if (item.hasTagCompound())
-                        return ItemStack.areItemStackTagsEqual(check, item);
-                    else
-                        return true;
+                    return !item.hasTagCompound() || ItemStack.areItemStackTagsEqual(check, item);
                 }
             }
         }
@@ -115,7 +109,7 @@ public class InvUtils {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null) {
-                inv.setStackInSlot(i, (ItemStack) null);
+                inv.setStackInSlot(i, null);
             }
         }
 
@@ -123,7 +117,7 @@ public class InvUtils {
 
     public static void copyTags(ItemStack destStack, ItemStack sourceStack) {
         if (sourceStack.hasTagCompound()) {
-            destStack.setTagCompound((NBTTagCompound) sourceStack.getTagCompound().copy());
+            destStack.setTagCompound(sourceStack.getTagCompound().copy());
         }
 
     }
@@ -133,12 +127,12 @@ public class InvUtils {
             ItemStack splitStack;
             if (inv.getStackInSlot(slot).stackSize <= amount) {
                 splitStack = inv.getStackInSlot(slot);
-                inv.setStackInSlot(slot, (ItemStack) null);
+                inv.setStackInSlot(slot, null);
                 return splitStack;
             } else {
                 splitStack = inv.getStackInSlot(slot).splitStack(amount);
                 if (inv.getStackInSlot(slot).stackSize < 1) {
-                    inv.setStackInSlot(slot, (ItemStack) null);
+                    inv.setStackInSlot(slot, null);
                 }
                 return splitStack;
             }
@@ -279,7 +273,7 @@ public class InvUtils {
                 }
 
                 stackSize -= stack.stackSize;
-                inv.setStackInSlot(i, (ItemStack) null);
+                inv.setStackInSlot(i, null);
             }
         }
 
@@ -288,8 +282,8 @@ public class InvUtils {
 
     public static boolean consumeOresInInventory(ItemStackHandler inv, List<?> list, int stackSize) {
         if (list.size() > 0) {
-            for (int i = 0; i < list.size(); ++i) {
-                ItemStack tempStack = (ItemStack) list.get(i);
+            for (Object aList : list) {
+                ItemStack tempStack = (ItemStack) aList;
                 Item item = tempStack.getItem();
                 int meta = tempStack.getItemDamage();
 
@@ -304,7 +298,7 @@ public class InvUtils {
                                 }
 
                                 stackSize -= stack.stackSize;
-                                inv.setStackInSlot(j, (ItemStack) null);
+                                inv.setStackInSlot(j, null);
                             }
                         } else {
                             if (stack.stackSize >= stackSize) {
@@ -313,7 +307,7 @@ public class InvUtils {
                             }
 
                             stackSize -= stack.stackSize;
-                            inv.setStackInSlot(j, (ItemStack) null);
+                            inv.setStackInSlot(j, null);
                         }
                     }
                 }

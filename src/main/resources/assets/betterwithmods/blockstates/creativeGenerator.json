@@ -14,10 +14,6 @@
       {
         "transform": "forge:default-block"
       }
-    ],
-    "ison": {
-      "true": {},
-      "false": {}
-    }
+    ]
   }
 }

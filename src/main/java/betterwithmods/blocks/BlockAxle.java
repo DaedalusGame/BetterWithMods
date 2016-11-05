@@ -6,14 +6,16 @@ import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -29,23 +31,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVariants {
-    public static final PropertyInteger AXLEDIR = PropertyInteger.create("dir", 0, 2);
+import static net.minecraft.util.EnumFacing.Axis.Y;
+
+public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle, IMultiVariants {
     public static final PropertyInteger SIGNAL = PropertyInteger.create("signal", 0, 4);
-    public static final int tickRate = 1;
-    public static final EnumFacing[][] facings = {{EnumFacing.UP, EnumFacing.DOWN}, {EnumFacing.NORTH, EnumFacing.SOUTH}, {EnumFacing.WEST, EnumFacing.EAST}};
+    public static final int TICK_RATE = 1;
+
+    private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
+    private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
+    private static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
 
     //TODO: Make a reinforced axle with a max power of 5
     public BlockAxle() {
         super(Material.WOOD);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXLEDIR, 0).withProperty(SIGNAL, 0));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Y).withProperty(SIGNAL, 0));
         this.setSoundType(SoundType.WOOD);
+        setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
     @Override
     public String[] getVariants() {
-        return new String[]{"dir=0,signal=0"};
+        return new String[]{"axis=y,signal=0"};
     }
 
     @Override
@@ -55,9 +62,9 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
         if (world.isRemote && emptyHands)
             return true;
         else if (!world.isRemote && emptyHands) {
-            int dir = state.getValue(AXLEDIR) == 2 ? 0 : state.getValue(AXLEDIR) + 1;
+            EnumFacing.Axis dir = DirUtils.getNextAxis(state.getValue(AXIS));
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(SIGNAL, 0).withProperty(AXLEDIR, dir));
+            world.setBlockState(pos, state.withProperty(SIGNAL, 0).withProperty(AXIS, dir));
             world.notifyNeighborsOfStateChange(pos, this);
             world.scheduleBlockUpdate(pos, this, 10, 5);
             return true;
@@ -67,7 +74,7 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
 
     @Override
     public int tickRate(World world) {
-        return tickRate;
+        return TICK_RATE;
     }
 
     @Override
@@ -87,36 +94,21 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        int ori = state.getValue(AXLEDIR);
-        AxisAlignedBB axis = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
-        switch (ori) {
-            case 0:
-                break;
-            case 1:
-                axis = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
-                break;
-            case 2:
-                axis = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
-                break;
+        switch (state.getValue(AXIS)) {
+            case X:
+                return X_AABB;
+            case Y:
+                return Y_AABB;
+            case Z:
+            default:
+                return Z_AABB;
         }
-        return axis;
-    }
-
-    @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, placer);
-        return setAxisAlignment(state, side);
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return EnumFacing.getFront(world.getBlockState(pos).getValue(AXLEDIR).intValue() * 2);
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        world.scheduleBlockUpdate(pos, this, tickRate, 5);
+        world.scheduleBlockUpdate(pos, this, TICK_RATE, 5);
     }
 
     @Override
@@ -130,55 +122,31 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
         validatePowerLevel(world, pos);
     }
 
-    private IBlockState setAxisAlignment(IBlockState state, EnumFacing facing) {
-        int axis;
-        switch (facing) {
-            case DOWN:
-            case UP:
-                axis = 0;
-                break;
-            case NORTH:
-            case SOUTH:
-                axis = 1;
-                break;
-            default:
-                axis = 2;
-        }
-        return state.withProperty(AXLEDIR, axis).withProperty(SIGNAL, 0);
-    }
-
     private void setPowerLevel(World world, BlockPos pos, int power) {
         IBlockState state = world.getBlockState(pos);
-
-        state = setPowerLevelInState(state, power);
-
-        world.setBlockState(pos, state);
-    }
-
-    private IBlockState setPowerLevelInState(IBlockState state, int power) {
-        return state.withProperty(SIGNAL, power);
+        world.setBlockState(pos, state.withProperty(SIGNAL, power));
     }
 
     private void validatePowerLevel(World world, BlockPos pos) {
         int currentPower = getPowerLevel(world, pos);
-        int axis = getAxisAlignment(world, pos);
-
         int maxNeighborPower = 0;
         int greaterPowerNeighbors = 0;
 
-        for (int i = 0; i < 2; i++) {
-            EnumFacing dir = facings[axis][i];
-            BlockPos pos2 = pos.offset(dir); //position of block checked
-            Block block = world.getBlockState(pos2).getBlock();
+        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
+        for (EnumFacing dir : EnumFacing.VALUES) {
+            if (dir.getAxis() == axis) {
+                BlockPos pos2 = pos.offset(dir); //position of block checked
+                Block block = world.getBlockState(pos2).getBlock();
 
-            if (block instanceof IMechanical) {
-                IMechanical mech = (IMechanical) block;
-                int powerLevel = mech.getMechPowerLevelToFacing(world, pos2, dir.getOpposite());
+                if (block instanceof IMechanical) {
+                    IMechanical mech = (IMechanical) block;
+                    int powerLevel = mech.getMechPowerLevelToFacing(world, pos2, dir.getOpposite());
 
-                if (powerLevel > maxNeighborPower)
-                    maxNeighborPower = powerLevel;
-                if (powerLevel > currentPower)
-                    greaterPowerNeighbors++;
+                    if (powerLevel > maxNeighborPower)
+                        maxNeighborPower = powerLevel;
+                    if (powerLevel > currentPower)
+                        greaterPowerNeighbors++;
+                }
             }
         }
 
@@ -187,7 +155,7 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
             return;
         }
 
-        int newPower = currentPower;
+        int newPower;
 
         if (maxNeighborPower > currentPower) {
             if (maxNeighborPower == 1) {
@@ -211,10 +179,11 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
 
     @Override
     public int getMechPowerLevelToFacing(World world, BlockPos pos, EnumFacing dir) {
-        int alignment = getAxisAlignment(world, pos);
-        if (dir.ordinal() >> 1 == alignment)
+        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
+        if (dir.getAxis() == axis)
             return getPowerLevel(world, pos);
-        return 0;
+        else
+            return 0;
     }
 
     @Override
@@ -228,38 +197,39 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
     }
 
     private int getPowerLevelFromState(IBlockState state) {
-        return state.getValue(SIGNAL).intValue();
+        return state.getValue(SIGNAL);
     }
 
     @Override
     public int getAxisAlignment(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(AXLEDIR);
+        return DirUtils.getLegacyAxis(world.getBlockState(pos).getValue(AXIS));
     }
 
     @Override
     public boolean isAxleOrientedToFacing(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        int axis = getAxisAlignment(world, pos);
-
-        return dir == facings[axis][0] || dir == facings[axis][1];
+        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
+        return axis == dir.getAxis();
     }
 
     public void overpower(World world, BlockPos pos) {
-        int axis = getAxisAlignment(world, pos);
-
-        overpowerBlockToSide(world, pos, axis, facings[axis][0]);
-        overpowerBlockToSide(world, pos, axis, facings[axis][1]);
+        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
+        for (EnumFacing dir : EnumFacing.VALUES) {
+            if (dir.getAxis() == axis) {
+                overpowerBlockToSide(world, pos, axis, dir);
+            }
+        }
     }
 
-    private void overpowerBlockToSide(World world, BlockPos pos, int source, EnumFacing dir) {
+    private void overpowerBlockToSide(World world, BlockPos pos, EnumFacing.Axis sourceAxis, EnumFacing dir) {
         BlockPos pos2 = pos.offset(dir);
 
         Block block = world.getBlockState(pos2).getBlock();
 
         if ((block == BWMBlocks.AXLE)) {
-            int axis = ((BlockAxle) world.getBlockState(pos2).getBlock()).getAxisAlignment(world, pos2);
+            EnumFacing.Axis axis = world.getBlockState(pos2).getValue(AXIS);
 
-            if (axis == source)
-                overpowerBlockToSide(world, pos2, source, dir);
+            if (axis == sourceAxis)
+                overpowerBlockToSide(world, pos2, sourceAxis, dir);
         } else if (block instanceof IMechanicalBlock) {
             IMechanicalBlock mech = (IMechanicalBlock) block;
 
@@ -304,25 +274,25 @@ public class BlockAxle extends BWMBlock implements IMechanical, IAxle, IMultiVar
             return 0;
     }
 
-    private int orientationFromMeta(int meta) {
+    private EnumFacing.Axis orientationFromMeta(int meta) {
         int powerLevel = 3 * powerLevelFromMeta(meta);
-        return meta - powerLevel;
+        return DirUtils.getAxisFromLegacy(meta - powerLevel);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return (state.getValue(SIGNAL) * 3) + state.getValue(AXLEDIR);
+        return (state.getValue(SIGNAL) * 3) + DirUtils.getLegacyAxis(state.getValue(AXIS));
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
         int power = powerLevelFromMeta(meta);
-        int ori = orientationFromMeta(meta);
-        return this.getDefaultState().withProperty(AXLEDIR, ori).withProperty(SIGNAL, power);
+        EnumFacing.Axis ori = orientationFromMeta(meta);
+        return this.getDefaultState().withProperty(AXIS, ori).withProperty(SIGNAL, power);
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, AXLEDIR, SIGNAL);
+        return new BlockStateContainer(this, AXIS, SIGNAL);
     }
 }

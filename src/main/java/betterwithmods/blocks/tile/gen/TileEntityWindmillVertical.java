@@ -21,11 +21,16 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityWindmillVertical extends TileEntityMechGenerator implements IColor {
+public class TileEntityWindmillVertical extends TileEntityMillGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0, 0, 0, 0, 0};
 
     public int getBladeColor(int blade) {
         return bladeMeta[blade];
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
     }
 
     @Override
@@ -70,7 +75,18 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
 
     @Override
     public boolean isValid() {
-        return isMasterValid();
+        //check master's validity
+        boolean valid = true;
+        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
+            for (int i = -3; i < 4; i++) {
+                if (i == 0)
+                    continue;
+                valid = isSlaveValid(i);
+                if (!valid)
+                    break;
+            }
+        }
+        return valid;
     }
 
     public boolean isSlaveValid(int offset) {
@@ -101,26 +117,9 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
         return notBlocked;
     }
 
-    public boolean isMasterValid() {
-        boolean valid = true;
-        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
-            for (int i = -3; i < 4; i++) {
-                if (i == 0)
-                    continue;
-                valid = isSlaveValid(i);
-                if (!valid)
-                    break;
-            }
-        }
-        return valid;
-    }
-
     @Override
     public boolean verifyIntegrity() {
-        return masterHasIntegrity();
-    }
-
-    public boolean masterHasIntegrity() {
+        //check master's integrity
         boolean integrity = true;
         {
             for (int offY = -3; offY < 4; offY++) {
@@ -152,16 +151,14 @@ public class TileEntityWindmillVertical extends TileEntityMechGenerator implemen
     @Override
     public void overpower() {
         if (this.getBlockType() instanceof BlockWindmill) {
-            BlockWindmill block = (BlockWindmill) this.worldObj.getBlockState(pos).getBlock();
-            {
-                int align = block.getAxisAlignment(this.worldObj, pos);
-                EnumFacing[] dir = BlockAxle.facings[align];
-                for (int i = 0; i < 2; i++) {
-                    BlockPos offset = pos.offset(dir[i]);
+            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+            for (EnumFacing dir : EnumFacing.VALUES) {
+                if (dir.getAxis() == axis) {
+                    BlockPos offset = pos.offset(dir);
                     Block axle = this.worldObj.getBlockState(offset).getBlock();
                     if (axle instanceof BlockAxle)
                         ((BlockAxle) axle).overpower(this.worldObj, offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir[i].getOpposite()))
+                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir.getOpposite()))
                         ((IMechanicalBlock) axle).overpower(this.worldObj, offset);
                 }
             }

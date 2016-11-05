@@ -46,8 +46,8 @@ public class BlockDetector extends BWMBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
         return setFacingInBlock(state, DirUtils.convertEntityOrientationToFacing(entity, side));
     }
 
@@ -74,7 +74,7 @@ public class BlockDetector extends BWMBlock {
         boolean blockDetection = detectBlock(world, pos);
         boolean detected = checkDetection(world, pos);
 
-        EnumFacing facing = getFacing(world, pos);
+        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
         BlockPos offset = pos.offset(facing);
 
         if (world.isAirBlock(offset)) {
@@ -109,16 +109,6 @@ public class BlockDetector extends BWMBlock {
     @Override
     public boolean canProvidePower(IBlockState state) {
         return true;
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(DirUtils.FACING);
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        setFacingInBlock(world.getBlockState(pos), facing);
     }
 
     @Override
@@ -173,7 +163,7 @@ public class BlockDetector extends BWMBlock {
     }
 
     public boolean detectBlock(World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacing(world, pos));
+        BlockPos offset = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
         Block target = world.getBlockState(offset).getBlock();
 
         if (world.isAirBlock(offset) && (world.getBiomeForCoordsBody(offset).canRain() && world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering()))) {
@@ -182,7 +172,7 @@ public class BlockDetector extends BWMBlock {
 
         if (target == BWMBlocks.LENS) {
             BlockLens lens = (BlockLens) target;
-            if (lens.getFacing(world, offset) == DirUtils.getOpposite(getFacing(world, pos)) && lens.isLit(world, offset))
+            if (lens.getFacingFromBlockState(world.getBlockState(offset)) == DirUtils.getOpposite(getFacingFromBlockState(world.getBlockState(pos))) && lens.isLit(world, offset))
                 return true;
         } else if (world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM)
             return true;
@@ -200,7 +190,7 @@ public class BlockDetector extends BWMBlock {
     }
 
     public boolean checkDetection(World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacing(world, pos));
+        BlockPos offset = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
 
         if (world.isAirBlock(offset)) {
             int x = offset.getX();
@@ -214,7 +204,7 @@ public class BlockDetector extends BWMBlock {
             BlockPos below = offset.offset(EnumFacing.DOWN);
             if (world.getBlockState(below).getBlock() instanceof BlockCrops && !(world.getBlockState(below).getBlock() instanceof BlockHemp) && world.getBlockState(below).getBlock().getMetaFromState(world.getBlockState(below)) >= ((BlockCrops) world.getBlockState(below).getBlock()).getMaxAge()) {
                 return true;
-            } else if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacing(world, offset) == getFacing(world, pos)) {
+            } else if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacingFromBlockState(world.getBlockState(offset)) == getFacingFromBlockState(world.getBlockState(pos))) {
                 return true;
             }
         } else {

@@ -164,7 +164,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     public List<EntityItem> getCaptureItems(World worldIn, BlockPos pos) {
-        return worldIn.<EntityItem>getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+        return worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
     }
 
     private boolean captureDroppedItems() {
@@ -176,13 +176,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                 //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (flag) {
-                this.worldObj.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.validateInventory()) {
-                    IBlockState state = worldObj.getBlockState(pos);
-                    int filledSlots = this.filledSlots();
-                    //if (filledSlots != state.getValue(BlockMechMachines.FILLEDSLOTS))
-                    //worldObj.setBlockState(pos, state.withProperty(BlockMechMachines.FILLEDSLOTS, filledSlots));
-                    worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//worldObj.markBlockForUpdate(pos);
+                    worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);
                 }
                 return true;
             }
@@ -214,7 +210,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
             }
 
             if (ejectIntoWorld) {
-                this.worldObj.playSound((EntityPlayer) null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ejectStack(worldObj, target, facing, eject);
                 inventory.extractItem(index, ejectStackSize, false);
             }
@@ -226,7 +222,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
         EntityItem item = new EntityItem(world, pos.getX() + 0.5F - (vec.getX() / 4d), pos.getY() + 0.25D, pos.getZ() + 0.5D - (vec.getZ() / 4d), stack);
         float velocity = 0.05F;
         item.motionX = (double) (vec.getX() * velocity);
-        item.motionY = (double) (vec.getY() * velocity * 0.1);
+        item.motionY = vec.getY() * velocity * 0.1;
         item.motionZ = (double) (vec.getZ() * velocity);
         item.setDefaultPickupDelay();
         world.spawnEntityInWorld(item);
@@ -256,10 +252,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
         if (this.fireIntensity > 0) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
-                    int xPos = x;
                     int yPos = -1;
-                    int zPos = z;
-                    BlockPos target = pos.add(xPos, yPos, zPos);
+                    BlockPos target = pos.add(x, yPos, z);
                     Block block = this.worldObj.getBlockState(target).getBlock();
                     int meta = this.worldObj.getBlockState(target).getBlock().damageDropped(this.worldObj.getBlockState(target));
                     if (BWMHeatRegistry.get(block, meta) != null)

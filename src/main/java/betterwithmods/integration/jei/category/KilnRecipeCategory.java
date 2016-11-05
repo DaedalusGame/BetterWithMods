@@ -49,6 +49,7 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
         return background;
     }
 
+    @Deprecated
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();

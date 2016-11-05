@@ -25,7 +25,7 @@ public class BlockTemporaryWater extends BlockLiquid {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = state.getValue(LEVEL).intValue();
+        int i = state.getValue(LEVEL);
 
         IBlockState stateBelow = worldIn.getBlockState(pos.down());
 
@@ -72,7 +72,7 @@ public class BlockTemporaryWater extends BlockLiquid {
             }
 
             worldIn.setBlockState(pos,
-                    Blocks.FLOWING_WATER.getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
+                    Blocks.FLOWING_WATER.getDefaultState().withProperty(LEVEL, level), 3);
         }
     }
 
@@ -85,14 +85,14 @@ public class BlockTemporaryWater extends BlockLiquid {
 
     private Set<EnumFacing> getPossibleFlowDirections(World worldIn, BlockPos pos) {
         int i = 1000;
-        Set<EnumFacing> set = EnumSet.<EnumFacing>noneOf(EnumFacing.class);
+        Set<EnumFacing> set = EnumSet.noneOf(EnumFacing.class);
 
         for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
             BlockPos blockpos = pos.offset(enumfacing);
             IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
             if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.blockMaterial
-                    || ((Integer) iblockstate.getValue(LEVEL)).intValue() > 0)) {
+                    || iblockstate.getValue(LEVEL) > 0)) {
                 int j;
 
                 if (this.isBlocked(worldIn, blockpos.down(), worldIn.getBlockState(blockpos.down()))) {
@@ -124,7 +124,7 @@ public class BlockTemporaryWater extends BlockLiquid {
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
                 if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.blockMaterial
-                        || iblockstate.getValue(LEVEL).intValue() > 0)) {
+                        || iblockstate.getValue(LEVEL) > 0)) {
                     if (!this.isBlocked(worldIn, blockpos.down(), iblockstate)) {
                         return distance;
                     }

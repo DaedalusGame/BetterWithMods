@@ -7,7 +7,7 @@ public class CraftingManagerCrucible extends CraftingManagerBulk {
         super("crucible");
     }
 
-    public static final CraftingManagerCrucible getInstance() {
+    public static CraftingManagerCrucible getInstance() {
         return instance;
     }
 }

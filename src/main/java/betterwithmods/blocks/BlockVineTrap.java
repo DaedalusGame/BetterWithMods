@@ -3,7 +3,6 @@ package betterwithmods.blocks;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -96,6 +95,6 @@ public class BlockVineTrap extends BWMBlock {
     }
 
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{HALF});
+        return new BlockStateContainer(this, HALF);
     }
 }

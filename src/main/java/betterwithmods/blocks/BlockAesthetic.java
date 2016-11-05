@@ -69,7 +69,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         return new BlockStateContainer(this, blockType);
     }
 
-    public static enum EnumType implements IStringSerializable {
+    public enum EnumType implements IStringSerializable {
         CHOPBLOCK(0, "chopping", MapColor.STONE),
         CHOPBLOCKBLOOD(1, "chopping_blood", MapColor.NETHERRACK),
         STEEL(2, "steel", MapColor.IRON),
@@ -92,7 +92,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         private final String name;
         private final MapColor color;
 
-        private EnumType(int meta, String name, MapColor color) {
+        EnumType(int meta, String name, MapColor color) {
             this.meta = meta;
             this.name = name;
             this.color = color;

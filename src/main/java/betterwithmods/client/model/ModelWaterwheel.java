@@ -5,8 +5,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelWaterwheel extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRenderer[] components = new ModelRenderer[16];
+    public final ModelRenderer axle;
+    public final ModelRenderer[] components = new ModelRenderer[16];
 
     public ModelWaterwheel() {
         for (int i = 0; i < 8; i++) {

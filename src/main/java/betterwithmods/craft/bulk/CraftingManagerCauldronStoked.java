@@ -7,7 +7,7 @@ public class CraftingManagerCauldronStoked extends CraftingManagerBulk {
         super("cauldronStoked");
     }
 
-    public static final CraftingManagerCauldronStoked getInstance() {
+    public static CraftingManagerCauldronStoked getInstance() {
         return instance;
     }
 }

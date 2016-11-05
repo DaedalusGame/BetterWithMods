@@ -5,12 +5,12 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelVerticalSails extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRendererChild[] components = new ModelRendererChild[8];
+    public final ModelRenderer axle;
+    public final ModelRendererChild[] components = new ModelRendererChild[8];
 
     public ModelVerticalSails() {
         for (int i = 0; i < 8; i++) {
-            this.components[i] = new ModelRendererChild(this, 0, 0, i);
+            this.components[i] = new ModelRendererChild(this, 0, 0);
             this.components[i].setTextureSize(16, 16);
             this.components[i].addBox(70.4F, -50.0F, -20.0F, 1, 100, 20);
             this.components[i].setRotationPoint(0.0F, 0.0F, 0.0F);

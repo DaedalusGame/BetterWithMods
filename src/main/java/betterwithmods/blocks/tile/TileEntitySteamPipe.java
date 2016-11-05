@@ -20,7 +20,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
     @Override
     public void update() {
-        if(update) {
+        if (update) {
             calculateSteamPower(null);
             update = false;
         }
@@ -34,19 +34,16 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
                 if (tile != null) {
                     if (isPipelineExit(tile, facing)) {
                         dirs.add(facing);
-                    }
-                    else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
+                    } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
                         if (facing == EnumFacing.DOWN) {
                             if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) == 0)
                                 dirs.add(facing);
-                        }
-                        else if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) < steamPower)
+                        } else if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) < steamPower)
                             dirs.add(facing);
                     }
                 }
             }
-        }
-        else {
+        } else {
             for (EnumFacing facing : EnumFacing.VALUES) {
                 TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
                 if (tile != null) {
@@ -79,11 +76,9 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
         if (highestNeighbor > currentPower) {
             currentPower = highestNeighbor - 1;
-        }
-        else if (currentPower > 0) {
+        } else if (currentPower > 0) {
             --currentPower;
-        }
-        else {
+        } else {
             currentPower = 0;
         }
 
@@ -109,9 +104,9 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
     @Override
     public void readSteamPower(NBTTagCompound tag) {
-        if(tag.hasKey("Steam"))
+        if (tag.hasKey("Steam"))
             this.steamPower = tag.getInteger("Steam");
-        if(tag.hasKey("Heat"))
+        if (tag.hasKey("Heat"))
             this.heatUnits = tag.getInteger("Heat");
     }
 
@@ -132,7 +127,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
     @Override
     public int getHeatUnits(EnumFacing facing) {
         int transfer = findLowestTransfer(true).size();
-        if(transfer > 0)
+        if (transfer > 0)
             return heatUnits / transfer;
         return heatUnits;
     }
@@ -160,7 +155,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
     @Override
     public void setSteamUpdate(boolean update) {
-        if(this.update != update)
+        if (this.update != update)
             this.update = update;
     }
 

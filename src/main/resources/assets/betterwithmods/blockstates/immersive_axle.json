@@ -31,10 +31,12 @@
         "model": "betterwithmods:axle"
       },
       "1": {
-        "model": "betterwithmods:axle_side"
+        "model": "betterwithmods:axle",
+        "x": 90
       },
       "2": {
-        "model": "betterwithmods:axle_side",
+        "model": "betterwithmods:axle",
+        "x": 90,
         "y": 90
       }
     }

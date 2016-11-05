@@ -3,7 +3,7 @@ package betterwithmods.integration.tcon;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.integration.ModIntegration;
+import betterwithmods.integration.ICompatModule;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -31,26 +31,27 @@ import slimeknights.tconstruct.tools.TinkerTraits;
 
 import java.util.List;
 
-public class TConstruct extends ModIntegration {
+@SuppressWarnings("unused")
+public class TConstruct implements ICompatModule {
 
-    public final Material soulforgedSteel = mat("soulforgedSteel", 5066061);
-    public final Material hellfire = mat("hellfire", 14426647);
-
+    public static final String MODID = "tconstruct";
+    public final Material soulforgedSteel = newTinkerMaterial("soulforgedSteel", 5066061);
+    public final Material hellfire = newTinkerMaterial("hellfire", 14426647);
     public AbstractTrait mending;
-
     public FluidMolten soulforgeFluid;
     public FluidMolten hellfireFluid;
 
+    @Override
+    public void preInit() {
+    }
+
+    @Override
     public void init() {
         mending = new TraitMending();
-        if (BWMod.proxy.isClientside())
-            registerRenderInfo(soulforgedSteel, 5066061, 0.1F, 0.3F, 0.1F);
         soulforgeFluid = fluidMetal("soulforged_steel", 5066061);
         soulforgeFluid.setTemperature(681);
         soulforgedSteel.addItem("ingotSoulforgedSteel", 1, Material.VALUE_Ingot);
         soulforgedSteel.addTrait(mending);
-        if (BWMod.proxy.isClientside())
-            registerRenderInfo(hellfire, 14426647, 0.0F, 0.2F, 0.0F);
         hellfireFluid = fluidMetal("hellfire", 14426647);
         hellfireFluid.setTemperature(850);
         hellfire.addItem("ingotHellfire", 1, Material.VALUE_Ingot);
@@ -62,23 +63,51 @@ public class TConstruct extends ModIntegration {
         registerMaterial(hellfire, hellfireFluid, "Hellfire");
         fixHellfireDust();
         netherWhitelist();
-        if (BWMod.proxy.isClientside())
-            registerClientRendering();
+    }
+
+    @Override
+    public void postInit() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void preInitClient() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void initClient() {
+        registerRenderInfo(soulforgedSteel, 5066061, 0.1F, 0.3F, 0.1F);
+        registerRenderInfo(hellfire, 14426647, 0.0F, 0.2F, 0.0F);
+        registerClientRendering();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void postInitClient() {
+
     }
 
     @SideOnly(Side.CLIENT)
     private void registerClientRendering() {
-        RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "stone_ladder"))), new ModelTransparent(new ResourceLocation("tconstruct", "textures/blocks/stone_ladder.png")));
+        RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, "stone_ladder"))), new ModelTransparent(new ResourceLocation(MODID, "textures/blocks/stone_ladder.png")));
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void registerRenderInfo(Material material, int color, float shininess, float brightness, float hueshift) {
+        material.setRenderInfo(new MaterialRenderInfo.Metal(color, shininess, brightness, hueshift));
     }
 
     private void netherWhitelist() {
-        Block ore = Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "ore"));
+        Block ore = Block.REGISTRY.getObject(new ResourceLocation(MODID, "ore"));
         NetherSpawnWhitelist.addBlock(ore, 0);
         NetherSpawnWhitelist.addBlock(ore, 1);
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "slime_congealed")), 3);
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "slime_congealed")), 4);
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "slime_dirt")), 3);
-        Block slimeGrass = Block.REGISTRY.getObject(new ResourceLocation("tconstruct", "slime_grass"));
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "slime_congealed")), 3);
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "slime_congealed")), 4);
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "slime_dirt")), 3);
+        Block slimeGrass = Block.REGISTRY.getObject(new ResourceLocation(MODID, "slime_grass"));
         NetherSpawnWhitelist.addBlock(slimeGrass, 4);
         NetherSpawnWhitelist.addBlock(slimeGrass, 9);
         NetherSpawnWhitelist.addBlock(slimeGrass, 14);
@@ -91,7 +120,7 @@ public class TConstruct extends ModIntegration {
         mat.registerRepresentativeItem();
     }
 
-    private Material mat(String name, int color) {
+    private Material newTinkerMaterial(String name, int color) {
         Material mat = new Material(name, color);
         TinkerMaterials.materials.add(mat);
         return mat;
@@ -108,10 +137,6 @@ public class TConstruct extends ModIntegration {
         return fluid;
     }
 
-    @SideOnly(Side.CLIENT)
-    private void registerRenderInfo(Material material, int color, float shininess, float brightness, float hueshift) {
-        material.setRenderInfo(new MaterialRenderInfo.Metal(color, shininess, brightness, hueshift));
-    }
 
     private void fixHellfireDust() {
         Pair<List<ItemStack>, Integer> dustOre = Pair.of(OreDictionary.getOres("powderedHellfire"), Material.VALUE_Ingot / 8);

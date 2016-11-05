@@ -6,16 +6,15 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWindmillVertical> {
-    private ModelVerticalShafts modelShafts = new ModelVerticalShafts();
-    private ModelVerticalSails modelSails = new ModelVerticalSails();
-    private ModelVerticalFrame modelFrame = new ModelVerticalFrame();
+    private final ModelVerticalShafts modelShafts = new ModelVerticalShafts();
+    private final ModelVerticalSails modelSails = new ModelVerticalSails();
+    private final ModelVerticalFrame modelFrame = new ModelVerticalFrame();
 
     @Override
     public void renderTileEntityAt(TileEntityWindmillVertical te, double x, double y, double z,
                                    float partialTicks, int destroyStage) {
-        TileEntityWindmillVertical windmill = (TileEntityWindmillVertical) te;
 
-        float rotation = (windmill.getCurrentRotation() + (windmill.getRunningState() == 0 ? 0 : partialTicks * windmill.getPrevRotation()));
+        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
         rotation = -rotation;
 
         GlStateManager.pushMatrix();
@@ -28,7 +27,7 @@ public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWi
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
         this.modelFrame.render(0.0625F);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"));
-        this.modelSails.render(0.0625F, windmill);
+        this.modelSails.render(0.0625F, te);
         GlStateManager.popMatrix();
     }
 }

@@ -77,7 +77,6 @@ public class HungerEventHandler {
 
     /**
      * Revert player's food system to vanilla {@link FoodStats}.
-     *
      */
     private void revertFoodSystem(EntityPlayer player) {
         if (!(player.getFoodStats() instanceof BWMFoodStats))
@@ -97,7 +96,6 @@ public class HungerEventHandler {
 
     /**
      * The FoodStats must be manually saved with event. Why is not known.
-     *
      */
     @SubscribeEvent
     public void saveFoodSystem(PlayerLoggedOutEvent event) {
@@ -108,7 +106,6 @@ public class HungerEventHandler {
 
     /**
      * Eating is not allowed when food poisoned.
-     *
      */
     @SubscribeEvent
     public void onFood(LivingEntityUseItemEvent.Start event) {
@@ -128,7 +125,6 @@ public class HungerEventHandler {
      * Mining speed changed according to health/exhaustion/fat. Complete rework
      * of EntityPlayer.getDigSpeed() to also check if using right item to
      * harvest.
-     *
      */
     @SubscribeEvent
     public void breakSpeedPenalty(PlayerEvent.BreakSpeed event) {
@@ -195,7 +191,6 @@ public class HungerEventHandler {
 
     /**
      * Walking speed changed according to health/exhaustion/fat
-     *
      */
     @SubscribeEvent
     public void walkingPenalty(LivingUpdateEvent event) {
@@ -214,7 +209,6 @@ public class HungerEventHandler {
     /**
      * Disable swimming if needed. FIXME Not able to jump at the bottom.
      * New hook may be required. (Probable workaround implemented)
-     *
      */
     @SubscribeEvent
     public void swimmingPenalty(LivingUpdateEvent event) {
@@ -251,7 +245,6 @@ public class HungerEventHandler {
      * penalties. Original FOV value given by the event is never used, we start
      * from scratch 1.0F value. Edited from
      * AbstractClientPlayer.getFovModifier()
-     *
      */
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent event) {

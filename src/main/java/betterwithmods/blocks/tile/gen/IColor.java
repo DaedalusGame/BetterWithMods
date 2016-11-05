@@ -1,7 +1,7 @@
 package betterwithmods.blocks.tile.gen;
 
 public interface IColor {
-    public boolean dyeBlade(int color);
+    boolean dyeBlade(int color);
 
-    public int getColorFromBlade(int blade);
+    int getColorFromBlade(int blade);
 }

@@ -24,7 +24,7 @@ public abstract class BlockFurniture extends BWMBlock {
     protected static final AxisAlignedBB TABLE_STAND_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 0.875D, 0.625D);
     protected static final AxisAlignedBB HALF_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
 
-    public BlockFurniture(Material material, String name) {
+    public BlockFurniture(Material material) {
         super(material);
         this.setHardness(3.5F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);

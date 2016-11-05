@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.BlockGen;
+import betterwithmods.blocks.BlockWindmill;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,23 +8,22 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHorizontal> {
-    private ModelWindmillShafts shafts = new ModelWindmillShafts();
-    private ModelWindmillSail sail = new ModelWindmillSail();
+    private final ModelWindmillShafts shafts = new ModelWindmillShafts();
+    private final ModelWindmillSail sail = new ModelWindmillSail();
 
     @Override
     public void renderTileEntityAt(TileEntityWindmillHorizontal te, double x, double y, double z,
                                    float partialTicks, int destroyStage) {
-        TileEntityWindmillHorizontal windmill = (TileEntityWindmillHorizontal) te;
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
-        float rotation = (windmill.getCurrentRotation() + (windmill.getRunningState() == 0 ? 0 : partialTicks * windmill.getPrevRotation()));
+        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
         EnumFacing dir = EnumFacing.SOUTH;
 
         if (te.hasWorldObj()) {
-            if (te.getBlockType() instanceof BlockGen)
-                dir = ((BlockGen) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
+            if (te.getBlockType() instanceof BlockWindmill)
+                dir = ((BlockWindmill) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
         }
 
         if (dir == EnumFacing.EAST) {
@@ -41,7 +40,7 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
         this.shafts.render(0.0625F);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"));
-        this.sail.render(0.0625F, windmill);
+        this.sail.render(0.0625F, te);
         GlStateManager.popMatrix();
     }
 

@@ -8,6 +8,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 public class MechanicalCapability {
+    @SuppressWarnings("CanBeFinal")
     @CapabilityInject(IMechanicalPower.class)
     public static Capability<IMechanicalPower> MECHANICAL_POWER = null;
 
@@ -35,14 +36,15 @@ public class MechanicalCapability {
         }
 
         @Override
-        public int getMinimumInput(EnumFacing facing) {
+        public int getMaximumInput(EnumFacing facing) {
             return 0;
         }
 
         @Override
-        public int getMaximumInput(EnumFacing facing) {
+        public int getMinimumInput(EnumFacing facing) {
             return 0;
         }
+
 
         @Override
         public void readFromTag(NBTTagCompound tag) {

@@ -13,6 +13,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +27,10 @@ import java.util.Random;
 public class BlockImmersiveAxle extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyInteger AXLEDIR = PropertyInteger.create("dir", 0, 2);
+
+    private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
+    private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
+    private static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
 
     public BlockImmersiveAxle() {
         super(Material.WOOD);
@@ -57,23 +62,21 @@ public class BlockImmersiveAxle extends BWMBlock implements IMechanicalBlock, IT
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         int ori = state.getValue(AXLEDIR);
-        AxisAlignedBB axis = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
         switch (ori) {
             case 0:
-                break;
+                return Y_AABB;
             case 1:
-                axis = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
-                break;
+                return Z_AABB;
             case 2:
-                axis = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
-                break;
+                return X_AABB;
         }
-        return axis;
+        return null;
     }
 
+    @Deprecated
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, stack);
         return setAxisAlignment(state, side);
     }
 

@@ -50,15 +50,15 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, facing, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer, stack);
         return setFacingInBlock(state, DirUtils.getOpposite(facing));
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
         EnumFacing facing = DirUtils.convertEntityOrientationToFacing(entity, EnumFacing.NORTH);
-        setFacing(world, pos, facing);
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, facing));
     }
 
     @Override
@@ -167,14 +167,8 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         return side != getFacingFromBlockState(state);
     }
 
-    @Override
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
         return getFacingFromBlockState(world.getBlockState(pos));
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, facing));
     }
 
     @Override

@@ -40,8 +40,6 @@ public class BWMFoodStats extends FoodStats {
 
     /**
      * Passing time also exhausts the player.
-     *
-     * @param player
      */
     private void updateExhaustionWithTime(EntityPlayer player) {
         ++this.exhaustionTimer;

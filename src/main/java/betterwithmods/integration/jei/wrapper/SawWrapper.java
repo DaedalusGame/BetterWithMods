@@ -16,8 +16,9 @@ import java.util.regex.Pattern;
  * Created by tyler on 9/4/16.
  */
 public class SawWrapper extends BlankRecipeWrapper {
-    public List<ItemStack> inputs = Lists.newArrayList(), outputs = Lists.newArrayList();
-    public ItemStack input;
+    public final List<ItemStack> inputs = Lists.newArrayList();
+    public final List<ItemStack> outputs = Lists.newArrayList();
+    public final ItemStack input;
 
     public SawWrapper(String string, List<ItemStack> output) {
         this.input = fromString(string);

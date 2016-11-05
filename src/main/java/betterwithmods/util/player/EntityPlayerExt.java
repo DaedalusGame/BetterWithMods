@@ -97,7 +97,7 @@ public final class EntityPlayerExt {
     /**
      * Edit the speed of an entity.
      *
-     * @param entity The entity whose speed will be changed.
+     * @param entity            The entity whose speed will be changed.
      * @param speedModifierUUID Unique UUID for modification
      * @param name              Unique name for easier debugging
      * @param modifier          The speed will be multiplied by this number

@@ -1,4 +1,7 @@
 {
+  "textures": {
+    "side": "betterwithmods:blocks/rope"
+  },
   "elements": [
     {
       "from": [

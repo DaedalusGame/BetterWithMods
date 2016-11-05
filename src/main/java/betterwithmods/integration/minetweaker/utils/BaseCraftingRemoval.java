@@ -17,7 +17,7 @@ public class BaseCraftingRemoval extends BaseListRemoval<IRecipe> {
     }
 
     public static List<IRecipe> getRecipes(List<IRecipe> list, IIngredient ingredient) {
-        List<IRecipe> recipes = new LinkedList<IRecipe>();
+        List<IRecipe> recipes = new LinkedList<>();
 
         for (IRecipe r : list) {
             if (r != null && r.getRecipeOutput() != null && r.getRecipeOutput() instanceof ItemStack && matches(ingredient, toIItemStack(r.getRecipeOutput()))) {

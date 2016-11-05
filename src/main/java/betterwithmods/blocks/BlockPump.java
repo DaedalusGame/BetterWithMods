@@ -125,10 +125,11 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
         return 5;
     }
 
+    @Deprecated
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                     int meta, EntityLivingBase entity) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
+                                            int meta, EntityLivingBase entity, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
         return setFacingInBlock(state, DirUtils.convertEntityOrientationToFlatFacing(entity, side));
     }
 

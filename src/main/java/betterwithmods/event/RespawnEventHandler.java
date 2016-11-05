@@ -26,8 +26,6 @@ public class RespawnEventHandler {
 
     /**
      * Disable Beds
-     *
-     * @param event
      */
     @SubscribeEvent
     public void onSleepInBed(PlayerSleepInBedEvent event) {
@@ -37,8 +35,6 @@ public class RespawnEventHandler {
 
     /**
      * Random Respawn. Less intense when there is a short time since death.
-     *
-     * @param event
      */
     @SubscribeEvent
     public void randomRespawn(LivingDeathEvent event) {
@@ -57,7 +53,6 @@ public class RespawnEventHandler {
      * Find a random position to respawn. Tries 20 times maximum to find a
      * suitable place. Else, the previous SP will remain unchanged.
      *
-     * @param player
      * @param spawnFuzz A "size coefficient" variable. Proportional to distance
      *                  between spawn points.
      * @return The new BlockPos

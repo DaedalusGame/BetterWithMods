@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Random;
 
 public class NetherSpawnEvent {
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent evt) {

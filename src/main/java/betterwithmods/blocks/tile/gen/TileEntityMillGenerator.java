@@ -4,7 +4,7 @@ import betterwithmods.BWSounds;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.blocks.BlockGen;
+import betterwithmods.blocks.BlockMillGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityMechGenerator extends TileEntity implements ITickable, IMechanicalPower {
+public abstract class TileEntityMillGenerator extends TileEntity implements ITickable, IMechanicalPower {
     //Every generator will take up a single block with no extended bounding box
     public int radius;
     public byte runningState = 0;
@@ -73,7 +73,7 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
         }
         if (this.currentRotation >= 360.0F)
             this.currentRotation -= 360.0F;
-        if (this.worldObj.getTotalWorldTime() % 20L == 0L && worldObj.getBlockState(pos).getBlock() instanceof BlockGen) {
+        if (this.worldObj.getTotalWorldTime() % 20L == 0L && worldObj.getBlockState(pos).getBlock() instanceof BlockMillGenerator) {
             verifyIntegrity();
             updateSpeed();
             if (this.runningState == 2 && overpowerTime < 1) {
@@ -96,7 +96,7 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
     }
 
     public void setRunningState(int i) {
-        boolean oldRun = this.worldObj.getBlockState(this.pos).getValue(BlockGen.ISACTIVE);
+        boolean oldRun = this.worldObj.getBlockState(this.pos).getValue(BlockMillGenerator.ISACTIVE);
         boolean newRun = oldRun;
         this.runningState = (byte) i;
         if (runningState > 0)
@@ -104,7 +104,7 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
         else if (runningState == 0)
             newRun = false;
         if (newRun != oldRun) {
-            this.worldObj.setBlockState(this.pos, this.worldObj.getBlockState(pos).withProperty(BlockGen.ISACTIVE, newRun));
+            this.worldObj.setBlockState(this.pos, this.worldObj.getBlockState(pos).withProperty(BlockMillGenerator.ISACTIVE, newRun));
             worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//this.worldObj.markBlockForUpdate(pos);
         }
     }
@@ -151,11 +151,6 @@ public abstract class TileEntityMechGenerator extends TileEntity implements ITic
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        return 0;
-    }
-
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
 

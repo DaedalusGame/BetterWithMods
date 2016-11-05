@@ -38,9 +38,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Random;
 
 public class MobDropEvent {
+    private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
+    private static final Random rand = new Random();
     public static FakePlayer player;
-    private static int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
-    private static Random rand = new Random();
 
     //Initializing a static fake player for saws, so spawn isn't flooded with player equipping sounds when mobs hit the saw.
     @SubscribeEvent
@@ -75,8 +75,7 @@ public class MobDropEvent {
         if (evt.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
             if (animal instanceof EntityWolf) {
-                if (!animal.worldObj.canSeeSky(animal.getPosition())) ;
-                {
+                if (!animal.worldObj.canSeeSky(animal.getPosition())) {
                     if (animal.getGrowingAge() > 99) {
                         int light = animal.worldObj.getLight(animal.getPosition());
                         if (animal.getGrowingAge() == fearLevel[light]) {

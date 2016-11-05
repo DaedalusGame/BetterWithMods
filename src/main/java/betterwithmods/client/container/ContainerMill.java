@@ -9,10 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import java.util.Iterator;
-
 public class ContainerMill extends Container {
-    private TileEntityMill mill;
+    private final TileEntityMill mill;
     private int lastMillCounter;
 
     public ContainerMill(EntityPlayer player, TileEntityMill mill) {
@@ -41,7 +39,7 @@ public class ContainerMill extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack stack = null;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack stack1 = slot.getStack();
@@ -69,9 +67,7 @@ public class ContainerMill extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        Iterator<IContainerListener> it = this.listeners.iterator();
-        while (it.hasNext()) {
-            IContainerListener craft = it.next();
+        for (IContainerListener craft : this.listeners) {
             if (this.lastMillCounter != this.mill.grindCounter) {
                 craft.sendProgressBarUpdate(this, 0, this.mill.grindCounter);
             }

@@ -1,7 +1,6 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import betterwithmods.integration.jei.wrapper.CrucibleRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
@@ -11,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrapper> {
@@ -42,6 +40,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         flame.draw(minecraft, 80, 19);
     }
 
+    @Deprecated
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
@@ -56,11 +55,9 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
             }
         }
 
-        BulkRecipeWrapper recipe = (BulkRecipeWrapper) wrapper;
-        //craftingGrid.setOutput(stacks, recipe.getOutputs());
-        stacks.set(outputSlots, recipe.getRecipe().getOutput());
-        if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
-            stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
+        stacks.set(outputSlots, wrapper.getRecipe().getOutput());
+        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+            stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
     }

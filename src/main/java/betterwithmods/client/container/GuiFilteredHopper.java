@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiFilteredHopper extends GuiContainer {
-    private TileEntityFilteredHopper tile;
+    private final TileEntityFilteredHopper tile;
 
     public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
         super(new ContainerFilteredHopper(player, tile));

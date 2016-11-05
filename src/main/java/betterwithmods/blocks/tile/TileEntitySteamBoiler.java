@@ -5,7 +5,6 @@ import betterwithmods.api.tile.ISteamPower;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.fluid.BWFluidRegistry;
 import betterwithmods.fluid.FluidTankRestricted;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,13 +29,13 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
 
     @Override
     public void update() {
-        if(heatUnits > 0) {
-            if(steam.getFluidAmount() < steam.getCapacity()) {
-                if(water.getFluidAmount() > 0) {
+        if (heatUnits > 0) {
+            if (steam.getFluidAmount() < steam.getCapacity()) {
+                if (water.getFluidAmount() > 0) {
                     FluidStack evaporate = water.getFluid();
-                    if(evaporate != null && evaporate.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
+                    if (evaporate != null && evaporate.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
                         int transfer = Math.min(heatUnits, steam.getCapacity() - steam.getFluidAmount());
-                        if(transfer != 0) {
+                        if (transfer != 0) {
                             if (water.drain(transfer, false) != null) {
                                 transfer = water.drain(transfer, true).amount;
                                 steam.fill(new FluidStack(BWFluidRegistry.STEAM, transfer), true);
@@ -47,7 +46,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
             }
         }
         update++;
-        if(update > 19) {
+        if (update > 19) {
             update = 0;
             calculateSteamPower(null);
             calculateHeatUnits();
@@ -57,13 +56,13 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     @Override
     public void calculateSteamPower(EnumFacing facing) {
         boolean active = steam.getFluidAmount() > 0;
-        if(isActive != active) {
+        if (isActive != active) {
             isActive = active;
-            for(EnumFacing side : EnumFacing.VALUES) {
-                if(side != EnumFacing.DOWN) {
+            for (EnumFacing side : EnumFacing.VALUES) {
+                if (side != EnumFacing.DOWN) {
                     TileEntity tile = worldObj.getTileEntity(pos.offset(side));
-                    if(tile != null) {
-                        if(tile.hasCapability(SteamCapability.STEAM_CAPABILITY, side)) {
+                    if (tile != null) {
+                        if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, side)) {
                             tile.getCapability(SteamCapability.STEAM_CAPABILITY, side).setSteamUpdate(true);
                         }
                     }
@@ -81,13 +80,13 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     public void calculateHeatUnits() {
         BlockPos pos = this.pos.offset(EnumFacing.DOWN);
         int heat = 0;
-        if(BWMHeatRegistry.contains(worldObj.getBlockState(pos.down()))) {
+        if (BWMHeatRegistry.contains(worldObj.getBlockState(pos.down()))) {
             heat = BWMHeatRegistry.get(worldObj.getBlockState(pos.down())).value;
         }
-        if(heat > 0) {
+        if (heat > 0) {
             for (int x = -1; x < 2; x++) {
                 for (int z = -1; z < 2; z++) {
-                    if(x == 0 && z == 0)
+                    if (x == 0 && z == 0)
                         continue;
                     BlockPos check = pos.add(x, 0, z);
                     IBlockState toCheck = worldObj.getBlockState(check);
@@ -96,25 +95,25 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
                 }
             }
         }
-        if(heat != heatUnits)
+        if (heat != heatUnits)
             heatUnits = heat;
     }
 
     @Override
     public int getHeatUnits(EnumFacing facing) {
         int exits = getExits().size();
-        if(exits > 0)
+        if (exits > 0)
             return this.heatUnits / exits;
         return this.heatUnits;
     }
 
     private List<EnumFacing> getExits() {
         List<EnumFacing> exits = new ArrayList<>();
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            if(facing != EnumFacing.DOWN) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if (facing != EnumFacing.DOWN) {
                 TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
-                if(tile != null) {
-                    if(tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
+                if (tile != null) {
+                    if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
                         exits.add(facing);
                     }
                 }
@@ -124,7 +123,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     }
 
     public FluidTank getFluidTankFromIndex(int index) {
-        if(index == 1)
+        if (index == 1)
             return steam;
         return water;
     }
@@ -137,9 +136,9 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
 
     @Override
     public void readSteamPower(NBTTagCompound tag) {
-        if(tag.hasKey("Active"))
+        if (tag.hasKey("Active"))
             isActive = tag.getBoolean("Active");
-        if(tag.hasKey("Heat"))
+        if (tag.hasKey("Heat"))
             heatUnits = tag.getInteger("Heat");
     }
 
@@ -158,5 +157,6 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     }
 
     @Override
-    public void setSteamUpdate(boolean update) {}
+    public void setSteamUpdate(boolean update) {
+    }
 }

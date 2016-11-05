@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import java.util.ArrayList;
 
 public class NetherSpawnWhitelist {
-    private static ArrayList<String> whitelist = new ArrayList<String>();
+    private static final ArrayList<String> whitelist = new ArrayList<>();
 
     public static void addBlock(Block block) {
         for (int i = 0; i < 16; i++)

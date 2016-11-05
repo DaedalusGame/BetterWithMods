@@ -43,6 +43,11 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
     }
@@ -183,9 +188,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         List<Object> ingredients = mill.getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
-            for (int i = 0; i < ingredients.size(); i++) {
-                if (ingredients.get(i) instanceof ItemStack) {
-                    ItemStack stack = ((ItemStack)ingredients.get(i)).copy();
+            for (Object ingredient : ingredients) {
+                if (ingredient instanceof ItemStack) {
+                    ItemStack stack = ((ItemStack) ingredient).copy();
                     if (stack != null) {
                         Item item = stack.getItem();
                         if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
@@ -200,8 +205,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
             assert (output != null && output.length > 0);
 
-            for (int i = 0; i < output.length; i++) {
-                ItemStack stack = output[i].copy();
+            for (ItemStack anOutput : output) {
+                ItemStack stack = anOutput.copy();
                 if (stack != null)
                     ejectStack(stack);
             }
@@ -218,9 +223,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         if (ingredients != null) {
             this.containsIngredientsToGrind = true;
             newGrindType = 1;
-            for (int i = 0; i < ingredients.size(); i++) {
-                if(ingredients.get(i) instanceof ItemStack) {
-                    ItemStack stack = ((ItemStack)ingredients.get(i)).copy();
+            for (Object ingredient : ingredients) {
+                if (ingredient instanceof ItemStack) {
+                    ItemStack stack = ((ItemStack) ingredient).copy();
                     if (stack != null) {
                         Item item = stack.getItem();
                         if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
@@ -265,10 +270,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         }
     }
 
-    public String getName() {
-        return "inv.mill.name";
-    }
-
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
         return 0;
@@ -283,11 +284,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             }
         }
         return power;
-    }
-
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 1;
     }
 
     @Override

@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class ModelSlats extends ModelWithResource {
-    private ModelRenderer slats;
+    private final ModelRenderer slats;
 
     public ModelSlats(ResourceLocation location) {
         super(location);

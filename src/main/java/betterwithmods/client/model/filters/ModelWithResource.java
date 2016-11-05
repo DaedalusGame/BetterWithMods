@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class ModelWithResource extends ModelBase {
-    private ResourceLocation location;
+    private final ResourceLocation location;
 
     public ModelWithResource(ResourceLocation location) {
         this.location = location;

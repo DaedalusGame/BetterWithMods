@@ -11,7 +11,7 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
 
     protected BaseMapAddition(String name, Map<K, V> map) {
         super(name, map);
-        this.overwritten = new HashMap<K, V>();
+        this.overwritten = new HashMap<>();
     }
 
     protected BaseMapAddition(String name, Map<K, V> map, Map<K, V> recipes) {
@@ -30,7 +30,7 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
             V oldValue = map.put(key, value);
 
             if (oldValue != null) {
-                LogHelper.logWarning(String.format("Overwritten %s Recipe for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<K, V>(entry.getKey(), value))));
+                LogHelper.logWarning(String.format("Overwritten %s Recipe for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<>(entry.getKey(), value))));
                 overwritten.put(key, oldValue);
             }
 
@@ -58,7 +58,7 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
             V oldValue = map.put(key, value);
 
             if (oldValue != null) {
-                LogHelper.logWarning(String.format("Overwritten %s Recipe which should not exist for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<K, V>(entry.getKey(), value))));
+                LogHelper.logWarning(String.format("Overwritten %s Recipe which should not exist for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<>(entry.getKey(), value))));
             }
         }
     }

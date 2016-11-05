@@ -1,14 +1,12 @@
 package betterwithmods.integration.minetweaker.utils;
 
 import betterwithmods.craft.OreStack;
-import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.mc1102.item.MCItemStack;
 import minetweaker.mc1102.liquid.MCLiquidStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -21,28 +19,23 @@ import java.util.List;
 
 public class InputHelper {
     public static boolean isABlock(IItemStack block) {
-        if (!(isABlock(toStack(block)))) {
-            return false;
-        } else
-            return true;
+        return isABlock(toStack(block));
     }
 
     public static <T> T[][] getMultiDimensionalArray(Class<T> clazz, T[] array, int height, int width) {
 
         @SuppressWarnings("unchecked")
-        T[][] multiDim = (T[][]) Array.newInstance(clazz, new int[]{height, width});
+        T[][] multiDim = (T[][]) Array.newInstance(clazz, height, width);
 
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                multiDim[y][x] = array[x + (y * width)];
-            }
+            System.arraycopy(array, (y * width), multiDim[y], 0, width);
         }
 
         return multiDim;
     }
 
     public static IItemStack[] toStacks(IIngredient[] iIngredient) {
-        ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();
+        ArrayList<IItemStack> stacks = new ArrayList<>();
 
         for (IIngredient ing : iIngredient) {
             for (IItemStack stack : ing.getItems()) {
@@ -55,10 +48,6 @@ public class InputHelper {
 
     public static boolean isABlock(ItemStack block) {
         return block.getItem() instanceof ItemBlock;
-    }
-
-    public static Entity toEntity(IEntity iEntity) {
-        return null;
     }
 
     public static ItemStack toStack(IItemStack iStack) {
@@ -199,7 +188,7 @@ public class InputHelper {
     }
 
     public static String toString(IOreDictEntry entry) {
-        return ((IOreDictEntry) entry).getName();
+        return entry.getName();
     }
 
     public static FluidStack toFluid(ILiquidStack iStack) {
@@ -215,10 +204,6 @@ public class InputHelper {
         } else
             return FluidRegistry.getFluid(iStack.getName());
 
-    }
-
-    public static FluidStack[] toFluids(IIngredient[] input) {
-        return toFluids((IItemStack[]) input);
     }
 
     public static FluidStack[] toFluids(ILiquidStack[] iStack) {

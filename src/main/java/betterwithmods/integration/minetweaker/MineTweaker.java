@@ -1,13 +1,21 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.integration.ModIntegration;
+import betterwithmods.integration.ICompatModule;
 import minetweaker.MineTweakerAPI;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by tyler on 9/4/16.
  */
-public class MineTweaker extends ModIntegration {
+@SuppressWarnings("unused")
+public class MineTweaker implements ICompatModule {
+    public static final String MODID = "MineTweaker3";
 
+    @Override
+    public void preInit() {
+
+    }
 
     public void init() {
         MineTweakerAPI.registerClass(Saw.class);
@@ -18,5 +26,28 @@ public class MineTweaker extends ModIntegration {
         MineTweakerAPI.registerClass(StokedCrucible.class);
         MineTweakerAPI.registerClass(Mill.class);
         MineTweakerAPI.registerClass(Buoyancy.class);
+    }
+
+    @Override
+    public void postInit() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void preInitClient() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void initClient() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void postInitClient() {
+
     }
 }

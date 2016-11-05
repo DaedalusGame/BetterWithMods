@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class ItemMechanical extends Item implements IMultiLocations {
-    public String[] names = {"windmill", "waterwheel", "windmill_vertical"};
+    private final String[] names = {"windmill", "waterwheel", "windmill_vertical"};
 
     public ItemMechanical() {
         super();
@@ -44,12 +44,12 @@ public class ItemMechanical extends Item implements IMultiLocations {
         Block block = world.getBlockState(pos).getBlock();
 
         if (block == BWMBlocks.AXLE) {
-            int axis = ((BlockAxle) block).getAxisAlignment(world, pos);
+            EnumFacing.Axis axis = world.getBlockState(pos).getValue(BlockAxle.AXIS);
 
-            if (axis == 0 && stack.getItemDamage() == 2) {
+            if (axis == EnumFacing.Axis.Y && stack.getItemDamage() == 2) {
                 if (isVerticalWindmillValid(player, world, pos, hitY))
                     stack.stackSize -= 1;
-            } else if (axis != 0 && stack.getItemDamage() != 2) {
+            } else if (axis != EnumFacing.Axis.Y && stack.getItemDamage() != 2) {
                 if (isHorizontalDeviceValid(player, world, pos, stack.getItemDamage(), axis))
                     stack.stackSize -= 1;
             }
@@ -58,11 +58,11 @@ public class ItemMechanical extends Item implements IMultiLocations {
         return EnumActionResult.PASS;
     }
 
-    private boolean isHorizontalDeviceValid(EntityPlayer player, World world, BlockPos pos, int meta, int axis) {
+    private boolean isHorizontalDeviceValid(EntityPlayer player, World world, BlockPos pos, int meta, EnumFacing.Axis axis) {
         boolean valid = false;
         if (meta == 1 && validateWaterwheel(world, pos, axis)) {
-            if (axis > 0) {
-                world.setBlockState(pos, ((BlockWaterwheel) BWMBlocks.WATERWHEEL).getWaterwheelState(axis));
+            if (axis != EnumFacing.Axis.Y) {
+                world.setBlockState(pos, ((BlockWaterwheel) BWMBlocks.WATERWHEEL).getAxisState(axis));
                 valid = true;
             }
         } else if (meta == 1) {
@@ -70,8 +70,8 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 player.addChatMessage(new TextComponentString("Not enough room to place the waterwheel. Need a 5x5 area to work."));
         }
         if (meta == 0 && validateWindmill(world, pos, axis)) {
-            if (axis > 0) {
-                world.setBlockState(pos, ((BlockWindmill) BWMBlocks.WINDMILL_BLOCK).getWindmillState(axis));
+            if (axis != EnumFacing.Axis.Y) {
+                world.setBlockState(pos, ((BlockWindmill) BWMBlocks.WINDMILL_BLOCK).getAxisState(axis));
                 valid = true;
             }
         } else if (meta == 0) {
@@ -81,46 +81,43 @@ public class ItemMechanical extends Item implements IMultiLocations {
         return valid;
     }
 
-    public boolean validateWaterwheel(World world, BlockPos pos, int axis) {
+    public boolean validateWaterwheel(World world, BlockPos pos, EnumFacing.Axis axis) {
         return validateHorizontal(world, pos, 2, axis, true);
     }
 
-    public boolean validateWindmill(World world, BlockPos pos, int axis) {
+    public boolean validateWindmill(World world, BlockPos pos, EnumFacing.Axis axis) {
         return validateHorizontal(world, pos, 6, axis, false);
     }
 
-    public boolean validateHorizontal(World world, BlockPos pos, int radius, int axis, boolean isWheel) {
+    public boolean validateHorizontal(World world, BlockPos pos, int radius, EnumFacing.Axis axis, boolean isWheel) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
         boolean valid = true;
-        //if(meta == 0)
-        {
-            for (int vert = -radius; vert <= radius; vert++) {
-                for (int i = -radius; i <= radius; i++) {
-                    int xP = axis == 1 ? i : 0;
-                    int zP = axis == 2 ? i : 0;
-                    int xPos = x + xP;
-                    int yPos = y + vert;
-                    int zPos = z + zP;
-                    BlockPos checkPos = new BlockPos(xPos, yPos, zPos);
+        for (int vert = -radius; vert <= radius; vert++) {
+            for (int i = -radius; i <= radius; i++) {
+                int xP = axis == EnumFacing.Axis.Z ? i : 0;
+                int zP = axis == EnumFacing.Axis.X ? i : 0;
+                int xPos = x + xP;
+                int yPos = y + vert;
+                int zPos = z + zP;
+                BlockPos checkPos = new BlockPos(xPos, yPos, zPos);
 
-                    if (yPos == y - radius && isWheel) {
+                if (yPos == y - radius && isWheel) {
+                    valid = world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER);
+                } else if (xP == 0 && yPos == y && zP == 0)
+                    continue;
+                else {
+                    if (isWheel && (xP == -radius || xP == radius || zP == -radius || zP == radius))
                         valid = world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER);
-                    } else if (xP == 0 && yPos == y && zP == 0)
-                        continue;
-                    else {
-                        if (isWheel && (xP == -radius || xP == radius || zP == -radius || zP == radius))
-                            valid = world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER);
-                        else
-                            valid = world.isAirBlock(checkPos);
-                    }
-                    if (!valid)
-                        break;
+                    else
+                        valid = world.isAirBlock(checkPos);
                 }
                 if (!valid)
                     break;
             }
+            if (!valid)
+                break;
         }
         return valid;
     }
@@ -138,7 +135,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState());//BlockPowerSource.setProxies(world, x, yPos, z);
                 valid = true;
             } else if (world.isRemote)
-                player.addChatMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a height of seven to work."));
+                player.addChatMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work."));
         } else {
             if (world.isRemote) {
                 player.addChatMessage(new TextComponentString("Too few vertical axles in column to place here. (Need seven)"));
@@ -155,18 +152,15 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     int x = pos.getX();
                     int y = pos.getY();
                     int z = pos.getZ();
-                    int xPos = xP;
-                    int yPos = yP;
-                    int zPos = zP;
-                    BlockPos target = new BlockPos(x + xPos, y + yPos, z + zPos);
-                    if (x + xPos != x && z + zPos != z && yP != -4 && yP != 4)
+                    BlockPos target = new BlockPos(x + xP, y + yP, z + zP);
+                    if (x + xP != x && z + zP != z && yP != -4 && yP != 4)
                         clear = world.isAirBlock(target);
                     if ((yP == -4 || yP == 4) && (xP == 0 && zP == 0)) {
                         clear = !(world.getBlockState(target).getBlock() instanceof BlockWindmill);
                     }
                     if (!clear) {
                         if (world.isRemote)
-                            player.addChatMessage(new TextComponentString("Blockage at x:" + (x + xPos) + " y:" + (y + yPos) + " z:" + (z + zPos)));
+                            player.addChatMessage(new TextComponentString("Blockage at x:" + (x + xP) + " y:" + (y + yP) + " z:" + (z + zP)));
                         break;
                     }
                 }
@@ -181,10 +175,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 for (int k = -8; k < 8; k++) {
                     if (!clear)
                         break;
-                    int xPos = i;
-                    int yPos = j;
-                    int zPos = k;
-                    BlockPos target = pos.add(xPos, yPos, zPos);
+                    BlockPos target = pos.add(i, j, k);
                     if (i > -5 && i < 5 && k > -5 && k < 5) {
                         continue;
                     } else if (world.getBlockState(target).getBlock() instanceof BlockWindmill || world.getBlockState(target).getBlock() instanceof BlockWaterwheel)
@@ -200,9 +191,8 @@ public class ItemMechanical extends Item implements IMultiLocations {
         }
         for (int i = 5; i < 8; i++) {
             int yMin = -i;
-            int yMax = i;
             BlockPos minPos = pos.add(0, yMin, 0);
-            BlockPos maxPos = pos.add(0, yMax, 0);
+            BlockPos maxPos = pos.add(0, i, 0);
             if (!clear)
                 break;
             if (world.getBlockState(minPos).getBlock() instanceof BlockWindmill)
@@ -219,15 +209,11 @@ public class ItemMechanical extends Item implements IMultiLocations {
 
     private boolean checkForSupportingAxles(World world, BlockPos pos) {
         for (int i = -3; i <= 3; i++) {
-            int yPos = i;
-            BlockPos target = pos.add(0, yPos, 0);
+            BlockPos target = pos.add(0, i, 0);
             Block targetBlock = world.getBlockState(target).getBlock();
-            if (targetBlock == BWMBlocks.AXLE) {
-                int axis = ((BlockAxle) targetBlock).getAxisAlignment(world, target);
-                if (axis != 0)
-                    return false;
-            } else
-                return false;
+            if (targetBlock != BWMBlocks.AXLE) return false;
+            EnumFacing.Axis axis = world.getBlockState(target).getValue(BlockAxle.AXIS);
+            if (axis != EnumFacing.Axis.Y) return false;
         }
         return true;
     }

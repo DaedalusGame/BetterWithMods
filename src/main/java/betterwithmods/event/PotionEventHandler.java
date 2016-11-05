@@ -22,8 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PotionEventHandler {
 
@@ -57,7 +55,6 @@ public class PotionEventHandler {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     private void renderFireInFirstPerson() {
         Minecraft mc = Minecraft.getMinecraft();
         Tessellator tessellator = Tessellator.getInstance();
@@ -73,7 +70,7 @@ public class PotionEventHandler {
         for (int i = 0; i < 2; ++i) {
             GlStateManager.pushMatrix();
             TextureAtlasSprite textureatlassprite = mc.getTextureMapBlocks()
-                    .getTextureExtry(BWMod.MODID+":blocks/stoked_fire_layer_0");
+                    .getTextureExtry(BWMod.MODID + ":blocks/stoked_fire_layer_0");
             if (textureatlassprite == null)
                 textureatlassprite = mc.getTextureMapBlocks().getMissingSprite();
             mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

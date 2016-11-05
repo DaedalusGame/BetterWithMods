@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class BWNetwork extends NetWrapper {
-    public static BWNetwork INSTANCE = new BWNetwork();
+    public static final BWNetwork INSTANCE = new BWNetwork();
 
     public BWNetwork() {
         super(BWMod.MODID);

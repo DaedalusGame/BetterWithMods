@@ -57,11 +57,8 @@ public class StackHelper {
             return false;
         }
 
-        if (!ingredient.matches(itemStack)) {
-            return false;
-        }
+        return ingredient.matches(itemStack);
 
-        return true;
     }
 
     /**

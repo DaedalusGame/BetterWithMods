@@ -90,8 +90,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
 
     @Override
     public int processSouls(World world, BlockPos pos, int souls) {
-        int soulsProcessed = Math.min(getMaximumSoulIntake(world, pos), souls);
-        return soulsProcessed;
+        return Math.min(getMaximumSoulIntake(world, pos), souls);
     }
 
     @Override
@@ -158,14 +157,12 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        IBlockState state = getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta));
-        return state;
+        return getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = state.getValue(TYPE).getMeta();
-        return meta;
+        return state.getValue(TYPE).getMeta();
     }
 
     public enum EnumUrnType implements IStringSerializable {
@@ -183,7 +180,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
         private String name;
         private int meta;
 
-        private EnumUrnType(String name, int meta) {
+        EnumUrnType(String name, int meta) {
             this.name = name;
             this.meta = meta;
         }

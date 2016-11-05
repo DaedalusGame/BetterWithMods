@@ -9,7 +9,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class KilnInteraction {
-    private static Hashtable<String, List<ItemStack>> cookables = new Hashtable<>();
+    private static final Hashtable<String, List<ItemStack>> cookables = new Hashtable<>();
 
     public static void addBlockRecipe(Block block, ItemStack... output) {
         addBlockRecipe(block, Arrays.asList(output));

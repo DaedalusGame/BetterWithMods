@@ -143,6 +143,35 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityGearbox.class, "bwm.gearbox");
     }
 
+    /**
+     * Register a block with its specified linked item. Block's registry name
+     * prevail and must be set before call.
+     *
+     * @param block Block instance to register.
+     * @param item  Item instance to register. Will have the same registered name
+     *              as the block. If is null, then no item will be linked to the
+     *              block.
+     */
+    public static Block registerBlock(Block block, @Nullable Item item) {
+        block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
+        Block registeredBlock = GameRegistry.register(block);
+        if (item != null)
+            GameRegistry.register(item.setRegistryName(block.getRegistryName()));
+        return registeredBlock;
+    }
+
+    /**
+     * Register a Block and a new ItemBlock generated from it.
+     *
+     * @param block Block instance to register.
+     * @return Registered block.
+     */
+    public static Block registerBlock(Block block) {
+        return registerBlock(block, new ItemBlock(block));
+    }
+
+    ///CLIENT BEGIN
+    @SideOnly(Side.CLIENT)
     public static void linkBlockModels() {
         setInventoryModel(ANCHOR);
         setInventoryModel(ROPE);
@@ -187,36 +216,9 @@ public final class BWMBlocks {
         setInventoryModel(VINE_TRAP);
     }
 
-    /**
-     * Register a block with its specified linked item. Block's registry name
-     * prevail and must be set before call.
-     *
-     * @param block Block instance to register.
-     * @param item  Item instance to register. Will have the same registered name
-     *              as the block. If is null, then no item will be linked to the
-     *              block.
-     * @author Koward
-     */
-    public static Block registerBlock(Block block, @Nullable Item item) {
-        block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
-        Block registeredBlock = GameRegistry.register(block);
-        if (item != null)
-            GameRegistry.register(item.setRegistryName(block.getRegistryName()));
-        return registeredBlock;
-    }
-
-    /**
-     * Register a Block and a new ItemBlock generated from it.
-     *
-     * @param block Block instance to register.
-     * @return Registered block.
-     */
-    public static Block registerBlock(Block block) {
-        return registerBlock(block, new ItemBlock(block));
-    }
-
     @SideOnly(Side.CLIENT)
     public static void setInventoryModel(Block block) {
         BWMItems.setInventoryModel(Item.getItemFromBlock(block));
     }
+    ///CLIENT END
 }

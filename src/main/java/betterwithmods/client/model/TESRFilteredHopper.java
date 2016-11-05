@@ -17,18 +17,7 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
     public void renderTileEntityAt(TileEntityFilteredHopper tile, double x, double y, double z, float partialTicks, int destroyStage) {
         if (tile != null) {
             if (tile.getSubtype() > 0) {
-                ItemStack check = tile.getFilterStack();
                 model = tile.getModel();
-                /*
-                if(!ItemStack.areItemsEqual(check, stack)) {
-                    if(RenderUtils.filterContains(check)) {
-                        model = tile.getModel();
-                    }
-                    else {
-                        model = null;
-                    }
-                    stack = check;
-                }*/
                 if (model != null) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);

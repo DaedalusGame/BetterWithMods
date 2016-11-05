@@ -121,13 +121,11 @@ public class LogHarvestEvent {
                                 List<ItemStack> newOutputs = Lists.newArrayList();
                                 if (outputs.size() == 3) {
                                     ItemStack planks = outputs.get(0).copy();
-                                    int plankStack = (planks.stackSize / 2) + (fort ? world.rand.nextInt(2) : 0);
-                                    planks.stackSize = plankStack;
+                                    planks.stackSize = (planks.stackSize / 2) + (fort ? world.rand.nextInt(2) : 0);
                                     int barkStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack bark = new ItemStack(BWMItems.BARK, barkStack, 0);
                                     barkStack = fort ? outputs.get(1).stackSize + world.rand.nextInt(fortune) : outputs.get(1).stackSize;
 
-                                    bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
+                                    ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
                                     ItemStack sawdust = new ItemStack(BWMItems.MATERIAL, sawdustStack, 22);
                                     newOutputs.add(planks);

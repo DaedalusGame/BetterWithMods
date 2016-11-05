@@ -1,7 +1,7 @@
 package betterwithmods.blocks.tile;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.api.block.IBWMBlock;
+import betterwithmods.api.block.ITurnable;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.TurntableCraft;
 import betterwithmods.craft.TurntableInteraction;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITickable {
-    private static int[] ticksToRotate = {10, 20, 40, 80};
+    private static final int[] ticksToRotate = {10, 20, 40, 80};
     public byte timerPos = 0;
     private int potteryRotation = 0;
     private boolean potteryRotated = false;
@@ -67,9 +67,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
     }
 
     public void update() {
-        if (this.worldObj.isRemote)
-            return;
-        else {
+        if (!this.worldObj.isRemote) {
             if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() instanceof BlockMechMachines && ((BlockMechMachines) worldObj.getBlockState(pos).getBlock()).isMechanicalOn(worldObj, pos)) {
                 //if(worldObj.getBlockState(pos).getValue(BlockMechMachines.SUBTYPE) != this.getSubtype())
                 //worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockMechMachines.SUBTYPE, this.getSubtype()));
@@ -187,17 +185,15 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
     private boolean canBlockTransmitRotationHorizontally(BlockPos pos) {
         Block target = worldObj.getBlockState(pos).getBlock();
 
-        if (target instanceof IBWMBlock) {
-            return ((IBWMBlock) target).canRotateHorizontally(worldObj, pos);
+        if (target instanceof ITurnable) {
+            return ((ITurnable) target).canRotateHorizontally(worldObj, pos);
         }
         if (target == Blocks.GLASS || target == Blocks.STAINED_GLASS)
             return true;
         if (target instanceof BlockPistonBase) {
             IBlockState state = worldObj.getBlockState(pos);
 
-            if (!state.getValue(BlockPistonBase.EXTENDED))
-                return true;
-            return false;
+            return !state.getValue(BlockPistonBase.EXTENDED);
         }
         if (target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD)
             return false;
@@ -208,8 +204,8 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
     private boolean canBlockTransmitRotationVertically(BlockPos pos) {
         Block target = worldObj.getBlockState(pos).getBlock();
 
-        if (target instanceof IBWMBlock) {
-            return ((IBWMBlock) target).canRotateVertically(worldObj, pos);
+        if (target instanceof ITurnable) {
+            return ((ITurnable) target).canRotateVertically(worldObj, pos);
         }
         if (target == Blocks.GLASS)
             return true;
@@ -218,9 +214,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         if (target instanceof BlockPistonBase) {
             IBlockState state = worldObj.getBlockState(pos);
 
-            if (!state.getValue(BlockPistonBase.EXTENDED))
-                return true;
-            return false;
+            return !state.getValue(BlockPistonBase.EXTENDED);
         }
         if (target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD)
             return false;
@@ -284,7 +278,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 
             if (block != null) {
                 int facing = i + 2;
-                int meta = 0;
+                int meta;
 
                 BlockPos offset = pos.offset(EnumFacing.getFront(facing));
                 IBlockState state = worldObj.getBlockState(offset);
@@ -326,16 +320,16 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
         if (TurntableInteraction.contains(state) && TurntableInteraction.getProduct(state) != null) {
-            if (target instanceof IBWMBlock) {
-                IBWMBlock block = (IBWMBlock) target;
+            if (target instanceof ITurnable) {
+                ITurnable block = (ITurnable) target;
                 if (block.canRotateOnTurntable(worldObj, pos))
                     block.rotateAroundYAxis(worldObj, pos, reverse);
             } else if (state != state.withRotation(rot))
                 worldObj.setBlockState(pos, state.withRotation(rot));
             rotateCraftable(state, TurntableInteraction.getProduct(state), pos, reverse);
             this.potteryRotated = true;
-        } else if (target instanceof IBWMBlock) {
-            IBWMBlock block = (IBWMBlock) target;
+        } else if (target instanceof ITurnable) {
+            ITurnable block = (ITurnable) target;
 
             if (block.canRotateOnTurntable(worldObj, pos))
                 block.rotateAroundYAxis(worldObj, pos, reverse);

@@ -24,6 +24,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.Objects;
+
 public final class BWMItems {
     public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3,
             22);
@@ -62,6 +64,21 @@ public final class BWMItems {
         registerItem(ENDER_SPECTACLES);
     }
 
+
+    /**
+     * Register an Item.
+     *
+     * @param item Item instance to register.
+     * @return Registered item.
+     */
+    public static Item registerItem(Item item) {
+        //betterwithmods:name => bwm:name
+        item.setUnlocalizedName("bwm" + item.getRegistryName().toString().substring(BWMod.MODID.length()));
+        return GameRegistry.register(item);
+    }
+
+    ///CLIENT BEGIN
+    @SideOnly(Side.CLIENT)
     public static void linkItemModels() {
         setInventoryModel(MATERIAL);
         setInventoryModel(WINDMILL);
@@ -77,18 +94,6 @@ public final class BWMItems {
         setInventoryModel(STEEL_SWORD);
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
-    }
-
-    /**
-     * Register an Item.
-     *
-     * @param item Item instance to register.
-     * @return Registered item.
-     */
-    public static Item registerItem(Item item) {
-        //betterwithmods:name => bwm:name
-        item.setUnlocalizedName("bwm" + item.getRegistryName().toString().substring(BWMod.MODID.length()));
-        return GameRegistry.register(item);
     }
 
     @SideOnly(Side.CLIENT)
@@ -117,7 +122,7 @@ public final class BWMItems {
             ModelLoader.setCustomStateMapper(block, new BWStateMapper(block.getRegistryName().toString()));
             String[] variants = ((IMultiVariants) block).getVariants();
             for (int meta = 0; meta < variants.length; meta++) {
-                if (variants[meta] != "") setModelLocation(item, meta, variants[meta]);
+                if (!Objects.equals(variants[meta], "")) setModelLocation(item, meta, variants[meta]);
             }
         } else if (block instanceof IMultiLocations) {
             String[] locations = ((IMultiLocations) block).getLocations();
@@ -169,4 +174,5 @@ public final class BWMItems {
                     "inventory");
         ModelBakery.registerItemVariants(item, resource);
     }
+    ///CLIENT END
 }

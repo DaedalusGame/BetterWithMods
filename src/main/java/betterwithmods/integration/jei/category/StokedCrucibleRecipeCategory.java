@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StokedCrucibleRecipeCategory extends BWMRecipeCategory<StokedCrucibleRecipeWrapper> {
@@ -57,10 +56,9 @@ public class StokedCrucibleRecipeCategory extends BWMRecipeCategory<StokedCrucib
             }
         }
 
-        BulkRecipeWrapper recipe = wrapper;
-        stacks.set(outputSlots, recipe.getRecipe().getOutput());
-        if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
-            stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
+        stacks.set(outputSlots, wrapper.getRecipe().getOutput());
+        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+            stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
     }
@@ -83,7 +81,7 @@ public class StokedCrucibleRecipeCategory extends BWMRecipeCategory<StokedCrucib
         List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
 
         stacks.set(outputSlots, outputs.get(0));
-        if(outputs.size() > 1)
+        if (outputs.size() > 1)
             stacks.set(outputSlots + 1, outputs.get(1));
 
         craftingGrid.setInputStacks(stacks, inputs);

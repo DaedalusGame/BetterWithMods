@@ -3,7 +3,6 @@ package betterwithmods.entity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,8 +27,8 @@ import static net.minecraft.util.EnumFacing.*;
  * Created by tyler on 9/5/16.
  */
 public class EntityMiningCharge extends Entity {
-    private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(EntityMiningCharge.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> FACING = EntityDataManager.<Integer>createKey(EntityMiningCharge.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FUSE = EntityDataManager.createKey(EntityMiningCharge.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FACING = EntityDataManager.createKey(EntityMiningCharge.class, DataSerializers.VARINT);
     private EntityLivingBase igniter;
     /**
      * How long the fuse is
@@ -57,8 +56,8 @@ public class EntityMiningCharge extends Entity {
     }
 
     protected void entityInit() {
-        this.dataManager.register(FUSE, Integer.valueOf(80));
-        this.dataManager.register(FACING, Integer.valueOf(EnumFacing.NORTH.getIndex()));
+        this.dataManager.register(FUSE, 80);
+        this.dataManager.register(FACING, EnumFacing.NORTH.getIndex());
     }
 
     /**
@@ -99,13 +98,13 @@ public class EntityMiningCharge extends Entity {
             }
         } else {
             this.handleWaterMovement();
-            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 
     private void explode() {
-        this.worldObj.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-        this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
+        this.worldObj.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+        this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
         BlockPos pos = getPosition();
         EnumFacing facing = this.facing.getOpposite();
         for (int k = 0; k <= 3; k++) {
@@ -131,7 +130,7 @@ public class EntityMiningCharge extends Entity {
             }
         }
         List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).expand(5, 5, 5));
-        entities.stream().forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
+        entities.forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
     }
 
     private void explodeBlock(World world, BlockPos pos) {
@@ -187,16 +186,16 @@ public class EntityMiningCharge extends Entity {
     }
 
     public void setFacing(EnumFacing facing) {
-        this.dataManager.set(FACING, Integer.valueOf(facing.getIndex()));
+        this.dataManager.set(FACING, facing.getIndex());
         this.facing = facing;
     }
 
     public int getFuseDM() {
-        return ((Integer) this.dataManager.get(FUSE)).intValue();
+        return this.dataManager.get(FUSE);
     }
 
     public int getFacingDM() {
-        return ((Integer) this.dataManager.get(FACING)).intValue();
+        return this.dataManager.get(FACING);
     }
 
     public EnumFacing getFacing() {
@@ -212,7 +211,7 @@ public class EntityMiningCharge extends Entity {
     }
 
     public void setFuse(int fuseIn) {
-        this.dataManager.set(FUSE, Integer.valueOf(fuseIn));
+        this.dataManager.set(FUSE, fuseIn);
         this.fuse = fuseIn;
     }
 }

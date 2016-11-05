@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
 public class ModelGrate extends ModelWithResource {
-    private ModelRenderer grate;
+    private final ModelRenderer grate;
 
     public ModelGrate(ResourceLocation location) {
         super(location);

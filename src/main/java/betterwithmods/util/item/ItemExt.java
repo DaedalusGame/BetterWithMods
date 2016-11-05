@@ -203,7 +203,6 @@ public final class ItemExt {
             return true;
         if (item instanceof ItemSpade && ToolsManager.getEffectiveMaterials((ItemSpade) item).contains(state.getMaterial()))
             return true;
-        if (ToolsManager.getEffectiveBlocks(item).contains(state.getBlock())) return true;
-        return false;
+        return ToolsManager.getEffectiveBlocks(item).contains(state.getBlock());
     }
 }

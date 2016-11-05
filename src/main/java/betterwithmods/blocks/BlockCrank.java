@@ -62,7 +62,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int meta = state.getValue(STAGE).intValue();
+        int meta = state.getValue(STAGE);
 
         if (meta == 0) {
             if (player.getFoodStats().getFoodLevel() > 6) {
@@ -143,7 +143,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(STAGE).intValue() > 1;
+        return world.getBlockState(pos).getValue(STAGE) > 1;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        int stage = state.getValue(STAGE).intValue();
+        int stage = state.getValue(STAGE);
 
         if (stage > 0) {
             if (stage < 7) {

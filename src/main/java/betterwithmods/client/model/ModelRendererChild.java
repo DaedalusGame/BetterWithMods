@@ -7,7 +7,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 
 public class ModelRendererChild extends ModelRenderer {
-    public ModelRendererChild(ModelBase model, int x, int y, int position) {
+    public ModelRendererChild(ModelBase model, int x, int y) {
         super(model, x, y);
     }
 
@@ -16,10 +16,5 @@ public class ModelRendererChild extends ModelRenderer {
         GlStateManager.color(colorIndex[0], colorIndex[1], colorIndex[2]);
         super.render(scale);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void render(float scale) {
-        super.render(scale);
     }
 }

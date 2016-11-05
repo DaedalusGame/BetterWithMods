@@ -5,7 +5,6 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.item.ItemStack;
-import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.List;
 public class BulkRecipeWrapper extends BWMRecipeWrapper {
 
     private final IJeiHelpers helpers;
+
     public BulkRecipeWrapper(IJeiHelpers helpers, @Nonnull BulkRecipe recipe) {
         super(recipe);
         this.helpers = helpers;
@@ -45,7 +45,7 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper {
         ingredients.setInputLists(ItemStack.class, inputs);
         List<ItemStack> outputs = new ArrayList<>();
         outputs.add(getRecipe().getOutput().copy());
-        if(getRecipe().getSecondary() != null)
+        if (getRecipe().getSecondary() != null)
             outputs.add(getRecipe().getSecondary().copy());
         ingredients.setOutputs(ItemStack.class, outputs);
     }

@@ -150,7 +150,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        List<ItemStack> ret = new ArrayList<ItemStack>();//super.getDrops(world, pos, state, fortune);
+        List<ItemStack> ret = new ArrayList<>();//super.getDrops(world, pos, state, fortune);
         int age = getAge(state);
         Random rand = world instanceof World ? ((World) world).rand : new Random();
 

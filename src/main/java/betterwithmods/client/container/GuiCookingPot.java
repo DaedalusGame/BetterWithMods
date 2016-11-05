@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiCookingPot extends GuiContainer {
     private static final int fireHeight = 12;
     private static final int stokedHeight = 28;
-    private TileEntityCookingPot tile;
+    private final TileEntityCookingPot tile;
 
 
     public GuiCookingPot(EntityPlayer player, TileEntityCookingPot tile) {

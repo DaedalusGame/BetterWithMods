@@ -112,7 +112,4 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         return -1;
     }
 
-    public String getName() {
-        return "inv.bwm.dispenser.name";
-    }
 }

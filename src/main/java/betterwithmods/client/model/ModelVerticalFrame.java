@@ -4,8 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelVerticalFrame extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRenderer[] components = new ModelRenderer[32];
+    public final ModelRenderer axle;
+    public final ModelRenderer[] components = new ModelRenderer[32];
 
     public ModelVerticalFrame() {
         for (int i = 0; i < 8; i++) {

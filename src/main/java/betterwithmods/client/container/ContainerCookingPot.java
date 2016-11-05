@@ -11,10 +11,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import java.util.Iterator;
-
 public class ContainerCookingPot extends Container {
-    private TileEntityCookingPot tile;
+    private final TileEntityCookingPot tile;
     private int lastCookCounter;
 
     public ContainerCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
@@ -53,7 +51,7 @@ public class ContainerCookingPot extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
         ItemStack stack = null;
-        Slot slot = (Slot) this.inventorySlots.get(slotIndex);
+        Slot slot = this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack stack1 = slot.getStack();
@@ -83,11 +81,7 @@ public class ContainerCookingPot extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        Iterator<?> it = this.listeners.iterator();
-
-        while (it.hasNext()) {
-            IContainerListener craft = (IContainerListener) it.next();
-
+        for (IContainerListener craft : this.listeners) {
             if (this.lastCookCounter != this.tile.scaledCookCounter)
                 craft.sendProgressBarUpdate(this, 0, this.tile.scaledCookCounter);
         }

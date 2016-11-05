@@ -10,7 +10,7 @@ public class FakeCrafter extends InventoryCrafting {
     }
 
     private static class fakeContainer extends Container {
-        public static fakeContainer instance = new fakeContainer();
+        public static final fakeContainer instance = new fakeContainer();
 
         @Override
         public boolean canInteractWith(EntityPlayer player) {

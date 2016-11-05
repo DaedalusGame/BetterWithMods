@@ -8,9 +8,9 @@ public interface IMechanicalPower {
 
     int getMechanicalInput(EnumFacing facing);
 
-    int getMinimumInput(EnumFacing facing);
-
     int getMaximumInput(EnumFacing facing);
+
+    int getMinimumInput(EnumFacing facing);
 
     void readFromTag(NBTTagCompound tag);
 

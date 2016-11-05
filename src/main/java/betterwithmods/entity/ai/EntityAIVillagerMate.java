@@ -12,16 +12,16 @@ import java.util.Random;
 import static betterwithmods.event.MobAIEvent.isWillingToMate;
 
 public class EntityAIVillagerMate extends EntityAIBase {
+    final World world;
+    /**
+     * The speed the creature moves at during mating behavior.
+     */
+    final double moveSpeed;
     private final EntityVillager villager;
-    World world;
     /**
      * Delay preventing a baby from spawning immediately when two mate-able animals find each other.
      */
     int spawnBabyDelay;
-    /**
-     * The speed the creature moves at during mating behavior.
-     */
-    double moveSpeed;
     private EntityVillager mate;
 
     public EntityAIVillagerMate(EntityVillager villager, double speedIn) {
@@ -78,7 +78,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
      * valid mate found.
      */
     private EntityVillager getNearbyMate() {
-        List<EntityVillager> list = this.world.<EntityVillager>getEntitiesWithinAABB(this.villager.getClass(), this.villager.getEntityBoundingBox().expandXyz(8.0D));
+        List<EntityVillager> list = this.world.getEntitiesWithinAABB(this.villager.getClass(), this.villager.getEntityBoundingBox().expandXyz(8.0D));
         double d0 = Double.MAX_VALUE;
         EntityVillager mate = null;
         for (EntityVillager current : list) {
@@ -116,7 +116,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
                 double d3 = random.nextDouble() * (double) this.villager.width * 2.0D - (double) this.villager.width;
                 double d4 = 0.5D + random.nextDouble() * (double) this.villager.height;
                 double d5 = random.nextDouble() * (double) this.villager.width * 2.0D - (double) this.villager.width;
-                this.world.spawnParticle(EnumParticleTypes.HEART, this.villager.posX + d3, this.villager.posY + d4, this.villager.posZ + d5, d0, d1, d2, new int[0]);
+                this.world.spawnParticle(EnumParticleTypes.HEART, this.villager.posX + d3, this.villager.posY + d4, this.villager.posZ + d5, d0, d1, d2);
             }
 
             if (this.world.getGameRules().getBoolean("doMobLoot")) {
@@ -126,6 +126,6 @@ public class EntityAIVillagerMate extends EntityAIBase {
     }
 
     public boolean canMateWith(EntityVillager village, EntityVillager mate) {
-        return village == mate ? false : isWillingToMate(villager) && isWillingToMate(mate);
+        return village != mate && (isWillingToMate(villager) && isWillingToMate(mate));
     }
 }

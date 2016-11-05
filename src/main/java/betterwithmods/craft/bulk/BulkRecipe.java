@@ -92,7 +92,7 @@ public class BulkRecipe {
 
     private List<ItemStack> getOreList(OreStack stack) {
         int stackSize = stack.getStackSize();
-        List<ItemStack> list = new ArrayList<ItemStack>();
+        List<ItemStack> list = new ArrayList<>();
         if (stack.getOres() != null && !stack.getOres().isEmpty()) {
             for (ItemStack s : stack.getOres()) {
                 list.add(new ItemStack(s.getItem(), stackSize, s.getItemDamage()));
@@ -118,7 +118,7 @@ public class BulkRecipe {
     }
 
     public boolean matches(ItemStackHandler inv) {
-        ArrayList<Object> required = new ArrayList<Object>(input);
+        ArrayList<Object> required = new ArrayList<>(input);
 
         if (required != null && required.size() > 0) {
             for (Object obj : required) {

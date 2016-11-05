@@ -2,7 +2,6 @@ package betterwithmods.items.tools;
 
 import betterwithmods.client.BWCreativeTabs;
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -14,7 +13,7 @@ public class ItemKnife extends ItemTool {
     private boolean repair = false;
 
     public ItemKnife(ToolMaterial material) {
-        super(material, Sets.newHashSet(new Block[]{Blocks.CRAFTING_TABLE}));
+        super(material, Sets.newHashSet(Blocks.CRAFTING_TABLE));
         this.setHarvestLevel("axe", material.getHarvestLevel() - 1);
         this.setMaxDamage(material.getMaxUses() / 2);
         this.setCreativeTab(BWCreativeTabs.BWTAB);

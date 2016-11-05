@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TurntableCraft {
@@ -12,10 +13,9 @@ public class TurntableCraft {
     private List<ItemStack> scrap;
 
     public TurntableCraft(IBlockState output, ItemStack... scraps) {
-        this.scrap = new ArrayList<ItemStack>();
+        this.scrap = new ArrayList<>();
         if (scraps.length > 0 && scraps != null) {
-            for (ItemStack scrap : scraps)
-                this.scrap.add(scrap);
+            Collections.addAll(this.scrap, scraps);
         }
         if (output != null)
             this.outputState = output;

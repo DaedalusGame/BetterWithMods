@@ -7,13 +7,13 @@ import java.util.Map.Entry;
 public abstract class BaseMapModification<K, V> extends BaseUndoable {
     protected final HashMap<K, V> recipes;
     protected final HashMap<K, V> successful;
-    protected Map<K, V> map;
+    protected final Map<K, V> map;
 
     protected BaseMapModification(String name, Map<K, V> map) {
         super(name);
         this.map = map;
-        this.recipes = new HashMap<K, V>();
-        this.successful = new HashMap<K, V>();
+        this.recipes = new HashMap<>();
+        this.successful = new HashMap<>();
     }
 
     @Override
@@ -44,9 +44,9 @@ public abstract class BaseMapModification<K, V> extends BaseUndoable {
     /**
      * This method must be overwritten by the extending classes. It should return
      * the name of the key item, for which the recipe is for. For example for machines
-     * which produce new items, it should return the name of the ouput. For machines
+     * which produce new items, it should return the name of the output. For machines
      * which are processing items (like a pulverizer) it should return the name of the
-     * the input. Another example would be the name of the enchantmant for a thaumcraft
+     * the input. Another example would be the name of the enchantment for a thaumcraft
      * infusion recipe.
      */
     protected abstract String getRecipeInfo(Entry<K, V> recipe);

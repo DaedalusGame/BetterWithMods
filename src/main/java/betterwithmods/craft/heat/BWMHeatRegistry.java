@@ -6,7 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import java.util.Hashtable;
 
 public class BWMHeatRegistry {
-    private static Hashtable<String, BWMHeatSource> heatSources = new Hashtable<String, BWMHeatSource>();
+    private static final Hashtable<String, BWMHeatSource> heatSources = new Hashtable<>();
 
     public static void setBlockHeatRegistry(Block block, int meta, int value) {
         BWMHeatSource entry = new BWMHeatSource(block, meta, value);

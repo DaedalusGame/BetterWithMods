@@ -6,13 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public interface IBWMBlock {
-    //String[] getVariants();
-
-    EnumFacing getFacing(IBlockAccess world, BlockPos pos);
-
-    void setFacing(World world, BlockPos pos, EnumFacing facing);
-
+public interface ITurnable {
     EnumFacing getFacingFromBlockState(IBlockState state);
 
     IBlockState setFacingInBlock(IBlockState state, EnumFacing facing);

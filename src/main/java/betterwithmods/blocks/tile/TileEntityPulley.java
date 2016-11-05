@@ -178,12 +178,12 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         for (BlockPos blockPos : platformBlocks) {
             Arrays.asList(new BlockPos[]{blockPos.north(), blockPos.south()}).forEach(p -> {
                 if (!platformBlocks.contains(p)) {
-                    fixRail((BlockPos) p, EnumRailDirection.ASCENDING_NORTH, EnumRailDirection.ASCENDING_SOUTH);
+                    fixRail(p, EnumRailDirection.ASCENDING_NORTH, EnumRailDirection.ASCENDING_SOUTH);
                 }
             });
             Arrays.asList(new BlockPos[]{blockPos.east(), blockPos.west()}).forEach(p -> {
                 if (!platformBlocks.contains(p)) {
-                    fixRail((BlockPos) p, EnumRailDirection.ASCENDING_EAST, EnumRailDirection.ASCENDING_WEST);
+                    fixRail(p, EnumRailDirection.ASCENDING_EAST, EnumRailDirection.ASCENDING_WEST);
                 }
             });
         }
@@ -255,16 +255,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
         BlockPos blockCheck = up ? p.up() : p.down();
 
-        Block b = worldObj.getBlockState(p).getBlock();
         if (worldObj.getBlockState(p).getBlock() != PLATFORM) {
             return true;
         }
 
-        b = worldObj.getBlockState(blockCheck).getBlock();
+        Block b = worldObj.getBlockState(blockCheck).getBlock();
 
-        if (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase) {
-
-        } else {
+        if (b != Blocks.REDSTONE_WIRE && !(b instanceof BlockRailBase)) {
             if (!(worldObj.isAirBlock(blockCheck) || b.isReplaceable(worldObj, blockCheck) || b == PLATFORM)
                     && !set.contains(blockCheck)) {
                 return false;
@@ -312,7 +309,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
             if (stack == null || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.stackSize < 64) {
                 if (flag) {
                     if (stack == null) {
-                        inventory.setStackInSlot(i, stack = new ItemStack(BWMBlocks.ROPE, 1));
+                        inventory.setStackInSlot(i, new ItemStack(BWMBlocks.ROPE, 1));
                     } else {
                         stack.stackSize++;
                     }
@@ -363,8 +360,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        NBTTagCompound ropetag = (NBTTagCompound) tag.getTag("Rope");
-        this.ropeTag = ropetag;
+        this.ropeTag = (NBTTagCompound) tag.getTag("Rope");
     }
 
     @Override

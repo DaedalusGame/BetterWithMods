@@ -193,7 +193,7 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
         return new BlockStateContainer(this, TYPES, DirUtils.SOUTH, DirUtils.EAST, DirUtils.NORTH, DirUtils.WEST);
     }
 
-    public static enum EnumPaneType implements IStringSerializable {
+    public enum EnumPaneType implements IStringSerializable {
         OAK(0, "oak"),
         SPRUCE(1, "spruce"),
         BIRCH(2, "birch"),
@@ -212,7 +212,7 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
         private String name;
         private int meta;
 
-        private EnumPaneType(int meta, String name) {
+        EnumPaneType(int meta, String name) {
             this.meta = meta;
             this.name = name;
         }

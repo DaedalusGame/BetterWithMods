@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "side": "blocks/stone_slab_top",
+    "knob": "blocks/iron_block",
+    "particle": "blocks/stone_slab_top"
+  },
   "elements": [
     {
       "from": [

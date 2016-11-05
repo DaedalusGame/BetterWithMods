@@ -6,13 +6,13 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +29,7 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private Set<Block> BLACKLIST = Sets.newHashSet(new Block[]{this, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT,});
+    private static final Set<Block> BLACKLIST = Sets.newHashSet(BWMBlocks.BUDDY_BLOCK, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT);
 
     public BlockBUD() {
         super(Material.ROCK);
@@ -44,7 +44,7 @@ public class BlockBUD extends BWMBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{DirUtils.FACING, REDSTONE});
+        return new BlockStateContainer(this, DirUtils.FACING, REDSTONE);
     }
 
     @Override
@@ -61,9 +61,10 @@ public class BlockBUD extends BWMBlock {
         return redstone | facing << 1;
     }
 
+    @Deprecated
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, UP));
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack).withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, UP));
     }
 
     @Override
@@ -106,7 +107,7 @@ public class BlockBUD extends BWMBlock {
                 world.playSound(null, pos, SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS, 1, .5f);
             }
 
-            BlockPos facing = pos.offset(getFacing(world, pos));
+            BlockPos facing = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
             if (!world.isAirBlock(facing)) {
                 world.getBlockState(facing).getBlock().onNeighborChange(world, facing, pos);
             }
@@ -129,38 +130,36 @@ public class BlockBUD extends BWMBlock {
     }
 
     public int getPower(IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return side.getOpposite() == getFacing(world, pos) && isRedstoneOn(world, pos) ? 15 : 0;
+        return side.getOpposite() == getFacingFromBlockState(world.getBlockState(pos)) && isRedstoneOn(world, pos) ? 15 : 0;
     }
 
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return getFacingFromBlockState(world.getBlockState(pos));
-    }
-
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), facing));
-    }
-
+    @Override
     public EnumFacing getFacingFromBlockState(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
+    @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.FACING, facing);
     }
 
+    @Override
     public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
         return true;
     }
 
+    @Override
     public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
         return true;
     }
 
+    @Override
     public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
         return true;
     }
 
+    @Override
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        setFacing(world, pos, DirUtils.rotateFacingAroundY(getFacing(world, pos), reverse));
+        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), reverse)));
     }
 }

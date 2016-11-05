@@ -4,8 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelWindmillShafts extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRenderer[] components = new ModelRenderer[4];
+    public final ModelRenderer axle;
+    public final ModelRenderer[] components = new ModelRenderer[4];
 
     public ModelWindmillShafts() {
         for (int i = 0; i < 4; i++) {

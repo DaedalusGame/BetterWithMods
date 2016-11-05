@@ -41,35 +41,35 @@ public class JEIRecipeRegistry {
     }
 
     private static List<CrucibleRecipeWrapper> getCrucibleRecipes(CraftingManagerCrucible bulk, IJeiHelpers helper) {
-        List<CrucibleRecipeWrapper> recipes = new ArrayList<CrucibleRecipeWrapper>();
+        List<CrucibleRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new CrucibleRecipeWrapper(helper, recipe));
         return recipes;
     }
 
     private static List<StokedCrucibleRecipeWrapper> getStokedCrucibleRecipes(CraftingManagerCrucibleStoked bulk, IJeiHelpers helper) {
-        List<StokedCrucibleRecipeWrapper> recipes = new ArrayList<StokedCrucibleRecipeWrapper>();
+        List<StokedCrucibleRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new StokedCrucibleRecipeWrapper(helper, recipe));
         return recipes;
     }
 
     private static List<CauldronRecipeWrapper> getCauldronRecipes(CraftingManagerCauldron bulk, IJeiHelpers helper) {
-        List<CauldronRecipeWrapper> recipes = new ArrayList<CauldronRecipeWrapper>();
+        List<CauldronRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new CauldronRecipeWrapper(helper, recipe));
         return recipes;
     }
 
     private static List<StokedCauldronRecipeWrapper> getStokedCauldronRecipes(CraftingManagerCauldronStoked bulk, IJeiHelpers helper) {
-        List<StokedCauldronRecipeWrapper> recipes = new ArrayList<StokedCauldronRecipeWrapper>();
+        List<StokedCauldronRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new StokedCauldronRecipeWrapper(helper, recipe));
         return recipes;
     }
 
     private static List<MillRecipeWrapper> getMillRecipes(CraftingManagerMill bulk, IJeiHelpers helper) {
-        List<MillRecipeWrapper> recipes = new ArrayList<MillRecipeWrapper>();
+        List<MillRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new MillRecipeWrapper(helper, recipe));
         return recipes;

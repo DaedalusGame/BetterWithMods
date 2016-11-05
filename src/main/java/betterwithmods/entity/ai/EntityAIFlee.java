@@ -12,8 +12,8 @@ import net.minecraft.util.math.Vec3d;
  * @author Koward
  */
 public class EntityAIFlee extends EntityAIBase {
+    protected final double speed;
     private final EntityCreature theEntityCreature;
-    protected double speed;
     private double randPosX;
     private double randPosY;
     private double randPosZ;

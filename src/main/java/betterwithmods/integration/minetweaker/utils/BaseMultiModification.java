@@ -10,7 +10,7 @@ public class BaseMultiModification extends BaseUndoable {
 
     protected BaseMultiModification(String name) {
         super(name);
-        this.actions = new LinkedList<IUndoableAction>();
+        this.actions = new LinkedList<>();
     }
 
     @Override
@@ -32,12 +32,12 @@ public class BaseMultiModification extends BaseUndoable {
 
     @Override
     public String describe() {
-        return String.format("Applying %d actions for %s Recipe change", this.name, this.actions.size());
+        return String.format("Applying %d actions for %s Recipe change", this.actions.size(), this.name);
     }
 
     @Override
     public String describeUndo() {
-        return String.format("Reverting %d actions for %s Recipe change", this.name, this.actions.size());
+        return String.format("Reverting %d actions for %s Recipe change", this.actions.size(), this.name);
     }
 
     @Override

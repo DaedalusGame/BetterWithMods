@@ -44,10 +44,8 @@ public abstract class BaseUndoable implements IUndoableAction {
 
         BaseUndoable u = (BaseUndoable) obj;
 
-        if (!name.equals(u.name))
-            return false;
+        return name.equals(u.name);
 
-        return true;
     }
 
     @Override

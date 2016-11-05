@@ -44,16 +44,15 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, stack);
         return setFacingInBlock(state, side.getOpposite());
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
         EnumFacing facing = DirUtils.convertEntityOrientationToFacing(entity, EnumFacing.NORTH);
-
-        setFacing(world, pos, facing);
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, facing));
     }
 
     @Override
@@ -123,14 +122,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         return 0;
     }
 
-    @Override
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
         return getFacingFromState(world.getBlockState(pos));
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, facing));
     }
 
     public EnumFacing getFacingFromState(IBlockState state) {
@@ -166,7 +159,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
                 setGearboxState(world, pos, false);
             }
 
-            setFacing(world, pos, newFacing);
+            world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, newFacing));
 
             world.markBlockRangeForRenderUpdate(pos, pos);
 

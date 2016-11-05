@@ -95,10 +95,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
-        if (type == BlockMechMachines.EnumType.MILL || type == BlockMechMachines.EnumType.PULLEY || type == BlockMechMachines.EnumType.TURNTABLE) {
-            return true;
-        }
-        return false;
+        return type == EnumType.MILL || type == EnumType.PULLEY || type == EnumType.TURNTABLE;
     }
 
     public int tickRateForMeta(int meta) {
@@ -181,11 +178,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         boolean gettingPower = this.isInputtingMechPower(world, pos);
         boolean isOn = isMechanicalOn(world, pos);
 
-        if (world.getTileEntity(pos) instanceof IMechSubtype) {
-            IMechSubtype sub = (IMechSubtype) world.getTileEntity(pos);
-            //if (sub.getSubtype() != state.getValue(SUBTYPE))
-            //world.setBlockState(pos, state.withProperty(SUBTYPE, sub.getSubtype()));
-        }
         if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
             if (!world.getGameRules().getBoolean("doDaylightCycle"))
                 ((TileEntityTurntable) world.getTileEntity(pos)).toggleAsynchronous(null);
@@ -365,12 +357,12 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
     public void updateMill(World world, BlockPos pos, Random rand) {
         if (isMechanicalOn(world, pos)) {
-            emitSmoke(world, pos, rand);
+            emitSmoke(world, pos, rand, 5);
         }
     }
 
-    private void emitSmoke(World world, BlockPos pos, Random rand) {
-        for (int i = 0; i < 5; i++) {
+    private void emitSmoke(World world, BlockPos pos, Random rand, int heat) {
+        for (int i = 0; i < heat; i++) {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
@@ -386,27 +378,9 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
             TileEntityCookingPot tile = (TileEntityCookingPot) world.getTileEntity(pos);
             int heat = tile.fireIntensity;
             if (heat > 4) {
-                for (int i = 0; i < heat; i++) {
-                    int x = pos.getX();
-                    int y = pos.getY();
-                    int z = pos.getZ();
-                    float fX = x + rand.nextFloat();
-                    float fY = y + rand.nextFloat() * 0.5F + 1.0F;
-                    float fZ = z + rand.nextFloat();
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, fX, fY, fZ, 0.0D, 0.0D, 0.0D);
-                }
+                emitSmoke(world, pos, rand, heat);
             }
         }
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return null;
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-
     }
 
     @Override
@@ -432,12 +406,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
         return false;
-    }
-
-    @Override
-    public void rotateAroundYAxis(World world, BlockPos pos,
-                                  boolean reverse) {
-
     }
 
     @Override
@@ -495,7 +463,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         return meta;
     }
 
-    public static enum EnumType implements IStringSerializable {
+    public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),
         PULLEY(1, "pulley", true),
         CRUCIBLE(2, "crucible"),
@@ -515,11 +483,11 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         private String name;
         private boolean solidity;
 
-        private EnumType(int meta, String name) {
+        EnumType(int meta, String name) {
             this(meta, name, false);
         }
 
-        private EnumType(int meta, String name, boolean solid) {
+        EnumType(int meta, String name, boolean solid) {
             this.meta = meta;
             this.name = name;
             this.solidity = solid;

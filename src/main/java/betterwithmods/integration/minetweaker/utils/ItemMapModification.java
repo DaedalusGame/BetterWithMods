@@ -11,15 +11,15 @@ public class ItemMapModification<T> extends BaseUndoable {
     protected final ItemStackMap<T> recipes;
     protected final ItemStackMap<T> successful;
     protected final ItemStackMap<T> overwritten;
-    protected ItemStackMap<T> map;
+    protected final ItemStackMap<T> map;
 
 
     protected ItemMapModification(String name, T defaultValue, ItemStackMap<T> map) {
         super(name);
         this.map = map;
-        recipes = new ItemStackMap<T>(defaultValue);
-        successful = new ItemStackMap<T>(defaultValue);
-        this.overwritten = new ItemStackMap<T>(defaultValue);
+        recipes = new ItemStackMap<>(defaultValue);
+        successful = new ItemStackMap<>(defaultValue);
+        this.overwritten = new ItemStackMap<>(defaultValue);
     }
 
     protected ItemMapModification(String name, T defaultValue, ItemStackMap<T> map, Map<? extends ItemStack, ? extends T> recipes) {

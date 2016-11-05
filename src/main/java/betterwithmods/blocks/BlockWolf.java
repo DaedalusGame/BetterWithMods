@@ -50,8 +50,8 @@ public class BlockWolf extends BWMBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, stack);
         return state.withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, side));
     }
 

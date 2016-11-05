@@ -1,9 +1,9 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMItems;
-import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, IBWMBlock, IMultiVariants {
+public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, ITurnable, IMultiVariants {
     public BlockDebarkedNew() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
@@ -27,16 +27,6 @@ public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, IBWMBl
     @Override
     public String[] getVariants() {
         return new String[]{"axis=y,variant=acacia", "axis=y,variant=dark_oak"};
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return null;
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-
     }
 
     @Override

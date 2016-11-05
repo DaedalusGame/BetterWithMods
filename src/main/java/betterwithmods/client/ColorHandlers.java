@@ -18,7 +18,7 @@ public class ColorHandlers {
             worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColor(0.5D, 1.0D);
 
     public static final IItemColor ItemPlanterColor = (stack, tintIndex) ->
-            (stack.getItem() instanceof ItemBlock && stack.getItem() instanceof ItemBlockPlanter) ? ((ItemBlockPlanter) stack.getItem()).getColorFromItemstack(stack, tintIndex) : -1;
+            (stack.getItem() instanceof ItemBlock && stack.getItem() instanceof ItemBlockPlanter) ? ((ItemBlockPlanter) stack.getItem()).getColorFromItemStack(stack, tintIndex) : -1;
     public static final IItemColor ItemFoliageColor = (stack, tintIndex) ->
             BlockFoliageColor.colorMultiplier(((ItemBlock) stack.getItem()).getBlock().getDefaultState(), null, null, tintIndex);
 

@@ -7,7 +7,7 @@ public class CraftingManagerMill extends CraftingManagerBulk {
         super("mill");
     }
 
-    public static final CraftingManagerMill getInstance() {
+    public static CraftingManagerMill getInstance() {
         return instance;
     }
 }

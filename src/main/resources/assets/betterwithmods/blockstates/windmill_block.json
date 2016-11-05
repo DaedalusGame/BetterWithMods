@@ -18,15 +18,17 @@
         "transform": "forge:default-block"
       }
     ],
-    "dir": {
-      "0": {
+    "axis": {
+      "y": {
         "model": "betterwithmods:axle"
       },
-      "1": {
-        "model": "betterwithmods:axle_side"
+      "z": {
+        "model": "betterwithmods:axle",
+        "x": 90
       },
-      "2": {
-        "model": "betterwithmods:axle_side",
+      "x": {
+        "model": "betterwithmods:axle",
+        "x": 90,
         "y": 90
       }
     },

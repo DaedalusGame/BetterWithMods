@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class CraftingManagerBulk {
-    private String craftType;
+    private final String craftType;
     private List<BulkRecipe> recipes;
 
     public CraftingManagerBulk(String craftType) {
         this.craftType = craftType;
-        this.recipes = new ArrayList<BulkRecipe>();
+        this.recipes = new ArrayList<>();
     }
 
     public void addOreRecipe(ItemStack output, Object[] inputs) {
@@ -111,7 +111,7 @@ public abstract class CraftingManagerBulk {
     }
 
     private HashMap<Integer, BulkRecipe> getValidRecipes(ItemStackHandler inv) {
-        HashMap<Integer, BulkRecipe> recipe = new HashMap<Integer, BulkRecipe>();
+        HashMap<Integer, BulkRecipe> recipe = new HashMap<>();
         int order = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             BulkRecipe single = null;
@@ -140,10 +140,7 @@ public abstract class CraftingManagerBulk {
         for (Object obj : list) {
             if (obj instanceof ItemStack) {
                 if (ItemStack.areItemsEqual((ItemStack) obj, stack) || (((ItemStack) obj).getItemDamage() == OreDictionary.WILDCARD_VALUE && stack.getItem() == ((ItemStack) obj).getItem())) {
-                    if (((ItemStack) obj).hasTagCompound())
-                        return ItemStack.areItemStackTagsEqual(stack, (ItemStack) obj);
-                    else
-                        return true;
+                    return !((ItemStack) obj).hasTagCompound() || ItemStack.areItemStackTagsEqual(stack, (ItemStack) obj);
                 }
             } else if (obj instanceof OreStack) {
                 if (InvUtils.listContains(stack, ((OreStack) obj).getOres()))
@@ -199,7 +196,7 @@ public abstract class CraftingManagerBulk {
     public void refreshRecipes() {
         List<BulkRecipe> recipes = getRecipes();
         if (!recipes.isEmpty()) {
-            this.recipes = new ArrayList<BulkRecipe>();
+            this.recipes = new ArrayList<>();
             for (BulkRecipe r : recipes) {
                 this.recipes.add(createRecipe(r.getOutput(), r.getSecondary(), r.input.toArray()));
             }

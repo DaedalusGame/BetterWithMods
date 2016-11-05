@@ -1,7 +1,7 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.IBWMBlock;
-import com.google.common.base.Predicate;
+import betterwithmods.api.block.ITurnable;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
@@ -10,15 +10,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Objects;
+
+import static net.minecraft.util.EnumFacing.Axis.*;
+
 public class DirUtils {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyDirection TILTING = PropertyDirection.create("facing", new Predicate<EnumFacing>() {
-        @Override
-        public boolean apply(EnumFacing facing) {
-            return facing != EnumFacing.DOWN;
-        }
-    });
+    public static final PropertyDirection TILTING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
     public static final PropertyBool NORTH = PropertyBool.create("north");
@@ -106,7 +105,7 @@ public class DirUtils {
         return facing;
     }
 
-    public static boolean rotateAroundY(IBWMBlock block, World world, BlockPos pos, boolean reverse) {
+    public static boolean rotateAroundY(ITurnable block, World world, BlockPos pos, boolean reverse) {
         IBlockState state = world.getBlockState(pos);
         IBlockState newState = rotateStateAroundY(block, state, reverse);
         if (newState != state) {
@@ -117,7 +116,7 @@ public class DirUtils {
         return false;
     }
 
-    public static IBlockState rotateStateAroundY(IBWMBlock block, IBlockState state, boolean reverse) {
+    public static IBlockState rotateStateAroundY(ITurnable block, IBlockState state, boolean reverse) {
         EnumFacing facing = block.getFacingFromBlockState(state);
         EnumFacing newFacing = rotateFacingAroundY(facing, reverse);
         state = block.setFacingInBlock(state, newFacing);
@@ -170,11 +169,11 @@ public class DirUtils {
     }
 
     public static int getPlacementMeta(String type, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (type == "siding") {
+        if (Objects.equals(type, "siding")) {
             return side.getOpposite().ordinal();
-        } else if (type == "moulding") {// X: East-West; Z: North-South
+        } else if (Objects.equals(type, "moulding")) {// X: East-West; Z: North-South
             return getMoulding(side, hitX, hitY, hitZ).getMeta();
-        } else if (type == "corner") {
+        } else if (Objects.equals(type, "corner")) {
             if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
                 boolean up = side == EnumFacing.UP;
                 if (hitX < 0.5F && hitZ < 0.5F)
@@ -306,13 +305,67 @@ public class DirUtils {
         return source.add(facing.getDirectionVec());
     }
 
+    /**
+     * Used to iterate through axis when right-clicking on the axle.
+     *
+     * @param axis Current axis.
+     * @return Next axis in an cyclical X-Y-Z order.
+     */
+    public static EnumFacing.Axis getNextAxis(EnumFacing.Axis axis) {
+        switch (axis) {
+            case X:
+                return Y;
+            case Y:
+                return Z;
+            case Z:
+            default:
+                return X;
+        }
+    }
+
+    /**
+     * Get the value that was used to describe axis before EnumFacing.Axis.
+     *
+     * @param axis The modern axis.
+     * @return 2 for X, 0 for Y, 1 for Z.
+     */
+    public static int getLegacyAxis(EnumFacing.Axis axis) {
+        switch (axis) {
+            case X:
+                return 2;
+            case Y:
+                return 0;
+            case Z:
+            default:
+                return 1;
+        }
+    }
+
+    /**
+     * Get the axis from the legacy axis value.
+     *
+     * @param axis The legacy axis integer, in [0,2].
+     * @return X for 2, Y for 0, Z for 1. Default to X if undefined.
+     */
+    public static EnumFacing.Axis getAxisFromLegacy(int axis) {
+        switch (axis) {
+            case 0:
+                return Y;
+            case 1:
+                return Z;
+            case 2:
+            default:
+                return X;
+        }
+    }
+
     private enum EnumMoulding {
         DOWNWEST(0), DOWNNORTH(1), DOWNSOUTH(2), DOWNEAST(3), UPWEST(4), UPNORTH(5), UPSOUTH(6), UPEAST(
                 7), VERTNORTHWEST(8), VERTNORTHEAST(9), VERTSOUTHWEST(10), VERTSOUTHEAST(11);
 
-        private int meta;
+        private final int meta;
 
-        private EnumMoulding(int meta) {
+        EnumMoulding(int meta) {
             this.meta = meta;
         }
 

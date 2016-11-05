@@ -4,7 +4,10 @@ import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import betterwithmods.integration.jei.wrapper.MillRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -19,13 +22,10 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
 
     private static final ResourceLocation guiTexture = new ResourceLocation(BWMod.MODID, "textures/gui/jei/mill.png");
     @Nonnull
-    private final ICraftingGridHelper craftingGrid;
-    @Nonnull
     private final IDrawableAnimated gear;
 
     public MillRecipeCategory(IGuiHelper helper) {
         super(helper.createDrawable(guiTexture, 5, 6, 158, 36), "inv.mill.name");
-        craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlots);
         IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 176, 0, 14, 14);
         this.gear = helper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
@@ -48,7 +48,6 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
 
         stacks.init(outputSlots, false, 118, 18);
         stacks.init(outputSlots + 1, false, 118 + 18, 18);
-        BulkRecipeWrapper recipe = wrapper;
         List<List<ItemStack>> input = wrapper.getInputs();
         for (int i = 0; i < 3; i++) {
             int index = inputSlots + i;
@@ -58,9 +57,9 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
             }
         }
 
-        stacks.set(outputSlots, recipe.getRecipe().getOutput());
-        if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
-            stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
+        stacks.set(outputSlots, wrapper.getRecipe().getOutput());
+        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+            stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
     }
 
     @Override

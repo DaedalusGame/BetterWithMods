@@ -89,13 +89,6 @@ public class BWRegistry {
     /**
      * Registers an entity for this mod. Handles automatic available ID
      * assignment.
-     *
-     * @param entityClass
-     * @param entityName
-     * @param trackingRange
-     * @param updateFrequency
-     * @param sendsVelocityUpdates
-     * @author Koward
      */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,
                                       int updateFrequency, boolean sendsVelocityUpdates) {

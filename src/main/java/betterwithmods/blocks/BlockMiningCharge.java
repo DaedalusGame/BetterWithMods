@@ -36,7 +36,7 @@ public class BlockMiningCharge extends BWMBlock {
 
     public BlockMiningCharge() {
         super(Material.TNT);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.FALSE));
         setSoundType(SoundType.PLANT);
     }
 
@@ -83,7 +83,7 @@ public class BlockMiningCharge extends BWMBlock {
         if (!worldIn.isRemote && state.getValue(EXPLODE)) {
             EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), igniter, getFacingFromBlockState(state));
             worldIn.spawnEntityInWorld(miningCharge);
-            worldIn.playSound((EntityPlayer) null, miningCharge.posX, miningCharge.posY, miningCharge.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            worldIn.playSound(null, miningCharge.posX, miningCharge.posY, miningCharge.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
@@ -100,14 +100,14 @@ public class BlockMiningCharge extends BWMBlock {
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos)) {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
             worldIn.setBlockToAir(pos);
         }
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
         if (worldIn.isBlockPowered(pos)) {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
             worldIn.setBlockToAir(pos);
         }
     }
@@ -128,12 +128,12 @@ public class BlockMiningCharge extends BWMBlock {
     }
 
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-        this.explode(worldIn, pos, state, (EntityLivingBase) null);
+        this.explode(worldIn, pos, state, null);
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (heldItem != null && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
-            this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)), playerIn);
+            this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 
             if (heldItem.getItem() == Items.FLINT_AND_STEEL) {
@@ -152,7 +152,7 @@ public class BlockMiningCharge extends BWMBlock {
         if (!worldIn.isRemote && entityIn instanceof EntityArrow) {
             EntityArrow entityarrow = (EntityArrow) entityIn;
             if (entityarrow.isBurning()) {
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, Boolean.valueOf(true)), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, Boolean.TRUE), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
                 worldIn.setBlockToAir(pos);
             }
         }

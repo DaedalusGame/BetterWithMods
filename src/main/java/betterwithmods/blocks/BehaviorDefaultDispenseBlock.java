@@ -37,7 +37,7 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem {
         if (stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check))) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             boolean blockAcross = !world.isAirBlock(check.offset(facing));
-            IBlockState state = block.onBlockPlaced(world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake);
+            IBlockState state = block.getStateForPlacement(world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake, stack);
             if (block.canPlaceBlockAt(world, check)) {
                 if (((ItemBlock) stack.getItem()).placeBlockAt(stack1, fake, world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), state)) {
                     world.playSound(null, check, state.getBlock().getSoundType(state, world, check, fake).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);

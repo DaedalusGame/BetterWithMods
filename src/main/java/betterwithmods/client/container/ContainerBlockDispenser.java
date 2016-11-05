@@ -12,7 +12,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBlockDispenser extends Container {
-    private TileEntityBlockDispenser tile;
+    private final TileEntityBlockDispenser tile;
     private int nextSlot;
 
     public ContainerBlockDispenser(EntityPlayer player, TileEntityBlockDispenser tile) {

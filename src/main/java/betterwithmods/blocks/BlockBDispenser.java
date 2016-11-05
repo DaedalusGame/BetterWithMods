@@ -2,8 +2,8 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.api.block.IBWMBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.api.block.ITurnable;
 import betterwithmods.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.event.MobDropEvent;
@@ -36,8 +36,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMultiVariants {
-    public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<Item, IBehaviorDispenseItem>(new BehaviorDefaultDispenseBlock());
+public class BlockBDispenser extends BlockDispenser implements ITurnable, IMultiVariants {
+    public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<>(new BehaviorDefaultDispenseBlock());
 
     public BlockBDispenser() {
         super();
@@ -176,16 +176,6 @@ public class BlockBDispenser extends BlockDispenser implements IBWMBlock, IMulti
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityBlockDispenser();
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return null;
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-
     }
 
     @Override

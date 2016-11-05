@@ -5,12 +5,12 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelWindmillSail extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRendererChild[] components = new ModelRendererChild[4];
+    public final ModelRenderer axle;
+    public final ModelRendererChild[] components = new ModelRendererChild[4];
 
     public ModelWindmillSail() {
         for (int i = 0; i < 4; i++) {
-            this.components[i] = new ModelRendererChild(this, 0, 0, i);
+            this.components[i] = new ModelRendererChild(this, 0, 0);
             this.components[i].setTextureSize(16, 16);
             this.components[i].addBox(15.0F, 1.75F, 1.0F, 84, 16, 1);
             this.components[i].setRotationPoint(0.0F, 0.0F, 0.0F);

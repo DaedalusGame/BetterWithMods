@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelTurntableKnob extends ModelBase {
-    public ModelRenderer knobs;
+    public final ModelRenderer knobs;
 
     public ModelTurntableKnob(int position) {
         float off = -4 + (position * 2);

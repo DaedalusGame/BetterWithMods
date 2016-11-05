@@ -41,8 +41,8 @@ public class BlockLens extends BWMBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
         EnumFacing face = DirUtils.convertEntityOrientationToFacing(entity, side);
         return setFacingInBlock(state, face);
     }
@@ -116,10 +116,9 @@ public class BlockLens extends BWMBlock {
 
                     if (world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE) {
                         world.setBlockToAir(bPos);
-                    } else if (world.isAirBlock(bPos))
-                        continue;
-                    else
+                    } else if (!world.isAirBlock(bPos)) {
                         break;
+                    }
                 }
             }
         } else {
@@ -138,14 +137,8 @@ public class BlockLens extends BWMBlock {
         return EnumPushReaction.BLOCK;
     }
 
-    @Override
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
         return getFacingFromBlockState(world.getBlockState(pos));
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.setBlockState(pos, world.getBlockState(pos));
     }
 
     @Override
@@ -163,11 +156,10 @@ public class BlockLens extends BWMBlock {
     }
 
     public void setLit(World world, BlockPos pos, boolean isOn) {
-        boolean lit = isOn;
         boolean oldLit = world.getBlockState(pos).getValue(LIT);
 
-        if (lit != oldLit) {
-            world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, lit));
+        if (isOn != oldLit) {
+            world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, isOn));
             world.notifyBlockOfStateChange(pos, this);
         }
     }
@@ -192,7 +184,7 @@ public class BlockLens extends BWMBlock {
         Block block = world.getBlockState(offset).getBlock();
 
         if (block == BWMBlocks.DETECTOR) {
-            EnumFacing detFacing = ((BlockDetector) block).getFacing(world, offset);
+            EnumFacing detFacing = ((BlockDetector) block).getFacingFromBlockState(world.getBlockState(offset));
 
             if (detFacing == DirUtils.getOpposite(facing))
                 return true;
@@ -237,13 +229,12 @@ public class BlockLens extends BWMBlock {
                 if (lightFace == oppFacing) {
                     world.setBlockToAir(offset);
                 }
-                continue;
-            } else if (world.isAirBlock(offset))
-                continue;
-            else if (world.getBlockState(offset).getBlock() == this) {
-                BlockLens lens = (BlockLens) world.getBlockState(pos).getBlock();
-                if (lens.getFacing(world, offset) == facing)
-                    break;
+            } else if (!world.isAirBlock(offset)) {
+                if (world.getBlockState(offset).getBlock() == this) {
+                    BlockLens lens = (BlockLens) world.getBlockState(pos).getBlock();
+                    if (lens.getFacing(world, offset) == facing)
+                        break;
+                }
             }
         }
     }

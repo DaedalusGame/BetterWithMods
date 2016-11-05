@@ -71,7 +71,7 @@ public class BlockHibachi extends BWMBlock {
 
     @Override
     public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {
-        return world.getBlockState(pos).getValue(LIT).booleanValue() && side == EnumFacing.UP;
+        return world.getBlockState(pos).getValue(LIT) && side == EnumFacing.UP;
     }
 
     public boolean isCurrentlyValid(World world, BlockPos pos) {
@@ -90,7 +90,7 @@ public class BlockHibachi extends BWMBlock {
     }
 
     public boolean isLit(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(LIT).booleanValue();
+        return world.getBlockState(pos).getValue(LIT);
     }
 
     private boolean shouldIgnite(World world, BlockPos pos) {

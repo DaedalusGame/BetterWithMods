@@ -1,7 +1,7 @@
 package betterwithmods.blocks.tile;
 
 public interface IMechSubtype {
-    public int getSubtype();
+    int getSubtype();
 
-    public void setSubtype(int sub);
+    void setSubtype(int sub);
 }

@@ -56,10 +56,11 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         return state.getBlock() == this && !state.getValue(ACTIVE);
     }
 
+    @Deprecated
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                     int meta, EntityLivingBase living) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, living);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
+                                            int meta, EntityLivingBase living, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, stack);
         if (side.ordinal() < 2)
             side = DirUtils.convertEntityOrientationToFlatFacing(living, side);
         return setFacingInBlock(state, side);
@@ -68,16 +69,6 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.HORIZONTAL, facing);
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-        world.getBlockState(pos).withProperty(DirUtils.HORIZONTAL, facing);
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return getFacingFromBlockState(world.getBlockState(pos));
     }
 
     @Override
@@ -197,7 +188,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        EnumFacing facing = getFacing(world, pos);
+        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
         return dir != facing && dir != EnumFacing.UP;
     }
 
@@ -226,9 +217,9 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     }
 
     private void stokeFlames(World world, BlockPos pos) {
-        EnumFacing dir = getFacing(world, pos);
-        EnumFacing dirLeft = DirUtils.rotateFacingAroundY(getFacing(world, pos), false);
-        EnumFacing dirRight = DirUtils.rotateFacingAroundY(getFacing(world, pos), true);
+        EnumFacing dir = getFacingFromBlockState(world.getBlockState(pos));
+        EnumFacing dirLeft = DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), false);
+        EnumFacing dirRight = DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), true);
 
         for (int i = 0; i < 3; i++) {
             BlockPos dirPos = pos.offset(dir, 1 + i);
@@ -272,9 +263,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         float extendedY = y + 1;
 
         if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                Entity entity = (Entity) list.get(i);
-
+            for (Entity entity : list) {
                 if (!entity.isDead && (entity.canBePushed() || entity instanceof EntityItem)) {
                     double tempY = entity.getEntityBoundingBox().minY;
 

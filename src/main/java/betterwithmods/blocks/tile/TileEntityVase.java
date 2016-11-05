@@ -30,7 +30,7 @@ public class TileEntityVase extends TileBasicInventory {
                 heldItem.stackSize -= 1;
                 playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldItem.stackSize == 0 ? null : heldItem);
             }
-            this.worldObj.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(),
+            this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
                     ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         }

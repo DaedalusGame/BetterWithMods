@@ -8,12 +8,12 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * @author Koward
+ */
 public class BuoyancyEventHandler {
     /**
      * Substitute the original {@link EntityItem} by our new {@link EntityItemBuoy}.
-     *
-     * @param event
-     * @author Koward
      */
     @SubscribeEvent
     public void replaceServerEntityItem(EntityJoinWorldEvent event) {
@@ -31,7 +31,6 @@ public class BuoyancyEventHandler {
             entityItem.setDead();
             entityItem.setInfinitePickupDelay();
             world.spawnEntityInWorld(newEntity);
-            return;
         }
     }
 }

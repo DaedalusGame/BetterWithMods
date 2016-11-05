@@ -4,7 +4,6 @@ import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.tile.TileEntityPulley;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerPulley extends Container {
-    private TileEntityPulley tile;
+    private final TileEntityPulley tile;
 
     public ContainerPulley(EntityPlayer player, TileEntityPulley tile) {
         this.tile = tile;
@@ -69,31 +68,4 @@ public class ContainerPulley extends Container {
         }
         return clickedStack;
     }
-
-    @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-    }
-
-//	@Override
-//	public void detectAndSendChanges() {
-//		super.detectAndSendChanges();
-//
-//		Iterator<IContainerListener> it = this.listeners.iterator();
-//
-//		while (it.hasNext()) {
-//			IContainerListener craft = it.next();
-//
-//			if (this.lastMechPower != this.tile.power)
-//				craft.sendProgressBarUpdate(this, 0, this.tile.power);
-//		}
-//		this.lastMechPower = this.tile.power;
-//	}
-
-//	@Override
-//	public void updateProgressBar(int index, int value) {
-//		if (index == 0)
-//			this.tile.power = (byte) value;
-//	}
-
 }

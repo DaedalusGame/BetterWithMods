@@ -9,7 +9,7 @@ public class FluidTankRestricted extends FluidTank {
 
     public FluidTankRestricted(FluidStack fluid, int capacity) {
         super(capacity);
-        if(fluid != null)
+        if (fluid != null)
             restriction = fluid.getFluid();
         else
             restriction = null;
@@ -21,9 +21,9 @@ public class FluidTankRestricted extends FluidTank {
     }
 
     private boolean areFluidsIdentical(Fluid fluid1, Fluid fluid2) {
-        if(fluid1 == null)
+        if (fluid1 == null)
             return fluid2 == null;
-        if(fluid2 == null)
+        if (fluid2 == null)
             return false;
         return fluid1 == fluid2 || fluid1.getName().equals(fluid2.getName());
     }

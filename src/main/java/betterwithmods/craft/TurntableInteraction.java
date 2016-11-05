@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Hashtable;
 
 public class TurntableInteraction {
-    private static Hashtable<IBlockState, TurntableCraft> spinnables = new Hashtable<IBlockState, TurntableCraft>();
+    private static Hashtable<IBlockState, TurntableCraft> spinnables = new Hashtable<>();
 
     public static void addBlockRecipe(Block block, IBlockState result, ItemStack... scraps) {
         TurntableCraft craft = new TurntableCraft(result, scraps);

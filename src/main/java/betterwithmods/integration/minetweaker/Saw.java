@@ -25,7 +25,7 @@ import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
  */
 @ZenClass("mods.betterwithmods.Saw")
 public class Saw {
-    public static Hashtable<String, List<ItemStack>> woodProduct = SawInteraction.getWoodProducts();
+    public static final Hashtable<String, List<ItemStack>> woodProduct = SawInteraction.getWoodProducts();
 
     @ZenMethod
     public static void add(IItemStack input, IItemStack[] output) {

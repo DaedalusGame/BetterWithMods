@@ -1,10 +1,12 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.api.block.ITurnable;
 import betterwithmods.blocks.BlockMechMachines.EnumType;
-import betterwithmods.util.DirUtils;
+import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,32 +24,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockAnchor extends BWMBlock {
-    public static final PropertyBool TOPCONNECT = PropertyBool.create("topconnect");
-    public static final PropertyBool BOTTOMCONNECT = PropertyBool.create("bottomconnect");
-    public static float height = 0.375F;
+public class BlockAnchor extends BlockDirectional implements ITurnable {
+    public static final PropertyBool LINKED = PropertyBool.create("linked");
+    private static final float HEIGHT = 0.375F;
+    private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
+    private static final AxisAlignedBB N_AABB = new AxisAlignedBB(0.0F, 0.0F, 1.0F - HEIGHT, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB S_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, HEIGHT);
+    private static final AxisAlignedBB W_AABB = new AxisAlignedBB(1.0F - HEIGHT, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, HEIGHT, 1.0F, 1.0F);
 
     public BlockAnchor() {
         super(Material.ROCK);
+        setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(2.0F);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        int facing = state.getValue(DirUtils.FACING).getIndex();
+        EnumFacing facing = state.getValue(FACING);
         switch (facing) {
-            case 0:
-                return new AxisAlignedBB(0.0F, 1.0F - height, 0.0F, 1.0F, 1.0F, 1.0F);
-            case 1:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, height, 1.0F);
-            case 2:
-                return new AxisAlignedBB(0.0F, 0.0F, 1.0F - height, 1.0F, 1.0F, 1.0F);
-            case 3:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, height);
-            case 4:
-                return new AxisAlignedBB(1.0F - height, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            case DOWN:
+                return D_AABB;
+            case UP:
+                return U_AABB;
+            case NORTH:
+                return N_AABB;
+            case SOUTH:
+                return S_AABB;
+            case WEST:
+                return W_AABB;
+            case EAST:
+            default:
+                return E_AABB;
         }
-        return new AxisAlignedBB(0.0F, 0.0F, 0.0F, height, 1.0F, 1.0F);
     }
 
     @Override
@@ -61,32 +71,31 @@ public class BlockAnchor extends BWMBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
         return this.setFacingInBlock(state, side);
     }
 
     @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
-        return state.withProperty(DirUtils.FACING, facing);
+        return state.withProperty(FACING, facing);
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        ItemStack stack = heldItem;
         BlockPos down = pos.down();
 
-        if (stack != null) {
-            if (stack.getItem() instanceof ItemBlock) {
-                Block block = ((ItemBlock) stack.getItem()).getBlock();
+        if (heldItem != null) {
+            if (heldItem.getItem() instanceof ItemBlock) {
+                Block block = ((ItemBlock) heldItem.getItem()).getBlock();
                 if (block == BWMBlocks.ROPE) {
                     if (!world.isRemote) {
                         if (world.getBlockState(down).getBlock() == BWMBlocks.ROPE) {
-                            BlockRope.placeRopeUnder(stack, world, down, player);
+                            BlockRope.placeRopeUnder(heldItem, world, down, player);
                         } else if (world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down)) {
                             world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
                             if (!player.capabilities.isCreativeMode)
-                                stack.stackSize--;
+                                heldItem.stackSize--;
                         } else
                             return false;
                     }
@@ -101,24 +110,36 @@ public class BlockAnchor extends BWMBlock {
 
     @Override
     public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = getFacing(world, pos);
+        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
     }
 
     @Override
+    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        EnumFacing facing = getFacing(world, pos);
+        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
         return side == facing.getOpposite();
     }
 
     @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return getFacingFromBlockState(world.getBlockState(pos));
-    }
-
-    @Override
     public EnumFacing getFacingFromBlockState(IBlockState state) {
-        return state.getValue(DirUtils.FACING);
+        return state.getValue(FACING);
     }
 
     private void retractRope(World world, BlockPos pos, EntityPlayer player) {
@@ -145,7 +166,7 @@ public class BlockAnchor extends BWMBlock {
 
     @Override
     public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(DirUtils.FACING) != EnumFacing.DOWN;
+        return entity instanceof EntityPlayer && world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(FACING) != EnumFacing.DOWN;
     }
 
     private boolean isRope(IBlockAccess world, BlockPos origin, EnumFacing facing) {
@@ -155,7 +176,7 @@ public class BlockAnchor extends BWMBlock {
 
     private boolean isAnchor(IBlockAccess world, BlockPos origin, EnumFacing facing) {
         BlockPos pos = origin.offset(facing);
-        return world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(DirUtils.FACING) != facing;
+        return world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(FACING) != facing;
     }
 
     private boolean isPulley(IBlockAccess world, BlockPos origin, EnumFacing facing) {
@@ -165,24 +186,34 @@ public class BlockAnchor extends BWMBlock {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        boolean topRope = isRope(world, pos, EnumFacing.UP) || isAnchor(world, pos, EnumFacing.UP) || isPulley(world, pos, EnumFacing.UP);
-        boolean bottomRope = isRope(world, pos, EnumFacing.DOWN) || isAnchor(world, pos, EnumFacing.DOWN);
-
-        return state.withProperty(TOPCONNECT, topRope).withProperty(BOTTOMCONNECT, bottomRope);
+        boolean isConnected;
+        switch (state.getValue(FACING)) {
+            case UP:
+                isConnected = isRope(world, pos, EnumFacing.UP) || isAnchor(world, pos, EnumFacing.UP) || isPulley(world, pos, EnumFacing.UP);
+                break;
+            case DOWN:
+            case NORTH:
+            case SOUTH:
+            case WEST:
+            case EAST:
+            default:
+                isConnected = isRope(world, pos, EnumFacing.DOWN) || isAnchor(world, pos, EnumFacing.DOWN);
+        }
+        return state.withProperty(LINKED, isConnected);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.getFront(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(DirUtils.FACING).getIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, DirUtils.FACING, TOPCONNECT, BOTTOMCONNECT);
+        return new BlockStateContainer(this, FACING, LINKED);
     }
 }

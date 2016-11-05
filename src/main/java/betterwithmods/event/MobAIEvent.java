@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIVillagerMate;
 import net.minecraft.entity.passive.*;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -23,8 +22,7 @@ public class MobAIEvent {
 
     public static boolean isWillingToMate(EntityVillager villager) {
         if (villager != null) {
-            boolean field = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, "isWillingToMate", "field_175565_bs");
-            return field;
+            return ReflectionHelper.getPrivateValue(EntityVillager.class, villager, "isWillingToMate", "field_175565_bs");
         }
         return false;
     }
@@ -48,7 +46,7 @@ public class MobAIEvent {
                     EntityVillager villager = (EntityVillager) entity;
                     villager.tasks.removeTask(new EntityAIVillagerMate(villager));
                     villager.tasks.addTask(0, new betterwithmods.entity.ai.EntityAIVillagerMate(villager, 1));
-                    villager.tasks.addTask(0, new EntityAITempt(villager, 1d, false, new HashSet<Item>(OreDictionary.getOres("gemDiamond").stream().map(ItemStack::getItem).collect(Collectors.toList()))));
+                    villager.tasks.addTask(0, new EntityAITempt(villager, 1d, false, new HashSet<>(OreDictionary.getOres("gemDiamond").stream().map(ItemStack::getItem).collect(Collectors.toList()))));
                 }
             }
         }
@@ -61,7 +59,7 @@ public class MobAIEvent {
             if (e.getTarget() instanceof EntityVillager) {
                 EntityVillager villager = (EntityVillager) e.getTarget();
                 ItemStack stack = e.getItemStack();
-                boolean isDiamond = stack == null ? false : OreDictionary.getOres("gemDiamond").stream().anyMatch(gem -> stack.isItemEqual(gem));
+                boolean isDiamond = stack != null && OreDictionary.getOres("gemDiamond").stream().anyMatch(stack::isItemEqual);
                 if (isDiamond && !villager.isChild() && !isWillingToMate(villager) && villager.getGrowingAge() == 0) {
                     if (e.getEntityPlayer().capabilities.isCreativeMode)
                         stack.stackSize--;

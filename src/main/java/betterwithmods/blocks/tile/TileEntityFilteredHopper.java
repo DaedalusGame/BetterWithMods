@@ -41,6 +41,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
+    private final ItemStack filterStack;
     public short filterType;
     public boolean outputBlocked;
     public byte power;
@@ -48,7 +49,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private int containedXP;
     private int xpDropDelay;
     private int soulsRetained;
-    private ItemStack filterStack;
     private String filter;
 
     public TileEntityFilteredHopper() {
@@ -312,7 +312,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     public List<EntityItem> getCaptureItems(World worldIn, BlockPos pos) {
-        return worldIn.<EntityItem>getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+        return worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
     }
 
     private boolean captureDroppedItems() {
@@ -330,10 +330,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (flag) {
-                this.worldObj.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.validateInventory()) {
-                    IBlockState state = worldObj.getBlockState(pos);
-                    int filledSlots = this.filledSlots();
                     worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//worldObj.markBlockForUpdate(pos);
                 }
                 return true;
@@ -459,8 +457,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             if (ejectIntoWorld) {
                 List<EntityMinecart> carts = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(pos.getX() + 0.4F, pos.getY() - 0.5F, pos.getZ() + 0.4F, pos.getX() + 0.6F, pos.getY(), pos.getZ() + 0.6F));
                 if (carts != null && carts.size() > 0) {
-                    for (int i = 0; i < carts.size(); i++) {
-                        EntityMinecart cart = carts.get(i);
+                    for (EntityMinecart cart : carts) {
                         if (cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                             IItemHandler items = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                             int itemsStored;
@@ -691,7 +688,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return filterStack;
     }
 
-    @SideOnly(Side.CLIENT)
     public ModelWithResource getModel() {
         return RenderUtils.getModelFromStack(filter);
     }

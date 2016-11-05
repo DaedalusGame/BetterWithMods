@@ -8,23 +8,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public abstract class AbstractPacketSided extends AbstractPacket {
     @Override
     public final IMessage handleClient(final NetHandlerPlayClient client) {
-        FMLCommonHandler.instance().getWorldThread(client).addScheduledTask(new Runnable() {
-            @Override
-            public void run() {
-                handleClientThreaded(client);
-            }
-        });
+        FMLCommonHandler.instance().getWorldThread(client).addScheduledTask(() -> handleClientThreaded(client));
         return null;
     }
 
     @Override
     public final IMessage handleServer(final NetHandlerPlayServer server) {
-        FMLCommonHandler.instance().getWorldThread(server).addScheduledTask(new Runnable() {
-            @Override
-            public void run() {
-                handleServerThreaded(server);
-            }
-        });
+        FMLCommonHandler.instance().getWorldThread(server).addScheduledTask(() -> handleServerThreaded(server));
         return null;
     }
 

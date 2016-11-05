@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.BlockGen;
+import betterwithmods.blocks.BlockWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwheel> {
-    private ModelWaterwheel waterwheel;
+    private final ModelWaterwheel waterwheel;
 
     public TESRWaterwheel() {
         this.waterwheel = new ModelWaterwheel();
@@ -17,17 +17,16 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
     @Override
     public void renderTileEntityAt(TileEntityWaterwheel te, double x, double y, double z,
                                    float partialTicks, int destroyStage) {
-        TileEntityWaterwheel wheel = (TileEntityWaterwheel) te;
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
-        float rotation = (wheel.getCurrentRotation() + (wheel.getRunningState() == 0 ? 0 : partialTicks * wheel.getPrevRotation()));
+        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
         EnumFacing dir = EnumFacing.SOUTH;
 
         if (te.hasWorldObj()) {
-            if (te.getBlockType() instanceof BlockGen)
-                dir = ((BlockGen) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
+            if (te.getBlockType() instanceof BlockWaterwheel)
+                dir = ((BlockWaterwheel) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
         }
 
         if (dir == EnumFacing.EAST) {

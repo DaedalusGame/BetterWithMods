@@ -8,10 +8,10 @@ public abstract class BaseListAddition<T> extends BaseListModification<T> {
         super(name, list);
     }
 
-    protected BaseListAddition(String name, List<T> list, List<T> recipies) {
+    protected BaseListAddition(String name, List<T> list, List<T> recipes) {
         this(name, list);
-        if (recipes != null) {
-            recipes.addAll(recipies);
+        if (this.recipes != null) {
+            this.recipes.addAll(recipes);
         }
     }
 

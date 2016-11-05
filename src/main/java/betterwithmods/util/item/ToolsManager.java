@@ -9,6 +9,7 @@ import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,15 +42,15 @@ public final class ToolsManager {
     }
 
     public static void setAxesAsEffectiveAgainst(Material... materials) {
-        for (Material material : materials) AXES_MATERIALS.add(material);
+        Collections.addAll(AXES_MATERIALS, materials);
     }
 
     public static void setPickaxesAsEffectiveAgainst(Material... materials) {
-        for (Material material : materials) PICKAXES_MATERIALS.add(material);
+        Collections.addAll(PICKAXES_MATERIALS, materials);
     }
 
     public static void setShovelsAsEffectiveAgainst(Material... materials) {
-        for (Material material : materials) SHOVELS_MATERIALS.add(material);
+        Collections.addAll(SHOVELS_MATERIALS, materials);
     }
 
     public static Set<Block> getEffectiveBlocks(ItemTool tool) {
@@ -70,6 +71,6 @@ public final class ToolsManager {
 
     public static void setToolAsEffectiveAgainst(ItemTool tool, Block... blocks) {
         Set<Block> effectiveOn = getEffectiveBlocks(tool);
-        for (Block block : blocks) effectiveOn.add(block);
+        Collections.addAll(effectiveOn, blocks);
     }
 }

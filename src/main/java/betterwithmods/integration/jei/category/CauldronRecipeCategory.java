@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrapper> {
@@ -63,10 +62,9 @@ public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrap
             }
         }
 
-        BulkRecipeWrapper recipe = wrapper;
-        stacks.set(outputSlots, recipe.getRecipe().getOutput());
-        if (recipe.getRecipe().getSecondary() != null && recipe.getRecipe().getSecondary().getItem() != null)
-            stacks.set(outputSlots + 1, recipe.getRecipe().getSecondary());
+        stacks.set(outputSlots, wrapper.getRecipe().getOutput());
+        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+            stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
     }

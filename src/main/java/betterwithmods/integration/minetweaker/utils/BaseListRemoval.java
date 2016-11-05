@@ -8,11 +8,11 @@ public abstract class BaseListRemoval<T> extends BaseListModification<T> {
         super(name, list);
     }
 
-    protected BaseListRemoval(String name, List<T> list, List<T> recipies) {
+    protected BaseListRemoval(String name, List<T> list, List<T> recipes) {
         this(name, list);
 
-        if (recipes != null) {
-            recipes.addAll(recipies);
+        if (this.recipes != null) {
+            this.recipes.addAll(recipes);
         }
     }
 

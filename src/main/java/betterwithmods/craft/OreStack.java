@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OreStack {
-    private String oreName;
+    private final String oreName;
+    private final List<ItemStack> oreStacks;
     private int stackSize;
-    private List<ItemStack> oreStacks;
 
     public OreStack(String name) {
         this(name, 1);

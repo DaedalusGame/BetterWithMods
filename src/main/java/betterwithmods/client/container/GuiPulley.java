@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiPulley extends GuiContainer {
-    private TileEntityPulley tile;
+    private final TileEntityPulley tile;
 
     public GuiPulley(EntityPlayer player, TileEntityPulley tile) {
         super(new ContainerPulley(player, tile));

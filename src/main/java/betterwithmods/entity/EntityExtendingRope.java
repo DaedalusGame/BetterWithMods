@@ -250,7 +250,6 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 : (blockState.getBlock() instanceof BlockRailBase || blockState.getBlock() instanceof BlockRedstoneWire ? 0 : 1)));
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean canRenderOnFire() {
         return false;
     }
@@ -295,10 +294,8 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                     }
 
                     if (retries > 0) {
-                        blocks.forEach((vec, state) -> {
-                            state.getBlock().getDrops(worldObj, pos, state, 0).forEach(stack -> worldObj
-                                    .spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack)));
-                        });
+                        blocks.forEach((vec, state) -> state.getBlock().getDrops(worldObj, pos, state, 0).forEach(stack -> worldObj
+                                .spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack))));
                     }
 
                     updatePassengers(posY, targetY + 0.25, true);

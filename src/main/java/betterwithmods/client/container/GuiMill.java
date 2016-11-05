@@ -9,7 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiMill extends GuiContainer {
-    private TileEntityMill mill;
+    private static final String NAME = "inv.mill.name";
+    private final TileEntityMill mill;
 
     public GuiMill(EntityPlayer player, TileEntityMill mill) {
         super(new ContainerMill(player, mill));
@@ -19,7 +20,7 @@ public class GuiMill extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        String s = I18n.format(mill.getName());
+        String s = I18n.format(NAME);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
     }
 

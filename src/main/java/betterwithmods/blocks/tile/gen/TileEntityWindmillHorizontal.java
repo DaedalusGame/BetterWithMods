@@ -17,12 +17,17 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implements IColor {
+public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0};
 
     public TileEntityWindmillHorizontal() {
         super();
         this.radius = 7;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
     }
 
     public int getBladeColor(int blade) {
@@ -100,16 +105,14 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
     @Override
     public void overpower() {
         if (this.getBlockType() instanceof BlockWindmill) {
-            BlockWindmill block = (BlockWindmill) this.worldObj.getBlockState(pos).getBlock();
-            {
-                int align = block.getAxisAlignment(this.worldObj, pos);
-                EnumFacing[] dir = BlockAxle.facings[align];
-                for (int i = 0; i < 2; i++) {
-                    BlockPos offset = pos.offset(dir[i]);
+            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+            for (EnumFacing dir : EnumFacing.VALUES) {
+                if (dir.getAxis() == axis) {
+                    BlockPos offset = pos.offset(dir);
                     Block axle = this.worldObj.getBlockState(offset).getBlock();
                     if (axle instanceof BlockAxle)
                         ((BlockAxle) axle).overpower(this.worldObj, offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir[i].getOpposite()))
+                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir.getOpposite()))
                         ((IMechanicalBlock) axle).overpower(this.worldObj, offset);
                 }
             }
@@ -121,16 +124,13 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
         boolean valid = true;
         if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
             BlockWindmill axle = (BlockWindmill) this.worldObj.getBlockState(pos).getBlock();
-            int axis = axle.getAxisAlignment(this.worldObj, pos);
+            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {
-                    int xP = axis == 1 ? i : 0;
-                    int zP = axis == 2 ? i : 0;
-                    int xPos = xP;
-                    int yPos = vert;
-                    int zPos = zP;
-                    BlockPos offset = pos.add(xPos, yPos, zPos);
-                    if (xP == 0 && yPos == 0 && zP == 0)
+                    int xP = (axis == EnumFacing.Axis.Z ? i : 0);
+                    int zP = (axis == EnumFacing.Axis.X ? i : 0);
+                    BlockPos offset = pos.add(xP, vert, zP);
+                    if (xP == 0 && vert == 0 && zP == 0)
                         continue;
                     else
                         valid = worldObj.isAirBlock(offset);
@@ -172,9 +172,10 @@ public class TileEntityWindmillHorizontal extends TileEntityMechGenerator implem
         int y = pos.getY();
         int z = pos.getZ();
         if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            int xP = ((BlockWindmill) this.worldObj.getBlockState(pos).getBlock()).getAxisAlignment(worldObj, pos) == 1 ? radius : 0;
+            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+            int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;
-            int zP = ((BlockWindmill) this.worldObj.getBlockState(pos).getBlock()).getAxisAlignment(worldObj, pos) == 2 ? radius : 0;
+            int zP = axis == EnumFacing.Axis.X ? radius : 0;
             return new AxisAlignedBB(x - xP - 1, y - yP - 1, z - zP - 1, x + xP + 1, y + yP + 1, z + zP + 1);
         } else
             return super.getRenderBoundingBox();

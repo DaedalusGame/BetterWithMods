@@ -26,7 +26,7 @@ import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
  */
 @ZenClass("mods.betterwithmods.Kiln")
 public class Kiln {
-    public static Hashtable<String, List<ItemStack>> cookables = KilnInteraction.getCookables();
+    private static final Hashtable<String, List<ItemStack>> cookables = KilnInteraction.getCookables();
 
     @ZenMethod
     public static void add(IItemStack input, IItemStack[] output) {

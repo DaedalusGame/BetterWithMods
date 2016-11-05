@@ -17,10 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import java.util.Iterator;
-
 public class ContainerFilteredHopper extends Container {
-    private TileEntityFilteredHopper tile;
+    private final TileEntityFilteredHopper tile;
     private byte lastMechPower;
 
     public ContainerFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
@@ -97,11 +95,7 @@ public class ContainerFilteredHopper extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        Iterator<IContainerListener> it = this.listeners.iterator();
-
-        while (it.hasNext()) {
-            IContainerListener craft = it.next();
-
+        for (IContainerListener craft : this.listeners) {
             if (this.lastMechPower != this.tile.power)
                 craft.sendProgressBarUpdate(this, 0, this.tile.power);
         }

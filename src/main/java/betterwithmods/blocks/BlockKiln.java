@@ -120,8 +120,7 @@ public class BlockKiln extends BWMBlock {
                 }
             }
         }
-        int tickRate = 60 * (8 - secondaryFire) / 8 + 20;
-        return tickRate;
+        return 60 * (8 - secondaryFire) / 8 + 20;
     }
 
     @Override

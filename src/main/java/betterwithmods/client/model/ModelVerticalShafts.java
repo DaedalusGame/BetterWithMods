@@ -4,8 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelVerticalShafts extends ModelBase {
-    public ModelRenderer axle;
-    public ModelRenderer[] components = new ModelRenderer[8];
+    public final ModelRenderer axle;
+    public final ModelRenderer[] components = new ModelRenderer[8];
 
     public ModelVerticalShafts() {
         for (int i = 0; i < 8; i++) {

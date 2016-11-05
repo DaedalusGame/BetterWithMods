@@ -12,8 +12,9 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiBlockDispenser extends GuiContainer {
     private static final int guiHeight = 182;
-    IItemHandler playerInv;
-    private TileEntityBlockDispenser tile;
+    private static final String NAME = "inv.bwm.dispenser.name";
+    final IItemHandler playerInv;
+    private final TileEntityBlockDispenser tile;
 
     public GuiBlockDispenser(EntityPlayer player, TileEntityBlockDispenser tile) {
 
@@ -25,7 +26,7 @@ public class GuiBlockDispenser extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        String s = I18n.format(tile.getName());
+        String s = I18n.format(NAME);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
     }
 

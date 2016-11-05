@@ -38,10 +38,11 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn", "potterytype=vase"};
     }
 
+    @Deprecated
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                     int meta, EntityLivingBase entity) {
-        IBlockState state = super.onBlockPlaced(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
+                                            int meta, EntityLivingBase entity, ItemStack stack) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
         return state.withProperty(POTTERYTYPE, EnumPotteryType.byMeta(meta));
     }
 

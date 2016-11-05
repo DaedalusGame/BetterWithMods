@@ -10,7 +10,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class SawInteraction {
-    private static Hashtable<String, List<ItemStack>> woodProduct = new Hashtable<String, List<ItemStack>>();
+    private static final Hashtable<String, List<ItemStack>> woodProduct = new Hashtable<>();
 
     public static void addBlock(ItemStack input, ItemStack... products) {
         if (input.getItem() != null && input.getItem() instanceof ItemBlock) {

@@ -71,9 +71,9 @@ public class LogHelper {
             List<ItemStack> ores = OreDictionary.getOres((String) object);
 
             if (!ores.isEmpty()) {
-                return "<ore:" + (String) object + ">";
+                return "<ore:" + object + ">";
             } else {
-                return "\"" + (String) object + "\"";
+                return "\"" + object + "\"";
             }
         } else if (object instanceof List) {
             return getListDescription((List) object);
@@ -90,7 +90,7 @@ public class LogHelper {
         Object internalObject = stack.getInternal();
 
         if (internalObject instanceof ItemStack) {
-            return getStackDescription((ItemStack) internalObject);
+            return getStackDescription(internalObject);
         } else if (internalObject instanceof FluidStack) {
             return getStackDescription((FluidStack) internalObject);
         } else if (internalObject instanceof IOreDictEntry) {
@@ -158,7 +158,7 @@ public class LogHelper {
 
     public static String getCraftingDescription(ShapedOreRecipe recipe) {
         int height = ReflectionHelper.getObject(recipe, "width");
-        int width = ReflectionHelper.getObject(recipe, "height");
+        int width = ReflectionHelper.getObject(recipe, "HEIGHT");
 
         Object[][] recipes = InputHelper.getMultiDimensionalArray(Object.class, recipe.getInput(), height, width);
 

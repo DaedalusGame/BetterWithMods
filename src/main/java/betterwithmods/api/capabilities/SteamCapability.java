@@ -12,12 +12,12 @@ public class SteamCapability {
 
     public static class CapabilitySteamPower implements Capability.IStorage<ISteamPower> {
         @Override
-        public NBTBase writeNBT (Capability<ISteamPower> capability, ISteamPower steam, EnumFacing side) {
+        public NBTBase writeNBT(Capability<ISteamPower> capability, ISteamPower steam, EnumFacing side) {
             return null;
         }
 
         @Override
-        public void readNBT (Capability<ISteamPower> capability, ISteamPower steam, EnumFacing side, NBTBase tag) {
+        public void readNBT(Capability<ISteamPower> capability, ISteamPower steam, EnumFacing side, NBTBase tag) {
 
         }
     }

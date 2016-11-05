@@ -11,16 +11,13 @@ public abstract class BaseListModification<T> extends BaseUndoable {
     protected BaseListModification(String name, List<T> list) {
         super(name);
         this.list = list;
-        this.recipes = new LinkedList<T>();
-        this.successful = new LinkedList<T>();
+        this.recipes = new LinkedList<>();
+        this.successful = new LinkedList<>();
     }
 
     @Override
     public boolean canUndo() {
-        if (recipes.isEmpty() || successful.isEmpty())
-            return false;
-
-        return true;
+        return !(recipes.isEmpty() || successful.isEmpty());
     }
 
     @Override
@@ -46,9 +43,9 @@ public abstract class BaseListModification<T> extends BaseUndoable {
     /**
      * This method must be overwritten by the extending classes. It should return
      * the name of the key item, for which the recipe is for. For example for machines
-     * which produce new items, it should return the name of the ouput. For machines
+     * which produce new items, it should return the name of the output. For machines
      * which are processing items (like a pulverizer) it should return the name of the
-     * the input. Another example would be the name of the enchantmant for a thaumcraft
+     * the input. Another example would be the name of the enchantment for a thaumcraft
      * infusion recipe.
      */
     protected abstract String getRecipeInfo(T recipe);
@@ -109,14 +106,6 @@ public abstract class BaseListModification<T> extends BaseUndoable {
      * add a custom equals method
      */
     protected boolean equals(T recipe, T otherRecipe) {
-        if (recipe == otherRecipe) {
-            return true;
-        }
-
-        if (!recipe.equals(otherRecipe)) {
-            return false;
-        }
-
-        return true;
+        return recipe == otherRecipe || recipe.equals(otherRecipe);
     }
 }

@@ -19,12 +19,12 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @author Koward
+ */
 public class EntityItemBuoy extends EntityItem {
     /**
      * Wrapper around EntityItem.
-     *
-     * @param orig Original EntityItem object.
-     * @author Koward
      */
     public EntityItemBuoy(EntityItem orig) {
         super(orig.worldObj, orig.posX, orig.posY, orig.posZ, orig.getEntityItem());
@@ -41,30 +41,31 @@ public class EntityItemBuoy extends EntityItem {
         this.motionZ = orig.motionZ * tossSpeed;
     }
 
+    /**
+     * Required for entities. Not actually used anywhere.
+     */
+    @SuppressWarnings("unused")
     public EntityItemBuoy(World world) {
         super(world);
     }
 
     /**
-     * Used to access {@link EntityItem.searchForOtherItemsNearby} as it's
+     * Used to access {@link EntityItem.searchForOtherItemsNearby()} as it's
      * private.
      */
+    @SuppressWarnings("JavadocReference")
     private void superSearchForOtherItemsNearby() {
         try {
             ReflectionHelper.findMethod(EntityItem.class, this,
                     new String[]{"func_85054_d", "searchForOtherItemsNearby"}, new Class<?>[]{})
                     .invoke(this, (Object[]) null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
 
     private void setAge(int age) {
-        ReflectionHelper.setPrivateValue(EntityItem.class, this, age, new String[]{"field_70292_b", "age"});
+        ReflectionHelper.setPrivateValue(EntityItem.class, this, age, "field_70292_b", "age");
     }
 
     private int getAge0() {
@@ -174,7 +175,7 @@ public class EntityItemBuoy extends EntityItem {
 
         for (int i = 0; i < maxIterations; ++i) {
             double low = getEntityBoundingBox().minY
-                    + (getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (double) (i + 0) * 0.375D + offset;
+                    + (getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (double) (i) * 0.375D + offset;
             double high = getEntityBoundingBox().minY
                     + (getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (double) (i + 1) * 0.375D + offset;
             AxisAlignedBB boundingBox = new AxisAlignedBB(getEntityBoundingBox().minX, low, getEntityBoundingBox().minZ,
@@ -203,8 +204,6 @@ public class EntityItemBuoy extends EntityItem {
     /**
      * Check the non visible current between two water blocks for all blocks
      * nearby entity.
-     *
-     * @return
      */
     private boolean isDrifted() {
         int minX = MathHelper.floor_double(getEntityBoundingBox().minX);

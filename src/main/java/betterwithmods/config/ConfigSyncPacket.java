@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import java.util.List;
 
 public class ConfigSyncPacket extends AbstractPacket {
-    public List<ConfigCategory> categories = Lists.newLinkedList();
+    public final List<ConfigCategory> categories = Lists.newLinkedList();
 
     @Override
     public IMessage handleClient(NetHandlerPlayClient net) {
@@ -29,12 +29,12 @@ public class ConfigSyncPacket extends AbstractPacket {
     @Override
     public void fromBytes(ByteBuf buf) {
         short categoryCount = buf.readShort();
-        for(short i = 0; i < categoryCount; i++) {
+        for (short i = 0; i < categoryCount; i++) {
             int propCount = buf.readInt();
             String categoryName = ByteBufUtils.readUTF8String(buf);
             ConfigCategory category = new ConfigCategory(categoryName);
             categories.add(category);
-            for(int j = 0; j < propCount; j++) {
+            for (int j = 0; j < propCount; j++) {
                 String name = ByteBufUtils.readUTF8String(buf);
                 char type = buf.readChar();
                 String value = ByteBufUtils.readUTF8String(buf);
@@ -47,10 +47,10 @@ public class ConfigSyncPacket extends AbstractPacket {
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeShort(categories.size());
-        for(ConfigCategory category : categories) {
+        for (ConfigCategory category : categories) {
             buf.writeInt(category.values().size());
             ByteBufUtils.writeUTF8String(buf, category.getName());
-            for(Property prop : category.values()) {
+            for (Property prop : category.values()) {
                 ByteBufUtils.writeUTF8String(buf, prop.getName());
                 buf.writeChar(prop.getType().getID());
                 ByteBufUtils.writeUTF8String(buf, prop.getString()); // always has string representation of the value

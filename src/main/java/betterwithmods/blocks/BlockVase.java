@@ -36,6 +36,7 @@ import java.util.Random;
  */
 public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityProvider {
     public static final PropertyEnum<EnumDyeColor> Color = BlockColored.COLOR;
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockVase() {
         super(Material.ROCK);
@@ -55,8 +56,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        state = state.getActualState(world, pos);
-        return new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
+        return AABB;
     }
 
     @Override

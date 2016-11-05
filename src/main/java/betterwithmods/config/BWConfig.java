@@ -9,13 +9,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 
 public class BWConfig {
-    public static ConfigCategory HARDCORE_CAT;
     public static final String HARDCORE = "Hardcore";
     public static final String VANILLA_TWEAKS = "Vanilla Tweaks";
     public static final String MODPACK_TWEAKS = "Modpack Tweaks";
     public static final String DEBUG = "Debug";
     public static final String PULLEY = "Pulley";
     public static final String MOD_COMPAT = "Mod Compat";
+    public static ConfigCategory HARDCORE_CAT;
     public static Configuration config;
     public static boolean hardcoreGunpowder;
     public static boolean hardcoreLumber;

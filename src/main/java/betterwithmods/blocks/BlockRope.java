@@ -65,7 +65,7 @@ public class BlockRope extends BWMBlock {
         boolean supported = false;
 
         if (blockAbove == BWMBlocks.ANCHOR) {
-            EnumFacing facing = ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(world, pos.up());
+            EnumFacing facing = ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(world.getBlockState(pos.up()));
             supported = facing != EnumFacing.UP;
         }
         if (blockAbove == this) {
@@ -101,16 +101,6 @@ public class BlockRope extends BWMBlock {
     }
 
     @Override
-    public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return null;
-    }
-
-    @Override
-    public void setFacing(World world, BlockPos pos, EnumFacing facing) {
-
-    }
-
-    @Override
     public EnumFacing getFacingFromBlockState(IBlockState state) {
         return null;
     }
@@ -126,13 +116,7 @@ public class BlockRope extends BWMBlock {
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {/*
-        if(side.ordinal() < 2)
-		{
-			EnumFacing dir = EnumFacing.getFront(side.ordinal());
-			BlockPos offPos = side.ordinal() == 0 ? pos.down() : pos.up();
-			return !world.isSideSolid(offPos, dir.getOpposite(), true);
-		}*/
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }
 }

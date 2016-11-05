@@ -21,7 +21,7 @@ public class BlockFireStoked extends BlockFire {
         super();
         this.disableStats();
         this.setLightLevel(1.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE).withProperty(UPPER, Boolean.FALSE));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class BlockFireStoked extends BlockFire {
                     j = 15;
                 }
 
-                worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState().withProperty(AGE, Integer.valueOf(j)), 3);
+                worldIn.setBlockState(pos, Blocks.FIRE.getDefaultState().withProperty(AGE, j), 3);
             } else {
                 worldIn.setBlockToAir(pos);
             }

@@ -3,13 +3,46 @@ package betterwithmods.integration;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BiomesOPlenty extends ModIntegration {
+@SuppressWarnings("unused")
+public class BiomesOPlenty implements ICompatModule {
+    public static final String MODID = "biomesoplenty";
+
+    @Override
+    public void preInit() {
+
+    }
+
     @Override
     public void init() {
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("biomesoplenty", "grass")), 1);
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("biomesoplenty", "grass")), 6);
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("biomesoplenty", "flesh")));
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation("biomesoplenty", "ash_block")));
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "grass")), 1);
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "grass")), 6);
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "flesh")));
+        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "ash_block")));
+    }
+
+    @Override
+    public void postInit() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void preInitClient() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void initClient() {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void postInitClient() {
+
     }
 }

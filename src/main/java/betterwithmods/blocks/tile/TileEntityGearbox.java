@@ -23,6 +23,11 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     private int refreshTime = 0;
 
     @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
     public void update() {
         if (getBlockType() instanceof BlockAdvGearbox) {
             if (((BlockAdvGearbox) getBlockType()).isGearboxOn(worldObj, pos)) {
@@ -84,11 +89,6 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
             }
         }
         return power;
-    }
-
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 1;
     }
 
     @Override

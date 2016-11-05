@@ -2,6 +2,7 @@ package betterwithmods.proxy;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.BWMod;
 import betterwithmods.blocks.tile.TileEntityCauldron;
 import betterwithmods.blocks.tile.TileEntityCrucible;
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
@@ -20,31 +21,37 @@ import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.integration.ICompatModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
-import java.util.ArrayList;
-
-public class ClientProxy extends CommonProxy {
-
-    public static ArrayList<Item> itemModelRegistry = new ArrayList<>();
+@SuppressWarnings("unused")
+public class ClientProxy implements IProxy {
 
     @Override
-    public Item addItemBlockModel(Item item) {
-        if (isClientside()) {
-            itemModelRegistry.add(item);
-        }
-        return item;
+    public void preInit() {
+        registerRenderInformation();
+        initRenderers();
+        BWMod.getLoadedModules().forEach(ICompatModule::preInitClient);
     }
 
     @Override
-    public void registerRenderInformation() {
+    public void init() {
+        registerColors();
+        BWMod.getLoadedModules().forEach(ICompatModule::initClient);
+    }
+
+    @Override
+    public void postInit() {
+        BWMod.getLoadedModules().forEach(ICompatModule::postInitClient);
+    }
+
+    private void registerRenderInformation() {
         BWMBlocks.linkBlockModels();
         BWMItems.linkItemModels();
         RenderUtils.registerFilters();
@@ -60,8 +67,7 @@ public class ClientProxy extends CommonProxy {
 
     }
 
-    @Override
-    public void registerColors() {
+    private void registerColors() {
         final BlockColors col = Minecraft.getMinecraft().getBlockColors();
         col.registerBlockColorHandler(ColorHandlers.BlockPlanterColor, BWMBlocks.PLANTER);
         col.registerBlockColorHandler(ColorHandlers.BlockFoliageColor, BWMBlocks.VINE_TRAP);
@@ -70,16 +76,10 @@ public class ClientProxy extends CommonProxy {
         itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, BWMBlocks.VINE_TRAP);
     }
 
-    @Override
-    public void initRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<EntityDynamite>(manager, BWMItems.DYNAMITE, Minecraft.getMinecraft().getRenderItem()));
+    private void initRenderers() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<>(manager, BWMItems.DYNAMITE, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityMiningCharge.class, RenderMiningCharge::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityExtendingRope.class, RenderExtendingRope::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShearedCreeper.class, RenderShearedCreeper::new);
-    }
-
-    @Override
-    public boolean isClientside() {
-        return true;
     }
 }

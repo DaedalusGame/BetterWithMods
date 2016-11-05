@@ -17,7 +17,7 @@ import java.util.List;
 
 public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
     public BlockWoodBench() {
-        super(Material.WOOD, "wood_bench");
+        super(Material.WOOD);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
 
     @Override
     public int damageDropped(IBlockState state) {
-        return ((BlockPlanks.EnumType) state.getValue(BlockPlanks.VARIANT)).getMetadata();
+        return state.getValue(BlockPlanks.VARIANT).getMetadata();
     }
 
     @Override

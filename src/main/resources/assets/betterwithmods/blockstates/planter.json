@@ -4,7 +4,7 @@
     "textures": {
       "particle": "blocks/hardened_clay",
       "side": "blocks/hardened_clay",
-      "filltop": "blocks/farmland"
+      "filltop": "blocks/farmland_wet"
     },
     "model": "betterwithmods:planter",
     "uvlock": false

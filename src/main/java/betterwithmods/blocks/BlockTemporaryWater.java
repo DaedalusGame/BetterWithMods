@@ -15,7 +15,6 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
 
-//TODO fix errors "Exception loading blockstate for the variant betterwithmods:temporary_water"
 public class BlockTemporaryWater extends BlockLiquid {
 
     public BlockTemporaryWater() {
@@ -25,7 +24,7 @@ public class BlockTemporaryWater extends BlockLiquid {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = state.getValue(LEVEL);
+        int level = state.getValue(LEVEL);
 
         IBlockState stateBelow = worldIn.getBlockState(pos.down());
 
@@ -35,25 +34,25 @@ public class BlockTemporaryWater extends BlockLiquid {
         }
 
         if (this.canFlowInto(worldIn, pos.down(), stateBelow)) {
-            if (i >= 8) {
-                this.tryFlowInto(worldIn, pos.down(), stateBelow, i);
+            if (level >= 8) {
+                this.tryFlowInto(worldIn, pos.down(), stateBelow, level);
             } else {
-                this.tryFlowInto(worldIn, pos.down(), stateBelow, i + 8);
+                this.tryFlowInto(worldIn, pos.down(), stateBelow, level + 8);
             }
-        } else if (i >= 0 && (i == 0 || this.isBlocked(worldIn, pos.down(), stateBelow))) {
+        } else if (level >= 0 && (level == 0 || this.isBlocked(worldIn, pos.down(), stateBelow))) {
             Set<EnumFacing> set = this.getPossibleFlowDirections(worldIn, pos);
-            int k1 = i + 1;
+            int nextLevel = level + 1;
 
-            if (i >= 8) {
-                k1 = 1;
+            if (level >= 8) {
+                nextLevel = 1;
             }
 
-            if (k1 >= 8) {
+            if (nextLevel >= 8) {
                 return;
             }
 
             for (EnumFacing facing : set) {
-                this.tryFlowInto(worldIn, pos.offset(facing), worldIn.getBlockState(pos.offset(facing)), k1);
+                this.tryFlowInto(worldIn, pos.offset(facing), worldIn.getBlockState(pos.offset(facing)), nextLevel);
             }
         }
 

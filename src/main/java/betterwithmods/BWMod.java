@@ -15,6 +15,7 @@ import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
 import betterwithmods.util.ColorUtils;
+import betterwithmods.util.HardcoreHardnessFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
@@ -120,6 +121,9 @@ public class BWMod {
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
+
+        if(BWConfig.hardcoreHardness)
+            HardcoreHardnessFunctions.applyChanges();
 
         BWRegistry.init();
         loadCompatibilityModules();

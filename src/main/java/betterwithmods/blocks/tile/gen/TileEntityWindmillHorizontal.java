@@ -123,7 +123,6 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
     public boolean isValid() {
         boolean valid = true;
         if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
-            BlockWindmill axle = (BlockWindmill) this.worldObj.getBlockState(pos).getBlock();
             EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {

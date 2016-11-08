@@ -437,7 +437,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                     TileEntity tile = this.worldObj.getTileEntity(down);
                     if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
                         IItemHandler below = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-                        ItemStack leftover = null;
+                        ItemStack leftover;
                         for (int slot = 0; slot < below.getSlots(); slot++) {
                             leftover = below.insertItem(slot, ejectStack, false);
                             if (leftover == null) {

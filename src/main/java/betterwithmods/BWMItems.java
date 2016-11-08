@@ -17,6 +17,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -168,11 +169,11 @@ public final class BWMItems {
                                 + BlockPlanks.EnumType.byMetadata(stack.getItemDamage()).getName(),
                         "inventory")
                         : new ModelResourceLocation(item.getRegistryName() + "_oak", "inventory"));
-        ModelResourceLocation[] resource = new ModelResourceLocation[6];
+        ModelResourceLocation[] resourceLocations = new ModelResourceLocation[6];
         for (int i = 0; i < 6; i++)
-            resource[i] = new ModelResourceLocation(item.getRegistryName() + "_" + BlockPlanks.EnumType.byMetadata(i),
+            resourceLocations[i] = new ModelResourceLocation(item.getRegistryName() + "_" + BlockPlanks.EnumType.byMetadata(i),
                     "inventory");
-        ModelBakery.registerItemVariants(item, resource);
+        ModelBakery.registerItemVariants(item, (ResourceLocation[]) resourceLocations);
     }
     ///CLIENT END
 }

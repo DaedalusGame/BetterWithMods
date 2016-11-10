@@ -4,20 +4,27 @@ import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 
 /**
  * Static methods that handle hardness rebalancing.
+ *
  * @author Koward
  */
 public final class HardcoreHardnessFunctions {
-    private HardcoreHardnessFunctions() {}
+    private HardcoreHardnessFunctions() {
+    }
 
     public static void applyChanges() {
         Blocks.FIRE.setFireInfo(Blocks.LEAVES, 60, 100);
         Blocks.FIRE.setFireInfo(Blocks.LEAVES2, 60, 100);
+        changeVanillaMaterials();
         rebalanceVanillaHardness();
 
-        editToolsDurability();
+        //Adjusted to 0 (1 use) by {@link HungerEventHandler.woodenPickaxeAdjustment()}
+        Items.WOODEN_PICKAXE.setMaxDamage(1);
+        Items.STONE_PICKAXE.setMaxDamage(6 - 1);
+
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.LEAVES, Blocks.LEAVES2,
                 Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
         ToolsManager.setAxesAsEffectiveAgainst(Material.WOOD, Material.VINE, Material.PLANTS, Material.CLOTH);
@@ -74,18 +81,62 @@ public final class HardcoreHardnessFunctions {
         Blocks.QUARTZ_STAIRS.setHardness(2.0F);
     }
 
-    private static void editToolsDurability() {
-        Items.WOODEN_PICKAXE.setMaxDamage(1);//Adjusted to 0 (1 use) at crafting by Event
-        Items.STONE_PICKAXE.setMaxDamage(6-1);
-        Items.IRON_PICKAXE.setMaxDamage(500-1);
+    /**
+     * Edit the values described at {@link net.minecraft.item.Item.ToolMaterial}.
+     * ATM it is in fact not possible so just every item using the materials are changed.
+     */
+    private static void changeVanillaMaterials() {
+        applyMaterialOverride(EnumToolMaterial.WOOD, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_PICKAXE,
+                Items.WOODEN_SHOVEL, Items.WOODEN_SWORD);
+        applyMaterialOverride(EnumToolMaterial.STONE, Items.STONE_AXE, Items.STONE_HOE, Items.STONE_PICKAXE,
+                Items.STONE_SHOVEL, Items.STONE_SWORD);
+        applyMaterialOverride(EnumToolMaterial.IRON, Items.IRON_AXE, Items.IRON_HOE, Items.IRON_PICKAXE,
+                Items.IRON_SHOVEL, Items.IRON_SWORD);
+        applyMaterialOverride(EnumToolMaterial.DIAMOND, Items.DIAMOND_AXE, Items.DIAMOND_HOE, Items.DIAMOND_PICKAXE,
+                Items.DIAMOND_SHOVEL, Items.DIAMOND_SWORD);
+        applyMaterialOverride(EnumToolMaterial.GOLD, Items.GOLDEN_AXE, Items.GOLDEN_HOE, Items.GOLDEN_PICKAXE,
+                Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD);
+    }
 
-        Items.WOODEN_SHOVEL.setMaxDamage(10-1);
-        Items.STONE_SHOVEL.setMaxDamage(50-1);
-        Items.IRON_SHOVEL.setMaxDamage(500-1);
+    private static void applyMaterialOverride(EnumToolMaterial material, Item... items) {
+        for (Item item : items) {
+            item.setMaxDamage(material.getMaxUses());
+            /* TODO change efficiency&enchant
+            item.setEfficiency(material.getEfficiencyOnProperMaterial());
+            item.setEnchantability(material.getEnchantability());
+            */
+        }
+    }
 
-        Items.IRON_SWORD.setMaxDamage(500-1);
+    /**
+     * New values for {@link net.minecraft.item.Item.ToolMaterial}
+     */
+    private enum EnumToolMaterial {
+        WOOD(10, 1.01F, 0),
+        STONE(50, 1.01F, 5),
+        IRON(500, 6.0F, 14),
+        DIAMOND(1561, 8.0F, 14),
+        GOLD(32, 12.0F, 22);
+        private final int maxUses;
+        private final float efficiencyOnProperMaterial;
+        private final int enchantability;
 
-        Items.STONE_AXE.setMaxDamage(50-1);
-        Items.IRON_AXE.setMaxDamage(500-1);
+        EnumToolMaterial(int par4, float par5, int par7) {
+            this.maxUses = par4;
+            this.efficiencyOnProperMaterial = par5;
+            this.enchantability = par7;
+        }
+
+        public int getMaxUses() {
+            return this.maxUses;
+        }
+
+        public float getEfficiencyOnProperMaterial() {
+            return this.efficiencyOnProperMaterial;
+        }
+
+        public int getEnchantability() {
+            return this.enchantability;
+        }
     }
 }

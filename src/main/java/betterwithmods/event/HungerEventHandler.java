@@ -14,21 +14,25 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -37,6 +41,7 @@ import java.util.UUID;
  * @author Koward
  */
 public class HungerEventHandler {
+    private static final Random rand = new Random();
     private static GuiHunger guiHunger = null;
 
     @SubscribeEvent
@@ -183,10 +188,36 @@ public class HungerEventHandler {
         }
 
         f *= EntityPlayerExt.getHealthAndExhaustionModifier(player);
+        if (BWConfig.hardcoreHardness) {
+            boolean canHarvestBlock = ForgeHooks.canHarvestBlock(state.getBlock(), player, player.getEntityWorld(), event.getPos());
+            if (!EntityPlayerExt.isCurrentToolEffectiveOnBlock(player, event.getPos())) {
+                if (!canHarvestBlock) {
+                    //Change partially applied (/100.0F) by {@link ForgeHooks.blockStrength}
+                    f *= 100.0F / 200.0F;
+                } else {
+                    //Change partially applied (/30.0F) by {@link ForgeHooks.blockStrength}
+                    f *= 30.0F / 200.0F;
+                }
+            }
+        }
 
         if (f < 0)
             f = 0;
         event.setNewSpeed(f);
+    }
+
+    /**
+     * Sets the wooden pickaxe from 2 usages to 1. Why:
+     * {@link Item#setMaxDamage} used with "1" gives 2 usages, and with "0" gives unbreakable item.
+     *
+     * @param event
+     */
+    @SubscribeEvent
+    public void woodenPickaxeAdjustment(ItemCraftedEvent event) {
+        if (!BWConfig.hardcoreHardness) return;
+        if (event.crafting.getItem() == Items.WOODEN_PICKAXE) {
+            event.crafting.attemptDamageItem(1, rand);
+        }
     }
 
     /**

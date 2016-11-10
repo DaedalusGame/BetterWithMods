@@ -122,7 +122,7 @@ public class BWMod {
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
 
-        if(BWConfig.hardcoreHardness)
+        if (BWConfig.hardcoreHardness)
             HardcoreHardnessFunctions.applyChanges();
 
         BWRegistry.init();

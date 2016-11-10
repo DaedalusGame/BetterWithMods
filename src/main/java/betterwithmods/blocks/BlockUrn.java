@@ -30,6 +30,9 @@ import java.util.Random;
 public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants {
     public static final PropertyEnum<EnumUrnType> TYPE = PropertyEnum.create("urntype", EnumUrnType.class);
     public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
+    private static final double OFFSET = 0.375D;
+    private static final AxisAlignedBB URN_AABB = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 0.625D, 0.6875D);
+    private static final AxisAlignedBB UNDER_HOPPER_AABB = URN_AABB.offset(0, OFFSET, 0);
 
     public BlockUrn() {
         super(Material.ROCK);
@@ -59,8 +62,8 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         state = state.getActualState(world, pos);
-        double offset = state.getValue(UNDERHOPPER) ? 0.375D : 0.0D;
-        return new AxisAlignedBB(0.3125D, offset, 0.3125D, 0.6875D, 0.625D + offset, 0.6875D);
+        if (state.getValue(UNDERHOPPER)) return UNDER_HOPPER_AABB;
+        else return URN_AABB;
     }
 
     @Override

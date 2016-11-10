@@ -31,6 +31,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     public static final float BASE_HEIGHT = 0.25F;
     private static final int TICK_RATE = 3;
     private static final int DELAY_BEFORE_RESET = 15;
+    private static final AxisAlignedBB CRANK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BASE_HEIGHT, 1.0F);
 
     public BlockCrank() {
         super(Material.ROCK);
@@ -52,7 +53,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
+        return CRANK_AABB;
     }
 
     @Override

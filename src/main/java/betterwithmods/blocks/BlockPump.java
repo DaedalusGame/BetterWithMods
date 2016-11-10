@@ -6,6 +6,7 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -45,7 +45,8 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
         EnumFacing direction = state.getValue(DirUtils.HORIZONTAL);
         BlockPos source = DirUtils.movePos(pos, direction);
         IBlockState sourceState = world.getBlockState(source);
-        return Arrays.asList(Blocks.WATER, Blocks.FLOWING_WATER).contains(sourceState.getBlock());
+        Block block = sourceState.getBlock();
+        return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
     }
 
     @Override
@@ -125,7 +126,6 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
         return 5;
     }
 
-    @Deprecated
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase entity, ItemStack stack) {

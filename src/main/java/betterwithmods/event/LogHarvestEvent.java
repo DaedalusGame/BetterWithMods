@@ -53,7 +53,7 @@ public class LogHarvestEvent {
             EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
-            if(playerStack == null)
+            if (playerStack == null)
                 return;
             BlockPos playerPos = pos.offset(evt.getFace());
             if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
@@ -124,8 +124,7 @@ public class LogHarvestEvent {
                                 if (outputs.size() == 3) {
                                     ItemStack planks = outputs.get(0).copy();
                                     planks.stackSize = (planks.stackSize / 2) + (fort ? world.rand.nextInt(2) : 0);
-                                    int barkStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    barkStack = fort ? outputs.get(1).stackSize + world.rand.nextInt(fortune) : outputs.get(1).stackSize;
+                                    int barkStack = fort ? outputs.get(1).stackSize + world.rand.nextInt(fortune) : outputs.get(1).stackSize;
 
                                     ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;

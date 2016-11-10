@@ -62,7 +62,7 @@ public class BWConfig {
         hardcoreBeds = config.get(HARDCORE, "Hardcore Beds", true, "You will be unable to sleep in a bed").getBoolean(true);
         hardcoreVillagers = config.get(HARDCORE, "Hardcore Villagers", true, "Villagers can be manually bred").getBoolean(true);
         steelRequiresEnd = config.get(HARDCORE, "Steel Requires End", true, "Soulforged Steel will require Ender Flux").getBoolean(true);
-        hardcoreHardness = config.get(HARDCORE, "Hardcore Hardness", true, "Hardness of blocks and durability of tools are rebalanced.").setRequiresMcRestart(true).getBoolean(true);
+        hardcoreHardness = config.get(HARDCORE, "Hardcore Hardness", true, "Hardness of blocks and durability of tools are rebalanced. Cheapest tools become unavailable.").setRequiresMcRestart(true).getBoolean(true);
 
         //config.addCustomCategoryComment(VANILLA_TWEAKS, "Vanilla tweaks settings");
         netherSpawn = config.get(VANILLA_TWEAKS, "Prevent Nether Spawns on Non-Nether Materials", true)

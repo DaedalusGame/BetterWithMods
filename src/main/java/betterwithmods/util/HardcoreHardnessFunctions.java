@@ -1,10 +1,13 @@
 package betterwithmods.util;
 
+import betterwithmods.BWMod;
 import betterwithmods.util.item.ToolsManager;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemTool;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Static methods that handle hardness rebalancing.
@@ -21,13 +24,17 @@ public final class HardcoreHardnessFunctions {
         changeVanillaMaterials();
         rebalanceVanillaHardness();
 
-        //Adjusted to 0 (1 use) by {@link HungerEventHandler.woodenPickaxeAdjustment()}
-        Items.WOODEN_PICKAXE.setMaxDamage(1);
+        RecipeUtils.removeRecipes(Items.WOODEN_AXE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.WOODEN_HOE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE);
+
         Items.STONE_PICKAXE.setMaxDamage(6 - 1);
 
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.LEAVES, Blocks.LEAVES2,
                 Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
-        ToolsManager.setAxesAsEffectiveAgainst(Material.WOOD, Material.VINE, Material.PLANTS, Material.CLOTH);
+        //ToolsManager.setAxesAsEffectiveAgainst(Material.WOOD, Material.VINE, Material.PLANTS, Material.CLOTH);
         //TODO axe hunger and damage by foliage
         ToolsManager.setPickaxesAsEffectiveAgainst(Blocks.LEVER, Blocks.GLASS, Blocks.STAINED_GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS_PANE,
                 Blocks.STONE_BUTTON, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_EXTENSION,
@@ -82,36 +89,33 @@ public final class HardcoreHardnessFunctions {
     }
 
     /**
-     * Edit the values described at {@link net.minecraft.item.Item.ToolMaterial}.
-     * ATM it is in fact not possible so just every item using the materials are changed.
+     * Edit the values of {@link Item.ToolMaterial}.
+     * The new values are described in {@link ToolMaterialOverride}.
      */
     private static void changeVanillaMaterials() {
-        applyMaterialOverride(EnumToolMaterial.WOOD, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_PICKAXE,
-                Items.WOODEN_SHOVEL, Items.WOODEN_SWORD);
-        applyMaterialOverride(EnumToolMaterial.STONE, Items.STONE_AXE, Items.STONE_HOE, Items.STONE_PICKAXE,
-                Items.STONE_SHOVEL, Items.STONE_SWORD);
-        applyMaterialOverride(EnumToolMaterial.IRON, Items.IRON_AXE, Items.IRON_HOE, Items.IRON_PICKAXE,
-                Items.IRON_SHOVEL, Items.IRON_SWORD);
-        applyMaterialOverride(EnumToolMaterial.DIAMOND, Items.DIAMOND_AXE, Items.DIAMOND_HOE, Items.DIAMOND_PICKAXE,
-                Items.DIAMOND_SHOVEL, Items.DIAMOND_SWORD);
-        applyMaterialOverride(EnumToolMaterial.GOLD, Items.GOLDEN_AXE, Items.GOLDEN_HOE, Items.GOLDEN_PICKAXE,
-                Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD);
-    }
-
-    private static void applyMaterialOverride(EnumToolMaterial material, Item... items) {
-        for (Item item : items) {
-            item.setMaxDamage(material.getMaxUses());
-            /* TODO change efficiency&enchant
-            item.setEfficiency(material.getEfficiencyOnProperMaterial());
-            item.setEnchantability(material.getEnchantability());
-            */
+        // Edit materials
+        for (Item.ToolMaterial material : Item.ToolMaterial.values()) {
+            ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(material);
+            if (newValues == null) continue;
+            ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getMaxUses(), "field_78002_g", "maxUses");
+            ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEfficiencyOnProperMaterial(), "field_78010_h", "efficiencyOnProperMaterial");
+            ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEnchantability(), "field_78008_j", "enchantability");
+        }
+        // Change values already taken from material at that time
+        for (Item item : BWMod.itemRegistry) {
+            if (!(item instanceof ItemTool)) continue;
+            ItemTool tool = (ItemTool) item;
+            ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(tool.getToolMaterial());
+            if (newValues == null) continue;
+            tool.setMaxDamage(newValues.getMaxUses());
+            ReflectionHelper.setPrivateValue(ItemTool.class, tool, newValues.getEfficiencyOnProperMaterial(), "field_77864_a", "efficiencyOnProperMaterial");
         }
     }
 
     /**
      * New values for {@link net.minecraft.item.Item.ToolMaterial}
      */
-    private enum EnumToolMaterial {
+    private enum ToolMaterialOverride {
         WOOD(10, 1.01F, 0),
         STONE(50, 1.01F, 5),
         IRON(500, 6.0F, 14),
@@ -121,10 +125,27 @@ public final class HardcoreHardnessFunctions {
         private final float efficiencyOnProperMaterial;
         private final int enchantability;
 
-        EnumToolMaterial(int par4, float par5, int par7) {
+        ToolMaterialOverride(int par4, float par5, int par7) {
             this.maxUses = par4;
             this.efficiencyOnProperMaterial = par5;
             this.enchantability = par7;
+        }
+
+        public static ToolMaterialOverride getOverride(Item.ToolMaterial material) {
+            switch (material) {
+                case WOOD:
+                    return ToolMaterialOverride.WOOD;
+                case STONE:
+                    return ToolMaterialOverride.STONE;
+                case IRON:
+                    return ToolMaterialOverride.IRON;
+                case DIAMOND:
+                    return ToolMaterialOverride.DIAMOND;
+                case GOLD:
+                    return ToolMaterialOverride.GOLD;
+                default:
+                    return null;
+            }
         }
 
         public int getMaxUses() {

@@ -1,9 +1,9 @@
 package betterwithmods.util.item;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -194,15 +194,5 @@ public final class ItemExt {
 
     public static float getWeight(ItemStack stack) {
         return weights.get(stack);
-    }
-
-    public static boolean isEffectiveAgainst(ItemTool item, IBlockState state) {
-        if (item instanceof ItemAxe && ToolsManager.getEffectiveMaterials((ItemAxe) item).contains(state.getMaterial()))
-            return true;
-        if (item instanceof ItemPickaxe && ToolsManager.getEffectiveMaterials((ItemPickaxe) item).contains(state.getMaterial()))
-            return true;
-        if (item instanceof ItemSpade && ToolsManager.getEffectiveMaterials((ItemSpade) item).contains(state.getMaterial()))
-            return true;
-        return ToolsManager.getEffectiveBlocks(item).contains(state.getBlock());
     }
 }

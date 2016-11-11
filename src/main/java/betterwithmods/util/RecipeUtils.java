@@ -34,7 +34,7 @@ public final class RecipeUtils {
         while (li.hasNext()) {
             ItemStack output = li.next().getRecipeOutput();
             if (output != null && output.getItem() == item) {
-                if(meta == OreDictionary.WILDCARD_VALUE || output.getMetadata() == meta) {
+                if (meta == OreDictionary.WILDCARD_VALUE || output.getMetadata() == meta) {
                     li.remove();
                     found = true;
                 }

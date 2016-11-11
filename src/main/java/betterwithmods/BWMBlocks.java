@@ -154,7 +154,7 @@ public final class BWMBlocks {
      *              block.
      */
     public static Block registerBlock(Block block, @Nullable Item item) {
-        if(Objects.equals(block.getUnlocalizedName(), "tile.null")) {
+        if (Objects.equals(block.getUnlocalizedName(), "tile.null")) {
             //betterwithmods:name => bwm:name
             block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
         }

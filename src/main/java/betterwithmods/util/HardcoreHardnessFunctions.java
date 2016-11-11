@@ -34,8 +34,6 @@ public final class HardcoreHardnessFunctions {
 
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.LEAVES, Blocks.LEAVES2,
                 Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
-        //ToolsManager.setAxesAsEffectiveAgainst(Material.WOOD, Material.VINE, Material.PLANTS, Material.CLOTH);
-        //TODO axe hunger and damage by foliage
         ToolsManager.setPickaxesAsEffectiveAgainst(Blocks.LEVER, Blocks.GLASS, Blocks.STAINED_GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS_PANE,
                 Blocks.STONE_BUTTON, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_EXTENSION,
                 Blocks.GLOWSTONE, Blocks.BEACON, Blocks.MONSTER_EGG,
@@ -116,11 +114,11 @@ public final class HardcoreHardnessFunctions {
      * New values for {@link net.minecraft.item.Item.ToolMaterial}
      */
     private enum ToolMaterialOverride {
-        WOOD(10, 1.01F, 0),
-        STONE(50, 1.01F, 5),
-        IRON(500, 6.0F, 14),
-        DIAMOND(1561, 8.0F, 14),
-        GOLD(32, 12.0F, 22);
+        WOOD(10 - 1, 1.01F, 0),
+        STONE(50 - 1, 1.01F, 5),
+        IRON(500 - 1, 6.0F, 14),
+        DIAMOND(1561 - 1, 8.0F, 14),
+        GOLD(32 - 1, 12.0F, 22);
         private final int maxUses;
         private final float efficiencyOnProperMaterial;
         private final int enchantability;

@@ -99,6 +99,7 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        //TODO Cache AABB
         state = state.getActualState(world, pos);
 
         float minY = 0.0F;

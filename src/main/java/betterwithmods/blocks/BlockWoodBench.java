@@ -32,7 +32,8 @@ public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getBlock() instanceof BlockWoodBench) {
-            state = state.getBlock().getActualState(state, source, pos);
+            BlockWoodBench block = (BlockWoodBench) state.getBlock();
+            state = block.getActualState(state, source, pos);
             if (state.getValue(SUPPORTED))
                 return BENCH_AABB;
         }
@@ -43,7 +44,8 @@ public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, BENCH_AABB);
         if (state.getBlock() instanceof BlockWoodBench) {
-            state = state.getBlock().getActualState(state, world, pos);
+            BlockWoodBench block = (BlockWoodBench) state.getBlock();
+            state = block.getActualState(state, world, pos);
             if (!state.getValue(SUPPORTED))
                 addCollisionBoxToList(pos, entityBox, collidingBoxes, BENCH_STAND_AABB);
         }

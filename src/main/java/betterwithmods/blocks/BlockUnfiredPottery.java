@@ -25,6 +25,9 @@ import java.util.List;
 public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<EnumPotteryType> POTTERYTYPE = PropertyEnum.create("potterytype",
             BlockUnfiredPottery.EnumPotteryType.class);
+    private static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB URN_AABB = new AxisAlignedBB(0.3125D, 0.0F, 0.3125D, 0.6875D, 0.625D, 0.6875D);
+    private static final AxisAlignedBB VASE_AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockUnfiredPottery() {
         super(Material.CLAY);
@@ -38,7 +41,6 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn", "potterytype=vase"};
     }
 
-    @Deprecated
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase entity, ItemStack stack) {
@@ -71,17 +73,16 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        int meta = state.getValue(POTTERYTYPE).getMeta();
-        switch (meta) {
-            case 0:
-            case 1:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            case 2:
-                return new AxisAlignedBB(0.3125D, 0.0F, 0.3125D, 0.6875D, 0.625D, 0.6875D);
-            case 3:
-                return new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
+        EnumPotteryType type = state.getValue(POTTERYTYPE);
+        switch (type) {
+            case CRUCIBLE:
+            case PLANTER:
+                return BLOCK_AABB;
+            case URN:
+                return URN_AABB;
+            case VASE:
             default:
-                return super.getBoundingBox(state, world, pos);
+                return VASE_AABB;
         }
     }
 

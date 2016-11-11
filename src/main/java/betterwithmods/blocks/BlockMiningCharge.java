@@ -32,7 +32,12 @@ import javax.annotation.Nullable;
  */
 public class BlockMiningCharge extends BWMBlock {
     public static final PropertyBool EXPLODE = PropertyBool.create("explode");
-
+    private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0, .5, 0, 1, 1, 1);
+    private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0, 0, 0, 1, .5, 1);
+    private static final AxisAlignedBB N_AABB = new AxisAlignedBB(0, 0, .5, 1, 1, 1);
+    private static final AxisAlignedBB S_AABB = new AxisAlignedBB(0, 0, 0, 1, 1, .5);
+    private static final AxisAlignedBB W_AABB = new AxisAlignedBB(.5, 0, 0, 1, 1, 1);
+    private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0, 0, 0, .5, 1, 1);
 
     public BlockMiningCharge() {
         super(Material.TNT);
@@ -50,23 +55,22 @@ public class BlockMiningCharge extends BWMBlock {
         return false;
     }
 
-
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         EnumFacing facing = state.getValue(DirUtils.FACING);
-        switch (facing.getIndex()) {
-            case 0://DOWN
-                return new AxisAlignedBB(0, .5, 0, 1, 1, 1);
-            case 1://UP
-                return new AxisAlignedBB(0, 0, 0, 1, .5, 1);
-            case 2:
-                return new AxisAlignedBB(0, 0, .5, 1, 1, 1);
-            case 3:
-                return new AxisAlignedBB(0, 0, 0, 1, 1, .5);
-            case 4:
-                return new AxisAlignedBB(.5, 0, 0, 1, 1, 1);
-            case 5:
-                return new AxisAlignedBB(0, 0, 0, .5, 1, 1);
+        switch (facing) {
+            case DOWN://DOWN
+                return D_AABB;
+            case UP://UP
+                return U_AABB;
+            case NORTH:
+                return N_AABB;
+            case SOUTH:
+                return S_AABB;
+            case WEST:
+                return W_AABB;
+            case EAST:
+                return E_AABB;
             default:
                 return FULL_BLOCK_AABB;
         }

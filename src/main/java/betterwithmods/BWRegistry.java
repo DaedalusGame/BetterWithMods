@@ -51,6 +51,7 @@ public class BWRegistry {
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
                 @Override
                 public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+                    ItemStack outputStack = stack;
                     BlockPos pos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
                     if (source.getWorld().isAirBlock(pos)
                             || source.getWorld().getBlockState(pos).getBlock().isReplaceable(source.getWorld(), pos)) {
@@ -61,10 +62,9 @@ public class BWRegistry {
                                     .isReplaceable(source.getWorld(), off))
                                 source.getWorld().setBlockState(off, Blocks.FLOWING_WATER.getStateFromMeta(5));
                         }
-                        stack.setItem(Items.BUCKET);
-                        stack.stackSize = 1;
+                        outputStack = new ItemStack(Items.BUCKET, 1);
                     }
-                    return stack;
+                    return outputStack;
                 }
             });
         }

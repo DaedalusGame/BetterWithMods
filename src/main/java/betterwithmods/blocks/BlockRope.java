@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockRope extends BWMBlock {
     public static final float width = 0.125F;
+    private static final AxisAlignedBB ROPE_AABB = new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
 
     public BlockRope() {
         super(Material.CIRCUITS);
@@ -97,7 +98,7 @@ public class BlockRope extends BWMBlock {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
+        return ROPE_AABB;
     }
 
     @Override

@@ -50,10 +50,9 @@ public class EntityItemBuoy extends EntityItem {
     }
 
     /**
-     * Used to access {@link EntityItem.searchForOtherItemsNearby()} as it's
+     * Used to access {@link EntityItem#searchForOtherItemsNearby} as it's
      * private.
      */
-    @SuppressWarnings("JavadocReference")
     private void superSearchForOtherItemsNearby() {
         try {
             ReflectionHelper.findMethod(EntityItem.class, this,

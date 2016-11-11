@@ -36,6 +36,13 @@ import java.util.Random;
 
 public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     public static final PropertyBool ISACTIVE = PropertyBool.create("isactive");
+    private static final float HEIGHT = 0.71875F;
+    private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
+    private static final AxisAlignedBB N_AABB = new AxisAlignedBB(0.0F, 0.0F, 1.0F - HEIGHT, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB S_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, HEIGHT);
+    private static final AxisAlignedBB W_AABB = new AxisAlignedBB(1.0F - HEIGHT, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, HEIGHT, 1.0F, 1.0F);
 
     public BlockSaw() {
         super(Material.WOOD);
@@ -80,21 +87,21 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         state = state.getActualState(world, pos);
-        float height = 0.71875F;
         EnumFacing facing = getFacingFromBlockState(state);
         switch (facing) {
             case DOWN:
-                return new AxisAlignedBB(0.0F, 1.0F - height, 0.0F, 1.0F, 1.0F, 1.0F);
+                return D_AABB;
             case UP:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, height, 1.0F);
+                return U_AABB;
             case NORTH:
-                return new AxisAlignedBB(0.0F, 0.0F, 1.0F - height, 1.0F, 1.0F, 1.0F);
+                return N_AABB;
             case SOUTH:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, height);
+                return S_AABB;
             case WEST:
-                return new AxisAlignedBB(1.0F - height, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                return W_AABB;
+            case EAST:
             default:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, height, 1.0F, 1.0F);
+                return E_AABB;
         }
     }
 

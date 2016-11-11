@@ -24,11 +24,10 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
         return super.hasCapability(capability, facing);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) inventory;
+            return net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         return super.getCapability(capability, facing);
     }
 

@@ -59,7 +59,7 @@ public class BlockHibachi extends BWMBlock {
             Block above = world.getBlockState(pos.up()).getBlock();
 
             if (above == Blocks.FIRE || above == BWMBlocks.STOKED_FLAME)
-                world.setBlockToAir(pos);
+                world.setBlockToAir(pos.up());
         }
     }
 

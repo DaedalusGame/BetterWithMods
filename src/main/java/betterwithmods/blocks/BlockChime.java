@@ -30,6 +30,7 @@ import java.util.Random;
 
 public class BlockChime extends BWMBlock implements IMultiVariants {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    private static final AxisAlignedBB CHIME_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.3125D, 0.6875D, 0.875D, 0.6875D);
 
     public BlockChime(Material material) {
         super(material);
@@ -123,7 +124,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0.3125D, 0.375D, 0.3125D, 0.6875D, 0.875D, 0.6875D);
+        return CHIME_AABB;
     }
 
     @Override

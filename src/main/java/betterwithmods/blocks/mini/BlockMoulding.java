@@ -30,6 +30,7 @@ public class BlockMoulding extends BlockMini {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        //TODO Cache AABB
         int ori = state.getValue(ORIENTATION);
         switch (ori) {
             case 1:

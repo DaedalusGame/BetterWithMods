@@ -28,8 +28,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.Objects;
 
 public final class BWMItems {
-    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("soulforged_steel", 3, 1561, 8, 3,
+    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 3, 1561, 8, 3,
             22);
+
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
@@ -44,6 +45,7 @@ public final class BWMItems {
     public static final Item STEEL_SWORD = new ItemSoulforgedSword().setRegistryName("steel_sword");
     public static final Item CREEPER_OYSTER = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
     public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
+
 
     private BWMItems() {
     }
@@ -65,7 +67,6 @@ public final class BWMItems {
         registerItem(ENDER_SPECTACLES);
     }
 
-
     /**
      * Register an Item.
      *
@@ -73,8 +74,10 @@ public final class BWMItems {
      * @return Registered item.
      */
     public static Item registerItem(Item item) {
-        //betterwithmods:name => bwm:name
-        item.setUnlocalizedName("bwm" + item.getRegistryName().toString().substring(BWMod.MODID.length()));
+        if (Objects.equals(item.getUnlocalizedName(), "item.null")) {
+            //betterwithmods:name => bwm:name
+            item.setUnlocalizedName("bwm" + item.getRegistryName().toString().substring(BWMod.MODID.length()));
+        }
         return GameRegistry.register(item);
     }
 

@@ -15,9 +15,12 @@ import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
 import betterwithmods.util.ColorUtils;
+import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Loader;
@@ -30,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
@@ -52,6 +56,7 @@ public class BWMod {
     @SuppressWarnings("CanBeFinal")
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
+    public static IForgeRegistry<Item> itemRegistry;
 
     static {
         //Avoid all direct references to class so
@@ -102,6 +107,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
+        MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
     }
 
     private static void registerEntities() {
@@ -115,11 +121,19 @@ public class BWMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
+
         BWConfig.init(evt.getSuggestedConfigurationFile());
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
+
+        // Cache the registry used for iterations
+        itemRegistry = GameRegistry.findRegistry(Item.class);
+
+        if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
+        if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
+        if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
 
         BWRegistry.init();
         loadCompatibilityModules();

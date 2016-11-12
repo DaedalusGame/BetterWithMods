@@ -9,7 +9,9 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
+import net.minecraftforge.common.ForgeHooks;
 
 import java.util.UUID;
 
@@ -143,5 +145,11 @@ public final class EntityPlayerExt {
         }
 
         return modifier;
+    }
+
+    public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos) {
+        ItemStack stack = player.getHeldItemMainhand();
+        if (stack == null) return false;
+        return ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
 }

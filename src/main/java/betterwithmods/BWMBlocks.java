@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public final class BWMBlocks {
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
@@ -149,11 +150,14 @@ public final class BWMBlocks {
      *
      * @param block Block instance to register.
      * @param item  Item instance to register. Will have the same registered name
-     *              as the block. If is null, then no item will be linked to the
+     *              as the block. If null, then no item will be linked to the
      *              block.
      */
     public static Block registerBlock(Block block, @Nullable Item item) {
-        block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
+        if (Objects.equals(block.getUnlocalizedName(), "tile.null")) {
+            //betterwithmods:name => bwm:name
+            block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
+        }
         Block registeredBlock = GameRegistry.register(block);
         if (item != null)
             GameRegistry.register(item.setRegistryName(block.getRegistryName()));

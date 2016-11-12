@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -183,6 +184,18 @@ public class HungerEventHandler {
         }
 
         f *= EntityPlayerExt.getHealthAndExhaustionModifier(player);
+        if (BWConfig.hardcoreHardness) {
+            boolean canHarvestBlock = ForgeHooks.canHarvestBlock(state.getBlock(), player, player.getEntityWorld(), event.getPos());
+            if (!EntityPlayerExt.isCurrentToolEffectiveOnBlock(player, event.getPos())) {
+                if (!canHarvestBlock) {
+                    //Change partially applied (/100.0F) by {@link ForgeHooks.blockStrength}
+                    f *= 100.0F / 200.0F;
+                } else {
+                    //Change partially applied (/30.0F) by {@link ForgeHooks.blockStrength}
+                    f *= 30.0F / 200.0F;
+                }
+            }
+        }
 
         if (f < 0)
             f = 0;

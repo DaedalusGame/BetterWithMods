@@ -1,6 +1,7 @@
 package betterwithmods.util;
 
 import betterwithmods.BWMod;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,28 +11,19 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
- * Static methods that handle hardness rebalancing.
+ * Various static methods that handle various hardcore things.
  *
  * @author Koward
  */
-public final class HardcoreHardnessFunctions {
-    private HardcoreHardnessFunctions() {
+public final class HardcoreFunctions {
+    private HardcoreFunctions() {
     }
 
-    public static void applyChanges() {
+    public static void applyHCHardness() {
         Blocks.FIRE.setFireInfo(Blocks.LEAVES, 60, 100);
         Blocks.FIRE.setFireInfo(Blocks.LEAVES2, 60, 100);
-        changeVanillaMaterials();
         rebalanceVanillaHardness();
-
-        RecipeUtils.removeRecipes(Items.WOODEN_AXE, OreDictionary.WILDCARD_VALUE);
-        RecipeUtils.removeRecipes(Items.WOODEN_HOE, OreDictionary.WILDCARD_VALUE);
-        RecipeUtils.removeRecipes(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE);
-        RecipeUtils.removeRecipes(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE);
-        RecipeUtils.removeRecipes(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE);
-
-        Items.STONE_PICKAXE.setMaxDamage(6 - 1);
-
+        changeVanillaToolMaterials();
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.LEAVES, Blocks.LEAVES2,
                 Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
         ToolsManager.setPickaxesAsEffectiveAgainst(Blocks.LEVER, Blocks.GLASS, Blocks.STAINED_GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS_PANE,
@@ -41,6 +33,13 @@ public final class HardcoreHardnessFunctions {
         );
     }
 
+    public static void removeLowTierToolRecipes() {
+        RecipeUtils.removeRecipes(Items.WOODEN_AXE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.WOODEN_HOE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE);
+        RecipeUtils.removeRecipes(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE);
+    }
 
     private static void rebalanceVanillaHardness() {
         Blocks.STONE.setHardness(2.25F).setResistance(10.0F);
@@ -90,7 +89,7 @@ public final class HardcoreHardnessFunctions {
      * Edit the values of {@link Item.ToolMaterial}.
      * The new values are described in {@link ToolMaterialOverride}.
      */
-    private static void changeVanillaMaterials() {
+    private static void changeVanillaToolMaterials() {
         // Edit materials
         for (Item.ToolMaterial material : Item.ToolMaterial.values()) {
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(material);
@@ -114,11 +113,11 @@ public final class HardcoreHardnessFunctions {
      * New values for {@link net.minecraft.item.Item.ToolMaterial}
      */
     private enum ToolMaterialOverride {
-        WOOD(10 - 1, 1.01F, 0),
-        STONE(50 - 1, 1.01F, 5),
-        IRON(500 - 1, 6.0F, 14),
-        DIAMOND(1561 - 1, 8.0F, 14),
-        GOLD(32 - 1, 12.0F, 22);
+        WOOD(BWConfig.woodDurability - 1, 1.01F, 0),
+        STONE(BWConfig.stoneDurability - 1, 1.01F, 5),
+        IRON(BWConfig.ironDurability - 1, 6.0F, 14),
+        DIAMOND(BWConfig.diamondDurability - 1, 8.0F, 14),
+        GOLD(BWConfig.goldDurability - 1, 12.0F, 22);
         private final int maxUses;
         private final float efficiencyOnProperMaterial;
         private final int enchantability;

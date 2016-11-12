@@ -15,10 +15,11 @@ import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
 import betterwithmods.util.ColorUtils;
-import betterwithmods.util.HardcoreHardnessFunctions;
+import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -130,8 +131,9 @@ public class BWMod {
         // Cache the registry used for iterations
         itemRegistry = GameRegistry.findRegistry(Item.class);
 
-        if (BWConfig.hardcoreHardness)
-            HardcoreHardnessFunctions.applyChanges();
+        if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
+        if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
+        if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
 
         BWRegistry.init();
         loadCompatibilityModules();

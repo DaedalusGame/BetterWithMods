@@ -22,7 +22,7 @@ public class HardcoreHardnessEventHandler {
      */
     @SubscribeEvent
     public void onBreaking(BlockEvent.BreakEvent event) {
-        if (!BWConfig.hardcoreHardness) return;
+        if (!BWConfig.earlyPickaxesRebalance) return;
         EntityPlayer player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
         if (stack == null || stack.getItem() == null) return;
@@ -32,6 +32,7 @@ public class HardcoreHardnessEventHandler {
     }
 
     private void destroyItem(ItemStack stack, EntityLivingBase entity) {
+        //FIXME No sound triggered.
         int damage = stack.getMaxDamage() + 1;
         stack.damageItem(damage, entity);
     }

@@ -200,6 +200,7 @@ public class BWRegistry {
                 }
             }
         }
+        SawInteraction.addBlock(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
         BWCrafting.addKilnWood();
     }
 

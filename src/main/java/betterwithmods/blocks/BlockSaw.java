@@ -128,6 +128,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 0.75F + rand.nextFloat() * 0.1F);
         } else if (powered) {
             sawBlockInFront(world, pos, rand);
+            world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
         }
     }
 

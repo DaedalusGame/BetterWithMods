@@ -4,6 +4,7 @@ import betterwithmods.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockVine;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -72,7 +73,7 @@ public class BlockDetector extends BWMBlock {
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         boolean blockDetection = detectBlock(world, pos);
-        boolean detected = checkDetection(world, pos);
+        boolean detected = checkDetection(state, world, pos);
 
         EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
         BlockPos offset = pos.offset(facing);
@@ -189,7 +190,7 @@ public class BlockDetector extends BWMBlock {
         return false;
     }
 
-    public boolean checkDetection(World world, BlockPos pos) {
+    public boolean checkDetection(IBlockState state, World world, BlockPos pos) {
         BlockPos offset = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
 
         if (world.isAirBlock(offset)) {
@@ -214,6 +215,15 @@ public class BlockDetector extends BWMBlock {
                 return true;
             else if (world.getBlockState(offset).getBlock() == Blocks.REEDS)
                 return true;
+            else if (world.getBlockState(offset).getBlock() instanceof BlockVine) {
+                if (state.getValue(DirUtils.FACING) == EnumFacing.UP)
+                    return true;
+                else {
+                    IBlockState vState = world.getBlockState(offset);
+                    BlockVine vine = (BlockVine)vState.getBlock();
+                    return vState.getValue(vine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
+                }
+            }
         }
         return false;
     }

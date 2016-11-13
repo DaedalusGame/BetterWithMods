@@ -5,12 +5,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.List;
 
@@ -78,7 +74,19 @@ public class EntityAISearchFood extends EntityAIBase {
      */
     @Override
     public boolean continueExecuting() {
-        if (targetItem.isDead || targetItem.getEntityItem().stackSize < 1)
+        if (targetItem.isDead || targetItem.getEntityItem().stackSize < 1) {
+            BlockPos entityPos = entity.getPosition();
+            List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
+            if (!entityItems.isEmpty()) {
+                for (EntityItem item : entityItems) {
+                    if (entity.isBreedingItem(item.getEntityItem())) {
+                        targetItem = item;
+                        break;
+                    }
+                }
+            }
+        }
+        if (targetItem == null || targetItem.isDead)
             return false;
         if (entity.getGrowingAge() < 1 && !entity.isInLove()) {
             if (entity instanceof EntityWolf) {
@@ -113,11 +121,24 @@ public class EntityAISearchFood extends EntityAIBase {
 
     private void processItemEating() {
         if (!entity.getEntityWorld().isRemote) {
-            FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) entity.getEntityWorld());
             ItemStack foodStack = targetItem.getEntityItem().splitStack(1);
-            entity.processInteract(player, EnumHand.MAIN_HAND, foodStack);
-            if (targetItem.getEntityItem().stackSize < 1)
+            boolean bred = false;
+            if (entity.isBreedingItem(foodStack)) {
+                if (entity.getGrowingAge() == 0 && !entity.isInLove()) {
+                    bred = true;
+                    entity.setInLove(null);
+                }
+                else if (entity.isChild()) {
+                    bred = true;
+                    entity.ageUp((int)((float)(-entity.getGrowingAge() / 20) * 0.1F), true);
+                }
+            }
+            if (!bred) {
+                targetItem.getEntityItem().stackSize += 1;
+            }
+            else if (targetItem.getEntityItem().stackSize < 1) {
                 targetItem.setDead();
+            }
         }
     }
 }

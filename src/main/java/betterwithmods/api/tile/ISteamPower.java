@@ -19,4 +19,6 @@ public interface ISteamPower {
     void calculateSteamPower(@Nullable EnumFacing facing);
 
     void setSteamUpdate(boolean update);
+
+    boolean canTransferItem();
 }

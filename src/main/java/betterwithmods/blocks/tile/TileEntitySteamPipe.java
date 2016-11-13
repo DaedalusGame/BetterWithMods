@@ -11,18 +11,31 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteamPower {
 
     private int heatUnits = 0;
     private int steamPower = 0;
     private boolean update = false;
+    private Random rand = new Random();
 
     @Override
     public void update() {
         if (update) {
             calculateSteamPower(null);
             update = false;
+        }
+        List<EnumFacing> low = findLowestTransfer(false);
+        if(!low.isEmpty()) {
+            int exits = low.size();
+            EnumFacing facing = low.get(rand.nextInt(exits));
+            TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
+            if(tile != null) {
+                if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+                    //Insert item transfer code here.
+                }
+            }
         }
     }
 
@@ -35,11 +48,13 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
                     if (isPipelineExit(tile, facing)) {
                         dirs.add(facing);
                     } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
-                        if (facing == EnumFacing.DOWN) {
-                            if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) == 0)
+                        if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).canTransferItem()) {
+                            if (facing == EnumFacing.DOWN) {
+                                if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) == 0)
+                                    dirs.add(facing);
+                            } else if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) < steamPower)
                                 dirs.add(facing);
-                        } else if (tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) < steamPower)
-                            dirs.add(facing);
+                        }
                     }
                 }
             }
@@ -112,9 +127,9 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        writeSteamPower(tag);
-        return tag;
+        NBTTagCompound t = super.writeToNBT(tag);
+        writeSteamPower(t);
+        return t;
     }
 
     @Override
@@ -161,5 +176,10 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
 
     private boolean isPipelineExit(TileEntity tile, EnumFacing facing) {
         return tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && !tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing) && !(tile instanceof TileEntityHopper) && !(tile instanceof TileEntityFilteredHopper);
+    }
+
+    @Override
+    public boolean canTransferItem() {
+        return true;
     }
 }

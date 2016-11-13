@@ -144,9 +144,9 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        writeSteamPower(tag);
-        return tag;
+        NBTTagCompound t = super.writeToNBT(tag);
+        writeSteamPower(t);
+        return t;
     }
 
     @Override
@@ -158,5 +158,10 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
 
     @Override
     public void setSteamUpdate(boolean update) {
+    }
+
+    @Override
+    public boolean canTransferItem() {
+        return false;
     }
 }

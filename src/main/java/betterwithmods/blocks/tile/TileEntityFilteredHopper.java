@@ -431,7 +431,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             else {
                 Block block = this.worldObj.getBlockState(down).getBlock();
 
-                if (block == null || (!block.isBlockSolid(this.worldObj, down, EnumFacing.UP) && (this.worldObj.getTileEntity(down) == null || !(this.worldObj.getTileEntity(down).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)))))
+                if (block == null || (!block.isBlockSolid(this.worldObj, down, EnumFacing.UP) && (this.worldObj.getTileEntity(down) == null || !(this.worldObj.getTileEntity(down).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)))))
                     ejectIntoWorld = true;
                 else {
                     TileEntity tile = this.worldObj.getTileEntity(down);

@@ -1,57 +1,13 @@
 package betterwithmods.integration.jei.wrapper;
 
-import com.google.common.collect.Lists;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import betterwithmods.craft.BlockMetaRecipe;
 
 /**
  * Created by tyler on 9/4/16.
  */
-public class KilnWrapper extends BlankRecipeWrapper {
-    public final ItemStack input;
-    private final List<ItemStack> inputs = Lists.newArrayList();
-    private final List<ItemStack> outputs = Lists.newArrayList();
+public class KilnWrapper extends BlockMetaWrapper {
 
-    public KilnWrapper(String string, List<ItemStack> output) {
-        this.input = fromString(string);
-        inputs.add(input);
-        outputs.addAll(output);
-    }
-
-    @Nonnull
-    @Deprecated
-    @Override
-    public List<ItemStack> getInputs() {
-        return inputs;
-    }
-
-    @Override
-    public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, inputs);
-        ingredients.setOutputs(ItemStack.class, outputs);
-    }
-
-    @Nonnull
-    @Deprecated
-    @Override
-    public List<ItemStack> getOutputs() {
-        return outputs;
-    }
-
-    public ItemStack fromString(String string) {
-        Pattern pattern = Pattern.compile("Block\\{(.*)\\}");
-        String b = string.substring(0, string.lastIndexOf(':'));
-        String m = string.substring(string.lastIndexOf(':') + 1);
-        Matcher matcher = pattern.matcher(b);
-        matcher.find();
-        return new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(matcher.group(1))), 1, Integer.parseInt(m));
+    public KilnWrapper(BlockMetaRecipe recipe) {
+        super(recipe);
     }
 }

@@ -21,7 +21,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -326,8 +330,8 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         BlockPos pos2 = pos.offset(getFacing(world, pos));
         Block block = world.getBlockState(pos2).getBlock();
         int harvestMeta = block.damageDropped(world.getBlockState(pos2));
-        if (SawInteraction.contains(block, harvestMeta)) {
-            List<ItemStack> products = SawInteraction.getProducts(block, harvestMeta);
+        if (SawInteraction.INSTANCE.contains(block, harvestMeta)) {
+            List<ItemStack> products = SawInteraction.INSTANCE.getProducts(block, harvestMeta);
             if (!products.isEmpty())
                 InvUtils.ejectStackWithOffset(world, pos2, products);
             world.setBlockToAir(pos2);

@@ -2,8 +2,12 @@ package betterwithmods;
 
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
-import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.craft.bulk.*;
+import betterwithmods.craft.bulk.CraftingManagerBulk;
+import betterwithmods.craft.bulk.CraftingManagerCauldron;
+import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
+import betterwithmods.craft.bulk.CraftingManagerCrucible;
+import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
+import betterwithmods.craft.bulk.CraftingManagerMill;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.util.NetherSpawnWhitelist;
 import com.google.common.collect.ImmutableList;
@@ -51,10 +55,10 @@ public class BWIMCHandler {
                         }
                         if (block != null) {
                             if (meta != OreDictionary.WILDCARD_VALUE) {
-                                KilnInteraction.addBlockRecipe(block, meta,
+                                KilnInteraction.INSTANCE.addRecipe(block, meta,
                                         ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output")));
                             } else
-                                KilnInteraction.addBlockRecipe(block,
+                                KilnInteraction.INSTANCE.addRecipe(block, 0,
                                         ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output")));
                         }
                     }
@@ -94,11 +98,13 @@ public class BWIMCHandler {
                                             .loadItemStackFromNBT(scrapTag.getCompoundTag("Item_" + i).copy());
                             }
                         }
+                        //TODO Turntable IMC
                         if (state.getBlock() != Blocks.AIR) {
                             if (meta != OreDictionary.WILDCARD_VALUE) {
-                                TurntableInteraction.addBlockRecipe(state, output, scraps);
-                            } else
-                                TurntableInteraction.addBlockRecipe(state.getBlock().getDefaultState(), output, scraps);
+//                                TurntableInteraction.addBlockRecipe(state, output, scraps);
+                            } else {
+//                                TurntableInteraction.addBlockRecipe(state.getBlock().getDefaultState(), output, scraps);
+                            }
                         }
                     }
                 } else if ("addHeatRegistry".equals(k)) {

@@ -3,8 +3,11 @@ package betterwithmods.util;
 import betterwithmods.BWCrafting;
 import betterwithmods.BWMod;
 import betterwithmods.craft.bulk.*;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -19,7 +22,12 @@ import java.util.Map;
 public final class RecipeUtils {
     private RecipeUtils() {
     }
-
+    public static IBlockState getStateFromStack(ItemStack stack) {
+        if(stack != null && stack.getItem() instanceof ItemBlock){
+            return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
+        }
+        return Blocks.AIR.getDefaultState();
+    }
     /**
      * Remove all recipes.
      *

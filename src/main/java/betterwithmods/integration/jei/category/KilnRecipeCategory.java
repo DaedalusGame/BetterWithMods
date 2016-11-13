@@ -49,20 +49,12 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
         return background;
     }
 
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper) {
-        IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
-        guiItemStacks.init(0, false, 20, 31);
-        guiItemStacks.setFromRecipe(0, wrapper.getInputs());
-
-        guiItemStacks.init(1, true, 94, 31);
-        guiItemStacks.setFromRecipe(1, wrapper.getOutputs());
-    }
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper, IIngredients ingredients) {
-        setRecipe(layout, wrapper);
-        //TODO Ingredients
+        IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
+        guiItemStacks.init(0, false, 20, 31);
+        guiItemStacks.init(1, true, 94, 31);
+        guiItemStacks.set(ingredients);
     }
 }

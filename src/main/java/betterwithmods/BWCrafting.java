@@ -1,18 +1,20 @@
 package betterwithmods;
 
-import betterwithmods.blocks.BlockUnfiredPottery;
 import betterwithmods.blocks.BlockUnfiredPottery.EnumPotteryType;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.craft.bulk.*;
+import betterwithmods.craft.bulk.CraftingManagerCauldron;
+import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
+import betterwithmods.craft.bulk.CraftingManagerCrucible;
+import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
+import betterwithmods.craft.bulk.CraftingManagerMill;
 import betterwithmods.items.ItemBark;
 import betterwithmods.items.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -280,15 +282,12 @@ public class BWCrafting {
 
 
     private static void addTurntableRecipes() {
-        addTurntableRecipe(Blocks.CLAY, BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.CRUCIBLE),
-                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.PLANTER),
-                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.VASE),
-                BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.POTTERYTYPE, EnumPotteryType.URN),
-                Blocks.AIR.getDefaultState(), new ItemStack(Items.CLAY_BALL));
+
+        addTurntableRecipe(Blocks.CLAY,0, BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(new ItemStack(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta()), null, new ItemStack(Items.CLAY_BALL));
     }
 
     private static void addKilnRecipes() {
@@ -369,7 +368,7 @@ public class BWCrafting {
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack... outputs) {
-        SawInteraction.addBlock(block, meta, outputs);
+        SawInteraction.INSTANCE.addRecipe(block, meta, outputs);
     }
 
     public static void addOreCauldronRecipe(ItemStack output, Object[] inputs) {
@@ -460,19 +459,21 @@ public class BWCrafting {
         CraftingManagerMill.getInstance().addOreRecipe(output, input);
     }
 
-    public static void addTurntableRecipe(Block block, IBlockState output, ItemStack... scrap) {
-        TurntableInteraction.addBlockRecipe(block, output, scrap);
+
+    public static void addTurntableRecipe(Block inputBlock, int iMeta, Block outputBlock, int oMeta, ItemStack... scraps){
+        TurntableInteraction.INSTANCE.addTurntableRecipe(inputBlock, iMeta, outputBlock, oMeta, scraps);
     }
 
-    public static void addTurntableRecipe(IBlockState input, IBlockState output, ItemStack... scrap) {
-        TurntableInteraction.addBlockRecipe(input, output, scrap);
+    public static void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps){
+        TurntableInteraction.INSTANCE.addTurntableRecipe(inputBlock, outputBlock, scraps);
     }
+
 
     public static void addKilnRecipe(Block inputBlock, ItemStack... output) {
-        KilnInteraction.addBlockRecipe(inputBlock, output);
+        KilnInteraction.INSTANCE.addRecipe(inputBlock,0, output);
     }
 
     public static void addKilnRecipe(Block inputBlock, int inputMeta, ItemStack... output) {
-        KilnInteraction.addBlockRecipe(inputBlock, inputMeta, output);
+        KilnInteraction.INSTANCE.addRecipe(inputBlock, inputMeta, output);
     }
 }

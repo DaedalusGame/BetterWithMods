@@ -156,8 +156,8 @@ public class BWRegistry {
             Block block = ((ItemBlock) log.getItem()).getBlock();
             ItemStack bark = new ItemStack(BWMItems.BARK, 2, type.getMetadata());
             ItemStack sawdust = ItemMaterial.getMaterial("sawdust", 2);
-            SawInteraction.addBlock(block, log.getMetadata(), plank, bark, sawdust);
-            SawInteraction.addBlock(Blocks.PLANKS, type.getMetadata(),
+            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
+            SawInteraction.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
                     new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
             plank = new ItemStack(Blocks.PLANKS, 5, type.getMetadata());
             if (type.getMetadata() < 4) {
@@ -166,7 +166,7 @@ public class BWRegistry {
                 log = new ItemStack(BWMBlocks.DEBARKED_NEW, 1, type.getMetadata() - 4);
             }
             block = ((ItemBlock) log.getItem()).getBlock();
-            SawInteraction.addBlock(block, log.getMetadata(), plank, sawdust);
+            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, sawdust);
         }
         List<ItemStack> logs = OreDictionary.getOres("logWood");
         for (ItemStack log : logs) {
@@ -182,8 +182,8 @@ public class BWRegistry {
                                 output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
                                 output[1] = new ItemStack(BWMItems.BARK, 2, 0);
                                 output[2] = ItemMaterial.getMaterial("sawdust");
-                                SawInteraction.addBlock(block, i, output);
-                                SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+                                SawInteraction.INSTANCE.addRecipe(block, i, output);
+                                SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                             }
                         }
                     } else {
@@ -193,14 +193,14 @@ public class BWRegistry {
                             output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
                             output[1] = new ItemStack(BWMItems.BARK, 2, 0);
                             output[2] = ItemMaterial.getMaterial("sawdust");
-                            SawInteraction.addBlock(block, log.getMetadata(), output);
-                            SawInteraction.addBlock(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+                            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), output);
+                            SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                         }
                     }
                 }
             }
         }
-        SawInteraction.addBlock(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
+        SawInteraction.INSTANCE.addRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
         BWCrafting.addKilnWood();
     }
 

@@ -3,11 +3,18 @@ package betterwithmods.blocks.tile;
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.blocks.BlockMechMachines;
-import betterwithmods.craft.TurntableCraft;
 import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.*;
+import betterwithmods.util.RecipeUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockButton;
+import net.minecraft.block.BlockLadder;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,7 +25,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -316,17 +328,18 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             return;
 
         IBlockState state = worldObj.getBlockState(pos);
+        ItemStack stack = new ItemStack(state.getBlock(),state.getBlock().damageDropped(state));
         Block target = state.getBlock();
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
-        if (TurntableInteraction.contains(state) && TurntableInteraction.getProduct(state) != null) {
+        if (TurntableInteraction.INSTANCE.contains(stack) && TurntableInteraction.INSTANCE.getRecipe(stack) != null) {
             if (target instanceof ITurnable) {
                 ITurnable block = (ITurnable) target;
                 if (block.canRotateOnTurntable(worldObj, pos))
                     block.rotateAroundYAxis(worldObj, pos, reverse);
             } else if (state != state.withRotation(rot))
                 worldObj.setBlockState(pos, state.withRotation(rot));
-            rotateCraftable(state, TurntableInteraction.getProduct(state), pos, reverse);
+            rotateCraftable(state, (TurntableInteraction.TurntableRecipe) TurntableInteraction.INSTANCE.getRecipe(stack), pos, reverse);
             this.potteryRotated = true;
         } else if (target instanceof ITurnable) {
             ITurnable block = (ITurnable) target;
@@ -348,19 +361,21 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         }
     }
 
-    private void rotateCraftable(IBlockState input, TurntableCraft craft, BlockPos pos, boolean reverse) {
+    private void rotateCraftable(IBlockState input, TurntableInteraction.TurntableRecipe craft, BlockPos pos, boolean reverse) {
         Block block = input.getBlock();
         this.potteryRotation++;
         if (this.potteryRotation > 7) {
-            this.worldObj.playSound(null, pos, block.getSoundType(input, this.worldObj, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
-            if (!craft.getScrap().isEmpty() && craft.getScrap().size() > 0) {
-                for (ItemStack scrap : craft.getScrap()) {
+            if (!craft.getOutputs().isEmpty() && craft.getOutputs().size() > 0) {
+                for (ItemStack scrap : craft.getOutputs()) {
                     InvUtils.ejectStackWithOffset(worldObj, pos.up(), scrap.copy());
                 }
             }
-            worldObj.setBlockState(pos, craft.getOutputState());
+
+            worldObj.setBlockState(pos, RecipeUtils.getStateFromStack(craft.getResult()));
             this.potteryRotation = 0;
         }
+        this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST,pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5,0,0,0, Block.getStateId(input));
+        this.worldObj.playSound(null, pos, block.getSoundType(input, this.worldObj, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
     }
 
     @Override

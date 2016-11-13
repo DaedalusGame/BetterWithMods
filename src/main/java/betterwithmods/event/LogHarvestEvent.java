@@ -8,7 +8,11 @@ import betterwithmods.craft.SawInteraction;
 import betterwithmods.items.tools.ItemKnife;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -73,7 +77,7 @@ public class LogHarvestEvent {
                     playerStack.damageItem(1, player);
                 } else {
                     IBlockState state = world.getBlockState(pos);
-                    if (SawInteraction.contains(block, block.getMetaFromState(state)) && InvUtils.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
+                    if (SawInteraction.INSTANCE.contains(block, block.getMetaFromState(state)) && InvUtils.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
                         InvUtils.ejectStackWithOffset(world, playerPos, new ItemStack(BARK, 1, 0));
                         IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
                         world.setBlockState(pos, dbl);
@@ -114,12 +118,12 @@ public class LogHarvestEvent {
                 boolean fort = fortune > 0;
                 List<ItemStack> logs = OreDictionary.getOres("logWood");
                 boolean isLog = logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
-                if (SawInteraction.contains(block, harvestMeta) && isLog && !evt.isSilkTouching()) {
+                if (SawInteraction.INSTANCE.contains(block, harvestMeta) && isLog && !evt.isSilkTouching()) {
                     for (ItemStack logStack : evt.getDrops()) {
                         if (logStack.getItem() instanceof ItemBlock) {
                             ItemBlock iBlock = (ItemBlock) logStack.getItem();
                             if (iBlock.getBlock() == block) {
-                                List<ItemStack> outputs = SawInteraction.getProducts(block, harvestMeta);
+                                List<ItemStack> outputs = SawInteraction.INSTANCE.getProducts(block, harvestMeta);
                                 List<ItemStack> newOutputs = Lists.newArrayList();
                                 if (outputs.size() == 3) {
                                     ItemStack planks = outputs.get(0).copy();

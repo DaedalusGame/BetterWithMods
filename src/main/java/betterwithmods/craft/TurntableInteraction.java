@@ -1,33 +1,37 @@
 package betterwithmods.craft;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.List;
 
-public class TurntableInteraction {
-    private static Hashtable<IBlockState, TurntableCraft> spinnables = new Hashtable<>();
-
-    public static void addBlockRecipe(Block block, IBlockState result, ItemStack... scraps) {
-        TurntableCraft craft = new TurntableCraft(result, scraps);
-        for (IBlockState state : block.getBlockState().getValidStates())
-            spinnables.put(state, craft);
+public class TurntableInteraction extends BlockMetaHandler {
+    public static TurntableInteraction INSTANCE = new TurntableInteraction();
+    public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
+        assert inputBlock.getItem() instanceof ItemBlock;
+        assert outputBlock == null || outputBlock.getItem() instanceof ItemBlock;
+        if(outputBlock == null)
+            addTurntableRecipe(((ItemBlock) inputBlock.getItem()).getBlock(), inputBlock.getMetadata(), null, 0,scraps);
+        else
+            addTurntableRecipe(((ItemBlock) inputBlock.getItem()).getBlock(), inputBlock.getMetadata(), ((ItemBlock) outputBlock.getItem()).getBlock(), outputBlock.getMetadata(),scraps);
     }
-
-    public static void addBlockRecipe(IBlockState state, IBlockState result, ItemStack... scraps) {
-        spinnables.put(state, new TurntableCraft(result, scraps));
+    public void addTurntableRecipe(Block block, int meta, Block result, int resultMeta, ItemStack... scraps) {
+        addRecipe(new TurntableRecipe(block, meta, result, resultMeta, Arrays.asList(scraps)));
     }
+    public class TurntableRecipe extends BlockMetaRecipe {
+        private Block result;
+        private int resultMeta;
+        public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List scraps) {
+            super(block, meta, scraps);
+            this.result = result;
+            this.resultMeta = resultMeta;
+        }
+        public ItemStack getResult() {
+            return new ItemStack(result,1,resultMeta);
+        }
 
-    public static boolean contains(IBlockState state) {
-        return spinnables.containsKey(state);
-    }
 
-    public static TurntableCraft getProduct(IBlockState state) {
-        return spinnables.get(state);
-    }
-
-    public static Hashtable<IBlockState, TurntableCraft> getSpinnables() {
-        return spinnables;
     }
 }

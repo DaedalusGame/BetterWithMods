@@ -1,8 +1,8 @@
 package betterwithmods.integration.minetweaker;
 
+import betterwithmods.craft.BlockMetaRecipe;
 import betterwithmods.craft.SawInteraction;
-import betterwithmods.integration.minetweaker.utils.BaseMapAddition;
-import betterwithmods.integration.minetweaker.utils.BaseMapRemoval;
+import betterwithmods.integration.minetweaker.utils.BaseListAddition;
 import betterwithmods.integration.minetweaker.utils.LogHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -12,12 +12,13 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
-import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
+import static betterwithmods.integration.minetweaker.utils.InputHelper.toIItemStack;
+import static betterwithmods.integration.minetweaker.utils.InputHelper.toStack;
+import static betterwithmods.integration.minetweaker.utils.InputHelper.toStacks;
 import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
 
 /**
@@ -25,7 +26,7 @@ import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
  */
 @ZenClass("mods.betterwithmods.Saw")
 public class Saw {
-    public static final Hashtable<String, List<ItemStack>> woodProduct = SawInteraction.getWoodProducts();
+    public static final ArrayList<BlockMetaRecipe> recipes = SawInteraction.INSTANCE.getRecipes();
 
     @ZenMethod
     public static void add(IItemStack input, IItemStack[] output) {
@@ -36,10 +37,10 @@ public class Saw {
 
     @ZenMethod
     public static void remove(IIngredient output) {
-        Map<String, List<ItemStack>> toRemove = new Hashtable<>();
-        for (Map.Entry<String, List<ItemStack>> sawRecipe : toRemove.entrySet()) {
-            if (sawRecipe != null && matches(output, toIItemStack(sawRecipe.getValue().get(0)))) {
-                toRemove.put(sawRecipe.getKey(), sawRecipe.getValue());
+        List<BlockMetaRecipe> toRemove = new ArrayList<>();
+        for (BlockMetaRecipe sawRecipe : recipes) {
+            if (sawRecipe != null && matches(output, toIItemStack(sawRecipe.getOutputs().get(0)))) {
+                toRemove.add(sawRecipe);
             }
         }
         if (!toRemove.isEmpty()) {
@@ -50,27 +51,26 @@ public class Saw {
     }
 
 
-    private static class Add extends BaseMapAddition<String, List<ItemStack>> {
-
+    private static class Add extends BaseListAddition<BlockMetaRecipe> {
         protected Add(Block block, int meta, ItemStack... product) {
-            super("saw", woodProduct);
-            recipes.put(block + ":" + meta, Arrays.asList(product));
+            super("saw", Saw.recipes);
+            recipes.add(new BlockMetaRecipe(block,meta, Arrays.asList(product)));
         }
 
         @Override
-        protected String getRecipeInfo(Map.Entry<String, List<ItemStack>> recipe) {
-            return LogHelper.getListDescription(recipe.getValue());
+        protected String getRecipeInfo(BlockMetaRecipe recipe) {
+            return recipe.toString();
         }
     }
 
-    private static class Remove extends BaseMapRemoval<String, List<ItemStack>> {
-        protected Remove(Map<String, List<ItemStack>> map) {
-            super("saw", woodProduct, map);
+    private static class Remove extends BaseListAddition<BlockMetaRecipe> {
+        protected Remove(List<BlockMetaRecipe> list) {
+            super("saw", Saw.recipes, list);
         }
 
         @Override
-        protected String getRecipeInfo(Map.Entry<String, List<ItemStack>> recipe) {
-            return LogHelper.getStackDescription(recipe.getKey());
+        protected String getRecipeInfo(BlockMetaRecipe recipe) {
+            return recipe.toString();
         }
     }
 }

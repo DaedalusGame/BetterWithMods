@@ -2,7 +2,7 @@ package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.SawWrapper;
+import betterwithmods.integration.jei.wrapper.TurntableRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -16,26 +16,29 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 
 /**
- * Created by tyler on 9/5/16.
+ * Purpose:
+ *
+ * @author Tyler Marshall
+ * @version 11/11/16
  */
-public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
-    public static final int width = 82;
+public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipeWrapper> {
+    public static final int width = 53;
     public static final int height = 50;
     @Nonnull
     private final IDrawable background;
     @Nonnull
     private final String localizedName;
 
-    public SawRecipeCategory(IGuiHelper helper) {
-        ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/saw.png");
+    public TurntableRecipeCategory(IGuiHelper helper) {
+        ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/turntable.png");
         background = helper.createDrawable(location, 0, 0, width, height);
-        localizedName = Translator.translateToLocal("inv.saw.name");
+        localizedName = Translator.translateToLocal("inv.turntable.name");
     }
 
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.saw";
+        return "bwm.turntable";
     }
 
     @Nonnull
@@ -50,18 +53,17 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
         return background;
     }
 
-    @Deprecated
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper) {
-    }
-
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull TurntableRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
-        guiItemStacks.init(0, false, 8, 9);
-        guiItemStacks.init(1, true, 57, 9);
-        guiItemStacks.init(3, false, 32, 27);
+        int x = 5, y = 9;
+        guiItemStacks.init(0,true,x,y);
+        guiItemStacks.init(1,false,x+27,y);
+        guiItemStacks.init(2,false,x+27,y+18);
+        guiItemStacks.init(3,false,x,y+18);
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3, new ItemStack(BWMBlocks.SAW));
+        guiItemStacks.set(3, new ItemStack(BWMBlocks.SINGLE_MACHINES,1,5));
+
     }
 }
+

@@ -263,6 +263,7 @@ inv.bwm.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
 inv.pulley.name=Pulley
+inv.turntable.name=Turntable
 
 itemGroup.bwm:bwTab=Better With Mods
 

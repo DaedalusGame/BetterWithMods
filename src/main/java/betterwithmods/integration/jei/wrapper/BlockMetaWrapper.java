@@ -15,7 +15,6 @@ import java.util.List;
  * @version 11/11/16
  */
 public class BlockMetaWrapper extends BlankRecipeWrapper {
-    public final List<ItemStack> inputs = Lists.newArrayList();
     public final List<ItemStack> outputs = Lists.newArrayList();
     public final ItemStack input;
 

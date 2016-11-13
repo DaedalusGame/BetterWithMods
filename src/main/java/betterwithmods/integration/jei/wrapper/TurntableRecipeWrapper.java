@@ -15,7 +15,8 @@ public class TurntableRecipeWrapper extends BlockMetaWrapper {
     public TurntableRecipeWrapper(TurntableInteraction.TurntableRecipe recipe) {
         super(recipe);
         result = recipe.getResult();
-        outputs.add(0,result);
+        if(result != null)
+            outputs.add(0,result);
     }
 
     @Override

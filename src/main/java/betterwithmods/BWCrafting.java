@@ -287,7 +287,7 @@ public class BWCrafting {
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(new ItemStack(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta()), null, new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.URN.getMeta(), null,0, new ItemStack(Items.CLAY_BALL));
     }
 
     private static void addKilnRecipes() {

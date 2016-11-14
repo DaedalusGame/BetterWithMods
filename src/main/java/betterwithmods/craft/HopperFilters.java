@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class HopperFilters {
     }
 
     public static int getFilterType(ItemStack filter) {
-        Optional<Integer> type = filters.inverse().keySet().stream().filter(p -> p.getLeft().isItemEqual(filter)).map(p -> filters.inverse().get(p)).findFirst();
+        Optional<Integer> type = filters.inverse().keySet().stream().filter(p -> (p.getLeft().isItemEqual(filter) || (p.getLeft().getItem() == filter.getItem() && p.getLeft().getMetadata() == OreDictionary.WILDCARD_VALUE))).map(p -> filters.inverse().get(p)).findFirst();
         if(type.isPresent())
             return type.get();
         return 0;

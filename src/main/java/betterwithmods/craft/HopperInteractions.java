@@ -36,7 +36,7 @@ public class HopperInteractions {
     }
     static {
         recipes.add(new SoulUrn(ItemMaterial.getMaterial("ground_netherrack"),ItemMaterial.getMaterial("hellfire_dust")));
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial("saw_dust"),ItemMaterial.getMaterial("soul_dust")));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"),ItemMaterial.getMaterial("sawdust")));
         recipes.add(new HopperRecipe(5,new ItemStack(Blocks.GRAVEL),new ItemStack(Items.FLINT)) {
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {

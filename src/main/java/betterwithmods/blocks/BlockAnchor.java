@@ -94,6 +94,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
                             BlockRope.placeRopeUnder(heldItem, world, down, player);
                         } else if (world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down)) {
                             world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
+                            world.playSound(null,down,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getPlaceSound(), SoundCategory.BLOCKS,1,1);
                             if (!player.capabilities.isCreativeMode)
                                 heldItem.stackSize--;
                         } else
@@ -103,8 +104,10 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
                 }
             }
             return false;
-        } else if (!world.isRemote)
-            retractRope(world, pos, player);
+        } else if (!world.isRemote) {
+            if(retractRope(world, pos, player))
+            world.playSound(null,pos,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getBreakSound(), SoundCategory.BLOCKS,1,1);
+        }
         return true;
     }
 
@@ -142,17 +145,17 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
         return state.getValue(FACING);
     }
 
-    private void retractRope(World world, BlockPos pos, EntityPlayer player) {
+    private boolean retractRope(World world, BlockPos pos, EntityPlayer player) {
         for (int i = pos.getY() - 1; i >= 0; i--) {
             BlockPos pos2 = new BlockPos(pos.getX(), i, pos.getZ());
             if (world.getBlockState(pos2).getBlock() != BWMBlocks.ROPE && world.getBlockState(pos2.up()).getBlock() == BWMBlocks.ROPE) {
                 if (!player.capabilities.isCreativeMode)
                     addRopeToInv(world, pos, player);
-                world.setBlockToAir(pos2.up());
-                break;
+                return world.setBlockToAir(pos2.up());
             } else if (world.getBlockState(pos2).getBlock() != BWMBlocks.ROPE)
-                break;
+                return false;
         }
+        return false;
     }
 
     private void addRopeToInv(World world, BlockPos pos, EntityPlayer player) {

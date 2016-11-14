@@ -7,12 +7,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockRope extends BWMBlock {
     public static final float width = 0.125F;
@@ -24,12 +29,21 @@ public class BlockRope extends BWMBlock {
         this.setHardness(0.5F);
     }
 
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if(heldItem != null && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
+            return placeRopeUnder(heldItem,worldIn,pos,playerIn);
+        }
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
+
     public static boolean placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
         if (stack != null || player == null) {
             BlockPos bp = getLowestRopeBlock(world, pos).down();
             Block block = world.getBlockState(bp).getBlock();
             if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.ROPE.getDefaultState().getBlock()).canBlockStay(world, bp)) {
                 world.setBlockState(bp, BWMBlocks.ROPE.getDefaultState());
+                world.playSound(null,bp,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getPlaceSound(), SoundCategory.BLOCKS,1,1);
                 if (player != null && !player.capabilities.isCreativeMode) // if this is placed by a pulley, let the pulley manage the stack size
                     stack.stackSize--;
                 return true;

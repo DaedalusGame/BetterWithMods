@@ -40,7 +40,7 @@ public final class ToolsManager {
         return ReflectionHelper.getPrivateValue(ItemTool.class, tool, "field_150914_c", "effectiveBlocks");
     }
 
-    private static void setToolAsEffectiveAgainst(ItemTool tool, Block... blocks) {
+    public static void setToolAsEffectiveAgainst(ItemTool tool, Block... blocks) {
         Set<Block> effectiveOn = getEffectiveBlocks(tool);
         Collections.addAll(effectiveOn, blocks);
     }

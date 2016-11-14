@@ -43,9 +43,10 @@ public final class BWMItems {
     public static final Item STEEL_PICKAXE = new ItemSoulforgedPickaxe().setRegistryName("steel_pickaxe");
     public static final Item STEEL_SHOVEL = new ItemSoulforgedShovel().setRegistryName("steel_shovel");
     public static final Item STEEL_SWORD = new ItemSoulforgedSword().setRegistryName("steel_sword");
+    public static final Item STEEL_MATTOCK = new ItemSoulforgedMattock().setRegistryName("steel_mattock");
+    public static final Item STEEL_BATTLEAXE = new ItemSoulforgedBattleAxe().setRegistryName("steel_battleaxe");
     public static final Item CREEPER_OYSTER = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
     public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
-
 
     private BWMItems() {
     }
@@ -63,6 +64,8 @@ public final class BWMItems {
         registerItem(STEEL_PICKAXE);
         registerItem(STEEL_SHOVEL);
         registerItem(STEEL_SWORD);
+        registerItem(STEEL_MATTOCK);
+        registerItem(STEEL_BATTLEAXE);
         registerItem(CREEPER_OYSTER);
         registerItem(ENDER_SPECTACLES);
     }
@@ -96,6 +99,8 @@ public final class BWMItems {
         setInventoryModel(STEEL_PICKAXE);
         setInventoryModel(STEEL_SHOVEL);
         setInventoryModel(STEEL_SWORD);
+        setInventoryModel(STEEL_BATTLEAXE);
+        setInventoryModel(STEEL_MATTOCK);
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
     }

@@ -47,6 +47,7 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Y).withProperty(SIGNAL, 0));
         this.setSoundType(SoundType.WOOD);
+        this.setHarvestLevel("axe",0);
         setCreativeTab(BWCreativeTabs.BWTAB);
     }
 

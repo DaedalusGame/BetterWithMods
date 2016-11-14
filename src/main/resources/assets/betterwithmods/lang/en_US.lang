@@ -239,6 +239,8 @@ item.bwm:steel_hoe.name=Soulforged Steel Hoe
 item.bwm:steel_pickaxe.name=Soulforged Steel Pickaxe
 item.bwm:steel_shovel.name=Soulforged Steel Shovel
 item.bwm:steel_sword.name=Soulforged Steel Sword
+item.bwm:steel_mattock.name=Soulforged Steel Mattock
+item.bwm:steel_battleaxe.name=Soulforged Steel Battleaxe
 
 lore.bwm:dynamite=Dwarven Fishing Pole
 

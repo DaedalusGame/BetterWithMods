@@ -169,9 +169,11 @@ public class BWMod {
         RecipeUtils.gatherCookableFood();
         BWRegistry.registerWood();
         InvUtils.initOreDictGathering();
+        BWCrafting.postInit();
         ColorUtils.initColors();
         registerEventHandlers();
         RecipeUtils.refreshRecipes();
+
         getLoadedModules().forEach(ICompatModule::postInit);
         BucketEvent.editModdedFluidDispenseBehavior();
         if (evt.getSide().isServer())

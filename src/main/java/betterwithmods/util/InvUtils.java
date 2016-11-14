@@ -18,11 +18,13 @@ import java.util.List;
 
 public class InvUtils {
     public static List<ItemStack> dustNames;
+    public static List<ItemStack> oreNames;
     public static List<ItemStack> ingotNames;
     public static List<ItemStack> cropNames;
 
     public static void initOreDictGathering() {
         dustNames = getOreNames("dust");
+        oreNames = getOreNames("ore");
         ingotNames = getOreNames("ingot");
         cropNames = getOreNames("crop");
     }
@@ -30,7 +32,6 @@ public class InvUtils {
     private static ArrayList<ItemStack> getOreNames(String prefix) {
         ArrayList<ItemStack> list = new ArrayList<>();
         String[] var2 = OreDictionary.getOreNames();
-
         for (String name : var2) {
             if (name.startsWith(prefix) && OreDictionary.getOres(name).size() > 0) {
                 list.addAll(OreDictionary.getOres(name));

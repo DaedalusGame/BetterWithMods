@@ -13,6 +13,7 @@ import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
 import betterwithmods.craft.bulk.CraftingManagerMill;
 import betterwithmods.items.ItemBark;
 import betterwithmods.items.ItemMaterial;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -20,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -31,11 +33,14 @@ public class BWCrafting {
         addCauldronRecipes();
         addCrucibleRecipes();
         addMillRecipes();
-        addTurntableRecipes();
         addKilnRecipes();
+        addTurntableRecipes();
         addHERecipes();
     }
 
+    public static void postInit() {
+      addKilnOres();
+    }
     private static void addHERecipes() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), "PIP", "GLG", "PIP", 'P', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial("redstone_latch")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), "MWM", " M ", "MWM", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), 'W', new ItemStack(BWMBlocks.PANE, 1, 2)));
@@ -299,8 +304,17 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
         addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? "ender_slag" : "brimstone"));
-    }
 
+    }
+    private static void addKilnOres() {
+        if(BWConfig.canKilnSmeltOres) {
+            InvUtils.oreNames.forEach(ore -> {
+                ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
+                if (ore != null && output != null)
+                    addKilnRecipe(ore, output);
+            });
+        }
+    }
     public static void addKilnWood() {
         for (ItemStack stack : OreDictionary.getOres("logWood")) {
             if (stack.getItem() instanceof ItemBlock) {
@@ -472,6 +486,9 @@ public class BWCrafting {
         TurntableInteraction.INSTANCE.addTurntableRecipe(inputBlock, outputBlock, scraps);
     }
 
+    public static void addKilnRecipe(ItemStack inputBlock, ItemStack... output) {
+        KilnInteraction.INSTANCE.addRecipe(inputBlock, output);
+    }
 
     public static void addKilnRecipe(Block inputBlock, ItemStack... output) {
         KilnInteraction.INSTANCE.addRecipe(inputBlock,0, output);

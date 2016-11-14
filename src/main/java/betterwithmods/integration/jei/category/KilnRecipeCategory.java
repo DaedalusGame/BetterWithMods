@@ -53,8 +53,8 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
-        guiItemStacks.init(0, false, 20, 31);
-        guiItemStacks.init(1, true, 94, 31);
+        guiItemStacks.init(0, true, 20, 31);
+        guiItemStacks.init(1, false, 94, 31);
         guiItemStacks.set(ingredients);
     }
 }

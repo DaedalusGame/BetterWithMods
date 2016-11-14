@@ -49,6 +49,7 @@ public class BWConfig {
     public static int maxPlatformBlocks;
     public static float upSpeed;
     public static float downSpeed;
+    public static boolean canKilnSmeltOres;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -101,7 +102,7 @@ public class BWConfig {
                 "The speed at which the pulley rope and platform moves up");
         downSpeed = config.getFloat("Vertical speed down", PULLEY, 0.1F, 0.0F, 1.0F,
                 "The speed at which the pulley rope and platform moves down");
-
+        canKilnSmeltOres = config.getBoolean("Can Kiln Smelt Ores",Configuration.CATEGORY_GENERAL,true,"Allows Ores to be smelted in the kiln");
         config.save();
     }
 

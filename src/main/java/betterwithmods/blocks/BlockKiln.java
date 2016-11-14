@@ -59,7 +59,6 @@ public class BlockKiln extends BWMBlock {
 
                 if (oldCookTime > 0)
                     world.sendBlockBreakProgress(0, up, -1);
-
                 return;
             }
         }
@@ -124,17 +123,7 @@ public class BlockKiln extends BWMBlock {
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        if (getCookCounterFromMeta(world.getBlockState(pos).getValue(COOK)) > 0)
-            world.sendBlockBreakProgress(0, pos.up(), -1);
-        Blocks.BRICK_BLOCK.dropBlockAsItem(world, pos, state, 0);
-    }
-
-    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        if (Loader.isModLoaded("terrafirmacraft"))
-            return Item
-                    .getItemFromBlock(Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")));
         return Item.getItemFromBlock(Blocks.BRICK_BLOCK);
     }
 

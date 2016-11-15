@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.blocks.mini.BlockMini;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -101,15 +102,20 @@ public class BlockDetector extends BWMBlock {
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        if (isBlockOn(world, pos))
-            return 15;
-        return 0;
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return true;
     }
 
     @Override
     public boolean canProvidePower(IBlockState state) {
-        return true;
+        return state.getValue(ACTIVE);
+    }
+
+    @Override
+    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        if (isBlockOn(world, pos))
+            return 15;
+        return 0;
     }
 
     @Override
@@ -170,12 +176,11 @@ public class BlockDetector extends BWMBlock {
         if (world.isAirBlock(offset) && (world.getBiomeForCoordsBody(offset).canRain() && world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering()))) {
             return true;
         }
-
         if (target == BWMBlocks.LENS) {
             BlockLens lens = (BlockLens) target;
             if (lens.getFacingFromBlockState(world.getBlockState(offset)) == DirUtils.getOpposite(getFacingFromBlockState(world.getBlockState(pos))) && lens.isLit(world, offset))
                 return true;
-        } else if (world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM)
+        } else if (world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM || world.getBlockState(offset).getBlock() instanceof BlockMini)
             return true;
         else if (!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset)) {
             int x = offset.getX();

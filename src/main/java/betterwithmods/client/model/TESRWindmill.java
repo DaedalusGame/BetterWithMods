@@ -31,8 +31,8 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
             sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));
             GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
         } else if (dir == EnumFacing.SOUTH) {
-            shafts.setRotateAngle(shafts.axle, 0, 0, -(float) Math.toRadians(rotation));
-            sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));
+            shafts.setRotateAngle(shafts.axle, 0, 0, (float) Math.toRadians(rotation));
+            sail.setRotateAngleForSails(0, 0, (float) Math.toRadians(rotation));
         } else {
             GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
         }

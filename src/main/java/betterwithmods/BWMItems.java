@@ -5,13 +5,28 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
-import betterwithmods.items.*;
-import betterwithmods.items.tools.*;
+import betterwithmods.items.ItemBark;
+import betterwithmods.items.ItemBreedingHarness;
+import betterwithmods.items.ItemDynamite;
+import betterwithmods.items.ItemEnderSpectacles;
+import betterwithmods.items.ItemFertilizer;
+import betterwithmods.items.ItemMaterial;
+import betterwithmods.items.ItemMechanical;
+import betterwithmods.items.tools.ItemKnife;
+import betterwithmods.items.tools.ItemSoulforgeArmor;
+import betterwithmods.items.tools.ItemSoulforgedAxe;
+import betterwithmods.items.tools.ItemSoulforgedBattleAxe;
+import betterwithmods.items.tools.ItemSoulforgedHoe;
+import betterwithmods.items.tools.ItemSoulforgedMattock;
+import betterwithmods.items.tools.ItemSoulforgedPickaxe;
+import betterwithmods.items.tools.ItemSoulforgedShovel;
+import betterwithmods.items.tools.ItemSoulforgedSword;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
@@ -30,7 +45,6 @@ import java.util.Objects;
 public final class BWMItems {
     public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 3, 1561, 8, 3,
             22);
-
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
@@ -47,7 +61,11 @@ public final class BWMItems {
     public static final Item STEEL_BATTLEAXE = new ItemSoulforgedBattleAxe().setRegistryName("steel_battleaxe");
     public static final Item CREEPER_OYSTER = (new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
     public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
-
+    public static final Item STEEL_HELMET = new ItemSoulforgeArmor(EntityEquipmentSlot.HEAD).setRegistryName("steel_helmet");
+    public static final Item STEEL_CHEST = new ItemSoulforgeArmor(EntityEquipmentSlot.CHEST).setRegistryName("steel_chest");
+    public static final Item STEEL_PANTS = new ItemSoulforgeArmor(EntityEquipmentSlot.LEGS).setRegistryName("steel_pants");
+    public static final Item STEEL_BOOTS = new ItemSoulforgeArmor(EntityEquipmentSlot.FEET).setRegistryName("steel_boots");
+    public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
     private BWMItems() {
     }
 
@@ -68,6 +86,11 @@ public final class BWMItems {
         registerItem(STEEL_BATTLEAXE);
         registerItem(CREEPER_OYSTER);
         registerItem(ENDER_SPECTACLES);
+        registerItem(STEEL_HELMET);
+        registerItem(STEEL_CHEST);
+        registerItem(STEEL_PANTS);
+        registerItem(STEEL_BOOTS);
+        registerItem(BREEDING_HARNESS);
     }
 
     /**
@@ -103,6 +126,7 @@ public final class BWMItems {
         setInventoryModel(STEEL_MATTOCK);
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
+        setInventoryModel(BREEDING_HARNESS);
     }
 
     @SideOnly(Side.CLIENT)

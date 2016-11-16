@@ -200,6 +200,8 @@ public class BWCrafting {
         }
 
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP, 1), "VVV", 'V', new ItemStack(Blocks.VINE));
+        GameRegistry.addShapelessRecipe(ItemMaterial.getMaterial("padding"), new ItemStack(Items.FEATHER), ItemMaterial.getMaterial("hemp_cloth"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("armor_plate"), " B", "SP","B ", 'B', ItemMaterial.getMaterial("leather_strap"), 'S', ItemMaterial.getMaterial("ingot_steel"), 'P', ItemMaterial.getMaterial("padding")));
     }
 
     private static void addMillRecipes() {
@@ -217,6 +219,7 @@ public class BWCrafting {
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), new ItemStack(Items.RABBIT_HIDE));
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), ItemMaterial.getMaterial("leather_cut"));
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), ItemMaterial.getMaterial("leather_strap"));
+        addMillRecipe(new ItemStack(Items.BLAZE_POWDER,0,3), new ItemStack(Items.BLAZE_ROD));
 
         //Dyes
         addMillRecipe(new ItemStack(Items.DYE, 2, 1), new ItemStack(Items.BEETROOT));
@@ -453,11 +456,11 @@ public class BWCrafting {
         CraftingManagerCrucibleStoked.getInstance().addOreRecipe(output, secondary, inputs);
     }
 
-    public static void addMillRecipe(ItemStack output, ItemStack[] inputs) {
+    public static void addMillRecipe(ItemStack output, ItemStack... inputs) {
         CraftingManagerMill.getInstance().addRecipe(output, inputs);
     }
 
-    public static void addMillRecipe(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
+    public static void addMillRecipe(ItemStack output, ItemStack secondary, ItemStack... inputs) {
         CraftingManagerMill.getInstance().addRecipe(output, secondary, inputs);
     }
 

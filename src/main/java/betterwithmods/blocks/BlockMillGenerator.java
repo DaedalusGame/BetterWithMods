@@ -122,6 +122,19 @@ public abstract class BlockMillGenerator extends BWMBlock implements IMechanical
         return this.getDefaultState().withProperty(AXIS, axis);
     }
 
+    public EnumFacing getAxleDirectionFromState(IBlockState state) {
+        EnumFacing.Axis axis = state.getValue(AXIS);
+        switch (axis) {
+            case Y:
+                return EnumFacing.UP;
+            case Z:
+                return EnumFacing.SOUTH;
+            case X:
+            default:
+                return EnumFacing.EAST;
+        }
+    }
+
     public EnumFacing getAxleDirection(World world, BlockPos pos) {
         EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
         switch (axis) {

@@ -1,6 +1,5 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.BlockWindmill;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -19,20 +18,16 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
 
         float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
-        EnumFacing dir = EnumFacing.SOUTH;
-
-        if (te.hasWorldObj()) {
-            if (te.getBlockType() instanceof BlockWindmill)
-                dir = ((BlockWindmill) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
-        }
+        EnumFacing dir = te.getOrientation();
 
         if (dir == EnumFacing.EAST) {
             shafts.setRotateAngle(shafts.axle, 0, 0, -(float) Math.toRadians(rotation));
             sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));
             GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
         } else if (dir == EnumFacing.SOUTH) {
-            shafts.setRotateAngle(shafts.axle, 0, 0, (float) Math.toRadians(rotation));
-            sail.setRotateAngleForSails(0, 0, (float) Math.toRadians(rotation));
+            shafts.setRotateAngle(shafts.axle, 0, 0, -(float) Math.toRadians(rotation));
+            sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));
+            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
         } else {
             GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
         }

@@ -1,6 +1,5 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.BlockWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -22,12 +21,7 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
         float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
-        EnumFacing dir = EnumFacing.SOUTH;
-
-        if (te.hasWorldObj()) {
-            if (te.getBlockType() instanceof BlockWaterwheel)
-                dir = ((BlockWaterwheel) te.getBlockType()).getAxleDirection(te.getWorld(), te.getPos());
-        }
+        EnumFacing dir = te.getOrientation();
 
         if (dir == EnumFacing.EAST) {
             waterwheel.setRotateAngle(waterwheel.axle, 0, 0, (float) Math.toRadians(rotation));

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class InvUtils {
 
     }
 
-    public static void clearInventory(ItemStackHandler inv) {
+    public static void clearInventory(IItemHandlerModifiable inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null) {
@@ -123,7 +123,7 @@ public class InvUtils {
 
     }
 
-    public static ItemStack decrStackSize(ItemStackHandler inv, int slot, int amount) {
+    public static ItemStack decrStackSize(IItemHandlerModifiable inv, int slot, int amount) {
         if (inv.getStackInSlot(slot) != null) {
             ItemStack splitStack;
             if (inv.getStackInSlot(slot).stackSize <= amount) {
@@ -236,7 +236,7 @@ public class InvUtils {
         return ret;
     }
 
-    public static boolean consumeItemsInInventory(ItemStackHandler inv, ItemStack toCheck, int stackSize) {
+    public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int stackSize) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null) {
@@ -264,7 +264,7 @@ public class InvUtils {
         return false;
     }
 
-    public static boolean consumeItemsInInventory(ItemStackHandler inv, Item item, int meta, int stackSize) {
+    public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, Item item, int meta, int stackSize) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
@@ -281,7 +281,7 @@ public class InvUtils {
         return false;
     }
 
-    public static boolean consumeOresInInventory(ItemStackHandler inv, List<?> list, int stackSize) {
+    public static boolean consumeOresInInventory(IItemHandlerModifiable inv, List<?> list, int stackSize) {
         if (list.size() > 0) {
             for (Object aList : list) {
                 ItemStack tempStack = (ItemStack) aList;

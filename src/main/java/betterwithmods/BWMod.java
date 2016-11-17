@@ -66,7 +66,7 @@ public class BWMod {
         map.put("harvestcraft", "betterwithmods.integration.Harvestcraft");
         map.put("immersiveengineering", "betterwithmods.integration.immersiveengineering.ImmersiveEngineering");
         map.put("MineTweaker3", "betterwithmods.integration.minetweaker.MineTweaker");
-        map.put("quark", "betterwithmods.integration.Quark");
+        map.put("Quark", "betterwithmods.integration.Quark");
         map.put("tconstruct", "betterwithmods.integration.tcon.TConstruct");
         compatClasses = Collections.unmodifiableMap(map);
     }

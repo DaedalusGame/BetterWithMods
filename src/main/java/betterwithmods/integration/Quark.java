@@ -1,11 +1,13 @@
 package betterwithmods.integration;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -13,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Quark implements ICompatModule {
 
     public static final String MODID = "quark";
-
+    public String[] wood = {"spruce", "birch", "jungle", "acacia", "dark_oak"};
     @Override
     public void preInit() {
 
@@ -22,6 +24,10 @@ public class Quark implements ICompatModule {
     @Override
     public void init() {
         NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "basalt")), 0);
+
+        for (int i = 0; i < 5; i++)
+            GameRegistry.addShapedRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID,"custom_chest")),1,i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING,1,i+1));
+
     }
 
     @Override
@@ -46,8 +52,7 @@ public class Quark implements ICompatModule {
 
     @SideOnly(Side.CLIENT)
     private void registerClientRendering() {
-        String[] trapdoors = {"spruce", "birch", "jungle", "acacia", "dark_oak"};
         for (int i = 0; i < 5; i++)
-            RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, trapdoors[i] + "_trapdoor"))), new ModelTransparent(new ResourceLocation(MODID, "textures/blocks/trapdoor_" + trapdoors[i] + ".png")));
+            RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, wood[i] + "_trapdoor"))), new ModelTransparent(new ResourceLocation(MODID, "textures/blocks/trapdoor_" + wood[i] + ".png")));
     }
 }

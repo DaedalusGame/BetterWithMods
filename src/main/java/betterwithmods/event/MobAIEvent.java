@@ -8,11 +8,11 @@ import betterwithmods.util.InvUtils;
 import com.google.common.base.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIVillagerMate;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
@@ -21,18 +21,22 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashSet;
@@ -42,6 +46,7 @@ import static net.minecraft.network.datasync.DataSerializers.OPTIONAL_ITEM_STACK
 
 public class MobAIEvent {
     private static final String TAG_HARNESS = "betterwithmods:harness";
+
     private static final DataParameter<Optional<ItemStack>> COW_DATA = EntityDataManager.createKey(EntityCow.class, OPTIONAL_ITEM_STACK),
             PIG_DATA = EntityDataManager.createKey(EntityPig.class, OPTIONAL_ITEM_STACK),
             SHEEP_DATA = EntityDataManager.createKey(EntitySheep.class, OPTIONAL_ITEM_STACK);
@@ -69,82 +74,70 @@ public class MobAIEvent {
     }
 
     @SubscribeEvent
-    public void preUpdate(EntityEvent.CanUpdate event) {
-        if(isValidAnimal(event.getEntity()) && !event.getEntity().worldObj.isRemote) {
-            ItemStack dataStack = event.getEntity().getDataManager().get(getHarnessData(event.getEntity())).orNull();
+    public void onEntity(EntityJoinWorldEvent e) {
+        if(isValidAnimal(e.getEntity())) {
+            EntityLiving animal = (EntityLiving) e.getEntity();
+            ItemStack dataStack = animal.getDataManager().get(getHarnessData(animal)).orNull();
 
-            NBTTagCompound cmp = event.getEntity().getEntityData().getCompoundTag(TAG_HARNESS);
+            NBTTagCompound cmp = animal.getEntityData().getCompoundTag(TAG_HARNESS);
             ItemStack nbtStack = ItemStack.loadItemStackFromNBT(cmp);
-            if(nbtStack != null)
-                System.out.println(nbtStack);
             if(dataStack != nbtStack)
-                event.getEntity().getDataManager().set(getHarnessData(event.getEntity()), Optional.of(nbtStack));
+                e.getEntity().getDataManager().set(getHarnessData(e.getEntity()), Optional.of(nbtStack));
         }
     }
-
     @SubscribeEvent
     public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if(event.getHand() != EnumHand.MAIN_HAND)
+        if (event.getHand() != EnumHand.MAIN_HAND)
             return;
         Entity target = event.getTarget();
         EntityPlayer player = event.getEntityPlayer();
-        if(isValidAnimal(target) && !target.getPassengers().contains(player)) {
-            ItemStack harness = getHarness(target);
-            if(harness != null && player.getHeldItemMainhand() == null) {
-                target.getDataManager().set(getHarnessData(target), Optional.absent());
-                ((EntityAnimal) target).getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-                if (!event.getWorld().isRemote)
-                    InvUtils.ejectStackWithOffset(event.getWorld(), target.getPosition(), harness);
+        World world = event.getWorld();
+        if (isValidAnimal(target) && !target.getPassengers().contains(player)) {
+            EntityLiving animal = (EntityLiving) target;
+            IItemHandlerModifiable playerInv = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+            ItemStack harness = getHarness(animal);
+            ItemStack held = player.getHeldItemMainhand();
+            if (harness != null) {
+                if (held == null) {
+                    InvUtils.addItemStackToInv(playerInv, harness);
+                    animal.getDataManager().set(getHarnessData(animal), Optional.absent());
+                    animal.getEntityData().setTag(TAG_HARNESS, new NBTTagCompound());
+                    world.playSound(null,animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundCategory.NEUTRAL,0.5f,1.3f);
+                    world.playSound(null,animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundCategory.NEUTRAL,0.5f,1.3f);
+                }
                 return;
-            }
-
-            EnumHand hand = EnumHand.MAIN_HAND;
-            ItemStack stack = player.getHeldItemMainhand();
-            if(stack == null || !(stack.getItem() instanceof ItemBreedingHarness)) {
-                stack = player.getHeldItemOffhand();
-                hand = EnumHand.OFF_HAND;
-            }
-
-            if(stack != null && stack.getItem() instanceof ItemBreedingHarness) {
-                ItemStack copyStack = stack.copy();
+            } else if (held != null && held.getItem() instanceof ItemBreedingHarness) {
+                if (getHarness(animal) != null)
+                    return;
+                InvUtils.consumeItemsInInventory(playerInv, held, 1);
+                ItemStack copyStack = held.copy();
                 copyStack.stackSize = 1;
-                player.swingArm(hand);
                 NBTTagCompound cmp = new NBTTagCompound();
                 copyStack.writeToNBT(cmp);
-                target.getDataManager().set(getHarnessData(target), Optional.of(copyStack));
-                target.getEntityData().setTag(TAG_HARNESS, cmp);
-                if(!event.getWorld().isRemote) {
-                    event.setCanceled(true);
-                    if(!player.capabilities.isCreativeMode) {
-                        stack.stackSize--;
-                        if(stack.stackSize <= 0)
-                            player.setHeldItem(hand, (ItemStack)null);
-                    }
-                }
-            }
-        }
-    }
-    @SubscribeEvent
-    public void onLivingDrop(LivingDropsEvent e) {
-        if(e.getEntityLiving() instanceof EntityAnimal) {
-            EntityAnimal animal = (EntityAnimal) e.getEntityLiving();
-            ItemStack stack = getHarness(animal);
-
-            if(stack != null) {
-                EntityItem item = new EntityItem(animal.worldObj,animal.posX,animal.posY,animal.posZ,stack);
-                e.getDrops().add(item);
+                animal.getDataManager().set(getHarnessData(animal), Optional.of(copyStack));
+                animal.getEntityData().setTag(TAG_HARNESS,cmp);
+                if (animal instanceof EntitySheep)
+                    ((EntitySheep) animal).setSheared(true);
+                world.playSound(null,animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundCategory.NEUTRAL,1,1);
+                world.playSound(null,animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundCategory.NEUTRAL,1,1f);
+                player.swingArm(EnumHand.MAIN_HAND);
             }
         }
     }
     @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingUpdateEvent e) {
         EntityLivingBase entity = e.getEntityLiving();
-        if(isValidAnimal(entity) && getHarness(entity) != null) {
-            entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(-1);
+        if (isValidAnimal(entity)) {
+            if (getHarness(entity) != null)
+                entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(-1);
+            else
+                entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
         }
     }
-    public static ItemStack getHarness(Entity animal) {
-        return animal.getDataManager().get(getHarnessData(animal)).orNull();
+
+    public static ItemStack getHarness(EntityLivingBase living) {
+        return living.getDataManager().get(getHarnessData(living)).orNull();
     }
 
     public static boolean isWillingToMate(EntityVillager villager) {

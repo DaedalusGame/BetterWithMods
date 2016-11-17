@@ -12,5 +12,6 @@ import net.minecraft.item.Item;
 public class ItemBreedingHarness extends Item {
     public ItemBreedingHarness() {
         setCreativeTab(BWCreativeTabs.BWTAB);
+        setMaxStackSize(1);
     }
 }

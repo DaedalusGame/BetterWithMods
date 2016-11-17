@@ -242,6 +242,8 @@ item.bwm:steel_sword.name=Soulforged Steel Sword
 item.bwm:steel_mattock.name=Soulforged Steel Mattock
 item.bwm:steel_battleaxe.name=Soulforged Steel Battleaxe
 
+item.bwm:breeding_harness.name=Breeding Harness
+
 lore.bwm:dynamite=Dwarven Fishing Pole
 
 material.hellfire=Hellfire

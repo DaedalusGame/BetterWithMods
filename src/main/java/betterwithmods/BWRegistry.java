@@ -21,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -128,6 +129,13 @@ public class BWRegistry {
         OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
         OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
 
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP);
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_BEEF);
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_CHICKEN);
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_FISH);
+        OreDictionary.registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_MUTTON);
+        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_RABBIT);
     }
 
     public static void registerHeatSources() {

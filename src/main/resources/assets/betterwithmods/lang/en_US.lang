@@ -220,7 +220,8 @@ item.bwm:dynamite.name=Dynamite
 item.bwm:fertilizer.name=Fertilizer
 item.bwm:creeper_oyster.name=Creeper Oyster
 item.bwm:ender_spectacles.name=Ender Spectacles
-
+item.bwm:raw_egg.name=Raw Egg
+item.bwm:fried_egg.name=Fried Egg
 
 item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel

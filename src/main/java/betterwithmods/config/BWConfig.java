@@ -50,6 +50,7 @@ public class BWConfig {
     public static float upSpeed;
     public static float downSpeed;
     public static boolean canKilnSmeltOres;
+    public static boolean rawEggDrop;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -103,6 +104,7 @@ public class BWConfig {
         downSpeed = config.getFloat("Vertical speed down", PULLEY, 0.1F, 0.0F, 1.0F,
                 "The speed at which the pulley rope and platform moves down");
         canKilnSmeltOres = config.getBoolean("Can Kiln Smelt Ores",Configuration.CATEGORY_GENERAL,true,"Allows Ores to be smelted in the kiln");
+        rawEggDrop = config.get(VANILLA_TWEAKS, "Eggs Drop Raw Egg When Thrown", true).getBoolean();
         config.save();
     }
 

@@ -66,6 +66,8 @@ public final class BWMItems {
     public static final Item STEEL_PANTS = new ItemSoulforgeArmor(EntityEquipmentSlot.LEGS).setRegistryName("steel_pants");
     public static final Item STEEL_BOOTS = new ItemSoulforgeArmor(EntityEquipmentSlot.FEET).setRegistryName("steel_boots");
     public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
+    public static final Item RAW_EGG = new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_egg");
+    public static final Item FRIED_EGG = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("fried_egg");
     private BWMItems() {
     }
 
@@ -91,6 +93,8 @@ public final class BWMItems {
         registerItem(STEEL_PANTS);
         registerItem(STEEL_BOOTS);
         registerItem(BREEDING_HARNESS);
+        registerItem(RAW_EGG);
+        registerItem(FRIED_EGG);
     }
 
     /**
@@ -127,6 +131,8 @@ public final class BWMItems {
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
         setInventoryModel(BREEDING_HARNESS);
+        setInventoryModel(RAW_EGG);
+        setInventoryModel(FRIED_EGG);
     }
 
     @SideOnly(Side.CLIENT)

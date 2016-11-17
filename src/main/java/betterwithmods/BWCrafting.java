@@ -204,6 +204,7 @@ public class BWCrafting {
         GameRegistry.addShapelessRecipe(ItemMaterial.getMaterial("padding"), new ItemStack(Items.FEATHER), ItemMaterial.getMaterial("hemp_cloth"));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("armor_plate"), " B", "SP","B ", 'B', ItemMaterial.getMaterial("leather_strap"), 'S', ItemMaterial.getMaterial("ingot_steel"), 'P', ItemMaterial.getMaterial("padding")));
         GameRegistry.addRecipe(new ShapedOreRecipe(BWMItems.BREEDING_HARNESS,"SLS","LLL","SLS", 'S', ItemMaterial.getMaterial("leather_strap"), 'L', ItemMaterial.getMaterial("tanned_leather")));
+        GameRegistry.addSmelting(BWMItems.RAW_EGG, new ItemStack(BWMItems.FRIED_EGG), 0.1F);
     }
 
     private static void addMillRecipes() {
@@ -290,6 +291,7 @@ public class BWCrafting {
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{"logWood"});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{new OreStack("plankWood", 6)});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{new OreStack("dustWood", 16)});
+        addCauldronRecipe(new ItemStack(BWMItems.FRIED_EGG), new ItemStack[]{new ItemStack(BWMItems.RAW_EGG)});
     }
 
 

@@ -122,6 +122,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
+        MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
     }
 
     private static void registerEntities() {

@@ -3,6 +3,7 @@ package betterwithmods.items;
 import betterwithmods.BWMBlocks;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.blocks.BlockAxle;
+import betterwithmods.blocks.BlockMillGenerator;
 import betterwithmods.blocks.BlockWaterwheel;
 import betterwithmods.blocks.BlockWindmill;
 import betterwithmods.client.BWCreativeTabs;
@@ -104,14 +105,14 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 BlockPos checkPos = new BlockPos(xPos, yPos, zPos);
 
                 if (yPos == y - radius && isWheel) {
-                    valid = world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER);
+                    valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) &&  !isNearMechMachine(world, checkPos, axis);
                 } else if (xP == 0 && yPos == y && zP == 0)
                     continue;
                 else {
                     if (isWheel && (xP == -radius || xP == radius || zP == -radius || zP == radius))
-                        valid = world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER);
+                        valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) && !isNearMechMachine(world, checkPos, axis);
                     else
-                        valid = world.isAirBlock(checkPos);
+                        valid = world.isAirBlock(checkPos) && !isNearMechMachine(world, checkPos, axis);
                 }
                 if (!valid)
                     break;
@@ -120,6 +121,18 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 break;
         }
         return valid;
+    }
+
+    private boolean isNearMechMachine(World world, BlockPos pos, EnumFacing.Axis axis) {
+        for(int i = -3; i < 4; i++) {
+            int xP = axis == EnumFacing.Axis.X ? i : 0;
+            int zP = axis == EnumFacing.Axis.Z ? i : 0;
+            BlockPos check = pos.add(xP, 0, zP);
+            if(world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isVerticalWindmillValid(EntityPlayer player, World world, BlockPos pos, float flY) {
@@ -132,7 +145,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
         BlockPos target = new BlockPos(pos.getX(), pos.getY() + yPos, pos.getZ());
         if (checkForSupportingAxles(world, target)) {
             if (validateArea(player, world, target)) {
-                world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState());//BlockPowerSource.setProxies(world, x, yPos, z);
+                world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState().withProperty(BlockMillGenerator.AXIS, EnumFacing.Axis.Y));//BlockPowerSource.setProxies(world, x, yPos, z);
                 valid = true;
             } else if (world.isRemote)
                 player.addChatMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work."));
@@ -155,6 +168,9 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     BlockPos target = new BlockPos(x + xP, y + yP, z + zP);
                     if (x + xP != x && z + zP != z && yP != -4 && yP != 4)
                         clear = world.isAirBlock(target);
+                    else if ((Math.sqrt(xP * xP) == 4 || Math.sqrt(zP * zP) == 4) && Math.sqrt(yP * yP) != 4) {
+                        clear = world.isAirBlock(target) && isVertClear(world, target, xP, zP);
+                    }
                     if ((yP == -4 || yP == 4) && (xP == 0 && zP == 0)) {
                         clear = !(world.getBlockState(target).getBlock() instanceof BlockWindmill);
                     }
@@ -169,7 +185,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
             if (!clear)
                 break;
-        }
+        }/*
         for (int i = -8; i < 8; i++) {
             for (int j = -8; j < 7; j++) {
                 for (int k = -8; k < 8; k++) {
@@ -178,7 +194,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     BlockPos target = pos.add(i, j, k);
                     if (i > -5 && i < 5 && k > -5 && k < 5) {
                         continue;
-                    } else if (world.getBlockState(target).getBlock() instanceof BlockWindmill || world.getBlockState(target).getBlock() instanceof BlockWaterwheel)
+                    } else if (world.getBlockState(target).getBlock() instanceof BlockMillGenerator)
                         clear = false;
                     if (!clear)
                         break;
@@ -188,13 +204,11 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
             if (!clear)
                 break;
-        }
-        for (int i = 5; i < 8; i++) {
+        }*/
+        for (int i = 5; i < 8 && clear; i++) {
             int yMin = -i;
             BlockPos minPos = pos.add(0, yMin, 0);
             BlockPos maxPos = pos.add(0, i, 0);
-            if (!clear)
-                break;
             if (world.getBlockState(minPos).getBlock() instanceof BlockWindmill)
                 clear = false;
             if (!clear)
@@ -205,6 +219,33 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 break;
         }
         return clear;
+    }
+
+    private boolean isVertClear(World world, BlockPos pos, int xP, int zP) {
+        if (xP == -4 || xP == 4) {
+            if (!vertCheck(world, pos, EnumFacing.Axis.X, xP < 0))
+                return false;
+        }
+        if (zP == -4 || zP == 4) {
+            if (!vertCheck(world, pos, EnumFacing.Axis.Z, zP < 0))
+                return false;
+        }
+        return true;
+    }
+
+    private boolean vertCheck (World world, BlockPos pos, EnumFacing.Axis axis, boolean negative) {
+        for (int i = 0; i < 4; i++) {
+            int xP = axis == EnumFacing.Axis.X ? i : 0;
+            int zP = axis == EnumFacing.Axis.Z ? i : 0;
+            if (negative) {
+                xP *= -1;
+                zP *= -1;
+            }
+            BlockPos check = pos.add(xP, 0, zP);
+            if (world.getBlockState(check).getBlock() instanceof BlockMillGenerator)
+                return false;
+        }
+        return true;
     }
 
     private boolean checkForSupportingAxles(World world, BlockPos pos) {

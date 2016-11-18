@@ -10,7 +10,16 @@ import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.entity.item.EntityItemBuoy;
-import betterwithmods.event.*;
+import betterwithmods.event.BucketEvent;
+import betterwithmods.event.BuoyancyEventHandler;
+import betterwithmods.event.HardcoreHardnessEventHandler;
+import betterwithmods.event.HungerEventHandler;
+import betterwithmods.event.LogHarvestEvent;
+import betterwithmods.event.MobAIEvent;
+import betterwithmods.event.MobDropEvent;
+import betterwithmods.event.NetherSpawnEvent;
+import betterwithmods.event.PotionEventHandler;
+import betterwithmods.event.RespawnEventHandler;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
@@ -19,6 +28,7 @@ import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,7 +46,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
@@ -134,6 +148,7 @@ public class BWMod {
         if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
         if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
         if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
+        if (BWConfig.axeOnLeaves) { Blocks.LEAVES.setHarvestLevel("axe",0); Blocks.LEAVES2.setHarvestLevel("axe",1); }
 
         BWRegistry.init();
         loadCompatibilityModules();
@@ -179,5 +194,6 @@ public class BWMod {
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ConfigSyncHandler());
         proxy.postInit();
+
     }
 }

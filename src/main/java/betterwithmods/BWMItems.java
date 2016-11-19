@@ -66,6 +66,15 @@ public final class BWMItems {
     public static final Item STEEL_PANTS = new ItemSoulforgeArmor(EntityEquipmentSlot.LEGS).setRegistryName("steel_pants");
     public static final Item STEEL_BOOTS = new ItemSoulforgeArmor(EntityEquipmentSlot.FEET).setRegistryName("steel_boots");
     public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
+    public static final Item RAW_EGG = new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_egg");
+    public static final Item COOKED_EGG = new ItemFood(3, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_egg");
+    public static final Item RAW_SCRAMBLED_EGG = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_scrambled_egg");
+    public static final Item COOKED_SCRAMBLED_EGG = new ItemFood(5, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_scrambled_egg");
+    public static final Item RAW_OMELET = new ItemFood(3, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
+    public static final Item COOKED_OMELET = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
+    public static final Item HAM_AND_EGGS = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
+    public static final Item TASTY_SANDWICH = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
+
     private BWMItems() {
     }
 
@@ -91,6 +100,14 @@ public final class BWMItems {
         registerItem(STEEL_PANTS);
         registerItem(STEEL_BOOTS);
         registerItem(BREEDING_HARNESS);
+        registerItem(RAW_EGG);
+        registerItem(COOKED_EGG);
+        registerItem(RAW_SCRAMBLED_EGG);
+        registerItem(COOKED_SCRAMBLED_EGG);
+        registerItem(RAW_OMELET);
+        registerItem(COOKED_OMELET);
+        registerItem(HAM_AND_EGGS);
+        registerItem(TASTY_SANDWICH);
     }
 
     /**
@@ -127,6 +144,14 @@ public final class BWMItems {
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
         setInventoryModel(BREEDING_HARNESS);
+        setInventoryModel(RAW_EGG);
+        setInventoryModel(COOKED_EGG);
+        setInventoryModel(RAW_SCRAMBLED_EGG);
+        setInventoryModel(COOKED_SCRAMBLED_EGG);
+        setInventoryModel(RAW_OMELET);
+        setInventoryModel(COOKED_OMELET);
+        setInventoryModel(HAM_AND_EGGS);
+        setInventoryModel(TASTY_SANDWICH);
     }
 
     @SideOnly(Side.CLIENT)

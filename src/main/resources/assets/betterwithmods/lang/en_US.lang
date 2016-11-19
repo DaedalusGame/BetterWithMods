@@ -220,7 +220,14 @@ item.bwm:dynamite.name=Dynamite
 item.bwm:fertilizer.name=Fertilizer
 item.bwm:creeper_oyster.name=Creeper Oyster
 item.bwm:ender_spectacles.name=Ender Spectacles
-
+item.bwm:raw_egg.name=Raw Egg
+item.bwm:cooked_egg.name=Cooked Egg
+item.bwm:raw_scrambled_egg.name=Raw Scrambled Eggs
+item.bwm:cooked_scrambled_egg.name=Cooked Scrambled Eggs
+item.bwm:raw_omelet.name=Raw Mushroom Omelet
+item.bwm:cooked_omelet.name=Cooked Mushroom Omelet
+item.bwm:ham_and_eggs.name=Ham and Eggs
+item.bwm:tasty_sandwich.name=Tasty Sandwich
 
 item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel

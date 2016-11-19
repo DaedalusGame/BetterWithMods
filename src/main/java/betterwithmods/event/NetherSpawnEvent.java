@@ -18,6 +18,8 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
@@ -26,8 +28,11 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class NetherSpawnEvent {
     private static final Random rand = new Random();
@@ -63,23 +68,19 @@ public class NetherSpawnEvent {
     }
 
     @SubscribeEvent
-    public void generateMossNearSpawner(LivingSpawnEvent evt) {
-        EntityLivingBase entity = evt.getEntityLiving();
-        BlockPos pos = new BlockPos(entity.posX, entity.posY, entity.posZ);
-        boolean nearSpawner = evt.getWorld().getBlockState(pos.down()).getBlock() == Blocks.MOB_SPAWNER;
-        BlockPos spawn = pos.down();
-
-        if (nearSpawner) {
+    public void generateMossNearSpawner(TickEvent.WorldTickEvent evt) {
+        List<BlockPos> positions = evt.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
+        positions.forEach( pos -> {
             int x = rand.nextInt(9) - 4;
             int y = rand.nextInt(5) - 1;
             int z = rand.nextInt(9) - 4;
-            BlockPos check = spawn.add(x, y, z);
-            IBlockState state = evt.getWorld().getBlockState(check);
+            BlockPos check = pos.add(x, y, z);
+            IBlockState state = evt.world.getBlockState(check);
             if ((state.getBlock() == Blocks.COBBLESTONE || (state.getBlock() == Blocks.STONEBRICK && state.getBlock().getMetaFromState(state) == 0)) && rand.nextInt(30) == 0) {
                 IBlockState changeState = state.getBlock() == Blocks.COBBLESTONE ? Blocks.MOSSY_COBBLESTONE.getDefaultState() : Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-                evt.getWorld().setBlockState(check, changeState);
+                evt.world.setBlockState(check, changeState);
             }
-        }
+        });
     }
 
     @SubscribeEvent

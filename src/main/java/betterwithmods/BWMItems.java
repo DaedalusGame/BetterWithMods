@@ -12,6 +12,8 @@ import betterwithmods.items.ItemEnderSpectacles;
 import betterwithmods.items.ItemFertilizer;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.items.ItemMechanical;
+import betterwithmods.items.tools.ItemBroadheadArrow;
+import betterwithmods.items.tools.ItemCompositeBow;
 import betterwithmods.items.tools.ItemKnife;
 import betterwithmods.items.tools.ItemSoulforgeArmor;
 import betterwithmods.items.tools.ItemSoulforgedAxe;
@@ -74,7 +76,8 @@ public final class BWMItems {
     public static final Item COOKED_OMELET = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
     public static final Item HAM_AND_EGGS = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
     public static final Item TASTY_SANDWICH = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
-
+    public static final Item COMPOSITE_BOW = new ItemCompositeBow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("composite_bow");
+    public static final Item BROADHEAD_ARROW = new ItemBroadheadArrow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("broadhead_arrow");
     private BWMItems() {
     }
 
@@ -108,6 +111,8 @@ public final class BWMItems {
         registerItem(COOKED_OMELET);
         registerItem(HAM_AND_EGGS);
         registerItem(TASTY_SANDWICH);
+        registerItem(COMPOSITE_BOW);
+        registerItem(BROADHEAD_ARROW);
     }
 
     /**
@@ -141,6 +146,10 @@ public final class BWMItems {
         setInventoryModel(STEEL_SWORD);
         setInventoryModel(STEEL_BATTLEAXE);
         setInventoryModel(STEEL_MATTOCK);
+        setInventoryModel(STEEL_HELMET);
+        setInventoryModel(STEEL_CHEST);
+        setInventoryModel(STEEL_PANTS);
+        setInventoryModel(STEEL_BOOTS);
         setInventoryModel(CREEPER_OYSTER);
         setInventoryModel(ENDER_SPECTACLES);
         setInventoryModel(BREEDING_HARNESS);
@@ -152,6 +161,8 @@ public final class BWMItems {
         setInventoryModel(COOKED_OMELET);
         setInventoryModel(HAM_AND_EGGS);
         setInventoryModel(TASTY_SANDWICH);
+        setInventoryModel(COMPOSITE_BOW);
+        setInventoryModel(BROADHEAD_ARROW);
     }
 
     @SideOnly(Side.CLIENT)

@@ -20,12 +20,14 @@ import betterwithmods.client.model.TESRVerticalWindmill;
 import betterwithmods.client.model.TESRWaterwheel;
 import betterwithmods.client.model.TESRWindmill;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.client.render.RenderBroadheadArrow;
 import betterwithmods.client.render.RenderCowHarness;
 import betterwithmods.client.render.RenderExtendingRope;
 import betterwithmods.client.render.RenderMiningCharge;
 import betterwithmods.client.render.RenderPigHarness;
 import betterwithmods.client.render.RenderShearedCreeper;
 import betterwithmods.client.render.RenderSheepHarness;
+import betterwithmods.entity.EntityBroadheadArrow;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
@@ -96,5 +98,6 @@ public class ClientProxy implements IProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityCow.class,RenderCowHarness::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityPig.class, RenderPigHarness::new);
         RenderingRegistry.registerEntityRenderingHandler(EntitySheep.class, RenderSheepHarness::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBroadheadArrow.class, RenderBroadheadArrow::new);
     }
 }

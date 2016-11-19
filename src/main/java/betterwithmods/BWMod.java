@@ -5,6 +5,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.config.ConfigSyncHandler;
+import betterwithmods.entity.EntityBroadheadArrow;
 import betterwithmods.entity.EntityDynamite;
 import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
@@ -12,6 +13,7 @@ import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.BucketEvent;
 import betterwithmods.event.BuoyancyEventHandler;
+import betterwithmods.event.EggImpactEvent;
 import betterwithmods.event.HardcoreHardnessEventHandler;
 import betterwithmods.event.HungerEventHandler;
 import betterwithmods.event.LogHarvestEvent;
@@ -131,6 +133,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
         BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
+        BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
     }
 
     @EventHandler

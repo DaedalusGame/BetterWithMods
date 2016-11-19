@@ -26,6 +26,6 @@ public class ItemEnderSpectacles extends ItemArmor {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return BWMod.MODID + ":textures/armor/ender_spectacles.png";
+        return BWMod.MODID + ":textures/models/armor/ender_spectacles.png";
     }
 }

@@ -213,6 +213,9 @@ item.bwm:material.knife_blade.name=Knife Blade
 item.bwm:material.ender_slag.name=Ender Slag
 item.bwm:material.soul_flux.name=Soul Flux
 item.bwm:material.ender_ocular.name=Ocular of Ender
+item.bwm:material.padding.name=Padding
+item.bwm:material.armor_plate.name=Soulforged Steel Armor Plate
+item.bwm:material.broadhead.name=Broadhead
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife
@@ -248,6 +251,14 @@ item.bwm:steel_shovel.name=Soulforged Steel Shovel
 item.bwm:steel_sword.name=Soulforged Steel Sword
 item.bwm:steel_mattock.name=Soulforged Steel Mattock
 item.bwm:steel_battleaxe.name=Soulforged Steel Battleaxe
+
+item.bwm:steel_helmet.name=Soulforged Steel Helmet
+item.bwm:steel_chest.name=Soulforged Steel Chestplate
+item.bwm:steel_pants.name=Soulforged Steel Leggings
+item.bwm:steel_boots.name=Soulforged Steel Boots
+
+item.bwm:composite_bow.name=Composite Bow
+item.bwm:broadhead_arrow.name=Broadhead Arrow
 
 item.bwm:breeding_harness.name=Breeding Harness
 

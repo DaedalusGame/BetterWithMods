@@ -14,13 +14,12 @@ import betterwithmods.craft.bulk.CraftingManagerMill;
 import betterwithmods.items.ItemBark;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -218,7 +217,32 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.STEEL_CHEST), "P P","SSS","SSS", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.STEEL_PANTS), "SSS","P P","P P", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.STEEL_BOOTS), "S S","P P", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel")));
-
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.BEEF_DINNER, 3), Items.COOKED_BEEF, Items.CARROT, Items.BAKED_POTATO);
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.BEEF_POTATOES, 2), Items.COOKED_BEEF, Items.BAKED_POTATO);
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.BEEF_POTATOES, 2), Items.COOKED_BEEF, Items.BAKED_POTATO);
+        GameRegistry.addSmelting(BWMItems.RAW_KEBAB, new ItemStack(BWMItems.COOKED_KEBAB), 0.1F);
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.PORK_DINNER, 3), Items.COOKED_PORKCHOP, Items.CARROT, Items.BAKED_POTATO);
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.RAW_KEBAB, 3), Blocks.BROWN_MUSHROOM, Items.CARROT, Items.MUTTON, Items.STICK);
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 0), "SSS", "MEM", "FFF", 'S', Items.SUGAR, 'M', Items.MILK_BUCKET, 'E', BWMItems.RAW_EGG, 'F', "foodFlour"));
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 0), new ItemStack(Items.CAKE), 0.1F);
+        addKilnRecipe(BWMBlocks.RAW_PASTRY, 0, new ItemStack(Items.CAKE));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 2), "FCF", 'F', "foodFlour", 'C', BWMItems.CHOCOLATE));
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 2), new ItemStack(Items.COOKIE, BWConfig.hardcoreHunger ? 8 : 16), 0.1F);
+        addKilnRecipe(BWMBlocks.RAW_PASTRY, 2, new ItemStack(Items.COOKIE, BWConfig.hardcoreHunger ? 8 : 16));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 1), Blocks.PUMPKIN, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour"));
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 1), new ItemStack(Items.PUMPKIN_PIE, BWConfig.hardcoreHunger ? 1 : 2), 0.1F);
+        addKilnRecipe(BWMBlocks.RAW_PASTRY, 1, new ItemStack(Items.PUMPKIN_PIE, BWConfig.hardcoreHunger ? 1 : 2));
+        if(BWConfig.hardcoreHunger) {
+            RecipeUtils.removeRecipes(Items.BREAD, 0);
+            RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
+            addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
+            RecipeUtils.removeRecipes(Items.CAKE, 0);
+            RecipeUtils.removeRecipes(Items.COOKIE, 0);
+            RecipeUtils.removeRecipes(Items.PUMPKIN_PIE, 0);
+            RecipeUtils.removeRecipes(Items.RABBIT_STEW, 0); //Eat Hearty Stew Instead
+            RecipeUtils.removeRecipes(Items.BEETROOT_SOUP, 0);
+            addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
+        }
     }
 
     private static void addMillRecipes() {
@@ -258,6 +282,7 @@ public class BWCrafting {
         addOreMillRecipe(ItemMaterial.getMaterial("flour"), "cropOats");
         addOreMillRecipe(ItemMaterial.getMaterial("flour"), "cropRye");
         addOreMillRecipe(ItemMaterial.getMaterial("flour"), "cropRice");
+        addMillRecipe(ItemMaterial.getMaterial("cocoa_powder"), new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()));
     }
 
     private static void addCauldronRecipes() {
@@ -305,6 +330,11 @@ public class BWCrafting {
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{"logWood"});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{new OreStack("plankWood", 6)});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial("potash"), new Object[]{new OreStack("dustWood", 16)});
+        addCauldronRecipe(new ItemStack(BWMItems.CHICKEN_SOUP, 3), new ItemStack[]{new ItemStack(Items.COOKED_CHICKEN), new ItemStack(Items.CARROT), new ItemStack(Items.BAKED_POTATO), new ItemStack(Items.BOWL, 3)});
+        addCauldronRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), new ItemStack(Items.BUCKET), new ItemStack[]{ItemMaterial.getMaterial("cocoa_powder"), new ItemStack(Items.SUGAR), new ItemStack(Items.MILK_BUCKET)});
+        addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Items.COOKED_FISH), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
+        addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
+        addOreCauldronRecipe(new ItemStack(BWMItems.HEARTY_STEW, 5), new Object[]{"listAllmeatcooked", Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.BROWN_MUSHROOM, 3), "foodFlour"});
     }
 
 

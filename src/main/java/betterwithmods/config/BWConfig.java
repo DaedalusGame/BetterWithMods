@@ -65,7 +65,7 @@ public class BWConfig {
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean();
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean();
         // FIXME See issue #71
-        hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement").setRequiresMcRestart(true).getBoolean();
+        hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement. Vanilla food recipes are changed to use BWM content").setRequiresMcRestart(true).getBoolean();
         hardcoreBuoy = config.get(HARDCORE, "Hardcore Buoy", true, "Buoyant items will float").getBoolean();
         hardcoreSpawn = config.get(HARDCORE, "Hardcore Spawn", true, "Your spawn point will be randomized").getBoolean();
         hardcoreBeds = config.get(HARDCORE, "Hardcore Beds", true, "You will be unable to sleep in a bed").getBoolean();

@@ -166,6 +166,9 @@ tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge
 tile.bwm:fertile_farmland.name=Fertile Farmland
 tile.bwm:advanced_gearbox.name=Advanced Gearbox
+tile.bwm:raw_pastry.0.name=Cake Batter
+tile.bwm:raw_pastry.1.name=Oven Ready Pumpkin Pie
+tile.bwm:raw_pastry.2.name=Cookie Dough
 
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
@@ -216,6 +219,7 @@ item.bwm:material.ender_ocular.name=Ocular of Ender
 item.bwm:material.padding.name=Padding
 item.bwm:material.armor_plate.name=Soulforged Steel Armor Plate
 item.bwm:material.broadhead.name=Broadhead
+item.bwm:material.cocoa_powder.name=Cocoa Powder
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife
@@ -231,6 +235,15 @@ item.bwm:raw_omelet.name=Raw Mushroom Omelet
 item.bwm:cooked_omelet.name=Cooked Mushroom Omelet
 item.bwm:ham_and_eggs.name=Ham and Eggs
 item.bwm:tasty_sandwich.name=Tasty Sandwich
+item.bwm:beef_dinner.name=Steak Dinner
+item.bwm:beef_potatoes.name=Steak and Potatoes
+item.bwm:chicken_soup.name=Chicken Soup
+item.bwm:chocolate.name=Chocolate
+item.bwm:chowder.name=Chowder
+item.bwm:cooked_kebab.name=Kebab
+item.bwm:hearty_stew.name=Hearty Stew
+item.bwm:pork_dinner.name=Pork Dinner
+item.bwm:raw_kebab.name=Uncooked Kebab
 
 item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel

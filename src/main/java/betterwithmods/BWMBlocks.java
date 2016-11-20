@@ -66,8 +66,8 @@ public final class BWMBlocks {
     public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
     public static final Block ADVANCED_GEARBOX = new BlockAdvGearbox().setRegistryName("advanced_gearbox");
     public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
-    public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater()
-            .setRegistryName("temporary_water");
+    public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater().setRegistryName("temporary_water");
+    public static final Block RAW_PASTRY = new BlockRawPastry().setRegistryName("raw_pastry");
 
     private BWMBlocks() {
     }
@@ -119,6 +119,7 @@ public final class BWMBlocks {
         registerBlock(PUMP);
         registerBlock(ADVANCED_GEARBOX);
         registerBlock(VINE_TRAP);
+        registerBlock(RAW_PASTRY, new ItemBlockMeta(RAW_PASTRY));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -218,6 +219,7 @@ public final class BWMBlocks {
         setInventoryModel(PUMP);
         setInventoryModel(ADVANCED_GEARBOX);
         setInventoryModel(VINE_TRAP);
+        setInventoryModel(RAW_PASTRY);
     }
 
     @SideOnly(Side.CLIENT)

@@ -33,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemSoup;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
@@ -70,14 +71,23 @@ public final class BWMItems {
     public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
     public static final Item RAW_EGG = new ItemFood(2, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_egg");
     public static final Item COOKED_EGG = new ItemFood(3, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_egg");
-    public static final Item RAW_SCRAMBLED_EGG = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_scrambled_egg");
+    public static final Item RAW_SCRAMBLED_EGG = new ItemFood(4, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_scrambled_egg");
     public static final Item COOKED_SCRAMBLED_EGG = new ItemFood(5, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_scrambled_egg");
-    public static final Item RAW_OMELET = new ItemFood(3, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
+    public static final Item RAW_OMELET = new ItemFood(3, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
     public static final Item COOKED_OMELET = new ItemFood(4, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
     public static final Item HAM_AND_EGGS = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
     public static final Item TASTY_SANDWICH = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
     public static final Item COMPOSITE_BOW = new ItemCompositeBow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("composite_bow");
     public static final Item BROADHEAD_ARROW = new ItemBroadheadArrow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("broadhead_arrow");
+    public static final Item BEEF_DINNER = new ItemFood(8, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_dinner");
+    public static final Item BEEF_POTATOES = new ItemFood(6, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_potatoes");
+    public static final Item CHICKEN_SOUP = new ItemSoup(8).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chicken_soup");
+    public static final Item CHOCOLATE = new ItemFood(2, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chocolate");
+    public static final Item CHOWDER = new ItemSoup(5).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chowder");
+    public static final Item COOKED_KEBAB = new ItemFood(8, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_kebab");
+    public static final Item HEARTY_STEW = new ItemSoup(10).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("hearty_stew");
+    public static final Item RAW_KEBAB = new ItemFood(6, 0.5F, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
+    public static final Item PORK_DINNER = new ItemFood(8, 0.5F, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
     private BWMItems() {
     }
 
@@ -113,6 +123,15 @@ public final class BWMItems {
         registerItem(TASTY_SANDWICH);
         registerItem(COMPOSITE_BOW);
         registerItem(BROADHEAD_ARROW);
+        registerItem(BEEF_DINNER);
+        registerItem(BEEF_POTATOES);
+        registerItem(CHICKEN_SOUP);
+        registerItem(CHOCOLATE);
+        registerItem(CHOWDER);
+        registerItem(COOKED_KEBAB);
+        registerItem(HEARTY_STEW);
+        registerItem(RAW_KEBAB);
+        registerItem(PORK_DINNER);
     }
 
     /**
@@ -163,6 +182,15 @@ public final class BWMItems {
         setInventoryModel(TASTY_SANDWICH);
         setInventoryModel(COMPOSITE_BOW);
         setInventoryModel(BROADHEAD_ARROW);
+        setInventoryModel(BEEF_DINNER);
+        setInventoryModel(BEEF_POTATOES);
+        setInventoryModel(CHICKEN_SOUP);
+        setInventoryModel(CHOCOLATE);
+        setInventoryModel(CHOWDER);
+        setInventoryModel(COOKED_KEBAB);
+        setInventoryModel(HEARTY_STEW);
+        setInventoryModel(RAW_KEBAB);
+        setInventoryModel(PORK_DINNER);
     }
 
     @SideOnly(Side.CLIENT)

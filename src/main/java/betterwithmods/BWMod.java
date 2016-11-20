@@ -11,17 +11,7 @@ import betterwithmods.entity.EntityExtendingRope;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.entity.item.EntityItemBuoy;
-import betterwithmods.event.BucketEvent;
-import betterwithmods.event.BuoyancyEventHandler;
-import betterwithmods.event.EggImpactEvent;
-import betterwithmods.event.HardcoreHardnessEventHandler;
-import betterwithmods.event.HungerEventHandler;
-import betterwithmods.event.LogHarvestEvent;
-import betterwithmods.event.MobAIEvent;
-import betterwithmods.event.MobDropEvent;
-import betterwithmods.event.NetherSpawnEvent;
-import betterwithmods.event.PotionEventHandler;
-import betterwithmods.event.RespawnEventHandler;
+import betterwithmods.event.*;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
@@ -125,6 +115,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
         MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
+        MinecraftForge.EVENT_BUS.register(new SaveSoupEvent());
     }
 
     private static void registerEntities() {

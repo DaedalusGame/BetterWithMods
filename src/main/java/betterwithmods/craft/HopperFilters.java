@@ -1,5 +1,6 @@
 package betterwithmods.craft;
 
+import betterwithmods.BWMod;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
@@ -9,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -19,16 +21,36 @@ import java.util.function.Predicate;
  */
 public class HopperFilters {
     public static BiMap<Integer,Pair<ItemStack,Predicate<ItemStack>>> filters = HashBiMap.create();
-
-    public static void addFilter(int type, Item item, int meta, Predicate<ItemStack> allowed) {
-        addFilter(type, new ItemStack(item,1,meta), allowed);
+    public static int type = 1;
+    public static int newType() {
+        int t = type++;
+        BWMod.logger.info(t);
+        return t;
+    }
+    public static boolean containsStack(Set<ItemStack> set, ItemStack stack) {
+        Optional<ItemStack> found = set.stream().filter( s -> s.isItemEqual(stack)).findFirst();
+        return found.isPresent();
+    }
+    public static void addFilter(ItemStack stack, Set<ItemStack> allowedItems) {
+        addFilter(newType(),stack, s -> containsStack(allowedItems,s));
     }
 
-    public static void addFilter(int type, Block block, int meta, Predicate<ItemStack> allowed) {
-        addFilter(type, new ItemStack(block,1,meta), allowed);
+    public static void addFilter(int type,Item item, int meta, Predicate<ItemStack> allowed) {
+        addFilter(type,new ItemStack(item,1,meta), allowed);
+    }
+
+    public static void addFilter(int type,Block block, int meta, Predicate<ItemStack> allowed) {
+        addFilter(type,new ItemStack(block,1,meta), allowed);
     }
     public static void addFilter(int type,ItemStack filter, Predicate<ItemStack> allowed) {
-        filters.put(type,Pair.of(filter, allowed));
+        if(getFilterType(filter) != 0) {
+            throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", getFilterType(filter), filter.getDisplayName()));
+        }
+        if(!filters.containsKey(type))
+            filters.put(type,Pair.of(filter, allowed));
+        else {
+            throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", type, filter.getDisplayName()));
+        }
     }
 
     public static ItemStack getFilter(int type) {

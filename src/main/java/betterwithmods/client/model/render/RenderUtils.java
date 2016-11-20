@@ -1,10 +1,15 @@
 package betterwithmods.client.model.render;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.client.model.filters.*;
+import betterwithmods.client.model.filters.ModelGrate;
+import betterwithmods.client.model.filters.ModelOpaque;
+import betterwithmods.client.model.filters.ModelSlats;
+import betterwithmods.client.model.filters.ModelTransparent;
+import betterwithmods.client.model.filters.ModelWithResource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -201,5 +206,20 @@ public class RenderUtils {
                 renderer.pos(x2, y, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
         }
+    }
+
+    private static RenderItem renderItem;
+    public static TextureAtlasSprite getSprite(ItemStack stack) {
+        if (renderItem == null) {
+            renderItem = Minecraft.getMinecraft().getRenderItem();
+        }
+
+        return renderItem.getItemModelWithOverrides(stack, null, null).getParticleTexture();
+    }
+    public static ResourceLocation getResourceLocation(ItemStack stack) {
+        TextureAtlasSprite sprite = getSprite(stack);
+        String iconLoc = sprite.getIconName();
+        String domain = iconLoc.substring(0, iconLoc.indexOf(':')), resource = iconLoc.substring(iconLoc.indexOf(':') + 1, iconLoc.length());
+        return new ResourceLocation(domain, "textures/" + resource + ".png");
     }
 }

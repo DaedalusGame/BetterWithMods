@@ -48,6 +48,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static betterwithmods.craft.HopperFilters.newType;
+
 public class BWRegistry {
     public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
     private static int availableEntityId = 0;
@@ -59,6 +61,7 @@ public class BWRegistry {
         registerHopperFilters();
         MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
     }
+
     public static void registerHopperFilters() {
 
         HopperFilters.filters = HashBiMap.create();
@@ -70,13 +73,13 @@ public class BWRegistry {
             }
             return item == Items.SKULL || item == Items.FLOWER_POT || item == Items.ITEM_FRAME;
         };
-        HopperFilters.addFilter(1,Blocks.LADDER,0, isNotBlock);
-        HopperFilters.addFilter(2,Blocks.TRAPDOOR,0, stack -> false);
-        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> false);
-        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> false);
-        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), stack -> InvUtils.listContains(stack,InvUtils.dustNames));
-        HopperFilters.addFilter(6,Blocks.SOUL_SAND,0, stack -> stack.equals(ItemMaterial.getMaterial("ground_netherrack"))|| stack.equals(ItemMaterial.getMaterial("soul_dust")));
-        HopperFilters.addFilter(7,Blocks.IRON_BARS,0, stack -> stack.getMaxStackSize() > 1);
+        HopperFilters.addFilter(newType(),Blocks.LADDER,0, isNotBlock);
+        HopperFilters.addFilter(newType(),Blocks.TRAPDOOR,0, stack -> false);
+        HopperFilters.addFilter(newType(),BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> false);
+        HopperFilters.addFilter(newType(),BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> false);
+        HopperFilters.addFilter(newType(),BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), stack -> InvUtils.listContains(stack,InvUtils.dustNames));
+        HopperFilters.addFilter(newType(),Blocks.SOUL_SAND,0, stack -> stack.equals(ItemMaterial.getMaterial("ground_netherrack"))|| stack.equals(ItemMaterial.getMaterial("soul_dust")));
+        HopperFilters.addFilter(newType(),Blocks.IRON_BARS,0, stack -> stack.getMaxStackSize() > 1);
     }
     public static void registerBlockDispenserBehavior() {
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());

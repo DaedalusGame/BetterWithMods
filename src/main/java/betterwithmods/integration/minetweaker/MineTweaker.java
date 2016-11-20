@@ -26,6 +26,7 @@ public class MineTweaker implements ICompatModule {
         MineTweakerAPI.registerClass(StokedCrucible.class);
         MineTweakerAPI.registerClass(Mill.class);
         MineTweakerAPI.registerClass(Buoyancy.class);
+        MineTweakerAPI.registerClass(HopperFilter.class);
     }
 
     @Override

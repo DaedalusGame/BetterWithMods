@@ -276,7 +276,7 @@ public class BWCrafting {
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), new ItemStack(Items.RABBIT_HIDE));
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), ItemMaterial.getMaterial("leather_cut"));
         addMillRecipe(ItemMaterial.getMaterial("scoured_leather_cut"), ItemMaterial.getMaterial("leather_strap"));
-        addMillRecipe(new ItemStack(Items.BLAZE_POWDER,0,3), new ItemStack(Items.BLAZE_ROD));
+        addMillRecipe(new ItemStack(Items.BLAZE_POWDER,3,0), new ItemStack(Items.BLAZE_ROD));
 
         //Dyes
         addMillRecipe(new ItemStack(Items.DYE, 2, 1), new ItemStack(Items.BEETROOT));

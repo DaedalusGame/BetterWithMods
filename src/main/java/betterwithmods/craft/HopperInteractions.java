@@ -42,32 +42,15 @@ public class HopperInteractions {
         recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"), ItemMaterial.getMaterial("sawdust")));
         recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND),new ItemStack(Blocks.SAND,1,1)) {
             @Override
-            public void onCraft(World world, BlockPos pos, EntityItem item) {
-
+            public void craft(EntityItem inputStack, World world, BlockPos pos) {
+                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 SimpleItemStackHandler inventory = tile.inventory;
-                ItemStack stack = item.getEntityItem();
-                int separate = world.rand.nextInt(stack.stackSize + 1);
-                int redStack = stack.stackSize - separate;
-                ItemStack redSand = getSecondaryOutput().get(1).copy();
-                redSand.stackSize = separate;
-                if (redStack != 0) {
-                    EntityItem red = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, redSand);
-                    if (!InvUtils.addItemStackToInv(inventory, red.getEntityItem())) {
-                        red.setDefaultPickupDelay();
-                        world.spawnEntityInWorld(red);
-                    }
+                ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
+                if (!InvUtils.addItemStackToInv(inventory, sand)) {
+                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
                 }
-                if (separate != 0) {
-                    ItemStack sand = getSecondaryOutput().get(0).copy();
-                    sand.stackSize = separate;
-                    EntityItem reg = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, sand);
-                    if (!InvUtils.addItemStackToInv(inventory, reg.getEntityItem())) {
-                        reg.setDefaultPickupDelay();
-                        world.spawnEntityInWorld(reg);
-                    }
-                }
-                item.setDead();
+                onCraft(world, pos, inputStack);
             }
         });
     }
@@ -78,20 +61,26 @@ public class HopperInteractions {
         }
 
         @Override
+        public void craft(EntityItem inputStack, World world, BlockPos pos) {
+            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
+            onCraft(world, pos, inputStack);
+        }
+
+        @Override
         public void onCraft(World world, BlockPos pos, EntityItem item) {
             ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(item.getEntityItem().stackSize);
             if (!world.isRemote) {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
             }
-            item.setDead();
+            super.onCraft(world, pos, item);
         }
     }
 
     public static abstract class HopperRecipe {
         private int filterType;
-        private ItemStack input;
-        private ItemStack output;
-        private List<ItemStack> secondaryOutput;
+        ItemStack input;
+        ItemStack output;
+        List<ItemStack> secondaryOutput;
 
         public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
             this.filterType = filterType;
@@ -112,12 +101,18 @@ public class HopperInteractions {
         }
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
+            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
             for (int i = 0; i < inputStack.getEntityItem().stackSize; i++)
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
             onCraft(world, pos, inputStack);
         }
 
-        public abstract void onCraft(World world, BlockPos pos, EntityItem item);
+        public void onCraft(World world, BlockPos pos, EntityItem item)
+        {
+            item.getEntityItem().stackSize--;
+            if(item.getEntityItem().stackSize <= 0)
+                item.setDead();
+        }
 
         public int getFilterType() {
             return filterType;

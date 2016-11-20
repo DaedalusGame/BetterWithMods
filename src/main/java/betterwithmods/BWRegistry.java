@@ -239,7 +239,6 @@ public class BWRegistry {
                 }
             }
         }
-        SawInteraction.INSTANCE.addRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
         BWCrafting.addKilnWood();
     }
 

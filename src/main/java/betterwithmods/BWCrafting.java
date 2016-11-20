@@ -2,10 +2,7 @@ package betterwithmods;
 
 import betterwithmods.blocks.BlockUnfiredPottery.EnumPotteryType;
 import betterwithmods.config.BWConfig;
-import betterwithmods.craft.KilnInteraction;
-import betterwithmods.craft.OreStack;
-import betterwithmods.craft.SawInteraction;
-import betterwithmods.craft.TurntableInteraction;
+import betterwithmods.craft.*;
 import betterwithmods.craft.bulk.CraftingManagerCauldron;
 import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
 import betterwithmods.craft.bulk.CraftingManagerCrucible;
@@ -15,6 +12,7 @@ import betterwithmods.items.ItemBark;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -26,6 +24,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.List;
+import java.util.Random;
+
 public class BWCrafting {
     public static void init() {
         addVanillaRecipes();
@@ -34,6 +35,7 @@ public class BWCrafting {
         addMillRecipes();
         addKilnRecipes();
         addTurntableRecipes();
+        addSawRecipes();
         addHERecipes();
     }
 
@@ -46,9 +48,6 @@ public class BWCrafting {
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.AXLE), "M", "R", "M", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE), 'R', BWMBlocks.ROPE);
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.GEARBOX), "SGS", "GLG", "SGS", 'L', ItemMaterial.getMaterial("redstone_latch"), 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'G', "gearWood"));
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial("gear", 2));
-            addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
-            addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
             GameRegistry.addShapelessRecipe(new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_CORNER, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_CORNER, 1, type.getMetadata()));
             GameRegistry.addShapelessRecipe(new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata()));
             GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()), new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()));
@@ -243,6 +242,23 @@ public class BWCrafting {
             RecipeUtils.removeRecipes(Items.BEETROOT_SOUP, 0);
             addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
         }
+    }
+
+    private static void addSawRecipes() {
+        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial("gear", 2));
+            addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
+            addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
+        }
+        addSawRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
+        addSawRecipe(Blocks.PUMPKIN, 0, new ItemStack(Blocks.PUMPKIN));
+        SawInteraction.INSTANCE.addRecipe(new BlockMetaRecipe(Blocks.MELON_BLOCK,0,null){
+            @Override
+            public List<ItemStack> getOutputs() {
+                Random random = new Random();
+                return Lists.newArrayList(new ItemStack(Items.MELON,3 + random.nextInt(5)));
+            }
+        });
     }
 
     private static void addMillRecipes() {

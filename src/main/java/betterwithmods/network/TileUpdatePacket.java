@@ -23,7 +23,7 @@ public class TileUpdatePacket extends AbstractPacketSided {
 
     @Override
     public void handleClientThreaded(NetHandlerPlayClient client) {
-        TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(pos);
+        TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
         if (tile instanceof IMechSubtype) {
             ((IMechSubtype) tile).setSubtype(sub);
         }

@@ -58,26 +58,26 @@ public class RespawnEventHandler {
      * @return The new BlockPos
      */
     public BlockPos getRespawnPoint(EntityPlayer player, int spawnFuzz) {
-        World worldObj = player.worldObj;
-        BlockPos ret = worldObj.getSpawnPoint();
-        if (!worldObj.provider.getHasNoSky()) {
+        World world = player.getEntityWorld();
+        BlockPos ret = world.getSpawnPoint();
+        if (!world.provider.getHasNoSky()) {
             boolean found = false;
             for (int tryCounter = 0; tryCounter < HARDCORE_SPAWN_MAX_ATTEMPTS; tryCounter++) {
-                ret = worldObj.getSpawnPoint();
-                double fuzzVar = worldObj.rand.nextDouble() * spawnFuzz;
-                double angle = worldObj.rand.nextDouble();
+                ret = world.getSpawnPoint();
+                double fuzzVar = world.rand.nextDouble() * spawnFuzz;
+                double angle = world.rand.nextDouble();
                 double customX = (double) (-MathHelper
                         .sin((float) (angle * 360.0D))) * fuzzVar;
                 double customZ = (double) MathHelper
                         .cos((float) (angle * 360.0D)) * fuzzVar;
-                ret = ret.add(MathHelper.floor_double(customX) + 0.5D, 1.5D,
-                        MathHelper.floor_double(customZ) + 0.5D);
-                ret = worldObj.getTopSolidOrLiquidBlock(ret);
+                ret = ret.add(MathHelper.floor(customX) + 0.5D, 1.5D,
+                        MathHelper.floor(customZ) + 0.5D);
+                ret = world.getTopSolidOrLiquidBlock(ret);
 
                 // Check if the position is correct
                 int cmp = ret.getY()
-                        - worldObj.provider.getAverageGroundLevel();
-                Material check = worldObj.getBlockState(ret).getMaterial();
+                        - world.provider.getAverageGroundLevel();
+                Material check = world.getBlockState(ret).getMaterial();
                 if (cmp >= 0 && (check == null || !check.isLiquid())) {
                     found = true;
                     break;

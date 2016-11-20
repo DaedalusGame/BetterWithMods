@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 public class ItemBroadheadArrow extends ItemArrow {
     @Override
     public EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter) {
-        if(stack != null && stack.getItem() == this)
-            return new EntityBroadheadArrow(worldIn,shooter);
+        if (stack != ItemStack.field_190927_a && stack.getItem() == this)
+            return new EntityBroadheadArrow(worldIn, shooter);
         return super.createArrow(worldIn, stack, shooter);
     }
 }

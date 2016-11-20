@@ -25,7 +25,7 @@ public class RenderUtils {
     private static HashMap<String, ModelWithResource> filterLocations;
 
     public static boolean filterContains(ItemStack stack) {
-        if (stack == null)
+        if (stack == ItemStack.field_190927_a)
             return false;
         return filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata()); //false;
     }
@@ -67,7 +67,7 @@ public class RenderUtils {
         VertexBuffer renderer = t.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        int brightness = minecraft.theWorld.getCombinedLight(pos, minecraft.theWorld.getLight(pos));
+        int brightness = minecraft.world.getCombinedLight(pos, minecraft.world.getLight(pos));
         preRender(x, y, z);
 
         TextureAtlasSprite sprite = minecraft.getTextureMapBlocks().getTextureExtry(textureLocation.toString());

@@ -26,9 +26,9 @@ public class BlockGearBoostedRail extends BlockRailPowered {
         boolean isOnPoweredGearbox = isOnActiveGearbox(state, world, pos);
         if (poweredProperty != isOnPoweredGearbox) {
             world.setBlockState(pos, state.withProperty(POWERED, isOnPoweredGearbox), 3);
-            world.notifyNeighborsOfStateChange(pos.down(), this);
+            world.notifyNeighborsOfStateChange(pos.down(), this, false);
             if (state.getValue(SHAPE).isAscending())
-                world.notifyNeighborsOfStateChange(pos.up(), this);
+                world.notifyNeighborsOfStateChange(pos.up(), this, false);
         }
     }
 

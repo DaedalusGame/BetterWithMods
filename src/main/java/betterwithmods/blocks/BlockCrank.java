@@ -52,7 +52,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         return CRANK_AABB;
     }
 
@@ -62,7 +62,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         int meta = state.getValue(STAGE);
 
         if (meta == 0) {
@@ -196,7 +196,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         BlockPos down = pos.down();
         if (!world.isSideSolid(down, EnumFacing.UP)) {
             dropBlockAsItem(world, pos, state, 0);

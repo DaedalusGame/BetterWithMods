@@ -50,7 +50,7 @@ public class ContainerMill extends Container {
                     return null;
             } else if (!mergeItemStack(stack1, 0, 3, false))
                 return null;
-            if (stack1.stackSize == 0)
+            if (stack1.func_190916_E() == 0)
                 slot.putStack(null);
             else
                 slot.onSlotChanged();

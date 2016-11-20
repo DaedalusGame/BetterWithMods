@@ -5,11 +5,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.config.ConfigSyncHandler;
-import betterwithmods.entity.EntityBroadheadArrow;
-import betterwithmods.entity.EntityDynamite;
-import betterwithmods.entity.EntityExtendingRope;
-import betterwithmods.entity.EntityMiningCharge;
-import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.entity.*;
 import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.*;
 import betterwithmods.integration.ICompatModule;
@@ -38,13 +34,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
+@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[13.19.0.2141,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
     public static final String VERSION = "0.13.1 Beta hotfix 3";
@@ -114,6 +106,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
+        MinecraftForge.EVENT_BUS.register(new HardcoreMelonEventHandler());
         MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
         MinecraftForge.EVENT_BUS.register(new SaveSoupEvent());
     }
@@ -125,6 +118,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingGourd.class, "entityFallingGourd", 64, 1, true);
     }
 
     @EventHandler
@@ -143,7 +137,10 @@ public class BWMod {
         if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
         if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
         if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
-        if (BWConfig.axeOnLeaves) { Blocks.LEAVES.setHarvestLevel("axe",0); Blocks.LEAVES2.setHarvestLevel("axe",1); }
+        if (BWConfig.axeOnLeaves) {
+            Blocks.LEAVES.setHarvestLevel("axe", 0);
+            Blocks.LEAVES2.setHarvestLevel("axe", 1);
+        }
 
         BWRegistry.init();
         loadCompatibilityModules();

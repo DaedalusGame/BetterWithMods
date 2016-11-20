@@ -51,7 +51,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote)
             return true;
         else {
@@ -74,7 +74,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos other) {
         boolean flag = isRedstonePowered(state, world, pos);
         boolean flag1 = state.getValue(TRIGGERED);
 
@@ -151,7 +151,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                     IBehaviorDispenseItem item = this.getBehavior(stack);
                     if (item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR) {
                         ItemStack stack1 = item.dispense(impl, stack);
-                        tile.inventory.setStackInSlot(index, stack1.stackSize <= 0 ? null : stack1);
+                        tile.inventory.setStackInSlot(index, stack1.func_190916_E() <= 0 ? ItemStack.field_190927_a : stack1);
                     }
                 }
             }

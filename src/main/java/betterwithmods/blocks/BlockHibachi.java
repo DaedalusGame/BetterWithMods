@@ -64,7 +64,7 @@ public class BlockHibachi extends BWMBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (!isCurrentlyValid(world, pos))
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }

@@ -5,24 +5,8 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
-import betterwithmods.items.ItemBark;
-import betterwithmods.items.ItemBreedingHarness;
-import betterwithmods.items.ItemDynamite;
-import betterwithmods.items.ItemEnderSpectacles;
-import betterwithmods.items.ItemFertilizer;
-import betterwithmods.items.ItemMaterial;
-import betterwithmods.items.ItemMechanical;
-import betterwithmods.items.tools.ItemBroadheadArrow;
-import betterwithmods.items.tools.ItemCompositeBow;
-import betterwithmods.items.tools.ItemKnife;
-import betterwithmods.items.tools.ItemSoulforgeArmor;
-import betterwithmods.items.tools.ItemSoulforgedAxe;
-import betterwithmods.items.tools.ItemSoulforgedBattleAxe;
-import betterwithmods.items.tools.ItemSoulforgedHoe;
-import betterwithmods.items.tools.ItemSoulforgedMattock;
-import betterwithmods.items.tools.ItemSoulforgedPickaxe;
-import betterwithmods.items.tools.ItemSoulforgedShovel;
-import betterwithmods.items.tools.ItemSoulforgedSword;
+import betterwithmods.items.*;
+import betterwithmods.items.tools.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -88,6 +72,7 @@ public final class BWMItems {
     public static final Item HEARTY_STEW = new ItemSoup(10).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("hearty_stew");
     public static final Item RAW_KEBAB = new ItemFood(6, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
     public static final Item PORK_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
+
     private BWMItems() {
     }
 

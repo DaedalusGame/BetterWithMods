@@ -34,7 +34,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
@@ -148,7 +147,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
@@ -190,7 +189,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
         if (!isCurrentStateValid(world, pos)) {
             world.scheduleBlockUpdate(pos, this, tickRateForMeta(type.getMeta()), 5);
@@ -233,7 +232,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 6; i++) {
             list.add(new ItemStack(item, 1, i));
         }

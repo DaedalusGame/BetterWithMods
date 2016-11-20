@@ -27,12 +27,12 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
             update = false;
         }
         List<EnumFacing> low = findLowestTransfer(false);
-        if(!low.isEmpty()) {
+        if (!low.isEmpty()) {
             int exits = low.size();
             EnumFacing facing = low.get(rand.nextInt(exits));
-            TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
-            if(tile != null) {
-                if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+            TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
+            if (tile != null) {
+                if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
                     //Insert item transfer code here.
                 }
             }
@@ -43,7 +43,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
         List<EnumFacing> dirs = new ArrayList<>();
         if (!heat) {
             for (EnumFacing facing : EnumFacing.VALUES) {
-                TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
+                TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
                 if (tile != null) {
                     if (isPipelineExit(tile, facing)) {
                         dirs.add(facing);
@@ -60,7 +60,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
             }
         } else {
             for (EnumFacing facing : EnumFacing.VALUES) {
-                TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
+                TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
                 if (tile != null) {
                     if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
                         if (facing != EnumFacing.DOWN && tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getSteamPower(facing.getOpposite()) < steamPower) {
@@ -78,7 +78,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
         int currentPower = steamPower;
         int highestNeighbor = 0;
         for (EnumFacing side : EnumFacing.VALUES) {
-            TileEntity tile = worldObj.getTileEntity(pos.offset(side));
+            TileEntity tile = getWorld().getTileEntity(pos.offset(side));
             if (side == EnumFacing.UP)
                 continue;
             if (tile != null) {
@@ -101,7 +101,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
             steamPower = currentPower;
 
             for (EnumFacing side : EnumFacing.VALUES) {
-                TileEntity tile = worldObj.getTileEntity(pos.offset(side));
+                TileEntity tile = getWorld().getTileEntity(pos.offset(side));
                 if (tile != null) {
                     if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, side)) {
                         tile.getCapability(SteamCapability.STEAM_CAPABILITY, side).setSteamUpdate(true);
@@ -158,7 +158,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
         heatUnits = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (!low.contains(facing)) {
-                TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
+                TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
                 if (tile != null) {
                     if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
                         heatUnits = tile.getCapability(SteamCapability.STEAM_CAPABILITY, facing).getHeatUnits(facing.getOpposite());

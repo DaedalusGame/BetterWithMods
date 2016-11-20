@@ -43,7 +43,7 @@ public class HungerEventHandler {
     @SubscribeEvent
     public void replaceHungerGui(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
-            if (!(Minecraft.getMinecraft().thePlayer.getFoodStats() instanceof BWMFoodStats))
+            if (!(Minecraft.getMinecraft().player.getFoodStats() instanceof BWMFoodStats))
                 return;// Can happen for a moment when changing config
             event.setCanceled(true);
             if (guiHunger == null)
@@ -139,7 +139,7 @@ public class HungerEventHandler {
             int i = EnchantmentHelper.getEfficiencyModifier(player);
             ItemStack itemstack = player.getHeldItemMainhand();
 
-            if (i > 0 && itemstack != null) {
+            if (i > 0 && itemstack != ItemStack.field_190927_a) {
                 float intermediate = (float) (i * i + 1);
 
                 if (!itemstack.canHarvestBlock(state) && f <= 1.0F) {
@@ -282,7 +282,7 @@ public class HungerEventHandler {
             f = 1.0F;
         }
 
-        if (player.isHandActive() && player.getActiveItemStack() != null
+        if (player.isHandActive() && player.getActiveItemStack() != ItemStack.field_190927_a
                 && player.getActiveItemStack().getItem() == Items.BOW) {
             int i = player.getItemInUseMaxCount();
             float f1 = (float) i / 20.0F;
@@ -307,7 +307,7 @@ public class HungerEventHandler {
 			return;
 		if (!Minecraft.getMinecraft().isSingleplayer())
 			return;
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = Minecraft.getMinecraft().player;
 		if (BWConfig.hardcoreHunger)
 			applyFoodSystem(player);
 		else

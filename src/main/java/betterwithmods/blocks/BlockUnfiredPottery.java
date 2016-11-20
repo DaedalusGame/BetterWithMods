@@ -13,14 +13,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<EnumPotteryType> POTTERYTYPE = PropertyEnum.create("potterytype",
@@ -43,8 +42,8 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                            int meta, EntityLivingBase entity, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
+                                            int meta, EntityLivingBase entity) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
         return state.withProperty(POTTERYTYPE, EnumPotteryType.byMeta(meta));
     }
 
@@ -60,7 +59,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -92,7 +91,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
             dropBlockAsItem(world, pos, state, 0);
             world.setBlockToAir(pos);

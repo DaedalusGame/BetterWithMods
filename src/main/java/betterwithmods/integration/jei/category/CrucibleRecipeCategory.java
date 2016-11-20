@@ -43,6 +43,11 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
     @Deprecated
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper) {
+
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
@@ -58,13 +63,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
         if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
+        List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);
-    }
-
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper, IIngredients ingredients) {
-        setRecipe(layout, wrapper);
-        //TODO Ingredients
     }
 }

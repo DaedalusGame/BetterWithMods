@@ -55,7 +55,7 @@ public class ContainerBlockDispenser extends Container {
             } else if (!mergeItemStack(stack1, 0, 16, false))
                 return null;
 
-            if (stack1.stackSize == 0)
+            if (stack1.func_190916_E() == 0)
                 slot.putStack(null);
             else
                 slot.onSlotChanged();

@@ -30,20 +30,22 @@ public abstract class BlockMetaHandler {
     }
 
     public void addRecipe(Block block, int meta, ItemStack... products) {
-        addRecipe(new BlockMetaRecipe(block,meta,Arrays.asList(products)));
+        addRecipe(new BlockMetaRecipe(block, meta, Arrays.asList(products)));
     }
+
     public void addRecipe(BlockMetaRecipe recipe) {
         recipes.add(recipe);
     }
 
     public boolean contains(ItemStack stack) {
-        if(stack == null)
+        if (stack == null)
             return false;
         assert stack.getItem() instanceof ItemBlock;
         return contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
+
     public boolean contains(Block block, int meta) {
-        return recipes.stream().filter(r -> r.equals(block,meta)).findFirst().isPresent();
+        return recipes.stream().filter(r -> r.equals(block, meta)).findFirst().isPresent();
     }
 
     public ArrayList<BlockMetaRecipe> getRecipes() {
@@ -51,22 +53,22 @@ public abstract class BlockMetaHandler {
     }
 
     public BlockMetaRecipe getRecipe(ItemStack stack) {
-        if(stack == null)
+        if (stack == null)
             return null;
         assert stack.getItem() instanceof ItemBlock;
         return getRecipe(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
 
     public BlockMetaRecipe getRecipe(Block block, int meta) {
-        Optional<BlockMetaRecipe> recipe = recipes.stream().filter(r -> r.equals(block,meta)).findFirst();
-        if(recipe.isPresent())
+        Optional<BlockMetaRecipe> recipe = recipes.stream().filter(r -> r.equals(block, meta)).findFirst();
+        if (recipe.isPresent())
             return recipe.get();
         return null;
     }
 
     public List getProducts(Block block, int meta) {
         BlockMetaRecipe recipe = getRecipe(block, meta);
-        if(recipe != null)
+        if (recipe != null)
             return recipe.getOutputs();
         return null;
     }

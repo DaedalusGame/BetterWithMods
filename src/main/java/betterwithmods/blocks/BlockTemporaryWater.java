@@ -23,6 +23,7 @@ public class BlockTemporaryWater extends BlockLiquid {
         this.setTickRandomly(true);
     }
 
+    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         int level = state.getValue(LEVEL);
 
@@ -142,6 +143,7 @@ public class BlockTemporaryWater extends BlockLiquid {
         return i;
     }
 
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         if (!this.checkForMixing(worldIn, pos, state)) {
             worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));

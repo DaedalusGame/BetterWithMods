@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -52,14 +53,14 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
             list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
         }
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote)
             return true;
         else {
@@ -67,7 +68,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
                 world.setBlockState(pos, state.withProperty(ACTIVE, true));
                 world.playSound(null, pos, state.getMaterial() == Material.IRON ? BWSounds.METALCHIME : BWSounds.WOODCHIME, SoundCategory.BLOCKS, 0.4F, 1.0F);
                 for (EnumFacing facing : EnumFacing.VALUES)
-                    world.notifyNeighborsOfStateChange(pos.offset(facing), this);
+                    world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
             }
             return true;
         }
@@ -108,12 +109,12 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         if (state.getValue(ACTIVE)) {
             for (EnumFacing facing : EnumFacing.VALUES)
-                world.notifyNeighborsOfStateChange(pos.offset(facing), this);
+                world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
         }
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (!canPlaceBlockAt(world, pos)) {
             this.dropBlockAsItem(world, pos, state, 0);
             world.setBlockToAir(pos);
@@ -129,7 +130,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return NULL_AABB;
     }
 
@@ -140,9 +141,9 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
         if (storm != isActive) {
             world.setBlockState(pos, state.withProperty(ACTIVE, storm));
-            world.notifyNeighborsOfStateChange(pos, this);
+            world.notifyNeighborsOfStateChange(pos, this, false);
             for (EnumFacing facing : EnumFacing.VALUES)
-                world.notifyNeighborsOfStateChange(pos.offset(facing), this);
+                world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
         }
         if (storm)
             world.playSound(null, pos, state.getMaterial() == Material.IRON ? BWSounds.METALCHIME : BWSounds.WOODCHIME, SoundCategory.BLOCKS, 0.25F + (rand.nextFloat() - rand.nextFloat() * 0.1F), 1.0F);
@@ -175,9 +176,9 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!state.getValue(ACTIVE)) {
             world.setBlockState(pos, state.withProperty(ACTIVE, true));
-            world.notifyNeighborsOfStateChange(pos, this);
+            world.notifyNeighborsOfStateChange(pos, this, false);
             for (EnumFacing facing : EnumFacing.VALUES)
-                world.notifyNeighborsOfStateChange(pos.offset(facing), this);
+                world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
             world.playSound(null, pos, state.getMaterial() == Material.IRON ? BWSounds.METALCHIME : BWSounds.WOODCHIME, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }

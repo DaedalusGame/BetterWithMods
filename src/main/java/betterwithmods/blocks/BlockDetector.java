@@ -48,8 +48,8 @@ public class BlockDetector extends BWMBlock {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
         return setFacingInBlock(state, DirUtils.convertEntityOrientationToFacing(entity, side));
     }
 
@@ -67,7 +67,7 @@ public class BlockDetector extends BWMBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
@@ -164,7 +164,7 @@ public class BlockDetector extends BWMBlock {
             world.setBlockState(pos, state);
 
             for (int i = 0; i < 6; i++) {
-                world.notifyBlockOfStateChange(pos.offset(EnumFacing.getFront(i)), this);
+                world.func_190524_a(pos.offset(EnumFacing.getFront(i)), this, pos);
             }
         }
     }
@@ -225,8 +225,7 @@ public class BlockDetector extends BWMBlock {
                     return true;
                 else {
                     IBlockState vState = world.getBlockState(offset);
-                    BlockVine vine = (BlockVine)vState.getBlock();
-                    return vState.getValue(vine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
+                    return vState.getValue(BlockVine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
                 }
             }
         }

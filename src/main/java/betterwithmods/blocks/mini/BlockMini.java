@@ -15,13 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public abstract class BlockMini extends BWMBlock {
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
@@ -80,7 +79,7 @@ public abstract class BlockMini extends BWMBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 6; i++) {
             ItemStack stack = new ItemStack(this, 1, i);/*
             NBTTagCompound tag = new NBTTagCompound();

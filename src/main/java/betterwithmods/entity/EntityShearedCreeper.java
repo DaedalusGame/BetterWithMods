@@ -25,6 +25,7 @@ public class EntityShearedCreeper extends EntityMob {
         super(worldIn);
     }
 
+    @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
@@ -36,6 +37,7 @@ public class EntityShearedCreeper extends EntityMob {
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
@@ -63,6 +65,7 @@ public class EntityShearedCreeper extends EntityMob {
         return true;
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable() {
         return LOOT;

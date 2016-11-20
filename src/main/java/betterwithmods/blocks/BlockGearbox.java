@@ -17,11 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -46,8 +42,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, stack);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer);
         return setFacingInBlock(state, side.getOpposite());
     }
 
@@ -58,8 +54,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.field_190927_a && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.field_190927_a && player.isSneaking();
 
         if (world.isRemote && emptyHands)
             return true;
@@ -67,7 +63,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
             EnumFacing facing = DirUtils.cycleFacing(state.getValue(DirUtils.FACING), false);
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
             world.setBlockState(pos, state.withProperty(ISACTIVE, false).withProperty(DirUtils.FACING, facing));
-            world.notifyNeighborsOfStateChange(pos, this);
+            world.notifyNeighborsOfStateChange(pos, this, false);
             world.scheduleBlockUpdate(pos, this, 10, 5);
             return true;
         }
@@ -99,7 +95,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         boolean isOn = isGearboxOn(world, pos);
 
         if (isOn) {

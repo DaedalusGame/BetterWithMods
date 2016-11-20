@@ -2,12 +2,7 @@ package betterwithmods;
 
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
-import betterwithmods.craft.bulk.CraftingManagerBulk;
-import betterwithmods.craft.bulk.CraftingManagerCauldron;
-import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
-import betterwithmods.craft.bulk.CraftingManagerCrucible;
-import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
-import betterwithmods.craft.bulk.CraftingManagerMill;
+import betterwithmods.craft.bulk.*;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.util.NetherSpawnWhitelist;
 import com.google.common.collect.ImmutableList;
@@ -46,7 +41,7 @@ public class BWIMCHandler {
                 } else if ("addKilnRecipe".equals(k)) {
                     if (m.isNBTMessage()) {
                         NBTTagCompound tag = m.getNBTValue();
-                        ItemStack blockStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+                        ItemStack blockStack = new ItemStack(tag.getCompoundTag("Input"));
                         Block block = null;
                         int meta = 0;
                         if (blockStack.getItem() instanceof ItemBlock) {
@@ -56,16 +51,16 @@ public class BWIMCHandler {
                         if (block != null) {
                             if (meta != OreDictionary.WILDCARD_VALUE) {
                                 KilnInteraction.INSTANCE.addRecipe(block, meta,
-                                        ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output")));
+                                        new ItemStack(tag.getCompoundTag("Output")));
                             } else
                                 KilnInteraction.INSTANCE.addRecipe(block, 0,
-                                        ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output")));
+                                        new ItemStack(tag.getCompoundTag("Output")));
                         }
                     }
                 } else if ("addTurntableRecipe".equals(k)) {
                     if (m.isNBTMessage()) {
                         NBTTagCompound tag = m.getNBTValue();
-                        ItemStack blockStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+                        ItemStack blockStack = new ItemStack(tag.getCompoundTag("Input"));
                         IBlockState state = Blocks.AIR.getDefaultState();
                         int meta = 0;
                         if (blockStack.getItem() instanceof ItemBlock) {
@@ -79,7 +74,7 @@ public class BWIMCHandler {
                         }
                         IBlockState output = Blocks.AIR.getDefaultState();
                         if (tag.hasKey("Output")) {
-                            ItemStack outputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
+                            ItemStack outputStack = new ItemStack(tag.getCompoundTag("Output"));
                             if (outputStack.getItem() instanceof ItemBlock) {
                                 if (blockStack.getItemDamage() != OreDictionary.WILDCARD_VALUE)
                                     output = ((ItemBlock) outputStack.getItem()).getBlock()
@@ -94,8 +89,8 @@ public class BWIMCHandler {
                             scraps = new ItemStack[scrapTag.getInteger("ScrapCount")];
                             for (int i = 0; i < scraps.length; i++) {
                                 if (tag.hasKey("Item_" + i))
-                                    scraps[i] = ItemStack
-                                            .loadItemStackFromNBT(scrapTag.getCompoundTag("Item_" + i).copy());
+                                    scraps[i] = new ItemStack
+                                            (scrapTag.getCompoundTag("Item_" + i).copy());
                             }
                         }
                         //TODO Turntable IMC
@@ -110,7 +105,7 @@ public class BWIMCHandler {
                 } else if ("addHeatRegistry".equals(k)) {
                     if (m.isNBTMessage()) {
                         NBTTagCompound tag = m.getNBTValue();
-                        ItemStack blockStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+                        ItemStack blockStack = new ItemStack(tag.getCompoundTag("Input"));
                         Block block = null;
                         int meta = 0;
                         int value = tag.getInteger("HeatValue");
@@ -128,7 +123,7 @@ public class BWIMCHandler {
                 } else if ("addNetherSpawnBlock".equals(k)) {
                     if (m.isNBTMessage()) {
                         NBTTagCompound tag = m.getNBTValue();
-                        ItemStack blockStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Spawn"));
+                        ItemStack blockStack = new ItemStack(tag.getCompoundTag("Spawn"));
                         Block block = null;
                         int meta = 0;
                         if (blockStack.getItem() instanceof ItemBlock) {
@@ -154,16 +149,16 @@ public class BWIMCHandler {
         if (m.isNBTMessage()) {
             NBTTagCompound tag = m.getNBTValue();
             NBTTagCompound outputs = tag.getCompoundTag("Outputs");
-            ItemStack output = ItemStack.loadItemStackFromNBT(outputs.getCompoundTag("Output"));
+            ItemStack output = new ItemStack(outputs.getCompoundTag("Output"));
             ItemStack second = null;
             if (outputs.hasKey("Secondary"))
-                second = ItemStack.loadItemStackFromNBT(outputs.getCompoundTag("Secondary"));
+                second = new ItemStack(outputs.getCompoundTag("Secondary"));
             NBTTagCompound inputs = tag.getCompoundTag("Inputs");
             Object[] inputStacks = new Object[inputs.getInteger("InputLength")];
             for (int i = 0; i < inputs.getInteger("InputLength"); i++) {
                 NBTBase obj = inputs.getTag("Input_" + i);
                 if (obj instanceof NBTTagCompound)
-                    inputStacks[i] = ItemStack.loadItemStackFromNBT(inputs.getCompoundTag("Input_" + i));
+                    inputStacks[i] = new ItemStack(inputs.getCompoundTag("Input_" + i));
                 else if (obj instanceof NBTTagString) {
                     if (i + 1 < inputs.getInteger("InputLength")) {
                         NBTBase nextObj = inputs.getTag("Input_" + (i + 1));

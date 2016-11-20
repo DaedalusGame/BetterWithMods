@@ -34,6 +34,7 @@ public abstract class BlockMillGenerator extends BWMBlock implements IMechanical
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Z).withProperty(ISACTIVE, false));
     }
 
+    @Override
     public int getPowerLevel(IBlockAccess world, BlockPos pos) {
         return getPowerLevelFromState(world.getBlockState(pos));
     }

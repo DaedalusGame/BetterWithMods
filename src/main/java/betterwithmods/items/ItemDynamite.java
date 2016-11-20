@@ -26,11 +26,11 @@ public class ItemDynamite extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         int flintIndex = -1;
 
-        for (int i = 0; i < player.inventory.mainInventory.length; i++) {
-            if (player.inventory.mainInventory[i] != null && player.inventory.mainInventory[i].getItem() == Items.FLINT_AND_STEEL) {
+        for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+            if (player.inventory.mainInventory.get(i) != ItemStack.field_190927_a && player.inventory.mainInventory.get(i).getItem() == Items.FLINT_AND_STEEL) {
                 flintIndex = i;
                 break;
             }
@@ -43,11 +43,11 @@ public class ItemDynamite extends Item {
                 lit = true;
                 ItemStack steelStack = player.inventory.getStackInSlot(flintIndex);
                 steelStack.damageItem(1, player);
-                if (steelStack.stackSize < 1)
-                    player.inventory.mainInventory[flintIndex] = null;
+                if (steelStack.func_190916_E() < 1)
+                    player.inventory.mainInventory.set(flintIndex, ItemStack.field_190927_a);
             }
 
-            stack.stackSize--;
+            player.getHeldItem(hand).func_190918_g(1);
             EntityDynamite dynamite = new EntityDynamite(world, player, new ItemStack(this, 1), lit);
             world.spawnEntityInWorld(dynamite);
 
@@ -56,7 +56,7 @@ public class ItemDynamite extends Item {
             else
                 world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.AMBIENT, 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override

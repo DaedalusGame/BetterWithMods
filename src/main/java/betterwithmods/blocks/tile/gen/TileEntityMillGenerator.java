@@ -54,8 +54,8 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         t.setByte("RunningState", runningState);
         t.setFloat("CurrentRotation", currentRotation);
         t.setFloat("RotationSpeed", previousRotation);
-        if(facing != null)
-            t.setByte("Facing", (byte)facing.ordinal());
+        if (facing != null)
+            t.setByte("Facing", (byte) facing.ordinal());
         return t;
     }
 
@@ -69,18 +69,18 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
 
     @Override
     public void update() {
-        if(facing == null) {
-            facing = ((BlockMillGenerator) worldObj.getBlockState(pos).getBlock()).getAxleDirectionFromState(worldObj.getBlockState(pos));
+        if (facing == null) {
+            facing = ((BlockMillGenerator) getWorld().getBlockState(pos).getBlock()).getAxleDirectionFromState(getWorld().getBlockState(pos));
         }
         if (this.runningState != 0) {
             this.previousRotation = (this.runningState > 1 ? this.runningSpeed * 5 : this.runningSpeed) * this.waterMod;//this.currentRotation;
             this.currentRotation += (this.runningState > 1 ? 5 : this.runningState) * this.runningSpeed * this.waterMod;
-            if (this.worldObj.rand.nextInt(100) == 0)
-                this.worldObj.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, worldObj.rand.nextFloat() * 0.25F + 0.25F);
+            if (this.getWorld().rand.nextInt(100) == 0)
+                this.getWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, getWorld().rand.nextFloat() * 0.25F + 0.25F);
         }
         if (this.currentRotation >= 360.0F)
             this.currentRotation -= 360.0F;
-        if (this.worldObj.getTotalWorldTime() % 20L == 0L && worldObj.getBlockState(pos).getBlock() instanceof BlockMillGenerator) {
+        if (this.getWorld().getTotalWorldTime() % 20L == 0L && getWorld().getBlockState(pos).getBlock() instanceof BlockMillGenerator) {
             verifyIntegrity();
             updateSpeed();
             if (this.runningState == 2 && overpowerTime < 1) {
@@ -92,17 +92,17 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         }
     }
 
+    public EnumFacing getOrientation() {
+        return facing;
+    }
+
     public void setOrientation(EnumFacing facing) {
         if (facing != null) {
-            if(facing.getAxisDirection() != EnumFacing.AxisDirection.POSITIVE)
+            if (facing.getAxisDirection() != EnumFacing.AxisDirection.POSITIVE)
                 this.facing = facing.getOpposite();
             else
                 this.facing = facing;
         }
-    }
-
-    public EnumFacing getOrientation() {
-        return facing;
     }
 
     public abstract void updateSpeed();
@@ -116,7 +116,7 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
     }
 
     public void setRunningState(int i) {
-        boolean oldRun = this.worldObj.getBlockState(this.pos).getValue(BlockMillGenerator.ISACTIVE);
+        boolean oldRun = this.getWorld().getBlockState(this.pos).getValue(BlockMillGenerator.ISACTIVE);
         boolean newRun = oldRun;
         this.runningState = (byte) i;
         if (runningState > 0)
@@ -124,8 +124,8 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         else if (runningState == 0)
             newRun = false;
         if (newRun != oldRun) {
-            this.worldObj.setBlockState(this.pos, this.worldObj.getBlockState(pos).withProperty(BlockMillGenerator.ISACTIVE, newRun));
-            worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//this.worldObj.markBlockForUpdate(pos);
+            this.getWorld().setBlockState(this.pos, this.getWorld().getBlockState(pos).withProperty(BlockMillGenerator.ISACTIVE, newRun));
+            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }
 
@@ -163,7 +163,7 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
         if (getBlockType() instanceof IMechanical) {
-            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0)
+            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0)
                 return 20;
         }
         return 0;

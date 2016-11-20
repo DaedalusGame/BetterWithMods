@@ -18,7 +18,7 @@ public abstract class BWMBlock extends Block implements ITurnable {
         if (material == Material.WOOD) {
             this.setSoundType(SoundType.WOOD);
             this.setHarvestLevel("axe", 0);
-        } else if(material == Material.ROCK) {
+        } else if (material == Material.ROCK) {
             this.setSoundType(SoundType.STONE);
             setHarvestLevel("pickaxe", 1);
         }

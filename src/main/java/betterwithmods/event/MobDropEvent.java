@@ -6,10 +6,12 @@ import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -20,7 +22,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -58,7 +59,7 @@ public class MobDropEvent {
     public void onWorldUnload(WorldEvent.Unload evt) {
         if (evt.getWorld() instanceof WorldServer) {
             if (player != null) {
-                player.setHeldItem(EnumHand.MAIN_HAND, null);
+                player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.field_190927_a);
                 player = null;
             }
         }
@@ -66,7 +67,7 @@ public class MobDropEvent {
 
     @SubscribeEvent
     public void mobDungProduction(LivingEvent.LivingUpdateEvent evt) {
-        if (evt.getEntityLiving().worldObj.isRemote)
+        if (evt.getEntityLiving().getEntityWorld().isRemote)
             return;
 
         if (!BWConfig.produceDung)
@@ -75,9 +76,9 @@ public class MobDropEvent {
         if (evt.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
             if (animal instanceof EntityWolf) {
-                if (!animal.worldObj.canSeeSky(animal.getPosition())) {
+                if (!animal.getEntityWorld().canSeeSky(animal.getPosition())) {
                     if (animal.getGrowingAge() > 99) {
-                        int light = animal.worldObj.getLight(animal.getPosition());
+                        int light = animal.getEntityWorld().getLight(animal.getPosition());
                         if (animal.getGrowingAge() == fearLevel[light]) {
                             evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
                             animal.setGrowingAge(99);
@@ -100,33 +101,28 @@ public class MobDropEvent {
     @SubscribeEvent
     public void mobDiesBySaw(LivingDropsEvent evt) {
         BlockPos pos = evt.getEntityLiving().getPosition().down();
-        if (isChoppingBlock(evt.getEntityLiving().worldObj, pos)) {
+        if (isChoppingBlock(evt.getEntityLiving().getEntityWorld(), pos) || isBattleAxe(evt.getEntityLiving())) {
             if (!(evt.getEntityLiving() instanceof EntityPlayer)) {
                 for (EntityItem item : evt.getDrops()) {
                     ItemStack stack = item.getEntityItem();
-                    if (stack.getMaxStackSize() != 1 && evt.getEntity().worldObj.rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(stack.getItem(), stack.stackSize + 1, stack.getItemDamage()));
+                    if (stack.getMaxStackSize() != 1 && evt.getEntity().getEntityWorld().rand.nextBoolean())
+                        item.setEntityItemStack(new ItemStack(stack.getItem(), stack.func_190916_E() + 1, stack.getItemDamage()));
                 }
             }
             if (evt.getEntityLiving() instanceof EntityAgeable)
                 addDrop(evt, new ItemStack(BWMItems.MATERIAL, 1, 5));
-            int headChance = evt.getEntityLiving().worldObj.rand.nextInt(12);
+            int headChance = evt.getEntityLiving().getEntityWorld().rand.nextInt(12);
             if (headChance < 5) {
-                if (evt.getEntityLiving() instanceof EntitySkeleton) {
-                    EntitySkeleton skeltal = (EntitySkeleton) evt.getEntityLiving();
-                    if (skeltal.getSkeletonType() != SkeletonType.STRAY)
-                        addDrop(evt, new ItemStack(Items.SKULL, 1, skeltal.getSkeletonType().getId()));
-                } else if (evt.getEntityLiving() instanceof EntityZombie)
+                if (evt.getEntityLiving() instanceof EntitySkeleton)
+                    addDrop(evt, new ItemStack(Items.SKULL, 1, 0));
+                else if (evt.getEntityLiving() instanceof EntityWitherSkeleton)
+                    addDrop(evt, new ItemStack(Items.SKULL, 1, 1));
+                else if (evt.getEntityLiving() instanceof EntityZombie)
                     addDrop(evt, new ItemStack(Items.SKULL, 1, 2));
                 else if (evt.getEntityLiving() instanceof EntityCreeper)
                     addDrop(evt, new ItemStack(Items.SKULL, 1, 4));
                 else if (evt.getEntityLiving() instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer) evt.getEntityLiving();
-                    ItemStack drop = new ItemStack(Items.SKULL, 1, 3);
-                    NBTTagCompound name = new NBTTagCompound();
-                    name.setString("SkullOwner", player.getDisplayNameString());
-                    drop.setTagCompound(name);
-                    addDrop(evt, drop);
+                    addDrop(evt, EntityPlayerExt.getPlayerHead((EntityPlayer) evt.getEntityLiving()));
                 }
             }
         }
@@ -140,6 +136,20 @@ public class MobDropEvent {
         return false;
     }
 
+    private boolean isBattleAxe(EntityLivingBase entity) {
+        DamageSource source = entity.getLastDamageSource();
+        if (source != null && source.getSourceOfDamage() != null) {
+            Entity e = source.getSourceOfDamage();
+            if (e instanceof EntityLivingBase) {
+                ItemStack held = ((EntityLivingBase) e).getHeldItemMainhand();
+                if (held != ItemStack.field_190927_a && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @SubscribeEvent
     public void mobDrops(LivingDropsEvent evt) {
         if (!BWConfig.hardcoreGunpowder)
@@ -149,16 +159,16 @@ public class MobDropEvent {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
                     if (rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.stackSize, 26));
+                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.func_190916_E(), 26));
                     else
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.stackSize, 25));
+                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.func_190916_E(), 25));
                 }
             }
         }
     }
 
     public void addDrop(LivingDropsEvent evt, ItemStack drop) {
-        EntityItem item = new EntityItem(evt.getEntityLiving().worldObj, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
+        EntityItem item = new EntityItem(evt.getEntityLiving().getEntityWorld(), evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
         item.setDefaultPickupDelay();
         evt.getDrops().add(item);
     }
@@ -167,7 +177,7 @@ public class MobDropEvent {
     public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
         Entity creeper = e.getTarget();
         if (creeper instanceof EntityCreeper) {
-            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != null) {
+            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != ItemStack.field_190927_a) {
                 if (e.getItemStack().getItem() instanceof ItemShears) {
                     InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
                     EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());

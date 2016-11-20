@@ -17,7 +17,7 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass) {
         int level = super.getHarvestLevel(stack, toolClass);
-        if (level == -1 && toolClass != null && getToolClasses(null).contains(toolClass))
+        if (level == -1 && toolClass != null && getToolClasses(stack).contains(toolClass))
             return this.toolMaterial.getHarvestLevel();
         else
             return level;
@@ -25,6 +25,6 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
 
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of("pickaxe","shovel");
+        return ImmutableSet.of("pickaxe", "shovel");
     }
 }

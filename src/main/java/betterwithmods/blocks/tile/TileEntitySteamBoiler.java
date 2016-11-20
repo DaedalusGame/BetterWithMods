@@ -60,7 +60,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
             isActive = active;
             for (EnumFacing side : EnumFacing.VALUES) {
                 if (side != EnumFacing.DOWN) {
-                    TileEntity tile = worldObj.getTileEntity(pos.offset(side));
+                    TileEntity tile = getWorld().getTileEntity(pos.offset(side));
                     if (tile != null) {
                         if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, side)) {
                             tile.getCapability(SteamCapability.STEAM_CAPABILITY, side).setSteamUpdate(true);
@@ -80,8 +80,8 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     public void calculateHeatUnits() {
         BlockPos pos = this.pos.offset(EnumFacing.DOWN);
         int heat = 0;
-        if (BWMHeatRegistry.contains(worldObj.getBlockState(pos.down()))) {
-            heat = BWMHeatRegistry.get(worldObj.getBlockState(pos.down())).value;
+        if (BWMHeatRegistry.contains(getWorld().getBlockState(pos.down()))) {
+            heat = BWMHeatRegistry.get(getWorld().getBlockState(pos.down())).value;
         }
         if (heat > 0) {
             for (int x = -1; x < 2; x++) {
@@ -89,7 +89,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
                     if (x == 0 && z == 0)
                         continue;
                     BlockPos check = pos.add(x, 0, z);
-                    IBlockState toCheck = worldObj.getBlockState(check);
+                    IBlockState toCheck = getWorld().getBlockState(check);
                     if (BWMHeatRegistry.contains(toCheck))
                         heat += BWMHeatRegistry.get(toCheck).value;
                 }
@@ -111,7 +111,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
         List<EnumFacing> exits = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (facing != EnumFacing.DOWN) {
-                TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
+                TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
                 if (tile != null) {
                     if (tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing)) {
                         exits.add(facing);

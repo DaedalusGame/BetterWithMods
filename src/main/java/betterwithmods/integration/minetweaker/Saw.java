@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toIItemStack;
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStack;
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStacks;
+import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
 import static betterwithmods.integration.minetweaker.utils.StackHelper.matches;
 
 /**
@@ -54,7 +52,7 @@ public class Saw {
     private static class Add extends BaseListAddition<BlockMetaRecipe> {
         protected Add(Block block, int meta, ItemStack... product) {
             super("saw", Saw.recipes);
-            recipes.add(new BlockMetaRecipe(block,meta, Arrays.asList(product)));
+            recipes.add(new BlockMetaRecipe(block, meta, Arrays.asList(product)));
         }
 
         @Override

@@ -68,7 +68,7 @@ public class ContainerFilteredHopper extends Container {
                 return null;
             }
 
-            if (processedStack.stackSize == 0)
+            if (processedStack.func_190916_E() == 0)
                 slot.putStack(null);
             else
                 slot.onSlotChanged();

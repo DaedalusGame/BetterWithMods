@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -62,11 +63,11 @@ public class EntityDynamite extends Entity implements IProjectile {
 
     @Override
     public void onUpdate() {
-        int x = MathHelper.floor_double(this.posX);
-        int y = MathHelper.floor_double(this.posY);
-        int z = MathHelper.floor_double(this.posZ);
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.posY);
+        int z = MathHelper.floor(this.posZ);
 
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
 
         if (block == Blocks.FLOWING_LAVA || block == Blocks.LAVA)
             this.fuse = 1;
@@ -77,29 +78,29 @@ public class EntityDynamite extends Entity implements IProjectile {
         }
 
         if (this.fuse > 0) {
-            if (!this.worldObj.isRemote && this.fuse % 20 == 0)
-                this.worldObj.playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            if (!this.getEntityWorld().isRemote && this.fuse % 20 == 0)
+                this.getEntityWorld().playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             this.fuse--;
             if (this.fuse == 0) {
                 this.setDead();
-                if (!this.worldObj.isRemote) {
+                if (!this.getEntityWorld().isRemote) {
                     explode();
                 }
             }
-            if (this.worldObj.isRemote) {
+            if (this.getEntityWorld().isRemote) {
                 float smokeOffset = 0.25F;
-                if ((block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER) ||
-                        (block instanceof IFluidBlock && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)) {
-                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
+                if ((block instanceof BlockLiquid && this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER) ||
+                        (block instanceof IFluidBlock && this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)) {
+                    this.getEntityWorld().spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
                 } else
-                    this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
+                    this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX - this.motionX * smokeOffset, this.posY - this.motionY * smokeOffset, this.posZ - this.motionZ * smokeOffset, this.motionX, this.motionY, this.motionZ);
             }
         } else if (block instanceof BlockFire) {
             this.fuse = 100;
-            this.worldObj.playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            this.getEntityWorld().playSound(null, new BlockPos(this.posX, this.posY, this.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
         } else if (this.onGround) {
             if (Math.abs(this.motionX) < 0.01D && Math.abs(this.motionY) < 0.01D && Math.abs(this.motionZ) < 0.01D) {
-                if (!this.worldObj.isRemote) {
+                if (!this.getEntityWorld().isRemote) {
                     convertToItem();
                     return;
                 }
@@ -109,7 +110,7 @@ public class EntityDynamite extends Entity implements IProjectile {
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.motionY -= 0.04D;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.98D;
         this.motionY *= 0.98D;
         this.motionZ *= 0.98D;
@@ -126,7 +127,7 @@ public class EntityDynamite extends Entity implements IProjectile {
     @Override
     public void setThrowableHeading(double dX, double dY,
                                     double dZ, float angle, float f) {
-        float sqrt = MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
+        float sqrt = MathHelper.sqrt(dX * dX + dY * dY + dZ * dZ);
         dX /= sqrt;
         dY /= sqrt;
         dZ /= sqrt;
@@ -139,7 +140,7 @@ public class EntityDynamite extends Entity implements IProjectile {
         this.motionX = dX;
         this.motionY = dY;
         this.motionZ = dZ;
-        float pitch = MathHelper.sqrt_double(dX * dX + dZ * dZ);
+        float pitch = MathHelper.sqrt(dX * dX + dZ * dZ);
         this.prevRotationYaw = (this.rotationYaw = (float) (Math.atan2(dX, dZ) * 180.0D / pi));
         this.prevRotationPitch = (this.rotationPitch = (float) (Math.atan2(dY, pitch) * 180.0D / pi));
     }
@@ -162,12 +163,12 @@ public class EntityDynamite extends Entity implements IProjectile {
 
     public void explode() {
         float intensity = 1.5F;
-        this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, intensity, true);
-        int x = MathHelper.floor_double(this.posX);
-        int y = MathHelper.floor_double(this.posY);
-        int z = MathHelper.floor_double(this.posZ);
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        if (block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)
+        this.getEntityWorld().createExplosion(null, this.posX, this.posY, this.posZ, intensity, true);
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.posY);
+        int z = MathHelper.floor(this.posZ);
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
+        if (block instanceof BlockLiquid && this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER)
             redneckFishing(x, y, z);
     }
 
@@ -185,21 +186,21 @@ public class EntityDynamite extends Entity implements IProjectile {
     }
 
     private boolean isWaterBlock(int x, int y, int z) {
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        return block instanceof BlockLiquid && this.worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER;
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
+        return block instanceof BlockLiquid && this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getMaterial() == Material.WATER;
     }
 
     private void spawnDeadFish(int x, int y, int z) {
-        LootContext.Builder build = new LootContext.Builder((WorldServer) this.worldObj);
-        for (ItemStack stack : this.worldObj.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.worldObj.rand, build.build())) {
-            EntityItem item = new EntityItem(this.worldObj, x, y, z, stack.copy());
-            this.worldObj.spawnEntityInWorld(item);
+        LootContext.Builder build = new LootContext.Builder((WorldServer) this.getEntityWorld());
+        for (ItemStack stack : this.getEntityWorld().getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.getEntityWorld().rand, build.build())) {
+            EntityItem item = new EntityItem(this.getEntityWorld(), x, y, z, stack.copy());
+            this.getEntityWorld().spawnEntityInWorld(item);
         }
     }
 
     private void convertToItem() {
-        if (!this.worldObj.isRemote)
-            InvUtils.ejectStack(this.worldObj, this.posX, this.posY, this.posZ, this.stack);
+        if (!this.getEntityWorld().isRemote)
+            InvUtils.ejectStack(this.getEntityWorld(), this.posX, this.posY, this.posZ, this.stack);
         this.setDead();
     }
 }

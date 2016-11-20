@@ -83,7 +83,7 @@ public class BWMFoodStats extends FoodStats {
      */
     @Override
     public void onUpdate(EntityPlayer player) {
-        EnumDifficulty enumdifficulty = player.worldObj.getDifficulty();
+        EnumDifficulty enumdifficulty = player.getEntityWorld().getDifficulty();
         setPrevFoodLevel(getFoodLevel());
 
         if (enumdifficulty != EnumDifficulty.PEACEFUL) {
@@ -100,7 +100,7 @@ public class BWMFoodStats extends FoodStats {
         } else
             setExhaustion(0.0F);
 
-        if (player.worldObj.getGameRules().getBoolean("naturalRegeneration") && this.getFoodLevel() >= 24
+        if (player.getEntityWorld().getGameRules().getBoolean("naturalRegeneration") && this.getFoodLevel() >= 24
                 && player.shouldHeal()) {
             setFoodTimer(getFoodTimer() + 1);
 

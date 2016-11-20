@@ -22,12 +22,14 @@ import java.util.Map;
 public final class RecipeUtils {
     private RecipeUtils() {
     }
+
     public static IBlockState getStateFromStack(ItemStack stack) {
-        if(stack != null && stack.getItem() instanceof ItemBlock){
+        if (stack != null && stack.getItem() instanceof ItemBlock) {
             return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
         }
         return Blocks.AIR.getDefaultState();
     }
+
     /**
      * Remove all recipes.
      *
@@ -41,7 +43,7 @@ public final class RecipeUtils {
         boolean found = false;
         while (li.hasNext()) {
             ItemStack output = li.next().getRecipeOutput();
-            if (output != null && output.getItem() == item) {
+            if (output != ItemStack.field_190927_a && output.getItem() == item) {
                 if (meta == OreDictionary.WILDCARD_VALUE || output.getMetadata() == meta) {
                     li.remove();
                     found = true;
@@ -59,7 +61,7 @@ public final class RecipeUtils {
             if (input != null) {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
-                    if (output != null) {
+                    if (output != ItemStack.field_190927_a) {
                         BWCrafting.addCauldronRecipe(output.copy(), new ItemStack[]{input.copy()});
                     }
                 }

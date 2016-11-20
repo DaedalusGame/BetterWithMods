@@ -58,10 +58,11 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
-        guiItemStacks.init(0, false, 8, 9);
-        guiItemStacks.init(1, true, 57, 9);
+        guiItemStacks.init(0, true, 8, 9);
+        guiItemStacks.init(1, false, 57, 9);
         guiItemStacks.init(3, false, 32, 27);
-        guiItemStacks.set(ingredients);
+        guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
+        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class));
         guiItemStacks.set(3, new ItemStack(BWMBlocks.SAW));
     }
 }

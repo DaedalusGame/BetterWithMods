@@ -59,8 +59,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     @Deprecated
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                            int meta, EntityLivingBase living, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, stack);
+                                            int meta, EntityLivingBase living) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living);
         if (side.ordinal() < 2)
             side = DirUtils.convertEntityOrientationToFlatFacing(living, side);
         return setFacingInBlock(state, side);
@@ -93,7 +93,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (!isCurrentStateValid(world, pos)) {
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
             setTriggerMechanicalStateChange(world, pos, true);

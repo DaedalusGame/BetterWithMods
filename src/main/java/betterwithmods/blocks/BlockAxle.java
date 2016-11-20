@@ -47,7 +47,7 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Y).withProperty(SIGNAL, 0));
         this.setSoundType(SoundType.WOOD);
-        this.setHarvestLevel("axe",0);
+        this.setHarvestLevel("axe", 0);
         setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
@@ -57,8 +57,8 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.field_190927_a && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.field_190927_a && player.isSneaking();
 
         if (world.isRemote && emptyHands)
             return true;
@@ -66,7 +66,7 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
             EnumFacing.Axis dir = DirUtils.getNextAxis(state.getValue(AXIS));
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
             world.setBlockState(pos, state.withProperty(SIGNAL, 0).withProperty(AXIS, dir));
-            world.notifyNeighborsOfStateChange(pos, this);
+            world.notifyNeighborsOfStateChange(pos, this, false);
             world.scheduleBlockUpdate(pos, this, 10, 5);
             return true;
         }
@@ -113,7 +113,7 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         validatePowerLevel(world, pos);
     }
 

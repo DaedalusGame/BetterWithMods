@@ -24,18 +24,19 @@ public class ItemFertilizer extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
         Block block = world.getBlockState(pos).getBlock();
         if (block != null && block instanceof IPlantable) {
             Block below = world.getBlockState(pos.down()).getBlock();
             if (processBlock(below, world, pos.down())) {
                 if (!player.capabilities.isCreativeMode)
-                    stack.stackSize--;
+                    stack.func_190918_g(1);
                 return EnumActionResult.SUCCESS;
             }
         } else if (processBlock(block, world, pos)) {
             if (!player.capabilities.isCreativeMode)
-                stack.stackSize--;
+                stack.func_190918_g(1);
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;

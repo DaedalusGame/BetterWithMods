@@ -22,17 +22,17 @@ public class TileEntityVase extends TileBasicInventory {
 
     public boolean onActivated(EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem) {
         ItemStack insertstack = heldItem.copy();
-        insertstack.stackSize = 1;
+        insertstack.func_190920_e(1);
         boolean flag = tryInsert(inventory, insertstack);
 
         if (flag) {
             if (!playerIn.isCreative()) {
-                heldItem.stackSize -= 1;
-                playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldItem.stackSize == 0 ? null : heldItem);
+                heldItem.func_190918_g(1);
+                playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldItem.func_190916_E() == 0 ? ItemStack.field_190927_a : heldItem);
             }
-            this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
+            this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
-                    ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         }
 
         return flag;
@@ -40,16 +40,16 @@ public class TileEntityVase extends TileBasicInventory {
 
     public void onBreak() {
         ItemStack vaseitem = inventory.getStackInSlot(0);
-        if (vaseitem != null && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
+        if (vaseitem != ItemStack.field_190927_a && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
             float intensity = 1.5f; // TODO: fiddle with this.
-            worldObj.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
+            getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
         } else {
-            InvUtils.ejectInventoryContents(worldObj, pos, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+            InvUtils.ejectInventoryContents(getWorld(), pos, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
         }
     }
 
     public boolean tryInsert(IItemHandler inv, ItemStack stack) {
-        if (stack.stackSize > 1 || inv.getStackInSlot(0) != null)
+        if (stack.func_190916_E() > 1 || inv.getStackInSlot(0) != ItemStack.field_190927_a)
             return false;
         inv.insertItem(0, stack, false);
         return true;

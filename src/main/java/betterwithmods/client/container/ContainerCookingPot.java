@@ -63,7 +63,7 @@ public class ContainerCookingPot extends Container {
             } else if (!mergeItemStack(stack1, 0, 27, false))
                 return null;
 
-            if (stack1.stackSize < 1)
+            if (stack1.func_190916_E() < 1)
                 slot.putStack(null);
             else
                 slot.onSlotChanged();

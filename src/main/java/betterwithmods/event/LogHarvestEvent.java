@@ -8,11 +8,7 @@ import betterwithmods.craft.SawInteraction;
 import betterwithmods.items.tools.ItemKnife;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -57,10 +53,10 @@ public class LogHarvestEvent {
             EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
-            if (playerStack == null)
+            if (playerStack == ItemStack.field_190927_a)
                 return;
             BlockPos playerPos = pos.offset(evt.getFace());
-            if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
+            if (playerStack != ItemStack.field_190927_a && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
                 if (block == Blocks.LOG) {
                     IBlockState state = world.getBlockState(pos);
                     IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));
@@ -103,7 +99,7 @@ public class LogHarvestEvent {
         World world = evt.getWorld();
         if (!world.isRemote && !evt.isSilkTouching()) {
             boolean harvest = false;
-            if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != null) {
+            if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.field_190927_a) {
                 Item item = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem();
 
                 if (item != null) {
@@ -114,7 +110,7 @@ public class LogHarvestEvent {
             }
 
             if (!harvest) {
-                int fortune = player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemKnife ? evt.getFortuneLevel() : 0;
+                int fortune = player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.field_190927_a && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemKnife ? evt.getFortuneLevel() : 0;
                 boolean fort = fortune > 0;
                 List<ItemStack> logs = OreDictionary.getOres("logWood");
                 boolean isLog = logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
@@ -127,8 +123,8 @@ public class LogHarvestEvent {
                                 List<ItemStack> newOutputs = Lists.newArrayList();
                                 if (outputs.size() == 3) {
                                     ItemStack planks = outputs.get(0).copy();
-                                    planks.stackSize = (planks.stackSize / 2) + (fort ? world.rand.nextInt(2) : 0);
-                                    int barkStack = fort ? outputs.get(1).stackSize + world.rand.nextInt(fortune) : outputs.get(1).stackSize;
+                                    planks.func_190920_e((planks.func_190916_E() / 2) + (fort ? world.rand.nextInt(2) : 0));
+                                    int barkStack = fort ? outputs.get(1).func_190916_E() + world.rand.nextInt(fortune) : outputs.get(1).func_190916_E();
 
                                     ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;

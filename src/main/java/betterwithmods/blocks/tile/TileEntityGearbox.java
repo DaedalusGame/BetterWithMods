@@ -30,7 +30,7 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     @Override
     public void update() {
         if (getBlockType() instanceof BlockAdvGearbox) {
-            if (((BlockAdvGearbox) getBlockType()).isGearboxOn(worldObj, pos)) {
+            if (((BlockAdvGearbox) getBlockType()).isGearboxOn(getWorld(), pos)) {
                 if (refreshTime == 20) {
                     findOutputs();
                 } else {
@@ -44,10 +44,10 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     private void findOutputs() {
         outputs = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
-            if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(worldObj, pos, facing)) {
+            if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(getWorld(), pos, facing)) {
                 if (powerLevel != getMechanicalInput(facing))
                     powerLevel = getMechanicalInput(facing);
-            } else if (MechanicalUtil.isAxle(worldObj.getBlockState(pos.offset(facing)).getBlock())) {
+            } else if (MechanicalUtil.isAxle(getWorld().getBlockState(pos.offset(facing)).getBlock())) {
                 outputs++;
             }
         }
@@ -70,7 +70,7 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
         if (getBlockType() instanceof IMechanical) {
-            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0) {
+            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0) {
                 if (outputs > 0)
                     return powerLevel / outputs;
                 else

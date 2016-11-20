@@ -66,7 +66,7 @@ public class BlockLight extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (!world.isRemote) {
             if (state.getValue(ACTIVE) && !world.isBlockPowered(pos) && !isIndirectlyPowered(world, pos))
                 world.scheduleUpdate(pos, this, 4);
@@ -74,7 +74,7 @@ public class BlockLight extends BWMBlock implements IMultiVariants {
                 world.setBlockState(pos, state.withProperty(ACTIVE, true), 2);
                 for (EnumFacing facing : EnumFacing.VALUES) {
                     if (world.getBlockState(pos.offset(facing)).getBlock() == this)
-                        world.notifyBlockOfStateChange(pos.offset(facing), this);
+                        world.func_190524_a(pos.offset(facing), this, pos);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class BlockLight extends BWMBlock implements IMultiVariants {
                 world.setBlockState(pos, state.withProperty(ACTIVE, false), 2);
                 for (EnumFacing facing : EnumFacing.VALUES) {
                     if (world.getBlockState(pos.offset(facing)).getBlock() == this)
-                        world.notifyBlockOfStateChange(pos.offset(facing), this);
+                        world.func_190524_a(pos.offset(facing), this, pos);
                 }
             }
         }

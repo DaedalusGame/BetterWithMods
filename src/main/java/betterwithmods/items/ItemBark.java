@@ -6,11 +6,11 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemBark extends Item implements IMultiLocations {
     public ItemBark() {
@@ -55,7 +55,7 @@ public class ItemBark extends Item implements IMultiLocations {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockPlanks.EnumType enumType : BlockPlanks.EnumType.values()) {
             list.add(new ItemStack(item, 1, enumType.getMetadata()));
         }

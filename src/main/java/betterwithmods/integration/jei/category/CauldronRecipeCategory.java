@@ -42,13 +42,6 @@ public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrap
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CauldronRecipeWrapper wrapper, IIngredients ingredients) {
-        setRecipe(layout, wrapper);
-        //TODO Ingredients
-    }
-
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CauldronRecipeWrapper wrapper) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
@@ -60,11 +53,16 @@ public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrap
                 stacks.init(index, true, 2 + i * 18, j * 18);
             }
         }
-
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
         if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
+        List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputStacks(stacks, inputList);
+    }
+
+    @Deprecated
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CauldronRecipeWrapper wrapper) {
+
     }
 }

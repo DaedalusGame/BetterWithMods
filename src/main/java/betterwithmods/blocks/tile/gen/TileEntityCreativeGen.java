@@ -44,7 +44,7 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
         if (getBlockType() instanceof IMechanical) {
-            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(worldObj, pos, facing) > 0)
+            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0)
                 return 20;
         }
         return 0;

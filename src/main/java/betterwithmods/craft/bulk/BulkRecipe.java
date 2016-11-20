@@ -70,7 +70,7 @@ public class BulkRecipe {
             int contain = InvUtils.listContains(obj, inputs);
             if (contain > -1) {
                 if (obj instanceof ItemStack) {
-                    ((ItemStack) inputs.get(contain)).stackSize += ((ItemStack) obj).stackSize;
+                    ((ItemStack) inputs.get(contain)).func_190917_f(((ItemStack) obj).func_190916_E());
                 } else if (obj instanceof OreStack) {
                     ((OreStack) inputs.get(contain)).addToStack(((OreStack) obj).getStackSize());
                 }
@@ -91,11 +91,11 @@ public class BulkRecipe {
     }
 
     private List<ItemStack> getOreList(OreStack stack) {
-        int stackSize = stack.getStackSize();
+        int sizeOfStack = stack.getStackSize();
         List<ItemStack> list = new ArrayList<>();
         if (stack.getOres() != null && !stack.getOres().isEmpty()) {
             for (ItemStack s : stack.getOres()) {
-                list.add(new ItemStack(s.getItem(), stackSize, s.getItemDamage()));
+                list.add(new ItemStack(s.getItem(), sizeOfStack, s.getItemDamage()));
             }
         }
         return list;
@@ -120,12 +120,12 @@ public class BulkRecipe {
     public boolean matches(ItemStackHandler inv) {
         ArrayList<Object> required = new ArrayList<>(input);
 
-        if (required != null && required.size() > 0) {
+        if (required.size() > 0) {
             for (Object obj : required) {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
-                    if (stack != null) {
-                        if (InvUtils.countItemStacksInInventory(inv, stack) < stack.stackSize)
+                    if (stack != ItemStack.field_190927_a) {
+                        if (InvUtils.countItemStacksInInventory(inv, stack) < stack.func_190916_E())
                             return false;
                     }
                 } else if (obj instanceof OreStack) {
@@ -163,8 +163,8 @@ public class BulkRecipe {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
 
-                    if (stack != null) {
-                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.stackSize))
+                    if (stack != ItemStack.field_190927_a) {
+                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.func_190916_E()))
                             success = false;
                     }
                 } else if (obj instanceof OreStack) {
@@ -181,6 +181,6 @@ public class BulkRecipe {
     }
 
     private boolean stacksMatch(ItemStack first, ItemStack second) {
-        return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.stackSize == second.stackSize;
+        return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.func_190916_E() == second.func_190916_E();
     }
 }

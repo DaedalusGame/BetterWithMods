@@ -13,7 +13,8 @@ import net.minecraft.util.ResourceLocation;
  * @version 11/18/16
  */
 public class RenderBroadheadArrow extends RenderArrow<EntityBroadheadArrow> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID,"textures/entity/broadhead_arrow.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID, "textures/entity/broadhead_arrow.png");
+
     public RenderBroadheadArrow(RenderManager renderManagerIn) {
         super(renderManagerIn);
     }

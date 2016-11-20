@@ -213,12 +213,12 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         blocks.forEach((vec, state) -> {
             if (getBlockStateHeight(state) > 0) {
                 Vec3d pos = new Vec3d(pulley.getX(), posY, pulley.getZ()).addVector(vec.getX(), vec.getY(), vec.getZ());
-                worldObj.getEntitiesWithinAABBExcludingEntity(this,
+                getEntityWorld().getEntitiesWithinAABBExcludingEntity(this,
                         createAABB(pos, pos.addVector(1, getBlockStateHeight(state), 1))).forEach(e -> {
                     if (!(e instanceof EntityExtendingRope)) {
                         double targetY = pos.yCoord + getBlockStateHeight(state) - 0.01;
                         if (!entMaxY.containsKey(e) || entMaxY.get(e) < targetY) {
-                            if ((!worldObj.isRemote ^ e instanceof EntityPlayer) || b) {
+                            if ((!getEntityWorld().isRemote ^ e instanceof EntityPlayer) || b) {
                                 entitiesInBlocks.add(e);
                                 entMaxY.put(e, targetY);
                             }
@@ -228,14 +228,14 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             }
         });
 
-        worldObj.getEntitiesWithinAABBExcludingEntity(this,
+        getEntityWorld().getEntitiesWithinAABBExcludingEntity(this,
                 AABBArray.toAABB(this.getEntityBoundingBox()).expand(0, 0.5, 0).offset(0, 0.5, 0)).forEach(e -> {
             if (!(e instanceof EntityExtendingRope)
                     && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).capabilities.isFlying))
                 passengers.add(e);
         });
 
-        passengers.forEach(e -> e.moveEntity(0, newPosY - posY, 0));
+        passengers.forEach(e -> e.moveEntity(null, 0, newPosY - posY, 0));
         passengers.forEach(e -> e.fallDistance = 0);
         entitiesInBlocks.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
         entitiesInBlocks.forEach(e -> e.isAirBorne = false);
@@ -250,13 +250,14 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 : (blockState.getBlock() instanceof BlockRailBase || blockState.getBlock() instanceof BlockRedstoneWire ? 0 : 1)));
     }
 
+    @Override
     public boolean canRenderOnFire() {
         return false;
     }
 
     private boolean done() {
-        if (!worldObj.isRemote) {
-            TileEntity te = worldObj.getTileEntity(pulley);
+        if (!getEntityWorld().isRemote) {
+            TileEntity te = getEntityWorld().getTileEntity(pulley);
             if (te instanceof TileEntityPulley) {
                 TileEntityPulley pulley = (TileEntityPulley) te;
                 if (!pulley.onJobCompleted(up, targetY, this)) {
@@ -265,12 +266,12 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                     // blocks.forEach((vec, state) -> {
                     // if (!(state.getBlock() instanceof BlockRailBase)) {
                     // if (state.getBlock().)
-                    // worldObj.setBlockState(pos.add(vec), state, 3);
+                    // getEntityWorld().setBlockState(pos.add(vec), state, 3);
                     // }
                     // });
                     // blocks.forEach((vec, state) -> {
                     // if (state.getBlock() instanceof BlockRailBase) {
-                    // worldObj.setBlockState(pos.add(vec), state, 3);
+                    // getEntityWorld().setBlockState(pos.add(vec), state, 3);
                     // }
                     // });
 
@@ -280,8 +281,8 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                         int skipped = 0;
                         for (Entry<Vec3i, IBlockState> entry : blocks.entrySet()) {
                             BlockPos blockPos = pos.add(entry.getKey());
-                            if (entry.getValue().getBlock().canPlaceBlockAt(worldObj, blockPos)) {
-                                worldObj.setBlockState(blockPos, entry.getValue(), 3);
+                            if (entry.getValue().getBlock().canPlaceBlockAt(getEntityWorld(), blockPos)) {
+                                getEntityWorld().setBlockState(blockPos, entry.getValue(), 3);
                                 blocks.remove(entry.getKey());
                                 skipped = 0;
                                 break;
@@ -294,8 +295,8 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                     }
 
                     if (retries > 0) {
-                        blocks.forEach((vec, state) -> state.getBlock().getDrops(worldObj, pos, state, 0).forEach(stack -> worldObj
-                                .spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack))));
+                        blocks.forEach((vec, state) -> state.getBlock().getDrops(getEntityWorld(), pos, state, 0).forEach(stack -> getEntityWorld()
+                                .spawnEntityInWorld(new EntityItem(getEntityWorld(), posX, posY, posZ, stack))));
                     }
 
                     updatePassengers(posY, targetY + 0.25, true);
@@ -337,6 +338,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         this.targetY = i;
     }
 
+    @Override
     public boolean canBeCollidedWith() {
         return !this.isDead;
     }
@@ -360,9 +362,9 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 else
                     pos = pos.down();
 
-                Block b = worldObj.getBlockState(pos).getBlock();
+                Block b = getEntityWorld().getBlockState(pos).getBlock();
 
-                if (!(b == Blocks.AIR || b.isReplaceable(worldObj, pos))) {
+                if (!(b == Blocks.AIR || b.isReplaceable(getEntityWorld(), pos))) {
                     blocked.add(pos);
                 }
             }

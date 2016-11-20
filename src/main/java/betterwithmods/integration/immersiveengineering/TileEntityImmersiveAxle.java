@@ -13,15 +13,15 @@ public class TileEntityImmersiveAxle extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if (!worldObj.isRemote) {
-            if (worldObj.getBlockState(pos).getBlock() instanceof BlockImmersiveAxle) {
-                if (((BlockImmersiveAxle) worldObj.getBlockState(pos).getBlock()).isMechanicalOn(worldObj, pos)) {
-                    if (!this.worldObj.isRaining() && !this.worldObj.isThundering() && overpowered)
+        if (!getWorld().isRemote) {
+            if (getWorld().getBlockState(pos).getBlock() instanceof BlockImmersiveAxle) {
+                if (((BlockImmersiveAxle) getWorld().getBlockState(pos).getBlock()).isMechanicalOn(getWorld(), pos)) {
+                    if (!this.getWorld().isRaining() && !this.getWorld().isThundering() && overpowered)
                         overpowered = false;
                     double velocity = overpowered ? 16 : 4;
-                    EnumFacing facing = EnumFacing.getFront(worldObj.getBlockState(pos).getValue(BlockImmersiveAxle.AXLEDIR) * 2);
-                    TileEntity entity = worldObj.getTileEntity(pos.offset(facing));
-                    TileEntity oppEntity = worldObj.getTileEntity(pos.offset(facing.getOpposite()));
+                    EnumFacing facing = EnumFacing.getFront(getWorld().getBlockState(pos).getValue(BlockImmersiveAxle.AXLEDIR) * 2);
+                    TileEntity entity = getWorld().getTileEntity(pos.offset(facing));
+                    TileEntity oppEntity = getWorld().getTileEntity(pos.offset(facing.getOpposite()));
                     if (entity instanceof TileEntityDynamo)
                         ((TileEntityDynamo) entity).inputRotation(velocity, facing);
                     else if (oppEntity instanceof TileEntityDynamo)
@@ -32,7 +32,7 @@ public class TileEntityImmersiveAxle extends TileEntity implements ITickable {
     }
 
     public void setOverpowered() {
-        if (!overpowered && (this.worldObj.isRaining() || this.worldObj.isThundering()))
+        if (!overpowered && (this.getWorld().isRaining() || this.getWorld().isThundering()))
             overpowered = true;
     }
 

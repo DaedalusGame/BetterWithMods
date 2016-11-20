@@ -82,12 +82,12 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
         if (meta < 7) {
             if (world.getLightFromNeighbors(up) > 12) {
-                if (rand.nextInt(MathHelper.floor_double(growthChance)) == 0)
+                if (rand.nextInt(MathHelper.floor(growthChance)) == 0)
                     world.setBlockState(pos, state.withProperty(AGE, meta + 1));
             }
         } else if (meta == 7 && world.isAirBlock(up) && !isTop) {
             if (world.getLightFromNeighbors(up) > 12) {
-                if (rand.nextInt(MathHelper.floor_double(growthChance)) == 0)
+                if (rand.nextInt(MathHelper.floor(growthChance)) == 0)
                     world.setBlockState(up, state.withProperty(AGE, 7).withProperty(TOP, true));
             }
         }

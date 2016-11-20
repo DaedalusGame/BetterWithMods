@@ -3,6 +3,7 @@ package betterwithmods.entity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,6 +56,7 @@ public class EntityMiningCharge extends Entity {
         setNoGravity(true);
     }
 
+    @Override
     protected void entityInit() {
         this.dataManager.register(FUSE, 80);
         this.dataManager.register(FACING, EnumFacing.NORTH.getIndex());
@@ -64,6 +66,7 @@ public class EntityMiningCharge extends Entity {
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
+    @Override
     protected boolean canTriggerWalking() {
         return false;
     }
@@ -71,6 +74,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
+    @Override
     public boolean canBeCollidedWith() {
         return !this.isDead;
     }
@@ -78,6 +82,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -85,7 +90,7 @@ public class EntityMiningCharge extends Entity {
         if (!this.hasNoGravity()) {
             this.motionY -= 0.03999999910593033D;
         }
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 
         --this.fuse;
@@ -93,18 +98,18 @@ public class EntityMiningCharge extends Entity {
         if (this.fuse <= 0) {
             this.setDead();
 
-            if (!this.worldObj.isRemote) {
+            if (!this.getEntityWorld().isRemote) {
                 this.explode();
             }
         } else {
             this.handleWaterMovement();
-            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 
     private void explode() {
-        this.worldObj.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-        this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
+        this.getEntityWorld().playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.getEntityWorld().rand.nextFloat() - this.getEntityWorld().rand.nextFloat()) * 0.2F) * 0.7F);
+        this.getEntityWorld().spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
         BlockPos pos = getPosition();
         EnumFacing facing = this.facing.getOpposite();
         for (int k = 0; k <= 3; k++) {
@@ -113,23 +118,23 @@ public class EntityMiningCharge extends Entity {
                 for (int i = -1; i <= 1; i++) {
                     for (int j = -1; j <= 1; j++) {
                         if (facing == UP || facing == DOWN)
-                            explodeBlock(worldObj, pos.add(i, dir * k, j));
+                            explodeBlock(getEntityWorld(), pos.add(i, dir * k, j));
                         else if (facing == NORTH || facing == SOUTH)
-                            explodeBlock(worldObj, pos.add(i, j, dir * k));
+                            explodeBlock(getEntityWorld(), pos.add(i, j, dir * k));
                         else if (facing == EAST || facing == WEST)
-                            explodeBlock(worldObj, pos.add(dir * k, i, j));
+                            explodeBlock(getEntityWorld(), pos.add(dir * k, i, j));
                     }
                 }
             } else {
                 if (facing == UP || facing == DOWN)
-                    explodeBlock(worldObj, pos.add(0, dir * k, 0));
+                    explodeBlock(getEntityWorld(), pos.add(0, dir * k, 0));
                 else if (facing == NORTH || facing == SOUTH)
-                    explodeBlock(worldObj, pos.add(0, 0, dir * k));
+                    explodeBlock(getEntityWorld(), pos.add(0, 0, dir * k));
                 else if (facing == EAST || facing == WEST)
-                    explodeBlock(worldObj, pos.add(dir * k, 0, 0));
+                    explodeBlock(getEntityWorld(), pos.add(dir * k, 0, 0));
             }
         }
-        List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).expand(5, 5, 5));
+        List<EntityLivingBase> entities = getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).expand(5, 5, 5));
         entities.forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
     }
 
@@ -152,6 +157,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
         compound.setShort("Fuse", (short) this.getFuse());
         compound.setByte("Facing", (byte) this.getFacing().getIndex());
@@ -160,6 +166,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
         this.setFuse(compound.getShort("Fuse"));
         this.setFacing(compound.getByte("Facing"));
@@ -172,10 +179,12 @@ public class EntityMiningCharge extends Entity {
         return this.igniter;
     }
 
+    @Override
     public float getEyeHeight() {
         return 0.0F;
     }
 
+    @Override
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (FUSE.equals(key)) {
             this.fuse = this.getFuseDM();

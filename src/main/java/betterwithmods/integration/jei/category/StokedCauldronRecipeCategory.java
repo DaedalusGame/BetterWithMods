@@ -40,28 +40,6 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
         flame.draw(minecraft, 80, 19);
     }
 
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull StokedCauldronRecipeWrapper wrapper) {
-        IGuiItemStackGroup stacks = layout.getItemStacks();
-
-        stacks.init(outputSlots, false, 118, 18);
-        stacks.init(outputSlots + 1, false, 118 + 18, 18);
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                int index = inputSlots + i + (j * 3);
-                stacks.init(index, true, 2 + i * 18, j * 18);
-            }
-        }
-
-        stacks.set(outputSlots, wrapper.getRecipe().getOutput());
-        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
-            stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = wrapper.getInputs(); //TODO adapted for JEI 3.11.2. May not be correct.
-        craftingGrid.setInputStacks(stacks, inputList);
-    }
-
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull StokedCauldronRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();

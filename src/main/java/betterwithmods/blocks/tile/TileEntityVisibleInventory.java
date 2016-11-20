@@ -1,6 +1,7 @@
 package betterwithmods.blocks.tile;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -62,8 +63,8 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         readFromNBT(tag);
-        IBlockState state = worldObj.getBlockState(this.pos);
-        worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+        IBlockState state = getWorld().getBlockState(this.pos);
+        getWorld().notifyBlockUpdate(this.pos, state, state, 3);
     }
 
     @Override
@@ -74,7 +75,7 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
     public int filledSlots() {
         int fill = 0;
         for (int i = 0; i < this.getMaxVisibleSlots(); i++) {
-            if (inventory.getStackInSlot(i) != null)
+            if (inventory.getStackInSlot(i) != ItemStack.field_190927_a)
                 fill++;
         }
         return fill;

@@ -25,8 +25,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by tyler on 9/5/16.
  */
@@ -101,6 +99,7 @@ public class BlockMiningCharge extends BWMBlock {
         return getDefaultState().withProperty(DirUtils.FACING, facing);
     }
 
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos)) {
@@ -109,7 +108,8 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos other) {
         if (worldIn.isBlockPowered(pos)) {
             this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
             worldIn.setBlockToAir(pos);
@@ -120,38 +120,43 @@ public class BlockMiningCharge extends BWMBlock {
     public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
         IBlockState state = world.getBlockState(pos);
         world.setBlockToAir(pos);
-        onBlockDestroyedByExplosion(world, pos, state, explosion);
+        onBlockDestroyedByExplosion(world, pos, explosion);
     }
 
-    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, IBlockState state, Explosion explosionIn) {
+    @Override
+    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
         if (!worldIn.isRemote) {
-            EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), explosionIn.getExplosivePlacedBy(), getFacingFromBlockState(state));
+            EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), explosionIn.getExplosivePlacedBy(), getFacingFromBlockState(worldIn.getBlockState(pos)));
             miningCharge.setFuse((short) (worldIn.rand.nextInt(miningCharge.getFuse() / 4) + miningCharge.getFuse() / 8));
             worldIn.spawnEntityInWorld(miningCharge);
         }
     }
 
+    @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         this.explode(worldIn, pos, state, null);
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (heldItem != null && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+        if (heldItem != ItemStack.field_190927_a && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
             this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 
             if (heldItem.getItem() == Items.FLINT_AND_STEEL) {
                 heldItem.damageItem(1, playerIn);
             } else if (!playerIn.capabilities.isCreativeMode) {
-                --heldItem.stackSize;
+                heldItem.func_190918_g(1);
             }
 
             return true;
         } else {
-            return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+            return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
         }
     }
 
+    @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote && entityIn instanceof EntityArrow) {
             EntityArrow entityarrow = (EntityArrow) entityIn;
@@ -162,16 +167,19 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
+    @Override
     public boolean canDropFromExplosion(Explosion explosionIn) {
         return false;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta) {
         boolean explode = (meta & 1) > 0;
         EnumFacing facing = EnumFacing.getFront(meta >> 1);
         return this.getDefaultState().withProperty(EXPLODE, explode).withProperty(DirUtils.FACING, facing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state) {
         int facing = state.getValue(DirUtils.FACING).getIndex() << 1;
         int explode = state.getValue(EXPLODE) ? 1 : 0;

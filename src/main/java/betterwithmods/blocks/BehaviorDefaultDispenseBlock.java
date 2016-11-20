@@ -37,33 +37,33 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem {
         if (stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check))) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             boolean blockAcross = !world.isAirBlock(check.offset(facing));
-            IBlockState state = block.getStateForPlacement(world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake, stack);
+            IBlockState state = block.getStateForPlacement(world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), stack.getItemDamage(), fake);
             if (block.canPlaceBlockAt(world, check)) {
                 if (((ItemBlock) stack.getItem()).placeBlockAt(stack1, fake, world, check, facing, getX(facing, blockAcross), getY(facing, blockAcross), getZ(facing, blockAcross), state)) {
                     world.playSound(null, check, state.getBlock().getSoundType(state, world, check, fake).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
                     return stack;
                 }
             } else {
-                stack.stackSize += 1;
+                stack.func_190917_f(1);
                 return stack;
             }
 
         } else if (stack.getItem() instanceof ItemBlockSpecial) {
-            if (stack.getItem().onItemUse(stack1, fake, world, check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if (stack.getItem().onItemUse(fake, world, check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             } else {
-                stack.stackSize += 1;
+                stack.func_190917_f(1);
                 return stack;
             }
         } else if (stack.getItem() instanceof ItemSeeds) {
-            if (stack.getItem().onItemUse(stack1, fake, world, check.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if (stack.getItem().onItemUse(fake, world, check.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             } else {
-                stack.stackSize += 1;
+                stack.func_190917_f(1);
                 return stack;
             }
         } else {
-            stack.stackSize += 1;
+            stack.func_190917_f(1);
             return stack;
         }
         return stack;

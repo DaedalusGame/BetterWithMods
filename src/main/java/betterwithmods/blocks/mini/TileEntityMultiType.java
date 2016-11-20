@@ -50,8 +50,8 @@ public class TileEntityMultiType extends TileEntity {
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         this.readFromNBT(tag);
-        IBlockState state = worldObj.getBlockState(this.pos);
-        this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+        IBlockState state = getWorld().getBlockState(this.pos);
+        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
     }
 
     @Override

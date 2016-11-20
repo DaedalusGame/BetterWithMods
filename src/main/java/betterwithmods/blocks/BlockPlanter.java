@@ -18,10 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -32,7 +29,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockPlanter extends BWMBlock implements IMultiVariants {
@@ -68,19 +64,20 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         IBlockState planter = world.getBlockState(pos);
+        ItemStack heldItem = player.getHeldItem(hand);
         int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
         if (world.isRemote) {
             ItemStack item = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (item != null) {
+            if (item != ItemStack.field_190927_a) {
                 if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
                     return true;
                 else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.FERTILIZER))
                     return true;
                 else if (meta == 2 && item.getItem() instanceof ItemHoe)
                     return true;
-                else if (meta != 0 && meta != 6 && item.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1)
+                else if (meta != 0 && meta != 6 && item.getItem().getHarvestLevel(player.getHeldItem(hand), "shovel", player, planter) > -1)
                     return true;
                 else if (meta == 6 && item.getItem() == Items.BUCKET)
                     return true;
@@ -90,14 +87,14 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
         if (meta == 0) {
             ItemStack stack = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (stack != null) {
+            if (stack != ItemStack.field_190927_a) {
                 boolean valid = false;
 
                 if (stack.getItem() == Items.WATER_BUCKET) {
                     world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.WATER));
                     world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                     ItemStack replacement = stack.getItem().getContainerItem(stack);
-                    if (stack.stackSize == 1 && !player.capabilities.isCreativeMode) {
+                    if (stack.func_190916_E() == 1 && !player.capabilities.isCreativeMode) {
                         EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
                         if (hand == EnumHand.OFF_HAND)
                             slot = EntityEquipmentSlot.OFFHAND;
@@ -114,7 +111,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                     Block block = ((ItemBlock) stack.getItem()).getBlock();
                     if (this.isValidBlockStack(stack)) {
                         if (!player.capabilities.isCreativeMode)
-                            stack.stackSize--;
+                            stack.func_190918_g(1);
                         for (EnumPlanterType type : EnumPlanterType.values()) {
                             if (valid)
                                 break;
@@ -130,11 +127,11 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 return valid;
             }
         } else if (meta == 1) {
-            if (heldItem != null) {
+            if (heldItem != ItemStack.field_190927_a) {
                 if (heldItem.getItem() == Items.DYE && heldItem.getItemDamage() == 15) {
                     world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.FERTILE));
                     if (!player.capabilities.isCreativeMode)
-                        heldItem.stackSize--;
+                        heldItem.func_190918_g(1);
                     world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     return true;
                 }
@@ -155,13 +152,13 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             return true;
         } else if (meta == 6 && heldItem.getItem() == Items.BUCKET) {
             if (!player.capabilities.isCreativeMode) {
-                if (heldItem.stackSize == 1) {
+                if (heldItem.func_190916_E() == 1) {
                     EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
                     if (hand == EnumHand.OFF_HAND)
                         slot = EntityEquipmentSlot.OFFHAND;
                     player.setItemStackToSlot(slot, new ItemStack(Items.WATER_BUCKET));
                 } else {
-                    heldItem.stackSize--;
+                    heldItem.func_190918_g(1);
                     if (!player.inventory.addItemStackToInventory(new ItemStack(Items.WATER_BUCKET)))
                         player.dropItem(new ItemStack(Items.WATER_BUCKET), false);
                 }
@@ -262,7 +259,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 9; i++) {
             list.add(new ItemStack(item, 1, i));
         }

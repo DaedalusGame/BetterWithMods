@@ -100,7 +100,7 @@ public class PotionEventHandler {
         if (e.getEntity() instanceof EntityPlayer) {
 
             EntityPlayer player = (EntityPlayer) e.getEntity();
-            World world = player.worldObj;
+            World world = player.getEntityWorld();
 
             if (player.isPotionActive(BWRegistry.POTION_TRUESIGHT)) {
 
@@ -110,9 +110,9 @@ public class PotionEventHandler {
                     if (!mc.isGamePaused()
                             && (world.provider.getDimension() == 0 || world.provider.getDimension() == 1)) {
 
-                        int var4 = MathHelper.floor_double(player.posX);
-                        int var5 = MathHelper.floor_double(player.posY);
-                        int var6 = MathHelper.floor_double(player.posZ);
+                        int var4 = MathHelper.floor(player.posX);
+                        int var5 = MathHelper.floor(player.posY);
+                        int var6 = MathHelper.floor(player.posZ);
                         int radius = 10;
                         for (int x = var4 - radius; x <= var4 + radius; ++x) {
                             for (int y = var5 - radius; y <= var5 + radius; ++y) {

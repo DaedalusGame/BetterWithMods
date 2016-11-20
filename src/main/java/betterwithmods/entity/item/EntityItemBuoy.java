@@ -1,10 +1,11 @@
 package betterwithmods.entity.item;
 
 import betterwithmods.util.item.ItemExt;
-import com.google.common.base.Optional;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -23,17 +24,19 @@ import java.lang.reflect.InvocationTargetException;
  * @author Koward
  */
 public class EntityItemBuoy extends EntityItem {
+    private final static byte BUOYANCY_MAX_ITERATIONS = 10;
+
     /**
      * Wrapper around EntityItem.
      */
     public EntityItemBuoy(EntityItem orig) {
-        super(orig.worldObj, orig.posX, orig.posY, orig.posZ, orig.getEntityItem());
+        super(orig.getEntityWorld(), orig.posX, orig.posY, orig.posZ, orig.getEntityItem());
         NBTTagCompound originalData = new NBTTagCompound();
         orig.writeEntityToNBT(originalData);
         this.readEntityFromNBT(originalData);
 
         String thrower = orig.getThrower();
-        Entity entity = thrower == null ? null : orig.worldObj.getPlayerEntityByName(thrower);
+        Entity entity = thrower == null ? null : orig.getEntityWorld().getPlayerEntityByName(thrower);
         double tossSpeed = entity != null && entity.isSprinting() ? 2D : 1D;
 
         this.motionX = orig.motionX * tossSpeed;
@@ -71,7 +74,7 @@ public class EntityItemBuoy extends EntityItem {
         return ReflectionHelper.getPrivateValue(EntityItem.class, this, new String[]{"field_70292_b", "age"});
     }
 
-    private DataParameter<Optional<ItemStack>> getITEM() {
+    private DataParameter<ItemStack> getITEM() {
         return ReflectionHelper.getPrivateValue(EntityItem.class, this, new String[]{"field_184533_c", "ITEM"});
     }
 
@@ -85,14 +88,14 @@ public class EntityItemBuoy extends EntityItem {
      */
     @Override
     public void onUpdate() {
-        ItemStack stack = this.getDataManager().get(getITEM()).orNull();
-        if (stack != null && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
+        ItemStack stack = this.getDataManager().get(getITEM());
+        if (stack != ItemStack.field_190927_a && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
             return;
-        if (this.getEntityItem() == null) {
+        if (this.getEntityItem() == ItemStack.field_190927_a) {
             this.setDead();
         } else {
             // super.super.onUpdate() START
-            if (!this.worldObj.isRemote) {
+            if (!this.getEntityWorld().isRemote) {
                 this.setFlag(6, this.isGlowing());
             }
             this.onEntityUpdate();
@@ -113,19 +116,19 @@ public class EntityItemBuoy extends EntityItem {
 
             this.noClip = this.pushOutOfBlocks(this.posX,
                     (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             boolean flag = (int) this.prevPosX != (int) this.posX || (int) this.prevPosY != (int) this.posY
                     || (int) this.prevPosZ != (int) this.posZ;
 
             if (flag || this.ticksExisted % 25 == 0) {
-                if (this.worldObj.getBlockState(new BlockPos(this)).getMaterial() == Material.LAVA) {
+                if (this.getEntityWorld().getBlockState(new BlockPos(this)).getMaterial() == Material.LAVA) {
                     this.motionY = 0.20000000298023224D;
                     this.motionX = (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                     this.motionZ = (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                     this.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
                 }
 
-                if (!this.worldObj.isRemote) {
+                if (!this.getEntityWorld().isRemote) {
                     superSearchForOtherItemsNearby();
                 }
             }
@@ -133,9 +136,9 @@ public class EntityItemBuoy extends EntityItem {
             float f = 0.98F;
 
             if (this.onGround) {
-                f = this.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.posX),
-                        MathHelper.floor_double(this.getEntityBoundingBox().minY) - 1,
-                        MathHelper.floor_double(this.posZ))).getBlock().slipperiness * 0.98F;
+                f = this.getEntityWorld().getBlockState(new BlockPos(MathHelper.floor(this.posX),
+                        MathHelper.floor(this.getEntityBoundingBox().minY) - 1,
+                        MathHelper.floor(this.posZ))).getBlock().slipperiness * 0.98F;
             }
 
             this.motionX *= (double) f;
@@ -152,27 +155,26 @@ public class EntityItemBuoy extends EntityItem {
 
             // this.handleWaterMovement();
 
-            ItemStack item = this.getDataManager().get(getITEM()).orNull();
+            ItemStack item = this.getDataManager().get(getITEM());
 
-            if (!this.worldObj.isRemote && this.getAge0() >= lifespan) {
+            if (!this.getEntityWorld().isRemote && this.getAge0() >= lifespan) {
                 int hook = net.minecraftforge.event.ForgeEventFactory.onItemExpire(this, item);
                 if (hook < 0)
                     this.setDead();
                 else
                     this.lifespan += hook;
             }
-            if (item != null && item.stackSize <= 0) {
+            if (item != ItemStack.field_190927_a && item.func_190916_E() <= 0) {
                 this.setDead();
             }
         }
     }
 
     private void updateBuoy() {
-        final byte maxIterations = 10;
         double waterAccumulator = 0.0D;
         final double offset = 0.1D;
 
-        for (int i = 0; i < maxIterations; ++i) {
+        for (int i = 0; i < BUOYANCY_MAX_ITERATIONS; ++i) {
             double low = getEntityBoundingBox().minY
                     + (getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (double) (i) * 0.375D + offset;
             double high = getEntityBoundingBox().minY
@@ -180,11 +182,11 @@ public class EntityItemBuoy extends EntityItem {
             AxisAlignedBB boundingBox = new AxisAlignedBB(getEntityBoundingBox().minX, low, getEntityBoundingBox().minZ,
                     getEntityBoundingBox().maxX, high, getEntityBoundingBox().maxZ);
 
-            if (!worldObj.isAABBInMaterial(boundingBox, Material.WATER)) {
+            if (!isAABBInMaterial(getEntityWorld(), boundingBox, Material.WATER)) {
                 break;
             }
 
-            waterAccumulator += 1.0D / (double) maxIterations;
+            waterAccumulator += 1.0D / (double) BUOYANCY_MAX_ITERATIONS;
         }
 
         if (waterAccumulator > 0.001D) {
@@ -197,7 +199,6 @@ public class EntityItemBuoy extends EntityItem {
             motionY *= 0.9;
             motionZ *= 0.9;
         }
-
     }
 
     /**
@@ -205,12 +206,12 @@ public class EntityItemBuoy extends EntityItem {
      * nearby entity.
      */
     private boolean isDrifted() {
-        int minX = MathHelper.floor_double(getEntityBoundingBox().minX);
-        int maxX = MathHelper.floor_double(getEntityBoundingBox().maxX + 1.0D);
-        int minY = MathHelper.floor_double(getEntityBoundingBox().minY);
-        int maxY = MathHelper.floor_double(getEntityBoundingBox().maxY + 1.0D);
-        int minZ = MathHelper.floor_double(getEntityBoundingBox().minZ);
-        int maxZ = MathHelper.floor_double(getEntityBoundingBox().maxZ + 1.0D);
+        int minX = MathHelper.floor(getEntityBoundingBox().minX);
+        int maxX = MathHelper.floor(getEntityBoundingBox().maxX + 1.0D);
+        int minY = MathHelper.floor(getEntityBoundingBox().minY);
+        int maxY = MathHelper.floor(getEntityBoundingBox().maxY + 1.0D);
+        int minZ = MathHelper.floor(getEntityBoundingBox().minZ);
+        int maxZ = MathHelper.floor(getEntityBoundingBox().maxZ + 1.0D);
 
         for (int x = minX; x < maxX; ++x) {
             for (int y = minY; y < maxY; ++y) {
@@ -229,13 +230,55 @@ public class EntityItemBuoy extends EntityItem {
      */
     private boolean checkBlockDrifting(int x, int y, int z) {
         for (int height = y - 1; height <= y + 1; height++) {
-            IBlockState blockState = worldObj.getBlockState(new BlockPos(x, height, z));
+            IBlockState blockState = getEntityWorld().getBlockState(new BlockPos(x, height, z));
             if (blockState.getBlock() == Blocks.FLOWING_WATER || blockState.getBlock() == Blocks.WATER) {
                 int meta = blockState.getBlock().getMetaFromState(blockState);
                 if (meta >= 8)
                     return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Checks if the given AABB is in the material given.
+     * Was in {@link World} before 1.11 and then was deleted. No idea where it went so this is a copy.
+     */
+    private boolean isAABBInMaterial(World world, AxisAlignedBB bb, Material materialIn) {
+        int i = MathHelper.floor(bb.minX);
+        int j = MathHelper.ceil(bb.maxX);
+        int k = MathHelper.floor(bb.minY);
+        int l = MathHelper.ceil(bb.maxY);
+        int i1 = MathHelper.floor(bb.minZ);
+        int j1 = MathHelper.ceil(bb.maxZ);
+        BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
+
+        for (int k1 = i; k1 < j; ++k1) {
+            for (int l1 = k; l1 < l; ++l1) {
+                for (int i2 = i1; i2 < j1; ++i2) {
+                    IBlockState iblockstate = world.getBlockState(blockpos$pooledmutableblockpos.setPos(k1, l1, i2));
+
+                    Boolean result = iblockstate.getBlock().isAABBInsideMaterial(world, blockpos$pooledmutableblockpos, bb, materialIn);
+                    if (result != null) return result;
+
+                    if (iblockstate.getMaterial() == materialIn) {
+                        int j2 = iblockstate.getValue(BlockLiquid.LEVEL);
+                        double d0 = (double) (l1 + 1);
+
+                        if (j2 < 8) {
+                            d0 = (double) (l1 + 1) - (double) j2 / 8.0D;
+                        }
+
+                        if (d0 >= bb.minY) {
+                            blockpos$pooledmutableblockpos.release();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        blockpos$pooledmutableblockpos.release();
         return false;
     }
 }

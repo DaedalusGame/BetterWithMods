@@ -22,20 +22,19 @@ public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem {
         EnumFacing facing = source.getBlockState().getValue(BlockBDispenser.FACING);
         IPosition pos = BlockBDispenser.getDispensePosition(source);
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
-        ItemStack stack1 = stack.splitStack(1);
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && stack.getItem() instanceof ItemBlockSpecial) {
             FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) source.getWorld());
             DirUtils.setEntityOrientationFacing(fake, facing);
             if (BWConfig.debug)
                 BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
-            if (stack.getItem().onItemUse(stack1, fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
+            if (stack.getItem().onItemUse(fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             } else {
-                stack.stackSize += 1;
+                stack.func_190917_f(1);
                 return stack;
             }
         } else {
-            stack.stackSize += 1;
+            stack.func_190917_f(1);
             return stack;
         }
     }

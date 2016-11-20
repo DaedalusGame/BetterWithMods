@@ -32,8 +32,8 @@ public class GuiHunger {
         int top = scale.getScaledHeight() - GuiIngameForge.right_height;
 
         drawFoodOverlay(left, top);
-        if (!this.mc.thePlayer.isInsideOfMaterial(Material.WATER)
-                && this.mc.thePlayer.getAir() >= 300) {
+        if (!this.mc.player.isInsideOfMaterial(Material.WATER)
+                && this.mc.player.getAir() >= 300) {
             left = scale.getScaledWidth() / 2 + 91;
             top = scale.getScaledHeight() - GuiIngameForge.right_height;
             drawPenaltyText(left, top);
@@ -43,7 +43,7 @@ public class GuiHunger {
     private void drawFoodOverlay(int left, int top) {
         boolean shakeTriggered = false; //TODO trigger shake effect
 
-        EntityPlayer player = this.mc.thePlayer;
+        EntityPlayer player = this.mc.player;
         BWMFoodStats foodStats = (BWMFoodStats) player.getFoodStats();
         int foodLevel = foodStats.getFoodLevel();
         int castedFat = (int) ((foodStats.getSaturationLevel() + 0.124F) * 4.0F);
@@ -107,11 +107,11 @@ public class GuiHunger {
     }
 
     private boolean drawPenaltyText(int left, int top) {
-        if (this.mc.thePlayer.isDead) {
+        if (this.mc.player.isDead) {
             return false;
         } else {
             FontRenderer fontRenderer = this.mc.fontRendererObj;
-            String text = EntityPlayerExt.getWorstPenalty(mc.thePlayer).getDescription();
+            String text = EntityPlayerExt.getWorstPenalty(mc.player).getDescription();
             if (!text.equals("")) {
                 int width = fontRenderer.getStringWidth(text);
                 fontRenderer.drawStringWithShadow(text, left - width, top,

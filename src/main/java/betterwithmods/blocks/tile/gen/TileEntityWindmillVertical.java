@@ -44,8 +44,8 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         if (bladeMeta[dyeIndex] != dyeColor) {
             bladeMeta[dyeIndex] = dyeColor;
             dyed = true;
-            IBlockState state = worldObj.getBlockState(this.pos);
-            this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+            IBlockState state = getWorld().getBlockState(this.pos);
+            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
             this.markDirty();
         }
         dyeIndex++;
@@ -77,7 +77,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     public boolean isValid() {
         //check master's validity
         boolean valid = true;
-        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
             for (int i = -3; i < 4; i++) {
                 if (i == 0)
                     continue;
@@ -96,14 +96,14 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
             for (int z = -4; z < 5; z++) {
                 BlockPos offPos = pos.add(x, offset, z);
                 if (x == 0 && z == 0) {
-                    if (worldObj.getBlockState(offPos).getBlock() instanceof IAxle && ((IAxle) worldObj.getBlockState(offPos).getBlock()).getAxisAlignment(worldObj, offPos) == 0)
+                    if (getWorld().getBlockState(offPos).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offPos).getBlock()).getAxisAlignment(getWorld(), offPos) == 0)
                         continue;
                 }
-                if (worldObj.provider.getDimensionType() == DimensionType.NETHER)
-                    notBlocked = this.worldObj.isAirBlock(offPos);
-                else if (worldObj.provider.getDimensionType() != DimensionType.NETHER) {
-                    notBlocked = this.worldObj.isAirBlock(offPos);
-                    if (worldObj.canBlockSeeSky(offPos))
+                if (getWorld().provider.getDimensionType() == DimensionType.NETHER)
+                    notBlocked = this.getWorld().isAirBlock(offPos);
+                else if (getWorld().provider.getDimensionType() != DimensionType.NETHER) {
+                    notBlocked = this.getWorld().isAirBlock(offPos);
+                    if (getWorld().canBlockSeeSky(offPos))
                         airCounter++;
                 }
                 if (!notBlocked)
@@ -112,7 +112,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
             if (!notBlocked)
                 break;
         }
-        if (worldObj.provider.getDimensionType() != DimensionType.NETHER)
+        if (getWorld().provider.getDimensionType() != DimensionType.NETHER)
             return notBlocked && airCounter > 25;
         return notBlocked;
     }
@@ -126,7 +126,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
                 BlockPos offset = pos.add(0, offY, 0);
                 if (offY == 0)
                     continue;
-                integrity = worldObj.getBlockState(offset).getBlock() instanceof IAxle && ((IAxle) worldObj.getBlockState(offset).getBlock()).getAxisAlignment(worldObj, offset) == 0;
+                integrity = getWorld().getBlockState(offset).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offset).getBlock()).getAxisAlignment(getWorld(), offset) == 0;
                 if (!integrity) {
                     invalidateWindmill();
                     break;
@@ -137,29 +137,29 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     }
 
     private void invalidateWindmill() {
-        this.worldObj.setBlockState(this.pos, BWMBlocks.WINDMILL_BLOCK.getDefaultState());
+        this.getWorld().setBlockState(this.pos, BWMBlocks.WINDMILL_BLOCK.getDefaultState());
         for (int i = -3; i < 4; i++) {
             BlockPos pos = this.pos.add(0, i, 0);
-            if (worldObj.getBlockState(pos).getBlock() instanceof BlockAxle)
-                this.worldObj.setBlockState(pos, BWMBlocks.AXLE.getDefaultState());
+            if (getWorld().getBlockState(pos).getBlock() instanceof BlockAxle)
+                this.getWorld().setBlockState(pos, BWMBlocks.AXLE.getDefaultState());
         }
-        if (!this.worldObj.isRemote)
-            InvUtils.ejectStackWithOffset(worldObj, pos, new ItemStack(BWMItems.WINDMILL, 1, 2));
-        this.worldObj.setBlockState(this.pos, BWMBlocks.AXLE.getDefaultState());
+        if (!this.getWorld().isRemote)
+            InvUtils.ejectStackWithOffset(getWorld(), pos, new ItemStack(BWMItems.WINDMILL, 1, 2));
+        this.getWorld().setBlockState(this.pos, BWMBlocks.AXLE.getDefaultState());
     }
 
     @Override
     public void overpower() {
         if (this.getBlockType() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
             for (EnumFacing dir : EnumFacing.VALUES) {
                 if (dir.getAxis() == axis) {
                     BlockPos offset = pos.offset(dir);
-                    Block axle = this.worldObj.getBlockState(offset).getBlock();
+                    Block axle = this.getWorld().getBlockState(offset).getBlock();
                     if (axle instanceof BlockAxle)
-                        ((BlockAxle) axle).overpower(this.worldObj, offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir.getOpposite()))
-                        ((IMechanicalBlock) axle).overpower(this.worldObj, offset);
+                        ((BlockAxle) axle).overpower(this.getWorld(), offset);
+                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(getWorld(), offset, dir.getOpposite()))
+                        ((IMechanicalBlock) axle).overpower(this.getWorld(), offset);
                 }
             }
         }
@@ -176,8 +176,8 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         this.readFromNBT(tag);
-        IBlockState state = worldObj.getBlockState(this.pos);
-        this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+        IBlockState state = getWorld().getBlockState(this.pos);
+        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
     }
 
     @Override
@@ -189,26 +189,26 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     public void updateSpeed() {
         byte speed = 0;
         if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
-            if ((this.worldObj.isRaining() || this.worldObj.isThundering()) && this.worldObj.provider.getDimensionType() != DimensionType.NETHER)
+            if ((this.getWorld().isRaining() || this.getWorld().isThundering()) && this.getWorld().provider.getDimensionType() != DimensionType.NETHER)
                 speed = 2;
             else
                 speed = 1;
         }
-        if (speed != this.runningState && worldObj.getBlockState(pos).getBlock() instanceof BlockWindmill) {
+        if (speed != this.runningState && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
             this.setRunningState(speed);
-            this.worldObj.setBlockState(pos, this.worldObj.getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
-            worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//this.worldObj.markBlockForUpdate(pos);
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
+            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }
 
     public boolean isNotOtherDimension() {
-        return this.worldObj.provider.getDimensionType() != DimensionType.THE_END;
+        return this.getWorld().provider.getDimensionType() != DimensionType.THE_END;
     }
 
     public boolean isGalacticraftDimension() {
         boolean isDimension = false;
         if (Loader.isModLoaded("GalacticraftCore")) {
-            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.worldObj);
+            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.getWorld());
         }
         return isDimension;
     }
@@ -219,7 +219,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() instanceof BlockWindmill)
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill)
             return new AxisAlignedBB(x - 4, y - 4, z - 4, x + 4, y + 4, z + 4);
         else
             return super.getRenderBoundingBox();

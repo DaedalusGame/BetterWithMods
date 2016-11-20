@@ -16,14 +16,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemMechanical extends Item implements IMultiLocations {
     private final String[] names = {"windmill", "waterwheel", "windmill_vertical"};
@@ -41,7 +40,8 @@ public class ItemMechanical extends Item implements IMultiLocations {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
         Block block = world.getBlockState(pos).getBlock();
 
         if (block == BWMBlocks.AXLE) {
@@ -49,10 +49,10 @@ public class ItemMechanical extends Item implements IMultiLocations {
 
             if (axis == EnumFacing.Axis.Y && stack.getItemDamage() == 2) {
                 if (isVerticalWindmillValid(player, world, pos, hitY))
-                    stack.stackSize -= 1;
+                    stack.func_190918_g(1);
             } else if (axis != EnumFacing.Axis.Y && stack.getItemDamage() != 2) {
                 if (isHorizontalDeviceValid(player, world, pos, stack.getItemDamage(), axis))
-                    stack.stackSize -= 1;
+                    stack.func_190918_g(1);
             }
             return EnumActionResult.SUCCESS;
         }
@@ -105,7 +105,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 BlockPos checkPos = new BlockPos(xPos, yPos, zPos);
 
                 if (yPos == y - radius && isWheel) {
-                    valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) &&  !isNearMechMachine(world, checkPos, axis);
+                    valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) && !isNearMechMachine(world, checkPos, axis);
                 } else if (xP == 0 && yPos == y && zP == 0)
                     continue;
                 else {
@@ -124,11 +124,11 @@ public class ItemMechanical extends Item implements IMultiLocations {
     }
 
     private boolean isNearMechMachine(World world, BlockPos pos, EnumFacing.Axis axis) {
-        for(int i = -3; i < 4; i++) {
+        for (int i = -3; i < 4; i++) {
             int xP = axis == EnumFacing.Axis.X ? i : 0;
             int zP = axis == EnumFacing.Axis.Z ? i : 0;
             BlockPos check = pos.add(xP, 0, zP);
-            if(world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
+            if (world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
                 return true;
             }
         }
@@ -233,7 +233,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
         return true;
     }
 
-    private boolean vertCheck (World world, BlockPos pos, EnumFacing.Axis axis, boolean negative) {
+    private boolean vertCheck(World world, BlockPos pos, EnumFacing.Axis axis, boolean negative) {
         for (int i = 0; i < 4; i++) {
             int xP = axis == EnumFacing.Axis.X ? i : 0;
             int zP = axis == EnumFacing.Axis.Z ? i : 0;
@@ -261,7 +261,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 3; i++) {
             list.add(new ItemStack(item, 1, i));
         }

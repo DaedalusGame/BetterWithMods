@@ -17,15 +17,13 @@ public class HardcoreHardnessEventHandler {
      * Sets the wooden pickaxe to 1 usage. Why:
      * {@link Item#setMaxDamage} used with "1" gives 2 usages, and with "0" gives unbreakable item.
      * So we needed another solution to set it to 1 usage.
-     *
-     * @param event
      */
     @SubscribeEvent
     public void onBreaking(BlockEvent.BreakEvent event) {
         if (!BWConfig.earlyPickaxesRebalance) return;
         EntityPlayer player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack == null || stack.getItem() == null) return;
+        if (stack == ItemStack.field_190927_a || stack.getItem() == null) return;
         if (stack.getItem() == Items.WOODEN_PICKAXE) {
             destroyItem(stack, player);
         }

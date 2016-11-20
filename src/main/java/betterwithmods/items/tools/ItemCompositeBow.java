@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -28,12 +29,24 @@ import javax.annotation.Nullable;
  */
 public class ItemCompositeBow extends ItemBow {
     public ItemCompositeBow() {
-        super();
+        this.setMaxStackSize(1);
         this.setMaxDamage(576);
+        this.addPropertyOverride(new ResourceLocation("pull"), (stack, worldIn, entityIn) -> {
+            if (entityIn == null) {
+                return 0.0F;
+            } else {
+                ItemStack itemstack = entityIn.getActiveItemStack();
+                return itemstack != null && itemstack.getItem() == this ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+            }
+        });
+        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entityIn) ->
+                entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F
+        );
 
     }
+
     private boolean isBroadHead(@Nullable ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ItemBroadheadArrow;
+        return stack != ItemStack.field_190927_a && stack.getItem() instanceof ItemBroadheadArrow;
     }
 
     @Override
@@ -53,17 +66,17 @@ public class ItemCompositeBow extends ItemBow {
                 if (this.isArrow(itemstack))
                     return itemstack;
             }
-            return null;
+            return ItemStack.field_190927_a;
         }
     }
 
     public float getArrowVelocity(ItemStack stack, int charge) {
-            int max = isBroadHead(stack) ? 2: 1;
-            float f = charge / 20.0F;
-            f = (f * f + f * 2.0F) / 3.0F;
-            if (f > max)
-                f = max;
-            return f;
+        int max = isBroadHead(stack) ? 2 : 1;
+        float f = charge / 20.0F;
+        f = (f * f + f * 2.0F) / 3.0F;
+        if (f > max)
+            f = max;
+        return f;
     }
 
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
@@ -73,11 +86,11 @@ public class ItemCompositeBow extends ItemBow {
             ItemStack itemstack = this.findAmmo(player);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, itemstack != null || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, itemstack != ItemStack.field_190927_a || flag);
             if (i < 0) return;
 
-            if (itemstack != null || flag) {
-                if (itemstack == null) {
+            if (itemstack != ItemStack.field_190927_a || flag) {
+                if (itemstack == ItemStack.field_190927_a) {
                     itemstack = new ItemStack(Items.ARROW);
                 }
 
@@ -119,12 +132,12 @@ public class ItemCompositeBow extends ItemBow {
                         worldIn.spawnEntityInWorld(entityarrow);
                     }
 
-                    worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+                    worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
                     if (!flag1) {
-                        --itemstack.stackSize;
+                        itemstack.func_190918_g(1);
 
-                        if (itemstack.stackSize == 0) {
+                        if (itemstack.func_190916_E() == 0) {
                             player.inventory.deleteStack(itemstack);
                         }
                     }

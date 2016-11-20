@@ -16,6 +16,7 @@ public class Quark implements ICompatModule {
 
     public static final String MODID = "quark";
     public String[] wood = {"spruce", "birch", "jungle", "acacia", "dark_oak"};
+
     @Override
     public void preInit() {
 
@@ -26,7 +27,7 @@ public class Quark implements ICompatModule {
         NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "basalt")), 0);
 
         for (int i = 0; i < 5; i++)
-            GameRegistry.addShapedRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID,"custom_chest")),1,i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING,1,i+1));
+            GameRegistry.addShapedRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, "custom_chest")), 1, i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, i + 1));
 
     }
 

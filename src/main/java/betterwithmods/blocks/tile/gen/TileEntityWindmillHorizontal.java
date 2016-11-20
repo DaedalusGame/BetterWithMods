@@ -45,8 +45,8 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
         if (bladeMeta[dyeIndex] != dyeColor) {
             bladeMeta[dyeIndex] = dyeColor;
             dyed = true;
-            IBlockState state = worldObj.getBlockState(this.pos);
-            this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+            IBlockState state = getWorld().getBlockState(this.pos);
+            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
             this.markDirty();
         }
         dyeIndex++;
@@ -78,26 +78,26 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
     public void updateSpeed() {
         byte speed = 0;
         if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
-            if (this.worldObj.provider.getDimensionType() == DimensionType.OVERWORLD && (this.worldObj.isRaining() || this.worldObj.isThundering()))
+            if (this.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && (this.getWorld().isRaining() || this.getWorld().isThundering()))
                 speed = 2;
             else
                 speed = 1;
         }
-        if (speed != this.runningState || (speed == 0 && this.worldObj.getBlockState(pos).getValue(BlockWindmill.ISACTIVE))) {
+        if (speed != this.runningState || (speed == 0 && this.getWorld().getBlockState(pos).getValue(BlockWindmill.ISACTIVE))) {
             this.setRunningState(speed);
-            this.worldObj.setBlockState(pos, this.worldObj.getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
-            worldObj.scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(worldObj), 5);//this.worldObj.markBlockForUpdate(pos);
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
+            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }
 
     public boolean isNotOtherDimension() {
-        return this.worldObj.provider.getDimensionType() != DimensionType.NETHER && this.worldObj.provider.getDimensionType() != DimensionType.THE_END;
+        return this.getWorld().provider.getDimensionType() != DimensionType.NETHER && this.getWorld().provider.getDimensionType() != DimensionType.THE_END;
     }
 
     public boolean isGalacticraftDimension() {
         boolean isDimension = false;
         if (Loader.isModLoaded("GalacticraftCore")) {
-            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.worldObj);
+            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.getWorld());
         }
         return isDimension;
     }
@@ -105,15 +105,15 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
     @Override
     public void overpower() {
         if (this.getBlockType() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
             for (EnumFacing dir : EnumFacing.VALUES) {
                 if (dir.getAxis() == axis) {
                     BlockPos offset = pos.offset(dir);
-                    Block axle = this.worldObj.getBlockState(offset).getBlock();
+                    Block axle = this.getWorld().getBlockState(offset).getBlock();
                     if (axle instanceof BlockAxle)
-                        ((BlockAxle) axle).overpower(this.worldObj, offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(worldObj, offset, dir.getOpposite()))
-                        ((IMechanicalBlock) axle).overpower(this.worldObj, offset);
+                        ((BlockAxle) axle).overpower(this.getWorld(), offset);
+                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(getWorld(), offset, dir.getOpposite()))
+                        ((IMechanicalBlock) axle).overpower(this.getWorld(), offset);
                 }
             }
         }
@@ -122,8 +122,8 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
     @Override
     public boolean isValid() {
         boolean valid = true;
-        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
-            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {
                     int xP = (axis == EnumFacing.Axis.Z ? i : 0);
@@ -132,7 +132,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
                     if (xP == 0 && vert == 0 && zP == 0)
                         continue;
                     else
-                        valid = worldObj.isAirBlock(offset);
+                        valid = getWorld().isAirBlock(offset);
                     if (!valid)
                         break;
                 }
@@ -140,7 +140,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
                     break;
             }
         }
-        return valid && this.worldObj.canBlockSeeSky(pos);
+        return valid && this.getWorld().canBlockSeeSky(pos);
     }
 
     @Override
@@ -154,8 +154,8 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         this.readFromNBT(tag);
-        IBlockState state = worldObj.getBlockState(this.pos);
-        this.worldObj.notifyBlockUpdate(this.pos, state, state, 3);
+        IBlockState state = getWorld().getBlockState(this.pos);
+        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
     }
 
     @Override
@@ -170,8 +170,8 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = worldObj.getBlockState(pos).getValue(BlockWindmill.AXIS);
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
             int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;
             int zP = axis == EnumFacing.Axis.X ? radius : 0;

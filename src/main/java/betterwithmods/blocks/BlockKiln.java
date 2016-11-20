@@ -128,7 +128,7 @@ public class BlockKiln extends BWMBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         int cookTime = getCookCounter(world, pos);
         BlockPos above = pos.up();
         BlockPos below = pos.down();

@@ -43,19 +43,19 @@ public class BlockWindmill extends BlockMillGenerator {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         TileEntity tile = world.getTileEntity(pos);
 
-        if (world.isRemote && stack != null && ColorUtils.contains(stack.getItem(), stack.getItemDamage()))
+        if (world.isRemote && stack != ItemStack.field_190927_a && ColorUtils.contains(stack.getItem(), stack.getItemDamage()))
             return true;
 
-        if (!world.isRemote && tile != null && tile instanceof IColor && stack != null && ColorUtils.contains(stack.getItem(), stack.getItemDamage())) {
+        if (!world.isRemote && tile != null && tile instanceof IColor && stack != ItemStack.field_190927_a && ColorUtils.contains(stack.getItem(), stack.getItemDamage())) {
             IColor color = (IColor) tile;
             int meta = ColorUtils.get(stack.getItem(), stack.getItemDamage()); //reverseMeta[stack.getItemDamage()];
             if (color.dyeBlade(meta)) {
                 if (!player.capabilities.isCreativeMode)
-                    stack.stackSize--;
+                    stack.func_190918_g(1);
                 return true;
             }
         }

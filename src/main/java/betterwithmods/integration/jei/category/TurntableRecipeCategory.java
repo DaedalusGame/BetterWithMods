@@ -57,12 +57,12 @@ public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipe
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull TurntableRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         int x = 5, y = 9;
-        guiItemStacks.init(0,true,x,y);
-        guiItemStacks.init(1,false,x+27,y);
-        guiItemStacks.init(2,false,x+27,y+18);
-        guiItemStacks.init(3,false,x,y+18);
+        guiItemStacks.init(0, true, x, y);
+        guiItemStacks.init(1, false, x + 27, y);
+        guiItemStacks.init(2, false, x + 27, y + 18);
+        guiItemStacks.init(3, false, x, y + 18);
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3, new ItemStack(BWMBlocks.SINGLE_MACHINES,1,5));
+        guiItemStacks.set(3, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 5));
 
     }
 }

@@ -81,7 +81,7 @@ public class ConfigSyncHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void playerJoinedWorld(TickEvent.ClientTickEvent evt) {
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
         if (requiresRestart) {
             player.addChatMessage(new TextComponentString("[Better With Mods] " + I18n.format("config.sync.restart")));
         } else {

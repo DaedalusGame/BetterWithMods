@@ -21,11 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -61,8 +57,8 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer, stack);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
+        IBlockState state = super.getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer);
         return setFacingInBlock(state, DirUtils.getOpposite(facing));
     }
 
@@ -110,7 +106,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         if (block == BWMBlocks.AXLE || block == BWMBlocks.HAND_CRANK)
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         else

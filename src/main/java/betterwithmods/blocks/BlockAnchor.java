@@ -71,8 +71,8 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, ItemStack stack) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, stack);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
         return this.setFacingInBlock(state, side);
     }
 
@@ -82,10 +82,11 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         BlockPos down = pos.down();
 
-        if (heldItem != null) {
+        if (heldItem != ItemStack.field_190927_a) {
             if (heldItem.getItem() instanceof ItemBlock) {
                 Block block = ((ItemBlock) heldItem.getItem()).getBlock();
                 if (block == BWMBlocks.ROPE) {
@@ -94,9 +95,9 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
                             BlockRope.placeRopeUnder(heldItem, world, down, player);
                         } else if (world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down)) {
                             world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
-                            world.playSound(null,down,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getPlaceSound(), SoundCategory.BLOCKS,1,1);
+                            world.playSound(null, down, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getPlaceSound(), SoundCategory.BLOCKS, 1, 1);
                             if (!player.capabilities.isCreativeMode)
-                                heldItem.stackSize--;
+                                heldItem.func_190918_g(1);
                         } else
                             return false;
                     }
@@ -105,8 +106,8 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
             }
             return false;
         } else if (!world.isRemote) {
-            if(retractRope(world, pos, player))
-            world.playSound(null,pos,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getBreakSound(), SoundCategory.BLOCKS,1,1);
+            if (retractRope(world, pos, player))
+                world.playSound(null, pos, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getBreakSound(), SoundCategory.BLOCKS, 1, 1);
         }
         return true;
     }

@@ -12,7 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +28,7 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private static final Set<Block> BLACKLIST = Sets.newHashSet(BWMBlocks.BUDDY_BLOCK, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT);
+    private static Set<Block> BLACKLIST = Sets.newHashSet(BWMBlocks.BUDDY_BLOCK, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT);
 
     public BlockBUD() {
         super(Material.ROCK);
@@ -38,6 +37,11 @@ public class BlockBUD extends BWMBlock {
         setDefaultState(getDefaultState().withProperty(DirUtils.FACING, UP));
     }
 
+    public static void addBlacklistBlock(Block block) {
+        BLACKLIST.add(block);
+    }
+
+    @Override
     public int tickRate(World var1) {
         return 5;
     }
@@ -61,10 +65,9 @@ public class BlockBUD extends BWMBlock {
         return redstone | facing << 1;
     }
 
-    @Deprecated
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack).withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, UP));
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(DirUtils.FACING, DirUtils.convertEntityOrientationToFacing(placer, UP));
     }
 
     @Override
@@ -85,7 +88,7 @@ public class BlockBUD extends BWMBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos other) {
         if (!isRedstoneOn(world, pos) && !BLACKLIST.contains(blockIn)) {
             world.scheduleUpdate(pos, state.getBlock(), tickRate(world));
         }

@@ -26,7 +26,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
 
     public EntityAIVillagerMate(EntityVillager villager, double speedIn) {
         this.villager = villager;
-        this.world = villager.worldObj;
+        this.world = villager.getEntityWorld();
         this.moveSpeed = speedIn;
         this.setMutexBits(3);
     }
@@ -34,6 +34,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute() {
         if (this.villager.getGrowingAge() != 0 || this.villager.getRNG().nextInt(500) != 0) {
             return false;
@@ -49,6 +50,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting() {
         return this.mate.isEntityAlive() && isWillingToMate(mate) && this.spawnBabyDelay < 60;
     }
@@ -56,6 +58,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
     /**
      * Resets the task
      */
+    @Override
     public void resetTask() {
         this.mate = null;
         this.spawnBabyDelay = 0;
@@ -64,6 +67,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
     /**
      * Updates the task
      */
+    @Override
     public void updateTask() {
         this.villager.getLookHelper().setLookPositionWithEntity(this.mate, 10.0F, (float) this.villager.getVerticalFaceSpeed());
         this.villager.getNavigator().tryMoveToEntityLiving(this.mate, this.moveSpeed);

@@ -40,14 +40,13 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
         gear.draw(minecraft, 80, 19);
     }
 
-    @Deprecated
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull MillRecipeWrapper wrapper) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull MillRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
         stacks.init(outputSlots + 1, false, 118 + 18, 18);
-        List<List<ItemStack>> input = wrapper.getInputs();
+        List<List<ItemStack>> input = ingredients.getInputs(ItemStack.class);
         for (int i = 0; i < 3; i++) {
             int index = inputSlots + i;
             stacks.init(index, true, 2 + i * 18, 18);
@@ -55,15 +54,8 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
                 stacks.set(index, input.get(i));
             }
         }
-
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
         if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
-    }
-
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull MillRecipeWrapper wrapper, IIngredients ingredients) {
-        setRecipe(layout, wrapper);
-        //TODO Ingredients
     }
 }

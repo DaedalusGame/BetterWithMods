@@ -1,9 +1,11 @@
 package betterwithmods.craft;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.tile.SimpleItemStackHandler;
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -12,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,27 +26,31 @@ import java.util.List;
  */
 public class HopperInteractions {
     public static ArrayList<HopperRecipe> recipes = new ArrayList<>();
-    public static boolean attemptToCraft(int filterType,World world, BlockPos pos, EntityItem input) {
+
+    public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
         for (HopperRecipe recipe : recipes) {
-            if(recipe.isRecipe(filterType,input)) {
-                recipe.craft(input,world,pos);
+            if (recipe.isRecipe(filterType, input)) {
+                recipe.craft(input, world, pos);
                 return true;
             }
         }
         return false;
     }
+
     static {
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial("ground_netherrack"),ItemMaterial.getMaterial("hellfire_dust")));
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"),ItemMaterial.getMaterial("sawdust")));
-        recipes.add(new HopperRecipe(5,new ItemStack(Blocks.GRAVEL),new ItemStack(Items.FLINT)) {
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial("ground_netherrack"), ItemMaterial.getMaterial("hellfire_dust")));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"), ItemMaterial.getMaterial("sawdust")));
+        recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND),new ItemStack(Blocks.SAND,1,1)) {
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
+
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 SimpleItemStackHandler inventory = tile.inventory;
                 ItemStack stack = item.getEntityItem();
                 int separate = world.rand.nextInt(stack.stackSize + 1);
                 int redStack = stack.stackSize - separate;
-                ItemStack redSand = new ItemStack(Blocks.SAND, redStack, 1);
+                ItemStack redSand = getSecondaryOutput().get(1).copy();
+                redSand.stackSize = separate;
                 if (redStack != 0) {
                     EntityItem red = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, redSand);
                     if (!InvUtils.addItemStackToInv(inventory, red.getEntityItem())) {
@@ -54,7 +59,8 @@ public class HopperInteractions {
                     }
                 }
                 if (separate != 0) {
-                    ItemStack sand = new ItemStack(Blocks.SAND, separate, 0);
+                    ItemStack sand = getSecondaryOutput().get(0).copy();
+                    sand.stackSize = separate;
                     EntityItem reg = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, sand);
                     if (!InvUtils.addItemStackToInv(inventory, reg.getEntityItem())) {
                         reg.setDefaultPickupDelay();
@@ -65,10 +71,12 @@ public class HopperInteractions {
             }
         });
     }
+
     public static class SoulUrn extends HopperRecipe {
         public SoulUrn(ItemStack input, ItemStack output) {
-            super(6,input,output);
+            super(6, input, output, new ItemStack(BWMBlocks.URN,1,8));
         }
+
         @Override
         public void onCraft(World world, BlockPos pos, EntityItem item) {
             ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(item.getEntityItem().stackSize);
@@ -78,31 +86,53 @@ public class HopperInteractions {
             item.setDead();
         }
     }
+
     public static abstract class HopperRecipe {
         private int filterType;
         private ItemStack input;
-        private List<ItemStack> output;
-        public HopperRecipe(int filterType, ItemStack input, ItemStack... output) {
+        private ItemStack output;
+        private List<ItemStack> secondaryOutput;
+
+        public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
             this.filterType = filterType;
             this.input = input;
-            this.output = Arrays.asList(output);
+            this.output = output;
+            this.secondaryOutput = Lists.newArrayList(secondaryOutput);
         }
+
         public boolean isRecipe(int filterType, EntityItem inputStack) {
-            if(filterType == this.filterType) {
+            if (filterType == this.filterType) {
                 if (inputStack != null) {
                     ItemStack i = inputStack.getEntityItem();
-
                     return i.getItem().equals(input.getItem()) && i.getMetadata() == input.getMetadata() && i.stackSize >= input.stackSize;
                 }
                 return false;
             }
             return false;
         }
+
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            for(int i = 0; i < inputStack.getEntityItem().stackSize; i++)
-                InvUtils.ejectStackWithOffset(world,inputStack.getPosition(),output);
-            onCraft(world,pos, inputStack);
+            for (int i = 0; i < inputStack.getEntityItem().stackSize; i++)
+                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
+            onCraft(world, pos, inputStack);
         }
+
         public abstract void onCraft(World world, BlockPos pos, EntityItem item);
+
+        public int getFilterType() {
+            return filterType;
+        }
+
+        public ItemStack getInput() {
+            return input;
+        }
+
+        public ItemStack getOutput() {
+            return output;
+        }
+
+        public List<ItemStack> getSecondaryOutput() {
+            return secondaryOutput;
+        }
     }
 }

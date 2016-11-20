@@ -20,24 +20,6 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper {
     }
 
     @Nonnull
-    @Deprecated
-    @Override
-    public List getInputs() {
-        return getRecipe().getInput();
-    }
-
-    @Nonnull
-    @Deprecated
-    @Override
-    public List<ItemStack> getOutputs() {
-        List<ItemStack> outputs = new ArrayList<>();
-        outputs.add(getRecipe().getOutput().copy());
-        if (getRecipe().getSecondary() != null)
-            outputs.add(getRecipe().getSecondary().copy());
-        return outputs;
-    }
-
-    @Nonnull
     @Override
     public void getIngredients(IIngredients ingredients) {
         IStackHelper stackHelper = helpers.getStackHelper();

@@ -300,6 +300,9 @@ inv.kiln.name=Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
 
+inv.hopper.name=Hopper Recipes
+inv.hopper.soulurn.name=Hopper Soul Urn Recipes
+
 itemGroup.bwm:bwTab=Better With Mods
 
 fluid.betterwithmods:soulforged_steel.name=Molten Soulforged Steel

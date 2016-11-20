@@ -1,8 +1,11 @@
 package betterwithmods.items.tools;
 
+import betterwithmods.BWMod;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -16,5 +19,11 @@ public class ItemSoulforgeArmor extends ItemArmor {
 
     public ItemSoulforgeArmor(EntityEquipmentSlot equipmentSlotIn) {
         super(SOULFORGED_STEEL, 2, equipmentSlotIn);
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+    {
+        return BWMod.MODID + ":textures/models/armor/steel_layer_" + (this.armorType.getSlotIndex() == 2 ? "2" : "1") + ".png";
     }
 }

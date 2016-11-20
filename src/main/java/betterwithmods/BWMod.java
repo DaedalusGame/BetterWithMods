@@ -5,11 +5,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.config.ConfigSyncHandler;
-import betterwithmods.entity.EntityBroadheadArrow;
-import betterwithmods.entity.EntityDynamite;
-import betterwithmods.entity.EntityExtendingRope;
-import betterwithmods.entity.EntityMiningCharge;
-import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.entity.*;
 import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.*;
 import betterwithmods.integration.ICompatModule;
@@ -114,6 +110,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
+        MinecraftForge.EVENT_BUS.register(new HardcoreMelonEventHandler());
         MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
         MinecraftForge.EVENT_BUS.register(new SaveSoupEvent());
     }
@@ -125,6 +122,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingGourd.class, "entityFallingGourd", 64, 1, true);
     }
 
     @EventHandler

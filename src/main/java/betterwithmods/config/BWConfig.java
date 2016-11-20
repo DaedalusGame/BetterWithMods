@@ -26,6 +26,7 @@ public class BWConfig {
     public static boolean hardcoreSpawn;
     public static boolean hardcoreBeds;
     public static boolean hardcoreVillagers;
+    public static boolean hardcoreMelons;
     public static boolean steelRequiresEnd;
     public static boolean hardcoreHardness;
     public static int woodDurability;
@@ -63,6 +64,7 @@ public class BWConfig {
         hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true, "Creepers and Ghasts will drop brimstone or niter instead of gunpowder").getBoolean();
         hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe").getBoolean();
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean();
+        hardcoreMelons = config.get(HARDCORE, "Hardcore Melons", true, "Melons and pumpkins are affected by gravity and need a saw to slice up.").getBoolean();
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean();
         // FIXME See issue #71
         hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement. Vanilla food recipes are changed to use BWM content").setRequiresMcRestart(true).getBoolean();

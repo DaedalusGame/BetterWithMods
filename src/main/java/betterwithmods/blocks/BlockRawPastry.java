@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.api.IMultiLocations;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * Created by blueyu2 on 11/19/16.
  */
-public class BlockRawPastry extends Block implements IMultiVariants {
+public class BlockRawPastry extends Block implements IMultiLocations {
     public static final PropertyEnum<BlockRawPastry.EnumType> VARIANT = PropertyEnum.<BlockRawPastry.EnumType>create("variant", BlockRawPastry.EnumType.class);
 
     public BlockRawPastry() {
@@ -37,16 +39,6 @@ public class BlockRawPastry extends Block implements IMultiVariants {
         this.setHardness(0.1F);
         this.setSoundType(SoundType.CLOTH);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
-    }
-
-    @Override
-    public String[] getVariants() {
-        ArrayList<String> variants = new ArrayList<>();
-        for(EnumType variant : EnumType.values())
-        {
-            variants.add("variant=" + variant.getName());
-        }
-        return variants.toArray(new String[variants.size()]);
     }
 
     @SideOnly(Side.CLIENT)
@@ -80,7 +72,7 @@ public class BlockRawPastry extends Block implements IMultiVariants {
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
@@ -116,6 +108,16 @@ public class BlockRawPastry extends Block implements IMultiVariants {
     private boolean canBlockStay(World worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+    }
+
+    @Override
+    public String[] getLocations() {
+        ArrayList<String> variants = new ArrayList<>();
+        for(EnumType variant : EnumType.values())
+        {
+            variants.add(variant.getName());
+        }
+        return variants.toArray(new String[variants.size()]);
     }
 
     public enum EnumType implements IStringSerializable

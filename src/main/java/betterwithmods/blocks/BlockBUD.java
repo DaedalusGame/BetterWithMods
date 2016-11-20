@@ -29,8 +29,10 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");
-    private static final Set<Block> BLACKLIST = Sets.newHashSet(BWMBlocks.BUDDY_BLOCK, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT);
-
+    private static Set<Block> BLACKLIST = Sets.newHashSet(BWMBlocks.BUDDY_BLOCK, Blocks.REDSTONE_WIRE, Blocks.POWERED_REPEATER, Blocks.UNPOWERED_REPEATER, Blocks.REDSTONE_TORCH, Blocks.UNLIT_REDSTONE_TORCH, BWMBlocks.LIGHT);
+    public static void addBlacklistBlock(Block block) {
+        BLACKLIST.add(block);
+    }
     public BlockBUD() {
         super(Material.ROCK);
         setHardness(3.5F);

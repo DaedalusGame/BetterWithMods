@@ -1,6 +1,7 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -22,6 +23,7 @@ import java.util.Random;
 
 public class BlockLens extends BWMBlock {
     public static final PropertyBool LIT = PropertyBool.create("lit");
+    public static final int RANGE = BWConfig.lensRange;
 
     public BlockLens() {
         super(Material.IRON);
@@ -81,7 +83,7 @@ public class BlockLens extends BWMBlock {
 
             BlockPos offset = pos.offset(dir);
             if (isLit(world, pos) && (world.isAirBlock(offset) || world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE)) {
-                for (int i = 1; i < 32; i++) {
+                for (int i = 1; i < RANGE; i++) {
                     BlockPos bPos = pos.offset(dir, i);
                     IBlockState lightState = BWMBlocks.LIGHT_SOURCE.getDefaultState();
                     if (world.isAirBlock(bPos)) {
@@ -111,7 +113,7 @@ public class BlockLens extends BWMBlock {
                     }
                 }
             } else if (!isLit(world, pos)) {
-                for (int i = 1; i < 32; i++) {
+                for (int i = 1; i < RANGE; i++) {
                     BlockPos bPos = pos.offset(dir, i);
 
                     if (world.getBlockState(bPos).getBlock() == BWMBlocks.LIGHT_SOURCE) {
@@ -204,7 +206,7 @@ public class BlockLens extends BWMBlock {
 
     private void cleanupLightToFacing(World world, BlockPos pos, EnumFacing facing) {
         EnumFacing opp = DirUtils.getOpposite(facing);
-        for (int i = 1; i < 32; i++) {
+        for (int i = 1; i < RANGE; i++) {
             BlockPos offset = pos.offset(facing, i);
             if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE) {
                 EnumFacing lightFace = ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacing(world, offset);
@@ -221,7 +223,7 @@ public class BlockLens extends BWMBlock {
         EnumFacing facing = getFacing(world, pos);
         EnumFacing oppFacing = DirUtils.getOpposite(facing);
 
-        for (int i = 1; i < 32; i++) {
+        for (int i = 1; i < RANGE; i++) {
             BlockPos offset = pos.offset(facing, i);
 
             if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE) {

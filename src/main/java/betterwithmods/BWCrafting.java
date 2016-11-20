@@ -341,7 +341,7 @@ public class BWCrafting {
     private static void addTurntableRecipes() {
 
         addTurntableRecipe(Blocks.CLAY,0, BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), null);
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY,EnumPotteryType.URN.getMeta(), null,0, new ItemStack(Items.CLAY_BALL));

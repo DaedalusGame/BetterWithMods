@@ -1,5 +1,6 @@
 package betterwithmods.craft;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public class TurntableInteraction extends BlockMetaHandler {
         }
     }
     public void addTurntableRecipe(Block block, int meta, Block result, int resultMeta, ItemStack... scraps) {
-        addRecipe(new TurntableRecipe(block, meta, result, resultMeta, Arrays.asList(scraps)));
+        addRecipe(new TurntableRecipe(block, meta, result, resultMeta, scraps == null ? Lists.newArrayList() : Arrays.asList(scraps)));
     }
     public class TurntableRecipe extends BlockMetaRecipe {
         private Block result;

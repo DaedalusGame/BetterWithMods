@@ -2,17 +2,25 @@ package betterwithmods;
 
 import betterwithmods.blocks.BehaviorDiodeDispense;
 import betterwithmods.blocks.BlockBDispenser;
+import betterwithmods.blocks.BlockBWMPane;
 import betterwithmods.config.BWConfig;
+import betterwithmods.craft.HopperFilters;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.entity.EntityMiningCharge;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -38,6 +46,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BWRegistry {
     public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
@@ -46,8 +55,31 @@ public class BWRegistry {
     public static void init() {
         registerOres();
         registerPotions();
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
+        registerBlockDispenserBehavior();
+        registerHopperFilters();
+        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
+    }
+    public static void registerHopperFilters() {
 
+        HopperFilters.filters = HashBiMap.create();
+        Predicate<ItemStack> isNotBlock = stack -> {
+            Item item = stack.getItem();
+            if(item instanceof ItemBlock) {
+                Block block = ((ItemBlock) item).getBlock();
+                return  block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack,"treeSapling");
+            }
+            return item == Items.SKULL || item == Items.FLOWER_POT || item == Items.ITEM_FRAME;
+        };
+        HopperFilters.addFilter(1,Blocks.LADDER,0, isNotBlock);
+        HopperFilters.addFilter(2,Blocks.TRAPDOOR,0, stack -> false);
+        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> false);
+        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> false);
+        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), stack -> InvUtils.listContains(stack,InvUtils.dustNames));
+        HopperFilters.addFilter(6,Blocks.SOUL_SAND,0, stack -> stack.equals(ItemMaterial.getMaterial("ground_netherrack"))|| stack.equals(ItemMaterial.getMaterial("soul_dust")));
+        HopperFilters.addFilter(7,Blocks.IRON_BARS,0, stack -> stack.getMaxStackSize() > 1);
+    }
+    public static void registerBlockDispenserBehavior() {
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
         if (BWConfig.hardcoreBuckets) {
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
                 @Override
@@ -84,9 +116,7 @@ public class BWRegistry {
                             SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return stack;
                 });
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
     }
-
     /**
      * Registers an entity for this mod. Handles automatic available ID
      * assignment.
@@ -105,7 +135,8 @@ public class BWRegistry {
         OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.MATERIAL, 1, 12));
         OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 14));
         OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.MATERIAL, 1, 15));
-        OreDictionary.registerOre("powderedHellfire", new ItemStack(BWMItems.MATERIAL, 1, 16));
+        OreDictionary.registerOre("dustHellfire", new ItemStack(BWMItems.MATERIAL, 1, 16));
+        OreDictionary.registerOre("dustSoul", new ItemStack(BWMItems.MATERIAL, 1, 23));
         OreDictionary.registerOre("ingotHellfire", new ItemStack(BWMItems.MATERIAL, 1, 17));
         OreDictionary.registerOre("dustCoal", new ItemStack(BWMItems.MATERIAL, 1, 18));
         OreDictionary.registerOre("dustPotash", new ItemStack(BWMItems.MATERIAL, 1, 21));

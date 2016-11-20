@@ -1,26 +1,21 @@
 package betterwithmods.blocks.tile;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.ISoulSensitive;
-import betterwithmods.blocks.BlockBWMPane;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.craft.HopperFilters;
+import betterwithmods.craft.HopperInteractions;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -36,7 +31,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -217,80 +211,15 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private short getFilterType() {
         ItemStack filter = inventory.getStackInSlot(18);
-        if (filter != null && filter.stackSize > 0) {
-            if (filter.getItem() instanceof ItemBlock) {
-                Block block = ((ItemBlock) filter.getItem()).getBlock();
-                if (block instanceof BlockLadder)
-                    return 1;
-                if (block instanceof BlockTrapDoor)
-                    return 2;
-                if (block instanceof BlockBWMPane) {
-                    switch (filter.getItemDamage()) {
-                        case 0:
-                            return 3;
-                        case 1:
-                            return 5;
-                        case 2:
-                            return 4;
-                    }
-                }
-                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.GRATE))
-                    return 3;
-                if (filter.getItem() == Item.getItemFromBlock(BWMBlocks.SLATS))
-                    return 5;
-                if (filter.getItem() == Item.getItemFromBlock(Blocks.SOUL_SAND))
-                    return 6;
-                if (filter.getItem() == Item.getItemFromBlock(Blocks.IRON_BARS))
-                    return 7;
-            }
-        }
+        if (filter != null && filter.stackSize > 0)
+            return (short) HopperFilters.getFilterType(filter);
         return 0;
     }
 
     private boolean canFilterProcessItem(ItemStack stack) {
-        Item item = stack.getItem();
-
         if (this.filterType > 0) {
-            if (item instanceof ItemBlock || item == Items.SKULL || item == Items.FLOWER_POT || item == Items.ITEM_FRAME) {
-                if (item instanceof ItemBlock) {
-                    if (((ItemBlock) item).getBlock() instanceof BlockBush || ((ItemBlock) item).getBlock() instanceof BlockTorch)
-                        return true;
-                }
-                if (item != Item.getItemFromBlock(Blocks.SAND) && item != Item.getItemFromBlock(Blocks.GRAVEL) && !InvUtils.listContains(stack, OreDictionary.getOres("treeSapling"))) {
-                    return false;
-                }
-            }
-            if (this.filterType == 1)
-                return true;
-            if (this.filterType < 6) {
-                if (item != Item.getItemFromBlock(Blocks.SAND) && !(item instanceof ItemSeeds) && !InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) && item != Items.GUNPOWDER && item != Items.SUGAR && item != Items.BLAZE_POWDER && !InvUtils.listContains(stack, OreDictionary.getOres("foodFlour"))) {
-                    if (!InvUtils.listContains(stack, InvUtils.dustNames)) {
-                        if (this.filterType == 4)
-                            return false;
-
-                        if (!InvUtils.listContains(stack, OreDictionary.getOres("string")) && item != Items.PAPER && (item == BWMItems.MATERIAL && stack.getItemDamage() != 28) && item != Item.getItemFromBlock(Blocks.WOOL)) {
-                            int meta = stack.getItemDamage();
-                            if (this.filterType == 5) {
-                                return item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || (item == BWMItems.MATERIAL && (meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35)));
-                            }
-
-                            if (item != Item.getItemFromBlock(Blocks.RED_FLOWER) && item != Item.getItemFromBlock(Blocks.YELLOW_FLOWER) && (!(item instanceof ItemBlock) && (stack.getMaxStackSize() > 1 && item != Items.FISHING_ROD && item != Items.CARROT_ON_A_STICK))) {
-                                if (this.filterType == 3)
-                                    return false;
-
-                                if (item != Items.BONE && item != Items.ARROW && !InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) && !InvUtils.listContains(stack, InvUtils.cropNames) && item != Items.REEDS && item != Items.BLAZE_ROD && (item == BWMItems.MATERIAL && (meta != 8 && meta != 9)))
-                                    return false;
-                            }
-                        }
-                    }
-                }
-            } else if (this.filterType == 6) {
-                return stack.getItem() == BWMItems.MATERIAL && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23);
-            } else if (this.filterType == 7) {
-                if (stack.getMaxStackSize() < 2)
-                    return false;
-            } else
-                return false;
+            if(HopperFilters.getAllowedItems(filterType) != null)
+                return HopperFilters.getAllowedItems(filterType).test(stack);
         }
         return true;
     }
@@ -321,13 +250,13 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             boolean flag = false;
             for (EntityItem item : items) {
                 ItemStack stack = item.getEntityItem();
-                if (filterType() == 4 && stack.getItem() == Item.getItemFromBlock(Blocks.GRAVEL)) {
-                    handleGravelCase(item);
-                } else if (filterType() == 6 && stack.getItem() == BWMItems.MATERIAL && (stack.getItemDamage() == 15 || stack.getItemDamage() == 23)) {
-                    handleSoulCase(item);
-                } else if (this.canFilterProcessItem(stack))
+                if(HopperInteractions.attemptToCraft(filterType(),worldObj,getPos(),item))
+                    this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (this.canFilterProcessItem(stack)) {
                     flag = putDropInInventoryAllSlots(inventory, item) || flag;
-                //this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                }
+
             }
             if (flag) {
                 this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -365,46 +294,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
         return true;
-    }
-
-    private void handleGravelCase(EntityItem item) {
-        ItemStack stack = item.getEntityItem();
-        int separate = this.getWorld().rand.nextInt(stack.stackSize + 1);
-        int redStack = stack.stackSize - separate;
-        ItemStack redSand = new ItemStack(Blocks.SAND, redStack, 1);
-        if (redStack != 0) {
-            EntityItem red = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, redSand);
-            if (!InvUtils.addItemStackToInv(inventory, red.getEntityItem())) {
-                red.setDefaultPickupDelay();
-                this.getWorld().spawnEntityInWorld(red);
-            }
-        }
-        if (separate != 0) {
-            ItemStack sand = new ItemStack(Blocks.SAND, separate, 0);
-            EntityItem reg = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, sand);
-            if (!InvUtils.addItemStackToInv(inventory, reg.getEntityItem())) {
-                reg.setDefaultPickupDelay();
-                this.getWorld().spawnEntityInWorld(reg);
-            }
-        }
-        ItemStack flint = new ItemStack(Items.FLINT, stack.stackSize);
-        EntityItem rock = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, flint);
-        rock.setDefaultPickupDelay();
-        if (!this.getWorld().isRemote) {
-            this.getWorld().spawnEntityInWorld(rock);
-        }
-        item.setDead();
-    }
-
-    private void handleSoulCase(EntityItem item) {
-        this.increaseSoulCount(item.getEntityItem().stackSize);
-        EntityItem hellfire = new EntityItem(this.getWorld(), item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(BWMItems.MATERIAL, item.getEntityItem().stackSize, 16));
-        hellfire.setDefaultPickupDelay();
-        if (!this.getWorld().isRemote) {
-            this.getWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, this.getWorld().rand.nextFloat() * 0.1F + 0.45F);
-            this.getWorld().spawnEntityInWorld(hellfire);
-        }
-        item.setDead();
     }
 
     private void attemptToEjectStackFromInv() {

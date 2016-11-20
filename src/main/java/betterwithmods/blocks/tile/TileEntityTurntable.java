@@ -328,7 +328,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             return;
 
         IBlockState state = worldObj.getBlockState(pos);
-        ItemStack stack = new ItemStack(state.getBlock(),state.getBlock().damageDropped(state));
+        ItemStack stack = new ItemStack(state.getBlock(),1,state.getBlock().damageDropped(state));
         Block target = state.getBlock();
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
@@ -370,7 +370,6 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                     InvUtils.ejectStackWithOffset(worldObj, pos.up(), scrap.copy());
                 }
             }
-
             worldObj.setBlockState(pos, RecipeUtils.getStateFromStack(craft.getResult()));
             this.potteryRotation = 0;
         }

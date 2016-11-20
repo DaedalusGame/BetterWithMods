@@ -8,7 +8,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.ForgeHooks;
@@ -151,5 +153,13 @@ public final class EntityPlayerExt {
         ItemStack stack = player.getHeldItemMainhand();
         if (stack == null) return false;
         return ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+    }
+
+    public static ItemStack getPlayerHead(EntityPlayer player) {
+        ItemStack head = new ItemStack(Items.SKULL, 1, 3);
+        NBTTagCompound name = new NBTTagCompound();
+        name.setString("SkullOwner", player.getDisplayNameString());
+        head.setTagCompound(name);
+        return head;
     }
 }

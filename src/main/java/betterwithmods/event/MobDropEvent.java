@@ -6,12 +6,18 @@ import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntityWolf;
@@ -20,7 +26,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -100,7 +105,7 @@ public class MobDropEvent {
     @SubscribeEvent
     public void mobDiesBySaw(LivingDropsEvent evt) {
         BlockPos pos = evt.getEntityLiving().getPosition().down();
-        if (isChoppingBlock(evt.getEntityLiving().worldObj, pos)) {
+        if (isChoppingBlock(evt.getEntityLiving().worldObj, pos) || isBattleAxe(evt.getEntityLiving())) {
             if (!(evt.getEntityLiving() instanceof EntityPlayer)) {
                 for (EntityItem item : evt.getDrops()) {
                     ItemStack stack = item.getEntityItem();
@@ -121,12 +126,7 @@ public class MobDropEvent {
                 else if (evt.getEntityLiving() instanceof EntityCreeper)
                     addDrop(evt, new ItemStack(Items.SKULL, 1, 4));
                 else if (evt.getEntityLiving() instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer) evt.getEntityLiving();
-                    ItemStack drop = new ItemStack(Items.SKULL, 1, 3);
-                    NBTTagCompound name = new NBTTagCompound();
-                    name.setString("SkullOwner", player.getDisplayNameString());
-                    drop.setTagCompound(name);
-                    addDrop(evt, drop);
+                    addDrop(evt, EntityPlayerExt.getPlayerHead((EntityPlayer) evt.getEntityLiving()));
                 }
             }
         }
@@ -136,6 +136,19 @@ public class MobDropEvent {
         if (world.getBlockState(pos).getBlock() == BWMBlocks.AESTHETIC) {
             IBlockState state = world.getBlockState(pos);
             return state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCK || state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCKBLOOD;
+        }
+        return false;
+    }
+    private boolean isBattleAxe(EntityLivingBase entity) {
+        DamageSource source = entity.getLastDamageSource();
+        if(source != null && source.getSourceOfDamage() != null) {
+            Entity e = source.getSourceOfDamage();
+            if(e instanceof EntityLivingBase) {
+                ItemStack held = ((EntityLivingBase) e).getHeldItemMainhand();
+                if(held != null && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
+                    return true;
+                }
+            }
         }
         return false;
     }

@@ -42,7 +42,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private int ejectCounter;
     private int containedXP;
     private int xpDropDelay;
-    private int soulsRetained;
+    public int soulsRetained;
     private String filter;
 
     public TileEntityFilteredHopper() {

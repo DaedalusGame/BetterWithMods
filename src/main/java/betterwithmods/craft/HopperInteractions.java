@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,24 @@ public class HopperInteractions {
                     InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
                 }
                 onCraft(world, pos, inputStack);
+            }
+        });
+        recipes.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), null) {
+            @Override
+            public void onCraft(World world, BlockPos pos, EntityItem item) {
+                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+                int stackSize = hopper.soulsRetained;
+                if(stackSize > item.getEntityItem().stackSize)
+                    stackSize = item.getEntityItem().stackSize;
+                hopper.soulsRetained -= stackSize;
+                item.getEntityItem().stackSize -= stackSize;
+                EntityItem soul = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(Blocks.SOUL_SAND, stackSize));
+                if (!InvUtils.addItemStackToInv(hopper.inventory, soul.getEntityItem())) {
+                    soul.setDefaultPickupDelay();
+                    world.spawnEntityInWorld(soul);
+                }
+                if (item.getEntityItem().stackSize < 1)
+                    item.setDead();
             }
         });
     }

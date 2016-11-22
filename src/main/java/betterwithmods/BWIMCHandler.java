@@ -72,7 +72,7 @@ public class BWIMCHandler {
                                 meta = OreDictionary.WILDCARD_VALUE;
                             }
                         }
-                        IBlockState output = Blocks.AIR.getDefaultState();
+                        IBlockState output;
                         if (tag.hasKey("Output")) {
                             ItemStack outputStack = new ItemStack(tag.getCompoundTag("Output"));
                             if (outputStack.getItem() instanceof ItemBlock) {
@@ -83,7 +83,7 @@ public class BWIMCHandler {
                                     output = ((ItemBlock) outputStack.getItem()).getBlock().getDefaultState();
                             }
                         }
-                        ItemStack[] scraps = new ItemStack[0];
+                        ItemStack[] scraps;
                         if (tag.hasKey("Scrap")) {
                             NBTTagCompound scrapTag = tag.getCompoundTag("Scrap");
                             scraps = new ItemStack[scrapTag.getInteger("ScrapCount")];

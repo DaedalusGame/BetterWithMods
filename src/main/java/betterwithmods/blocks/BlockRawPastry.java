@@ -26,7 +26,7 @@ import java.util.List;
  * Created by blueyu2 on 11/19/16.
  */
 public class BlockRawPastry extends Block implements IMultiLocations {
-    public static final PropertyEnum<BlockRawPastry.EnumType> VARIANT = PropertyEnum.<BlockRawPastry.EnumType>create("variant", BlockRawPastry.EnumType.class);
+    public static final PropertyEnum<BlockRawPastry.EnumType> VARIANT = PropertyEnum.create("variant", BlockRawPastry.EnumType.class);
 
     public BlockRawPastry() {
         super(Material.CAKE);

@@ -19,8 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
-
 /**
  * Purpose:
  *
@@ -36,7 +34,7 @@ public class ItemCompositeBow extends ItemBow {
                 return 0.0F;
             } else {
                 ItemStack itemstack = entityIn.getActiveItemStack();
-                return itemstack != null && itemstack.getItem() == this ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+                return itemstack != ItemStack.EMPTY && itemstack.getItem() == this ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
             }
         });
         this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entityIn) ->
@@ -45,12 +43,12 @@ public class ItemCompositeBow extends ItemBow {
 
     }
 
-    private boolean isBroadHead(@Nullable ItemStack stack) {
-        return stack != ItemStack.field_190927_a && stack.getItem() instanceof ItemBroadheadArrow;
+    private boolean isBroadHead(ItemStack stack) {
+        return stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBroadheadArrow;
     }
 
     @Override
-    protected boolean isArrow(@Nullable ItemStack stack) {
+    protected boolean isArrow(ItemStack stack) {
         return isBroadHead(stack) || super.isArrow(stack);
     }
 
@@ -66,7 +64,7 @@ public class ItemCompositeBow extends ItemBow {
                 if (this.isArrow(itemstack))
                     return itemstack;
             }
-            return ItemStack.field_190927_a;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -86,21 +84,21 @@ public class ItemCompositeBow extends ItemBow {
             ItemStack itemstack = this.findAmmo(player);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, itemstack != ItemStack.field_190927_a || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, itemstack != ItemStack.EMPTY || flag);
             if (i < 0) return;
 
-            if (itemstack != ItemStack.field_190927_a || flag) {
-                if (itemstack == ItemStack.field_190927_a) {
+            if (itemstack != ItemStack.EMPTY || flag) {
+                if (itemstack == ItemStack.EMPTY) {
                     itemstack = new ItemStack(Items.ARROW);
                 }
 
                 float velocity = getArrowVelocity(itemstack, i);
 
                 if ((double) velocity >= 0.1D) {
-                    boolean flag1 = player.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow ? ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, player) : false);
+                    boolean flag1 = player.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, player));
 
                     if (!worldIn.isRemote) {
-                        ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+                        ItemArrow itemarrow = (ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW);
                         EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, player);
                         entityarrow.setAim(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
 
@@ -129,15 +127,15 @@ public class ItemCompositeBow extends ItemBow {
                             entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
                         }
 
-                        worldIn.spawnEntityInWorld(entityarrow);
+                        worldIn.spawnEntity(entityarrow);
                     }
 
                     worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
                     if (!flag1) {
-                        itemstack.func_190918_g(1);
+                        itemstack.shrink(1);
 
-                        if (itemstack.func_190916_E() == 0) {
+                        if (itemstack.getCount() == 0) {
                             player.inventory.deleteStack(itemstack);
                         }
                     }

@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -48,8 +49,8 @@ public class BlockDetector extends BWMBlock {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
         return setFacingInBlock(state, DirUtils.convertEntityOrientationToFacing(entity, side));
     }
 
@@ -164,7 +165,7 @@ public class BlockDetector extends BWMBlock {
             world.setBlockState(pos, state);
 
             for (int i = 0; i < 6; i++) {
-                world.func_190524_a(pos.offset(EnumFacing.getFront(i)), this, pos);
+                world.neighborChanged(pos.offset(EnumFacing.getFront(i)), this, pos);
             }
         }
     }

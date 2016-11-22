@@ -39,12 +39,12 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
         BlockPos blockpos = source.getBlockPos().offset(dispenserFacing);
 
         ItemStack result = FluidUtil.tryPickUpFluid(stack, null, world, blockpos, dispenserFacing.getOpposite()).getResult();
-        if (result == ItemStack.field_190927_a) {
+        if (result == ItemStack.EMPTY) {
             return super.dispenseStack(source, stack);
         }
 
-        stack.func_190918_g(1);
-        if (stack.func_190916_E() == 0) {
+        stack.shrink(1);
+        if (stack.getCount() == 0) {
             stack.deserializeNBT(result.serializeNBT());
         } else if (((TileEntityDispenser) source.getBlockTileEntity()).addItemStack(result) < 0) {
             this.dispenseBehavior.dispense(source, result);
@@ -58,7 +58,7 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
      */
     private ItemStack dumpContainer(IBlockSource source, ItemStack stack) {
         ItemStack dispensedStack = stack.copy();
-        dispensedStack.func_190920_e(1);
+        dispensedStack.setCount(1);
         IFluidHandler fluidHandler = FluidUtil.getFluidHandler(dispensedStack);
         if (fluidHandler == null) {
             return super.dispenseStack(source, stack);
@@ -81,8 +81,8 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
 
             fluidHandler.drain(Fluid.BUCKET_VOLUME, true);
 
-            stack.func_190918_g(1);
-            if (stack.func_190916_E() == 0) {
+            stack.shrink(1);
+            if (stack.getCount() == 0) {
                 stack.deserializeNBT(dispensedStack.serializeNBT());
             } else if (((TileEntityDispenser) source.getBlockTileEntity()).addItemStack(dispensedStack) < 0) {
                 this.dispenseBehavior.dispense(source, dispensedStack);

@@ -23,7 +23,7 @@ public class HardcoreHardnessEventHandler {
         if (!BWConfig.earlyPickaxesRebalance) return;
         EntityPlayer player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack == ItemStack.field_190927_a || stack.getItem() == null) return;
+        if (stack == ItemStack.EMPTY || stack.getItem() == null) return;
         if (stack.getItem() == Items.WOODEN_PICKAXE) {
             destroyItem(stack, player);
         }

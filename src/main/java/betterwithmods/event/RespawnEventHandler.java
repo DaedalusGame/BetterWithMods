@@ -57,10 +57,10 @@ public class RespawnEventHandler {
      *                  between spawn points.
      * @return The new BlockPos
      */
-    public BlockPos getRespawnPoint(EntityPlayer player, int spawnFuzz) {
+    private BlockPos getRespawnPoint(EntityPlayer player, int spawnFuzz) {
         World world = player.getEntityWorld();
         BlockPos ret = world.getSpawnPoint();
-        if (!world.provider.getHasNoSky()) {
+        if (!world.provider.hasNoSky()) {
             boolean found = false;
             for (int tryCounter = 0; tryCounter < HARDCORE_SPAWN_MAX_ATTEMPTS; tryCounter++) {
                 ret = world.getSpawnPoint();

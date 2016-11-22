@@ -235,7 +235,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 passengers.add(e);
         });
 
-        passengers.forEach(e -> e.moveEntity(null, 0, newPosY - posY, 0));
+        passengers.forEach(e -> e.move(null, 0, newPosY - posY, 0));
         passengers.forEach(e -> e.fallDistance = 0);
         entitiesInBlocks.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
         entitiesInBlocks.forEach(e -> e.isAirBorne = false);
@@ -296,7 +296,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 
                     if (retries > 0) {
                         blocks.forEach((vec, state) -> state.getBlock().getDrops(getEntityWorld(), pos, state, 0).forEach(stack -> getEntityWorld()
-                                .spawnEntityInWorld(new EntityItem(getEntityWorld(), posX, posY, posZ, stack))));
+                                .spawnEntity(new EntityItem(getEntityWorld(), posX, posY, posZ, stack))));
                     }
 
                     updatePassengers(posY, targetY + 0.25, true);

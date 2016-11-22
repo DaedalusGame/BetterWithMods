@@ -44,7 +44,7 @@ public class HardcoreMelonEventHandler {
                     EntityFallingGourd entitygourd = new EntityFallingGourd(world, (double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5, blockstate);
                     if (block instanceof BlockPumpkin) entitygourd.setSeedStack(new ItemStack(Items.PUMPKIN_SEEDS));
                     else entitygourd.setSeedStack(new ItemStack(Items.MELON_SEEDS));
-                    world.spawnEntityInWorld(entitygourd);
+                    world.spawnEntity(entitygourd);
                 }
             }
         }

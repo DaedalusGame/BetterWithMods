@@ -40,15 +40,15 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     }
 
     public void addStackToInventory(ItemStack stack, BlockPos pos) {
-        if (stack == ItemStack.field_190927_a) return;
+        if (stack == ItemStack.EMPTY) return;
         for (int i = 0; i < 16; i++) {
             ItemStack check = this.inventory.getStackInSlot(i);
-            if (ItemStack.areItemsEqual(stack, check) && check.func_190916_E() < check.getMaxStackSize()) {
+            if (ItemStack.areItemsEqual(stack, check) && check.getCount() < check.getMaxStackSize()) {
                 if (check.hasTagCompound() || stack.hasTagCompound()) {
                     if (!ItemStack.areItemStackTagsEqual(stack, check))
                         continue;
                 }
-                check.func_190917_f(1);
+                check.grow(1);
                 this.inventory.setStackInSlot(i, check);
                 return;
             }
@@ -59,13 +59,13 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         } else {
             EntityItem item = new EntityItem(getWorld(), pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
             item.setDefaultPickupDelay();
-            getWorld().spawnEntityInWorld(item);
+            getWorld().spawnEntity(item);
         }
     }
 
     private int findFirstNullStack() {
         for (int i = 0; i < 16; i++) {
-            if (this.inventory.getStackInSlot(i) == ItemStack.field_190927_a)
+            if (this.inventory.getStackInSlot(i) == ItemStack.EMPTY)
                 return i;
         }
         return -1;
@@ -74,11 +74,11 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     public ItemStack getNextStackFromInv() {
         ItemStack nextStack;
 
-        if (this.nextIndex >= this.inventory.getSlots() || this.inventory.getStackInSlot(this.nextIndex) == ItemStack.field_190927_a) {
+        if (this.nextIndex >= this.inventory.getSlots() || this.inventory.getStackInSlot(this.nextIndex) == ItemStack.EMPTY) {
             int slot = findNextValidSlot(this.nextIndex);
 
             if (slot < 0)
-                return ItemStack.field_190927_a;
+                return ItemStack.EMPTY;
 
             this.nextIndex = slot;
         }
@@ -97,16 +97,16 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
 
     private int findNextValidSlot(int currentSlot) {
         for (int slot = currentSlot + 1; slot < this.inventory.getSlots(); slot++) {
-            if (this.inventory.getStackInSlot(slot) != ItemStack.field_190927_a)
+            if (this.inventory.getStackInSlot(slot) != ItemStack.EMPTY)
                 return slot;
         }
 
         for (int slot = 0; slot < currentSlot; slot++) {
-            if (this.inventory.getStackInSlot(slot) != ItemStack.field_190927_a)
+            if (this.inventory.getStackInSlot(slot) != ItemStack.EMPTY)
                 return slot;
         }
 
-        if (this.inventory.getStackInSlot(currentSlot) != ItemStack.field_190927_a)
+        if (this.inventory.getStackInSlot(currentSlot) != ItemStack.EMPTY)
             return currentSlot;
 
         return -1;

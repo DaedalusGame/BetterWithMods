@@ -47,15 +47,15 @@ public class BlockWindmill extends BlockMillGenerator {
         ItemStack stack = player.getHeldItem(hand);
         TileEntity tile = world.getTileEntity(pos);
 
-        if (world.isRemote && stack != ItemStack.field_190927_a && ColorUtils.contains(stack.getItem(), stack.getItemDamage()))
+        if (world.isRemote && stack != ItemStack.EMPTY && ColorUtils.contains(stack.getItem(), stack.getItemDamage()))
             return true;
 
-        if (!world.isRemote && tile != null && tile instanceof IColor && stack != ItemStack.field_190927_a && ColorUtils.contains(stack.getItem(), stack.getItemDamage())) {
+        if (!world.isRemote && tile != null && tile instanceof IColor && stack != ItemStack.EMPTY && ColorUtils.contains(stack.getItem(), stack.getItemDamage())) {
             IColor color = (IColor) tile;
             int meta = ColorUtils.get(stack.getItem(), stack.getItemDamage()); //reverseMeta[stack.getItemDamage()];
             if (color.dyeBlade(meta)) {
                 if (!player.capabilities.isCreativeMode)
-                    stack.func_190918_g(1);
+                    stack.shrink(1);
                 return true;
             }
         }

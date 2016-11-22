@@ -59,7 +59,7 @@ public class MobDropEvent {
     public void onWorldUnload(WorldEvent.Unload evt) {
         if (evt.getWorld() instanceof WorldServer) {
             if (player != null) {
-                player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.field_190927_a);
+                player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
                 player = null;
             }
         }
@@ -106,7 +106,7 @@ public class MobDropEvent {
                 for (EntityItem item : evt.getDrops()) {
                     ItemStack stack = item.getEntityItem();
                     if (stack.getMaxStackSize() != 1 && evt.getEntity().getEntityWorld().rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(stack.getItem(), stack.func_190916_E() + 1, stack.getItemDamage()));
+                        item.setEntityItemStack(new ItemStack(stack.getItem(), stack.getCount() + 1, stack.getItemDamage()));
                 }
             }
             if (evt.getEntityLiving() instanceof EntityAgeable)
@@ -142,7 +142,7 @@ public class MobDropEvent {
             Entity e = source.getSourceOfDamage();
             if (e instanceof EntityLivingBase) {
                 ItemStack held = ((EntityLivingBase) e).getHeldItemMainhand();
-                if (held != ItemStack.field_190927_a && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
+                if (held != ItemStack.EMPTY && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
                     return true;
                 }
             }
@@ -159,9 +159,9 @@ public class MobDropEvent {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
                     if (rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.func_190916_E(), 26));
+                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.getCount(), 26));
                     else
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.func_190916_E(), 25));
+                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.getCount(), 25));
                 }
             }
         }
@@ -177,7 +177,7 @@ public class MobDropEvent {
     public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
         Entity creeper = e.getTarget();
         if (creeper instanceof EntityCreeper) {
-            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != ItemStack.field_190927_a) {
+            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != ItemStack.EMPTY) {
                 if (e.getItemStack().getItem() instanceof ItemShears) {
                     InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
                     EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
@@ -186,7 +186,7 @@ public class MobDropEvent {
                     e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.HOSTILE, 1, 0.3F);
                     e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.HOSTILE, 1, 1F);
                     creeper.setDead();
-                    e.getWorld().spawnEntityInWorld(shearedCreeper);
+                    e.getWorld().spawnEntity(shearedCreeper);
                 }
             }
         }

@@ -58,7 +58,7 @@ public final class BWMBlocks {
     public static final Block BAMBOO_CHIME = new BlockChime(Material.WOOD).setRegistryName("bamboo_chime");
     public static final Block METAL_CHIME = new BlockChime(Material.IRON).setRegistryName("metal_chime");
     public static final Block BUDDY_BLOCK = new BlockBUD().setRegistryName("buddy_block");
-    public static final Block CREATIVE_GENERATOR = new BlockCreativeGenerator().setRegistryName("creativeGenerator");
+    public static final Block CREATIVE_GENERATOR = new BlockCreativeGenerator().setRegistryName("creative_generator");
     public static final Block LIGHT = new BlockLight().setRegistryName("light");
     public static final Block PLATFORM = new BlockPlatform().setRegistryName("platform");
     public static final Block MINING_CHARGE = new BlockMiningCharge().setRegistryName("mining_charge");

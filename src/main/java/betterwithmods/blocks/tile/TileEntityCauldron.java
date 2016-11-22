@@ -68,7 +68,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     private boolean hasNonFoulFood() {
         for (int i = 0; i < 27; i++) {
-            if (this.inventory.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (this.inventory.getStackInSlot(i) != ItemStack.EMPTY) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
                     if (item instanceof ItemFood) {
@@ -83,11 +83,11 @@ public class TileEntityCauldron extends TileEntityCookingPot {
     private boolean spoilFood() {
         boolean foodSpoiled = false;
         for (int i = 0; i < 27; i++) {
-            if (this.inventory.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (this.inventory.getStackInSlot(i) != ItemStack.EMPTY) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
                     if (item != BWMItems.FERTILIZER && item instanceof ItemFood) {
-                        int sizeOfStack = this.inventory.getStackInSlot(i).func_190916_E();
+                        int sizeOfStack = this.inventory.getStackInSlot(i).getCount();
                         ItemStack spoiled = new ItemStack(BWMItems.FERTILIZER, sizeOfStack);
                         this.inventory.setStackInSlot(i, spoiled);
                         foodSpoiled = true;

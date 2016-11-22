@@ -86,12 +86,12 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
     }
 
     public boolean processRightClick(EntityPlayer player) {
-        if (player.getHeldItem(EnumHand.MAIN_HAND) != ItemStack.field_190927_a) {
+        if (player.getHeldItem(EnumHand.MAIN_HAND) != ItemStack.EMPTY) {
             if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Items.CLOCK) {
                 toggleAsynchronous(player);
                 return true;
             }
-        } else if (player.getHeldItemMainhand() == ItemStack.field_190927_a && player.getHeldItemOffhand() == ItemStack.field_190927_a) {
+        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY && player.getHeldItemOffhand() == ItemStack.EMPTY) {
             advanceTimerPos();
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
@@ -105,7 +105,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             if (!asynchronous) {
                 this.asynchronous = true;
             } else if (player != null) {
-                player.addChatComponentMessage(new TextComponentTranslation("message.bwm:async.unavailable"), false);
+                player.sendStatusMessage(new TextComponentTranslation("message.bwm:async.unavailable"), false);
             }
         } else {
             boolean isSneaking = player.isSneaking();
@@ -113,7 +113,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             boolean async = !this.asynchronous;
             if ((!async && !isSneaking) || (async && isSneaking))
                 isOn = "disabled";
-            player.addChatComponentMessage(new TextComponentTranslation("message.bwm:async." + isOn), false);
+            player.sendStatusMessage(new TextComponentTranslation("message.bwm:async." + isOn), false);
             if (!isSneaking) {
                 this.getWorld().playSound(null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.05F, 1.0F);
                 this.asynchronous = async;
@@ -162,7 +162,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         if (!potteryRotated)
             potteryRotation = 0;
 
-        getWorld().func_190524_a(pos, BWMBlocks.SINGLE_MACHINES, pos);
+        getWorld().neighborChanged(pos, BWMBlocks.SINGLE_MACHINES, pos);
     }
 
     public byte getTimerPos() {

@@ -57,8 +57,8 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer, hand);
         return setFacingInBlock(state, DirUtils.getOpposite(facing));
     }
 

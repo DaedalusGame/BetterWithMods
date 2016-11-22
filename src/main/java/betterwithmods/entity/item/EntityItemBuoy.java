@@ -89,9 +89,9 @@ public class EntityItemBuoy extends EntityItem {
     @Override
     public void onUpdate() {
         ItemStack stack = this.getDataManager().get(getITEM());
-        if (stack != ItemStack.field_190927_a && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
+        if (stack != ItemStack.EMPTY && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
             return;
-        if (this.getEntityItem() == ItemStack.field_190927_a) {
+        if (this.getEntityItem() == ItemStack.EMPTY) {
             this.setDead();
         } else {
             // super.super.onUpdate() START
@@ -116,7 +116,7 @@ public class EntityItemBuoy extends EntityItem {
 
             this.noClip = this.pushOutOfBlocks(this.posX,
                     (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-            this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             boolean flag = (int) this.prevPosX != (int) this.posX || (int) this.prevPosY != (int) this.posY
                     || (int) this.prevPosZ != (int) this.posZ;
 
@@ -164,7 +164,7 @@ public class EntityItemBuoy extends EntityItem {
                 else
                     this.lifespan += hook;
             }
-            if (item != ItemStack.field_190927_a && item.func_190916_E() <= 0) {
+            if (item != ItemStack.EMPTY && item.getCount() <= 0) {
                 this.setDead();
             }
         }

@@ -42,8 +42,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, hand);
         return setFacingInBlock(state, side.getOpposite());
     }
 
@@ -55,7 +55,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.field_190927_a && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.field_190927_a && player.isSneaking();
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && player.isSneaking();
 
         if (world.isRemote && emptyHands)
             return true;

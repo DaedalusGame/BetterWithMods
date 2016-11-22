@@ -151,7 +151,7 @@ public final class EntityPlayerExt {
 
     public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos) {
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack == ItemStack.field_190927_a) return false;
+        if (stack == ItemStack.EMPTY) return false;
         return ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
 

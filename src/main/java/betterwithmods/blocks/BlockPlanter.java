@@ -70,7 +70,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
         if (world.isRemote) {
             ItemStack item = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (item != ItemStack.field_190927_a) {
+            if (item != ItemStack.EMPTY) {
                 if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
                     return true;
                 else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.FERTILIZER))
@@ -87,14 +87,14 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
         if (meta == 0) {
             ItemStack stack = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (stack != ItemStack.field_190927_a) {
+            if (stack != ItemStack.EMPTY) {
                 boolean valid = false;
 
                 if (stack.getItem() == Items.WATER_BUCKET) {
                     world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.WATER));
                     world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                     ItemStack replacement = stack.getItem().getContainerItem(stack);
-                    if (stack.func_190916_E() == 1 && !player.capabilities.isCreativeMode) {
+                    if (stack.getCount() == 1 && !player.capabilities.isCreativeMode) {
                         EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
                         if (hand == EnumHand.OFF_HAND)
                             slot = EntityEquipmentSlot.OFFHAND;
@@ -111,7 +111,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                     Block block = ((ItemBlock) stack.getItem()).getBlock();
                     if (this.isValidBlockStack(stack)) {
                         if (!player.capabilities.isCreativeMode)
-                            stack.func_190918_g(1);
+                            stack.shrink(1);
                         for (EnumPlanterType type : EnumPlanterType.values()) {
                             if (valid)
                                 break;
@@ -127,11 +127,11 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 return valid;
             }
         } else if (meta == 1) {
-            if (heldItem != ItemStack.field_190927_a) {
+            if (heldItem != ItemStack.EMPTY) {
                 if (heldItem.getItem() == Items.DYE && heldItem.getItemDamage() == 15) {
                     world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.FERTILE));
                     if (!player.capabilities.isCreativeMode)
-                        heldItem.func_190918_g(1);
+                        heldItem.shrink(1);
                     world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     return true;
                 }
@@ -152,13 +152,13 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             return true;
         } else if (meta == 6 && heldItem.getItem() == Items.BUCKET) {
             if (!player.capabilities.isCreativeMode) {
-                if (heldItem.func_190916_E() == 1) {
+                if (heldItem.getCount() == 1) {
                     EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
                     if (hand == EnumHand.OFF_HAND)
                         slot = EntityEquipmentSlot.OFFHAND;
                     player.setItemStackToSlot(slot, new ItemStack(Items.WATER_BUCKET));
                 } else {
-                    heldItem.func_190918_g(1);
+                    heldItem.shrink(1);
                     if (!player.inventory.addItemStackToInventory(new ItemStack(Items.WATER_BUCKET)))
                         player.dropItem(new ItemStack(Items.WATER_BUCKET), false);
                 }

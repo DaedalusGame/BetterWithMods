@@ -54,15 +54,15 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         this.filterType = 0;
         this.soulsRetained = 0;
         this.occupiedSlots = 0;
-        this.filterStack = ItemStack.field_190927_a;
+        this.filterStack = ItemStack.EMPTY;
         this.filter = "";
     }
 
     public static ItemStack attemptToInsert(IItemHandler inv, ItemStack stack) {
-        ItemStack leftover = ItemStack.field_190927_a;
+        ItemStack leftover = ItemStack.EMPTY;
         for (int slot = 0; slot < inv.getSlots() - 1; slot++) {
             leftover = inv.insertItem(slot, stack, false);
-            if (leftover == ItemStack.field_190927_a)
+            if (leftover == ItemStack.EMPTY)
                 break;
         }
         return leftover;
@@ -75,7 +75,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         } else {
             ItemStack itemstack = entityItem.getEntityItem().copy();
             ItemStack leftovers = attemptToInsert(inv, itemstack);
-            if (leftovers != ItemStack.field_190927_a && leftovers.func_190916_E() != 0) {
+            if (leftovers != ItemStack.EMPTY && leftovers.getCount() != 0) {
                 entityItem.setEntityItemStack(leftovers);
             } else {
                 putAll = true;
@@ -183,7 +183,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             stateChanged = true;
             if (hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
                 ItemStack stack = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(18);
-                if (stack != ItemStack.field_190927_a) {
+                if (stack != ItemStack.EMPTY) {
                     String check = stack.getItem().toString() + stack.getMetadata();
                     if (!filter.equals(check)) {
                         filter = check;
@@ -211,7 +211,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private short getFilterType() {
         ItemStack filter = inventory.getStackInSlot(18);
-        if (filter != ItemStack.field_190927_a && filter.func_190916_E() > 0)
+        if (filter != ItemStack.EMPTY && filter.getCount() > 0)
             return (short) HopperFilters.getFilterType(filter);
         return 0;
     }
@@ -289,7 +289,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private boolean isFull() {
         for (int i = 0; i < this.inventory.getSlots(); i++) {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (itemstack == ItemStack.field_190927_a || itemstack.func_190916_E() != itemstack.getMaxStackSize()) {
+            if (itemstack == ItemStack.EMPTY || itemstack.getCount() != itemstack.getMaxStackSize()) {
                 return false;
             }
         }
@@ -302,8 +302,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         if (stackIndex > -1 && stackIndex < 18) {
             ItemStack invStack = inventory.getStackInSlot(stackIndex);
             int ejectStackSize = 8;
-            if (8 > invStack.func_190916_E())
-                ejectStackSize = invStack.func_190916_E();
+            if (8 > invStack.getCount())
+                ejectStackSize = invStack.getCount();
 
             ItemStack ejectStack = new ItemStack(invStack.getItem(), ejectStackSize, invStack.getItemDamage());
 
@@ -329,7 +329,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         ItemStack leftover;
                         for (int slot = 0; slot < below.getSlots(); slot++) {
                             leftover = below.insertItem(slot, ejectStack, false);
-                            if (leftover == ItemStack.field_190927_a) {
+                            if (leftover == ItemStack.EMPTY) {
                                 inventory.extractItem(stackIndex, ejectStackSize, false);
                                 break;
                             }
@@ -353,7 +353,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                             if (InvUtils.addItemStackToInv(items, ejectStack))
                                 itemsStored = ejectStackSize;
                             else
-                                itemsStored = ejectStackSize - ejectStack.func_190916_E();
+                                itemsStored = ejectStackSize - ejectStack.getCount();
                             if (itemsStored > 0) {
                                 inventory.extractItem(stackIndex, itemsStored, false);
                                 this.getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -386,7 +386,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         item.motionY = -0.009999999776482582D;
         item.motionZ = 0.0D;
         item.setDefaultPickupDelay();
-        this.getWorld().spawnEntityInWorld(item);
+        this.getWorld().spawnEntity(item);
     }
 
     private void attemptToEjectXPFromInv() {
@@ -460,7 +460,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         orb.motionY = 0.0D;
         orb.motionZ = 0.0D;
 
-        this.getWorld().spawnEntityInWorld(orb);
+        this.getWorld().spawnEntity(orb);
     }
 
     private boolean attemptToSwallowXPOrb(World world, BlockPos pos, EntityXPOrb entity) {
@@ -533,7 +533,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             ghast.setLocationAndAngles(xPos, yPos, zPos, this.getWorld().rand.nextFloat() * 360.0F, 0.0F);
 
             if (ghast.getCanSpawnHere()) {
-                this.getWorld().spawnEntityInWorld(ghast);
+                this.getWorld().spawnEntity(ghast);
                 return true;
             }
         }

@@ -69,7 +69,7 @@ public class MobAIEvent {
     public void onEntityInit(EntityEvent.EntityConstructing event) {
         if (isValidAnimal(event.getEntity())) {
             EntityDataManager manager = event.getEntity().getDataManager();
-            manager.register(getHarnessData(event.getEntity()), ItemStack.field_190927_a);
+            manager.register(getHarnessData(event.getEntity()), ItemStack.EMPTY);
         }
     }
 
@@ -99,21 +99,20 @@ public class MobAIEvent {
 
             ItemStack harness = getHarness(animal);
             ItemStack held = player.getHeldItemMainhand();
-            if (harness != ItemStack.field_190927_a) {
-                if (held == ItemStack.field_190927_a) {
+            if (harness != ItemStack.EMPTY) {
+                if (held == ItemStack.EMPTY) {
                     InvUtils.addItemStackToInv(playerInv, harness);
-                    animal.getDataManager().set(getHarnessData(animal), ItemStack.field_190927_a);
+                    animal.getDataManager().set(getHarnessData(animal), ItemStack.EMPTY);
                     animal.getEntityData().setTag(TAG_HARNESS, new NBTTagCompound());
                     world.playSound(null, animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundCategory.NEUTRAL, 0.5f, 1.3f);
                     world.playSound(null, animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundCategory.NEUTRAL, 0.5f, 1.3f);
                 }
-                return;
-            } else if (held != ItemStack.field_190927_a && held.getItem() instanceof ItemBreedingHarness) {
-                if (getHarness(animal) != ItemStack.field_190927_a)
+            } else if (held != ItemStack.EMPTY && held.getItem() instanceof ItemBreedingHarness) {
+                if (getHarness(animal) != ItemStack.EMPTY)
                     return;
                 InvUtils.consumeItemsInInventory(playerInv, held, 1);
                 ItemStack copyStack = held.copy();
-                copyStack.func_190920_e(1);
+                copyStack.setCount(1);
                 NBTTagCompound cmp = new NBTTagCompound();
                 copyStack.writeToNBT(cmp);
                 animal.getDataManager().set(getHarnessData(animal), copyStack);
@@ -131,7 +130,7 @@ public class MobAIEvent {
     public void onLivingTick(LivingEvent.LivingUpdateEvent e) {
         EntityLivingBase entity = e.getEntityLiving();
         if (isValidAnimal(entity)) {
-            if (getHarness(entity) != ItemStack.field_190927_a)
+            if (getHarness(entity) != ItemStack.EMPTY)
                 entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(-1);
             else
                 entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
@@ -170,14 +169,14 @@ public class MobAIEvent {
             if (e.getTarget() instanceof EntityVillager) {
                 EntityVillager villager = (EntityVillager) e.getTarget();
                 ItemStack stack = e.getItemStack();
-                boolean isDiamond = stack != ItemStack.field_190927_a && OreDictionary.getOres("gemDiamond").stream().anyMatch(stack::isItemEqual);
+                boolean isDiamond = stack != ItemStack.EMPTY && OreDictionary.getOres("gemDiamond").stream().anyMatch(stack::isItemEqual);
                 if (isDiamond && !villager.isChild() && !isWillingToMate(villager) && villager.getGrowingAge() == 0) {
                     if (e.getEntityPlayer().capabilities.isCreativeMode)
-                        stack.func_190918_g(1);
+                        stack.shrink(1);
                     e.getWorld().setEntityState(villager, (byte) 12);
                     ((EntityVillager) e.getTarget()).setIsWillingToMate(true);
-                    if (stack.func_190916_E() < 1)
-                        e.getEntityPlayer().setHeldItem(e.getHand(), ItemStack.field_190927_a);
+                    if (stack.getCount() < 1)
+                        e.getEntityPlayer().setHeldItem(e.getHand(), ItemStack.EMPTY);
                 }
             }
         }

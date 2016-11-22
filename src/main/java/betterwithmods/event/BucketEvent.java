@@ -37,9 +37,7 @@ public class BucketEvent {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null))
-            return true;
-        return false;
+        return stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
     private static int getCapacity(ItemStack stack) {
@@ -66,7 +64,7 @@ public class BucketEvent {
             return;
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
-        if (toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !isFluidContainer(toCheck))
+        if (toCheck == ItemStack.EMPTY || toCheck.getItem() == Items.WATER_BUCKET || !isFluidContainer(toCheck))
             return;
 
         if (FluidUtil.getFluidContained(toCheck) == null)
@@ -86,7 +84,7 @@ public class BucketEvent {
 
             if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
                 ItemStack equip = evt.getEntityPlayer().getHeldItem(evt.getHand());
-                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != ItemStack.field_190927_a && containsWater(equip)) {
+                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != ItemStack.EMPTY && containsWater(equip)) {
                     if (evt.getWorld().getBlockState(pos).getBlock().isAir(evt.getWorld().getBlockState(pos), evt.getWorld(), pos) || evt.getWorld().getBlockState(pos).getBlock().isReplaceable(evt.getWorld(), pos)) {
                         Item item = equip.getItem();
                         if (isFluidContainer(equip) && item.getItemUseAction(equip) == EnumAction.NONE) {
@@ -98,11 +96,11 @@ public class BucketEvent {
                                         evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
                                 }
                                 if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
-                                    if (equip.func_190916_E() == 1) {
+                                    if (equip.getCount() == 1) {
                                         EnumHand hand = evt.getHand();
-                                        evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : ItemStack.field_190927_a);
-                                    } else if (equip.func_190916_E() > 1) {
-                                        equip.func_190918_g(1);
+                                        evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : ItemStack.EMPTY);
+                                    } else if (equip.getCount() > 1) {
+                                        equip.shrink(1);
                                         if (item.hasContainerItem(equip))
                                             evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());
                                         evt.setUseItem(Event.Result.DENY);
@@ -124,7 +122,7 @@ public class BucketEvent {
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
 
-        if (toCheck == ItemStack.field_190927_a || toCheck.getItem() != Items.WATER_BUCKET)
+        if (toCheck == ItemStack.EMPTY || toCheck.getItem() != Items.WATER_BUCKET)
             return;
 
         if (!evt.getWorld().isRemote) {
@@ -138,7 +136,7 @@ public class BucketEvent {
 
             if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
                 ItemStack equip = evt.getEntityPlayer().getHeldItem(evt.getHand());
-                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != ItemStack.field_190927_a && equip.getItem() == Items.WATER_BUCKET) {
+                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != ItemStack.EMPTY && equip.getItem() == Items.WATER_BUCKET) {
                     if (evt.getWorld().getBlockState(pos).getBlock().isAir(evt.getWorld().getBlockState(pos), evt.getWorld(), pos) || evt.getWorld().getBlockState(pos).getBlock().isReplaceable(evt.getWorld(), pos)) {
                         ItemBucket bucket = (ItemBucket) Items.WATER_BUCKET;
                         if (bucket.tryPlaceContainedLiquid(evt.getEntityPlayer(), evt.getWorld(), pos)) {
@@ -149,11 +147,11 @@ public class BucketEvent {
                                     evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
                             }
                             if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
-                                if (equip.func_190916_E() == 1) {
+                                if (equip.getCount() == 1) {
                                     EnumHand hand = evt.getHand();
                                     evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
-                                } else if (equip.func_190916_E() > 1) {
-                                    equip.func_190918_g(1);
+                                } else if (equip.getCount() > 1) {
+                                    equip.shrink(1);
                                     evt.getEntityPlayer().inventory.addItemStackToInventory(new ItemStack(Items.BUCKET));
                                     evt.setUseItem(Event.Result.DENY);
                                 }

@@ -30,11 +30,11 @@ public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem {
             if (stack.getItem().onItemUse(fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 return stack;
             } else {
-                stack.func_190917_f(1);
+                stack.grow(1);
                 return stack;
             }
         } else {
-            stack.func_190917_f(1);
+            stack.grow(1);
             return stack;
         }
     }

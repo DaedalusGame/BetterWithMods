@@ -86,7 +86,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
         ItemStack heldItem = playerIn.getHeldItem(hand);
         TileEntity te = worldIn.getTileEntity(pos);
 
-        if (te != null && playerIn != null && !playerIn.isSneaking() && heldItem != ItemStack.field_190927_a && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+        if (te != null && playerIn != null && !playerIn.isSneaking() && heldItem != ItemStack.EMPTY && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             return ((TileEntityVase) te).onActivated(playerIn, hand, heldItem);
         }
 

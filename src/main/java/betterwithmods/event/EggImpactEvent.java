@@ -44,7 +44,7 @@ public class EggImpactEvent {
                         EntityChicken entitychicken = new EntityChicken(egg.getEntityWorld());
                         entitychicken.setGrowingAge(-24000);
                         entitychicken.setLocationAndAngles(egg.posX, egg.posY, egg.posZ, egg.rotationYaw, 0.0F);
-                        egg.getEntityWorld().spawnEntityInWorld(entitychicken);
+                        egg.getEntityWorld().spawnEntity(entitychicken);
                     }
                 } else {
                     InvUtils.ejectStack(egg.getEntityWorld(), egg.posX, egg.posY, egg.posZ, new ItemStack(BWMItems.RAW_EGG));

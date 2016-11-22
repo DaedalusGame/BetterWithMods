@@ -75,7 +75,7 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
     public int filledSlots() {
         int fill = 0;
         for (int i = 0; i < this.getMaxVisibleSlots(); i++) {
-            if (inventory.getStackInSlot(i) != ItemStack.field_190927_a)
+            if (inventory.getStackInSlot(i) != ItemStack.EMPTY)
                 fill++;
         }
         return fill;

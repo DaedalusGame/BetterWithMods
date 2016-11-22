@@ -23,7 +23,7 @@ public class RenderSheepHarness extends RenderSheep {
 
     @Override
     protected ResourceLocation getEntityTexture(EntitySheep entity) {
-        if (MobAIEvent.getHarness(entity) != ItemStack.field_190927_a)
+        if (MobAIEvent.getHarness(entity) != ItemStack.EMPTY)
             return HARNESS;
         return super.getEntityTexture(entity);
     }

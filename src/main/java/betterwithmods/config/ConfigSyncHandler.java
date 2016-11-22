@@ -83,9 +83,9 @@ public class ConfigSyncHandler {
     public void playerJoinedWorld(TickEvent.ClientTickEvent evt) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         if (requiresRestart) {
-            player.addChatMessage(new TextComponentString("[Better With Mods] " + I18n.format("config.sync.restart")));
+            player.sendMessage(new TextComponentString("[Better With Mods] " + I18n.format("config.sync.restart")));
         } else {
-            player.addChatMessage(new TextComponentString("[Better With Mods] " + I18n.format("config.sync.ok")));
+            player.sendMessage(new TextComponentString("[Better With Mods] " + I18n.format("config.sync.ok")));
         }
         MinecraftForge.EVENT_BUS.unregister(this);
     }

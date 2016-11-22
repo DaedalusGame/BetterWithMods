@@ -78,7 +78,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                         breakCrank(world, pos);
                 }
             } else if (world.isRemote) {
-                player.addChatMessage(new TextComponentString("You are too exhausted to turn it."));
+                player.sendMessage(new TextComponentString("You are too exhausted to turn it."));
                 return false;
             }
             return true;

@@ -49,10 +49,10 @@ public class ItemMechanical extends Item implements IMultiLocations {
 
             if (axis == EnumFacing.Axis.Y && stack.getItemDamage() == 2) {
                 if (isVerticalWindmillValid(player, world, pos, hitY))
-                    stack.func_190918_g(1);
+                    stack.shrink(1);
             } else if (axis != EnumFacing.Axis.Y && stack.getItemDamage() != 2) {
                 if (isHorizontalDeviceValid(player, world, pos, stack.getItemDamage(), axis))
-                    stack.func_190918_g(1);
+                    stack.shrink(1);
             }
             return EnumActionResult.SUCCESS;
         }
@@ -68,7 +68,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
         } else if (meta == 1) {
             if (world.isRemote)
-                player.addChatMessage(new TextComponentString("Not enough room to place the waterwheel. Need a 5x5 area to work."));
+                player.sendMessage(new TextComponentString("Not enough room to place the waterwheel. Need a 5x5 area to work."));
         }
         if (meta == 0 && validateWindmill(world, pos, axis)) {
             if (axis != EnumFacing.Axis.Y) {
@@ -77,7 +77,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
         } else if (meta == 0) {
             if (world.isRemote)
-                player.addChatMessage(new TextComponentString("Not enough room to place the windmill. Need a 13x13 area to work."));
+                player.sendMessage(new TextComponentString("Not enough room to place the windmill. Need a 13x13 area to work."));
         }
         return valid;
     }
@@ -148,10 +148,10 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState().withProperty(BlockMillGenerator.AXIS, EnumFacing.Axis.Y));//BlockPowerSource.setProxies(world, x, yPos, z);
                 valid = true;
             } else if (world.isRemote)
-                player.addChatMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work."));
+                player.sendMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work."));
         } else {
             if (world.isRemote) {
-                player.addChatMessage(new TextComponentString("Too few vertical axles in column to place here. (Need seven)"));
+                player.sendMessage(new TextComponentString("Too few vertical axles in column to place here. (Need seven)"));
             }
         }
         return valid;
@@ -176,7 +176,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     }
                     if (!clear) {
                         if (world.isRemote)
-                            player.addChatMessage(new TextComponentString("Blockage at x:" + (x + xP) + " y:" + (y + yP) + " z:" + (z + zP)));
+                            player.sendMessage(new TextComponentString("Blockage at x:" + (x + xP) + " y:" + (y + yP) + " z:" + (z + zP)));
                         break;
                     }
                 }

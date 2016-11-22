@@ -21,14 +21,14 @@ public class TileEntityVase extends TileBasicInventory {
     }
 
     public boolean onActivated(EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem) {
-        ItemStack insertstack = heldItem.copy();
-        insertstack.func_190920_e(1);
-        boolean flag = tryInsert(inventory, insertstack);
+        ItemStack insertedStack = heldItem.copy();
+        insertedStack.setCount(1);
+        boolean flag = tryInsert(inventory, insertedStack);
 
         if (flag) {
             if (!playerIn.isCreative()) {
-                heldItem.func_190918_g(1);
-                playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldItem.func_190916_E() == 0 ? ItemStack.field_190927_a : heldItem);
+                heldItem.shrink(1);
+                playerIn.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldItem.getCount() == 0 ? ItemStack.EMPTY : heldItem);
             }
             this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(),
                     SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
@@ -40,7 +40,7 @@ public class TileEntityVase extends TileBasicInventory {
 
     public void onBreak() {
         ItemStack vaseitem = inventory.getStackInSlot(0);
-        if (vaseitem != ItemStack.field_190927_a && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
+        if (vaseitem != ItemStack.EMPTY && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
             float intensity = 1.5f; // TODO: fiddle with this.
             getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
         } else {
@@ -49,7 +49,7 @@ public class TileEntityVase extends TileBasicInventory {
     }
 
     public boolean tryInsert(IItemHandler inv, ItemStack stack) {
-        if (stack.func_190916_E() > 1 || inv.getStackInSlot(0) != ItemStack.field_190927_a)
+        if (stack.getCount() > 1 || inv.getStackInSlot(0) != ItemStack.EMPTY)
             return false;
         inv.insertItem(0, stack, false);
         return true;

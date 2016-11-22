@@ -30,7 +30,7 @@ public class ItemDynamite extends Item {
         int flintIndex = -1;
 
         for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-            if (player.inventory.mainInventory.get(i) != ItemStack.field_190927_a && player.inventory.mainInventory.get(i).getItem() == Items.FLINT_AND_STEEL) {
+            if (player.inventory.mainInventory.get(i) != ItemStack.EMPTY && player.inventory.mainInventory.get(i).getItem() == Items.FLINT_AND_STEEL) {
                 flintIndex = i;
                 break;
             }
@@ -43,13 +43,13 @@ public class ItemDynamite extends Item {
                 lit = true;
                 ItemStack steelStack = player.inventory.getStackInSlot(flintIndex);
                 steelStack.damageItem(1, player);
-                if (steelStack.func_190916_E() < 1)
-                    player.inventory.mainInventory.set(flintIndex, ItemStack.field_190927_a);
+                if (steelStack.getCount() < 1)
+                    player.inventory.mainInventory.set(flintIndex, ItemStack.EMPTY);
             }
 
-            player.getHeldItem(hand).func_190918_g(1);
+            player.getHeldItem(hand).shrink(1);
             EntityDynamite dynamite = new EntityDynamite(world, player, new ItemStack(this, 1), lit);
-            world.spawnEntityInWorld(dynamite);
+            world.spawnEntity(dynamite);
 
             if (lit)
                 world.playSound(null, new BlockPos(dynamite.posX, dynamite.posY, dynamite.posZ), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.AMBIENT, 1.0F, 1.0F);

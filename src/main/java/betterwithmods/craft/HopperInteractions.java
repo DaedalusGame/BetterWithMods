@@ -37,24 +37,24 @@ public class HopperInteractions {
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 SimpleItemStackHandler inventory = tile.inventory;
                 ItemStack stack = item.getEntityItem();
-                int separate = world.rand.nextInt(stack.func_190916_E() + 1);
-                int redStack = stack.func_190916_E() - separate;
+                int separate = world.rand.nextInt(stack.getCount() + 1);
+                int redStack = stack.getCount() - separate;
                 ItemStack redSand = getSecondaryOutput().get(1).copy();
-                redSand.func_190920_e(separate);
+                redSand.setCount(separate);
                 if (redStack != 0) {
                     EntityItem red = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, redSand);
                     if (!InvUtils.addItemStackToInv(inventory, red.getEntityItem())) {
                         red.setDefaultPickupDelay();
-                        world.spawnEntityInWorld(red);
+                        world.spawnEntity(red);
                     }
                 }
                 if (separate != 0) {
                     ItemStack sand = getSecondaryOutput().get(0).copy();
-                    sand.func_190920_e(separate);
+                    sand.setCount(separate);
                     EntityItem reg = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, sand);
                     if (!InvUtils.addItemStackToInv(inventory, reg.getEntityItem())) {
                         reg.setDefaultPickupDelay();
-                        world.spawnEntityInWorld(reg);
+                        world.spawnEntity(reg);
                     }
                 }
                 item.setDead();
@@ -79,7 +79,7 @@ public class HopperInteractions {
 
         @Override
         public void onCraft(World world, BlockPos pos, EntityItem item) {
-            ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(item.getEntityItem().func_190916_E());
+            ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(item.getEntityItem().getCount());
             if (!world.isRemote) {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
             }
@@ -104,7 +104,7 @@ public class HopperInteractions {
             if (filterType == this.filterType) {
                 if (inputStack != null) {
                     ItemStack i = inputStack.getEntityItem();
-                    return i.getItem().equals(input.getItem()) && i.getMetadata() == input.getMetadata() && i.func_190916_E() >= input.func_190916_E();
+                    return i.getItem().equals(input.getItem()) && i.getMetadata() == input.getMetadata() && i.getCount() >= input.getCount();
                 }
                 return false;
             }
@@ -112,7 +112,7 @@ public class HopperInteractions {
         }
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            for (int i = 0; i < inputStack.getEntityItem().func_190916_E(); i++)
+            for (int i = 0; i < inputStack.getEntityItem().getCount(); i++)
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
             onCraft(world, pos, inputStack);
         }

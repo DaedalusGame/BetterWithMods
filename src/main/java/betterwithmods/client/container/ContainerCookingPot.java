@@ -50,7 +50,7 @@ public class ContainerCookingPot extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack()) {
@@ -59,12 +59,12 @@ public class ContainerCookingPot extends Container {
 
             if (slotIndex < 27) {
                 if (!mergeItemStack(stack1, 27, this.inventorySlots.size(), true))
-                    return null;
+                    return ItemStack.EMPTY;
             } else if (!mergeItemStack(stack1, 0, 27, false))
-                return null;
+                return ItemStack.EMPTY;
 
-            if (stack1.func_190916_E() < 1)
-                slot.putStack(null);
+            if (stack1.getCount() < 1)
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
         }

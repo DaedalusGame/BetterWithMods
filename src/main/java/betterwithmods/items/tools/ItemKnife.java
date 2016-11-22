@@ -36,7 +36,7 @@ public class ItemKnife extends ItemTool {
             return null;
 
         ItemStack newStack = new ItemStack(this);
-        if (stack != ItemStack.field_190927_a && stack.getItem() == this) {
+        if (stack != ItemStack.EMPTY && stack.getItem() == this) {
             newStack.setItemDamage(stack.getItemDamage() + 1);
         }
         return newStack;

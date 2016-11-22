@@ -23,7 +23,7 @@ public class RenderCowHarness extends RenderCow {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityCow entity) {
-        if (MobAIEvent.getHarness(entity) != ItemStack.field_190927_a)
+        if (MobAIEvent.getHarness(entity) != ItemStack.EMPTY)
             return HARNESS;
         return super.getEntityTexture(entity);
     }

@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -128,8 +129,8 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                            int meta, EntityLivingBase entity) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
+                                            int meta, EntityLivingBase entity, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
         return setFacingInBlock(state, DirUtils.convertEntityOrientationToFlatFacing(entity, side));
     }
 

@@ -71,8 +71,8 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
         return this.setFacingInBlock(state, side);
     }
 
@@ -86,7 +86,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
         ItemStack heldItem = player.getHeldItem(hand);
         BlockPos down = pos.down();
 
-        if (heldItem != ItemStack.field_190927_a) {
+        if (heldItem != ItemStack.EMPTY) {
             if (heldItem.getItem() instanceof ItemBlock) {
                 Block block = ((ItemBlock) heldItem.getItem()).getBlock();
                 if (block == BWMBlocks.ROPE) {
@@ -97,7 +97,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
                             world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
                             world.playSound(null, down, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getPlaceSound(), SoundCategory.BLOCKS, 1, 1);
                             if (!player.capabilities.isCreativeMode)
-                                heldItem.func_190918_g(1);
+                                heldItem.shrink(1);
                         } else
                             return false;
                     }

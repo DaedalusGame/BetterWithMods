@@ -85,25 +85,25 @@ public class InvUtils {
     public static void ejectInventoryContents(World world, BlockPos pos, IItemHandler inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a) {
+            if (stack != ItemStack.EMPTY) {
                 float fX = world.rand.nextFloat() * 0.7F + 0.15F;
                 float fY = world.rand.nextFloat() * 0.7F + 0.15F;
                 float fZ = world.rand.nextFloat() * 0.7F + 0.15F;
 
-                while (stack.func_190916_E() > 0) {
+                while (stack.getCount() > 0) {
                     int j = world.rand.nextInt(21) + 10;
-                    if (j > stack.func_190916_E()) {
-                        j = stack.func_190916_E();
+                    if (j > stack.getCount()) {
+                        j = stack.getCount();
                     }
 
-                    stack.func_190918_g(j);
+                    stack.shrink(j);
                     EntityItem item = new EntityItem(world, (double) ((float) pos.getX() + fX), (double) ((float) pos.getY() + fY), (double) ((float) pos.getZ() + fZ), new ItemStack(stack.getItem(), j, stack.getItemDamage()));
                     float f1 = 0.05F;
                     item.motionX = (double) ((float) world.rand.nextGaussian() * f1);
                     item.motionY = (double) ((float) world.rand.nextGaussian() * f1 + 0.2F);
                     item.motionZ = (double) ((float) world.rand.nextGaussian() * f1);
                     copyTags(item.getEntityItem(), stack);
-                    world.spawnEntityInWorld(item);
+                    world.spawnEntity(item);
                 }
             }
         }
@@ -113,8 +113,8 @@ public class InvUtils {
     public static void clearInventory(IItemHandlerModifiable inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a) {
-                inv.setStackInSlot(i, ItemStack.field_190927_a);
+            if (stack != ItemStack.EMPTY) {
+                inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
 
@@ -128,16 +128,16 @@ public class InvUtils {
     }
 
     public static ItemStack decrStackSize(IItemHandlerModifiable inv, int slot, int amount) {
-        if (inv.getStackInSlot(slot) != ItemStack.field_190927_a) {
+        if (inv.getStackInSlot(slot) != ItemStack.EMPTY) {
             ItemStack splitStack;
-            if (inv.getStackInSlot(slot).func_190916_E() <= amount) {
+            if (inv.getStackInSlot(slot).getCount() <= amount) {
                 splitStack = inv.getStackInSlot(slot);
-                inv.setStackInSlot(slot, ItemStack.field_190927_a);
+                inv.setStackInSlot(slot, ItemStack.EMPTY);
                 return splitStack;
             } else {
                 splitStack = inv.getStackInSlot(slot).splitStack(amount);
-                if (inv.getStackInSlot(slot).func_190916_E() < 1) {
-                    inv.setStackInSlot(slot, ItemStack.field_190927_a);
+                if (inv.getStackInSlot(slot).getCount() < 1) {
+                    inv.setStackInSlot(slot, ItemStack.EMPTY);
                 }
                 return splitStack;
             }
@@ -153,7 +153,7 @@ public class InvUtils {
 
     private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, false) == ItemStack.field_190927_a)
+            if (inv.insertItem(slot, stack, false) == ItemStack.EMPTY)
                 return true;
         }
         return false;
@@ -161,7 +161,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackInRange(IItemHandler inv, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot <= maxSlot; ++slot) {
-            if (inv.getStackInSlot(slot) != ItemStack.field_190927_a) {
+            if (inv.getStackInSlot(slot) != ItemStack.EMPTY) {
                 return slot;
             }
         }
@@ -170,7 +170,7 @@ public class InvUtils {
 
     public static int getFirstEmptyStackInRange(IItemHandler inv, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot <= maxSlot; ++slot) {
-            if (inv.getStackInSlot(slot) == ItemStack.field_190927_a) {
+            if (inv.getStackInSlot(slot) == ItemStack.EMPTY) {
                 return slot;
             }
         }
@@ -186,7 +186,7 @@ public class InvUtils {
         int count = 0;
 
         for (int i = min; i <= max; ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
                 ++count;
             }
         }
@@ -198,13 +198,13 @@ public class InvUtils {
         int itemCount = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a) {
+            if (stack != ItemStack.EMPTY) {
                 if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
-                            itemCount += stack.func_190916_E();
+                            itemCount += stack.getCount();
                     } else
-                        itemCount += stack.func_190916_E();
+                        itemCount += stack.getCount();
                 }
             }
         }
@@ -219,10 +219,10 @@ public class InvUtils {
         int itemCount = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a) {
+            if (stack != ItemStack.EMPTY) {
                 if (stack.getItem() == item) {
                     if ((meta == OreDictionary.WILDCARD_VALUE) || (stack.getItemDamage() == meta)) {
-                        itemCount += inv.getStackInSlot(i).func_190916_E();
+                        itemCount += inv.getStackInSlot(i).getCount();
                     }
                 }
             }
@@ -243,24 +243,24 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a) {
+            if (stack != ItemStack.EMPTY) {
                 if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
-                            if (stack.func_190916_E() >= sizeOfStack) {
+                            if (stack.getCount() >= sizeOfStack) {
                                 decrStackSize(inv, i, sizeOfStack);
                                 return true;
                             }
-                            sizeOfStack -= stack.func_190916_E();
-                            inv.setStackInSlot(i, ItemStack.field_190927_a);
+                            sizeOfStack -= stack.getCount();
+                            inv.setStackInSlot(i, ItemStack.EMPTY);
                         }
                     } else {
-                        if (stack.func_190916_E() >= sizeOfStack) {
+                        if (stack.getCount() >= sizeOfStack) {
                             decrStackSize(inv, i, sizeOfStack);
                             return true;
                         }
-                        sizeOfStack -= stack.func_190916_E();
-                        inv.setStackInSlot(i, ItemStack.field_190927_a);
+                        sizeOfStack -= stack.getCount();
+                        inv.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
             }
@@ -271,14 +271,14 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, Item item, int meta, int stackSize) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
-                if (stack.func_190916_E() >= stackSize) {
+            if (stack != ItemStack.EMPTY && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
+                if (stack.getCount() >= stackSize) {
                     decrStackSize(inv, i, stackSize);
                     return false;
                 }
 
-                stackSize -= stack.func_190916_E();
-                inv.setStackInSlot(i, ItemStack.field_190927_a);
+                stackSize -= stack.getCount();
+                inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
 
@@ -294,25 +294,25 @@ public class InvUtils {
 
                 for (int j = 0; j < inv.getSlots(); ++j) {
                     ItemStack stack = inv.getStackInSlot(j);
-                    if (stack != ItemStack.field_190927_a && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
+                    if (stack != ItemStack.EMPTY && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
                         if (tempStack.hasTagCompound()) {
                             if (ItemStack.areItemStackTagsEqual(tempStack, stack)) {
-                                if (stack.func_190916_E() >= stackSize) {
+                                if (stack.getCount() >= stackSize) {
                                     decrStackSize(inv, j, stackSize);
                                     return false;
                                 }
 
-                                stackSize -= stack.func_190916_E();
-                                inv.setStackInSlot(j, ItemStack.field_190927_a);
+                                stackSize -= stack.getCount();
+                                inv.setStackInSlot(j, ItemStack.EMPTY);
                             }
                         } else {
-                            if (stack.func_190916_E() >= stackSize) {
+                            if (stack.getCount() >= stackSize) {
                                 decrStackSize(inv, j, stackSize);
                                 return false;
                             }
 
-                            stackSize -= stack.func_190916_E();
-                            inv.setStackInSlot(j, ItemStack.field_190927_a);
+                            stackSize -= stack.getCount();
+                            inv.setStackInSlot(j, ItemStack.EMPTY);
                         }
                     }
                 }
@@ -328,7 +328,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackNotOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
                 if (inv.getStackInSlot(i).getItem() != item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta != meta)) {
                     return i;
@@ -345,7 +345,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
                 if (inv.getStackInSlot(i).getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta == meta)) {
                     return i;
@@ -386,7 +386,7 @@ public class InvUtils {
         item.motionY = (double) ((float) world.rand.nextGaussian() * velocity + 0.2F);
         item.motionZ = (double) ((float) world.rand.nextGaussian() * velocity);
         item.setPickupDelay(pickupDelay);
-        world.spawnEntityInWorld(item);
+        world.spawnEntity(item);
     }
 
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack) {

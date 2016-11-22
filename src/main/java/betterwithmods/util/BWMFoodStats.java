@@ -115,7 +115,7 @@ public class BWMFoodStats extends FoodStats {
 
             if (this.getFoodTimer() >= 80) {
                 if (enumdifficulty != EnumDifficulty.PEACEFUL) {
-                    player.attackEntityFrom(DamageSource.starve, 1.0F);
+                    player.attackEntityFrom(DamageSource.STARVE, 1.0F);
                 }
 
                 setFoodTimer(0);

@@ -1,4 +1,4 @@
-tile.bwm:stokedFire.name=Stoked Fire
+tile.bwm:stoked_flame.name=Stoked Fire
 tile.bwm:hand_crank.name=Hand Crank
 tile.bwm:axle.name=Axle
 tile.bwm:gearbox.name=Gearbox
@@ -160,7 +160,7 @@ tile.bwm:metal_chime.4.name=Acacia Wind Chime
 tile.bwm:metal_chime.5.name=Dark Oak Wind Chime
 tile.bwm:immersive_axle.name=Treated Wood Axle
 tile.bwm:buddy_block.name=Buddy Block
-tile.bwm:creativeGenerator.name=Creative Mechanical Generator
+tile.bwm:creative_generator.name=Creative Mechanical Generator
 tile.bwm:light.name=Light Block
 tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge

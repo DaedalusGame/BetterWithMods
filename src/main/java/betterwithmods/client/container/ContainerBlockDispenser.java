@@ -42,7 +42,7 @@ public class ContainerBlockDispenser extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack()) {
@@ -51,12 +51,12 @@ public class ContainerBlockDispenser extends Container {
 
             if (slotIndex < 16) {
                 if (!mergeItemStack(stack1, 16, this.inventorySlots.size(), true))
-                    return null;
+                    return ItemStack.EMPTY;
             } else if (!mergeItemStack(stack1, 0, 16, false))
-                return null;
+                return ItemStack.EMPTY;
 
-            if (stack1.func_190916_E() == 0)
-                slot.putStack(null);
+            if (stack1.getCount() == 0)
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
         }

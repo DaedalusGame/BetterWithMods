@@ -90,7 +90,7 @@ public class EntityMiningCharge extends Entity {
         if (!this.hasNoGravity()) {
             this.motionY -= 0.03999999910593033D;
         }
-        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 
         --this.fuse;

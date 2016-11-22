@@ -156,7 +156,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     private boolean isFull() {
         for (int i = 0; i < this.inventory.getSlots(); i++) {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (itemstack == ItemStack.field_190927_a || itemstack.func_190916_E() != itemstack.getMaxStackSize()) {
+            if (itemstack == ItemStack.EMPTY || itemstack.getCount() != itemstack.getMaxStackSize()) {
                 return false;
             }
         }
@@ -190,8 +190,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
         if (index >= 0 && index < inventory.getSlots()) {
             ItemStack stack = inventory.getStackInSlot(index);
             int ejectStackSize = 8;
-            if (8 > stack.func_190916_E()) {
-                ejectStackSize = stack.func_190916_E();
+            if (8 > stack.getCount()) {
+                ejectStackSize = stack.getCount();
             }
             BlockPos target = pos.offset(facing);
             ItemStack eject = new ItemStack(stack.getItem(), ejectStackSize, stack.getItemDamage());
@@ -224,7 +224,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
         item.motionY = vec.getY() * velocity * 0.1;
         item.motionZ = (double) (vec.getZ() * velocity);
         item.setDefaultPickupDelay();
-        world.spawnEntityInWorld(item);
+        world.spawnEntity(item);
     }
 
     @Override
@@ -341,7 +341,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
 
                 if (output != null) {
                     for (ItemStack out : output) {
-                        if (out != ItemStack.field_190927_a) {
+                        if (out != ItemStack.EMPTY) {
                             ItemStack stack = out.copy();
                             if (!InvUtils.addItemStackToInv(inventory, stack))
                                 InvUtils.ejectStackWithOffset(this.getWorld(), this.pos.up(), stack);

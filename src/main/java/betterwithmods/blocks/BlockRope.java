@@ -34,7 +34,7 @@ public class BlockRope extends BWMBlock {
                 world.setBlockState(bp, BWMBlocks.ROPE.getDefaultState());
                 world.playSound(null, bp, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getPlaceSound(), SoundCategory.BLOCKS, 1, 1);
                 if (player != null && !player.capabilities.isCreativeMode) // if this is placed by a pulley, let the pulley manage the stack size
-                    stack.func_190918_g(1);
+                    stack.shrink(1);
                 return true;
             }
         }
@@ -58,7 +58,7 @@ public class BlockRope extends BWMBlock {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (heldItem != ItemStack.field_190927_a && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
+        if (heldItem != ItemStack.EMPTY && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
             return placeRopeUnder(heldItem, worldIn, pos, playerIn);
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);

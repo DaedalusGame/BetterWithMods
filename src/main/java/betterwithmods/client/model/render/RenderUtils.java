@@ -25,7 +25,7 @@ public class RenderUtils {
     private static HashMap<String, ModelWithResource> filterLocations;
 
     public static boolean filterContains(ItemStack stack) {
-        if (stack == ItemStack.field_190927_a)
+        if (stack == ItemStack.EMPTY)
             return false;
         return filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata()); //false;
     }

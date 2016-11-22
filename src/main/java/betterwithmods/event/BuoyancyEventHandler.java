@@ -24,13 +24,13 @@ public class BuoyancyEventHandler {
         if (!(event.getEntity().getClass() == EntityItem.class)) return;
         EntityItem entityItem = (EntityItem) event.getEntity();
 
-        if (entityItem.getEntityItem().func_190916_E() > 0) {
+        if (entityItem.getEntityItem().getCount() > 0) {
             event.setResult(Result.DENY);
             event.setCanceled(true);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
             entityItem.setDead();
             entityItem.setInfinitePickupDelay();
-            world.spawnEntityInWorld(newEntity);
+            world.spawnEntity(newEntity);
         }
     }
 }

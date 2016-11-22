@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[13.19.0.2141,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
+@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
     public static final String VERSION = "0.13.1 Beta hotfix 3";
@@ -112,13 +112,13 @@ public class BWMod {
     }
 
     private static void registerEntities() {
-        BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
-        BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
-        BWRegistry.registerEntity(EntityMiningCharge.class, "BWMMiningCharge", 10, 50, true);
-        BWRegistry.registerEntity(EntityItemBuoy.class, "entityItemBuoy", 64, 20, true);
-        BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
-        BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
-        BWRegistry.registerEntity(EntityFallingGourd.class, "entityFallingGourd", 64, 1, true);
+        BWRegistry.registerEntity(EntityExtendingRope.class, "extending_rope", 64, 20, true);
+        BWRegistry.registerEntity(EntityDynamite.class, "dynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityMiningCharge.class, "mining_charge", 10, 50, true);
+        BWRegistry.registerEntity(EntityItemBuoy.class, "item_buoy", 64, 20, true);
+        BWRegistry.registerEntity(EntityShearedCreeper.class, "sheared_creeper", 64, 1, true);
+        BWRegistry.registerEntity(EntityBroadheadArrow.class, "broadhead_arrow", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingGourd.class, "falling_gourd", 64, 1, true);
     }
 
     @EventHandler

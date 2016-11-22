@@ -70,7 +70,7 @@ public class BulkRecipe {
             int contain = InvUtils.listContains(obj, inputs);
             if (contain > -1) {
                 if (obj instanceof ItemStack) {
-                    ((ItemStack) inputs.get(contain)).func_190917_f(((ItemStack) obj).func_190916_E());
+                    ((ItemStack) inputs.get(contain)).grow(((ItemStack) obj).getCount());
                 } else if (obj instanceof OreStack) {
                     ((OreStack) inputs.get(contain)).addToStack(((OreStack) obj).getStackSize());
                 }
@@ -124,8 +124,8 @@ public class BulkRecipe {
             for (Object obj : required) {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
-                    if (stack != ItemStack.field_190927_a) {
-                        if (InvUtils.countItemStacksInInventory(inv, stack) < stack.func_190916_E())
+                    if (stack != ItemStack.EMPTY) {
+                        if (InvUtils.countItemStacksInInventory(inv, stack) < stack.getCount())
                             return false;
                     }
                 } else if (obj instanceof OreStack) {
@@ -163,8 +163,8 @@ public class BulkRecipe {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
 
-                    if (stack != ItemStack.field_190927_a) {
-                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.func_190916_E()))
+                    if (stack != ItemStack.EMPTY) {
+                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.getCount()))
                             success = false;
                     }
                 } else if (obj instanceof OreStack) {
@@ -181,6 +181,6 @@ public class BulkRecipe {
     }
 
     private boolean stacksMatch(ItemStack first, ItemStack second) {
-        return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.func_190916_E() == second.func_190916_E();
+        return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.getCount() == second.getCount();
     }
 }

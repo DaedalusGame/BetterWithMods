@@ -31,12 +31,12 @@ public class ItemFertilizer extends Item {
             Block below = world.getBlockState(pos.down()).getBlock();
             if (processBlock(below, world, pos.down())) {
                 if (!player.capabilities.isCreativeMode)
-                    stack.func_190918_g(1);
+                    stack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
         } else if (processBlock(block, world, pos)) {
             if (!player.capabilities.isCreativeMode)
-                stack.func_190918_g(1);
+                stack.shrink(1);
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;

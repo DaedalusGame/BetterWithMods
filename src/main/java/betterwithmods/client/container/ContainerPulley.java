@@ -46,7 +46,7 @@ public class ContainerPulley extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack clickedStack = null;
+        ItemStack clickedStack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -55,13 +55,13 @@ public class ContainerPulley extends Container {
 
             if (index < 4) {
                 if (!mergeItemStack(processedStack, 4, this.inventorySlots.size(), true))
-                    return null;
+                    return ItemStack.EMPTY;
             } else if (!mergeItemStack(processedStack, 0, 3, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (processedStack.func_190916_E() == 0) {
-                slot.putStack(null);
+            if (processedStack.getCount() == 0) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }

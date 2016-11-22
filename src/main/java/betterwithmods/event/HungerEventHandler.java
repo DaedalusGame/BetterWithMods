@@ -139,7 +139,7 @@ public class HungerEventHandler {
             int i = EnchantmentHelper.getEfficiencyModifier(player);
             ItemStack itemstack = player.getHeldItemMainhand();
 
-            if (i > 0 && itemstack != ItemStack.field_190927_a) {
+            if (i > 0 && itemstack != ItemStack.EMPTY) {
                 float intermediate = (float) (i * i + 1);
 
                 if (!itemstack.canHarvestBlock(state) && f <= 1.0F) {
@@ -282,7 +282,7 @@ public class HungerEventHandler {
             f = 1.0F;
         }
 
-        if (player.isHandActive() && player.getActiveItemStack() != ItemStack.field_190927_a
+        if (player.isHandActive() && player.getActiveItemStack() != ItemStack.EMPTY
                 && player.getActiveItemStack().getItem() == Items.BOW) {
             int i = player.getItemInUseMaxCount();
             float f1 = (float) i / 20.0F;

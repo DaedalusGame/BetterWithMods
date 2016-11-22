@@ -38,7 +38,7 @@ public class ContainerMill extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -47,11 +47,11 @@ public class ContainerMill extends Container {
 
             if (index < 3) {
                 if (!mergeItemStack(stack1, 3, this.inventorySlots.size(), true))
-                    return null;
+                    return ItemStack.EMPTY;
             } else if (!mergeItemStack(stack1, 0, 3, false))
-                return null;
-            if (stack1.func_190916_E() == 0)
-                slot.putStack(null);
+                return ItemStack.EMPTY;
+            if (stack1.getCount() == 0)
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
         }

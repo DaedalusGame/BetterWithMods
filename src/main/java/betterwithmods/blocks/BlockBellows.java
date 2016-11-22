@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -59,8 +60,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     @Deprecated
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
-                                            int meta, EntityLivingBase living) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living);
+                                            int meta, EntityLivingBase living, EnumHand hand) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, hand);
         if (side.ordinal() < 2)
             side = DirUtils.convertEntityOrientationToFlatFacing(living, side);
         return setFacingInBlock(state, side);

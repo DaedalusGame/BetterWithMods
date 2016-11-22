@@ -30,6 +30,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -107,7 +108,7 @@ public class BWRegistry {
                     EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
                             pos.getZ() + 0.5F, null, facing);
                     miningCharge.setNoGravity(false);
-                    worldIn.spawnEntityInWorld(miningCharge);
+                    worldIn.spawnEntity(miningCharge);
                     worldIn.playSound(null, miningCharge.posX, miningCharge.posY, miningCharge.posZ,
                             SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return stack;
@@ -120,7 +121,7 @@ public class BWRegistry {
      */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,
                                       int updateFrequency, boolean sendsVelocityUpdates) {
-        EntityRegistry.registerModEntity(entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
+        EntityRegistry.registerModEntity(new ResourceLocation(BWMod.MODID, entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
                 updateFrequency, sendsVelocityUpdates);
         availableEntityId++;
     }

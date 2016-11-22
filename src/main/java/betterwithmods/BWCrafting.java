@@ -354,7 +354,7 @@ public class BWCrafting {
     private static void addTurntableRecipes() {
 
         addTurntableRecipe(Blocks.CLAY, 0, BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.PLANTER.getMeta(), ItemStack.field_190927_a);
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.PLANTER.getMeta(), ItemStack.EMPTY);
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, EnumPotteryType.URN.getMeta(), null, 0, new ItemStack(Items.CLAY_BALL));
@@ -374,7 +374,7 @@ public class BWCrafting {
         if (BWConfig.canKilnSmeltOres) {
             InvUtils.oreNames.forEach(ore -> {
                 ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
-                if (ore != ItemStack.field_190927_a && output != ItemStack.field_190927_a)
+                if (ore != ItemStack.EMPTY && output != ItemStack.EMPTY)
                     addKilnRecipe(ore, output);
             });
         }

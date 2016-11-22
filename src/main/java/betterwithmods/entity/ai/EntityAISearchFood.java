@@ -43,7 +43,7 @@ public class EntityAISearchFood extends EntityAIBase {
             }
             if (targetItem != null) {
                 BlockPos targetPos = targetItem.getPosition();
-                if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().func_190916_E() > 0) {
+                if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().getCount() > 0) {
                     processItemEating();
                     return false;
                 } else {
@@ -74,7 +74,7 @@ public class EntityAISearchFood extends EntityAIBase {
      */
     @Override
     public boolean continueExecuting() {
-        if (targetItem.isDead || targetItem.getEntityItem().func_190916_E() < 1) {
+        if (targetItem.isDead || targetItem.getEntityItem().getCount() < 1) {
             BlockPos entityPos = entity.getPosition();
             List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
             if (!entityItems.isEmpty()) {
@@ -109,7 +109,7 @@ public class EntityAISearchFood extends EntityAIBase {
      */
     @Override
     public void updateTask() {
-        if (entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().func_190916_E() > 0) {
+        if (entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().getCount() > 0) {
             processItemEating();
         } else {
             ++timeoutCounter;
@@ -133,8 +133,8 @@ public class EntityAISearchFood extends EntityAIBase {
                 }
             }
             if (!bred) {
-                targetItem.getEntityItem().func_190917_f(1);
-            } else if (targetItem.getEntityItem().func_190916_E() < 1) {
+                targetItem.getEntityItem().grow(1);
+            } else if (targetItem.getEntityItem().getCount() < 1) {
                 targetItem.setDead();
             }
         }

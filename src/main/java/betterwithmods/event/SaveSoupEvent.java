@@ -12,9 +12,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class SaveSoupEvent {
     @SubscribeEvent
     public void saveSoup(LivingEntityUseItemEvent.Finish event) {
-        if (event.getItem() != ItemStack.field_190927_a) {
+        if (event.getItem() != ItemStack.EMPTY) {
             if (event.getItem().getItem() instanceof ItemSoup) {
-                if (event.getItem().func_190916_E() > 0) {
+                if (event.getItem().getCount() > 0) {
                     ItemStack result = event.getResultStack();
                     event.setResultStack(event.getItem());
                     if (event.getEntityLiving() instanceof EntityPlayer) {

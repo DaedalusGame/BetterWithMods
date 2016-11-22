@@ -172,7 +172,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     public boolean isCompanionCubeInInventory() {
         for (int i = 0; i < 3; i++) {
-            if (this.inventory.getStackInSlot(i) != ItemStack.field_190927_a) {
+            if (this.inventory.getStackInSlot(i) != ItemStack.EMPTY) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
                     if (item == Item.getItemFromBlock(BWMBlocks.WOLF))
@@ -191,7 +191,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             for (Object ingredient : ingredients) {
                 if (ingredient instanceof ItemStack) {
                     ItemStack stack = ((ItemStack) ingredient).copy();
-                    if (stack != ItemStack.field_190927_a) {
+                    if (stack != ItemStack.EMPTY) {
                         Item item = stack.getItem();
                         if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
                             this.getWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -207,7 +207,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
             for (ItemStack anOutput : output) {
                 ItemStack stack = anOutput.copy();
-                if (stack != ItemStack.field_190927_a)
+                if (stack != ItemStack.EMPTY)
                     ejectStack(stack);
             }
             return true;
@@ -226,7 +226,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             for (Object ingredient : ingredients) {
                 if (ingredient instanceof ItemStack) {
                     ItemStack stack = ((ItemStack) ingredient).copy();
-                    if (stack != ItemStack.field_190927_a) {
+                    if (stack != ItemStack.EMPTY) {
                         Item item = stack.getItem();
                         if (item == Item.getItemFromBlock(BWMBlocks.WOLF)) {
                             newGrindType = 3;

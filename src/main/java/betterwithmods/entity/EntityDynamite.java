@@ -110,7 +110,7 @@ public class EntityDynamite extends Entity implements IProjectile {
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.motionY -= 0.04D;
-        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.98D;
         this.motionY *= 0.98D;
         this.motionZ *= 0.98D;
@@ -194,7 +194,7 @@ public class EntityDynamite extends Entity implements IProjectile {
         LootContext.Builder build = new LootContext.Builder((WorldServer) this.getEntityWorld());
         for (ItemStack stack : this.getEntityWorld().getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.getEntityWorld().rand, build.build())) {
             EntityItem item = new EntityItem(this.getEntityWorld(), x, y, z, stack.copy());
-            this.getEntityWorld().spawnEntityInWorld(item);
+            this.getEntityWorld().spawnEntity(item);
         }
     }
 

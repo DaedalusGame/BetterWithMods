@@ -136,7 +136,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         if (!flag || movePlatform(lowest.down(), true)) {
             getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
                     0.4F + (getWorld().rand.nextFloat() * 0.1F), 1.0F);
-            getWorld().spawnEntityInWorld(rope);
+            getWorld().spawnEntity(rope);
             getWorld().setBlockToAir(lowest);
             putRope(true);
         } else {
@@ -151,7 +151,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
                 && ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
         rope = new EntityExtendingRope(getWorld(), pos, newPos.up(), newPos.getY());
         if (!flag || movePlatform(newPos, false)) {
-            getWorld().spawnEntityInWorld(rope);
+            getWorld().spawnEntity(rope);
         } else {
             rope = null;
         }
@@ -216,7 +216,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         IBlockState state = getWorld().getBlockState(rail);
         if (getWorld().getBlockState(rail).getBlock() instanceof BlockRailBase) {
             PropertyEnum<EnumRailDirection> shape = null;
-            for (IProperty<?> p : state.getPropertyNames()) {
+            for (IProperty<?> p : state.getPropertyKeys()) {
                 if ("shape".equals(p.getName()) && p instanceof PropertyEnum<?>) {
                     shape = (PropertyEnum<EnumRailDirection>) p;
                     break;
@@ -289,11 +289,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     private boolean takeRope(boolean flag) {
         for (int i = 0; i < 4; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (stack != ItemStack.field_190927_a && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.func_190916_E() > 0) {
+            if (stack != ItemStack.EMPTY && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() > 0) {
                 if (flag) {
-                    stack.func_190918_g(1);
-                    if (stack.func_190916_E() < 1) {
-                        inventory.setStackInSlot(i, ItemStack.field_190927_a);
+                    stack.shrink(1);
+                    if (stack.getCount() < 1) {
+                        inventory.setStackInSlot(i, ItemStack.EMPTY);
                     }
                     inventory.onContentsChanged(i);
                 }
@@ -306,12 +306,12 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     private boolean putRope(boolean flag) {
         for (int i = 0; i < 4; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (stack == ItemStack.field_190927_a || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.func_190916_E() < 64) {
+            if (stack == ItemStack.EMPTY || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() < 64) {
                 if (flag) {
-                    if (stack == ItemStack.field_190927_a) {
+                    if (stack == ItemStack.EMPTY) {
                         inventory.setStackInSlot(i, new ItemStack(BWMBlocks.ROPE, 1));
                     } else {
-                        stack.func_190917_f(1);
+                        stack.grow(1);
                     }
                     inventory.onContentsChanged(i);
                 }
@@ -364,8 +364,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     @Override
-    public void setWorldObj(World worldIn) {
-        super.setWorldObj(worldIn);
+    public void setWorld(World worldIn) {
+        super.setWorld(worldIn);
         if (rope == null && !worldIn.isRemote && ropeTag != null && !ropeTag.hasNoTags()) {
             NBTTagList pos = (NBTTagList) ropeTag.getTag("Pos");
             if (pos != null) {

@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
@@ -24,6 +23,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
     private static final DataParameter<Integer> FALLBLOCK = EntityDataManager.createKey(EntityFallingGourd.class, DataSerializers.VARINT);
     private ItemStack seedStack;
 
+    @SuppressWarnings("unused")
     public EntityFallingGourd(World worldIn) {
         super(worldIn);
     }
@@ -58,7 +58,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
                 this.motionY -= 0.03999999910593033D;
             }
 
-            this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             this.motionX *= 0.9800000190734863D;
             this.motionY *= 0.9800000190734863D;
             this.motionZ *= 0.9800000190734863D;
@@ -75,7 +75,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
                     this.motionZ *= 0.699999988079071D;
                     this.motionY *= -0.5D;
                     if (iblockstate.getBlock() != Blocks.PISTON_EXTENSION) {
-                        if (this.getEntityWorld().canBlockBePlaced(block, blockpos1, true, EnumFacing.UP, (Entity) null, (ItemStack) null) && !BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(blockpos1.down())) && (10 + rand.nextInt(7)) > this.fallTime && this.getEntityWorld().setBlockState(blockpos1, fallblock, 3)) {
+                        if (this.getEntityWorld().mayPlace(block, blockpos1, true, EnumFacing.UP, null) && !BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(blockpos1.down())) && (10 + rand.nextInt(7)) > this.fallTime && this.getEntityWorld().setBlockState(blockpos1, fallblock, 3)) {
                             this.setDead();
                             if (block instanceof BlockFalling) {
                                 ((BlockFalling) block).onEndFalling(this.getEntityWorld(), blockpos1);
@@ -105,7 +105,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
 
             if (seedStack != null) {
                 ItemStack seeds = seedStack.copy();
-                seeds.func_190920_e(rand.nextInt(3) + 1);
+                seeds.setCount(rand.nextInt(3) + 1);
                 if (this.shouldDropItem && this.getEntityWorld().getGameRules().getBoolean("doEntityDrops")) {
                     this.entityDropItem(seeds, 0.0F);
                 }
@@ -137,11 +137,6 @@ public class EntityFallingGourd extends EntityFallingBlock {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(FALLBLOCK, 0);
-    }
-
-    @Override
-    public void setDead() {
-        super.setDead();
     }
 
     @Override

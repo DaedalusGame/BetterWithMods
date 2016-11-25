@@ -23,8 +23,10 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
             if (tile.getSubtype() > 0) {
                 model = tile.getModel();
                 if (model == null && tile.filterType > 0) {
-                    ItemStack filter = HopperFilters.getFilter(tile.filterType);
-                    model = new ModelTransparent(RenderUtils.getResourceLocation(filter));
+                    ItemStack filter = tile.getFilterStack();//HopperFilters.getFilter(tile.filterType);
+                    if(filter != null) {
+                        model = new ModelTransparent(RenderUtils.getResourceLocation(filter));
+                    }
                 }
                 if (model != null) {
                     GlStateManager.pushMatrix();

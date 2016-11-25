@@ -43,6 +43,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -62,8 +63,7 @@ public class BWRegistry {
 
     public static void registerHopperFilters() {
 
-        HopperFilters.filters = HashBiMap.create();
-        HopperFilters.filters = HashBiMap.create();
+        HopperFilters.filters = new HashMap<>();
         HopperFilters.addFilter(1,Blocks.LADDER,0, stack -> isNotBlock(stack));
         HopperFilters.addFilter(2,Blocks.TRAPDOOR,0, stack -> isNarrow(stack) || isParticulate(stack));
         HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack));

@@ -7,11 +7,12 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -20,10 +21,16 @@ import java.util.function.Predicate;
  * @version 11/13/16
  */
 public class HopperFilters {
-    public static BiMap<Integer,Pair<ItemStack,Predicate<ItemStack>>> filters = HashBiMap.create();
-    public static int type = 1;
+    public static HashMap<ItemStack,Integer> filtertypes = new HashMap<>();
+    //public static BiMap<Integer,Pair<ItemStack,Predicate<ItemStack>>> filters = HashBiMap.create();
+    public static HashMap<Integer,Predicate<ItemStack>> filters = new HashMap<>();
+
+    //This had to change because apparently soul urn recipes are hardcoded to type 6 or whatever.
     public static int newType() {
-        int t = type++;
+        int t = 0;
+        for (int type:filtertypes.values()) {
+            t = Math.max(t,type+1);
+        }
         BWMod.logger.info(t);
         return t;
     }
@@ -42,29 +49,55 @@ public class HopperFilters {
     public static void addFilter(int type,Block block, int meta, Predicate<ItemStack> allowed) {
         addFilter(type,new ItemStack(block,1,meta), allowed);
     }
+
     public static void addFilter(int type,ItemStack filter, Predicate<ItemStack> allowed) {
         if(getFilterType(filter) != 0) {
             throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", getFilterType(filter), filter.getDisplayName()));
         }
-        if(!filters.containsKey(type))
-            filters.put(type,Pair.of(filter, allowed));
+        if(!filters.containsKey(type)) {
+            filters.put(type, allowed);
+            filtertypes.put(filter,type);
+        }
         else {
             throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", type, filter.getDisplayName()));
         }
     }
 
-    public static ItemStack getFilter(int type) {
-        return filters.get(type).getLeft();
+    public static void addFilterItem(int type,ItemStack filter) {
+        if(!filtertypes.containsKey(filter)) {
+            filtertypes.put(filter,type);
+        }
+        else {
+            throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", type, filter.getDisplayName()));
+        }
+    }
+
+    public static void addFilterItem(ItemStack otherfilter, ItemStack filter)
+    {
+        addFilterItem(getFilterType(otherfilter),filter);
+    }
+
+    public static void removeFilterItem(ItemStack filter) {
+        filtertypes.entrySet().removeIf(p -> p.getKey() == filter);
+    }
+
+    public static void removeFilterType(int type) {
+        filtertypes.entrySet().removeIf(p -> p.getValue() == type);
+        filters.remove(type);
+    }
+
+    public static ArrayList<ItemStack> getFilters(int type) {
+        return filtertypes.entrySet().stream().filter(entry -> entry.getValue() == type).map(Map.Entry::getKey).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static Predicate<ItemStack> getAllowedItems(int type) {
-        return filters.get(type).getRight();
+        return filters.get(type);
     }
 
     public static int getFilterType(ItemStack filter) {
-        Optional<Integer> type = filters.inverse().keySet().stream().filter(p -> (p.getLeft().isItemEqual(filter) || (p.getLeft().getItem() == filter.getItem() && p.getLeft().getMetadata() == OreDictionary.WILDCARD_VALUE))).map(p -> filters.inverse().get(p)).findFirst();
+        Optional<ItemStack> type = filtertypes.keySet().stream().filter(p -> (p.isItemEqual(filter) || (p.getItem() == filter.getItem() && p.getMetadata() == OreDictionary.WILDCARD_VALUE))).findFirst();
         if(type.isPresent())
-            return type.get();
+            return filtertypes.get(type.get());
         return 0;
     }
 

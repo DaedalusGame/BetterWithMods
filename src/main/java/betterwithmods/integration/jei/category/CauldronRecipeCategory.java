@@ -59,10 +59,4 @@ public class CauldronRecipeCategory extends BWMRecipeCategory<CauldronRecipeWrap
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputStacks(stacks, inputList);
     }
-
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CauldronRecipeWrapper wrapper) {
-
-    }
 }

@@ -1,7 +1,7 @@
 package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
-import betterwithmods.event.MobAIEvent;
+import betterwithmods.event.BreedingHardnessEvent;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPig;
 import net.minecraft.entity.passive.EntityPig;
@@ -17,14 +17,13 @@ import net.minecraft.util.ResourceLocation;
 public class RenderPigHarness extends RenderPig {
     private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID, "textures/entity/pig_harness.png");
 
-
     public RenderPigHarness(RenderManager renderManagerIn) {
         super(renderManagerIn);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityPig entity) {
-        if (MobAIEvent.getHarness(entity) != ItemStack.EMPTY)
+        if (BreedingHardnessEvent.getHarness(entity) != ItemStack.EMPTY)
             return HARNESS;
         return super.getEntityTexture(entity);
     }

@@ -7,21 +7,31 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class BucketEvent {
     public static void editModdedFluidDispenseBehavior() {
@@ -37,7 +47,7 @@ public class BucketEvent {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        return stack != ItemStack.EMPTY && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
     private static int getCapacity(ItemStack stack) {
@@ -159,6 +169,56 @@ public class BucketEvent {
                             evt.setCanceled(true);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
+        World world = e.player.getEntityWorld();
+        if (BWConfig.hardcoreLavaBuckets) {
+            if (world.getTotalWorldTime() % 10 == 0) {
+                if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE)) {
+                    IItemHandler inv = e.player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                    BlockPos pos = e.player.getPosition();
+                    for (int i = 0; i < inv.getSlots(); i++) {
+                        ItemStack stack = inv.getStackInSlot(i);
+                        if (world.rand.nextInt(50) == 0) {
+                            if (stack != ItemStack.EMPTY && stack.isItemEqual(new ItemStack(Items.LAVA_BUCKET))) {
+                                IFluidHandler bucket = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                                bucket.drain(1000, true);
+                                world.playSound(e.player, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, 1, 1);
+                                placeLavaBucket(world, pos.offset(e.player.getHorizontalFacing()), 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void placeLavaBucket(World world, BlockPos pos, int depth) {
+        if (depth >= 5)
+            return;
+        if (world.isAirBlock(pos)) {
+            world.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
+        } else {
+            placeLavaBucket(world, pos.offset(EnumFacing.VALUES[world.rand.nextInt(6)]), depth++);
+        }
+    }
+
+    @SubscribeEvent
+    public void onFillBucket(FillBucketEvent e) {
+        if (BWConfig.hardcoreLavaBuckets) {
+            if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
+                return;
+            if (e.getTarget() != null && e.getTarget().getBlockPos() != null) {
+                Block block = e.getWorld().getBlockState(e.getTarget().getBlockPos()).getBlock();
+                if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) {
+                    e.getEntityPlayer().attackEntityFrom(DamageSource.LAVA, 1);
+                    e.getWorld().playSound(null, e.getTarget().getBlockPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1.5f);
+                    e.setCanceled(true);
                 }
             }
         }

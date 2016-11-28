@@ -1,0 +1,59 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "betterwithmods:blocks/soulforged_steel",
+      "side": "betterwithmods:blocks/infernal_enchanter_side",
+      "top": "betterwithmods:blocks/infernal_enchanter_top",
+      "bottom": "#all",
+      "particle": "#all"
+    },
+    "model": "betterwithmods:infernal_enchanter",
+    "uvlock": true
+  },
+  "variants": {
+    "normal": [
+      {
+        "submodel": {
+          "candle1": {
+            "model": "betterwithmods:infernal_candle"
+          },
+          "candle2": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 90
+          },
+          "candle3": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 180
+          },
+          "candle4": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 270
+          }
+        }
+      }
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block",
+        "submodel": {
+          "candle1": {
+            "model": "betterwithmods:infernal_candle"
+          },
+          "candle2": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 90
+          },
+          "candle3": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 180
+          },
+          "candle4": {
+            "model": "betterwithmods:infernal_candle",
+            "y": 270
+          }
+        }
+      }
+    ]
+  }
+}

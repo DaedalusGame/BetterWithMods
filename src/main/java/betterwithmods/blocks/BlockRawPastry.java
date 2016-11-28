@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -20,7 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by blueyu2 on 11/19/16.
@@ -36,53 +36,64 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockRawPastry.EnumType blockrawpastry$enumtype : BlockRawPastry.EnumType.values()) {
             list.add(new ItemStack(itemIn, 1, blockrawpastry$enumtype.getMetadata()));
         }
     }
 
+    @Override
     public int damageDropped(IBlockState state) {
         return state.getValue(VARIANT).getMetadata();
     }
 
+    @Override
     public boolean isFullCube(IBlockState state) {
         return false;
     }
 
+    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
+    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
     }
 
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!this.canBlockStay(worldIn, pos)) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
         }
     }
 
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return state.getValue(VARIANT).getAABB();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
         return state.getCollisionBoundingBox(worldIn, pos);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(VARIANT).getMetadata();
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
     }
@@ -135,6 +146,7 @@ public class BlockRawPastry extends Block implements IMultiLocations {
             return this.meta;
         }
 
+        @Override
         public String getName() {
             return this.name;
         }

@@ -50,11 +50,6 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
         return background;
     }
 
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper) {
-    }
-
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();

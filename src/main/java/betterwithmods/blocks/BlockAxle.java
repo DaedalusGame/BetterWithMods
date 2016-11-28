@@ -246,7 +246,7 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
             emitAxleParticles(world, pos, rand);
 
             if (rand.nextInt(200) == 0)
-                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.1F + 0.5F, false);
+                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.15F, rand.nextFloat() * 0.1F + 0.5F, false);
         }
     }
 

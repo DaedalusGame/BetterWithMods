@@ -115,7 +115,7 @@ public class NetherSpawnEvent {
                 BlockPos pos = new BlockPos(x, y - 1, z);
                 Block block = evt.getWorld().getBlockState(pos).getBlock();
                 int meta = evt.getWorld().getBlockState(pos).getBlock().getMetaFromState(evt.getWorld().getBlockState(pos));
-                if (!NetherSpawnWhitelist.contains(block, meta))
+                if (!evt.getWorld().isAirBlock(pos) && !NetherSpawnWhitelist.contains(block, meta))
                     evt.setResult(Result.DENY);
             }
         }

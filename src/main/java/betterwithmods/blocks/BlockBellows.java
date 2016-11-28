@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.BWSounds;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -15,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -45,6 +47,22 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     @Override
     public int tickRate(World world) {
         return 37;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        boolean emptyHands = playerIn.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && playerIn.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && playerIn.isSneaking();
+
+        if (worldIn.isRemote && emptyHands)
+            return true;
+        else if (!worldIn.isRemote && emptyHands) {
+            worldIn.playSound(null, pos, this.getSoundType(state, worldIn, pos, playerIn).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+            worldIn.setBlockState(pos, state.cycleProperty(DirUtils.HORIZONTAL).withProperty(ACTIVE, false));
+            worldIn.notifyNeighborsOfStateChange(pos, this, false);
+            worldIn.scheduleBlockUpdate(pos, this, 10, 5);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -129,9 +147,11 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
 
                 if (gettingPower) {
+                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
                     blow(world, pos);
                 } else
-                    liftCollidingEntities(world, pos);
+                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
+                liftCollidingEntities(world, pos);
             } else {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
                 setTriggerMechanicalStateChange(world, pos, true);
@@ -224,20 +244,20 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
         for (int i = 0; i < 3; i++) {
             BlockPos dirPos = pos.offset(dir, 1 + i);
-
+            //
             Block target = world.getBlockState(dirPos).getBlock();
 
             if (target == Blocks.FIRE || target == BWMBlocks.STOKED_FLAME)
                 stokeFire(world, dirPos);
             else if (!world.isAirBlock(dirPos))
                 break;
-
+            //
             BlockPos posLeft = dirPos.offset(dirLeft);
 
             Block targetLeft = world.getBlockState(posLeft).getBlock();
             if (targetLeft == Blocks.FIRE || targetLeft == BWMBlocks.STOKED_FLAME)
                 stokeFire(world, posLeft);
-
+            //
             BlockPos posRight = dirPos.offset(dirRight);
 
             Block targetRight = world.getBlockState(posRight).getBlock();
@@ -249,7 +269,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     private void stokeFire(World world, BlockPos pos) {
         BlockPos down = pos.down();
         if (world.getBlockState(down).getBlock() == BWMBlocks.HIBACHI) {
-            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
+            int flag = (world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME) ? 4 : 3;
+            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState(), flag);
         } else
             world.setBlockToAir(pos);
     }

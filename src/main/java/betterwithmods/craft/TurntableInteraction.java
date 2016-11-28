@@ -12,10 +12,10 @@ public class TurntableInteraction extends BlockMetaHandler {
     public static TurntableInteraction INSTANCE = new TurntableInteraction();
 
     public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
-        if (inputBlock != null && inputBlock.getItem() instanceof ItemBlock) {
+        if (inputBlock != ItemStack.EMPTY && inputBlock.getItem() instanceof ItemBlock) {
             Block iBlock = ((ItemBlock) inputBlock.getItem()).getBlock();
             int iMeta = inputBlock.getMetadata();
-            if (outputBlock == null)
+            if (outputBlock == ItemStack.EMPTY)
                 addTurntableRecipe(iBlock, iMeta, null, 0, scraps);
             else if (outputBlock.getItem() instanceof ItemBlock) {
                 Block oBlock = ((ItemBlock) outputBlock.getItem()).getBlock();
@@ -33,7 +33,7 @@ public class TurntableInteraction extends BlockMetaHandler {
         private Block result;
         private int resultMeta;
 
-        public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List scraps) {
+        public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List<ItemStack> scraps) {
             super(block, meta, scraps);
             this.result = result;
             this.resultMeta = resultMeta;
@@ -41,7 +41,7 @@ public class TurntableInteraction extends BlockMetaHandler {
 
         public ItemStack getResult() {
             if (result == null)
-                return null;
+                return ItemStack.EMPTY;
             return new ItemStack(result, 1, resultMeta);
         }
     }

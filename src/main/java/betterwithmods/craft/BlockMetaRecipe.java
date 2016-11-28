@@ -12,11 +12,11 @@ import java.util.List;
  * @version 11/11/16
  */
 public class BlockMetaRecipe {
-    private Block block;
-    private int meta;
-    private List outputs;
+    private final Block block;
+    private final int meta;
+    private final List<ItemStack> outputs;
 
-    public BlockMetaRecipe(Block block, int meta, List outputs) {
+    public BlockMetaRecipe(Block block, int meta, List<ItemStack> outputs) {
         this.block = block;
         this.meta = meta;
         this.outputs = outputs;
@@ -33,6 +33,4 @@ public class BlockMetaRecipe {
     public ItemStack getStack() {
         return new ItemStack(block, 1, meta);
     }
-
-
 }

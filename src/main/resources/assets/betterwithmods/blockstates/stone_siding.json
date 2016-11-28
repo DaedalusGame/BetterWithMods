@@ -1,0 +1,78 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "blocks/stone",
+      "particle": "#side"
+    },
+    "model": "betterwithmods:mini/siding/siding_west",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "type": {
+      "0": {
+        "textures": {
+          "side": "blocks/stone"
+        }
+      },
+      "1": {
+        "textures": {
+          "side": "blocks/stonebrick"
+        }
+      },
+      "2": {
+        "textures": {
+          "side": "betterwithmods:blocks/whitestone"
+        }
+      },
+      "3": {
+        "textures": {
+          "side": "blocks/nether_brick"
+        }
+      },
+      "4": {
+        "textures": {
+          "side": "blocks/brick"
+        }
+      },
+      "5": {
+        "textures": {
+          "side": "blocks/sandstone_normal"
+        }
+      },
+      "6": {
+        "textures": {
+          "side": "blocks/quartz_block_side"
+        }
+      }
+    },
+    "orientation": {
+      "0": {
+        "model": "betterwithmods:mini/siding/siding_down"
+      },
+      "1": {
+        "model": "betterwithmods:mini/siding/siding_up"
+      },
+      "2": {
+        "model": "betterwithmods:mini/siding/siding_north"
+      },
+      "3": {
+        "model": "betterwithmods:mini/siding/siding_south"
+      },
+      "4": {
+        "model": "betterwithmods:mini/siding/siding_west"
+      },
+      "5": {
+        "model": "betterwithmods:mini/siding/siding_east"
+      }
+    }
+  }
+}

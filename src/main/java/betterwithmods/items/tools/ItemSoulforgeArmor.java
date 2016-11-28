@@ -1,6 +1,7 @@
 package betterwithmods.items.tools;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -19,6 +20,7 @@ public class ItemSoulforgeArmor extends ItemArmor {
 
     public ItemSoulforgeArmor(EntityEquipmentSlot equipmentSlotIn) {
         super(SOULFORGED_STEEL, 2, equipmentSlotIn);
+        this.setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
     @Override

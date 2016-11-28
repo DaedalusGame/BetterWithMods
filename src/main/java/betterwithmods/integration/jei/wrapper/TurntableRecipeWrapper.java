@@ -11,11 +11,9 @@ import net.minecraft.item.ItemStack;
  * @version 11/11/16
  */
 public class TurntableRecipeWrapper extends BlockMetaWrapper {
-    private ItemStack result;
-
     public TurntableRecipeWrapper(TurntableInteraction.TurntableRecipe recipe) {
         super(recipe);
-        result = recipe.getResult();
+        ItemStack result = recipe.getResult();
         if (result != null && result.getItem() != null)
             outputs.add(0, result);
     }

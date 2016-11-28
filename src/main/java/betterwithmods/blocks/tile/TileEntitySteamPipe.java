@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 
 public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteamPower {
-
     private int heatUnits = 0;
     private int steamPower = 0;
     private boolean update = false;

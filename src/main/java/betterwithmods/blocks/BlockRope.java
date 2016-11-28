@@ -27,7 +27,7 @@ public class BlockRope extends BWMBlock {
     }
 
     public static boolean placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
-        if (stack != null || player == null) {
+        if (stack != ItemStack.EMPTY || player == null) {
             BlockPos bp = getLowestRopeBlock(world, pos).down();
             Block block = world.getBlockState(bp).getBlock();
             if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.ROPE.getDefaultState().getBlock()).canBlockStay(world, bp)) {
@@ -56,19 +56,19 @@ public class BlockRope extends BWMBlock {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
         if (heldItem != ItemStack.EMPTY && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
             return placeRopeUnder(heldItem, worldIn, pos, playerIn);
         }
-        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor, BlockPos other) {
-        if (!canBlockStay(world, pos)) {
-            dropBlockAsItem(world, pos, state, 0);
-            world.setBlockToAir(pos);
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!canBlockStay(worldIn, pos)) {
+            dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
         }
     }
 

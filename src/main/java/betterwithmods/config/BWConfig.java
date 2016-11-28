@@ -54,6 +54,10 @@ public class BWConfig {
     public static boolean axeOnLeaves;
     public static boolean rawEggDrop;
     public static int lensRange;
+    public static boolean hardcoreDiamonds;
+    public static boolean dropsHempSeeds;
+    public static boolean hardcoreLavaBuckets;
+    public static boolean hardcoreEndermen;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -67,7 +71,6 @@ public class BWConfig {
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean();
         hardcoreMelons = config.get(HARDCORE, "Hardcore Melons", true, "Melons and pumpkins are affected by gravity and need a saw to slice up.").getBoolean();
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean();
-        // FIXME See issue #71
         hardcoreHunger = config.get(HARDCORE, "Hardcore Hunger", true, "Saturation becomes fat, while hunger and health stats affect your movement. Vanilla food recipes are changed to use BWM content").setRequiresMcRestart(true).getBoolean();
         hardcoreBuoy = config.get(HARDCORE, "Hardcore Buoy", true, "Buoyant items will float").getBoolean();
         hardcoreSpawn = config.get(HARDCORE, "Hardcore Spawn", true, "Your spawn point will be randomized").getBoolean();
@@ -111,6 +114,10 @@ public class BWConfig {
         axeOnLeaves = config.getBoolean("Axes Effective On Leaves", Configuration.CATEGORY_GENERAL, true, "Makes axes quickly break leaves.");
         lensRange = config.getInt("Lens Horizontal Range", Configuration.CATEGORY_GENERAL, 256, 32, 256, "Range that lens light will travel");
         rawEggDrop = config.get(VANILLA_TWEAKS, "Eggs Drop Raw Egg When Thrown", true).getBoolean();
+        hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to craft. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
+        dropsHempSeeds = config.getBoolean("Drop Hemp Seeds", MODPACK_TWEAKS, true, "Tall Grass Drops Hemp Seeds");
+        hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets", HARDCORE, true, "Makes lava buckets hot if you don't have a fire resistance potion");
+        hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE, true, "Changes to Endermen AI that make them even more menacing");
         config.save();
     }
 

@@ -103,7 +103,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
             if (fallblock != null)
                 getEntityWorld().playEvent(2001, new BlockPos(this), Block.getStateId(fallblock));
 
-            if (seedStack != null) {
+            if (seedStack != ItemStack.EMPTY) {
                 ItemStack seeds = seedStack.copy();
                 seeds.setCount(rand.nextInt(3) + 1);
                 if (this.shouldDropItem && this.getEntityWorld().getGameRules().getBoolean("doEntityDrops")) {

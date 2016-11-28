@@ -1,5 +1,6 @@
 package betterwithmods.client.model;
 
+import betterwithmods.BWMod;
 import betterwithmods.blocks.tile.TileEntityCauldron;
 import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -14,7 +15,7 @@ public class TESRCauldron extends TileEntitySpecialRenderer<TileEntityCauldron> 
             if (occupiedStacks != tile.filledSlots())
                 occupiedStacks = tile.filledSlots();
             float fillOffset = 0.75F * occupationMod(tile);
-            RenderUtils.renderFill(new ResourceLocation("betterwithmods", "blocks/cauldron_contents"), tile.getPos(), x, y, z, 0.123D, 0.125D, 0.123D, 0.877D, 0.248D + fillOffset, 0.877D);
+            RenderUtils.renderFill(new ResourceLocation(BWMod.MODID, "blocks/cauldron_contents"), tile.getPos(), x, y, z, 0.123D, 0.125D, 0.123D, 0.877D, 0.248D + fillOffset, 0.877D);
         }
     }
 

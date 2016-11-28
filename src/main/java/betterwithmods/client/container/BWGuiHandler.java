@@ -27,6 +27,8 @@ public class BWGuiHandler implements IGuiHandler {
                 return new ContainerMill(player, (TileEntityMill) tile);
             if (tile instanceof TileEntityFilteredHopper)
                 return new ContainerFilteredHopper(player, (TileEntityFilteredHopper) tile);
+            if (tile instanceof TileEntitySteelAnvil)
+                return new ContainerSteelAnvil(player.inventory, world, pos, (TileEntitySteelAnvil) tile);
         }
         return null;
     }
@@ -49,6 +51,8 @@ public class BWGuiHandler implements IGuiHandler {
                 return new GuiMill(player, (TileEntityMill) tile);
             if (tile instanceof TileEntityFilteredHopper)
                 return new GuiFilteredHopper(player, (TileEntityFilteredHopper) tile);
+            if (tile instanceof TileEntitySteelAnvil)
+                return new GuiSteelAnvil(player.inventory, world, pos, (TileEntitySteelAnvil) tile);
         }
         return null;
     }

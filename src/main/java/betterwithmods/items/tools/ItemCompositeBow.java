@@ -77,6 +77,7 @@ public class ItemCompositeBow extends ItemBow {
         return f;
     }
 
+    @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityLiving;

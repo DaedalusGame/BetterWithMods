@@ -17,6 +17,7 @@ public class MineTweaker implements ICompatModule {
 
     }
 
+    @Override
     public void init() {
         MineTweakerAPI.registerClass(Saw.class);
         MineTweakerAPI.registerClass(Kiln.class);
@@ -26,6 +27,8 @@ public class MineTweaker implements ICompatModule {
         MineTweakerAPI.registerClass(StokedCrucible.class);
         MineTweakerAPI.registerClass(Mill.class);
         MineTweakerAPI.registerClass(Buoyancy.class);
+        MineTweakerAPI.registerClass(HopperFilter.class);
+        MineTweakerAPI.registerClass(SteelAnvil.class);
     }
 
     @Override

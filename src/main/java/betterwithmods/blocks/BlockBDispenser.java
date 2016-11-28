@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -206,5 +207,19 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
     @Override
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
 
+    }
+
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+                return InvUtils.calculateComparatorLevel(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+            }
+        }
+        return 0;
     }
 }

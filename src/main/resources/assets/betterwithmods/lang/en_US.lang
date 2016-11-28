@@ -29,6 +29,7 @@ tile.bwm:screw_pump.name=Screw Pump
 tile.bwm:kiln.name=Kiln
 tile.bwm:bellows.name=Bellows
 tile.bwm:saw.name=Saw
+tile.bwm:steel_anvil.name=Steel Anvil
 tile.bwm:aesthetic.0.name=Chopping Block
 tile.bwm:aesthetic.1.name=Bloodied Chopping Block
 tile.bwm:aesthetic.2.name=Soulforged Steel Block
@@ -119,6 +120,30 @@ tile.bwm:wood_corner.3.name=Jungle Wood Corner
 tile.bwm:wood_corner.4.name=Acacia Wood Corner
 tile.bwm:wood_corner.5.name=Dark Oak Wood Corner
 tile.bwm:wood_corner.6.name=Blood Wood Corner
+
+tile.bwm:stone_siding.0.name=Stone Siding
+tile.bwm:stone_siding.1.name=Stone Brick Siding
+tile.bwm:stone_siding.2.name=White Stone Siding
+tile.bwm:stone_siding.3.name=Nether Brick Siding
+tile.bwm:stone_siding.4.name=Brick Siding
+tile.bwm:stone_siding.5.name=Sandstone Siding
+tile.bwm:stone_siding.6.name=Quartz Siding
+
+tile.bwm:stone_moulding.0.name=Stone Moulding
+tile.bwm:stone_moulding.1.name=Stone Brick Moulding
+tile.bwm:stone_moulding.2.name=White Stone Moulding
+tile.bwm:stone_moulding.3.name=Nether Brick Moulding
+tile.bwm:stone_moulding.4.name=Brick Moulding
+tile.bwm:stone_moulding.5.name=Sandstone Moulding
+tile.bwm:stone_moulding.6.name=Quartz Moulding
+
+tile.bwm:stone_corner.0.name=Stone Corner
+tile.bwm:stone_corner.1.name=Stone Brick Corner
+tile.bwm:stone_corner.2.name=White Stone Corner
+tile.bwm:stone_corner.3.name=Nether Brick Corner
+tile.bwm:stone_corner.4.name=Brick Corner
+tile.bwm:stone_corner.5.name=Sandstone Corner
+tile.bwm:stone_corner.6.name=Quartz Corner
 
 tile.bwm:wood_table.0.name=Oak Wood Table
 tile.bwm:wood_table.1.name=Spruce Wood Table
@@ -220,6 +245,8 @@ item.bwm:material.padding.name=Padding
 item.bwm:material.armor_plate.name=Soulforged Steel Armor Plate
 item.bwm:material.broadhead.name=Broadhead
 item.bwm:material.cocoa_powder.name=Cocoa Powder
+item.bwm:material.diamond_ingot.name=Diamond Ingot
+item.bwm:material.chain_mail.name=Chain Mail
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife
@@ -275,6 +302,9 @@ item.bwm:broadhead_arrow.name=Broadhead Arrow
 
 item.bwm:breeding_harness.name=Breeding Harness
 
+item.bwm:arcane_scroll.name=Arcane Scroll
+
+enchantment.level.-1=
 lore.bwm:dynamite=Dwarven Fishing Pole
 
 material.hellfire=Hellfire
@@ -299,6 +329,10 @@ inv.saw.name=Saw
 inv.kiln.name=Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
+inv.steelanvil.name=Steel Anvil
+
+inv.hopper.name=Hopper Recipes
+inv.hopper.soulurn.name=Hopper Soul Urn Recipes
 
 inv.hopper.name=Hopper Recipes
 inv.hopper.soulurn.name=Hopper Soul Urn Recipes
@@ -314,11 +348,13 @@ modifier.mending.desc=§oKillsteal!§r\nAbsorbs experience to repair the tool.
 
 subtitles.bwm.wood.creak=Wood creaks
 subtitles.bwm.stone.grind=Stones grinding
+subtitles.bwm.wood.bellow=Bellow blowing
 subtitles.bwm.wood.chime=Wood chimes
 subtitles.bwm.metal.chime=Metal chimes
 
 death.attack.saw=%s forgot the lessons of wood shop safety
 death.attack.choppingBlock=%s lost their head
+death.blasting_oil=%s is having a blast
 
 bwm.message.immersive.0=Only works to bridge mechanical power
 bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos

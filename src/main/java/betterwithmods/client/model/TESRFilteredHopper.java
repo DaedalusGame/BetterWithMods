@@ -1,6 +1,7 @@
 package betterwithmods.client.model;
 
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,11 +14,17 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
     private ItemStack stack;
     private int occupiedStacks;
 
+
     @Override
     public void renderTileEntityAt(TileEntityFilteredHopper tile, double x, double y, double z, float partialTicks, int destroyStage) {
         if (tile != null) {
             if (tile.getSubtype() > 0) {
                 model = tile.getModel();
+                if (model == null && tile.filterType > 0) {
+                    if (tile.getFilterStack() != null) {
+                        model = new ModelTransparent(RenderUtils.getResourceLocation(tile.getFilterStack()));
+                    }
+                }
                 if (model != null) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -25,6 +32,7 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
                     model.render(0.0622F);
                     GlStateManager.popMatrix();
                 }
+
             } else if (model != null) {
                 model = null;
             }

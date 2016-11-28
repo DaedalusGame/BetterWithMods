@@ -8,12 +8,16 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,6 +31,32 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));
+    }
+
+    @Override
+    public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+        return state.getValue(blockType) != EnumType.STEEL || entity instanceof EntityPlayer;
+    }
+
+    @Override
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
+        if (world.getBlockState(pos).getValue(blockType) != EnumType.STEEL)
+            super.onBlockExploded(world, pos, explosion);
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        if (world.getBlockState(pos).getValue(blockType) != EnumType.STEEL)
+            return 10;
+        else
+            return 2000.0F;
+    }
+
+    @Override
+    public boolean canDropFromExplosion(Explosion explosionIn) {
+        //TODO might need to take steel blocks out of this or get a state based method added by forge
+        //needed to make steel wither-proof
+        return false;
     }
 
     @Override

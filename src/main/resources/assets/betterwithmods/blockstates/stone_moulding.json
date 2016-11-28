@@ -1,0 +1,96 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "blocks/stone",
+      "particle": "#side"
+    },
+    "model": "betterwithmods:mini/siding/siding_west",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "type": {
+      "0": {
+        "textures": {
+          "side": "blocks/stone"
+        }
+      },
+      "1": {
+        "textures": {
+          "side": "blocks/stonebrick"
+        }
+      },
+      "2": {
+        "textures": {
+          "side": "betterwithmods:blocks/whitestone"
+        }
+      },
+      "3": {
+        "textures": {
+          "side": "blocks/nether_brick"
+        }
+      },
+      "4": {
+        "textures": {
+          "side": "blocks/brick"
+        }
+      },
+      "5": {
+        "textures": {
+          "side": "blocks/sandstone_normal"
+        }
+      },
+      "6": {
+        "textures": {
+          "side": "blocks/quartz_block_side"
+        }
+      }
+    },
+    "orientation": {
+      "0": {
+        "model": "betterwithmods:mini/moulding/down_west"
+      },
+      "1": {
+        "model": "betterwithmods:mini/moulding/down_north"
+      },
+      "2": {
+        "model": "betterwithmods:mini/moulding/down_south"
+      },
+      "3": {
+        "model": "betterwithmods:mini/moulding/down_east"
+      },
+      "4": {
+        "model": "betterwithmods:mini/moulding/up_west"
+      },
+      "5": {
+        "model": "betterwithmods:mini/moulding/up_north"
+      },
+      "6": {
+        "model": "betterwithmods:mini/moulding/up_south"
+      },
+      "7": {
+        "model": "betterwithmods:mini/moulding/up_east"
+      },
+      "8": {
+        "model": "betterwithmods:mini/moulding/vert_north_west"
+      },
+      "9": {
+        "model": "betterwithmods:mini/moulding/vert_north_east"
+      },
+      "10": {
+        "model": "betterwithmods:mini/moulding/vert_south_west"
+      },
+      "11": {
+        "model": "betterwithmods:mini/moulding/vert_south_east"
+      }
+    }
+  }
+}

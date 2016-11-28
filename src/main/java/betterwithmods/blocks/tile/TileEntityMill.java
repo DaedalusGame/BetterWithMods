@@ -75,14 +75,14 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             validateContents();
 
         if (mill.isMechanicalOn(getWorld(), pos))
-            if (getWorld().rand.nextInt(6) == 0)
-                getWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.4F + getWorld().rand.nextFloat() * 0.1F, 0.25F + getWorld().rand.nextFloat() * 0.1F);
+            if (getWorld().rand.nextInt(20) == 0)
+                getWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getWorld().rand.nextFloat() * 0.1F, 0.5F + getWorld().rand.nextFloat() * 0.1F);
 
         if (this.containsIngredientsToGrind && mill.isMechanicalOn(getWorld(), pos)) {
             if (!this.getWorld().isRemote) {
                 if (grindType == 2) {
-                    if (this.getWorld().rand.nextInt(20) < 2) {
-                        getWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 0.75F, getWorld().rand.nextFloat() * 0.4F + 0.8F);
+                    if (this.getWorld().rand.nextInt(25) < 2) {
+                        getWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_HURT, SoundCategory.BLOCKS, 0.75F, getWorld().rand.nextFloat() * 0.4F + 0.8F);
                     }
                 } else if (grindType == 3) {
                     if (this.getWorld().rand.nextInt(20) < 2)

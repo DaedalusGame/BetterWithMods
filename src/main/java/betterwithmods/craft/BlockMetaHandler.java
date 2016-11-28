@@ -66,7 +66,7 @@ public abstract class BlockMetaHandler {
         return null;
     }
 
-    public List getProducts(Block block, int meta) {
+    public List<ItemStack> getProducts(Block block, int meta) {
         BlockMetaRecipe recipe = getRecipe(block, meta);
         if (recipe != null)
             return recipe.getOutputs();

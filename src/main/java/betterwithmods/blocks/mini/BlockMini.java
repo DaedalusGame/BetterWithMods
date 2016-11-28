@@ -1,8 +1,12 @@
 package betterwithmods.blocks.mini;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.BWMBlock;
+import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -10,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -17,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,13 +30,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockMini extends BWMBlock {
+    public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
     public static final PropertyInteger ORIENTATION = createOrientation();
 
     public BlockMini(Material material, String name) {
         super(material);
         //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        this.setSoundType(material == Material.CIRCUITS ? SoundType.WOOD : SoundType.STONE);
+        this.setSoundType(material == MINI ? SoundType.WOOD : SoundType.STONE);
         if (material == Material.CIRCUITS)
             this.setHarvestLevel("axe", 0);
     }
@@ -38,6 +45,31 @@ public abstract class BlockMini extends BWMBlock {
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 5);
     }
+
+    public int getMaxOrientation() {
+        return 5;
+    }
+
+    public boolean rotate(World world, BlockPos pos, IBlockState state, EntityPlayer player, PropertyInteger property) {
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && player.isSneaking();
+        if (world.isRemote && emptyHands)
+            return true;
+        else if (!world.isRemote && emptyHands) {
+            int nextOrient = (state.getValue(property) + 1) % (getMaxOrientation() + 1);
+            world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+            world.setBlockState(pos, state.withProperty(property, nextOrient));
+            world.notifyNeighborsOfStateChange(pos, this, false);
+            world.scheduleBlockUpdate(pos, this, 10, 5);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return rotate(worldIn, pos, state, playerIn, ORIENTATION);
+    }
+
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
@@ -56,17 +88,10 @@ public abstract class BlockMini extends BWMBlock {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {/*
-            if(stack.hasTagCompound()) {
-                ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(stack.getTagCompound().getInteger("type"));
-                world.setBlockState(pos, state.withProperty(TYPE, stack.getTagCompound().getInteger("type")));
-            }
-            else */
-            {
-                int meta = stack.getItemDamage();
-                ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
-                world.setBlockState(pos, state.withProperty(TYPE, meta));
-            }
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
+            int meta = stack.getItemDamage();
+            ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
+            world.setBlockState(pos, state.withProperty(TYPE, meta));
         }
     }
 
@@ -82,11 +107,7 @@ public abstract class BlockMini extends BWMBlock {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (int i = 0; i < 6; i++) {
-            ItemStack stack = new ItemStack(this, 1, i);/*
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("type", i);
-            stack.setTagCompound(tag);*/
-            list.add(stack);
+            list.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -137,5 +158,57 @@ public abstract class BlockMini extends BWMBlock {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, TYPE, ORIENTATION);
+    }
+
+    public enum EnumType {
+
+        STONE(0, "stone", Blocks.STONE),
+        STONEBRICK(1, "stone_brick", Blocks.STONEBRICK),
+        WHITESTONE(2, "whitestone", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.WHITESTONE.getMeta())),
+        NETHERBRICK(3, "nether_brick", Blocks.NETHER_BRICK),
+        BRICK(4, "brick", Blocks.BRICK_BLOCK),
+        SANDSTONE(5, "sandstone", Blocks.SANDSTONE);
+
+        private static final BlockMini.EnumType[] META_LOOKUP = new BlockMini.EnumType[values().length];
+
+        static {
+            for (BlockMini.EnumType blockmini$enumtype : values()) {
+                META_LOOKUP[blockmini$enumtype.getMetadata()] = blockmini$enumtype;
+            }
+        }
+
+        private final int meta;
+        private final String name;
+        private final ItemStack block;
+
+        EnumType(int metaIn, String nameIn, Block blockIn) {
+            this(metaIn, nameIn, new ItemStack(blockIn));
+        }
+
+        EnumType(int metaIn, String nameIn, ItemStack blockIn) {
+            this.meta = metaIn;
+            this.name = nameIn;
+            this.block = blockIn;
+        }
+
+        public static BlockMini.EnumType byMetadata(int meta) {
+            if (meta < 0 || meta >= META_LOOKUP.length) {
+                meta = 0;
+            }
+
+            return META_LOOKUP[meta];
+        }
+
+        public int getMetadata() {
+            return this.meta;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public ItemStack getBlock() {
+            return this.block;
+        }
     }
 }

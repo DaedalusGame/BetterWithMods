@@ -2,6 +2,7 @@ package betterwithmods;
 
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.blocks.mini.BlockMini;
 import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
@@ -238,23 +239,42 @@ public final class BWMItems {
 
     @SideOnly(Side.CLIENT)
     private static void registerMiniBlockNBT(ItemBlockMini item) {
-        //TODO use more of the BlockPlanks.EnumType instead of metadata
-        ModelLoader.setCustomMeshDefinition(item,
-                stack -> (stack.hasTagCompound() && stack.getTagCompound().hasKey("type")) ? new ModelResourceLocation(
-                        item.getRegistryName() + "_"
-                                + BlockPlanks.EnumType.byMetadata(stack.getTagCompound().getInteger("type")).getName(),
-                        "inventory")
-                        : stack.getItemDamage() < 6
-                        ? new ModelResourceLocation(
-                        item.getRegistryName() + "_"
-                                + BlockPlanks.EnumType.byMetadata(stack.getItemDamage()).getName(),
-                        "inventory")
-                        : new ModelResourceLocation(item.getRegistryName() + "_oak", "inventory"));
-        ModelResourceLocation[] resourceLocations = new ModelResourceLocation[6];
-        for (int i = 0; i < 6; i++)
-            resourceLocations[i] = new ModelResourceLocation(item.getRegistryName() + "_" + BlockPlanks.EnumType.byMetadata(i),
-                    "inventory");
-        ModelBakery.registerItemVariants(item, (ResourceLocation[]) resourceLocations);
+        if (Block.getBlockFromItem(item).getRegistryName().getResourcePath().startsWith("wood")) {
+            //TODO use more of the BlockPlanks.EnumType instead of metadata
+            ModelLoader.setCustomMeshDefinition(item,
+                    stack -> (stack.hasTagCompound() && stack.getTagCompound().hasKey("type")) ? new ModelResourceLocation(
+                            item.getRegistryName() + "_"
+                                    + BlockPlanks.EnumType.byMetadata(stack.getTagCompound().getInteger("type")).getName(),
+                            "inventory")
+                            : stack.getItemDamage() < 6
+                            ? new ModelResourceLocation(
+                            item.getRegistryName() + "_"
+                                    + BlockPlanks.EnumType.byMetadata(stack.getItemDamage()).getName(),
+                            "inventory")
+                            : new ModelResourceLocation(item.getRegistryName() + "_oak", "inventory"));
+            ModelResourceLocation[] resourceLocations = new ModelResourceLocation[6];
+            for (int i = 0; i < 6; i++)
+                resourceLocations[i] = new ModelResourceLocation(item.getRegistryName() + "_" + BlockPlanks.EnumType.byMetadata(i),
+                        "inventory");
+            ModelBakery.registerItemVariants(item, (ResourceLocation[]) resourceLocations);
+        } else {
+            ModelLoader.setCustomMeshDefinition(item,
+                    stack -> (stack.hasTagCompound() && stack.getTagCompound().hasKey("type")) ? new ModelResourceLocation(
+                            item.getRegistryName() + "_"
+                                    + BlockMini.EnumType.byMetadata(stack.getTagCompound().getInteger("type")).getName(),
+                            "inventory")
+                            : stack.getItemDamage() < 6
+                            ? new ModelResourceLocation(
+                            item.getRegistryName() + "_"
+                                    + BlockMini.EnumType.byMetadata(stack.getItemDamage()).getName(),
+                            "inventory")
+                            : new ModelResourceLocation(item.getRegistryName() + "_stone", "inventory"));
+            ModelResourceLocation[] resourceLocations = new ModelResourceLocation[6];
+            for (int i = 0; i < 6; i++)
+                resourceLocations[i] = new ModelResourceLocation(item.getRegistryName() + "_" + BlockMini.EnumType.byMetadata(i).getName(),
+                        "inventory");
+            ModelBakery.registerItemVariants(item, (ResourceLocation[]) resourceLocations);
+        }
     }
     ///CLIENT END
 }

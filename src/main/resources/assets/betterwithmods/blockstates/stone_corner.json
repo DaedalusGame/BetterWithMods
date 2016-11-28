@@ -1,0 +1,84 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "blocks/stone",
+      "particle": "#side"
+    },
+    "model": "betterwithmods:mini/siding/siding_west",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "type": {
+      "0": {
+        "textures": {
+          "side": "blocks/stone"
+        }
+      },
+      "1": {
+        "textures": {
+          "side": "blocks/stonebrick"
+        }
+      },
+      "2": {
+        "textures": {
+          "side": "betterwithmods:blocks/whitestone"
+        }
+      },
+      "3": {
+        "textures": {
+          "side": "blocks/nether_brick"
+        }
+      },
+      "4": {
+        "textures": {
+          "side": "blocks/brick"
+        }
+      },
+      "5": {
+        "textures": {
+          "side": "blocks/sandstone_normal"
+        }
+      },
+      "6": {
+        "textures": {
+          "side": "blocks/quartz_block_side"
+        }
+      }
+    },
+    "orientation": {
+      "0": {
+        "model": "betterwithmods:mini/corner/d_s_w"
+      },
+      "1": {
+        "model": "betterwithmods:mini/corner/d_n_w"
+      },
+      "2": {
+        "model": "betterwithmods:mini/corner/d_s_e"
+      },
+      "3": {
+        "model": "betterwithmods:mini/corner/d_n_e"
+      },
+      "4": {
+        "model": "betterwithmods:mini/corner/u_s_w"
+      },
+      "5": {
+        "model": "betterwithmods:mini/corner/u_n_w"
+      },
+      "6": {
+        "model": "betterwithmods:mini/corner/u_s_e"
+      },
+      "7": {
+        "model": "betterwithmods:mini/corner/u_n_e"
+      }
+    }
+  }
+}

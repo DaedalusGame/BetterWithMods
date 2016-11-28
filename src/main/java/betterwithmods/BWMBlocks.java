@@ -46,9 +46,9 @@ public final class BWMBlocks {
     public static final Block BOOSTER = new BlockGearBoostedRail().setRegistryName("booster");
     public static final Block WINDMILL_BLOCK = new BlockWindmill().setRegistryName("windmill_block");
     public static final Block WATERWHEEL = new BlockWaterwheel().setRegistryName("waterwheel");
-    public static final Block WOOD_SIDING = new BlockSiding(Material.CIRCUITS).setRegistryName("wood_siding");
-    public static final Block WOOD_MOULDING = new BlockMoulding(Material.CIRCUITS).setRegistryName("wood_moulding");
-    public static final Block WOOD_CORNER = new BlockCorner(Material.CIRCUITS).setRegistryName("wood_corner");
+    public static final Block WOOD_SIDING = new BlockSiding(BlockMini.MINI).setRegistryName("wood_siding");
+    public static final Block WOOD_MOULDING = new BlockMoulding(BlockMini.MINI).setRegistryName("wood_moulding");
+    public static final Block WOOD_CORNER = new BlockCorner(BlockMini.MINI).setRegistryName("wood_corner");
     public static final Block DEBARKED_NEW = new BlockDebarkedNew().setRegistryName("debarked_new");
     public static final Block DEBARKED_OLD = new BlockDebarkedOld().setRegistryName("debarked_old");
     public static final Block WOOD_BENCH = new BlockWoodBench().setRegistryName("wood_bench");
@@ -68,6 +68,10 @@ public final class BWMBlocks {
     public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
     public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater().setRegistryName("temporary_water");
     public static final Block RAW_PASTRY = new BlockRawPastry().setRegistryName("raw_pastry");
+    public static final Block STEEL_ANVIL = new BlockSteelAnvil().setRegistryName("steel_anvil");
+    public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
+    public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
+    public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
 
     private BWMBlocks() {
     }
@@ -120,6 +124,10 @@ public final class BWMBlocks {
         registerBlock(ADVANCED_GEARBOX);
         registerBlock(VINE_TRAP);
         registerBlock(RAW_PASTRY, new ItemBlockMeta(RAW_PASTRY));
+        registerBlock(STEEL_ANVIL);
+        registerBlock(STONE_SIDING, new ItemBlockMini(STONE_SIDING));
+        registerBlock(STONE_MOULDING, new ItemBlockMini(STONE_MOULDING));
+        registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -131,6 +139,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
         GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
         GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
+        GameRegistry.registerTileEntity(TileEntitySteelAnvil.class, "bwm.steelAnvil");
 
         GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
 
@@ -220,6 +229,10 @@ public final class BWMBlocks {
         setInventoryModel(ADVANCED_GEARBOX);
         setInventoryModel(VINE_TRAP);
         setInventoryModel(RAW_PASTRY);
+        setInventoryModel(STEEL_ANVIL);
+        setInventoryModel(STONE_SIDING);
+        setInventoryModel(STONE_MOULDING);
+        setInventoryModel(STONE_CORNER);
     }
 
     @SideOnly(Side.CLIENT)

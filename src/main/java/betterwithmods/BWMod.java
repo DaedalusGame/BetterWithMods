@@ -48,10 +48,10 @@ public class BWMod {
      */
     private static final Map<String, String> compatClasses;
     public static Logger logger;
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @SidedProxy(serverSide = "betterwithmods.proxy.ServerProxy", clientSide = "betterwithmods.proxy.ClientProxy")
     public static IProxy proxy;
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
     public static IForgeRegistry<Item> itemRegistry;
@@ -66,6 +66,7 @@ public class BWMod {
         map.put("MineTweaker3", "betterwithmods.integration.minetweaker.MineTweaker");
         map.put("Quark", "betterwithmods.integration.Quark");
         map.put("tconstruct", "betterwithmods.integration.tcon.TConstruct");
+        map.put("nethercore", "betterwithmods.integration.NetherCore");
         compatClasses = Collections.unmodifiableMap(map);
     }
 
@@ -79,6 +80,7 @@ public class BWMod {
             String classPath = entry.getValue();
             if (isLoaded(modId)) try {
                 loadedModules.add(Class.forName(classPath).asSubclass(ICompatModule.class).newInstance());
+                BWMod.logger.info("Successfully load compat for " + modId);
             } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
                 BWMod.logger.error("Compatibility class " + classPath + " could not be loaded. Report this!");
                 e.printStackTrace();
@@ -109,6 +111,9 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new HardcoreMelonEventHandler());
         MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
         MinecraftForge.EVENT_BUS.register(new SaveSoupEvent());
+        MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
+        MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
+        MinecraftForge.EVENT_BUS.register(new HardcoreEndermenEvent());
     }
 
     private static void registerEntities() {

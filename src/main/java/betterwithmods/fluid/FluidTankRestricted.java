@@ -5,7 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 public class FluidTankRestricted extends FluidTank {
-    protected Fluid restriction;
+    protected final Fluid restriction;
 
     public FluidTankRestricted(FluidStack fluid, int capacity) {
         super(capacity);

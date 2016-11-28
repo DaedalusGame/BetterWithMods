@@ -40,12 +40,6 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         flame.draw(minecraft, 80, 19);
     }
 
-    @Deprecated
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper) {
-
-    }
-
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();

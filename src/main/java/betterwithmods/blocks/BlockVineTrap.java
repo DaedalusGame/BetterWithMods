@@ -79,7 +79,7 @@ public class BlockVineTrap extends BWMBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return world == null || world.getBlockState(pos.offset(side)).getBlock() != this;
+        return world == null || world.getBlockState(pos.offset(side)).getBlock() != this || side.getAxis() == EnumFacing.Axis.Z;
     }
 
     /**

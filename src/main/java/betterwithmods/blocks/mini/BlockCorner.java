@@ -5,10 +5,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockCorner extends BlockMini {
     public static final PropertyInteger ORIENTATION = createOrientation();
@@ -26,6 +29,17 @@ public class BlockCorner extends BlockMini {
 
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 7);
+    }
+
+    @Override
+    public int getMaxOrientation() {
+        return 7;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        //TODO: Maybe make this try to work with items that don't have a use action?
+        return rotate(worldIn, pos, state, playerIn, ORIENTATION);
     }
 
     @Override

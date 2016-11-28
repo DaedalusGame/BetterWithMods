@@ -1,12 +1,10 @@
 package betterwithmods.client.model.render;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -23,6 +21,7 @@ public class RenderUtils {
     protected static final Minecraft minecraft = Minecraft.getMinecraft();
 
     private static HashMap<String, ModelWithResource> filterLocations;
+    private static RenderItem renderItem;
 
     public static boolean filterContains(ItemStack stack) {
         if (stack == ItemStack.EMPTY)
@@ -51,10 +50,10 @@ public class RenderUtils {
         String[] woodTypes = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"};
         filterLocations = new HashMap<>();
         for (int i = 0; i < 6; i++) {
-            addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation("betterwithmods", "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
-            addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation("betterwithmods", "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
+            addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
+            addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
         }
-        addFilter(new ItemStack(BWMBlocks.PANE, 1, 2), new ModelOpaque(new ResourceLocation("betterwithmods", "textures/blocks/wicker.png")));
+        addFilter(new ItemStack(BWMBlocks.PANE, 1, 2), new ModelOpaque(new ResourceLocation(BWMod.MODID, "textures/blocks/wicker.png")));
         addFilter(new ItemStack(Blocks.SOUL_SAND), new ModelOpaque(new ResourceLocation("minecraft", "textures/blocks/soul_sand.png")));
         addFilter(new ItemStack(Blocks.IRON_BARS), new ModelTransparent(new ResourceLocation("minecraft", "textures/blocks/iron_bars.png")));
         addFilter(new ItemStack(Blocks.LADDER), new ModelTransparent(new ResourceLocation("minecraft", "textures/blocks/ladder.png")));
@@ -201,5 +200,20 @@ public class RenderUtils {
                 renderer.pos(x2, y, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
         }
+    }
+
+    public static TextureAtlasSprite getSprite(ItemStack stack) {
+        if (renderItem == null) {
+            renderItem = Minecraft.getMinecraft().getRenderItem();
+        }
+
+        return renderItem.getItemModelWithOverrides(stack, null, null).getParticleTexture();
+    }
+
+    public static ResourceLocation getResourceLocation(ItemStack stack) {
+        TextureAtlasSprite sprite = getSprite(stack);
+        String iconLoc = sprite.getIconName();
+        String domain = iconLoc.substring(0, iconLoc.indexOf(':')), resource = iconLoc.substring(iconLoc.indexOf(':') + 1, iconLoc.length());
+        return new ResourceLocation(domain, "textures/" + resource + ".png");
     }
 }

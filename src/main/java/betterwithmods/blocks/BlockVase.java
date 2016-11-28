@@ -152,4 +152,18 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, Color);
     }
+
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+                return tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0) != null ? 15 : 0;
+            }
+        }
+        return 0;
+    }
 }

@@ -18,7 +18,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
             "windmill_blade", "glue", "tallow", "ingot_steel", "ground_netherrack", "hellfire_dust", "concentrated_hellfire", "coal_dust", "filament", "polished_lapis",
             "potash", "sawdust", "soul_dust", "screw", "brimstone", "niter", "element", "fuse", "blasting_oil", "nugget_iron", "nugget_steel", "leather_cut",
             "tanned_leather_cut", "scoured_leather_cut", "redstone_latch", "nether_sludge", "flour", "haft", "charcoal_dust", "sharpening_stone", "knife_blade", "soul_flux", "ender_slag", "ender_ocular",
-            "padding", "armor_plate", "broadhead", "cocoa_powder"};
+            "padding", "armor_plate", "broadhead", "cocoa_powder", "diamond_ingot", "chain_mail"};
 
     public ItemMaterial() {
         super();

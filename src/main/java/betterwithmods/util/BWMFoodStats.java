@@ -178,10 +178,6 @@ public class BWMFoodStats extends FoodStats {
         ReflectionHelper.setPrivateValue(FoodStats.class, this, foodTimerIn, "field_75123_d", "foodTimer");
     }
 
-    public int getPrevFoodLevel() {
-        return ReflectionHelper.getPrivateValue(FoodStats.class, this, "field_75124_e", "prevFoodLevel");
-    }
-
     public void setPrevFoodLevel(int prevFoodLevel) {
         ReflectionHelper.setPrivateValue(FoodStats.class, this, prevFoodLevel, "field_75124_e", "prevFoodLevel");
     }

@@ -19,7 +19,6 @@ public class BulkRecipeWrapper extends BWMRecipeWrapper {
         this.helpers = helpers;
     }
 
-    @Nonnull
     @Override
     public void getIngredients(IIngredients ingredients) {
         IStackHelper stackHelper = helpers.getStackHelper();

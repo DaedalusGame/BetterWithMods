@@ -2,22 +2,23 @@
   "block.wood.creak": {
     "category": "block",
     "sounds": [
-      "betterwithmods:wood/wood_creak_0",
-      "betterwithmods:wood/wood_creak_1",
-      "betterwithmods:wood/wood_creak_2",
-      "betterwithmods:wood/wood_creak_3"
+      "betterwithmods:wood/wood_creak"
     ],
     "subtitle": "subtitles.bwm.wood.creak"
   },
   "block.stone.grind": {
     "category": "block",
     "sounds": [
-      "betterwithmods:stone/stone_grind_0",
-      "betterwithmods:stone/stone_grind_1",
-      "betterwithmods:stone/stone_grind_2",
-      "betterwithmods:stone/stone_grind_3"
+      "betterwithmods:stone/stone_grind"
     ],
     "subtitle": "subtitles.bwm.stone.grind"
+  },
+  "block.wood.bellow": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:wood/bellow"
+    ],
+    "subtitle": "subtitles.bwm.wood.bellow"
   },
   "block.wood.chime": {
     "category": "block",

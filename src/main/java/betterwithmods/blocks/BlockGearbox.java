@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
@@ -88,9 +89,10 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         if (isOn != gettingPower) {
             if (isOn)
                 setGearboxState(world, pos, false);
-            else
+            else {
                 setGearboxState(world, pos, true);
-            world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F);
+                world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
+            }
         }
     }
 
@@ -226,7 +228,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 
     public void breakGearbox(World world, BlockPos pos) {
         if (BWConfig.dropsGearbox)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/gearbox"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/gearbox"));
         /*
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));
@@ -243,7 +245,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         if (state.getValue(ISACTIVE)) {
             emitGearboxParticles(world, pos, rand);
             if (rand.nextInt(50) == 0)
-                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, world.rand.nextFloat() * 0.25F + 0.25F, false);
+                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F, false);
         }
     }
 
@@ -314,5 +316,15 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING, ISACTIVE, DirUtils.UP, DirUtils.DOWN, DirUtils.NORTH, DirUtils.SOUTH, DirUtils.WEST, DirUtils.EAST);
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        return isGearboxOn(worldIn, pos) ? 15 : 0;
     }
 }

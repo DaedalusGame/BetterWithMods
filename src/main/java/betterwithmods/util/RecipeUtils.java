@@ -52,6 +52,7 @@ public final class RecipeUtils {
         }
         if (!found)
             BWMod.logger.error("No matching recipe found.");
+
     }
 
     public static void gatherCookableFood() {

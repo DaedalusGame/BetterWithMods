@@ -3,6 +3,7 @@ package betterwithmods;
 import betterwithmods.blocks.BehaviorDiodeDispense;
 import betterwithmods.blocks.BlockBDispenser;
 import betterwithmods.blocks.BlockBWMPane;
+import betterwithmods.blocks.BlockRope;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.HopperFilters;
 import betterwithmods.craft.SawInteraction;
@@ -13,7 +14,6 @@ import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
-import com.google.common.collect.HashBiMap;
 import net.minecraft.block.*;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -21,10 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
@@ -41,7 +38,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public class BWRegistry {
     public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
@@ -52,27 +48,20 @@ public class BWRegistry {
         registerPotions();
         registerBlockDispenserBehavior();
         registerHopperFilters();
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
+
+        if (BWConfig.dropsHempSeeds) {
+            MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
+        }
     }
 
     public static void registerHopperFilters() {
-
-        HopperFilters.filters = HashBiMap.create();
-        Predicate<ItemStack> isNotBlock = stack -> {
-            Item item = stack.getItem();
-            if (item instanceof ItemBlock) {
-                Block block = ((ItemBlock) item).getBlock();
-                return block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack, "treeSapling");
-            }
-            return item == Items.SKULL || item == Items.FLOWER_POT || item == Items.ITEM_FRAME;
-        };
-        HopperFilters.addFilter(1, Blocks.LADDER, 0, isNotBlock);
-        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> false);
-        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> false);
-        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> false);
-        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), stack -> InvUtils.listContains(stack, InvUtils.dustNames));
-        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> stack.equals(ItemMaterial.getMaterial("ground_netherrack")) || stack.equals(ItemMaterial.getMaterial("soul_dust")));
-        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> stack.getMaxStackSize() > 1);
+        HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock);
+        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack));
+        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack));
+        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> isParticulate(stack) || isFlat(stack));
+        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), BWRegistry::isParticulate);
+        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> false);
+        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1);
     }
 
     public static void registerBlockDispenserBehavior() {
@@ -214,7 +203,7 @@ public class BWRegistry {
                     if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                         for (int i = 0; i < 4; i++) {
                             ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
-                            if (planks != null) {
+                            if (planks != ItemStack.EMPTY) {
                                 ItemStack[] output = new ItemStack[3];
                                 output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
                                 output[1] = new ItemStack(BWMItems.BARK, 2, 0);
@@ -225,7 +214,7 @@ public class BWRegistry {
                         }
                     } else {
                         ItemStack planks = getRecipeOutput(log);
-                        if (planks != null) {
+                        if (planks != ItemStack.EMPTY) {
                             ItemStack[] output = new ItemStack[3];
                             output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
                             output[1] = new ItemStack(BWMItems.BARK, 2, 0);
@@ -259,7 +248,7 @@ public class BWRegistry {
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private static void registerPotions() {
@@ -270,5 +259,34 @@ public class BWRegistry {
         String potionName = potion.getRegistryName().toString().substring(BWMod.MODID.length() + ":".length());
         potion.setPotionName("bwm.effect." + potionName);
         GameRegistry.register(potion);
+    }
+
+    private static boolean isNotBlock(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof ItemBlock) {
+            Block block = ((ItemBlock) item).getBlock();
+            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack, "treeSapling");
+        }
+        return true;
+    }
+
+    private static boolean isParticulate(ItemStack stack) {
+        Item item = stack.getItem();
+        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames);
+    }
+
+    private static boolean isFlat(ItemStack stack) {
+        Item item = stack.getItem();
+        int meta = stack.getMetadata();
+        if (item == BWMItems.MATERIAL) {
+            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
+        }
+        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || InvUtils.listContains(stack, OreDictionary.getOres("string")) || InvUtils.listContains(stack, OreDictionary.getOres("paper"));
+    }
+
+    private static boolean isNarrow(ItemStack stack) {
+        Item item = stack.getItem();
+        int meta = stack.getMetadata();
+        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) || InvUtils.listContains(stack, InvUtils.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD || (item == BWMItems.MATERIAL && (meta == 8 || meta == 9));
     }
 }

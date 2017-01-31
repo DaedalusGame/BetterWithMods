@@ -48,7 +48,7 @@ public class CraftingManagerSteelAnvil {
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting craftMatrix, World worldIn) {

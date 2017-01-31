@@ -17,6 +17,12 @@ public class TileEntitySteelAnvil extends TileEntity implements IInventory, ISid
 
     private ItemStack matrix[] = new ItemStack[16];
 
+    public TileEntitySteelAnvil() {
+        super();
+        for (int i = 0; i < 16; i++)
+            matrix[i] = ItemStack.EMPTY;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -26,14 +32,14 @@ public class TileEntitySteelAnvil extends TileEntity implements IInventory, ISid
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
+        NBTTagCompound tag = super.writeToNBT(nbt);
         for (int i = 0; i < matrix.length; i++) {
             if (matrix[i] != ItemStack.EMPTY)
-                nbt.setTag("matrix" + i, matrix[i].writeToNBT(new NBTTagCompound()));
+                tag.setTag("matrix" + i, matrix[i].writeToNBT(new NBTTagCompound()));
             else
-                nbt.removeTag("matrix" + i);
+                tag.removeTag("matrix" + i);
         }
-        return nbt;
+        return tag;
     }
 
     @Override

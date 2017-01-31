@@ -98,6 +98,11 @@ public class BlockSteelAnvil extends BlockContainer {
     }
 
     @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileEntitySteelAnvil();
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntitySteelAnvil();
     }

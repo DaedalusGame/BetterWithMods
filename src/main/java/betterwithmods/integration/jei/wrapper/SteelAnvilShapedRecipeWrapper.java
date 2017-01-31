@@ -32,8 +32,8 @@ public class SteelAnvilShapedRecipeWrapper extends BlankRecipeWrapper implements
                 }
             }
         }
-        this.width = recipe.width;
-        this.height = recipe.height;
+        this.width = recipe.getWidth();
+        this.height = recipe.getHeight();
     }
 
     @Override

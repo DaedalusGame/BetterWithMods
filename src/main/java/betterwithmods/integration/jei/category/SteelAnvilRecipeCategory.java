@@ -7,19 +7,18 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by blueyu2 on 11/25/16.
  */
-public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecipeWrapper> {
+public class SteelAnvilRecipeCategory extends BlankRecipeCategory<IRecipeWrapper> {
 
     public static final int WIDTH = 134;
     public static final int HEIGHT = 72;
@@ -52,7 +51,7 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, ICraftingRecipeWrapper recipeWrapper, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
 
         stacks.init(craftOutputSlot, false, 112, 27);
@@ -65,16 +64,15 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
         }
 
         List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-        List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class).get(0);
+        List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
         if (recipeWrapper instanceof IShapedCraftingRecipeWrapper) {
             IShapedCraftingRecipeWrapper wrapper = (IShapedCraftingRecipeWrapper) recipeWrapper;
             setInputStacks(stacks, inputs, wrapper.getWidth(), wrapper.getHeight());
-            setOutput(stacks, outputs);
         } else {
             setInputStacks(stacks, inputs);
-            setOutput(stacks, outputs);
         }
+        stacks.set(craftOutputSlot, outputs.get(0));
     }
 
 
@@ -113,7 +111,8 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
 
     //Copied from CraftingGridHelper
     private void setInput(IGuiItemStackGroup guiItemStacks, int inputIndex, List<ItemStack> input) {
-        guiItemStacks.set(craftInputSlot1 + inputIndex, input.get(0));
+        if (!input.isEmpty())
+            guiItemStacks.set(craftInputSlot1 + inputIndex, input.get(0));
     }
 
     //Copied from CraftingGridHelper

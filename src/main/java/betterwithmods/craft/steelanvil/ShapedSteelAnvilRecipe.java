@@ -26,7 +26,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
     private static final int MAX_MATRIX_HEIGHT = 4;
     public int width;
     public int height;
-    private ItemStack output = null;
+    private ItemStack output = ItemStack.EMPTY;
     private Object[] input = null;
     private boolean mirrored = true;
 
@@ -43,11 +43,13 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
 
         String shape = "";
         int idx = 0;
+        width = 0;
 
         if (recipe[idx] instanceof String[]) {
             String[] parts = ((String[]) recipe[idx++]);
 
             for (String s : parts) {
+                if (s.length() > width)
                 width = s.length();
                 shape += s;
             }
@@ -57,6 +59,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             while (recipe[idx] instanceof String) {
                 String s = (String) recipe[idx++];
                 shape += s;
+                if (s.length() > width)
                 width = s.length();
                 height++;
             }
@@ -175,13 +178,21 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
                     if (!matched) {
                         return false;
                     }
-                } else if (target == null && slot != null) {
+                } else if (target == null && !slot.isEmpty()) {
                     return false;
                 }
             }
         }
 
         return true;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public ShapedSteelAnvilRecipe setMirrored(boolean mirror) {

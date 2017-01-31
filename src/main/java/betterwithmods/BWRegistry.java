@@ -113,7 +113,7 @@ public class BWRegistry {
      */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,
                                       int updateFrequency, boolean sendsVelocityUpdates) {
-        EntityRegistry.registerModEntity(new ResourceLocation("bwm:" + entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
+        EntityRegistry.registerModEntity(new ResourceLocation("betterwithmods:" + entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
                 updateFrequency, sendsVelocityUpdates);
         availableEntityId++;
     }

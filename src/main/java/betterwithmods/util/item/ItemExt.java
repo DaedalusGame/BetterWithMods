@@ -201,6 +201,8 @@ public final class ItemExt {
         buoyancy.put("barkWood", 1.0F);
         buoyancy.put(Items.DYE, EnumDyeColor.BROWN.getDyeDamage(), 1.0F);
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial("soul_flux").getMetadata(), 1.0F);
+        buoyancy.put(BWMBlocks.STUMP, 1.0F);
+        buoyancy.put(BWMItems.STUMP_REMOVER, 1.0F);
     }
 
     public static void initWeights() {

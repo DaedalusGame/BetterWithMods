@@ -15,11 +15,13 @@ public class BlockMetaRecipe {
     private final Block block;
     private final int meta;
     private final List<ItemStack> outputs;
+    private final String type;
 
-    public BlockMetaRecipe(Block block, int meta, List<ItemStack> outputs) {
+    public BlockMetaRecipe(String type, Block block, int meta, List<ItemStack> outputs) {
         this.block = block;
         this.meta = meta;
         this.outputs = outputs;
+        this.type = type;
     }
 
     public boolean equals(Block block, int meta) {
@@ -32,5 +34,9 @@ public class BlockMetaRecipe {
 
     public ItemStack getStack() {
         return new ItemStack(block, 1, meta);
+    }
+
+    public String getType() {
+        return type;
     }
 }

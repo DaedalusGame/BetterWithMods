@@ -76,8 +76,12 @@ public class BreedingHardnessEvent {
             EntityLiving animal = (EntityLiving) e.getEntity();
             ItemStack dataStack = animal.getDataManager().get(getHarnessData(animal));
 
-            NBTTagCompound cmp = animal.getEntityData().getCompoundTag(TAG_HARNESS);
-            ItemStack nbtStack = new ItemStack(cmp);
+            ItemStack nbtStack = ItemStack.EMPTY;
+            if(animal.getEntityData().hasKey(TAG_HARNESS)) {
+                NBTTagCompound cmp = animal.getEntityData().getCompoundTag(TAG_HARNESS);
+                if (!cmp.hasNoTags())
+                    nbtStack = new ItemStack(cmp);
+            }
             if (dataStack != nbtStack)
                 e.getEntity().getDataManager().set(getHarnessData(e.getEntity()), nbtStack);
         }

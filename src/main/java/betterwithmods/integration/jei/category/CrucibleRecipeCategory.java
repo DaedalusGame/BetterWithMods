@@ -36,7 +36,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft) {
+    public void drawExtras(@Nonnull Minecraft minecraft) {
         flame.draw(minecraft, 80, 19);
     }
 
@@ -55,7 +55,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         }
 
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
-        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+        if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class); //TODO adapted for JEI 3.11.2. May not be correct.
         craftingGrid.setInputStacks(stacks, inputList);

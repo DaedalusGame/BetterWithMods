@@ -24,10 +24,9 @@ import java.util.List;
  * Created by blueyu2 on 11/25/16.
  */
 public class SteelAnvilShapelessRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper {
+    private static final double shapelessIconScale = 0.5;
     private final IJeiHelpers jeiHelpers;
     private final ShapelessOreRecipe recipe;
-
-    private static final double shapelessIconScale = 0.5;
     private final IDrawable shapelessIcon;
     private final HoverChecker shapelessIconHoverChecker;
 
@@ -38,8 +37,8 @@ public class SteelAnvilShapelessRecipeWrapper extends BlankRecipeWrapper impleme
         for (Object input : this.recipe.getInput()) {
             if (input instanceof ItemStack) {
                 ItemStack itemStack = (ItemStack) input;
-                if (itemStack.stackSize != 1) {
-                    itemStack.stackSize = 1;
+                if (itemStack.getCount() != 1) {
+                    itemStack.setCount(1);
                 }
             }
         }
@@ -87,22 +86,12 @@ public class SteelAnvilShapelessRecipeWrapper extends BlankRecipeWrapper impleme
         ingredients.setInputLists(ItemStack.class, inputs);
 
         ItemStack recipeOutput = recipe.getRecipeOutput();
-        if (recipeOutput != null) {
+        if (recipeOutput != ItemStack.EMPTY) {
             ingredients.setOutput(ItemStack.class, recipeOutput);
         }
     }
 
-    @Override
-    public List getInputs() {
-        return recipe.getInput();
-    }
-
-    @Override
-    public List<ItemStack> getOutputs() {
-        return Collections.singletonList(recipe.getRecipeOutput());
-    }
-
     private boolean hasMultipleIngredients() {
-        return getInputs().size() > 1;
+        return recipe.getInput().size() > 1;
     }
 }

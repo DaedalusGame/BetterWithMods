@@ -58,6 +58,14 @@ public class BWConfig {
     public static boolean dropsHempSeeds;
     public static boolean hardcoreLavaBuckets;
     public static boolean hardcoreEndermen;
+    public static boolean hardcoreRedstone;
+    public static boolean hardcoreOres;
+    public static boolean hardcoreStructures;
+    public static boolean armorDrops;
+    public static boolean hardcoreStumping;
+    public static boolean hardcoreStructureCraft;
+    public static int reclaimCount;
+    public static boolean inferiorDrops;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -67,7 +75,7 @@ public class BWConfig {
     private static void syncConfig() {
         HARDCORE_CAT = config.getCategory(HARDCORE);
         hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true, "Creepers and Ghasts will drop brimstone or niter instead of gunpowder").getBoolean();
-        hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe").getBoolean();
+        hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe. Need an axe to chop logs into planks").setRequiresMcRestart(true).getBoolean();
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean();
         hardcoreMelons = config.get(HARDCORE, "Hardcore Melons", true, "Melons and pumpkins are affected by gravity and need a saw to slice up.").getBoolean();
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean();
@@ -91,6 +99,7 @@ public class BWConfig {
         slimeSpawn = config.get(VANILLA_TWEAKS, "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true)
                 .getBoolean();
         produceDung = config.get(VANILLA_TWEAKS, "Animals Produce Dung", true).getBoolean();
+        armorDrops = config.get(VANILLA_TWEAKS, "Undead drop all armor", true, "This option will force zombies and skeletons to drop any non-standard equipment, including enchanted versions of their default weapons.").getBoolean();
 
         dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean();
         dropsSaw = config.get(MODPACK_TWEAKS, "Saw generating drops when overpowered", true).getBoolean();
@@ -98,6 +107,7 @@ public class BWConfig {
         dropsPulley = config.get(MODPACK_TWEAKS, "Pulley generating drops when overpowered", true).getBoolean();
         dropsMill = config.get(MODPACK_TWEAKS, "Mill generating drops when overpowered", true).getBoolean();
         dropsTurntable = config.get(MODPACK_TWEAKS, "Turntable generating drops when overpowered", true).getBoolean();
+        reclaimCount = config.getInt("Nugget Reclaim", MODPACK_TWEAKS, 9, 0, 9, "Amount (in nuggets per ingot) tools and armor in the crucible reclaim. Does not affect diamond or soulforged steel ingot reclamation. (Set to 0 to disable reclamation entirely.)");
 
         debug = config.get(DEBUG, "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean();
         dumpBlockData = config
@@ -118,7 +128,14 @@ public class BWConfig {
         dropsHempSeeds = config.getBoolean("Drop Hemp Seeds", MODPACK_TWEAKS, true, "Tall Grass Drops Hemp Seeds");
         hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets", HARDCORE, true, "Makes lava buckets hot if you don't have a fire resistance potion");
         hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE, true, "Changes to Endermen AI that make them even more menacing");
-        config.save();
+        hardcoreRedstone = config.get(HARDCORE, "Hardcore Redstone", true, "Prevents wooden doors, trapdoors, and fence gates from being activated by redstone. Changes various redstone related recipes").setRequiresMcRestart(true).getBoolean();
+        hardcoreOres = config.get(HARDCORE, "Hardcore Ores", true, "Makes ores only smelt to a single nugget if available").setRequiresMcRestart(true).getBoolean();
+        hardcoreStructures = config.get(HARDCORE, "Hardcore Structures", true, "Changes various structures to be affected by the Hardcore Spawn radius. Removes Enchanting Table and Brewing Stand recipes").setRequiresMcRestart(true).getBoolean();
+        hardcoreStructureCraft = hardcoreStructures && config.get(HARDCORE, "Disable Brewing Stand and Enchanting Table Recipes", true, "If enabled with Hardcore Structures, disables crafting recipes for the brewing stand and enchanting table").setRequiresMcRestart(true).getBoolean();
+        hardcoreStumping = config.get(HARDCORE, "Hardcore Stumping", true, "The bottom block of trees is very hard. Promotes landscapes filled with iconic stumps to show the triumphant march of progress").setRequiresMcRestart(true).getBoolean();
+        inferiorDrops = config.get(HARDCORE, "Inferior Dirt Drops", true, "Dirt, sand, and gravel will drop piles if not harvested with a shovel").getBoolean();
+        if(config.hasChanged())
+            config.save();
     }
 
     @SubscribeEvent

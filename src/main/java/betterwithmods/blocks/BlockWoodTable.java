@@ -42,7 +42,7 @@ public class BlockWoodTable extends BlockFurniture implements IMultiVariants {
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity) {
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean pass) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, TABLE_AABB);
         if (state.getBlock() instanceof BlockWoodTable) {
             BlockWoodTable block = (BlockWoodTable) state.getBlock();

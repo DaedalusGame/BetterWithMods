@@ -17,6 +17,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class InvUtils {
     public static List<ItemStack> dustNames;
@@ -24,11 +26,22 @@ public class InvUtils {
     public static List<ItemStack> ingotNames;
     public static List<ItemStack> cropNames;
 
-    public static void initOreDictGathering() {
+    public static void postInitOreDictGathering() {
         dustNames = getOreNames("dust");
         oreNames = getOreNames("ore");
         ingotNames = getOreNames("ingot");
         cropNames = getOreNames("crop");
+    }
+
+    public static ItemStack getMatchingSuffixStack(ItemStack stack, String startingPrefix, String resultingPrefix) {
+        List<ItemStack> list = getMatchingSuffix(stack, startingPrefix, resultingPrefix);
+        if (list.size() > 0)
+            return list.get(0);
+        return null;
+    }
+
+    public static List<ItemStack> getMatchingSuffix(ItemStack stack, String startingPrefix, String resultingPrefix) {
+        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).filter(ore -> ore.startsWith(startingPrefix)).map(ore -> OreDictionary.getOres(resultingPrefix + ore.substring(startingPrefix.length()))).flatMap(List::stream).collect(Collectors.toList());
     }
 
     public static ArrayList<ItemStack> getOreNames(String prefix) {

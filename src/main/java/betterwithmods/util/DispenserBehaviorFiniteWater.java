@@ -9,10 +9,7 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
@@ -68,7 +65,7 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
         EnumFacing dispenserFacing = source.getBlockState().getValue(BlockDispenser.FACING);
         BlockPos blockpos = source.getBlockPos().offset(dispenserFacing);
 
-        if (fluidStack != null && fluidStack.amount == Fluid.BUCKET_VOLUME && FluidUtil.tryPlaceFluid(null, source.getWorld(), fluidStack, blockpos)) {
+        if (fluidStack != null && fluidStack.amount == Fluid.BUCKET_VOLUME && FluidUtil.tryPlaceFluid(null, source.getWorld(), blockpos, stack.getItem().getContainerItem(stack), fluidStack) != FluidActionResult.FAILURE) {
             if (fluidStack.getFluid() == FluidRegistry.WATER) {
                 source.getWorld().setBlockState(blockpos, Blocks.FLOWING_WATER.getStateFromMeta(2));
                 for (EnumFacing face : EnumFacing.HORIZONTALS) {

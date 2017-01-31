@@ -21,26 +21,26 @@ public class Harvestcraft implements ICompatModule {
 
     @Override
     public void init() {
-        Item corn = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cornItem"));
-        Item cornmeal = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cornmealItem"));
+        Item corn = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cornitem"));
+        Item cornmeal = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cornmealitem"));
         BWCrafting.addMillRecipe(new ItemStack(cornmeal), new ItemStack(corn));
-        Item pepper = Item.REGISTRY.getObject(new ResourceLocation(MODID, "blackpepperItem"));
-        Item peppercorn = Item.REGISTRY.getObject(new ResourceLocation(MODID, "peppercornItem"));
+        Item pepper = Item.REGISTRY.getObject(new ResourceLocation(MODID, "blackpepperitem"));
+        Item peppercorn = Item.REGISTRY.getObject(new ResourceLocation(MODID, "peppercornitem"));
         BWCrafting.addMillRecipe(new ItemStack(pepper), new ItemStack(peppercorn));
-        Item cocoa = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cocoapowderItem"));
+        Item cocoa = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cocoapowderitem"));
         BWCrafting.addMillRecipe(new ItemStack(cocoa), new ItemStack(Items.DYE, 1, 3));
-        Item cinnamon = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cinnamonItem"));
-        Item cinnamonPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "groundcinnamonItem"));
+        Item cinnamon = Item.REGISTRY.getObject(new ResourceLocation(MODID, "cinnamonitem"));
+        Item cinnamonPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "groundcinnamonitem"));
         BWCrafting.addMillRecipe(new ItemStack(cinnamonPowder), new ItemStack(cinnamon));
-        Item nutmeg = Item.REGISTRY.getObject(new ResourceLocation(MODID, "nutmegItem"));
-        Item nutmegPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "groundnutmegItem"));
+        Item nutmeg = Item.REGISTRY.getObject(new ResourceLocation(MODID, "nutmegitem"));
+        Item nutmegPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "groundnutmegitem"));
         BWCrafting.addMillRecipe(new ItemStack(nutmegPowder), new ItemStack(nutmeg));
-        Item curry = Item.REGISTRY.getObject(new ResourceLocation(MODID, "curryleafItem"));
-        Item curryPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "currypowderItem"));
+        Item curry = Item.REGISTRY.getObject(new ResourceLocation(MODID, "curryleafitem"));
+        Item curryPowder = Item.REGISTRY.getObject(new ResourceLocation(MODID, "currypowderitem"));
         BWCrafting.addMillRecipe(new ItemStack(curryPowder), new ItemStack(curry));
-        Item boiledEgg = Item.REGISTRY.getObject(new ResourceLocation(MODID, "boiledeggItem"));
+        Item boiledEgg = Item.REGISTRY.getObject(new ResourceLocation(MODID, "boiledeggitem"));
         BWCrafting.addCauldronRecipe(new ItemStack(boiledEgg), new ItemStack[]{new ItemStack(Items.EGG)});
-        Item dough = Item.REGISTRY.getObject(new ResourceLocation(MODID, "doughItem"));
+        Item dough = Item.REGISTRY.getObject(new ResourceLocation(MODID, "doughitem"));
         BWCrafting.addCauldronRecipe(new ItemStack(Items.BREAD), new ItemStack[]{new ItemStack(dough)});
         OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
 

@@ -3,12 +3,21 @@ package betterwithmods.util;
 import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.item.ToolsManager;
+import betterwithmods.world.gen.feature.*;
+import net.minecraft.block.*;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * Various static methods that handle various hardcore things.
@@ -17,6 +26,138 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public final class HardcoreFunctions {
     private HardcoreFunctions() {
+    }
+
+    /**
+     * Hardcore Stumping
+     * Checks various properties to find a {@link BlockPlanks.EnumType} for the state.
+     *
+     * @param state State of the wooden block to get wood type from.
+     * @return The type if it has any, null otherwise.
+     */
+    @Nullable
+    public static BlockPlanks.EnumType getWoodType(IBlockState state) {
+        if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
+            return state.getValue(BlockPlanks.VARIANT);
+        } else if (state.getProperties().containsKey(BlockOldLog.VARIANT)) {
+            return state.getValue(BlockOldLog.VARIANT);
+        } else if (state.getProperties().containsKey(BlockNewLog.VARIANT)) {
+            return state.getValue(BlockNewLog.VARIANT);
+        } else return null;
+    }
+
+    /**
+     * Hardcore Stumping
+     * <p>
+     * Edited version of {@link BlockSapling#isTwoByTwoOfType(World, BlockPos, int, int, BlockPlanks.EnumType)} build 2185
+     */
+    private static boolean isTwoByTwoOfType(BlockSapling sapling, World worldIn, BlockPos pos, int p_181624_3_, int p_181624_4_, BlockPlanks.EnumType type) {
+        return sapling.isTypeAt(worldIn, pos.add(p_181624_3_, 0, p_181624_4_), type) && sapling.isTypeAt(worldIn, pos.add(p_181624_3_ + 1, 0, p_181624_4_), type) && sapling.isTypeAt(worldIn, pos.add(p_181624_3_, 0, p_181624_4_ + 1), type) && sapling.isTypeAt(worldIn, pos.add(p_181624_3_ + 1, 0, p_181624_4_ + 1), type);
+    }
+
+    /**
+     * Hardcore Stumping
+     * <p>
+     * Edited version of {@link BlockSapling#generateTree(World, BlockPos, IBlockState, Random)} build 2185
+     */
+    public static void generateTreeWithStump(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (!(state.getBlock() instanceof BlockSapling)) return;
+        BlockSapling sapling = (BlockSapling) state.getBlock();
+        WorldGenerator worldgenerator = rand.nextInt(10) == 0 ? new WorldGenBigTreeWithStump(true) : new WorldGenTreesWithStump(true);
+        int i = 0;
+        int j = 0;
+        boolean flag = false;
+
+        switch (state.getValue(BlockSapling.TYPE)) {
+            case SPRUCE:
+                label114:
+
+                for (i = 0; i >= -1; --i) {
+                    for (j = 0; j >= -1; --j) {
+                        if (isTwoByTwoOfType(sapling, worldIn, pos, i, j, BlockPlanks.EnumType.SPRUCE)) {
+                            worldgenerator = new WorldGenMegaPineTreeWithStump(false, rand.nextBoolean());
+                            flag = true;
+                            break label114;
+                        }
+                    }
+                }
+
+                if (!flag) {
+                    i = 0;
+                    j = 0;
+                    worldgenerator = new WorldGenTaiga2WithStump(true);
+                }
+
+                break;
+            case BIRCH:
+                worldgenerator = new WorldGenBirchTreeWithStump(true, false);
+                break;
+            case JUNGLE:
+                IBlockState iblockstate = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+                IBlockState iblockstate1 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+                label269:
+
+                for (i = 0; i >= -1; --i) {
+                    for (j = 0; j >= -1; --j) {
+                        if (isTwoByTwoOfType(sapling, worldIn, pos, i, j, BlockPlanks.EnumType.JUNGLE)) {
+                            worldgenerator = new WorldGenMegaJungleWithStump(true, 10, 20, iblockstate, iblockstate1);
+                            flag = true;
+                            break label269;
+                        }
+                    }
+                }
+
+                if (!flag) {
+                    i = 0;
+                    j = 0;
+                    worldgenerator = new WorldGenTreesWithStump(true, 4 + rand.nextInt(7), iblockstate, iblockstate1, false);
+                }
+
+                break;
+            case ACACIA:
+                worldgenerator = new WorldGenSavannaTreeWithStump(true);
+                break;
+            case DARK_OAK:
+                label390:
+
+                for (i = 0; i >= -1; --i) {
+                    for (j = 0; j >= -1; --j) {
+                        if (isTwoByTwoOfType(sapling, worldIn, pos, i, j, BlockPlanks.EnumType.DARK_OAK)) {
+                            worldgenerator = new WorldGenCanopyTreeWithStump(true);
+                            flag = true;
+                            break label390;
+                        }
+                    }
+                }
+
+                if (!flag) {
+                    return;
+                }
+
+            case OAK:
+        }
+
+        IBlockState iblockstate2 = Blocks.AIR.getDefaultState();
+
+        if (flag) {
+            worldIn.setBlockState(pos.add(i, 0, j), iblockstate2, 4);
+            worldIn.setBlockState(pos.add(i + 1, 0, j), iblockstate2, 4);
+            worldIn.setBlockState(pos.add(i, 0, j + 1), iblockstate2, 4);
+            worldIn.setBlockState(pos.add(i + 1, 0, j + 1), iblockstate2, 4);
+        } else {
+            worldIn.setBlockState(pos, iblockstate2, 4);
+        }
+
+        if (!worldgenerator.generate(worldIn, rand, pos.add(i, 0, j))) {
+            if (flag) {
+                worldIn.setBlockState(pos.add(i, 0, j), state, 4);
+                worldIn.setBlockState(pos.add(i + 1, 0, j), state, 4);
+                worldIn.setBlockState(pos.add(i, 0, j + 1), state, 4);
+                worldIn.setBlockState(pos.add(i + 1, 0, j + 1), state, 4);
+            } else {
+                worldIn.setBlockState(pos, state, 4);
+            }
+        }
     }
 
     public static void applyHCHardness() {

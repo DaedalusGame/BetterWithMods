@@ -20,9 +20,14 @@ import java.util.Optional;
 public abstract class BlockMetaHandler {
 
     private final ArrayList<BlockMetaRecipe> recipes = Lists.newArrayList();
+    private final String type;
+
+    public BlockMetaHandler(String type) {
+        this.type = type;
+    }
 
     public void addRecipe(ItemStack input, ItemStack... products) {
-        if (input.getItem() != null && input.getItem() instanceof ItemBlock) {
+        if (input != ItemStack.EMPTY && input.getItem() instanceof ItemBlock) {
             addRecipe(((ItemBlock) input.getItem()).getBlock(), input.getMetadata(), products);
         } else {
             BWMod.logger.info("BlockMeta input: %s must be a block", input);
@@ -30,7 +35,7 @@ public abstract class BlockMetaHandler {
     }
 
     public void addRecipe(Block block, int meta, ItemStack... products) {
-        addRecipe(new BlockMetaRecipe(block, meta, Arrays.asList(products)));
+        addRecipe(new BlockMetaRecipe(type, block, meta, Arrays.asList(products)));
     }
 
     public void addRecipe(BlockMetaRecipe recipe) {

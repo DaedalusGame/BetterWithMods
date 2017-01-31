@@ -147,7 +147,7 @@ public class ContainerInfernalEnchanter extends Container {
 
             if (current.getCount() == previous.getCount())
                 return ItemStack.EMPTY;
-            slot.onPickupFromSlot(playerIn, current);
+            slot.onTake(playerIn, current);
         }
         return previous;
     }

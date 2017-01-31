@@ -17,6 +17,7 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.entity.*;
 import betterwithmods.integration.ICompatModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -24,6 +25,9 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -72,6 +76,11 @@ public class ClientProxy implements IProxy {
         final ItemColors itCol = Minecraft.getMinecraft().getItemColors();
         itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor, BWMBlocks.PLANTER);
         itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, BWMBlocks.VINE_TRAP);
+        col.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D), BWMBlocks.DIRT_SLAB);
+        itCol.registerItemColorHandler((stack, tintIndex) -> {
+            IBlockState iblockstate = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
+            return col.colorMultiplier(iblockstate, null, null, tintIndex);
+        }, BWMBlocks.DIRT_SLAB);
     }
 
     private void initRenderers() {

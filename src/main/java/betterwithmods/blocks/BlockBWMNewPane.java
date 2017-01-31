@@ -66,7 +66,7 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean pass) {
         state = state.getActualState(world, pos);
 
         float minY = 0.001F;

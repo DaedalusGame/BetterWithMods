@@ -78,7 +78,7 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
         guiItemStacks.init(4, false, x, y + 27); //hopper
 
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3, ingredients.getOutputs(ItemStack.class).subList(1, 3));
+        guiItemStacks.set(3, ingredients.getOutputs(ItemStack.class).subList(1, 3).get(0));
         guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 4));
 
 

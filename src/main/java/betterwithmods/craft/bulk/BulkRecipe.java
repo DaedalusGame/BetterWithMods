@@ -13,18 +13,20 @@ import java.util.List;
 
 //TODO Probably this should implement some recipe interface, at the very least.
 public class BulkRecipe {
-    protected ItemStack output = null;
-    protected ItemStack secondary = null;
+    protected ItemStack output = ItemStack.EMPTY;
+    protected ItemStack secondary = ItemStack.EMPTY;
     protected ArrayList<Object> input = new ArrayList<>();//Either ItemStack or OreStack
     protected ArrayList<List<ItemStack>> jeiInput = new ArrayList<>();
+    private String type;
 
     public BulkRecipe(String type, ItemStack output, Object... input) {
         this(type, output, null, input);
     }
 
     public BulkRecipe(String type, ItemStack output, ItemStack secondaryOutput, Object... input) {
+        this.type = type;
         this.output = output.copy();
-        if (secondaryOutput != null)
+        if (secondaryOutput != null && secondaryOutput != ItemStack.EMPTY)
             this.secondary = secondaryOutput.copy();
         int place = -1;
         ArrayList<Object> inputs = new ArrayList<>();
@@ -142,10 +144,10 @@ public class BulkRecipe {
     }
 
     public boolean matches(BulkRecipe recipe) {
-        if (this.getOutput() != null && recipe.getOutput() != null) {
+        if (this.getOutput() != ItemStack.EMPTY && recipe.getOutput() != ItemStack.EMPTY) {
             boolean match = this.stacksMatch(this.getOutput(), recipe.getOutput());
-            if (match && (this.getSecondary() != null || recipe.getSecondary() != null)) {
-                match = this.getSecondary() != null && recipe.getSecondary() != null;
+            if (match && (this.getSecondary() != ItemStack.EMPTY || recipe.getSecondary() != ItemStack.EMPTY)) {
+                match = this.getSecondary() != ItemStack.EMPTY && recipe.getSecondary() != ItemStack.EMPTY;
                 if (match)
                     match = this.stacksMatch(this.getSecondary(), recipe.getSecondary());
             }
@@ -182,5 +184,9 @@ public class BulkRecipe {
 
     private boolean stacksMatch(ItemStack first, ItemStack second) {
         return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.getCount() == second.getCount();
+    }
+
+    public String getType() {
+        return type;
     }
 }

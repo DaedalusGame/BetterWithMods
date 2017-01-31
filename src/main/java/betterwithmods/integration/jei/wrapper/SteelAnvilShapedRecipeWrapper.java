@@ -27,8 +27,8 @@ public class SteelAnvilShapedRecipeWrapper extends BlankRecipeWrapper implements
         for (Object input : this.recipe.getInput()) {
             if (input instanceof ItemStack) {
                 ItemStack itemStack = (ItemStack) input;
-                if (itemStack.stackSize != 1) {
-                    itemStack.stackSize = 1;
+                if (itemStack.getCount() != 1) {
+                    itemStack.setCount(1);
                 }
             }
         }
@@ -44,19 +44,9 @@ public class SteelAnvilShapedRecipeWrapper extends BlankRecipeWrapper implements
         ingredients.setInputLists(ItemStack.class, inputs);
 
         ItemStack recipeOutput = recipe.getRecipeOutput();
-        if (recipeOutput != null) {
+        if (recipeOutput != ItemStack.EMPTY) {
             ingredients.setOutput(ItemStack.class, recipeOutput);
         }
-    }
-
-    @Override
-    public List getInputs() {
-        return Arrays.asList(recipe.getInput());
-    }
-
-    @Override
-    public List<ItemStack> getOutputs() {
-        return Collections.singletonList(recipe.getRecipeOutput());
     }
 
     @Override

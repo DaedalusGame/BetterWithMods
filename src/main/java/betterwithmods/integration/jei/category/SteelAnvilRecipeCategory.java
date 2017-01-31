@@ -33,12 +33,12 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
     public SteelAnvilRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/steel_anvil.png");
         background = guiHelper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
-        localizedName = Translator.translateToLocal("inv.steelanvil.name");
+        localizedName = Translator.translateToLocal("inv.steel_anvil.name");
     }
 
     @Override
     public String getUid() {
-        return "bwm.steelanvil";
+        return "bwm.steel_anvil";
     }
 
     @Override
@@ -58,14 +58,14 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
         stacks.init(craftOutputSlot, false, 112, 27);
 
         for (int y = 0; y < 4; y++) {
-            for(int x = 0; x < 4; x++) {
+            for (int x = 0; x < 4; x++) {
                 int index = craftInputSlot1 + x + (y * 4);
                 stacks.init(index, true, x * 18, y * 18);
             }
         }
 
         List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-        List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+        List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class).get(0);
 
         if (recipeWrapper instanceof IShapedCraftingRecipeWrapper) {
             IShapedCraftingRecipeWrapper wrapper = (IShapedCraftingRecipeWrapper) recipeWrapper;
@@ -83,8 +83,7 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
         int width, height;
         if (input.size() > 9) {
             width = height = 4;
-        }
-        else if (input.size() > 4) {
+        } else if (input.size() > 4) {
             width = height = 3;
         } else if (input.size() > 1) {
             width = height = 2;
@@ -113,8 +112,8 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
     }
 
     //Copied from CraftingGridHelper
-    private void setInput(IGuiItemStackGroup guiItemStacks, int inputIndex, Collection<ItemStack> input) {
-        guiItemStacks.set(craftInputSlot1 + inputIndex, input);
+    private void setInput(IGuiItemStackGroup guiItemStacks, int inputIndex, List<ItemStack> input) {
+        guiItemStacks.set(craftInputSlot1 + inputIndex, input.get(0));
     }
 
     //Copied from CraftingGridHelper

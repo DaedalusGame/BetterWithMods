@@ -23,7 +23,7 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
     }
 
     @Override
-    public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
+    public ItemStack onTake(EntityPlayer playerIn, ItemStack stack) {
         net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
         this.onCrafting(stack);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
@@ -50,5 +50,6 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
                 }
             }
         }
+        return stack;
     }
 }

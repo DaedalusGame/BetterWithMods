@@ -36,7 +36,7 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft) {
+    public void drawExtras(@Nonnull Minecraft minecraft) {
         gear.draw(minecraft, 80, 19);
     }
 
@@ -55,7 +55,7 @@ public class MillRecipeCategory extends BWMRecipeCategory<MillRecipeWrapper> {
             }
         }
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
-        if (wrapper.getRecipe().getSecondary() != null && wrapper.getRecipe().getSecondary().getItem() != null)
+        if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
     }
 }

@@ -34,13 +34,13 @@ public class SoulUrnCategory extends BlankRecipeCategory<SoulUrnWrapper> {
     public SoulUrnCategory(IGuiHelper guiHelper) {
         ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/hopper.png");
         background = guiHelper.createDrawable(location, 0, 0, width, height);
-        localizedName = Translator.translateToLocal("inv.hopper.soulurn.name");
+        localizedName = Translator.translateToLocal("inv.hopper.soul_urn.name");
     }
 
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.hopper.soulurn";
+        return "bwm.hopper.soul_urn";
     }
 
     @Nonnull

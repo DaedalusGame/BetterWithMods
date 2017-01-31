@@ -97,7 +97,7 @@ public class ContainerSteelAnvil extends Container {
                 return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(player, itemstack1);
+            slot.onTake(player, itemstack1);
         }
 
         return itemstack;

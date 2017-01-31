@@ -1,9 +1,9 @@
 package betterwithmods.craft.steelanvil;
 
-import betterwithmods.integration.minetweaker.utils.InputHelper;
+/*import betterwithmods.integration.minetweaker.utils.InputHelper;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import minetweaker.api.oredict.IOreDictEntry;
+import minetweaker.api.oredict.IOreDictEntry;*/
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -101,7 +101,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             input[x++] = itemMap.get(chr);
         }
     }
-
+/*
     public ShapedSteelAnvilRecipe(IItemStack result, IIngredient[][] recipe) {
         output = InputHelper.toStack(result);
 
@@ -123,7 +123,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
                 }
             }
         }
-    }
+    }*/
 
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {

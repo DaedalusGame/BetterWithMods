@@ -5,6 +5,7 @@ import betterwithmods.blocks.BlockBDispenser;
 import betterwithmods.blocks.BlockBWMPane;
 import betterwithmods.blocks.BlockRope;
 import betterwithmods.config.BWConfig;
+import betterwithmods.craft.ChoppingRecipe;
 import betterwithmods.craft.HopperFilters;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.heat.BWMHeatRegistry;
@@ -24,6 +25,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BWRegistry {
@@ -110,7 +113,7 @@ public class BWRegistry {
      */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,
                                       int updateFrequency, boolean sendsVelocityUpdates) {
-        EntityRegistry.registerModEntity(new ResourceLocation(BWMod.MODID, entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
+        EntityRegistry.registerModEntity(new ResourceLocation("bwm:" + entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
                 updateFrequency, sendsVelocityUpdates);
         availableEntityId++;
     }
@@ -119,6 +122,7 @@ public class BWRegistry {
         OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.MATERIAL, 1, 0));
         OreDictionary.registerOre("cropHemp", new ItemStack(BWMItems.MATERIAL, 1, 2));
         OreDictionary.registerOre("dyeBrown", new ItemStack(BWMItems.MATERIAL, 1, 5));
+        OreDictionary.registerOre("dung", new ItemStack(BWMItems.MATERIAL, 1, 5));
         OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.MATERIAL, 1, 12));
         OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 14));
         OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.MATERIAL, 1, 15));
@@ -135,15 +139,20 @@ public class BWRegistry {
         OreDictionary.registerOre("foodFlour", new ItemStack(BWMItems.MATERIAL, 1, 37));
         OreDictionary.registerOre("dustCharcoal", new ItemStack(BWMItems.MATERIAL, 1, 39));
 
-        OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+        //OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
-
+        //Added bark subtype entries for Roots compatibility
         OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("barkOak", new ItemStack(BWMItems.BARK, 1, 0));
+        OreDictionary.registerOre("barkSpruce", new ItemStack(BWMItems.BARK, 1, 1));
+        OreDictionary.registerOre("barkBirch", new ItemStack(BWMItems.BARK, 1, 2));
+        OreDictionary.registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
+        OreDictionary.registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
+        OreDictionary.registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
         OreDictionary.registerOre("craftingToolKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         // TFC compatibility
         OreDictionary.registerOre("itemKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("string", new ItemStack(BWMItems.MATERIAL, 1, 3));
         OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
         OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
 
@@ -172,7 +181,7 @@ public class BWRegistry {
     public static void registerWood() {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             ItemStack log;
-            ItemStack plank = new ItemStack(Blocks.PLANKS, 6, type.getMetadata());
+            ItemStack plank = new ItemStack(Blocks.PLANKS, BWConfig.hardcoreLumber ? 4 : 6, type.getMetadata());
             if (type.getMetadata() < 4) {
                 log = new ItemStack(Blocks.LOG, 1, type.getMetadata());
 
@@ -180,12 +189,16 @@ public class BWRegistry {
                 log = new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
             }
             Block block = ((ItemBlock) log.getItem()).getBlock();
-            ItemStack bark = new ItemStack(BWMItems.BARK, 2, type.getMetadata());
+            ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
             ItemStack sawdust = ItemMaterial.getMaterial("sawdust", 2);
+            if (BWConfig.hardcoreLumber) {
+                removeRecipe(plank, log);
+                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
+            }
             SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
             SawInteraction.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
                     new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
-            plank = new ItemStack(Blocks.PLANKS, 5, type.getMetadata());
+            plank = new ItemStack(Blocks.PLANKS, BWConfig.hardcoreLumber ? 3 : 5, type.getMetadata());
             if (type.getMetadata() < 4) {
                 log = new ItemStack(BWMBlocks.DEBARKED_OLD, 1, type.getMetadata());
             } else {
@@ -203,22 +216,30 @@ public class BWRegistry {
                     if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                         for (int i = 0; i < 4; i++) {
                             ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
-                            if (planks != ItemStack.EMPTY) {
+                            if (planks != null) {
                                 ItemStack[] output = new ItemStack[3];
-                                output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-                                output[1] = new ItemStack(BWMItems.BARK, 2, 0);
-                                output[2] = ItemMaterial.getMaterial("sawdust");
+                                output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
+                                output[1] = new ItemStack(BWMItems.BARK, 1, 0);
+                                output[2] = ItemMaterial.getMaterial("sawdust", 2);
+                                if (BWConfig.hardcoreLumber) {
+                                    removeRecipe(output[0], log);
+                                    GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
+                                }
                                 SawInteraction.INSTANCE.addRecipe(block, i, output);
                                 SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                             }
                         }
                     } else {
                         ItemStack planks = getRecipeOutput(log);
-                        if (planks != ItemStack.EMPTY) {
+                        if (planks != null) {
                             ItemStack[] output = new ItemStack[3];
-                            output[0] = new ItemStack(planks.getItem(), 6, planks.getMetadata());
-                            output[1] = new ItemStack(BWMItems.BARK, 2, 0);
-                            output[2] = ItemMaterial.getMaterial("sawdust");
+                            output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
+                            output[1] = new ItemStack(BWMItems.BARK, 1, 0);
+                            output[2] = ItemMaterial.getMaterial("sawdust", 2);
+                            if (BWConfig.hardcoreLumber) {
+                                removeRecipe(output[0], log);
+                                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
+                            }
                             SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), output);
                             SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                         }
@@ -248,7 +269,43 @@ public class BWRegistry {
                 }
             }
         }
-        return ItemStack.EMPTY;
+        return null;
+    }
+
+    private static void removeRecipe(ItemStack output, ItemStack input) {
+        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+        List<IRecipe> toRemove = new ArrayList<>();
+        for (IRecipe recipe : recipes) {
+            if (recipe instanceof ShapedRecipes) {
+                ShapedRecipes shaped = (ShapedRecipes) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.recipeItems[0].isItemEqual(input)) {
+                        if(output.isItemEqual(shaped.getRecipeOutput()))
+                            toRemove.add(recipe);
+                    }
+                }
+            }
+            else if (recipe instanceof ShapelessRecipes) {
+                ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
+                if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
+                    if(output.isItemEqual(shapeless.getRecipeOutput()))
+                        toRemove.add(recipe);
+                }
+            } else if (recipe instanceof ShapelessOreRecipe) {
+                ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
+                if (shapeless.getRecipeSize() == 1) {
+                    if (shapeless.getInput().get(0) instanceof ItemStack) {
+                        if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
+                            if(output.isItemEqual(shapeless.getRecipeOutput()))
+                                toRemove.add(recipe);
+                        }
+                    }
+                }
+            }
+        }
+        for(IRecipe remove : toRemove) {
+            CraftingManager.getInstance().getRecipeList().remove(remove);
+        }
     }
 
     private static void registerPotions() {
@@ -272,7 +329,8 @@ public class BWRegistry {
 
     private static boolean isParticulate(ItemStack stack) {
         Item item = stack.getItem();
-        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames);
+        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames)
+                || item == BWMItems.DIRT_PILE || item == BWMItems.GRAVEL_PILE || item == BWMItems.SAND_PILE;
     }
 
     private static boolean isFlat(ItemStack stack) {

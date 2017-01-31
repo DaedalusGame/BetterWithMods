@@ -1,0 +1,51 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "blocks/dirt",
+      "bottom": "blocks/dirt",
+      "side": "blocks/dirt"
+    }
+  },
+  "variants": {
+    "snowy=false,variant=dirt": {
+      "model": "betterwithmods:dirt_slab"
+    },
+    "snowy=true,variant=dirt": {
+      "model": "betterwithmods:dirt_slab",
+      "textures": {
+        "top": "blocks/snow"
+      }
+    },
+    "snowy=false,variant=grass": {
+      "model": "betterwithmods:grass_slab",
+      "textures": {
+        "bottom": "blocks/dirt",
+        "top": "blocks/grass_top",
+        "side": "blocks/grass_side",
+        "overlay": "blocks/grass_side_overlay"
+      }
+    },
+    "snowy=true,variant=grass": {
+      "model": "betterwithmods:dirt_slab",
+      "textures": {
+        "top": "blocks/snow",
+        "side": "blocks/grass_side_snowed"
+      }
+    },
+    "snowy=false,variant=mycelium": {
+      "model": "betterwithmods:dirt_slab",
+      "textures": {
+        "top": "blocks/mycelium_top",
+        "side": "blocks/mycelium_side"
+      }
+    },
+    "snowy=true,variant=mycelium": {
+      "model": "betterwithmods:dirt_slab",
+      "textures": {
+        "top": "blocks/snow",
+        "side": "blocks/mycelium_side"
+      }
+    }
+  }
+}

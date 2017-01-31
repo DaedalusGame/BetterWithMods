@@ -7,11 +7,14 @@ import betterwithmods.blocks.tile.gen.TileEntityCreativeGen;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.items.ItemSimpleSlab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,6 +75,8 @@ public final class BWMBlocks {
     public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
     public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
     public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
+    public static final Block STUMP = new BlockStump().setRegistryName("stump");
+    public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
 
     private BWMBlocks() {
     }
@@ -128,30 +133,47 @@ public final class BWMBlocks {
         registerBlock(STONE_SIDING, new ItemBlockMini(STONE_SIDING));
         registerBlock(STONE_MOULDING, new ItemBlockMini(STONE_MOULDING));
         registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
+        registerBlock(STUMP, new ItemBlockMeta(STUMP));
+        registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
-        GameRegistry.registerTileEntity(TileEntityPulley.class, "bwm.pulley");
-        GameRegistry.registerTileEntity(TileEntityFilteredHopper.class, "bwm.hopper");
-        GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
-        GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
-        GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
-        GameRegistry.registerTileEntity(TileEntitySteelAnvil.class, "bwm.steelAnvil");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityMill.class, "bwm_millstone", "millstone", "bwm.millstone");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityPulley.class, "bwm_pulley", "pulley", "bwm.pulley");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityFilteredHopper.class, "bwm_hopper", "hopper", "bwm.hopper");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCauldron.class, "bwm_cauldron", "cauldron", "bwm.cauldron");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCrucible.class, "bwm_crucible", "crucible", "bwm.crucible");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityTurntable.class, "bwm_turntable", "turntable", "bwm.turntable");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntitySteelAnvil.class, "bwm_steel_anvil", "steel_anvil", "bwm.steelAnvil");
 
-        GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityVase.class, "bwm_vase", "vase", "bwm.vase");
 
-        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
-        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillVertical.class, "bwm_vertical_windmill", "vertical_windmill", "bwm.vertWindmill");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillHorizontal.class, "bwm_horizontal_windmill", "horizontal_windmill", "bwm.horizWindmill");
 
-        GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
-        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
-        GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
-        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWaterwheel.class, "bwm_waterwheel", "waterwheel", "bwm.waterwheel");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityBlockDispenser.class, "bwm_block_dispenser", "block_dispenser", "bwm.block_dispenser");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCreativeGen.class, "bwm_creative_generator", "creative_generator", "creativeGenerator");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "bwm_multi_type", "multi_type", "bwm.multiType");
 
-        GameRegistry.registerTileEntity(TileEntityGearbox.class, "bwm.gearbox");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "bwm_gearbox", "gearbox", "bwm.gearbox");
+    }
+
+    /**
+     * Substitute vanilla blocks with our custom instances.
+     * Should be done at the earliest point in preInit. The earlier, the better.
+     *
+     * @throws ExistingSubstitutionException
+     */
+    public static void substituteBlocks() throws ExistingSubstitutionException {
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:grass", GameRegistry.Type.BLOCK,
+                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:mycelium", GameRegistry.Type.BLOCK,
+                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
     }
 
     /**
@@ -233,6 +255,8 @@ public final class BWMBlocks {
         setInventoryModel(STONE_SIDING);
         setInventoryModel(STONE_MOULDING);
         setInventoryModel(STONE_CORNER);
+        setInventoryModel(STUMP);
+        setInventoryModel(DIRT_SLAB);
     }
 
     @SideOnly(Side.CLIENT)

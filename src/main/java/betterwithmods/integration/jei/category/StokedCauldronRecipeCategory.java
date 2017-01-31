@@ -36,7 +36,7 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft) {
+    public void drawExtras(@Nonnull Minecraft minecraft) {
         flame.draw(minecraft, 80, 19);
     }
 
@@ -55,7 +55,7 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
         }
 
         List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-        List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+        List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
         stacks.set(outputSlots, outputs.get(0));
         if (outputs.size() > 1)

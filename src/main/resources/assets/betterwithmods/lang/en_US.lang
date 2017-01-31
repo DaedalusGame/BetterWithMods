@@ -1,4 +1,4 @@
-tile.bwm:stoked_flame.name=Stoked Fire
+tile.bwm:stokedFire.name=Stoked Fire
 tile.bwm:hand_crank.name=Hand Crank
 tile.bwm:axle.name=Axle
 tile.bwm:gearbox.name=Gearbox
@@ -194,6 +194,15 @@ tile.bwm:advanced_gearbox.name=Advanced Gearbox
 tile.bwm:raw_pastry.0.name=Cake Batter
 tile.bwm:raw_pastry.1.name=Oven Ready Pumpkin Pie
 tile.bwm:raw_pastry.2.name=Cookie Dough
+tile.bwm:stump.0.name=Oak Stump
+tile.bwm:stump.1.name=Spruce Stump
+tile.bwm:stump.2.name=Birch Stump
+tile.bwm:stump.3.name=Jungle Stump
+tile.bwm:stump.4.name=Acacia Stump
+tile.bwm:stump.5.name=Dark Oak Stump
+tile.bwm:dirt_slab.0.name=Dirt Slab
+tile.bwm:dirt_slab.1.name=Grass Slab
+tile.bwm:dirt_slab.2.name=Mycelium Slab
 
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
@@ -304,13 +313,19 @@ item.bwm:breeding_harness.name=Breeding Harness
 
 item.bwm:arcane_scroll.name=Arcane Scroll
 
+item.bwm:stump_remover.name=Stump Remover
+
+item.bwm:gravel_pile.name=Pile of Gravel
+item.bwm:dirt_pile.name=Pile of Dirt
+item.bwm:sand_pile.name=Pile of Sand
+
 enchantment.level.-1=
 lore.bwm:dynamite=Dwarven Fishing Pole
 
 material.hellfire=Hellfire
 material.hellfire.ability=Molten
-material.soulforged=Soulforged Steel
-material.soulforged.ability=Soul-Sucking
+material.soulforgedsteel.name=Soulforged Steel
+material.soulforgedsteel.ability=Soul-Sucking
 fluid.molten.hellfire=Molten Hellfire
 fluid.molten.soulforge=Molten Soulforged Steel
 
@@ -322,26 +337,23 @@ inv.cauldron.name=Cauldron
 inv.cauldron.stoked.name=Stoked Cauldron
 inv.crucible.name=Crucible
 inv.crucible.stoked.name=Stoked Crucible
-inv.filteredhopper.name=Filtered Hopper
+inv.filtered_hopper.name=Filtered Hopper
 inv.mill.name=Mill Stone
 inv.bwm.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
-inv.steelanvil.name=Steel Anvil
+inv.steel_anvil.name=Steel Anvil
 
 inv.hopper.name=Hopper Recipes
-inv.hopper.soulurn.name=Hopper Soul Urn Recipes
-
-inv.hopper.name=Hopper Recipes
-inv.hopper.soulurn.name=Hopper Soul Urn Recipes
+inv.hopper.soul_urn.name=Hopper Soul Urn Recipes
 
 itemGroup.bwm:bwTab=Better With Mods
 
 fluid.betterwithmods:soulforged_steel.name=Molten Soulforged Steel
 fluid.betterwithmods:hellfire.name=Molten Hellfire
-material.soulforgedsteel.name=Soulforged Steel
+material.soulforged_steel.name=Soulforged Steel
 material.hellfire.name=Hellfire
 modifier.mending.name=Mending
 modifier.mending.desc=§oKillsteal!§r\nAbsorbs experience to repair the tool.
@@ -353,7 +365,7 @@ subtitles.bwm.wood.chime=Wood chimes
 subtitles.bwm.metal.chime=Metal chimes
 
 death.attack.saw=%s forgot the lessons of wood shop safety
-death.attack.choppingBlock=%s lost their head
+death.attack.chopping_block=%s lost their head
 death.blasting_oil=%s is having a blast
 
 bwm.message.immersive.0=Only works to bridge mechanical power

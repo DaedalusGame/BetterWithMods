@@ -57,7 +57,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
         guiItemStacks.init(1, false, 57, 9);
         guiItemStacks.init(3, false, 32, 27);
         guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
-        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class));
+        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class).get(0));
         guiItemStacks.set(3, new ItemStack(BWMBlocks.SAW));
     }
 }

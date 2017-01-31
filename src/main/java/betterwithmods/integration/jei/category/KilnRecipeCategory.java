@@ -57,6 +57,6 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
         guiItemStacks.init(0, true, 20, 31);
         guiItemStacks.init(1, false, 94, 31);
         guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
-        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class));
+        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class).get(0));
     }
 }

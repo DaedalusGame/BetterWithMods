@@ -7,6 +7,7 @@ import betterwithmods.blocks.tile.gen.TileEntityCreativeGen;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.items.ItemHempSeed;
 import betterwithmods.items.ItemSimpleSlab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -100,7 +101,7 @@ public final class BWMBlocks {
         registerBlock(HIBACHI);
         registerBlock(BELLOWS);
         registerBlock(KILN, null);
-        registerBlock(HEMP);
+        registerBlock(HEMP, new ItemHempSeed(HEMP));
         registerBlock(DETECTOR);
         registerBlock(LENS);
         registerBlock(LIGHT_SOURCE, null);

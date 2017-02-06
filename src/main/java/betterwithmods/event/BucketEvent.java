@@ -4,6 +4,7 @@ import betterwithmods.config.BWConfig;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -99,30 +100,42 @@ public class BucketEvent {
                         Item item = equip.getItem();
                         if (isFluidContainer(equip) && item.getItemUseAction(equip) == EnumAction.NONE) {
                             if (getCapacity(equip) == Fluid.BUCKET_VOLUME) {
-                                evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
-                                for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-                                    BlockPos p2 = pos.offset(facing);
-                                    if (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2))
-                                        evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
-                                }
-                                if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
-                                    if (equip.getCount() == 1) {
-                                        EnumHand hand = evt.getHand();
-                                        evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : ItemStack.EMPTY);
-                                    } else if (equip.getCount() > 1) {
-                                        equip.shrink(1);
-                                        if (item.hasContainerItem(equip))
-                                            evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());
-                                        evt.setUseItem(Event.Result.DENY);
+                                if (isWater(evt.getWorld().getBlockState(pos))) {
+                                    IBlockState state = evt.getWorld().getBlockState(pos);
+                                    if (state.getBlock().getMetaFromState(state) > 0) {
+                                        placeContainerFluid(evt, pos, equip);
                                     }
                                 }
-                                evt.setCanceled(true);
+                                else
+                                    placeContainerFluid(evt, pos, equip);
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private void placeContainerFluid (PlayerInteractEvent.RightClickBlock evt, BlockPos pos, ItemStack equip) {
+        Item item = equip.getItem();
+        evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            BlockPos p2 = pos.offset(facing);
+            if (!isWater(evt.getWorld().getBlockState(p2)) && (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2)))
+                evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+        }
+        if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
+            if (equip.getCount() == 1) {
+                EnumHand hand = evt.getHand();
+                evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : ItemStack.EMPTY);
+            } else if (equip.getCount() > 1) {
+                equip.shrink(1);
+                if (item.hasContainerItem(equip))
+                    evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());
+                evt.setUseItem(Event.Result.DENY);
+            }
+        }
+        evt.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -149,29 +162,43 @@ public class BucketEvent {
                 if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), evt.getWorld().getBlockState(evt.getPos()), evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F) && equip != ItemStack.EMPTY && equip.getItem() == Items.WATER_BUCKET) {
                     if (evt.getWorld().getBlockState(pos).getBlock().isAir(evt.getWorld().getBlockState(pos), evt.getWorld(), pos) || evt.getWorld().getBlockState(pos).getBlock().isReplaceable(evt.getWorld(), pos)) {
                         ItemBucket bucket = (ItemBucket) Items.WATER_BUCKET;
-                        if (bucket.tryPlaceContainedLiquid(evt.getEntityPlayer(), evt.getWorld(), pos)) {
-                            evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
-                            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-                                BlockPos p2 = pos.offset(facing);
-                                if (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2))
-                                    evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+                        if (isWater(evt.getWorld().getBlockState(pos))) {
+                            IBlockState state = evt.getWorld().getBlockState(pos);
+                            if (state.getBlock().getMetaFromState(state) > 0) {
+                                placeSources(evt, pos, equip);
                             }
-                            if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
-                                if (equip.getCount() == 1) {
-                                    EnumHand hand = evt.getHand();
-                                    evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
-                                } else if (equip.getCount() > 1) {
-                                    equip.shrink(1);
-                                    evt.getEntityPlayer().inventory.addItemStackToInventory(new ItemStack(Items.BUCKET));
-                                    evt.setUseItem(Event.Result.DENY);
-                                }
-                            }
-                            evt.setCanceled(true);
+                        }
+                        else if (bucket.tryPlaceContainedLiquid(evt.getEntityPlayer(), evt.getWorld(), pos)) {
+                            placeSources(evt, pos, equip);
                         }
                     }
                 }
             }
         }
+    }
+
+    private void placeSources (PlayerInteractEvent.RightClickBlock evt, BlockPos pos, ItemStack equip) {
+        evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            BlockPos p2 = pos.offset(facing);
+            if (!isWater(evt.getWorld().getBlockState(p2)) && (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2)))
+                evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+        }
+        if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
+            if (equip.getCount() == 1) {
+                EnumHand hand = evt.getHand();
+                evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BUCKET));
+            } else if (equip.getCount() > 1) {
+                equip.shrink(1);
+                evt.getEntityPlayer().inventory.addItemStackToInventory(new ItemStack(Items.BUCKET));
+                evt.setUseItem(Event.Result.DENY);
+            }
+        }
+        evt.setCanceled(true);
+    }
+
+    private boolean isWater (IBlockState state) {
+        return state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER;
     }
 
     @SubscribeEvent

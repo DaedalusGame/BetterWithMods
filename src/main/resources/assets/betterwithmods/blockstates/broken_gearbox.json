@@ -1,0 +1,116 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "input": "betterwithmods:blocks/gearbox_input_broken_0",
+      "output": "betterwithmods:blocks/gearbox_output_broken_0"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block",
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "up": "#input"
+        }
+      }
+    ],
+    "facing": {
+      "down": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "down": "#input"
+        }
+      },
+      "up": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "up": "#input"
+        }
+      },
+      "north": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "north": "#input"
+        }
+      },
+      "south": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "south": "#input"
+        }
+      },
+      "west": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "west": "#input"
+        }
+      },
+      "east": {
+        "model": "betterwithmods:gearbox",
+        "textures": {
+          "east": "#input"
+        }
+      }
+    },
+    "repair": {
+      "0": {},
+      "1": {"textures": {
+        "input": "betterwithmods:blocks/gearbox_input_broken_1",
+        "output": "betterwithmods:blocks/gearbox_output_broken_1"
+      }}
+    },
+    "up": {
+      "false": {},
+      "true": {
+        "textures": {
+          "up": "#output"
+        }
+      }
+    },
+    "down": {
+      "false": {},
+      "true": {
+        "textures": {
+          "down": "#output"
+        }
+      }
+    },
+    "north": {
+      "false": {},
+      "true": {
+        "textures": {
+          "north": "#output"
+        }
+      }
+    },
+    "south": {
+      "false": {},
+      "true": {
+        "textures": {
+          "south": "#output"
+        }
+      }
+    },
+    "west": {
+      "false": {},
+      "true": {
+        "textures": {
+          "west": "#output"
+        }
+      }
+    },
+    "east": {
+      "false": {},
+      "true": {
+        "textures": {
+          "east": "#output"
+        }
+      }
+    }
+  }
+}

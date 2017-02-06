@@ -56,7 +56,7 @@ public class BlockSteelAnvil extends BlockContainer {
         IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
         if (facing.ordinal() < 2)
             facing = DirUtils.convertEntityOrientationToFlatFacing(placer, facing);
-        return state.withProperty(DirUtils.HORIZONTAL, facing);
+        return state.withProperty(DirUtils.HORIZONTAL, facing.rotateY());
     }
 
     @Override

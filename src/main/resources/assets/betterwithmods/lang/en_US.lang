@@ -204,6 +204,8 @@ tile.bwm:dirt_slab.0.name=Dirt Slab
 tile.bwm:dirt_slab.1.name=Grass Slab
 tile.bwm:dirt_slab.2.name=Mycelium Slab
 
+tile.bwm:broken_gearbox.name=Broken Gearbox
+
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
 item.bwm:material.hemp.name=Hemp

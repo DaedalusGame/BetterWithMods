@@ -190,7 +190,7 @@ public class BWRegistry {
             }
             Block block = ((ItemBlock) log.getItem()).getBlock();
             ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
-            ItemStack sawdust = ItemMaterial.getMaterial("sawdust", 2);
+            ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
             if (BWConfig.hardcoreLumber) {
                 removeRecipe(plank, log);
                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
@@ -220,7 +220,7 @@ public class BWRegistry {
                                 ItemStack[] output = new ItemStack[3];
                                 output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
                                 output[1] = new ItemStack(BWMItems.BARK, 1, 0);
-                                output[2] = ItemMaterial.getMaterial("sawdust", 2);
+                                output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
                                 if (BWConfig.hardcoreLumber) {
                                     removeRecipe(output[0], log);
                                     GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
@@ -235,7 +235,7 @@ public class BWRegistry {
                             ItemStack[] output = new ItemStack[3];
                             output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
                             output[1] = new ItemStack(BWMItems.BARK, 1, 0);
-                            output[2] = ItemMaterial.getMaterial("sawdust", 2);
+                            output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
                             if (BWConfig.hardcoreLumber) {
                                 removeRecipe(output[0], log);
                                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));

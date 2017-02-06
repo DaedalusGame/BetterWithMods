@@ -33,7 +33,11 @@ public class HardcoreRedstoneEvent {
                 if (!state.getMaterial().equals(Material.IRON))
                     continue;
             }
-            world.updateObservingBlocksAt(pos.offset(facing), event.getState().getBlock());
+            world.neighborChanged(pos.offset(facing), event.getState().getBlock(), pos);
+            for (EnumFacing f1 : EnumFacing.VALUES) {
+                if (f1 != facing.getOpposite())
+                    world.neighborChanged(pos.offset(facing).offset(f1), event.getState().getBlock(), pos.offset(facing));
+            }
         }
     }
 }

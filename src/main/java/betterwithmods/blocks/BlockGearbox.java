@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
@@ -199,7 +200,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     @Override
     public void overpower(World world, BlockPos pos) {
         if (isGearboxOn(world, pos))
-            breakGearbox(world, pos);
+            breakGearbox(world, pos, world.getBlockState(pos));
     }
 
     public boolean isGearboxOn(IBlockAccess world, BlockPos pos) {
@@ -226,17 +227,9 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         }
     }
 
-    public void breakGearbox(World world, BlockPos pos) {
-        if (BWConfig.dropsGearbox)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/gearbox"));
-        /*
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 0));
-		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.GOLD_NUGGET, 2, 0));
-		*/
+    public void breakGearbox(World world, BlockPos pos, IBlockState state) {
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
-        world.setBlockToAir(pos);
+        world.setBlockState(pos, BWMBlocks.BROKEN_GEARBOX.getDefaultState().withProperty(DirUtils.FACING, state.getValue(DirUtils.FACING)));
     }
 
     @Override

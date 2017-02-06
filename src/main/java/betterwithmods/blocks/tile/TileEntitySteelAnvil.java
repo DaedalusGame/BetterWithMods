@@ -141,7 +141,7 @@ public class TileEntitySteelAnvil extends TileEntity implements IInventory, ISid
 
     @Override
     public String getName() {
-        return "inv.steelanvil.name";
+        return "inv.steel_anvil.name";
     }
 
     @Override

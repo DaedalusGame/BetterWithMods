@@ -206,17 +206,26 @@ public class BucketEvent {
         World world = e.player.getEntityWorld();
         if (BWConfig.hardcoreLavaBuckets) {
             if (world.getTotalWorldTime() % 10 == 0) {
-                if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE)) {
+                if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE) && !e.player.capabilities.isCreativeMode) {
                     IItemHandler inv = e.player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                     BlockPos pos = e.player.getPosition();
-                    for (int i = 0; i < inv.getSlots(); i++) {
-                        ItemStack stack = inv.getStackInSlot(i);
-                        if (world.rand.nextInt(50) == 0) {
-                            if (stack != ItemStack.EMPTY && stack.isItemEqual(new ItemStack(Items.LAVA_BUCKET))) {
-                                IFluidHandler bucket = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                                bucket.drain(1000, true);
-                                world.playSound(e.player, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, 1, 1);
-                                placeLavaBucket(world, pos.offset(e.player.getHorizontalFacing()), 0);
+                    if (inv != null) {
+                        for (int i = 0; i < inv.getSlots(); i++) {
+                            ItemStack stack = inv.getStackInSlot(i);
+                            if (world.rand.nextInt(50) == 0) {
+                                if (stack != ItemStack.EMPTY && stack.isItemEqual(new ItemStack(Items.LAVA_BUCKET))) {
+                                    IFluidHandler bucket = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+                                    if (bucket != null) {
+                                        bucket.drain(1000, true);
+                                        world.playSound(e.player, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, 1, 1);
+                                        placeLavaBucket(world, pos.offset(e.player.getHorizontalFacing()), 0);
+                                    } else {
+                                        inv.extractItem(i, 1, false);
+                                        inv.insertItem(i, new ItemStack(Items.BUCKET), false);
+                                        world.playSound(e.player, pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, 1, 1);
+                                        placeLavaBucket(world, pos.offset(e.player.getHorizontalFacing()), 0);
+                                    }
+                                }
                             }
                         }
                     }

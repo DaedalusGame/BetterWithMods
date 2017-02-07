@@ -5,6 +5,7 @@ import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.world.BWMapGenScatteredFeature;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
@@ -40,7 +41,7 @@ public class BWMWorldGenEvent {
         if (!BWConfig.hardcoreStumping)
             return;
         IBlockState state = event.getWorld().getBlockState(event.getPos());
-        if (!(state.getBlock() instanceof BlockSapling)) return;
+        if (state.getBlock() != Blocks.SAPLING)/*(!(state.getBlock() instanceof BlockSapling))*/ return;
         event.setResult(Event.Result.DENY);
         HardcoreFunctions.generateTreeWithStump(event.getWorld(), event.getPos(), state, event.getRand());
     }

@@ -37,6 +37,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
@@ -253,6 +254,25 @@ public class BWRegistry {
     private static ItemStack getRecipeOutput(ItemStack input) {
         List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
         for (IRecipe recipe : recipes) {
+            if (recipe instanceof ShapedRecipes) {
+                ShapedRecipes shaped = (ShapedRecipes) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.recipeItems[0].isItemEqual(input)) {
+                        return shaped.getRecipeOutput();
+                    }
+                }
+            }
+            else if (recipe instanceof ShapedOreRecipe) {
+                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.getInput()[0] instanceof ItemStack) {
+                        ItemStack stack = (ItemStack)shaped.getInput()[0];
+                        if (stack.isItemEqual(input)) {
+                            return shaped.getRecipeOutput();
+                        }
+                    }
+                }
+            }
             if (recipe instanceof ShapelessRecipes) {
                 ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
                 if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
@@ -282,6 +302,18 @@ public class BWRegistry {
                     if (shaped.recipeItems[0].isItemEqual(input)) {
                         if(output.isItemEqual(shaped.getRecipeOutput()))
                             toRemove.add(recipe);
+                    }
+                }
+            }
+            else if (recipe instanceof ShapedOreRecipe) {
+                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.getInput()[0] instanceof ItemStack) {
+                        ItemStack stack = (ItemStack)shaped.getInput()[0];
+                        if (stack.isItemEqual(input)) {
+                            if (output.isItemEqual(shaped.getRecipeOutput()))
+                                toRemove.add(recipe);
+                        }
                     }
                 }
             }

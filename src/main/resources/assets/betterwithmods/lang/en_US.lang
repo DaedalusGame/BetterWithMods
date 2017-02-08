@@ -360,6 +360,9 @@ material.hellfire.name=Hellfire
 modifier.mending.name=Mending
 modifier.mending.desc=§oKillsteal!§r\nAbsorbs experience to repair the tool.
 
+entity.betterwithmods.entity_sheared_creeper.name=Sheared Creeper
+tile.bwm:single_machine=Mechanical Machine
+
 subtitles.bwm.wood.creak=Wood creaks
 subtitles.bwm.stone.grind=Stones grinding
 subtitles.bwm.wood.bellow=Bellow blowing

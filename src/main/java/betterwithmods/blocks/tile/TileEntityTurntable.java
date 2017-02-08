@@ -335,8 +335,13 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                 block.rotateAroundYAxis(getWorld(), pos, reverse);
         } else {
             IBlockState newState = state.withRotation(rot);
-            if (!(target instanceof BlockRailBase) && state != newState)
-                getWorld().setBlockState(pos, newState);
+            if (!(target instanceof BlockRailBase) && !(target instanceof BlockPistonExtension) && !(target instanceof BlockPistonMoving) && state != newState) {
+                if (target instanceof BlockPistonBase) {
+                    if (!state.getValue(BlockPistonBase.EXTENDED))
+                        getWorld().setBlockState(pos, newState);
+                } else
+                    getWorld().setBlockState(pos, newState);
+            }
             else if (target instanceof BlockRailBase) {
                 BlockRailBase rail = (BlockRailBase) target;
                 BlockRailBase.EnumRailDirection dir = state.getValue(rail.getShapeProperty());

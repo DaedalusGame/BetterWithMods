@@ -36,7 +36,7 @@ public class HopperInteractions {
         recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
+                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 SimpleItemStackHandler inventory = tile.inventory;
                 ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
@@ -69,8 +69,10 @@ public class HopperInteractions {
     public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
         for (HopperRecipe recipe : recipes) {
             if (recipe.isRecipe(filterType, input)) {
-                recipe.craft(input, world, pos);
-                return true;
+                if (recipe.canCraft(world, pos)) {
+                    recipe.craft(input, world, pos);
+                    return true;
+                }
             }
         }
         return false;
@@ -94,6 +96,11 @@ public class HopperInteractions {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
             }
             super.onCraft(world, pos, item);
+        }
+
+        @Override
+        public boolean canCraft(World world, BlockPos pos) {
+            return true;
         }
     }
 
@@ -148,6 +155,21 @@ public class HopperInteractions {
 
         public List<ItemStack> getSecondaryOutput() {
             return secondaryOutput;
+        }
+
+        public boolean canCraft(World world, BlockPos pos) {
+            TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            SimpleItemStackHandler inventory = tile.inventory;
+            boolean flag = true;
+            if (!secondaryOutput.isEmpty()) {
+                for (ItemStack stack : secondaryOutput) {
+                    if (!InvUtils.checkItemStackInsert(inventory, stack)) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            return flag;
         }
     }
 }

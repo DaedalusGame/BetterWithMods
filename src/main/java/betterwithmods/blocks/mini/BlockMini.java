@@ -38,8 +38,10 @@ public abstract class BlockMini extends BWMBlock {
         super(material);
         //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
         this.setSoundType(material == MINI ? SoundType.WOOD : SoundType.STONE);
-        if (material == Material.CIRCUITS)
+        if (material == MINI)
             this.setHarvestLevel("axe", 0);
+        else
+            this.setHarvestLevel("pickaxe", 0);
     }
 
     public static PropertyInteger createOrientation() {

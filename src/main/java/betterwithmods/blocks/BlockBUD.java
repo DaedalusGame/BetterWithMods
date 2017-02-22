@@ -36,6 +36,7 @@ public class BlockBUD extends BWMBlock {
         setHardness(3.5F);
         setSoundType(SoundType.STONE);
         setDefaultState(getDefaultState().withProperty(DirUtils.FACING, UP));
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     public static void addBlacklistBlock(Block block) {

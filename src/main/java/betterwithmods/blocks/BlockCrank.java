@@ -39,6 +39,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
         this.setSoundType(SoundType.WOOD);
         this.setTickRandomly(true);
         this.setDefaultState(getDefaultState().withProperty(STAGE, 0));
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

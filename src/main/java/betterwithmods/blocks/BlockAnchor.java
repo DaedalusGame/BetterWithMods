@@ -38,6 +38,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
         super(Material.ROCK);
         setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(2.0F);
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

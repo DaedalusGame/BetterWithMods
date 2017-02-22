@@ -44,6 +44,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

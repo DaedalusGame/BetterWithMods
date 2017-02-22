@@ -31,6 +31,7 @@ public class BlockLens extends BWMBlock {
         this.setHardness(3.5F);
         this.setTickRandomly(true);
         this.setDefaultState(this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.NORTH));
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

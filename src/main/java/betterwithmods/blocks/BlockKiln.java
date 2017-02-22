@@ -30,6 +30,7 @@ public class BlockKiln extends BWMBlock {
         this.setTickRandomly(true);
         this.setHardness(2.0F);
         this.setResistance(10.0F);
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

@@ -329,9 +329,9 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         int harvestMeta = block.damageDropped(world.getBlockState(pos2));
         if (SawInteraction.INSTANCE.contains(block, harvestMeta)) {
             List<ItemStack> products = SawInteraction.INSTANCE.getProducts(block, harvestMeta);
+            world.setBlockToAir(pos2);
             if (!products.isEmpty())
                 InvUtils.ejectStackWithOffset(world, pos2, products);
-            world.setBlockToAir(pos2);
             world.playSound(null, pos2, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
         }
     }

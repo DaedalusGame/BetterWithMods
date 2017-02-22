@@ -36,6 +36,7 @@ public class BlockDetector extends BWMBlock {
         this.setSoundType(SoundType.STONE);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
         this.setTickRandomly(true);
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

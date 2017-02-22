@@ -41,6 +41,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, DirtSlabType.DIRT).withProperty(SNOWY, false));
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
         this.setTickRandomly(true);
+        this.setHarvestLevel("shovel", 0);
     }
 
     @Override

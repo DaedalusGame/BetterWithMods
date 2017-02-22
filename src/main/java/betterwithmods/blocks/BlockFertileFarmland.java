@@ -18,6 +18,7 @@ public class BlockFertileFarmland extends BlockFarmland {
         super();
         this.setHardness(0.6F);
         this.setSoundType(SoundType.GROUND);
+        this.setHarvestLevel("shovel", 0);
     }
 
     @Override

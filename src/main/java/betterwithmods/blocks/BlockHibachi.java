@@ -25,6 +25,7 @@ public class BlockHibachi extends BWMBlock {
         this.setTickRandomly(true);
         this.setHardness(3.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(LIT, false));
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override

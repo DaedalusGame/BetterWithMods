@@ -43,7 +43,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
             boolean inRecipe = false;
             ItemStack slot = inventory.getStackInSlot(x);
 
-            if (slot != null) {
+            if (slot != ItemStack.EMPTY) {
                 if (isAxe(slot)) {
                     if(!hasAxe) {
                         hasAxe = true;
@@ -82,25 +82,23 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        ItemStack[] ret = new ItemStack[inv.getSizeInventory()];
-        NonNullList<ItemStack> stacks = NonNullList.create();
+        NonNullList<ItemStack> stacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
-        for (int i = 0; i < ret.length; i++)
+        for (int i = 0; i < stacks.size(); i++)
         {
             ItemStack stack = inv.getStackInSlot(i);
             if(stack != ItemStack.EMPTY && isAxe(stack)) {
                 ItemStack copy = stack.copy();
                 if(copy.getItem().getHarvestLevel(copy, "axe", null, null) > 1) {
-                    ret[i] = copy;
+                    stacks.set(i, copy.copy());
                 }
                 else if (!copy.attemptDamageItem(1, new Random())) {
-                    ret[i] = copy;
+                    stacks.set(i, copy.copy());
                 }
                 else if (copy.getItem().getRegistryName().getResourceDomain().equals("tconstruct")) {
-                    ret[i] = copy;
+                    stacks.set(i, copy.copy());
                 }
             }
-            stacks.add(ret[i].copy());
         }
 
         return stacks;
@@ -114,9 +112,9 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         if(isMatch(event.craftMatrix))
         {
             if(!event.player.getEntityWorld().isRemote) {
-                if (sawdust != null)
+                if (sawdust != ItemStack.EMPTY)
                     event.player.entityDropItem(sawdust, 0);
-                if (bark != null)
+                if (bark != ItemStack.EMPTY)
                     event.player.entityDropItem(bark, 0);
             }
             else

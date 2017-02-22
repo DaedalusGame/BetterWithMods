@@ -104,7 +104,7 @@ public final class ItemExt {
         buoyancy.put(BWMBlocks.BELLOWS, 1.0F);
         buoyancy.put(BWMBlocks.VASE, 1.0F);
         buoyancy.put(Items.APPLE, 1.0F);
-        buoyancy.put(Items.BOW, 1.0F);
+        buoyancy.put(Items.BOW, OreDictionary.WILDCARD_VALUE, 1.0F);
         buoyancy.put(Items.ARROW, 1.0F);
         buoyancy.put(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE, 1.0F);
         buoyancy.put(Items.WOODEN_SHOVEL, OreDictionary.WILDCARD_VALUE, 1.0F);

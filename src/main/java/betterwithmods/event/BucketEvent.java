@@ -137,6 +137,71 @@ public class BucketEvent {
     }
 
     @SubscribeEvent
+    public void fluidContainerUse(PlayerInteractEvent.RightClickBlock evt) {
+        if (!BWConfig.hardcoreFluidContainer)
+            return;
+
+        ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
+        if (toCheck == ItemStack.EMPTY || toCheck.getItem() == Items.WATER_BUCKET || !isNonVanillaBucket(toCheck))
+            return;
+
+        FluidStack fluid = FluidUtil.getFluidContained(toCheck);
+
+        if (fluid == null || fluid.getFluid() == null || fluid.getFluid() != FluidRegistry.WATER)
+            return;
+
+        if (!evt.getWorld().isRemote) {
+            evt.setUseBlock(Event.Result.DENY);
+            IBlockState state = evt.getWorld().getBlockState(evt.getPos());
+            Block block = state.getBlock();
+
+            boolean replaceable = block.isReplaceable(evt.getWorld(), evt.getPos());
+            BlockPos pos = replaceable ? evt.getPos() : evt.getPos().offset(evt.getFace());
+            state = evt.getWorld().getBlockState(pos);
+            if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
+                if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), state, evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F)) {
+                    if (state.getBlock().isAir(state, evt.getWorld(), pos) || state.getBlock().isReplaceable(evt.getWorld(), pos)) {
+                        Item item = toCheck.getItem();
+                        if (item.getItemUseAction(toCheck) == EnumAction.NONE) {
+                            if (isWater(state)) {
+                                if (state.getBlock().getMetaFromState(state) > 0) {
+                                    placeContainerFluid(evt, pos, toCheck);
+                                }
+                            }
+                            else {
+                                placeContainerFluid(evt, pos, toCheck);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void placeContainerFluid(PlayerInteractEvent.RightClickBlock evt, BlockPos pos, ItemStack equip) {
+        if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
+            Item item = equip.getItem();
+            evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
+            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                BlockPos p2 = pos.offset(facing);
+                if (!isWater(evt.getWorld().getBlockState(p2)) && (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2)))
+                    evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+            }
+            if (equip.getCount() == 1) {
+                EnumHand hand = evt.getHand();
+                evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : null);
+            }
+            else if (equip.getCount() > 1) {
+                equip.shrink(1);
+                if (item.hasContainerItem(equip))
+                    evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());
+                evt.setUseItem(Event.Result.DENY);
+            }
+            evt.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
         if (BWConfig.hardcoreLavaBuckets) {

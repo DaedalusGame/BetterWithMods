@@ -1,8 +1,8 @@
 package betterwithmods.util;
 
-import betterwithmods.BWCrafting;
+import betterwithmods.common.BWCrafting;
 import betterwithmods.BWMod;
-import betterwithmods.craft.bulk.*;
+import betterwithmods.common.registry.bulk.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

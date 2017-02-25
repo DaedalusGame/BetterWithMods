@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
+import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;

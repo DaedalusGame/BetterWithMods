@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.tile.TileEntityTurntable;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;

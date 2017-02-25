@@ -1,7 +1,7 @@
 package betterwithmods.util;
 
-import betterwithmods.BWMItems;
-import betterwithmods.entity.EntityDynamite;
+import betterwithmods.common.BWMItems;
+import betterwithmods.common.entity.EntityDynamite;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

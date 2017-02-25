@@ -1,6 +1,6 @@
 package betterwithmods.api.block;
 
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWMItems;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 

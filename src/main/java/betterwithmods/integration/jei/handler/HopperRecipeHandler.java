@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.handler;
 
-import betterwithmods.craft.HopperInteractions;
+import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
 import betterwithmods.integration.jei.wrapper.SoulUrnWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;

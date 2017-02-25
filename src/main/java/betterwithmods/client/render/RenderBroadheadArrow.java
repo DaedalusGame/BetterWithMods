@@ -1,7 +1,7 @@
 package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
-import betterwithmods.entity.EntityBroadheadArrow;
+import betterwithmods.common.entity.EntityBroadheadArrow;
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

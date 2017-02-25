@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.entity.ai.EndermanAgro;
+import betterwithmods.common.entity.ai.EndermanAgro;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityEnderman;

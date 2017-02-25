@@ -1,10 +1,10 @@
 package betterwithmods.event;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
-import betterwithmods.blocks.BlockAesthetic;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.config.BWConfig;
-import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.common.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.state.IBlockState;

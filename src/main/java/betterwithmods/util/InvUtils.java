@@ -1,6 +1,6 @@
 package betterwithmods.util;
 
-import betterwithmods.craft.OreStack;
+import betterwithmods.common.registry.OreStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

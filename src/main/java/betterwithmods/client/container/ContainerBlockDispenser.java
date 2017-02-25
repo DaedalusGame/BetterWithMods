@@ -1,6 +1,6 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;

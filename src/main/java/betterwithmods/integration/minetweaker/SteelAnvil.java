@@ -1,7 +1,7 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
-import betterwithmods.craft.steelanvil.ShapedSteelAnvilRecipe;
+import betterwithmods.common.registry.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.common.registry.steelanvil.ShapedSteelAnvilRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;

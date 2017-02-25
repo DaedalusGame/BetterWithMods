@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
-import betterwithmods.entity.item.EntityItemBuoy;
+import betterwithmods.common.entity.item.EntityItemBuoy;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;

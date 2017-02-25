@@ -1,7 +1,7 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.craft.BlockMetaRecipe;
-import betterwithmods.craft.KilnInteraction;
+import betterwithmods.common.registry.BlockMetaRecipe;
+import betterwithmods.common.registry.KilnInteraction;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;

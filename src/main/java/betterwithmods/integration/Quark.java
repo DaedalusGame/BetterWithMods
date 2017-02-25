@@ -1,6 +1,6 @@
 package betterwithmods.integration;
 
-import betterwithmods.BWMBlocks;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

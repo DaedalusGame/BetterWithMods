@@ -1,6 +1,6 @@
 package betterwithmods.util.player;
 
-import betterwithmods.BWMBlocks;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

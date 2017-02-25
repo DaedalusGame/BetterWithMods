@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.blocks.BlockStump;
+import betterwithmods.common.blocks.BlockStump;
 import betterwithmods.config.BWConfig;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;

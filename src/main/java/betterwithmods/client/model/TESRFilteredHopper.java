@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;

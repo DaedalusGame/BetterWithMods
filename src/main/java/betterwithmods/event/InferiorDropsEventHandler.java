@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;

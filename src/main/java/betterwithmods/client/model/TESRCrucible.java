@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;

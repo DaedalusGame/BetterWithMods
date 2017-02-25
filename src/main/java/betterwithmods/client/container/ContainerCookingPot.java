@@ -1,6 +1,6 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.TileEntityCookingPot;
+import betterwithmods.common.blocks.tile.TileEntityCookingPot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;

@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.items.ItemMaterial;
+import betterwithmods.common.items.ItemMaterial;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;

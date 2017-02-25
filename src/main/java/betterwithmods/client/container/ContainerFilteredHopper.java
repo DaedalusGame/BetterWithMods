@@ -1,8 +1,8 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.BlockBWMNewPane;
-import betterwithmods.blocks.BlockBWMPane;
-import betterwithmods.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.BlockBWMNewPane;
+import betterwithmods.common.blocks.BlockBWMPane;
+import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockTrapDoor;

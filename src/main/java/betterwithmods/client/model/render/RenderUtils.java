@@ -1,6 +1,6 @@
 package betterwithmods.client.model.render;
 
-import betterwithmods.BWMBlocks;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.*;
 import net.minecraft.client.Minecraft;

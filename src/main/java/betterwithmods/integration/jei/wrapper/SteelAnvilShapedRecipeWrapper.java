@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.steelanvil.ShapedSteelAnvilRecipe;
+import betterwithmods.common.registry.steelanvil.ShapedSteelAnvilRecipe;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
@@ -9,7 +9,6 @@ import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

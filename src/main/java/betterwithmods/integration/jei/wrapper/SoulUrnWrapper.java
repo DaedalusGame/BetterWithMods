@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.HopperInteractions;
+import betterwithmods.common.registry.HopperInteractions;
 
 /**
  * Purpose:

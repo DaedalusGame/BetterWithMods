@@ -1,7 +1,7 @@
 package betterwithmods.integration;
 
-import betterwithmods.BWCrafting;
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWCrafting;
+import betterwithmods.common.BWMItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

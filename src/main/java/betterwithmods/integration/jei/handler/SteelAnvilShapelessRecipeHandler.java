@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.handler;
 
-import betterwithmods.craft.steelanvil.ShapelessSteelAnvilRecipe;
+import betterwithmods.common.registry.steelanvil.ShapelessSteelAnvilRecipe;
 import betterwithmods.integration.jei.BWMJEIPlugin;
 import betterwithmods.integration.jei.wrapper.SteelAnvilShapelessRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;

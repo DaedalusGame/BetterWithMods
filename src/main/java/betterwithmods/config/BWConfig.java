@@ -124,7 +124,7 @@ public class BWConfig {
         axeOnLeaves = config.getBoolean("Axes Effective On Leaves", Configuration.CATEGORY_GENERAL, true, "Makes axes quickly break leaves.");
         lensRange = config.getInt("Lens Horizontal Range", Configuration.CATEGORY_GENERAL, 256, 32, 256, "Range that lens light will travel");
         rawEggDrop = config.get(VANILLA_TWEAKS, "Eggs Drop Raw Egg When Thrown", true).getBoolean();
-        hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to craft. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
+        hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to registry. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
         dropsHempSeeds = config.getBoolean("Drop Hemp Seeds", MODPACK_TWEAKS, true, "Tall Grass Drops Hemp Seeds");
         hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets", HARDCORE, true, "Makes lava buckets hot if you don't have a fire resistance potion");
         hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE, true, "Changes to Endermen AI that make them even more menacing");

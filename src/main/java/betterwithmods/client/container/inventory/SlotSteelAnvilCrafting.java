@@ -1,6 +1,6 @@
 package betterwithmods.client.container.inventory;
 
-import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.common.registry.steelanvil.CraftingManagerSteelAnvil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;

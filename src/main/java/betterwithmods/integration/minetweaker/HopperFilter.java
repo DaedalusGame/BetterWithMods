@@ -1,6 +1,6 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.craft.HopperFilters;
+import betterwithmods.common.registry.HopperFilters;
 import com.blamejared.mtlib.utils.BaseMultiModification;
 import com.google.common.collect.Sets;
 import minetweaker.MineTweakerAPI;

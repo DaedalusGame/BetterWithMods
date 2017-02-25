@@ -1,7 +1,7 @@
 package betterwithmods.client.render;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.entity.EntityExtendingRope;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.util.AABBArray;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

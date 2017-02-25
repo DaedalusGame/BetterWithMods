@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
-import betterwithmods.entity.ai.EntityAIFlee;
-import betterwithmods.entity.ai.EntityAISearchFood;
+import betterwithmods.common.entity.ai.EntityAIFlee;
+import betterwithmods.common.entity.ai.EntityAISearchFood;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -31,7 +31,7 @@ public class MobAIEvent {
                 if (BWConfig.hardcoreVillagers) {
                     EntityVillager villager = (EntityVillager) entity;
                     villager.tasks.removeTask(new EntityAIVillagerMate(villager));
-                    villager.tasks.addTask(0, new betterwithmods.entity.ai.EntityAIVillagerMate(villager, 1));
+                    villager.tasks.addTask(0, new betterwithmods.common.entity.ai.EntityAIVillagerMate(villager, 1));
                     villager.tasks.addTask(0, new EntityAITempt(villager, 1d, false, new HashSet<>(OreDictionary.getOres("gemDiamond").stream().map(ItemStack::getItem).collect(Collectors.toList()))));
                 }
             }*/

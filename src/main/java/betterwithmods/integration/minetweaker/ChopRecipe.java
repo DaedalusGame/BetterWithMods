@@ -1,6 +1,6 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.craft.ChoppingRecipe;
+import betterwithmods.common.registry.ChoppingRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import minetweaker.MineTweakerAPI;

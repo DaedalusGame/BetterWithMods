@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.BlockMetaRecipe;
+import betterwithmods.common.registry.BlockMetaRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;

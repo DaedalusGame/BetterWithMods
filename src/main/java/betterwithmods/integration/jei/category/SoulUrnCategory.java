@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.category;
 
-import betterwithmods.BWMBlocks;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.integration.jei.wrapper.SoulUrnWrapper;
 import mezz.jei.api.IGuiHelper;

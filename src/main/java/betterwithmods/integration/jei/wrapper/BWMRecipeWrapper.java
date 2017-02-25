@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.common.registry.bulk.BulkRecipe;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 
 import javax.annotation.Nonnull;

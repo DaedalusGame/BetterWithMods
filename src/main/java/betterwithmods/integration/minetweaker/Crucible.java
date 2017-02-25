@@ -1,8 +1,8 @@
 package betterwithmods.integration.minetweaker;
 
 
-import betterwithmods.craft.bulk.BulkRecipe;
-import betterwithmods.craft.bulk.CraftingManagerCrucible;
+import betterwithmods.common.registry.bulk.BulkRecipe;
+import betterwithmods.common.registry.bulk.CraftingManagerCrucible;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;

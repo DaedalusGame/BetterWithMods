@@ -1,9 +1,9 @@
 package betterwithmods.util.item;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
-import betterwithmods.blocks.BlockMechMachines;
-import betterwithmods.items.ItemMaterial;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.items.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static betterwithmods.items.ItemMaterial.EnumMaterial;
+import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
 
 /**
  * Set of methods dealing with Items and ItemStacks.

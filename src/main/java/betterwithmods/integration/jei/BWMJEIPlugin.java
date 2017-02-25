@@ -1,16 +1,16 @@
 package betterwithmods.integration.jei;
 
-import betterwithmods.BWMBlocks;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.client.container.GuiCauldron;
 import betterwithmods.client.container.GuiCrucible;
 import betterwithmods.client.container.GuiMill;
 import betterwithmods.client.container.GuiSteelAnvil;
-import betterwithmods.craft.HopperInteractions;
-import betterwithmods.craft.KilnInteraction;
-import betterwithmods.craft.SawInteraction;
-import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.craft.bulk.*;
-import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.KilnInteraction;
+import betterwithmods.common.registry.SawInteraction;
+import betterwithmods.common.registry.TurntableInteraction;
+import betterwithmods.common.registry.bulk.*;
+import betterwithmods.common.registry.steelanvil.CraftingManagerSteelAnvil;
 import betterwithmods.integration.jei.category.*;
 import betterwithmods.integration.jei.handler.*;
 import mezz.jei.api.BlankModPlugin;
@@ -21,7 +21,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 
 @mezz.jei.api.JEIPlugin
 public class BWMJEIPlugin extends BlankModPlugin {

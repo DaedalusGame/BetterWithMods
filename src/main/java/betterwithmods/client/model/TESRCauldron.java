@@ -1,7 +1,7 @@
 package betterwithmods.client.model;
 
 import betterwithmods.BWMod;
-import betterwithmods.blocks.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;

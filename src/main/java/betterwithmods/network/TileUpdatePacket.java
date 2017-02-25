@@ -1,6 +1,6 @@
 package betterwithmods.network;
 
-import betterwithmods.blocks.tile.IMechSubtype;
+import betterwithmods.common.blocks.tile.IMechSubtype;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;

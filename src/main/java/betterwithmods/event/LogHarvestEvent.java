@@ -1,11 +1,11 @@
 package betterwithmods.event;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.config.BWConfig;
-import betterwithmods.craft.SawInteraction;
-import betterwithmods.items.tools.ItemKnife;
+import betterwithmods.common.registry.SawInteraction;
+import betterwithmods.common.items.tools.ItemKnife;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
@@ -31,7 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-import static betterwithmods.BWMItems.BARK;
+import static betterwithmods.common.BWMItems.BARK;
 
 public class LogHarvestEvent {
     public static IRecipe findMatchingRecipe(InventoryCrafting inv, World world) {

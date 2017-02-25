@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
-import betterwithmods.entity.EntityFallingGourd;
+import betterwithmods.common.entity.EntityFallingGourd;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockMelon;

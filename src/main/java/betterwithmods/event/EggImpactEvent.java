@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWMItems;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.InvUtils;
 import net.minecraft.entity.passive.EntityChicken;

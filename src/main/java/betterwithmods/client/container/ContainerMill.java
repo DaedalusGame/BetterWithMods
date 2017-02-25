@@ -1,6 +1,6 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.TileEntityMill;
+import betterwithmods.common.blocks.tile.TileEntityMill;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;

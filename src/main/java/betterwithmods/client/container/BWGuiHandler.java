@@ -1,6 +1,12 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.*;
+import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.TileEntityMill;
+import betterwithmods.common.blocks.tile.TileEntityPulley;
+import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

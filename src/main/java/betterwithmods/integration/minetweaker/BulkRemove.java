@@ -1,8 +1,8 @@
 package betterwithmods.integration.minetweaker;
 
 
-import betterwithmods.craft.bulk.BulkRecipe;
-import betterwithmods.craft.bulk.CraftingManagerBulk;
+import betterwithmods.common.registry.bulk.BulkRecipe;
+import betterwithmods.common.registry.bulk.CraftingManagerBulk;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 

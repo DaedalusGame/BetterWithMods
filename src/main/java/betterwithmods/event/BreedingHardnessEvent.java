@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.items.ItemBreedingHarness;
+import betterwithmods.common.items.ItemBreedingHarness;
 import betterwithmods.util.InvUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

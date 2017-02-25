@@ -1,7 +1,7 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.TileEntityInfernalEnchanter;
-import betterwithmods.items.ItemArcaneScroll;
+import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
+import betterwithmods.common.items.ItemArcaneScroll;
 import betterwithmods.util.InvUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

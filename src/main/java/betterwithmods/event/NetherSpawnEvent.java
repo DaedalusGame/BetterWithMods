@@ -1,8 +1,8 @@
 package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
-import betterwithmods.entity.ai.EntityAIFlee;
-import betterwithmods.entity.ai.EntityAISearchFood;
+import betterwithmods.common.entity.ai.EntityAIFlee;
+import betterwithmods.common.entity.ai.EntityAISearchFood;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;

@@ -1,6 +1,6 @@
 package betterwithmods.client.container;
 
-import betterwithmods.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiCrucible extends GuiCookingPot {

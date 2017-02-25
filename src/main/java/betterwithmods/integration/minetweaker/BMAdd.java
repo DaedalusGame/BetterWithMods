@@ -1,7 +1,7 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.craft.BlockMetaHandler;
-import betterwithmods.craft.BlockMetaRecipe;
+import betterwithmods.common.registry.BlockMetaHandler;
+import betterwithmods.common.registry.BlockMetaRecipe;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.google.common.collect.Lists;
 

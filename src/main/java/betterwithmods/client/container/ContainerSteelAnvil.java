@@ -1,10 +1,10 @@
 package betterwithmods.client.container;
 
-import betterwithmods.BWMBlocks;
-import betterwithmods.blocks.tile.TileEntitySteelAnvil;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.client.container.inventory.InventorySteelAnvilCrafting;
 import betterwithmods.client.container.inventory.SlotSteelAnvilCrafting;
-import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.common.registry.steelanvil.CraftingManagerSteelAnvil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;

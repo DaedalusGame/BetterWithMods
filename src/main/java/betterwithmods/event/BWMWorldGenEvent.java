@@ -2,8 +2,7 @@ package betterwithmods.event;
 
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.HardcoreFunctions;
-import betterwithmods.world.BWMapGenScatteredFeature;
-import net.minecraft.block.BlockSapling;
+import betterwithmods.common.world.BWMapGenScatteredFeature;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

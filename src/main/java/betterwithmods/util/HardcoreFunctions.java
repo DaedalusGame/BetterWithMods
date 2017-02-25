@@ -3,7 +3,7 @@ package betterwithmods.util;
 import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.item.ToolsManager;
-import betterwithmods.world.gen.feature.*;
+import betterwithmods.common.world.gen.feature.*;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

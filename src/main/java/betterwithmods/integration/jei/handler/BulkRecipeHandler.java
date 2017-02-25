@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.handler;
 
-import betterwithmods.craft.bulk.BulkRecipe;
+import betterwithmods.common.registry.bulk.BulkRecipe;
 import betterwithmods.integration.jei.BWMJEIPlugin;
 import betterwithmods.integration.jei.wrapper.*;
 import mezz.jei.api.IJeiHelpers;

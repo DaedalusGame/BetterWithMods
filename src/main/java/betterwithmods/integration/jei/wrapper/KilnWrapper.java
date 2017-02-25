@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.craft.BlockMetaRecipe;
+import betterwithmods.common.registry.BlockMetaRecipe;
 
 /**
  * Created by tyler on 9/4/16.

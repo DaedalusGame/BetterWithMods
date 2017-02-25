@@ -1,6 +1,6 @@
 package betterwithmods.client;
 
-import betterwithmods.BWMItems;
+import betterwithmods.common.BWMItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;

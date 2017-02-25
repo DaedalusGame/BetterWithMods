@@ -1,73 +1,38 @@
 package betterwithmods.integration.minetweaker;
 
+
 import betterwithmods.craft.bulk.BulkRecipe;
 import betterwithmods.craft.bulk.CraftingManagerCauldron;
-import betterwithmods.integration.minetweaker.utils.BaseListAddition;
-import betterwithmods.integration.minetweaker.utils.BaseListRemoval;
-import betterwithmods.integration.minetweaker.utils.LogHelper;
-import betterwithmods.integration.minetweaker.utils.StackHelper;
+import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import net.minecraft.item.ItemStack;
+import stanhebben.zenscript.annotations.NotNull;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static betterwithmods.integration.minetweaker.utils.InputHelper.*;
-
-
 /**
- * Created by tyler on 9/3/16.
+ * Purpose:
+ *
+ * @author Tyler Marshall
+ * @version 12/31/16
  */
-@ZenClass("mods.betterwithmods.Cauldron")
+@ZenClass(Cauldron.clazz)
 public class Cauldron {
-    private final static List<BulkRecipe> recipes = CraftingManagerCauldron.getInstance().getRecipes();
+
+    public static final String clazz = "mods.betterwithmods.Cauldron";
 
     @ZenMethod
-    public static void add(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
-        MineTweakerAPI.apply(new Add(toStack(output), toStack(secondary), toInputs(inputs)));
+    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+        BulkRecipe r = new BulkRecipe("cauldron", InputHelper.toStack(output), InputHelper.toStack(secondaryOutput),InputHelper.toObjects(inputs));
+        MineTweakerAPI.apply(new BulkAdd("cauldron", CraftingManagerCauldron.getInstance(),r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        List<BulkRecipe> toRemove = new ArrayList<>();
-        for (BulkRecipe recipe : recipes) {
-            if (StackHelper.matches(output, toIItemStack(recipe.getOutput()))) {
-                toRemove.add(recipe);
-            }
-        }
-        if (!toRemove.isEmpty()) {
-            MineTweakerAPI.apply(new Remove(toRemove));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", "cauldron", output.toString()));
-        }
+        MineTweakerAPI.apply(new BulkRemove("cauldron", CraftingManagerCauldron.getInstance(),InputHelper.toStack(output)));
     }
 
-    public static class Add extends BaseListAddition<BulkRecipe> {
 
-        protected Add(ItemStack output, ItemStack secondary, Object[] inputs) {
-            super("cauldron", Cauldron.recipes);
-            recipes.add(new BulkRecipe(this.name, output, secondary, inputs));
-        }
-
-        @Override
-        protected String getRecipeInfo(BulkRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.getOutput());
-        }
-    }
-
-    public static class Remove extends BaseListRemoval<BulkRecipe> {
-
-        protected Remove(List<BulkRecipe> list) {
-            super("cauldron", Cauldron.recipes, list);
-        }
-
-        @Override
-        protected String getRecipeInfo(BulkRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.getOutput());
-        }
-    }
 }

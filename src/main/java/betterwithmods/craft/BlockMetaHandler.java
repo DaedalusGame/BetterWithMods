@@ -6,10 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Purpose:
@@ -75,6 +72,20 @@ public abstract class BlockMetaHandler {
         if (recipe != null)
             return recipe.getOutputs();
         return null;
+    }
+
+    public List<BlockMetaRecipe> removeRecipes(ItemStack input) {
+        List<BlockMetaRecipe> removed = Lists.newArrayList();
+        Iterator<BlockMetaRecipe> it = recipes.iterator();
+        while(it.hasNext())
+        {
+            BlockMetaRecipe ir = it.next();
+            if(ir.getStack().isItemEqual(input))
+            {
+                removed.add(ir);
+            }
+        }
+        return removed;
     }
 
 }

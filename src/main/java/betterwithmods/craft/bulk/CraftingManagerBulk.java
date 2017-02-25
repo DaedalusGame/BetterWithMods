@@ -2,12 +2,14 @@ package betterwithmods.craft.bulk;
 
 import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class CraftingManagerBulk {
@@ -55,6 +57,20 @@ public abstract class CraftingManagerBulk {
     public void addRecipe(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
         BulkRecipe recipe = createRecipe(output, secondary, inputs);
         this.recipes.add(recipe);
+    }
+
+    public List<BulkRecipe> removeRecipes(ItemStack output) {
+        List<BulkRecipe> removed = Lists.newArrayList();
+        Iterator<BulkRecipe> it = recipes.iterator();
+        while(it.hasNext())
+        {
+            BulkRecipe ir = it.next();
+            if(ir.getOutput().isItemEqual(output))
+            {
+                removed.add(ir);
+            }
+        }
+        return removed;
     }
 
     public boolean removeRecipe(ItemStack output, Object[] inputs) {

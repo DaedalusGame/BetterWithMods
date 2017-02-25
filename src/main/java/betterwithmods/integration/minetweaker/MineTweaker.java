@@ -26,9 +26,10 @@ public class MineTweaker implements ICompatModule {
         MineTweakerAPI.registerClass(Crucible.class);
         MineTweakerAPI.registerClass(StokedCrucible.class);
         MineTweakerAPI.registerClass(Mill.class);
-        MineTweakerAPI.registerClass(Buoyancy.class);
-        MineTweakerAPI.registerClass(HopperFilter.class);
+//        MineTweakerAPI.registerClass(Buoyancy.class); really need to rewrite the Bouyancy registration, it's a generics nightmare
+//        MineTweakerAPI.registerClass(HopperFilter.class);
         MineTweakerAPI.registerClass(SteelAnvil.class);
+        MineTweakerAPI.registerClass(ChopRecipe.class);
     }
 
     @Override

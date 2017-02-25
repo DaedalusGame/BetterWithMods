@@ -1,5 +1,6 @@
 package betterwithmods.craft.steelanvil;
 
+import com.google.common.collect.Lists;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -9,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,15 +32,18 @@ public class CraftingManagerSteelAnvil {
         return recipe;
     }
 
-    public void removeRecipe(ItemStack result) {
-        List<IRecipe> toRemove = new ArrayList<>();
-        for (IRecipe recipe : this.recipes) {
-            if (OreDictionary.itemMatches(recipe.getRecipeOutput(), result, true)) {
-                toRemove.add(recipe);
+    public List<IRecipe> removeRecipes(ItemStack result) {
+        List<IRecipe> removed = Lists.newArrayList();
+        Iterator<IRecipe> it = recipes.iterator();
+        while(it.hasNext())
+        {
+            IRecipe ir = it.next();
+            if(OreDictionary.itemMatches(ir.getRecipeOutput(), result, true))
+            {
+                removed.add(ir);
             }
         }
-        for (IRecipe recipe : toRemove)
-            this.recipes.remove(recipe);
+        return removed;
     }
 
     public ItemStack findMatchingRecipe(InventoryCrafting matrix, World world) {

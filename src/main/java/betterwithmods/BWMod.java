@@ -46,7 +46,7 @@ import java.util.*;
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
-    public static final String VERSION = "1.0-RC6";
+    public static final String VERSION = "1.0.0";
     public static final String NAME = "Better With Mods";
     private static final Set<ICompatModule> loadedModules = new HashSet<>();
 
@@ -70,7 +70,7 @@ public class BWMod {
         map.put("biomesoplenty", "betterwithmods.integration.BiomesOPlenty");
         map.put("harvestcraft", "betterwithmods.integration.Harvestcraft");
         //map.put("immersiveengineering", "betterwithmods.integration.immersiveengineering.ImmersiveEngineering");
-        //map.put("MineTweaker3", "betterwithmods.integration.minetweaker.MineTweaker");
+        map.put("crafttweaker", "betterwithmods.integration.minetweaker.MineTweaker");
         map.put("Quark", "betterwithmods.integration.Quark");
         //map.put("tconstruct", "betterwithmods.integration.tcon.TConstruct");
         map.put("nethercore", "betterwithmods.integration.NetherCore");

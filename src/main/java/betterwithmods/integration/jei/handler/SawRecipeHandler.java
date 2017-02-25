@@ -18,14 +18,8 @@ public class SawRecipeHandler implements IRecipeHandler<SawWrapper> {
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.saw";
-    }
-
-    @Nonnull
-    @Override
     public String getRecipeCategoryUid(@Nonnull SawWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.saw";
     }
 
     @Nonnull

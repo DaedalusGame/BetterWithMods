@@ -9,13 +9,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper> {
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.mill";
-    }
-
-    @Nonnull
+     @Nonnull
     @Override
     public Class<MillRecipeWrapper> getRecipeClass() {
         return MillRecipeWrapper.class;
@@ -24,7 +18,7 @@ public class MillRecipeHandler implements IRecipeHandler<MillRecipeWrapper> {
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull MillRecipeWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.mill";
     }
 
     @Nonnull

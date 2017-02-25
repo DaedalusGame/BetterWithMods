@@ -9,11 +9,6 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class StokedCauldronRecipeHandler implements IRecipeHandler<StokedCauldronRecipeWrapper> {
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.cauldron.stoked";
-    }
 
     @Nonnull
     @Override
@@ -24,7 +19,7 @@ public class StokedCauldronRecipeHandler implements IRecipeHandler<StokedCauldro
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull StokedCauldronRecipeWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.cauldron.stoked";
     }
 
     @Nonnull

@@ -11,12 +11,6 @@ import java.util.List;
 public class CauldronRecipeHandler implements IRecipeHandler<CauldronRecipeWrapper> {
     @Nonnull
     @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.cauldron";
-    }
-
-    @Nonnull
-    @Override
     public Class<CauldronRecipeWrapper> getRecipeClass() {
         return CauldronRecipeWrapper.class;
     }
@@ -24,7 +18,7 @@ public class CauldronRecipeHandler implements IRecipeHandler<CauldronRecipeWrapp
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull CauldronRecipeWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.cauldron";
     }
 
     @Nonnull

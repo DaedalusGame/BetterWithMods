@@ -45,7 +45,7 @@ repositories {
 dependencies {
 	deobfCompile "mezz.jei:jei_1.11.2:+"
     deobfCompile "MineTweaker3:MineTweaker3-API:+"
-    deobfCompile "com.blamejared:MTLib:+"
+    deobfCompile "com.blamejared:MTLib:2.+"
     runtime "MineTweaker3:MineTweaker3-MC1112-Main:+"
 
 }

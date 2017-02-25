@@ -18,14 +18,8 @@ public class KilnRecipeHandler implements IRecipeHandler<KilnWrapper> {
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.kiln";
-    }
-
-    @Nonnull
-    @Override
     public String getRecipeCategoryUid(@Nonnull KilnWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.kiln";
     }
 
     @Nonnull

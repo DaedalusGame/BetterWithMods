@@ -9,11 +9,6 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class StokedCrucibleRecipeHandler implements IRecipeHandler<StokedCrucibleRecipeWrapper> {
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return "bwm.crucible.stoked";
-    }
 
     @Nonnull
     @Override
@@ -24,7 +19,7 @@ public class StokedCrucibleRecipeHandler implements IRecipeHandler<StokedCrucibl
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull StokedCrucibleRecipeWrapper recipe) {
-        return getRecipeCategoryUid();
+        return "bwm.crucible.stoked";
     }
 
     @Nonnull

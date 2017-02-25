@@ -1,7 +1,7 @@
 package betterwithmods.integration.minetweaker;
 
 import betterwithmods.craft.HopperFilters;
-import betterwithmods.integration.minetweaker.utils.BaseMultiModification;
+import com.blamejared.mtlib.utils.BaseMultiModification;
 import com.google.common.collect.Sets;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -12,8 +12,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Set;
 
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStack;
-import static betterwithmods.integration.minetweaker.utils.InputHelper.toStacks;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.toStacks;
 
 /**
  * Purpose:

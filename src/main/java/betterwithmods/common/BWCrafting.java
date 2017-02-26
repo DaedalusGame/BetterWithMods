@@ -226,7 +226,7 @@ public class BWCrafting {
         }
 
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP, 1), "VVV", 'V', new ItemStack(Blocks.VINE));
-        GameRegistry.addShapelessRecipe(ItemMaterial.getMaterial(EnumMaterial.PADDING), new ItemStack(Items.FEATHER), ItemMaterial.getMaterial(EnumMaterial.HEMP_CLOTH));
+        GameRegistry.addShapelessRecipe(ItemMaterial.getMaterial(EnumMaterial.PADDING), new ItemStack(Items.FEATHER), "fabricHemp");
         //GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.ARMOR_PLATE), " B", "SP", "B ", 'B', ItemMaterial.getMaterial(EnumMaterial.LEATHER_STRAP), 'S', ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), 'P', ItemMaterial.getMaterial(EnumMaterial.PADDING)));
         GameRegistry.addRecipe(new ShapedOreRecipe(BWMItems.BREEDING_HARNESS, "SLS", "LLL", "SLS", 'S', ItemMaterial.getMaterial(EnumMaterial.LEATHER_STRAP), 'L', ItemMaterial.getMaterial(EnumMaterial.TANNED_LEATHER)));
         GameRegistry.addSmelting(BWMItems.RAW_EGG, new ItemStack(BWMItems.COOKED_EGG), 0.1F);

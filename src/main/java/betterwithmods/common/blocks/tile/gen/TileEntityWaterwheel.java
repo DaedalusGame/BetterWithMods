@@ -2,17 +2,15 @@ package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockWaterwheel;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,7 +25,9 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
     public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
-
+    public boolean isWater(BlockPos pos) {
+        return world.getBlockState(pos).getBlock() == Blocks.WATER;
+    }
     @Override
     public boolean isValid() {
         boolean isAir = true;
@@ -40,7 +40,7 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
                     int zPos = (axis == EnumFacing.Axis.X ? i : 0);
                     BlockPos offset = pos.add(xPos, j, zPos);
                     if (j == -2)
-                        hasWater = (getWorld().getBlockState(offset).getBlock() instanceof BlockLiquid && getWorld().getBlockState(offset).getMaterial() == Material.WATER) || (getWorld().getBlockState(offset).getBlock() instanceof IFluidBlock && getWorld().getBlockState(offset).getMaterial() == Material.WATER);// == Blocks.water || getWorld().getBlock(xPos, yPos, zPos) == Blocks.flowing_water;//getWorld().isMaterialInBB(AxisAlignedBB.getBoundingBox(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.water);
+                        hasWater = isWater(offset);
                     if (!hasWater) {
                         hasWater = sidesHaveWater();
                         if (!hasWater)
@@ -50,7 +50,7 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
                         continue;
                     else if (j > -2) {
                         if (i == -2 || i == 2) {
-                            isAir = getWorld().isAirBlock(offset) || ((getWorld().getBlockState(offset).getBlock() instanceof BlockLiquid && getWorld().getBlockState(offset).getMaterial() == Material.WATER) || (getWorld().getBlockState(offset).getBlock() instanceof IFluidBlock && getWorld().getBlockState(offset).getMaterial() == Material.WATER));
+                            isAir = getWorld().isAirBlock(offset) || isWater(offset);
                         } else
                             isAir = getWorld().isAirBlock(offset);
                     }
@@ -75,19 +75,17 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
             int zP1 = axis == EnumFacing.Axis.X ? -2 : 0;
             int zP2 = axis == EnumFacing.Axis.X ? 2 : 0;
             BlockPos leftPos = pos.add(xP1, i, zP1);
-            Block leftBlock = getWorld().getBlockState(leftPos).getBlock();
             BlockPos rightPos = pos.add(xP2, i, zP2);
-            Block rightBlock = getWorld().getBlockState(rightPos).getBlock();
-            if (leftBlock instanceof BlockLiquid || leftBlock instanceof IFluidBlock)
+            if (isWater(leftPos))
                 leftWater++;
-            else if (rightBlock instanceof BlockLiquid || rightBlock instanceof IFluidBlock)
+            else if (isWater(rightPos))
                 rightWater++;
 
             int xP = axis == EnumFacing.Axis.Z ? i : 0;
             int yP = -2;
             int zP = axis == EnumFacing.Axis.X ? i : 0;
             BlockPos bPos = pos.add(xP, yP, zP);
-            bottomIsUnobstructed = getWorld().isAirBlock(bPos) || ((getWorld().getBlockState(bPos).getBlock() instanceof BlockLiquid && getWorld().getBlockState(bPos).getMaterial() == Material.WATER) || (getWorld().getBlockState(bPos).getBlock() instanceof IFluidBlock && getWorld().getBlockState(bPos).getMaterial() == Material.WATER));
+            bottomIsUnobstructed = getWorld().isAirBlock(bPos) || isWater(bPos);
             if (!bottomIsUnobstructed)
                 break;
         }
@@ -108,15 +106,14 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
                 int xP = axis == EnumFacing.Axis.Z ? metaPos : 0;
                 int zP = axis == EnumFacing.Axis.X ? metaPos : 0;
                 BlockPos lowPos = pos.add(xP, -2, zP);
-                //int meta = getWorld().getBlockState(lowPos).getBlock();
-                if (getWorld().getBlockState(lowPos).getBlock() instanceof BlockLiquid) {
+                if (isWater(lowPos)) {
                     int meta = getWorld().getBlockState(lowPos).getBlock().getMetaFromState(getWorld().getBlockState(lowPos));
                     waterMeta[i] = BlockLiquid.getLiquidHeightPercent(meta);
-                } else if (getWorld().getBlockState(lowPos).getBlock() instanceof IFluidBlock) {
+                } /*else if (getWorld().getBlockState(lowPos).getBlock() instanceof IFluidBlock) {
                     int[] opp = {2, 1, 0};
                     IFluidBlock fluid = (IFluidBlock) getWorld().getBlockState(lowPos).getBlock();
                     waterMeta[opp[i]] = fluid.getFilledPercentage(getWorld(), lowPos);
-                }
+                }*/
             }
             for (int i = -1; i < 3; i++) {
                 int xP1 = axis == EnumFacing.Axis.Z ? -2 : 0;
@@ -125,11 +122,9 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
                 int zP2 = axis == EnumFacing.Axis.X ? 2 : 0;
                 BlockPos leftPos = pos.add(xP1, i, zP1);
                 BlockPos rightPos = pos.add(xP2, i, zP2);
-                Block leftBlock = getWorld().getBlockState(leftPos).getBlock();
-                Block rightBlock = getWorld().getBlockState(rightPos).getBlock();
-                if (leftBlock instanceof BlockLiquid || leftBlock instanceof IFluidBlock)
+                if (isWater(leftPos))
                     leftWater++;
-                else if (rightBlock instanceof BlockLiquid || rightBlock instanceof IFluidBlock)
+                else if (isWater(rightPos))
                     rightWater++;
             }
             if (leftWater > rightWater || (waterMeta[0] < waterMeta[1] && waterMeta[1] < waterMeta[2] && leftWater >= rightWater))

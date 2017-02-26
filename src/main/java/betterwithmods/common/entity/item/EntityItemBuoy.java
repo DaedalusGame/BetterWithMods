@@ -16,9 +16,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Koward
@@ -52,35 +49,20 @@ public class EntityItemBuoy extends EntityItem {
         super(world);
     }
 
-    /**
-     * Used to access {@link EntityItem#searchForOtherItemsNearby} as it's
-     * private.
-     */
-    private void superSearchForOtherItemsNearby() {
-        try {
-            ReflectionHelper.findMethod(EntityItem.class, this,
-                    new String[]{"func_85054_d", "searchForOtherItemsNearby"}, new Class<?>[]{})
-                    .invoke(this, (Object[]) null);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setAge(int age) {
-        ReflectionHelper.setPrivateValue(EntityItem.class, this, age, "field_70292_b", "age");
+        this.age = age;
     }
 
     private int getAge0() {
-        return ReflectionHelper.getPrivateValue(EntityItem.class, this, new String[]{"field_70292_b", "age"});
+        return this.age;
     }
 
     private DataParameter<ItemStack> getITEM() {
-        return ReflectionHelper.getPrivateValue(EntityItem.class, this, new String[]{"field_184533_c", "ITEM"});
+        return this.ITEM;
     }
 
     private int getPickupDelay() {
-        return ReflectionHelper.getPrivateValue(EntityItem.class, this,
-                new String[]{"field_145804_b", "delayBeforeCanPickup"});
+        return this.delayBeforeCanPickup;
     }
 
     /**
@@ -129,7 +111,7 @@ public class EntityItemBuoy extends EntityItem {
                 }
 
                 if (!this.getEntityWorld().isRemote) {
-                    superSearchForOtherItemsNearby();
+                    searchForOtherItemsNearby();
                 }
             }
 

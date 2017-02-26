@@ -1,4 +1,4 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.other;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityPulley;

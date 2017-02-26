@@ -1,4 +1,4 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.other;
 
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import net.minecraft.entity.player.EntityPlayer;

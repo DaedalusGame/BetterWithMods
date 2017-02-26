@@ -14,7 +14,6 @@ public abstract class TileBasicInventory extends TileEntity {
 
     public abstract SimpleItemStackHandler createItemStackHandler();
 
-
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

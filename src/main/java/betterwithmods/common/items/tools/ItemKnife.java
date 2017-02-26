@@ -3,7 +3,6 @@ package betterwithmods.common.items.tools;
 import betterwithmods.client.BWCreativeTabs;
 import com.google.common.collect.Sets;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -34,7 +33,8 @@ public class ItemKnife extends ItemTool {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment.type == EnumEnchantmentType.BREAKABLE;
+        return super.canApplyAtEnchantingTable(stack,enchantment);
+//        return enchantment.type == EnumEnchantmentType.BREAKABLE;
     }
 
     @Override

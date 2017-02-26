@@ -1,18 +1,18 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.other;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.TileEntityPulley;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiFilteredHopper extends GuiContainer {
-    private final TileEntityFilteredHopper tile;
+public class GuiPulley extends GuiContainer {
+    private final TileEntityPulley tile;
 
-    public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
-        super(new ContainerFilteredHopper(player, tile));
+    public GuiPulley(EntityPlayer player, TileEntityPulley tile) {
+        super(new ContainerPulley(player, tile));
         this.ySize = 193;
         this.tile = tile;
     }
@@ -24,17 +24,16 @@ public class GuiFilteredHopper extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f,
-                                                   int x, int y) {
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/hopper.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/pulley.png"));
 
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
-        if (this.tile.power > 0) {
-            drawTexturedModalRect(xPos + 80, yPos + 18, 176, 0, 14, 14);
+        if (this.tile.isMechanicallyPowered()) {
+            drawTexturedModalRect(xPos + 81, yPos + 30, 176, 0, 14, 14);
         }
 
     }

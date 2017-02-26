@@ -1,65 +1,79 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.anvil;
 
-import betterwithmods.common.BWMBlocks;
+import betterwithmods.client.container.inventory.SlotCraftingItemHandler;
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
-import betterwithmods.client.container.inventory.InventorySteelAnvilCrafting;
-import betterwithmods.client.container.inventory.SlotSteelAnvilCrafting;
-import betterwithmods.common.registry.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
-/**
- * Created by blueyu2 on 11/22/16.
- */
+import javax.annotation.Nullable;
+
 public class ContainerSteelAnvil extends Container {
     private final int INV_FIRST = 17;
     private final int INV_LAST = 44;
     private final int HOT_LAST = 53;
-    protected World world;
-    protected BlockPos pos;
-    private InventoryCrafting matrix;
-    private IInventory result;
+    public InventoryCrafting craftMatrix;
+    public IInventory craftResult;
+    private TileEntitySteelAnvil te;
+    private IItemHandler handler;
 
-    public ContainerSteelAnvil(InventoryPlayer playerInventory, World worldIn, BlockPos pos, TileEntitySteelAnvil anvilIn) {
-        this.world = worldIn;
-        this.pos = pos;
-        matrix = new InventorySteelAnvilCrafting(this, anvilIn);
-        result = new InventoryCraftResult();
-        this.addSlotToContainer(new SlotSteelAnvilCrafting(playerInventory.player, this.matrix, this.result, 0, 124, 44));
+    public ContainerSteelAnvil(InventoryPlayer player, TileEntitySteelAnvil te) {
+        this.te = te;
+        handler = te.inventory;
+        craftMatrix = new InventorySteelCrafting(this,te);
+        craftResult = new InventorySteelCraftingResult(te);
+        this.addSlotToContainer(new SlotCraftingItemHandler(player.player, craftMatrix, craftResult, 0, 124, 44));
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                this.addSlotToContainer(new Slot(this.matrix, j + i * 4, 12 + j * 18, 17 + i * 18));
+                this.addSlotToContainer(new Slot(craftMatrix, j + i * 4, 12 + j * 18, 17 + i * 18));
             }
         }
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
+                this.addSlotToContainer(new Slot(player, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
             }
         }
 
         for (int i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 160));
+            this.addSlotToContainer(new Slot(player, i, 8 + i * 18, 160));
         }
 
-        this.onCraftMatrixChanged(this.matrix);
+        this.onCraftMatrixChanged(craftMatrix);
     }
 
-    @Override
+    /**
+     * Callback for when the crafting matrix is changed.
+     */
     public void onCraftMatrixChanged(IInventory matrix) {
-        this.result.setInventorySlotContents(0, CraftingManagerSteelAnvil.INSTANCE.findMatchingRecipe(this.matrix, this.world));
+        this.craftResult.setInventorySlotContents(0, SteelCraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, te.getWorld()));
+    }
+
+    /**
+     * Called when the container is closed.
+     */
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
+
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
-        return this.world.getBlockState(pos).getBlock() == BWMBlocks.STEEL_ANVIL && playerIn.getDistanceSq(pos) <= 64.0D;
+    public boolean canInteractWith(EntityPlayer player) {
+        return te.isUseableByPlayer(player);
     }
 
+    /**
+     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+     */
+
+    @Nullable
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;

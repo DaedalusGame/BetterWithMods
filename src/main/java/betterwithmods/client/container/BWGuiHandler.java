@@ -1,5 +1,18 @@
 package betterwithmods.client.container;
 
+import betterwithmods.client.container.anvil.ContainerSteelAnvil;
+import betterwithmods.client.container.anvil.GuiSteelAnvil;
+import betterwithmods.client.container.bulk.ContainerCookingPot;
+import betterwithmods.client.container.bulk.ContainerFilteredHopper;
+import betterwithmods.client.container.bulk.ContainerMill;
+import betterwithmods.client.container.bulk.GuiCauldron;
+import betterwithmods.client.container.bulk.GuiCrucible;
+import betterwithmods.client.container.bulk.GuiFilteredHopper;
+import betterwithmods.client.container.bulk.GuiMill;
+import betterwithmods.client.container.other.ContainerBlockDispenser;
+import betterwithmods.client.container.other.ContainerPulley;
+import betterwithmods.client.container.other.GuiBlockDispenser;
+import betterwithmods.client.container.other.GuiPulley;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
@@ -34,7 +47,7 @@ public class BWGuiHandler implements IGuiHandler {
             if (tile instanceof TileEntityFilteredHopper)
                 return new ContainerFilteredHopper(player, (TileEntityFilteredHopper) tile);
             if (tile instanceof TileEntitySteelAnvil)
-                return new ContainerSteelAnvil(player.inventory, world, pos, (TileEntitySteelAnvil) tile);
+                return new ContainerSteelAnvil(player.inventory, (TileEntitySteelAnvil) tile);
         }
         return null;
     }
@@ -58,7 +71,7 @@ public class BWGuiHandler implements IGuiHandler {
             if (tile instanceof TileEntityFilteredHopper)
                 return new GuiFilteredHopper(player, (TileEntityFilteredHopper) tile);
             if (tile instanceof TileEntitySteelAnvil)
-                return new GuiSteelAnvil(player.inventory, world, pos, (TileEntitySteelAnvil) tile);
+                return new GuiSteelAnvil((TileEntitySteelAnvil) tile,new ContainerSteelAnvil(player.inventory, (TileEntitySteelAnvil) tile));
         }
         return null;
     }

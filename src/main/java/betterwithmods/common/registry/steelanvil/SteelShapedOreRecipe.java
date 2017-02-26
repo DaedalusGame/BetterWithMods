@@ -1,55 +1,57 @@
 package betterwithmods.common.registry.steelanvil;
 
-/*import betterwithmods.integration.minetweaker.utils.InputHelper;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.oredict.IOreDictEntry;*/
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Iterator;
+import javax.annotation.Nonnull;
 
-/**
- * Code based off of Avarita https://minecraft.curseforge.com/projects/avaritia
- */
-public class ShapedSteelAnvilRecipe implements IRecipe {
-    private static final int MAX_MATRIX_WIDTH = 4;
-    private static final int MAX_MATRIX_HEIGHT = 4;
-    public int width;
-    public int height;
+import java.util.*;
+
+public class SteelShapedOreRecipe implements IRecipe {
+    //Added in for future ease of change, but hard coded for now.
+    private static final int MAX_CRAFT_GRID_WIDTH = 4;
+    private static final int MAX_CRAFT_GRID_HEIGHT = 4;
+
     private ItemStack output = ItemStack.EMPTY;
     private Object[] input = null;
+    public int width = 0;
+    public int height = 0;
     private boolean mirrored = true;
 
-    public ShapedSteelAnvilRecipe(Block result, Object... recipe) {
+    public SteelShapedOreRecipe(Block result, Object... recipe) {
         this(new ItemStack(result), recipe);
     }
 
-    public ShapedSteelAnvilRecipe(Item result, Object... recipe) {
+    public SteelShapedOreRecipe(Item result, Object... recipe) {
         this(new ItemStack(result), recipe);
     }
 
-    public ShapedSteelAnvilRecipe(ItemStack result, Object... recipe) {
+    public SteelShapedOreRecipe(ItemStack result, Object... recipe) {
         output = result.copy();
 
         String shape = "";
         int idx = 0;
-        width = 0;
+
+        if (recipe[idx] instanceof Boolean) {
+            mirrored = (Boolean) recipe[idx];
+            if (recipe[idx + 1] instanceof Object[]) {
+                recipe = (Object[]) recipe[idx + 1];
+            } else {
+                idx = 1;
+            }
+        }
 
         if (recipe[idx] instanceof String[]) {
             String[] parts = ((String[]) recipe[idx++]);
 
             for (String s : parts) {
-                if (s.length() > width)
                 width = s.length();
                 shape += s;
             }
@@ -59,7 +61,6 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             while (recipe[idx] instanceof String) {
                 String s = (String) recipe[idx++];
                 shape += s;
-                if (s.length() > width)
                 width = s.length();
                 height++;
             }
@@ -74,7 +75,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             throw new RuntimeException(ret);
         }
 
-        HashMap<Character, Object> itemMap = new HashMap<>();
+        HashMap<Character, Object> itemMap = new HashMap<Character, Object>();
 
         for (; idx < recipe.length; idx += 2) {
             Character chr = (Character) recipe[idx];
@@ -87,7 +88,7 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             } else if (in instanceof Block) {
                 itemMap.put(chr, new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             } else if (in instanceof String) {
-                itemMap.put(chr, in);
+                itemMap.put(chr, OreDictionary.getOres((String) in));
             } else {
                 String ret = "Invalid shaped ore recipe: ";
                 for (Object tmp : recipe) {
@@ -104,34 +105,70 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
             input[x++] = itemMap.get(chr);
         }
     }
-/*
-    public ShapedSteelAnvilRecipe(IItemStack result, IIngredient[][] recipe) {
-        output = InputHelper.toStack(result);
 
-        height = recipe.length;
-        for (IIngredient[] row : recipe) {
-            if (width < row.length)
-                width = row.length;
-        }
+    SteelShapedOreRecipe(ShapedRecipes recipe, Map<ItemStack, String> replacements) {
+        output = recipe.getRecipeOutput();
+        width = recipe.recipeWidth;
+        height = recipe.recipeHeight;
 
-        input = new Object[width * height];
+        input = new Object[recipe.recipeItems.length];
 
-        int count = 0;
-        for (IIngredient[] row : recipe) {
-            for (IIngredient ingredient : row) {
-                if (ingredient instanceof IItemStack) {
-                    input[count++] = InputHelper.toStack((IItemStack) ingredient);
-                } else if (ingredient instanceof IOreDictEntry) {
-                    input[count++] = ((IOreDictEntry) ingredient).getName();
+        for (int i = 0; i < input.length; i++) {
+            ItemStack ingred = recipe.recipeItems[i];
+
+            if (ingred.isEmpty()) continue;
+
+            input[i] = recipe.recipeItems[i];
+
+            for (Map.Entry<ItemStack, String> replace : replacements.entrySet()) {
+                if (OreDictionary.itemMatches(replace.getKey(), ingred, true)) {
+                    input[i] = OreDictionary.getOres(replace.getValue());
+                    break;
                 }
             }
         }
-    }*/
+    }
+
+    public SteelShapedOreRecipe(ItemStack result, Object[] ingredients, int wid, int hei) {
+        width = wid;
+        height = hei;
+        output = result;
+        input = ingredients;
+    }
+
+    /**
+     * Returns an Item that is the result of this recipe
+     */
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting var1) {
+        return output.copy();
+    }
+
+    /**
+     * Returns the size of the recipe area
+     */
+    @Override
+    public int getRecipeSize() {
+        return input.length;
+    }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
-        for (int x = 0; x <= MAX_MATRIX_WIDTH - width; x++) {
-            for (int y = 0; y <= MAX_MATRIX_HEIGHT - height; ++y) {
+    public ItemStack getRecipeOutput() {
+        return output;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+        return NonNullList.create();
+    }
+
+    /**
+     * Used to check if a recipe matches current crafting inventory
+     */
+    @Override
+    public boolean matches(@Nonnull InventoryCrafting inv,@Nonnull World world) {
+        for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++) {
+            for (int y = 0; y <= MAX_CRAFT_GRID_HEIGHT - height; ++y) {
                 if (checkMatch(inv, x, y, false)) {
                     return true;
                 }
@@ -147,8 +184,8 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
 
     @SuppressWarnings("unchecked")
     private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror) {
-        for (int x = 0; x < MAX_MATRIX_WIDTH; x++) {
-            for (int y = 0; y < MAX_MATRIX_HEIGHT; y++) {
+        for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++) {
+            for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++) {
                 int subX = x - startX;
                 int subY = y - startY;
                 Object target = null;
@@ -167,12 +204,12 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
                     if (!OreDictionary.itemMatches((ItemStack) target, slot, false)) {
                         return false;
                     }
-                } else if (target instanceof String) {
+                } else if (target instanceof List) {
                     boolean matched = false;
-                    Iterator<ItemStack> itr = OreDictionary.getOres((String) target).iterator();
+
+                    Iterator<ItemStack> itr = ((List<ItemStack>) target).iterator();
                     while (itr.hasNext() && !matched) {
-                        ItemStack testy = itr.next();
-                        matched = OreDictionary.itemMatches(testy, slot, false);
+                        matched = OreDictionary.itemMatches(itr.next(), slot, false);
                     }
 
                     if (!matched) {
@@ -187,42 +224,18 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
         return true;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public ShapedSteelAnvilRecipe setMirrored(boolean mirror) {
+    public SteelShapedOreRecipe setMirrored(boolean mirror) {
         mirrored = mirror;
         return this;
     }
 
-    @Nullable
-    @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
-        return output.copy();
-    }
-
-    @Override
-    public int getRecipeSize() {
-        return input.length;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack getRecipeOutput() {
-        return output;
-    }
-
+    /**
+     * Returns the input for this recipe, any mod accessing this value should never
+     * manipulate the values in this array as it will effect the recipe itself.
+     *
+     * @return The recipes input vales.
+     */
     public Object[] getInput() {
         return this.input;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 }

@@ -1,9 +1,10 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -11,7 +12,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -110,7 +110,7 @@ public class BlockSteelAnvil extends BlockContainer {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntitySteelAnvil anvil = (TileEntitySteelAnvil) worldIn.getTileEntity(pos);
-        InventoryHelper.dropInventoryItems(worldIn, pos, anvil);
+        InvUtils.ejectInventoryContents(worldIn,pos,anvil.inventory);
         super.breakBlock(worldIn, pos, state);
     }
 }

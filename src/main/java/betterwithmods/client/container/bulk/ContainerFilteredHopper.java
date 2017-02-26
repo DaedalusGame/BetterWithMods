@@ -1,4 +1,4 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.bulk;
 
 import betterwithmods.common.blocks.BlockBWMNewPane;
 import betterwithmods.common.blocks.BlockBWMPane;

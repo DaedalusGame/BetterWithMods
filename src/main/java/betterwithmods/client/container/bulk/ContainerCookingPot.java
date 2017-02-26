@@ -1,4 +1,4 @@
-package betterwithmods.client.container;
+package betterwithmods.client.container.bulk;
 
 import betterwithmods.common.blocks.tile.TileEntityCookingPot;
 import net.minecraft.entity.player.EntityPlayer;

@@ -5,15 +5,17 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
+import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SteelShapedRecipeWrapper extends BlankRecipeWrapper {
+public class SteelShapedRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
 
     private final SteelShapedOreRecipe recipe;
     private final IJeiHelpers jeiHelpers;
+    private int width, height;
 
     public SteelShapedRecipeWrapper(IJeiHelpers jeiHelpers, SteelShapedOreRecipe recipe) {
         this.jeiHelpers = jeiHelpers;
@@ -26,6 +28,8 @@ public class SteelShapedRecipeWrapper extends BlankRecipeWrapper {
                 }
             }
         }
+        width = recipe.width;
+        height = recipe.height;
     }
 
     @Override
@@ -38,5 +42,15 @@ public class SteelShapedRecipeWrapper extends BlankRecipeWrapper {
         ingredients.setInputLists(ItemStack.class, inputs);
         ingredients.setOutput(ItemStack.class, recipeOutput);
 
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
     }
 }

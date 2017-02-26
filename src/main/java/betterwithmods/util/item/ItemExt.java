@@ -4,6 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.items.ItemMaterial.EnumMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -11,16 +12,14 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
-
 /**
  * Set of methods dealing with Items and ItemStacks.
  *
  * @author Koward
  */
 public final class ItemExt {
-    private static final ItemStackMap<Float> buoyancy = new ItemStackMap<>(-1.0F);
-    private static final ItemStackMap<Integer> weights = new ItemStackMap<>(0);
+    public static final StackMap<Float> buoyancy = new StackMap<>(-1.0F);
+    public static final StackMap<Integer> weights = new StackMap<>(0);
 
     private ItemExt() {
     }
@@ -241,10 +240,6 @@ public final class ItemExt {
 
     public static float getBuoyancy(ItemStack stack) {
         return buoyancy.get(stack);
-    }
-
-    public static ItemStackMap<Float> getBuoyancyRegistry() {
-        return buoyancy;
     }
 
     public static float getWeight(ItemStack stack) {

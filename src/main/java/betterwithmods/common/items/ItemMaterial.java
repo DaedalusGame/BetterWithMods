@@ -50,6 +50,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
         return super.getUnlocalizedName() + "." + EnumMaterial.values()[stack.getMetadata()].getName();
     }
 
+
     public enum EnumMaterial {
         GEAR,
         NETHERCOAL,

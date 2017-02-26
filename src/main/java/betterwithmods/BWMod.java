@@ -10,12 +10,38 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.BWSounds;
-import betterwithmods.config.BWConfig;
-import betterwithmods.config.ConfigSyncHandler;
-import betterwithmods.common.entity.*;
+import betterwithmods.common.entity.EntityBroadheadArrow;
+import betterwithmods.common.entity.EntityDynamite;
+import betterwithmods.common.entity.EntityExtendingRope;
+import betterwithmods.common.entity.EntityFallingGourd;
+import betterwithmods.common.entity.EntityMiningCharge;
+import betterwithmods.common.entity.EntityShearedCreeper;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
-import betterwithmods.event.*;
+import betterwithmods.common.world.BWComponentScatteredFeaturePieces;
+import betterwithmods.common.world.BWMapGenScatteredFeature;
+import betterwithmods.config.BWConfig;
+import betterwithmods.config.ConfigSyncHandler;
+import betterwithmods.event.BWMWorldGenEvent;
+import betterwithmods.event.BlastingOilEvent;
+import betterwithmods.event.BreedingHardnessEvent;
+import betterwithmods.event.BucketEvent;
+import betterwithmods.event.BuoyancyEventHandler;
+import betterwithmods.event.EggImpactEvent;
+import betterwithmods.event.HardcoreEndermenEvent;
+import betterwithmods.event.HardcoreHardnessEventHandler;
+import betterwithmods.event.HardcoreMelonEventHandler;
+import betterwithmods.event.HardcoreRedstoneEvent;
+import betterwithmods.event.HungerEventHandler;
+import betterwithmods.event.InferiorDropsEventHandler;
+import betterwithmods.event.LogHarvestEvent;
+import betterwithmods.event.MobAIEvent;
+import betterwithmods.event.MobDropEvent;
+import betterwithmods.event.NetherSpawnEvent;
+import betterwithmods.event.PotionEventHandler;
+import betterwithmods.event.RespawnEventHandler;
+import betterwithmods.event.SaveSoupEvent;
+import betterwithmods.event.StumpingEventHandler;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.network.BWNetwork;
 import betterwithmods.proxy.IProxy;
@@ -24,8 +50,6 @@ import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
-import betterwithmods.common.world.BWComponentScatteredFeaturePieces;
-import betterwithmods.common.world.BWMapGenScatteredFeature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -47,7 +71,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
@@ -229,6 +258,7 @@ public class BWMod {
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ConfigSyncHandler());
         proxy.postInit();
+
 
     }
 

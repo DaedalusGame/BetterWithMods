@@ -14,7 +14,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -27,7 +26,10 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.DispenseFluidContainer;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -51,11 +53,31 @@ public class BucketEvent {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return stack != ItemStack.EMPTY && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        return stack != ItemStack.EMPTY && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
     }
 
     private static boolean isNonVanillaBucket(ItemStack stack) {
         return stack.getItem() != Items.BUCKET && stack.getItem() != Items.WATER_BUCKET && stack.getItem() != Items.LAVA_BUCKET && stack.getItem() != Items.MILK_BUCKET && isFluidContainer(stack);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void fillFromFlowing(PlayerInteractEvent.RightClickBlock e) {
+        if (e.getHand() != EnumHand.MAIN_HAND)
+            return;
+        ItemStack stack = e.getItemStack();
+        EntityPlayer player = e.getEntityPlayer();
+        if (isFluidContainer(stack)) {
+            FluidStack fluid = FluidUtil.getFluidContained(stack);
+            if (fluid == null || fluid.getFluid() == null) {
+                if (!player.capabilities.isCreativeMode) {
+                    if (stack.getItem() == Items.BUCKET && BWConfig.hardcoreBuckets) {
+                        fluidContainerUse(new FillBucketEvent(player, stack, e.getWorld(), new RayTraceResult(e.getHitVec(), e.getFace())));
+                    }
+                    e.setResult(Event.Result.ALLOW);
+                }
+            }
+
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -79,14 +101,12 @@ public class BucketEvent {
                 BlockPos pos = target.getBlockPos().offset(target.sideHit);
                 IBlockState state = evt.getWorld().getBlockState(pos);
 
-                /*if (fluid == null || fluid.getFluid() == null) {
-                    TODO: Find a way to fill a bucket from flowing water
+                if (fluid == null || fluid.getFluid() == null) {
                     if (isWater(state) && state.getBlock().getMetaFromState(state) > 0) {
                         if (!player.capabilities.isCreativeMode) {
                             if (evt.getEmptyBucket().getItem() == Items.BUCKET && BWConfig.hardcoreBuckets) {
                                 evt.setFilledBucket(new ItemStack(Items.WATER_BUCKET));
-                            }
-                            else if (isFluidContainer(evt.getEmptyBucket()) && BWConfig.hardcoreFluidContainer) {
+                            } else if (isFluidContainer(evt.getEmptyBucket()) && BWConfig.hardcoreFluidContainer) {
                                 ItemStack fill = evt.getEmptyBucket().copy();
                                 fill.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(new FluidStack(FluidRegistry.WATER, 1000), true);
                                 evt.setFilledBucket(fill);
@@ -94,8 +114,7 @@ public class BucketEvent {
                             evt.setResult(Event.Result.ALLOW);
                         }
                     }
-                }
-                else */if (fluid != null && fluid.getFluid() != null && fluid.getFluid() == FluidRegistry.WATER) {
+                } else if (fluid != null && fluid.getFluid() != null && fluid.getFluid() == FluidRegistry.WATER) {
                     if (state.getBlock().isAir(state, evt.getWorld(), pos) || state.getBlock().isReplaceable(evt.getWorld(), pos)) {
                         if (!player.capabilities.isCreativeMode) {
                             if ((evt.getEmptyBucket().getItem() == Items.WATER_BUCKET && BWConfig.hardcoreBuckets) || (isNonVanillaBucket(evt.getEmptyBucket()) && BWConfig.hardcoreFluidContainer))
@@ -113,8 +132,7 @@ public class BucketEvent {
             if (state.getBlock().getMetaFromState(state) > 0) {
                 emptyBucket(evt, pos, equip);
             }
-        }
-        else {
+        } else {
             emptyBucket(evt, pos, equip);
         }
     }
@@ -132,9 +150,10 @@ public class BucketEvent {
         evt.setResult(Event.Result.ALLOW);
     }
 
-    private boolean isWater (IBlockState state) {
+    private boolean isWater(IBlockState state) {
         return state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER;
     }
+
 
     @SubscribeEvent
     public void fluidContainerUse(PlayerInteractEvent.RightClickBlock evt) {
@@ -167,8 +186,7 @@ public class BucketEvent {
                                 if (state.getBlock().getMetaFromState(state) > 0) {
                                     placeContainerFluid(evt, pos, toCheck);
                                 }
-                            }
-                            else {
+                            } else {
                                 placeContainerFluid(evt, pos, toCheck);
                             }
                         }
@@ -190,8 +208,7 @@ public class BucketEvent {
             if (equip.getCount() == 1) {
                 EnumHand hand = evt.getHand();
                 evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : null);
-            }
-            else if (equip.getCount() > 1) {
+            } else if (equip.getCount() > 1) {
                 equip.shrink(1);
                 if (item.hasContainerItem(equip))
                     evt.getEntityPlayer().inventory.addItemStackToInventory(item.getContainerItem(equip).copy());

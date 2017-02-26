@@ -184,12 +184,22 @@ public class HungerEventHandler {
         }
 
         f *= EntityPlayerExt.getHealthAndExhaustionModifier(player);
+        boolean canHarvestBlock = ForgeHooks.canHarvestBlock(state.getBlock(), player, player.getEntityWorld(), event.getPos());
         if (BWConfig.hardcoreHardness) {
-            boolean canHarvestBlock = ForgeHooks.canHarvestBlock(state.getBlock(), player, player.getEntityWorld(), event.getPos());
             if (!EntityPlayerExt.isCurrentToolEffectiveOnBlock(player, event.getPos())) {
                 if (!canHarvestBlock) {
                     //Change partially applied (/100.0F) by {@link ForgeHooks.blockStrength}
                     f *= 100.0F / 200.0F;
+                } else {
+                    //Change partially applied (/30.0F) by {@link ForgeHooks.blockStrength}
+                    f *= 30.0F / 200.0F;
+                }
+            }
+        } else {
+            if (!EntityPlayerExt.isCurrentToolEffectiveOnBlock(player, event.getPos())) {
+                if (!canHarvestBlock) {
+                    //Change partially applied (/100.0F) by {@link ForgeHooks.blockStrength}
+                    f /=2;
                 } else {
                     //Change partially applied (/30.0F) by {@link ForgeHooks.blockStrength}
                     f *= 30.0F / 200.0F;

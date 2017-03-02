@@ -7,6 +7,7 @@ import betterwithmods.config.BWConfig;
 import betterwithmods.common.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.Profiles;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -47,7 +48,7 @@ public class MobDropEvent {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load evt) {
         if (evt.getWorld() instanceof WorldServer) {
-            player = FakePlayerFactory.getMinecraft((WorldServer) evt.getWorld());
+            player = FakePlayerFactory.get((WorldServer) evt.getWorld(), Profiles.BWMSAW);
             ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
             sword.addEnchantment(Enchantment.getEnchantmentByLocation("looting"), 2);
             player.setHeldItem(EnumHand.MAIN_HAND, sword);

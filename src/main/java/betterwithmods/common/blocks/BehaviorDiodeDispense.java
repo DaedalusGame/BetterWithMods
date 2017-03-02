@@ -3,9 +3,11 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.player.Profiles;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -23,7 +25,8 @@ public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem {
         IPosition pos = BlockBDispenser.getDispensePosition(source);
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && stack.getItem() instanceof ItemBlockSpecial) {
-            FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) source.getWorld());
+            FakePlayer fake = FakePlayerFactory.get((WorldServer) source.getWorld(), Profiles.BWMDISP);
+            fake.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
             DirUtils.setEntityOrientationFacing(fake, facing);
             if (BWConfig.debug)
                 BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());

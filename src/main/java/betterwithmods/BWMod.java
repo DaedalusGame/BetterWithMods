@@ -149,7 +149,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new MobAIEvent());
-        MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
+        //MinecraftForge.EVENT_BUS.register(new HardcoreHardnessEventHandler());
         MinecraftForge.EVENT_BUS.register(new HardcoreMelonEventHandler());
         MinecraftForge.EVENT_BUS.register(new EggImpactEvent());
         MinecraftForge.EVENT_BUS.register(new SaveSoupEvent());
@@ -206,7 +206,10 @@ public class BWMod {
         itemRegistry = GameRegistry.findRegistry(Item.class);
 
         if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
-        if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
+        if (BWConfig.earlyPickaxesRebalance) {
+            Items.STONE_PICKAXE.setMaxDamage(6 - 1);
+            Items.WOODEN_PICKAXE.setMaxDamage(1);
+        }
         if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
         if (BWConfig.axeOnLeaves) {
             Blocks.LEAVES.setHarvestLevel("axe", 0);

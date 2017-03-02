@@ -28,13 +28,14 @@ public class BehaviorDiodeDispense extends BehaviorDefaultDispenseItem {
             if (BWConfig.debug)
                 BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
             if (stack.getItem().onItemUse(fake, source.getWorld(), check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
-                return stack;
+                stack.shrink(1);
+                return stack.isEmpty() ? ItemStack.EMPTY : stack;
             } else {
-                stack.grow(1);
+                //stack.grow(1);
                 return stack;
             }
         } else {
-            stack.grow(1);
+            //stack.grow(1);
             return stack;
         }
     }

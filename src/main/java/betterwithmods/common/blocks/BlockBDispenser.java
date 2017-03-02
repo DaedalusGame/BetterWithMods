@@ -147,13 +147,13 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
             } else {
                 int index = tile.nextIndex;
                 ItemStack stack = tile.getNextStackFromInv();
-                if (index == -1 || stack == null)
+                if (index == -1 || stack == ItemStack.EMPTY)
                     world.playEvent(1001, pos, 0);
                 else {
                     IBehaviorDispenseItem item = this.getBehavior(stack);
                     if (item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR) {
                         ItemStack stack1 = item.dispense(impl, stack);
-                        tile.inventory.setStackInSlot(index, stack1.getCount() <= 0 ? ItemStack.EMPTY : stack1);
+                        tile.inventory.setStackInSlot(index, stack1);
                     }
                 }
             }

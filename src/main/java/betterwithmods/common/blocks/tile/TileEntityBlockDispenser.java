@@ -43,14 +43,16 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         if (stack == ItemStack.EMPTY) return;
         for (int i = 0; i < 16; i++) {
             ItemStack check = this.inventory.getStackInSlot(i);
-            if (ItemStack.areItemsEqual(stack, check) && check.getCount() < check.getMaxStackSize()) {
-                if (check.hasTagCompound() || stack.hasTagCompound()) {
-                    if (!ItemStack.areItemStackTagsEqual(stack, check))
-                        continue;
+            if (!check.isEmpty()) {
+                if (ItemStack.areItemsEqual(stack, check) && check.getCount() < check.getMaxStackSize()) {
+                    if (check.hasTagCompound() || stack.hasTagCompound()) {
+                        if (!ItemStack.areItemStackTagsEqual(stack, check))
+                            continue;
+                    }
+                    check.grow(1);
+                    this.inventory.setStackInSlot(i, check);
+                    return;
                 }
-                check.grow(1);
-                this.inventory.setStackInSlot(i, check);
-                return;
             }
         }
         int firstSlot = findFirstNullStack();
@@ -65,7 +67,7 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
 
     private int findFirstNullStack() {
         for (int i = 0; i < 16; i++) {
-            if (this.inventory.getStackInSlot(i) == ItemStack.EMPTY)
+            if (this.inventory.getStackInSlot(i).isEmpty())
                 return i;
         }
         return -1;

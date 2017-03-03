@@ -1,10 +1,10 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.ISoulSensitive;
-import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
@@ -549,8 +550,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 19);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 19);
     }
 
     @Override

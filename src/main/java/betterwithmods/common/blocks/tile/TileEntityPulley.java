@@ -1,12 +1,12 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.blocks.BlockRope;
-import betterwithmods.config.BWConfig;
 import betterwithmods.common.entity.EntityExtendingRope;
+import betterwithmods.config.BWConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -26,8 +26,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
+import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Formatter;
+import java.util.HashSet;
+import java.util.List;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
 
@@ -60,8 +65,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 4);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 4);
     }
 
     @Override
@@ -295,7 +300,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
                     if (stack.getCount() < 1) {
                         inventory.setStackInSlot(i, ItemStack.EMPTY);
                     }
-                    inventory.onContentsChanged(i);
+                    this.markDirty();
                 }
                 return true;
             }
@@ -313,7 +318,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
                     } else {
                         stack.grow(1);
                     }
-                    inventory.onContentsChanged(i);
+                    this.markDirty();
                 }
                 return true;
             }

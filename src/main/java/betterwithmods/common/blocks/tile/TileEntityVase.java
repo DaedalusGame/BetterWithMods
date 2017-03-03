@@ -10,6 +10,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
@@ -56,7 +57,7 @@ public class TileEntityVase extends TileBasicInventory {
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 1);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 1);
     }
 }

@@ -1,7 +1,6 @@
 package betterwithmods.common.registry;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.SimpleItemStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
@@ -14,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class HopperInteractions {
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                SimpleItemStackHandler inventory = tile.inventory;
+                ItemStackHandler inventory = tile.inventory;
                 ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
                 if (!InvUtils.addItemStackToInv(inventory, sand)) {
                     InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
@@ -159,7 +159,7 @@ public class HopperInteractions {
 
         public boolean canCraft(World world, BlockPos pos) {
             TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-            SimpleItemStackHandler inventory = tile.inventory;
+            ItemStackHandler inventory = tile.inventory;
             boolean flag = true;
             if (!secondaryOutput.isEmpty()) {
                 for (ItemStack stack : secondaryOutput) {

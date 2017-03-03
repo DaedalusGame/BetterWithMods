@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * Created by blueyu2 on 11/21/16.
@@ -22,8 +23,8 @@ public class TileEntitySteelAnvil extends TileBasicInventory {
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 17);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 17);
     }
 
     public void setInventorySlotContents(int slot, ItemStack stack) {

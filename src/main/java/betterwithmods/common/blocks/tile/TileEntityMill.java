@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWSounds;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.bulk.CraftingManagerMill;
 import betterwithmods.util.InvUtils;
@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,8 +108,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 3);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 3);
     }
 
     @Override

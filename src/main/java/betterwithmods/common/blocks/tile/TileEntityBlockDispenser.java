@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityBlockDispenser extends TileBasicInventory {
     public int nextIndex;
@@ -28,8 +29,8 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     }
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 16);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 16);
     }
 
     @Override

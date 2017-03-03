@@ -11,12 +11,13 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
     public short occupiedSlots;
-    public SimpleItemStackHandler inventory = createItemStackHandler();
+    public ItemStackHandler inventory = createItemStackHandler();
 
-    public abstract SimpleItemStackHandler createItemStackHandler();
+    public abstract ItemStackHandler createItemStackHandler();
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

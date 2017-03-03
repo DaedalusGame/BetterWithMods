@@ -4,15 +4,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * Created by tyler on 9/4/16.
  */
 public abstract class TileBasicInventory extends TileEntity {
 
-    public SimpleItemStackHandler inventory = createItemStackHandler();
+    public ItemStackHandler inventory = createItemStackHandler();
 
-    public abstract SimpleItemStackHandler createItemStackHandler();
+    public abstract ItemStackHandler createItemStackHandler();
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

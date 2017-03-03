@@ -25,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -52,8 +53,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
 
 
     @Override
-    public SimpleItemStackHandler createItemStackHandler() {
-        return new SimpleItemStackHandler(this, true, 27);
+    public ItemStackHandler createItemStackHandler() {
+        return new ItemStackHandler( 27);
     }
 
     @Override

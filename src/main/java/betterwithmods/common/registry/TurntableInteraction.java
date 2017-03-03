@@ -33,10 +33,12 @@ public class TurntableInteraction extends BlockMetaHandler {
         addRecipe(new TurntableRecipe(block, meta, result, resultMeta, scraps == null ? Lists.newArrayList() : Arrays.asList(scraps)));
     }
 
-    public class TurntableRecipe extends BlockMetaRecipe {
+    public static class TurntableRecipe extends BlockMetaRecipe {
         private Block result;
         private int resultMeta;
-
+        public TurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, List<ItemStack> scraps) {
+            this(((ItemBlock)inputBlock.getItem()).getBlock(), inputBlock.getMetadata(),((ItemBlock)outputBlock.getItem()).getBlock(), outputBlock.getMetadata(),scraps);
+        }
         public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List<ItemStack> scraps) {
             super("turntable", block, meta, scraps);
             this.result = result;
@@ -47,6 +49,11 @@ public class TurntableInteraction extends BlockMetaHandler {
             if (result == null)
                 return ItemStack.EMPTY;
             return new ItemStack(result, 1, resultMeta);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s-> %s + [%s]", getStack(), getResult(), getOutputs());
         }
     }
 }

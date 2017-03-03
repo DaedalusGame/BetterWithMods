@@ -1,13 +1,22 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.ITurnable;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.TurntableInteraction;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockButton;
+import net.minecraft.block.BlockLadder;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockPistonExtension;
+import net.minecraft.block.BlockPistonMoving;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,10 +27,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -341,8 +356,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                         getWorld().setBlockState(pos, newState);
                 } else
                     getWorld().setBlockState(pos, newState);
-            }
-            else if (target instanceof BlockRailBase) {
+            } else if (target instanceof BlockRailBase) {
                 BlockRailBase rail = (BlockRailBase) target;
                 BlockRailBase.EnumRailDirection dir = state.getValue(rail.getShapeProperty());
                 if (dir != BlockRailBase.EnumRailDirection.ASCENDING_NORTH && dir != BlockRailBase.EnumRailDirection.ASCENDING_EAST && dir != BlockRailBase.EnumRailDirection.ASCENDING_SOUTH && dir != BlockRailBase.EnumRailDirection.ASCENDING_WEST) {
@@ -351,6 +365,11 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void spawnParticles(IBlockState state) {
+        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
     }
 
     private void rotateCraftable(IBlockState input, TurntableInteraction.TurntableRecipe craft, BlockPos pos, boolean reverse) {
@@ -364,8 +383,9 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             }
             getWorld().setBlockState(pos, RecipeUtils.getStateFromStack(craft.getResult()));
             this.potteryRotation = 0;
+
         }
-        this.getWorld().spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0, Block.getStateId(input));
+        spawnParticles(input);
         this.getWorld().playSound(null, pos, block.getSoundType(input, this.getWorld(), pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.8F);
     }
 

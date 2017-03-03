@@ -132,4 +132,9 @@ public class SteelShapelessRecipe implements IRecipe {
     public int getRecipeSize() {
         return this.recipeItems.size();
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s -> %s",recipeItems, recipeOutput);
+    }
 }

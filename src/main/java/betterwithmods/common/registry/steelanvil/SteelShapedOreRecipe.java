@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.steelanvil;
 
+import com.blamejared.mtlib.utils.ArrayUtils;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -11,8 +12,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class SteelShapedOreRecipe implements IRecipe {
     //Added in for future ease of change, but hard coded for now.
@@ -237,5 +240,10 @@ public class SteelShapedOreRecipe implements IRecipe {
      */
     public Object[] getInput() {
         return this.input;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s -> %s", ArrayUtils.toArrayList(input), output);
     }
 }

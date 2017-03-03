@@ -30,6 +30,7 @@ public class MineTweaker implements ICompatModule {
 //        MineTweakerAPI.registerClass(HopperFilter.class);
         MineTweakerAPI.registerClass(SteelAnvil.class);
         MineTweakerAPI.registerClass(ChopRecipe.class);
+        MineTweakerAPI.registerClass(Turntable.class);
     }
 
     @Override

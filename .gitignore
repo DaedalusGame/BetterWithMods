@@ -24,3 +24,5 @@ classes
 # other
 eclipse
 run*
+/src/main/java/mcmultipart/test/
+/src/main/resources/assets/mcmultiparttest/

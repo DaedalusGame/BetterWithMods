@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by blueyu2 on 11/28/16.
  */
 public class HardcoreRedstoneEvent {
-
+    //TODO This caused some pretty severe crashes when testing mcmultipart, keep an eye on it.
     @SubscribeEvent
     public void disableRedstone(BlockEvent.NeighborNotifyEvent event) {
         if (!BWConfig.hardcoreRedstone)
@@ -33,11 +33,13 @@ public class HardcoreRedstoneEvent {
                 if (!state.getMaterial().equals(Material.IRON))
                     continue;
             }
-            world.neighborChanged(pos.offset(facing), event.getState().getBlock(), pos);
             for (EnumFacing f1 : EnumFacing.VALUES) {
                 if (f1 != facing.getOpposite())
                     world.neighborChanged(pos.offset(facing).offset(f1), event.getState().getBlock(), pos.offset(facing));
             }
+        }
+        if (event.getForceRedstoneUpdate()) {
+            event.getWorld().updateObservingBlocksAt(pos, event.getState().getBlock());
         }
     }
 }

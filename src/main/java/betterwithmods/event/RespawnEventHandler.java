@@ -9,7 +9,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,8 +23,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class RespawnEventHandler {
     static final int HARDCORE_SPAWN_RADIUS = 2000;
-    static final int HARDCORE_SPAWN_COOLDOWN = 24000;//20 min
+    static final int HARDCORE_SPAWN_COOLDOWN_RADIUS = 100;
+    static final int HARDCORE_SPAWN_COOLDOWN = 0;//24000;//20 min
     static final int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
+    static final EntityPlayer.SleepResult TOO_RESTLESS = EnumHelper.addEnum(EntityPlayer.SleepResult.class, "TOO_RESTLESS", new Class[0], new Object[0]);
+
 
     /**
      * Disable Beds
@@ -30,7 +35,10 @@ public class RespawnEventHandler {
     @SubscribeEvent
     public void onSleepInBed(PlayerSleepInBedEvent event) {
         if (!BWConfig.hardcoreBeds) return;
-        if (EntityPlayerExt.isSurvival(event.getEntityPlayer())) event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+        if (EntityPlayerExt.isSurvival(event.getEntityPlayer())) {
+            event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("tile.bed.tooRestless", new Object[0]), true);
+            event.setResult(TOO_RESTLESS);
+        }
     }
 
     /**
@@ -43,7 +51,7 @@ public class RespawnEventHandler {
         EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
         if (EntityPlayerExt.isSurvival(player)) {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
-            int spawnFuzz = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN ? HARDCORE_SPAWN_RADIUS : 100;
+            int spawnFuzz = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;
             BlockPos newPos = getRespawnPoint(player, spawnFuzz);
             player.setSpawnPoint(newPos, true);
         }

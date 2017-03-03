@@ -34,12 +34,14 @@ repositories {
         name "Base"
         url "http://blamejared.com/maven"
     }
+    maven { url "http://maven.amadornes.com/" }
 }
 dependencies {
 	deobfCompile "mezz.jei:jei_1.11.2:+"
     deobfCompile "MineTweaker3:MineTweaker3-API:+"
     deobfCompile "com.blamejared:MTLib:2.+"
     runtime "MineTweaker3:MineTweaker3-MC1112-Main:+"
+    deobfCompile "MCMultiPart2:MCMultiPart-exp:+"
 
 }
 

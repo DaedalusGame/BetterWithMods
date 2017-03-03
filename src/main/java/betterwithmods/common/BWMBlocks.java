@@ -12,6 +12,7 @@ import betterwithmods.common.blocks.BlockBWMPane;
 import betterwithmods.common.blocks.BlockBellows;
 import betterwithmods.common.blocks.BlockBrokenGearbox;
 import betterwithmods.common.blocks.BlockChime;
+import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockCrank;
 import betterwithmods.common.blocks.BlockCreativeGenerator;
 import betterwithmods.common.blocks.BlockDebarkedNew;
@@ -145,7 +146,7 @@ public final class BWMBlocks {
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
     public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
-
+    public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     private BWMBlocks() {
     }
 
@@ -204,6 +205,7 @@ public final class BWMBlocks {
         registerBlock(STUMP, new ItemBlockMeta(STUMP));
         registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
         registerBlock(BROKEN_GEARBOX);
+        registerBlock(COOKING_POTS, new ItemBlockMeta(COOKING_POTS));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -327,6 +329,7 @@ public final class BWMBlocks {
         setInventoryModel(STUMP);
         setInventoryModel(DIRT_SLAB);
         setInventoryModel(BROKEN_GEARBOX);
+        setInventoryModel(COOKING_POTS);
     }
 
     @SideOnly(Side.CLIENT)

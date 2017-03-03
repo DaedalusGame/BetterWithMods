@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntityCauldron extends TileEntityCookingPot {
     @Override
@@ -104,4 +105,33 @@ public class TileEntityCauldron extends TileEntityCookingPot {
         return "inv.cauldron.name";
     }
 
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public void readFromTag(NBTTagCompound tag) {
+
+    }
+
+    @Override
+    public NBTTagCompound writeToTag(NBTTagCompound tag) {
+        return null;
+    }
 }

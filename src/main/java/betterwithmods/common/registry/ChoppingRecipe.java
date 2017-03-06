@@ -29,6 +29,10 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public ChoppingRecipe(ItemStack planks, ItemStack sawdust, ItemStack log) {
+        this(planks, ItemStack.EMPTY, sawdust, log);
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         return isMatch(inv);

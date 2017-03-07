@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -109,7 +110,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     @Override
     public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler( 3);
+        return new MillInventory(this);
     }
 
     @Override
@@ -305,5 +306,18 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     private int getGrindingBonus() {
         return powerLevel / 3;
+    }
+
+    private static class MillInventory extends ItemStackHandler {
+        private TileEntity tile;
+        public MillInventory(TileEntity tile) {
+            super(3);
+            this.tile = tile;
+        }
+
+        @Override
+        public void onContentsChanged(int slot) {
+            tile.markDirty();
+        }
     }
 }

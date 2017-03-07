@@ -117,9 +117,9 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         {
             if(!event.player.getEntityWorld().isRemote) {
                 if (sawdust != ItemStack.EMPTY)
-                    event.player.entityDropItem(sawdust, 0);
+                    event.player.entityDropItem(sawdust.copy(), 0);
                 if (bark != ItemStack.EMPTY)
-                    event.player.entityDropItem(bark, 0);
+                    event.player.entityDropItem(bark.copy(), 0);
             }
             else
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);

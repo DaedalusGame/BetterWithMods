@@ -72,22 +72,30 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 if (player.getFoodStats().getFoodLevel() > 6) {
                     player.addExhaustion(BWConfig.crankExhaustion);
                     if (!world.isRemote) {
-                        if (!checkForOverpower(world, pos)) {
-                            world.setBlockState(pos, state.withProperty(STAGE, 1));
-                            world.markBlockRangeForRenderUpdate(pos, pos);
-                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-                        } else
-                            breakCrank(world, pos);
+                        toggleSwitch(world, pos, state);
                     }
                 } else if (world.isRemote) {
                     player.sendMessage(new TextComponentString("You are too exhausted to turn it."));
                     return false;
                 }
             }
+            else
+                toggleSwitch(world, pos, state);
             return true;
         }
         return false;
+    }
+
+    private void toggleSwitch(World world, BlockPos pos, IBlockState state) {
+        if (!world.isRemote) {
+            if (!checkForOverpower(world, pos)) {
+                world.setBlockState(pos, state.withProperty(STAGE, 1));
+                world.markBlockRangeForRenderUpdate(pos, pos);
+                world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
+                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
+            } else
+                breakCrank(world, pos);
+        }
     }
 
     @Override

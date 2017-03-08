@@ -66,6 +66,8 @@ public class BWConfig {
     public static boolean hardcoreStructureCraft;
     public static int reclaimCount;
     public static boolean inferiorDrops;
+    public static boolean kidFriendly;
+    public static float crankExhaustion;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -134,6 +136,8 @@ public class BWConfig {
         hardcoreStructureCraft = hardcoreStructures && config.get(HARDCORE, "Disable Brewing Stand and Enchanting Table Recipes", true, "If enabled with Hardcore Structures, disables crafting recipes for the brewing stand and enchanting table").setRequiresMcRestart(true).getBoolean();
         hardcoreStumping = config.get(HARDCORE, "Hardcore Stumping", true, "The bottom block of trees is very hard. Promotes landscapes filled with iconic stumps to show the triumphant march of progress").setRequiresMcRestart(true).getBoolean();
         inferiorDrops = config.get(HARDCORE, "Inferior Dirt Drops", true, "Dirt, sand, and gravel will drop piles if not harvested with a shovel").getBoolean();
+        kidFriendly = config.get("cosmetic", "Family Show", false, "Enable if your pack is kid-friendly.").getBoolean();
+        crankExhaustion = config.getFloat("Crank Exhaustion", MODPACK_TWEAKS, 2.0F, 0.0F, 2.0F, "How much saturation turning the crank eats. Set to 0.0 to disable.");
         if(config.hasChanged())
             config.save();
     }

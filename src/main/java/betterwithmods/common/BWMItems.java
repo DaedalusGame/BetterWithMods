@@ -9,6 +9,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.common.items.*;
 import betterwithmods.common.items.tools.*;
+import betterwithmods.config.BWConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -48,7 +49,7 @@ public final class BWMItems {
     public static final Item STEEL_SWORD = new ItemSoulforgedSword().setRegistryName("steel_sword");
     public static final Item STEEL_MATTOCK = new ItemSoulforgedMattock().setRegistryName("steel_mattock");
     public static final Item STEEL_BATTLEAXE = new ItemSoulforgedBattleAxe().setRegistryName("steel_battleaxe");
-    public static final Item CREEPER_OYSTER = (new ItemFood(2, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
+    public static final Item CREEPER_OYSTER = (new ItemAltNameFood(2, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
     public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
     public static final Item STEEL_HELMET = new ItemSoulforgeArmor(EntityEquipmentSlot.HEAD).setRegistryName("steel_helmet");
     public static final Item STEEL_CHEST = new ItemSoulforgeArmor(EntityEquipmentSlot.CHEST).setRegistryName("steel_chest");

@@ -31,6 +31,8 @@ public class ConfigSyncHandler {
         BWMod.logger.info("Syncing Config with Server");
 
         for (ConfigCategory serverCategory : categories) {
+            if (serverCategory.getName().equals("cosmetic"))
+                continue;
             // get the local equivalent
             ConfigCategory category = BWConfig.config.getCategory(serverCategory.getName());
 

@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -67,20 +68,22 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
         int meta = state.getValue(STAGE);
 
         if (meta == 0) {
-            if (player.getFoodStats().getFoodLevel() > 6) {
-                player.addExhaustion(2.0F);
-                if (!world.isRemote) {
-                    if (!checkForOverpower(world, pos)) {
-                        world.setBlockState(pos, state.withProperty(STAGE, 1));
-                        world.markBlockRangeForRenderUpdate(pos, pos);
-                        world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                        world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-                    } else
-                        breakCrank(world, pos);
+            if (BWConfig.crankExhaustion > 0.0F) {
+                if (player.getFoodStats().getFoodLevel() > 6) {
+                    player.addExhaustion(BWConfig.crankExhaustion);
+                    if (!world.isRemote) {
+                        if (!checkForOverpower(world, pos)) {
+                            world.setBlockState(pos, state.withProperty(STAGE, 1));
+                            world.markBlockRangeForRenderUpdate(pos, pos);
+                            world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
+                            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
+                        } else
+                            breakCrank(world, pos);
+                    }
+                } else if (world.isRemote) {
+                    player.sendMessage(new TextComponentString("You are too exhausted to turn it."));
+                    return false;
                 }
-            } else if (world.isRemote) {
-                player.sendMessage(new TextComponentString("You are too exhausted to turn it."));
-                return false;
             }
             return true;
         }

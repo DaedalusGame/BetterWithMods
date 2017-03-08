@@ -264,6 +264,7 @@ item.bwm:knife.name=Iron Knife
 item.bwm:dynamite.name=Dynamite
 item.bwm:fertilizer.name=Fertilizer
 item.bwm:creeper_oyster.name=Creeper Oyster
+item.bwm:creeper_oyster_kf.name=Creeper Fuse
 item.bwm:ender_spectacles.name=Ender Spectacles
 item.bwm:raw_egg.name=Raw Egg
 item.bwm:cooked_egg.name=Cooked Egg
@@ -312,6 +313,7 @@ item.bwm:composite_bow.name=Composite Bow
 item.bwm:broadhead_arrow.name=Broadhead Arrow
 
 item.bwm:breeding_harness.name=Breeding Harness
+item.bwm:breeding_harness_kf.name=Restraints
 
 item.bwm:arcane_scroll.name=Arcane Scroll
 

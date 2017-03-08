@@ -1,7 +1,7 @@
 package betterwithmods.common.items;
 
 import betterwithmods.client.BWCreativeTabs;
-import net.minecraft.item.Item;
+import betterwithmods.config.BWConfig;
 
 /**
  * Purpose:
@@ -9,9 +9,17 @@ import net.minecraft.item.Item;
  * @author Tyler Marshall
  * @version 11/15/16
  */
-public class ItemBreedingHarness extends Item {
+public class ItemBreedingHarness extends ItemAltName {
     public ItemBreedingHarness() {
         setCreativeTab(BWCreativeTabs.BWTAB);
         setMaxStackSize(1);
+    }
+
+    @Override
+    public String[] getLocations() {
+        if (BWConfig.kidFriendly)
+            return new String[]{"breeding_harness_kf"};
+        else
+            return new String[]{"breeding_harness"};
     }
 }

@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.blocks.tile.TileEntityVase;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.ITileEntityProvider;
@@ -10,24 +11,32 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -82,6 +91,14 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     }
 
     @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            InvUtils.readFromStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack);
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
         TileEntity te = worldIn.getTileEntity(pos);
@@ -97,6 +114,11 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!world.isRemote && entity != null && entity instanceof EntityArrow) {
             world.playEvent(2001, pos, Block.getStateId(state));
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile != null && tile instanceof TileEntityVase) {
+                ((TileEntityVase)tile).onBreak();
+                world.updateComparatorOutputLevel(pos, this);
+            }
             world.setBlockToAir(pos);
         }
 
@@ -104,11 +126,51 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     }
 
     @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(Color).getMetadata());
+        TileEntity tile = world.getTileEntity(pos);
+        if (!world.isRemote && tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            InvUtils.writeToStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack);
+        }
+        return stack;
+    }
+
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile, ItemStack stack) {
+        player.addStat(StatList.getBlockStats(this));
+        player.addExhaustion(0.005F);
+
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
+            List<ItemStack> items = new ArrayList<>();
+            ItemStack itemStack = this.getSilkTouchDrop(state);
+
+            if (!itemStack.isEmpty()) {
+                if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+                    InvUtils.writeToStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), itemStack);
+                }
+                items.add(itemStack);
+            }
+
+            ForgeEventFactory.fireBlockHarvesting(items, world, pos, state, 0, 1.0f, true, player);
+            for (ItemStack item : items) {
+                spawnAsEntity(world, pos, item);
+            }
+        }
+        else {
+            if (tile != null && tile instanceof TileEntityVase) {
+                ((TileEntityVase)tile).onBreak();
+            }
+            harvesters.set(player);
+            this.dropBlockAsItem(world, pos, state, 0);
+            harvesters.set(null);
+        }
+    }
+
+    @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntityVase) {
-            ((TileEntityVase) tile).onBreak();
             world.updateComparatorOutputLevel(pos, this);
         }
 

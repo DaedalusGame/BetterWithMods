@@ -385,6 +385,8 @@ bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
 
 bwm.effect.true_sight=True Sight
 
+bwm.item.containment=Contains:
+
 config.sync.restart=Server changes to the configs require a client restart. Sorry about that.
 config.sync.ok=Changes to the configs successful. If you see issues from not restarting the client, please report it to the server admins so they can report the changes made to the config file.
 

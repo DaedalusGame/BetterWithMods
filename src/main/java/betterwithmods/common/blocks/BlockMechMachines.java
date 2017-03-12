@@ -76,10 +76,10 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         switch (state.getValue(MACHINETYPE)) {
             case HOPPER:
             case PULLEY:
-                setHarvestLevel("axe", 0);
+                setHarvestLevel("axe", 0, state);
                 return Material.WOOD;
             default:
-
+                setHarvestLevel("pickaxe", 0, state);
                 return super.getMaterial(state);
         }
     }

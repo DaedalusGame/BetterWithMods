@@ -106,7 +106,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                 toggleAsynchronous(player);
                 return true;
             }
-        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY && player.getHeldItemOffhand() == ItemStack.EMPTY) {
+        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY) {
             advanceTimerPos();
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);

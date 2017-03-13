@@ -160,7 +160,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
             if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                 player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             } else {
-                if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityTurntable) {
+                if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityTurntable && hand == EnumHand.MAIN_HAND) {
                     return ((TileEntityTurntable) world.getTileEntity(pos)).processRightClick(player);
                 }
             }

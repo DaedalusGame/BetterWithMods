@@ -377,6 +377,7 @@ death.blasting_oil=%s is having a blast
 
 bwm.message.immersive.0=Only works to bridge mechanical power
 bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos
+bwm.message.exhaustion=You are too exhausted to turn it.
 
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features

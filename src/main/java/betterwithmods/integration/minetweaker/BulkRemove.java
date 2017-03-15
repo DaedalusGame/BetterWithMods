@@ -16,6 +16,11 @@ public class BulkRemove extends BaseListRemoval<BulkRecipe> {
     protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output) {
         super(name, recipes.getRecipes(), recipes.removeRecipes(output));
     }
+
+    protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output, Object... inputs) {
+        super(name, recipes.getRecipes(), recipes.removeRecipes(output, inputs));
+    }
+
     @Override
     protected String getRecipeInfo(BulkRecipe recipe) {
         return recipe.getOutput().getDisplayName();

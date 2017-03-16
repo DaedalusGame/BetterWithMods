@@ -1,6 +1,7 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.blocks.BlockAdvBellows;
 import betterwithmods.common.blocks.BlockAdvGearbox;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockAnchor;
@@ -59,6 +60,7 @@ import betterwithmods.common.blocks.mini.BlockMoulding;
 import betterwithmods.common.blocks.mini.BlockSiding;
 import betterwithmods.common.blocks.mini.ItemBlockMini;
 import betterwithmods.common.blocks.mini.TileEntityMultiType;
+import betterwithmods.common.blocks.tile.TileEntityAdvBellows;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
@@ -145,7 +147,7 @@ public final class BWMBlocks {
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
     public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
-
+    public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     private BWMBlocks() {
     }
 
@@ -206,6 +208,7 @@ public final class BWMBlocks {
         registerBlock(BROKEN_GEARBOX);
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
+        registerBlock(ADVANCED_BELLOWS);
     }
 
     public static void registerTileEntities() {
@@ -228,6 +231,8 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "bwm_multi_type", "multi_type", "bwm.multiType");
 
         GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "bwm_gearbox", "gearbox", "bwm.gearbox");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityAdvBellows.class, "bwm_bellows", "bellows", "bwm.bellows");
+
     }
 
     /**
@@ -327,6 +332,7 @@ public final class BWMBlocks {
         setInventoryModel(STUMP);
         setInventoryModel(DIRT_SLAB);
         setInventoryModel(BROKEN_GEARBOX);
+        setInventoryModel(ADVANCED_BELLOWS);
     }
 
     @SideOnly(Side.CLIENT)

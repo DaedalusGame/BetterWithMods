@@ -282,6 +282,8 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS), "C C", "C C", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL));
 
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ADVANCED_BELLOWS), "WWW", "LLL", "BGB", 'W', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'L', ItemMaterial.getMaterial(EnumMaterial.TANNED_LEATHER_CUT), 'B', ItemMaterial.getMaterial(EnumMaterial.STEEL_SPRING), 'G', ItemMaterial.getMaterial(EnumMaterial.STEEL_GEAR)));
+
         if (BWConfig.hardcoreOres) {
             RecipeUtils.removeRecipes(Items.COMPASS, 0);
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
@@ -602,7 +604,8 @@ public class BWCrafting {
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 6, 0), "X  X", "XXXX", 'X', "stone");
         addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
-
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.STEEL_GEAR)," NN ","NIIN","NIIN"," NN ",'N',"nuggetSoulforgedSteel",'I',"ingotSoulforgedSteel");
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.STEEL_SPRING),"NNN","NNN","NNN","NNN",'N',"nuggetSoulforgedSteel");
         for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 8, type.getMetadata()), "XXXX", 'X', type.getBlock());
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()));

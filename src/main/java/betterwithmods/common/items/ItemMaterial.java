@@ -102,7 +102,9 @@ public class ItemMaterial extends Item implements IMultiLocations {
         BROADHEAD,
         COCOA_POWDER,
         DIAMOND_INGOT,
-        CHAIN_MAIL;
+        CHAIN_MAIL,
+        STEEL_GEAR,
+        STEEL_SPRING;
 
         int getMetadata() {
             return this.ordinal();

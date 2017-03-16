@@ -39,6 +39,7 @@ tile.bwm:aesthetic.5.name=Flint Block
 tile.bwm:aesthetic.6.name=White Stone
 tile.bwm:aesthetic.7.name=White Cobble
 tile.bwm:aesthetic.8.name=Ender Block
+tile.bwm:advanced_bellows.name=Spring-Action Bellows
 
 tile.bwm:windmill.windmill.name=Windmill
 tile.bwm:windmill.waterwheel.name=Waterwheel
@@ -258,6 +259,10 @@ item.bwm:material.broadhead.name=Broadhead
 item.bwm:material.cocoa_powder.name=Cocoa Powder
 item.bwm:material.diamond_ingot.name=Diamond Ingot
 item.bwm:material.chain_mail.name=Chain Mail
+item.bwm:material.steel_gear.name=Steel Gear
+item.bwm:material.steel_spring.name=Steel Spring
+
+
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife

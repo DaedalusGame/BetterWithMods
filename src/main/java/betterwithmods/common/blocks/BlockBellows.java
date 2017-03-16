@@ -145,13 +145,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
                 setTriggerMechanicalStateChange(world, pos, false);
                 setMechanicalOn(world, pos, gettingPower);
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
-
-                if (gettingPower) {
-                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
-                    blow(world, pos);
-                } else
-                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
-                liftCollidingEntities(world, pos);
+                blow(world, pos);
             } else {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
                 setTriggerMechanicalStateChange(world, pos, true);
@@ -233,8 +227,14 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         return state.getValue(ACTIVE);
     }
 
-    private void blow(World world, BlockPos pos) {
-        stokeFlames(world, pos);
+    public void blow(World world, BlockPos pos) {
+        if (isMechanicalOn(world, pos)) {
+            stokeFlames(world, pos);
+            liftCollidingEntities(world, pos);
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
+        } else {
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
+        }
     }
 
     private void stokeFlames(World world, BlockPos pos) {

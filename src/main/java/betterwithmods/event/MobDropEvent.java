@@ -3,6 +3,7 @@ package betterwithmods.event;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.config.BWConfig;
 import betterwithmods.common.entity.EntityShearedCreeper;
 import betterwithmods.util.InvUtils;
@@ -159,10 +160,7 @@ public class MobDropEvent {
             for (EntityItem item : evt.getDrops()) {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    if (rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.getCount(), 26));
-                    else
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.getCount(), 25));
+                    item.setEntityItemStack(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.getCount()));
                 }
             }
         }

@@ -1,10 +1,12 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.tile.TileEntityAdvBellows;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -48,6 +50,15 @@ public class BlockAdvBellows extends BlockBellows implements ITileEntityProvider
             if(!gettingPower)
                 setTriggerMechanicalStateChange(world,pos,false);
         }
+    }
+
+    @Override
+    public void playStateChangeSound(World world, BlockPos pos) {
+        super.playStateChangeSound(world, pos);
+        if (isTriggerMechanicalStateChange(world, pos))
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
+        else
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
     }
 
     @Nullable

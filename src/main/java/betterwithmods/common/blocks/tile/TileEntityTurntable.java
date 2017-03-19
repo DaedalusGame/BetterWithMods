@@ -367,7 +367,6 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         }
     }
 
-    @SideOnly(Side.CLIENT)
     private void spawnParticles(IBlockState state) {
         ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
     }

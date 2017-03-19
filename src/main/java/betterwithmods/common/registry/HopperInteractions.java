@@ -91,7 +91,7 @@ public class HopperInteractions {
 
         @Override
         public void onCraft(World world, BlockPos pos, EntityItem item) {
-            ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(item.getEntityItem().getCount());
+            ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(1);
             if (!world.isRemote) {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
             }

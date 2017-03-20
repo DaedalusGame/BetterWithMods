@@ -102,6 +102,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
             setFacingInBlock(state, EnumFacing.NORTH);
         EnumFacing facing = DirUtils.convertEntityOrientationToFlatFacing(entity);
         setFacingInBlock(state, facing);
+        world.scheduleBlockUpdate(pos, this, 10, 5);
     }
 
     @Override

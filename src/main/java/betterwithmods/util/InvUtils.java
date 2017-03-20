@@ -371,7 +371,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
                 if (inv.getStackInSlot(i).getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta == meta)) {
                     return i;
@@ -384,20 +384,20 @@ public class InvUtils {
 
     public static void ejectStackWithOffset(World world, BlockPos pos, List<ItemStack> stacks) {
         for (ItemStack stack : stacks) {
-            if (stack != null)
+            if (!stack.isEmpty())
                 ejectStackWithOffset(world, pos, stack.copy());
         }
     }
 
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack... stacks) {
         for (ItemStack stack : stacks) {
-            if (stack != null)
+            if (!stack.isEmpty())
                 ejectStackWithOffset(world, pos, stack.copy());
         }
     }
 
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack stack) {
-        if (stack == null)
+        if (stack.isEmpty())
             return;
         float xOff = world.rand.nextFloat() * 0.7F + 0.15F;
         float yOff = world.rand.nextFloat() * 0.2F + 0.1F;

@@ -26,6 +26,8 @@ public class TileEntityAdvBellows extends TileEntity implements ITickable{
             }
             if(tick >= 37) {
                 block.setTriggerMechanicalStateChange(world, pos, continuous = !continuous);
+                if (!world.isRemote)
+                    block.playStateChangeSound(world, pos);
                 tick = 0;
             }
             tick++;

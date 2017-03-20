@@ -1,5 +1,6 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
@@ -19,9 +20,10 @@ import java.util.Random;
  * Created by blueyu2 on 12/12/16.
  */
 public class ChoppingRecipe extends ShapelessOreRecipe {
-    private final ItemStack log, bark, sawdust;
+    private final Object log;
+    private final ItemStack bark, sawdust;
 
-    public ChoppingRecipe(ItemStack planks, ItemStack bark, ItemStack sawdust, ItemStack log) {
+    public ChoppingRecipe(ItemStack planks, ItemStack bark, ItemStack sawdust, Object log) {
         super(planks, new ItemStack(Items.IRON_AXE, 1, OreDictionary.WILDCARD_VALUE), log);
         this.log = log;
         this.bark = bark;
@@ -29,7 +31,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public ChoppingRecipe(ItemStack planks, ItemStack sawdust, ItemStack log) {
+    public ChoppingRecipe(ItemStack planks, ItemStack sawdust, Object log) {
         this(planks, ItemStack.EMPTY, sawdust, log);
     }
 
@@ -56,10 +58,24 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
                     else
                         return false;
                 }
-                else if (OreDictionary.itemMatches(slot, log, true)) {
-                    if(!hasLog) {
-                        hasLog = true;
-                        inRecipe = true;
+                else {
+                    if (log instanceof ItemStack) {
+                        if (OreDictionary.itemMatches(slot, (ItemStack)log, true)) {
+                            if (!hasLog) {
+                                hasLog = true;
+                                inRecipe = true;
+                            } else
+                                return false;
+                        }
+                    }
+                    else if (log instanceof String) {
+                        if (InvUtils.listContains(slot, OreDictionary.getOres((String)log))) {
+                            if (!hasLog) {
+                                hasLog = true;
+                                inRecipe = true;
+                            } else
+                                return false;
+                        }
                     }
                     else
                         return false;

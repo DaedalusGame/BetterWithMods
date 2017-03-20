@@ -6,6 +6,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -33,13 +34,32 @@ public class HardcoreRedstoneEvent {
                 if (!state.getMaterial().equals(Material.IRON))
                     continue;
             }
+
+            world.neighborChanged(pos.offset(facing), event.getState().getBlock(), pos);
+            /*
             for (EnumFacing f1 : EnumFacing.VALUES) {
                 if (f1 != facing.getOpposite())
                     world.neighborChanged(pos.offset(facing).offset(f1), event.getState().getBlock(), pos.offset(facing));
-            }
+            }*/
         }
         if (event.getForceRedstoneUpdate()) {
             event.getWorld().updateObservingBlocksAt(pos, event.getState().getBlock());
+        } else {
+            IBlockState state = world.getBlockState(pos);
+            boolean hasFacingProp = false;
+            IProperty<EnumFacing> dir = null;
+            for (IProperty<?> prop : state.getProperties().keySet()) {
+                if (prop.getName().equals("facing") && prop.getValueClass().equals(EnumFacing.class)) {
+                    dir = ((IProperty<EnumFacing>)prop);
+                    hasFacingProp = true;
+                }
+                if (hasFacingProp)
+                    break;
+            }
+            if (hasFacingProp) {
+                EnumFacing face = state.getValue(dir);
+                world.notifyNeighborsOfStateChange(pos.offset(face.getOpposite()), state.getBlock(), false);
+            }
         }
     }
 }

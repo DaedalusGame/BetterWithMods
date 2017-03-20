@@ -1,5 +1,6 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
@@ -19,14 +20,19 @@ import java.util.Random;
  * Created by blueyu2 on 12/12/16.
  */
 public class ChoppingRecipe extends ShapelessOreRecipe {
-    private final ItemStack log, bark, sawdust;
+    private final Object log;
+    private final ItemStack bark, sawdust;
 
-    public ChoppingRecipe(ItemStack planks, ItemStack bark, ItemStack sawdust, ItemStack log) {
+    public ChoppingRecipe(ItemStack planks, ItemStack bark, ItemStack sawdust, Object log) {
         super(planks, new ItemStack(Items.IRON_AXE, 1, OreDictionary.WILDCARD_VALUE), log);
         this.log = log;
         this.bark = bark;
         this.sawdust = sawdust;
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public ChoppingRecipe(ItemStack planks, ItemStack sawdust, Object log) {
+        this(planks, ItemStack.EMPTY, sawdust, log);
     }
 
     @Override
@@ -52,10 +58,24 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
                     else
                         return false;
                 }
-                else if (OreDictionary.itemMatches(slot, log, true)) {
-                    if(!hasLog) {
-                        hasLog = true;
-                        inRecipe = true;
+                else {
+                    if (log instanceof ItemStack) {
+                        if (OreDictionary.itemMatches(slot, (ItemStack)log, true)) {
+                            if (!hasLog) {
+                                hasLog = true;
+                                inRecipe = true;
+                            } else
+                                return false;
+                        }
+                    }
+                    else if (log instanceof String) {
+                        if (InvUtils.listContains(slot, OreDictionary.getOres((String)log))) {
+                            if (!hasLog) {
+                                hasLog = true;
+                                inRecipe = true;
+                            } else
+                                return false;
+                        }
                     }
                     else
                         return false;
@@ -113,9 +133,9 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         {
             if(!event.player.getEntityWorld().isRemote) {
                 if (sawdust != ItemStack.EMPTY)
-                    event.player.entityDropItem(sawdust, 0);
+                    event.player.entityDropItem(sawdust.copy(), 0);
                 if (bark != ItemStack.EMPTY)
-                    event.player.entityDropItem(bark, 0);
+                    event.player.entityDropItem(bark.copy(), 0);
             }
             else
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);

@@ -106,7 +106,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                 toggleAsynchronous(player);
                 return true;
             }
-        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY && player.getHeldItemOffhand() == ItemStack.EMPTY) {
+        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY) {
             advanceTimerPos();
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
@@ -367,7 +367,6 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         }
     }
 
-    @SideOnly(Side.CLIENT)
     private void spawnParticles(IBlockState state) {
         ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
     }

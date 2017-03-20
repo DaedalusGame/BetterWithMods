@@ -34,5 +34,8 @@ public class Crucible {
         MineTweakerAPI.apply(new BulkRemove("crucible", CraftingManagerCrucible.getInstance(), InputHelper.toStack(output)));
     }
 
-
+    @ZenMethod
+    public static void remove(IItemStack output, IIngredient[] inputs) {
+        MineTweakerAPI.apply(new BulkRemove("crucible", CraftingManagerCrucible.getInstance(), InputHelper.toStack(output), InputHelper.toObjects(inputs)));
+    }
 }

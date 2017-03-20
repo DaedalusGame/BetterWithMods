@@ -102,6 +102,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
             setFacingInBlock(state, EnumFacing.NORTH);
         EnumFacing facing = DirUtils.convertEntityOrientationToFlatFacing(entity);
         setFacingInBlock(state, facing);
+        world.scheduleBlockUpdate(pos, this, 10, 5);
     }
 
     @Override
@@ -145,12 +146,13 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
                 setTriggerMechanicalStateChange(world, pos, false);
                 setMechanicalOn(world, pos, gettingPower);
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
-
                 if (gettingPower) {
                     world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
                     blow(world, pos);
-                } else
+                }
+                else {
                     world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
+                }
                 liftCollidingEntities(world, pos);
             } else {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
@@ -233,8 +235,14 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         return state.getValue(ACTIVE);
     }
 
-    private void blow(World world, BlockPos pos) {
-        stokeFlames(world, pos);
+    public void blow(World world, BlockPos pos) {
+        if (isMechanicalOn(world, pos)) {
+            stokeFlames(world, pos);
+        }
+    }
+
+    public void playStateChangeSound(World world, BlockPos pos) {
+        liftCollidingEntities(world, pos);
     }
 
     private void stokeFlames(World world, BlockPos pos) {

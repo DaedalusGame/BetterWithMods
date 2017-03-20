@@ -1,6 +1,7 @@
 package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
+import betterwithmods.config.BWConfig;
 import betterwithmods.event.BreedingHardnessEvent;
 import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
  * @version 11/15/16
  */
 public class RenderCowHarness extends RenderCow {
-    private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID, "textures/entity/cow_harness.png");
+    private static final ResourceLocation HARNESS = BWConfig.kidFriendly ? new ResourceLocation(BWMod.MODID, "textures/entity/cow_harness_kf.png") : new ResourceLocation(BWMod.MODID, "textures/entity/cow_harness.png");
 
     public RenderCowHarness(RenderManager renderManagerIn) {
         super(renderManagerIn);

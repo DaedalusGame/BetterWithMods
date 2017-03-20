@@ -23,6 +23,7 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -33,6 +34,9 @@ import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
 
 public class BWCrafting {
     public static void init() {
+        RecipeSorter.register("bwm:chopping", ChoppingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:cutting", CuttingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:dyetag", DyeWithTagRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         addVanillaRecipes();
         addCauldronRecipes();
         addCrucibleRecipes();
@@ -76,9 +80,9 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.SANDSTONE_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.SANDSTONE.getMetadata())).setMirrored(true));
         if (BWConfig.hardcoreLumber) {
             for (int i = 0; i < 4; i++)
-                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), null, ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
+                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
             for (int i = 0; i < 2; i++)
-                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, 4 + i), null, ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i)));
+                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, 4 + i), ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i)));
         } else {
             for (int i = 0; i < 4; i++)
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
@@ -223,7 +227,7 @@ public class BWCrafting {
         String[] dyes = {"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
 
         for (int i = 0; i < 16; i++) {
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]));
+            GameRegistry.addRecipe(new DyeWithTagRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]));
         }
 
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP, 1), "VVV", 'V', new ItemStack(Blocks.VINE));
@@ -277,6 +281,8 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS), "CCC", "C C", "C C", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS), "C C", "C C", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ADVANCED_BELLOWS), " C " , "SBS", " G ",  'B', BWMBlocks.BELLOWS, 'C', Items.CLOCK,'S', ItemMaterial.getMaterial(EnumMaterial.STEEL_SPRING), 'G', ItemMaterial.getMaterial(EnumMaterial.STEEL_GEAR)));
 
         if (BWConfig.hardcoreOres) {
             RecipeUtils.removeRecipes(Items.COMPASS, 0);
@@ -502,7 +508,7 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.GOLDEN_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
         if (BWConfig.hardcoreOres) {
-            addStokedCrucibleRecipe(new ItemStack(InvUtils.getOreNames("nuggetIron").get(0).getItem(), 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
         } else {
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
         }
@@ -598,7 +604,8 @@ public class BWCrafting {
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 6, 0), "X  X", "XXXX", 'X', "stone");
         addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
-
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.STEEL_GEAR)," NN ","NIIN","NIIN"," NN ",'N',"nuggetSoulforgedSteel",'I',"ingotSoulforgedSteel");
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.STEEL_SPRING),"NNN","NNN","NNN","NNN",'N',"nuggetSoulforgedSteel");
         for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 8, type.getMetadata()), "XXXX", 'X', type.getBlock());
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()));

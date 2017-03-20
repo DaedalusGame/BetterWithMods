@@ -2,8 +2,11 @@ package betterwithmods.util;
 
 import betterwithmods.common.registry.OreStack;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -368,7 +371,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
                 if (inv.getStackInSlot(i).getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta == meta)) {
                     return i;
@@ -381,20 +384,20 @@ public class InvUtils {
 
     public static void ejectStackWithOffset(World world, BlockPos pos, List<ItemStack> stacks) {
         for (ItemStack stack : stacks) {
-            if (stack != null)
+            if (!stack.isEmpty())
                 ejectStackWithOffset(world, pos, stack.copy());
         }
     }
 
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack... stacks) {
         for (ItemStack stack : stacks) {
-            if (stack != null)
+            if (!stack.isEmpty())
                 ejectStackWithOffset(world, pos, stack.copy());
         }
     }
 
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack stack) {
-        if (stack == null)
+        if (stack.isEmpty())
             return;
         float xOff = world.rand.nextFloat() * 0.7F + 0.15F;
         float yOff = world.rand.nextFloat() * 0.2F + 0.1F;
@@ -430,6 +433,32 @@ public class InvUtils {
             List<ItemStack> stacks = world.getLootTableManager().getLootTableFromLocation(lootLocation).generateLootForPools(world.rand, build.build());
             if (!stacks.isEmpty()) {
                 ejectStackWithOffset(world, pos, stacks);
+            }
+        }
+    }
+
+    public static void writeToStack (IItemHandler inv, ItemStack stack) {
+        NonNullList<ItemStack> list = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < inv.getSlots(); i++) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
+                list.set(i, inv.getStackInSlot(i).copy());
+            }
+        }
+        NBTTagCompound tag = ItemStackHelper.saveAllItems(new NBTTagCompound(), list);
+
+        if (!tag.hasNoTags())
+            stack.setTagCompound(tag);
+    }
+
+    public static void readFromStack (IItemHandler inv, ItemStack stack) {
+        if (!stack.isEmpty() && stack.hasTagCompound()) {
+            NonNullList<ItemStack> list = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
+            NBTTagCompound tag = stack.getTagCompound();
+            if (tag != null) {
+                ItemStackHelper.loadAllItems(tag, list);
+                for (int i = 0; i < inv.getSlots(); i++) {
+                    inv.insertItem(i, list.get(i), false);
+                }
             }
         }
     }

@@ -36,6 +36,7 @@ tile.bwm:aesthetic.5.name=Flint Block
 tile.bwm:aesthetic.6.name=White Stone
 tile.bwm:aesthetic.7.name=White Cobble
 tile.bwm:aesthetic.8.name=Ender Block
+tile.bwm:advanced_bellows.name=Spring-Action Bellows
 
 tile.bwm:windmill.windmill.name=Windmill
 tile.bwm:windmill.waterwheel.name=Waterwheel
@@ -255,12 +256,17 @@ item.bwm:material.broadhead.name=Broadhead
 item.bwm:material.cocoa_powder.name=Cocoa Powder
 item.bwm:material.diamond_ingot.name=Diamond Ingot
 item.bwm:material.chain_mail.name=Chain Mail
+item.bwm:material.steel_gear.name=Steel Gear
+item.bwm:material.steel_spring.name=Steel Spring
+
+
 
 item.bwm:donut.name=Donut
 item.bwm:knife.name=Iron Knife
 item.bwm:dynamite.name=Dynamite
 item.bwm:fertilizer.name=Fertilizer
 item.bwm:creeper_oyster.name=Creeper Oyster
+item.bwm:creeper_oyster_kf.name=Creeper Fuse
 item.bwm:ender_spectacles.name=Ender Spectacles
 item.bwm:raw_egg.name=Raw Egg
 item.bwm:cooked_egg.name=Cooked Egg
@@ -309,6 +315,7 @@ item.bwm:composite_bow.name=Composite Bow
 item.bwm:broadhead_arrow.name=Broadhead Arrow
 
 item.bwm:breeding_harness.name=Breeding Harness
+item.bwm:breeding_harness_kf.name=Restraints
 
 item.bwm:arcane_scroll.name=Arcane Scroll
 
@@ -372,6 +379,7 @@ death.blasting_oil=%s is having a blast
 
 bwm.message.immersive.0=Only works to bridge mechanical power
 bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos
+bwm.message.exhaustion=You are too exhausted to turn it.
 
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
@@ -379,6 +387,8 @@ bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
 bwm.config.pulley.tooltip=Limitations of the platforms of the pulley 
 
 bwm.effect.true_sight=True Sight
+
+bwm.item.containment=Contains:
 
 config.sync.restart=Server changes to the configs require a client restart. Sorry about that.
 config.sync.ok=Changes to the configs successful. If you see issues from not restarting the client, please report it to the server admins so they can report the changes made to the config file.

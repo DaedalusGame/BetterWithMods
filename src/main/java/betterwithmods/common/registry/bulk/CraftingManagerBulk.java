@@ -73,6 +73,58 @@ public abstract class CraftingManagerBulk {
         return removed;
     }
 
+    public List<BulkRecipe> removeRecipes(ItemStack output, Object... inputs) {
+        List<BulkRecipe> removed = Lists.newArrayList();
+        Iterator<BulkRecipe> it = recipes.iterator();
+        while(it.hasNext()) {
+            BulkRecipe ir = it.next();
+            if(ir.getOutput().isItemEqual(output)) {
+                if (inputs.length > 0) {
+                    boolean match = true;
+                    for (Object input : inputs) {
+                        match = hasMatch(input, ir.getRecipeInput());
+                        if (!match)
+                            break;
+                    }
+                    if (match)
+                        removed.add(ir);
+                }
+                else {
+                    removed.add(ir);
+                }
+            }
+        }
+        return removed;
+    }
+
+    private boolean hasMatch(Object input, List<Object> inputs) {
+        if (input instanceof String) {
+            for (Object in : inputs) {
+                if (in instanceof OreStack) {
+                    if (input.equals(((OreStack)in).getOreName()))
+                        return true;
+                }
+                else if (in instanceof ItemStack) {
+                    if (InvUtils.listContains((ItemStack)in, OreDictionary.getOres((String)input)))
+                        return true;
+                }
+            }
+        } else if (input instanceof ItemStack) {
+            for (Object in : inputs) {
+                if (in instanceof ItemStack) {
+                    if (((ItemStack)input).isItemEqual((ItemStack)in))
+                        return true;
+                }
+                else if (in instanceof OreStack) {
+                    if (InvUtils.listContains((ItemStack)input, ((OreStack)in).getOres())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean removeRecipe(ItemStack output, Object[] inputs) {
         return removeRecipe(output, null, inputs);
     }

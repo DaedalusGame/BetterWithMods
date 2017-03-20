@@ -33,5 +33,8 @@ public class Mill {
         MineTweakerAPI.apply(new BulkRemove("mill",CraftingManagerMill.getInstance(),InputHelper.toStack(output)));
     }
 
-
+    @ZenMethod
+    public static void remove(IItemStack output, IIngredient[] inputs) {
+        MineTweakerAPI.apply(new BulkRemove("mill",CraftingManagerMill.getInstance(),InputHelper.toStack(output), InputHelper.toObjects(inputs)));
+    }
 }

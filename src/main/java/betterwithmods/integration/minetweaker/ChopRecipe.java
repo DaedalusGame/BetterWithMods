@@ -4,6 +4,7 @@ import betterwithmods.common.registry.ChoppingRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -18,8 +19,8 @@ public class ChopRecipe {
     public static final String clazz = "mods.betterwithmods.ChopRecipe";
 
     @ZenMethod
-    public static void add(IItemStack output, @Optional IItemStack bark, @Optional IItemStack sawdust, IItemStack log) {
-        ChoppingRecipe recipe = new ChoppingRecipe(InputHelper.toStack(output), InputHelper.toStack(bark), InputHelper.toStack(sawdust), InputHelper.toStack(log));
+    public static void add(IItemStack output, @Optional IItemStack bark, @Optional IItemStack sawdust, IIngredient log) {
+        ChoppingRecipe recipe = new ChoppingRecipe(InputHelper.toStack(output), InputHelper.toStack(bark), InputHelper.toStack(sawdust), InputHelper.toObject(log));
         MineTweakerAPI.apply(new Add(recipe));
     }
 

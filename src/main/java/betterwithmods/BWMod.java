@@ -78,10 +78,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
+@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:quark", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
-    public static final String VERSION = "1.0.1";
+    public static final String VERSION = "1.1.0";
     public static final String NAME = "Better With Mods";
     private static final Set<ICompatModule> loadedModules = new HashSet<>();
 
@@ -106,7 +106,7 @@ public class BWMod {
         map.put("harvestcraft", "betterwithmods.integration.Harvestcraft");
         //map.put("immersiveengineering", "betterwithmods.integration.immersiveengineering.ImmersiveEngineering");
         map.put("crafttweaker", "betterwithmods.integration.minetweaker.MineTweaker");
-        map.put("Quark", "betterwithmods.integration.Quark");
+        map.put("quark", "betterwithmods.integration.Quark");
         //map.put("tconstruct", "betterwithmods.integration.tcon.TConstruct");
         map.put("nethercore", "betterwithmods.integration.NetherCore");
         compatClasses = Collections.unmodifiableMap(map);

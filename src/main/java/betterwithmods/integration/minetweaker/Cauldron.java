@@ -34,5 +34,8 @@ public class Cauldron {
         MineTweakerAPI.apply(new BulkRemove("cauldron", CraftingManagerCauldron.getInstance(),InputHelper.toStack(output)));
     }
 
-
+    @ZenMethod
+    public static void remove(IItemStack output, @NotNull IIngredient[] inputs) {
+        MineTweakerAPI.apply(new BulkRemove("cauldron", CraftingManagerCauldron.getInstance(),InputHelper.toStack(output), InputHelper.toObjects(inputs)));
+    }
 }

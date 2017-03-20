@@ -44,16 +44,19 @@ public class TileEntityVase extends TileBasicInventory {
         if (vaseitem != ItemStack.EMPTY && vaseitem.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
             float intensity = 1.5f; // TODO: fiddle with this.
             getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
-        } else {
-            InvUtils.ejectInventoryContents(getWorld(), pos, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+        } else if (vaseitem != ItemStack.EMPTY) {
+            InvUtils.ejectStackWithOffset(getWorld(), pos, vaseitem);
         }
     }
 
     public boolean tryInsert(IItemHandler inv, ItemStack stack) {
         if (stack.getCount() > 1 || inv.getStackInSlot(0) != ItemStack.EMPTY)
             return false;
-        inv.insertItem(0, stack, false);
-        return true;
+        else {
+            if (!world.isRemote)
+                inv.insertItem(0, stack, false);
+            return true;
+        }
     }
 
     @Override

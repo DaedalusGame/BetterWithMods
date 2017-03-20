@@ -551,12 +551,12 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler( 19);
+        return new HopperHandler(this);
     }
 
     @Override
     public String getName() {
-        return "inv.filteredhopper.name";
+        return "inv.filtered_hopper.name";
     }
 
     @Override
@@ -584,5 +584,23 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     public ModelWithResource getModel() {
         return RenderUtils.getModelFromStack(filter);
+    }
+
+    private class HopperHandler extends ItemStackHandler {
+        private TileEntityFilteredHopper hopper;
+        public HopperHandler(TileEntityFilteredHopper hopper) {
+            super(19);
+            this.hopper = hopper;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return slot == 18 ? 1 : super.getSlotLimit(slot);
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            hopper.markDirty();
+        }
     }
 }

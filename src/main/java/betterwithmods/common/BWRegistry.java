@@ -236,8 +236,8 @@ public class BWRegistry {
                                 output[1] = new ItemStack(BWMItems.BARK, 1, 0);
                                 output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
                                 if (BWConfig.hardcoreLumber) {
-                                    removeRecipe(output[0], log);
-                                    GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
+                                    removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
+                                    GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
                                 }
                                 SawInteraction.INSTANCE.addRecipe(block, i, output);
                                 SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));

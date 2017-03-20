@@ -6,4 +6,5 @@ public interface IProxy {
     void init();
 
     void postInit();
+
 }

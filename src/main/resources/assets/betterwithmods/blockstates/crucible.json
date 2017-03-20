@@ -6,7 +6,7 @@
       "bottom": "betterwithmods:blocks/crucible_bottom",
       "side": "betterwithmods:blocks/crucible_side"
     },
-    "model": "betterwithmods:cooking_vat",
+    "model": "betterwithmods:cooking_pot",
     "uvlock": false
   },
   "variants": {

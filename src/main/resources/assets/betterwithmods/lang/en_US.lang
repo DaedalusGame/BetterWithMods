@@ -23,6 +23,10 @@ tile.bwm:slats.4.name=Acacia Slats
 tile.bwm:slats.5.name=Dark Oak Slats
 tile.bwm:screw_pump.name=Screw Pump
 
+tile.bwm:cooking_pot.0.name=Crucible
+tile.bwm:cooking_pot.1.name=Cauldron
+tile.bwm:cooking_pot.2.name=Mysterious Vessel
+
 tile.bwm:kiln.name=Kiln
 tile.bwm:bellows.name=Bellows
 tile.bwm:saw.name=Saw

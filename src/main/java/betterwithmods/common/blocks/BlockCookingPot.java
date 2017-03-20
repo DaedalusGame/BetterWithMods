@@ -85,8 +85,6 @@ public class BlockCookingPot extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-
-
         return super.getActualState(state, worldIn, pos);
     }
 

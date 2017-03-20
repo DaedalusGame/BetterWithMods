@@ -8,7 +8,7 @@
       "bottom": "betterwithmods:blocks/cauldron_bottom",
       "invfill": "betterwithmods:blocks/cauldron_contents"
     },
-    "model": "betterwithmods:cooking_vat",
+    "model": "betterwithmods:cooking_pot",
     "uvlock": false
   },
   "variants": {
@@ -34,11 +34,11 @@
         "x": 90
       },
       "east": {
+        "x": -90
       }
     },
     "type": {
       "crucible": {
-        "model": "betterwithmods:cooking_vat",
         "textures": {
           "side": "betterwithmods:blocks/crucible_side",
           "top": "betterwithmods:blocks/crucible_top",
@@ -46,7 +46,6 @@
         }
       },
       "cauldron": {
-        "model": "betterwithmods:cooking_vat",
         "textures": {
           "side": "betterwithmods:blocks/cauldron_side",
           "top": "betterwithmods:blocks/cauldron_top",
@@ -55,7 +54,6 @@
         }
       },
       "dragonvessel": {
-        "model": "betterwithmods:cooking_vat",
         "textures": {
           "side": "betterwithmods:blocks/cauldron_side",
           "top": "betterwithmods:blocks/cauldron_top",

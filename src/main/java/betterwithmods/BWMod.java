@@ -29,7 +29,6 @@ import betterwithmods.event.BucketEvent;
 import betterwithmods.event.BuoyancyEventHandler;
 import betterwithmods.event.EggImpactEvent;
 import betterwithmods.event.HardcoreEndermenEvent;
-import betterwithmods.event.HardcoreHardnessEventHandler;
 import betterwithmods.event.HardcoreMelonEventHandler;
 import betterwithmods.event.HardcoreRedstoneEvent;
 import betterwithmods.event.HungerEventHandler;

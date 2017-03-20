@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.tile.TileEntityDragonVessel;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -50,7 +51,6 @@ public class BlockCookingPot extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
@@ -119,6 +119,7 @@ public class BlockCookingPot extends BWMBlock implements IMultiVariants {
             case CAULDRON:
                 return new TileEntityCauldron();
             case DRAGONVESSEL:
+                return new TileEntityDragonVessel();
             default:
                 return super.createTileEntity(world, state);
         }

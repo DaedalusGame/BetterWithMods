@@ -55,10 +55,10 @@
       },
       "dragonvessel": {
         "textures": {
-          "side": "betterwithmods:blocks/cauldron_side",
-          "top": "betterwithmods:blocks/cauldron_top",
-          "bottom": "betterwithmods:blocks/cauldron_bottom",
-          "invfill": "betterwithmods:blocks/cauldron_contents"
+          "side": "betterwithmods:blocks/vessel_side",
+          "top": "betterwithmods:blocks/vessel_bars",
+          "bottom": "betterwithmods:blocks/vessel_bottom",
+          "invfill": "betterwithmods:blocks/vessel_contents"
         }
       }
     }

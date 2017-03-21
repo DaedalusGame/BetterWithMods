@@ -14,7 +14,7 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

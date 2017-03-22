@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -66,7 +68,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
     @Override
     public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler( 4);
+        return new PulleyInventory();
     }
 
     @Override
@@ -294,7 +296,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     private boolean takeRope(boolean flag) {
         for (int i = 0; i < 4; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() > 0) {
+            if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() > 0) {
                 if (flag) {
                     stack.shrink(1);
                     if (stack.getCount() < 1) {
@@ -311,9 +313,9 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     private boolean putRope(boolean flag) {
         for (int i = 0; i < 4; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (stack == ItemStack.EMPTY || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() < 64) {
+            if (stack.isEmpty() || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() < 64) {
                 if (flag) {
-                    if (stack == ItemStack.EMPTY) {
+                    if (stack.isEmpty()) {
                         inventory.setStackInSlot(i, new ItemStack(BWMBlocks.ROPE, 1));
                     } else {
                         stack.grow(1);
@@ -377,6 +379,21 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
                 rope = (EntityExtendingRope) AnvilChunkLoader.readWorldEntityPos(ropeTag, getWorld(), pos.getDoubleAt(0),
                         pos.getDoubleAt(1), pos.getDoubleAt(2), true);
             }
+        }
+    }
+
+    private class PulleyInventory extends ItemStackHandler {
+        public PulleyInventory() {
+            super(4);
+        }
+
+        @Override
+        @Nonnull
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE)) {
+                return super.insertItem(slot, stack, simulate);
+            }
+            return ItemStack.EMPTY;
         }
     }
 

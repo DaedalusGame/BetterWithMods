@@ -22,6 +22,7 @@ import net.minecraft.world.World;
  */
 public class EntityItemBuoy extends EntityItem {
     private final static byte BUOYANCY_MAX_ITERATIONS = 10;
+    private EntityItem watchItem = null;
 
     /**
      * Wrapper around EntityItem.
@@ -70,10 +71,20 @@ public class EntityItemBuoy extends EntityItem {
      */
     @Override
     public void onUpdate() {
+        if (this.watchItem != null) {
+            if (!this.watchItem.isDead) {
+                if (isEntityItemFake(this.watchItem)) {
+                    this.setDead();
+                } else if (this.watchItem.age > 2) {
+                    watchItem.setDead();
+                    watchItem.setInfinitePickupDelay();
+                }
+            }
+        }
         ItemStack stack = this.getDataManager().get(getITEM());
-        if (stack != ItemStack.EMPTY && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
             return;
-        if (this.getEntityItem() == ItemStack.EMPTY) {
+        if (this.getEntityItem().isEmpty()) {
             this.setDead();
         } else {
             // super.super.onUpdate() START
@@ -262,5 +273,13 @@ public class EntityItemBuoy extends EntityItem {
 
         blockpos$pooledmutableblockpos.release();
         return false;
+    }
+
+    public void setWatchItem(EntityItem item) {
+        this.watchItem = item;
+    }
+
+    private boolean isEntityItemFake(EntityItem item) {
+        return item.delayBeforeCanPickup == 32767 && item.age == item.getEntityItem().getItem().getEntityLifespan(item.getEntityItem(), item.getEntityWorld()) - 1;
     }
 }

@@ -72,7 +72,7 @@ public class MobDropEvent {
         if (evt.getEntityLiving().getEntityWorld().isRemote)
             return;
 
-        if (!BWConfig.produceDung)
+        if (!BWConfig.produceDung && !BWConfig.wolvesOnly)
             return;
 
         if (evt.getEntityLiving() instanceof EntityAnimal) {
@@ -88,7 +88,7 @@ public class MobDropEvent {
                     }
                 }
             }
-            if (!(animal instanceof EntityRabbit)) {
+            if (!(animal instanceof EntityRabbit) && (!BWConfig.wolvesOnly || animal instanceof EntityWolf)) {
                 if (animal.getGrowingAge() == 100) {
                     evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
                 } else if (animal.isInLove()) {

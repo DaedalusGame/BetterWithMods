@@ -39,6 +39,7 @@ public class BWConfig {
     public static boolean netherSpawn;
     public static boolean slimeSpawn;
     public static boolean produceDung;
+    public static boolean wolvesOnly;
     public static boolean dropsGearbox;
     public static boolean dropsSaw;
     public static boolean dropsHopper;
@@ -101,6 +102,7 @@ public class BWConfig {
         slimeSpawn = config.get(VANILLA_TWEAKS, "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true)
                 .getBoolean();
         produceDung = config.get(VANILLA_TWEAKS, "Animals Produce Dung", true).getBoolean();
+        wolvesOnly = config.get(VANILLA_TWEAKS, "Only Wolves Produce Dung", false).getBoolean();
         armorDrops = config.get(VANILLA_TWEAKS, "Undead drop all armor", true, "This option will force zombies and skeletons to drop any non-standard equipment, including enchanted versions of their default weapons.").getBoolean();
 
         dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean();

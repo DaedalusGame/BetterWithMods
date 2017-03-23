@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -34,28 +35,13 @@ public class BuoyancyEventHandler {
             event.setResult(Result.DENY);
             event.setCanceled(true);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
-            entityItem.setDead();
-            entityItem.setInfinitePickupDelay();
+            if (entityItem.delayBeforeCanPickup == 40)
+                newEntity.setWatchItem(entityItem);
+            else {
+                entityItem.setDead();
+                entityItem.setInfinitePickupDelay();
+            }
             world.spawnEntity(newEntity);
-        }
-    }
-
-    @SubscribeEvent
-    public void replaceGive(CommandEvent evt) {
-        if (!BWConfig.hardcoreBuoy) return;
-        if (evt.getCommand().getClass() == CommandGive.class) {
-            String[] args = evt.getParameters();
-            ICommandSender sender = evt.getSender();
-            MinecraftServer server = sender.getServer();
-            evt.setCanceled(true);
-            evt.setResult(Result.DENY);
-            CommandBuoyGive give = new CommandBuoyGive();
-            try {
-                give.execute(server, sender, args);
-            }
-            catch (CommandException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

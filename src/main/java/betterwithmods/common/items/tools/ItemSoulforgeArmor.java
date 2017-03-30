@@ -2,12 +2,14 @@ package betterwithmods.common.items.tools;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.util.InvUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Purpose:
@@ -26,5 +28,11 @@ public class ItemSoulforgeArmor extends ItemArmor {
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
         return BWMod.MODID + ":textures/models/armor/steel_layer_" + (this.armorType.getSlotIndex() == 2 ? "2" : "1") + ".png";
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        if (InvUtils.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel"))) return true;
+        return super.getIsRepairable(toRepair, repair);
     }
 }

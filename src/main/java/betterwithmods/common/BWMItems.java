@@ -34,7 +34,7 @@ import java.util.Objects;
 
 public final class BWMItems {
     public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 3, 1561, 8, 3,
-            22).setRepairItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
+            22);
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
     public static final Item BARK = new ItemBark().setRegistryName("bark");

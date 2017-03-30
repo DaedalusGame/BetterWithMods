@@ -2,11 +2,13 @@ package betterwithmods.common.items.tools;
 
 import betterwithmods.common.BWMItems;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.util.InvUtils;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -24,6 +26,12 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
             return this.toolMaterial.getHarvestLevel();
         else
             return level;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        if (InvUtils.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel"))) return true;
+        return super.getIsRepairable(toRepair, repair);
     }
 
     @Override

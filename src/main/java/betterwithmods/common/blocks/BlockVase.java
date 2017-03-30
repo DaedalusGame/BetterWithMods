@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityVase;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -47,8 +48,9 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockVase() {
-        super(Material.ROCK);
+        super(BWMBlocks.POTTERY);
         this.setHardness(2.0F);
+        this.setHarvestLevel("pickaxe", -1);
         this.setDefaultState(this.blockState.getBaseState().withProperty(Color, EnumDyeColor.WHITE));
     }
 

@@ -79,6 +79,7 @@ import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -92,6 +93,8 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public final class BWMBlocks {
+    public static final Material POTTERY = new Material(MapColor.STONE);
+
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");

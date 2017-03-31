@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockSourceImpl;
+import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.EntityLivingBase;
@@ -96,7 +97,14 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
         if (tile != null) {
             if (!world.getBlockState(pos).getValue(TRIGGERED)) {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
-                if (!world.isAirBlock(check) && !world.getBlockState(check).getBlock().isReplaceable(world, check) && world.getBlockState(check).getBlockHardness(world, check) != -1.0F) {
+                if (world.getBlockState(check).getBlock() instanceof BlockShulkerBox) {
+                    IBlockState state = world.getBlockState(check);
+                    world.playSound(null, check, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
+                    state.getBlock().breakBlock(world, check, state);
+                    world.setBlockToAir(check);
+                    return;
+                }
+                else if (!world.isAirBlock(check) && !world.getBlockState(check).getBlock().isReplaceable(world, check) && world.getBlockState(check).getBlockHardness(world, check) != -1.0F) {
                     IBlockState state = world.getBlockState(check);
                     List<ItemStack> stacks = state.getBlock().getDrops(world, check, state, 0);
                     if (stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
@@ -114,7 +122,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                         for (ItemStack stack : stacks)
                             tile.addStackToInventory(stack, check);
                     }
-                    world.playSound(null, check, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
+                    world.playSound(null, check, state.getBlock().getSoundType(state, world, check, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
                     state.getBlock().breakBlock(world, check, state);
                     world.setBlockToAir(check);
                     return;

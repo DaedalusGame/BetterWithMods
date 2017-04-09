@@ -9,6 +9,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -165,8 +167,31 @@ public final class HardcoreFunctions {
         Blocks.FIRE.setFireInfo(Blocks.LEAVES2, 60, 100);
         rebalanceVanillaHardness();
         changeVanillaToolMaterials();
-        ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.LEAVES, Blocks.LEAVES2,
+        ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL,
                 Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
+        if (BWConfig.axeOnLeaves) {
+            ToolsManager.setAxesAsEffectiveAgainst(Blocks.LEAVES, Blocks.LEAVES2);
+            for (ItemStack stack : OreDictionary.getOres("treeLeaves")) {
+                if (stack.getItem() instanceof ItemBlock) {
+                    Block block = ((ItemBlock)stack.getItem()).getBlock();
+                    if (block == Blocks.LEAVES || block == Blocks.LEAVES2) continue;
+                    if (block instanceof BlockLeaves) {
+                        ToolsManager.setAxesAsEffectiveAgainst(block);
+                        block.setHarvestLevel("axe", 0);
+                    }
+                    else {
+                        ToolsManager.setAxesAsEffectiveAgainst(block);
+                        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+                            block.setHarvestLevel("axe", 0);
+                        else if (stack.getItemDamage() < 16) {
+                            IBlockState state = block.getStateFromMeta(stack.getMetadata());
+                            block.setHarvestLevel("axe", 0, state);
+                        }
+                    }
+
+                }
+            }
+        }
         ToolsManager.setPickaxesAsEffectiveAgainst(Blocks.LEVER, Blocks.GLASS, Blocks.STAINED_GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS_PANE,
                 Blocks.STONE_BUTTON, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_EXTENSION,
                 Blocks.GLOWSTONE, Blocks.BEACON, Blocks.MONSTER_EGG,

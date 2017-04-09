@@ -78,10 +78,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:quark", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
+@Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:quark;after:mekanism;after:thermalexpansion", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
-    public static final String VERSION = "1.1.3";
+    public static final String VERSION = "1.1.4";
     public static final String NAME = "Better With Mods";
     private static final Set<ICompatModule> loadedModules = new HashSet<>();
 

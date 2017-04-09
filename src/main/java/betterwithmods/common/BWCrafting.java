@@ -37,6 +37,9 @@ public class BWCrafting {
         RecipeSorter.register("bwm:chopping", ChoppingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         RecipeSorter.register("bwm:cutting", CuttingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         RecipeSorter.register("bwm:dyetag", DyeWithTagRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:steel_shapeless", SteelShapelessRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:steel_shaped", SteelShapedRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
+        RecipeSorter.register("bwm:steel_shaped_ore", SteelShapedOreRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
         addVanillaRecipes();
         addCauldronRecipes();
         addCrucibleRecipes();

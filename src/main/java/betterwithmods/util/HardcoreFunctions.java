@@ -184,8 +184,14 @@ public final class HardcoreFunctions {
                         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
                             block.setHarvestLevel("axe", 0);
                         else if (stack.getItemDamage() < 16) {
-                            IBlockState state = block.getStateFromMeta(stack.getMetadata());
-                            block.setHarvestLevel("axe", 0, state);
+                            for (int i = 0; i < 4; i++) {
+                                int multi = 4 * i;
+                                int meta = stack.getMetadata() + multi;
+                                if (meta < 16) {
+                                    IBlockState state = block.getStateFromMeta(meta);
+                                    block.setHarvestLevel("axe", 0, state);
+                                }
+                            }
                         }
                     }
 

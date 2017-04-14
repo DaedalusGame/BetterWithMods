@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -207,6 +208,7 @@ public class BlockDetector extends BWMBlock {
             AxisAlignedBB collisionBox = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
             List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, collisionBox);
             entityList.removeIf(e -> e.isDead); // remove dead entities, prevents dead moving pulley blocks from triggering it
+            entityList.removeIf(e -> !(e instanceof EntityItem) && !(e instanceof EntityLivingBase)); // remove anything that isn't an item or a mob/player
             if (entityList.size() > 0)
                 return true;
             BlockPos below = offset.offset(EnumFacing.DOWN);

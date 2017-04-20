@@ -34,7 +34,7 @@ public class HCBuoy extends Feature {
 
         if (entityItem.getEntityItem().getCount() > 0) {
             event.setResult(Event.Result.DENY);
-            event.setCanceled(true);
+//            event.setCanceled(true);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
             if (entityItem.delayBeforeCanPickup == 40)
                 newEntity.setWatchItem(entityItem);

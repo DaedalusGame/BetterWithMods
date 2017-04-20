@@ -6,7 +6,7 @@
       "bottom": "betterwithmods:blocks/cauldron_bottom",
       "side": "betterwithmods:blocks/cauldron_side"
     },
-    "model": "betterwithmods:cooking_vat",
+    "model": "betterwithmods:cooking_pot",
     "uvlock": false
   },
   "variants": {

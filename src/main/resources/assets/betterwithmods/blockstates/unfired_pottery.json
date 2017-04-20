@@ -7,7 +7,7 @@
       "top": "#side",
       "bottom": "#side"
     },
-    "model": "betterwithmods:cooking_vat",
+    "model": "betterwithmods:cooking_pot",
     "uvlock": false
   },
   "variants": {
@@ -21,7 +21,7 @@
     ],
     "potterytype": {
       "crucible": {
-        "model": "betterwithmods:cooking_vat"
+        "model": "betterwithmods:cooking_pot"
       },
       "planter": {
         "model": "betterwithmods:planter"

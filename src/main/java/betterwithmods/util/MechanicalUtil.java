@@ -51,7 +51,6 @@ public class MechanicalUtil {
 
         if (isAxle(block)) {
             IAxle axle = (IAxle) block;
-
             if (axle.isAxleOrientedToFacing(world, pos2, dir)) {
                 if (axle.getPowerLevel(world, pos2) > 0) {
                     return true;
@@ -89,8 +88,9 @@ public class MechanicalUtil {
     public static boolean isBlockPoweredByAxle(World world, BlockPos pos, IMechanicalBlock block) {
         for (int i = 0; i < 6; i++) {
             if (block.canInputPowerToSide(world, pos, EnumFacing.getFront(i))) {
-                if (isBlockPoweredByAxleOnSide(world, pos, EnumFacing.getFront(i)))
+                if (isBlockPoweredByAxleOnSide(world, pos, EnumFacing.getFront(i))) {
                     return true;
+                }
             }
         }
         return false;

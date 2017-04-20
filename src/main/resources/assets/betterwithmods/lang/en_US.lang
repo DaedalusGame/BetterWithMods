@@ -3,11 +3,8 @@ tile.bwm:hand_crank.name=Hand Crank
 tile.bwm:axle.name=Axle
 tile.bwm:gearbox.name=Gearbox
 tile.bwm:single_machine.0.name=Mill Stone
-tile.bwm:single_machine.1.name=Pulley
-tile.bwm:single_machine.2.name=Crucible
-tile.bwm:single_machine.3.name=Cauldron
+tile.bwm:single_machine.2.name=Pulley
 tile.bwm:single_machine.4.name=Filtered Hopper
-tile.bwm:single_machine.5.name=Turntable
 tile.bwm:single_machine.6.name=Turntable
 tile.bwm:pane.0.name=Grate
 tile.bwm:pane.1.name=Slats
@@ -25,6 +22,10 @@ tile.bwm:slats.3.name=Jungle Slats
 tile.bwm:slats.4.name=Acacia Slats
 tile.bwm:slats.5.name=Dark Oak Slats
 tile.bwm:screw_pump.name=Screw Pump
+
+tile.bwm:cooking_pot.0.name=Crucible
+tile.bwm:cooking_pot.1.name=Cauldron
+tile.bwm:cooking_pot.2.name=Mysterious Vessel
 
 tile.bwm:kiln.name=Kiln
 tile.bwm:bellows.name=Bellows

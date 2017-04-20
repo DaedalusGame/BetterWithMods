@@ -13,6 +13,7 @@ import betterwithmods.common.blocks.BlockBWMPane;
 import betterwithmods.common.blocks.BlockBellows;
 import betterwithmods.common.blocks.BlockBrokenGearbox;
 import betterwithmods.common.blocks.BlockChime;
+import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockCrank;
 import betterwithmods.common.blocks.BlockCreativeGenerator;
 import betterwithmods.common.blocks.BlockDebarkedNew;
@@ -60,6 +61,7 @@ import betterwithmods.common.blocks.mini.BlockMoulding;
 import betterwithmods.common.blocks.mini.BlockSiding;
 import betterwithmods.common.blocks.mini.ItemBlockMini;
 import betterwithmods.common.blocks.mini.TileEntityMultiType;
+import betterwithmods.common.blocks.tile.TileEntityDragonVessel;
 import betterwithmods.common.blocks.tile.TileEntityAdvBellows;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
@@ -84,6 +86,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -150,6 +153,7 @@ public final class BWMBlocks {
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
     public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
+    public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     private BWMBlocks() {
     }
@@ -209,6 +213,12 @@ public final class BWMBlocks {
         registerBlock(STUMP, new ItemBlockMeta(STUMP));
         registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
         registerBlock(BROKEN_GEARBOX);
+        registerBlock(COOKING_POTS, new ItemBlockMeta(COOKING_POTS) {
+            @Override
+            public int getItemStackLimit(ItemStack stack) {
+                return stack.getMetadata() == BlockCookingPot.EnumType.DRAGONVESSEL.getMeta() ? 1 : 64;
+            }
+        });
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
         registerBlock(ADVANCED_BELLOWS);
@@ -220,6 +230,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityFilteredHopper.class, "bwm_hopper", "hopper", "bwm.hopper");
         GameRegistry.registerTileEntityWithAlternatives(TileEntityCauldron.class, "bwm_cauldron", "cauldron", "bwm.cauldron");
         GameRegistry.registerTileEntityWithAlternatives(TileEntityCrucible.class, "bwm_crucible", "crucible", "bwm.crucible");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityDragonVessel.class, "bwm_vessel", "vessel", "bwm.vessel");
         GameRegistry.registerTileEntityWithAlternatives(TileEntityTurntable.class, "bwm_turntable", "turntable", "bwm.turntable");
         GameRegistry.registerTileEntityWithAlternatives(TileEntitySteelAnvil.class, "bwm_steel_anvil", "steel_anvil", "bwm.steelAnvil");
 
@@ -335,6 +346,7 @@ public final class BWMBlocks {
         setInventoryModel(STUMP);
         setInventoryModel(DIRT_SLAB);
         setInventoryModel(BROKEN_GEARBOX);
+        setInventoryModel(COOKING_POTS);
         setInventoryModel(ADVANCED_BELLOWS);
     }
 

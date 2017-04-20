@@ -1,13 +1,8 @@
 package betterwithmods.proxy;
 
-import betterwithmods.BWMod;
-import betterwithmods.client.BWStateMapper;
-import betterwithmods.client.ColorHandlers;
-import betterwithmods.client.model.*;
-import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.client.render.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.BWMod;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
@@ -15,9 +10,13 @@ import betterwithmods.common.blocks.tile.TileEntityTurntable;
 import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.client.BWStateMapper;
+import betterwithmods.client.ColorHandlers;
+import betterwithmods.client.model.*;
+import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.client.render.*;
 import betterwithmods.common.entity.*;
 import betterwithmods.integration.ICompatModule;
-import betterwithmods.module.ModuleLoader;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -65,8 +64,8 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFilteredHopper.class, new TESRFilteredHopper());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurntable.class, new TESRTurntable());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TESRCrucible());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new TESRCauldron());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TESRCookingPot());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new TESRCookingPot());
 
     }
 

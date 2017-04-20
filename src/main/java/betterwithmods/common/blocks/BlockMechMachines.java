@@ -3,9 +3,6 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
-import betterwithmods.common.blocks.tile.TileEntityCauldron;
-import betterwithmods.common.blocks.tile.TileEntityCookingPot;
-import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.blocks.tile.TileEntityMill;
 import betterwithmods.common.blocks.tile.TileEntityPulley;
@@ -31,7 +28,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -55,19 +60,21 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         this.setDefaultState(this.blockState.getBaseState()
                 .withProperty(MACHINETYPE, BlockMechMachines.EnumType.MILL)
                 .withProperty(ISACTIVE, false)
-                .withProperty(DirUtils.TILTING, EnumFacing.UP)
         );
         this.useNeighborBrightness = true;
     }
 
     @Override
     public String[] getVariants() {
-        return new String[]{"facing=up,ison=false,machinetype=mill",
-                "facing=up,ison=false,machinetype=pulley",
-                "facing=up,ison=false,machinetype=crucible",
-                "facing=up,ison=false,machinetype=cauldron",
-                "facing=up,ison=false,machinetype=hopper",
-                "facing=up,ison=false,machinetype=turntable",};
+        return new String[]{
+                "ison=true,machinetype=mill",
+                "ison=false,machinetype=mill",
+                "ison=true,machinetype=pulley",
+                "ison=false,machinetype=pulley",
+                "ison=true,machinetype=hopper",
+                "ison=false,machinetype=hopper",
+                "ison=true,machinetype=turntable",
+                "ison=false,machinetype=turntable",};
     }
 
     @SuppressWarnings("deprecation")
@@ -90,10 +97,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
             case HOPPER:
             case PULLEY:
                 return SoundType.WOOD;
-            case CRUCIBLE:
-                return SoundType.GLASS;
-            case CAULDRON:
-                return SoundType.METAL;
             default:
                 return super.getSoundType(state, world, pos, entity);
         }
@@ -106,16 +109,9 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     public int tickRateForMeta(int meta) {
-        if (meta > 7)
-            meta -= 8;
-        switch (meta) {
-            case 1:
-            case 2:
-            case 3:
-                return 1;
-            default:
-                return 10;
-        }
+        if(meta == 1)
+            return 1;
+        return 10;
     }
 
     @Override
@@ -239,10 +235,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
                 return new TileEntityMill();
             case PULLEY:
                 return new TileEntityPulley();
-            case CRUCIBLE:
-                return new TileEntityCrucible();
-            case CAULDRON:
-                return new TileEntityCauldron();
             case HOPPER:
                 return new TileEntityFilteredHopper();
             case TURNTABLE:
@@ -254,9 +246,10 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (int i = 0; i < 6; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 2));
+        list.add(new ItemStack(item, 1, 4));
+        list.add(new ItemStack(item, 1, 6));
     }
 
     @Override
@@ -292,8 +285,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
                 return dir == EnumFacing.UP || dir == EnumFacing.DOWN;
             case PULLEY:
                 return dir != EnumFacing.DOWN && dir != EnumFacing.UP;
-            case CRUCIBLE:
-            case CAULDRON:
             case HOPPER:
                 return dir != EnumFacing.UP && dir != EnumFacing.DOWN;
             case TURNTABLE:
@@ -373,8 +364,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         boolean isOn = world.getBlockState(pos).getValue(ISACTIVE);
         if (type == BlockMechMachines.EnumType.MILL && isOn)
             updateMill(world, pos, rand);
-        else if (!isOn && (type == BlockMechMachines.EnumType.CAULDRON || type == BlockMechMachines.EnumType.CRUCIBLE))
-            updateCookingPot(world, pos, rand);
     }
 
     public void updateMill(World world, BlockPos pos, Random rand) {
@@ -392,16 +381,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
             float fY = y + rand.nextFloat() * 0.5F + 1.0F;
             float fZ = z + rand.nextFloat();
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, fX, fY, fZ, 0.0D, 0.0D, 0.0D);
-        }
-    }
-
-    private void updateCookingPot(World world, BlockPos pos, Random rand) {
-        if (!isMechanicalOn(world, pos)) {
-            TileEntityCookingPot tile = (TileEntityCookingPot) world.getTileEntity(pos);
-            int heat = tile.fireIntensity;
-            if (heat > 4) {
-                emitSmoke(world, pos, rand, heat);
-            }
         }
     }
 
@@ -452,55 +431,27 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        int facing = 1;
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile != null) {
-            if (tile instanceof TileEntityCookingPot) {
-                //TODO Kills performance from rendering updates, should be fixed by separating cooking pots out
-                facing = ((TileEntityCookingPot) tile).facing;
-            }
-        }
-        return state.withProperty(DirUtils.TILTING, EnumFacing.getFront(facing));
-    }
-
-    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE, DirUtils.TILTING);
+        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        boolean isActive = false;
-        if (meta > 7) {
-            isActive = true;
-            meta -= 8;
-        }
-        return this.getDefaultState().withProperty(MACHINETYPE, BlockMechMachines.EnumType.byMeta(meta)).withProperty(ISACTIVE, isActive);
+        return getDefaultState().withProperty(MACHINETYPE, EnumType.byMeta(meta >> 1)).withProperty(ISACTIVE,(meta & 1) == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = state.getValue(MACHINETYPE).getMeta();
-        meta += state.getValue(ISACTIVE) ? 8 : 0;
-        return meta;
+        return state.getValue(MACHINETYPE).getMeta() << 1 | (state.getValue(ISACTIVE) ? 1 : 0);
     }
 
     public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),
-        PULLEY(1, "pulley", true),
-        CRUCIBLE(2, "crucible"),
-        CAULDRON(3, "cauldron"),
+        PULLEY(2, "pulley", true),
         HOPPER(4, "hopper"),
-        TURNTABLE(5, "turntable", true);
+        TURNTABLE(6, "turntable", true);
 
-        private static final BlockMechMachines.EnumType[] META_LOOKUP = new BlockMechMachines.EnumType[values().length];
-
-        static {
-            for (BlockMechMachines.EnumType machineTypes : values()) {
-                META_LOOKUP[machineTypes.getMeta()] = machineTypes;
-            }
-        }
+        private static final BlockMechMachines.EnumType[] META_LOOKUP = values();
 
         private int meta;
         private String name;
@@ -517,11 +468,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         }
 
         public static BlockMechMachines.EnumType byMeta(int meta) {
-            if (meta > 7)
-                meta -= 8;
-            if (meta < 0 || meta >= META_LOOKUP.length)
-                meta = 0;
-            return META_LOOKUP[meta];
+            return META_LOOKUP[meta%META_LOOKUP.length];
         }
 
         @Override

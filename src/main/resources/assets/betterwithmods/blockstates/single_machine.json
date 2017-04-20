@@ -21,23 +21,6 @@
         "transform": "forge:default-block"
       }
     ],
-    "facing": {
-      "up": {},
-      "north": {
-        "x": 90,
-        "y": 90
-      },
-      "south": {
-        "x": 90,
-        "y": -90
-      },
-      "west": {
-        "x": 90
-      },
-      "east": {
-        "x": -90
-      }
-    },
     "machinetype": {
       "mill": {
         "model": "betterwithmods:mill"
@@ -49,23 +32,6 @@
           "up": "betterwithmods:blocks/pulley_top",
           "down": "betterwithmods:blocks/pulley_bottom",
           "particle": "#side"
-        }
-      },
-      "crucible": {
-        "model": "betterwithmods:cooking_vat",
-        "textures": {
-          "side": "betterwithmods:blocks/crucible_side",
-          "top": "betterwithmods:blocks/crucible_top",
-          "bottom": "betterwithmods:blocks/crucible_bottom"
-        }
-      },
-      "cauldron": {
-        "model": "betterwithmods:cooking_vat",
-        "textures": {
-          "side": "betterwithmods:blocks/cauldron_side",
-          "top": "betterwithmods:blocks/cauldron_top",
-          "bottom": "betterwithmods:blocks/cauldron_bottom",
-          "invfill": "betterwithmods:blocks/cauldron_contents"
         }
       },
       "hopper": {

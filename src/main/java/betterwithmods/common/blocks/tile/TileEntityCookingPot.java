@@ -1,13 +1,17 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.BWMod;
+import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.registry.bulk.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.registry.heat.BWMHeatSource;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -20,48 +24,119 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.animation.Animation;
+import net.minecraftforge.common.animation.Event;
+import net.minecraftforge.common.animation.ITimeValue;
+import net.minecraftforge.common.animation.TimeValues;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.model.animation.CapabilityAnimation;
+import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static betterwithmods.common.blocks.tile.TileEntityFilteredHopper.putDropInInventoryAllSlots;
 
-public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
+public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower {
     public int cookCounter;
     public int stokedCooldownCounter;
     public int scaledCookCounter;
     public boolean containsValidIngredients;
     public int fireIntensity;
-    public int facing;
+    public EnumFacing facing;
     private boolean forceValidation;
+    protected CraftingManagerBulk unstoked, stoked;
 
-    public TileEntityCookingPot() {
+    public TileEntityCookingPot(CraftingManagerBulk unstoked, CraftingManagerBulk stoked) {
+        this.unstoked = unstoked;
+        this.stoked = stoked;
         this.cookCounter = 0;
         this.containsValidIngredients = false;
         this.forceValidation = true;
         this.scaledCookCounter = 0;
         this.fireIntensity = -1;
         this.occupiedSlots = 0;
-        this.facing = 1;
+        this.facing = EnumFacing.UP;
     }
 
+    @Override
+    public boolean hasFastRenderer() {
+        return true;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == MechanicalCapability.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == MechanicalCapability.MECHANICAL_POWER) {
+            return MechanicalCapability.MECHANICAL_POWER.cast(this);
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    private boolean isInputtingPower(EnumFacing facing) {
+        return getMechanicalInput(facing) > 0;
+    }
+
+    private EnumFacing getPoweredSide() {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (isInputtingPower(facing))
+                return facing;
+        }
+        return null;
+    }
+    private boolean isPowered() {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (isInputtingPower(facing))
+                return true;
+        }
+        return false;
+    }
+
+    protected boolean isStoked() {
+        return fireIntensity > 4;
+    }
 
     @Override
     public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler( 27);
+        return new ItemStackHandler(27);
+    }
+
+    @Override
+    public void readFromTag(NBTTagCompound tag) {
+
+    }
+
+    @Override
+    public NBTTagCompound writeToTag(NBTTagCompound tag) {
+        return null;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.fireIntensity = tag.hasKey("fireIntensity") ? tag.getInteger("fireIntensity") : -1;
-        this.facing = tag.hasKey("facing") ? tag.getInteger("facing") : 1;
+        this.facing = tag.hasKey("facing") ? EnumFacing.getFront(tag.getInteger("facing")) : EnumFacing.UP;
+
+        if (tag.hasKey("CookTime"))
+            this.cookCounter = tag.getInteger("CookTime");
+        if (tag.hasKey("ContainsValidIngredients"))
+            this.containsValidIngredients = tag.getBoolean("ContainsValidIngredients");
+        if (tag.hasKey("StokedCooldown"))
+            this.stokedCooldownCounter = tag.getInteger("StokedCooldown");
         validateInventory();
     }
 
@@ -69,44 +144,37 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
         t.setInteger("fireIntensity", this.fireIntensity);
-        t.setInteger("facing", facing);
+        t.setInteger("facing", facing.getIndex());
+        t.setInteger("CookTime", this.cookCounter);
+        t.setInteger("StokedCooldown", this.stokedCooldownCounter);
+        t.setBoolean("ContainsValidIngredients", this.containsValidIngredients);
         return t;
     }
+
 
     @Override
     public void update() {
         if (this.getWorld().isRemote)
             return;
 
-        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachines) {
-            BlockMechMachines block = (BlockMechMachines) this.getWorld().getBlockState(this.pos).getBlock();
-            if (block.isCurrentStateValid(getWorld(), pos)) {
-                getWorld().scheduleBlockUpdate(pos, block, block.tickRate(getWorld()), 5);
-            }
+        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockCookingPot) {
             IBlockState state = this.getWorld().getBlockState(this.pos);
-            boolean stateChanged = state.getValue(DirUtils.TILTING) != EnumFacing.getFront(facing);
-            if (this.getWorld() != null && stateChanged) {
-                this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-            }
             if (this.fireIntensity != getFireIntensity()) {
                 validateFireIntensity();
                 this.forceValidation = true;
             }
-
-            if (!block.isMechanicalOn(this.getWorld(), this.pos)) {
-                this.facing = 1;
+            if (!isPowered()) {
+                this.facing = EnumFacing.UP;
                 entityCollision();
                 if (this.fireIntensity > 0) {
                     if (this.forceValidation) {
                         validateContents();
                         this.forceValidation = false;
                     }
-
                     if (this.fireIntensity > 4) {
                         if (this.stokedCooldownCounter < 1)
                             this.cookCounter = 0;
                         this.stokedCooldownCounter = 20;
-
                         performStokedFireUpdate(getCurrentFireIntensity());
                     } else if (this.stokedCooldownCounter > 0) {
                         this.stokedCooldownCounter -= 1;
@@ -120,24 +188,15 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                     this.cookCounter = 0;
             } else {
                 this.cookCounter = 0;
-                EnumFacing power = EnumFacing.UP;
-                if (getWorld().getBlockState(pos).getValue(BlockMechMachines.ISACTIVE)) {
-                    for (EnumFacing f : EnumFacing.HORIZONTALS) {
-                        if (power != EnumFacing.UP) {
-                            MechanicalUtil.destoryHorizontalAxles(getWorld(), getPos().offset(f));
-                        }
-                        if (MechanicalUtil.isBlockPoweredByAxleOnSide(getWorld(), pos, f) || MechanicalUtil.isPoweredByCrankOnSide(getWorld(), pos, f)) {
-                            power = f;
-                        }
-                    }
-                }
-                facing = power.getIndex();
-                EnumFacing dumpToward = DirUtils.rotateFacingAroundY(power, false);
-                if (power != EnumFacing.UP && filledSlots() > 0) {
-                    ejectInventory(dumpToward);
-                }
-
+                this.facing = getPoweredSide();
+                ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
             }
+
+            if(facing != state.getValue(DirUtils.TILTING)) {
+                world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
+            }
+
+
         }
         validateInventory();
         this.scaledCookCounter = this.cookCounter * 1000 / 4350;
@@ -187,10 +246,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     public void ejectInventory(EnumFacing facing) {
-
-
         int index = InvUtils.getFirstOccupiedStackNotOfItem(inventory, Items.BRICK);
         if (index >= 0 && index < inventory.getSlots()) {
+
             ItemStack stack = inventory.getStackInSlot(index);
             int ejectStackSize = 8;
             if (8 > stack.getCount()) {
@@ -233,10 +291,27 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     public boolean isUseableByPlayer(EntityPlayer player) {
         return this.getWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
+    public abstract boolean validateStoked();
+    public abstract boolean validateUnstoked();
 
-    public abstract void validateContents();
+    public void validateContents() {
+        this.containsValidIngredients = false;
+        if (!isStoked()) {
+            if(!validateUnstoked())
+                return;
+            if (unstoked.getCraftingResult(inventory) != null)
+                this.containsValidIngredients = true;
+        } else {
+            if(!validateStoked())
+                return;
+            else if (stoked.getCraftingResult(inventory) != null)
+                this.containsValidIngredients = true;
+        }
+    }
 
-    protected abstract CraftingManagerBulk getCraftingManager(boolean stoked);
+    protected CraftingManagerBulk getCraftingManager(boolean stoked) {
+        return stoked ? this.stoked : unstoked;
+    }
 
     public int getCurrentFireIntensity() {
         int fireFactor = 0;
@@ -393,5 +468,29 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     @Override
     public int getMaxVisibleSlots() {
         return 27;
+    }
+
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        return MechanicalUtil.isBlockPoweredByAxleOnSide(world,pos,facing) || MechanicalUtil.isPoweredByCrankOnSide(world,pos,facing)? 1 : 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    public void handleEvents(float time, Iterable<Event> pastEvents) {
+        pastEvents.forEach( e -> System.out.println(e));
     }
 }

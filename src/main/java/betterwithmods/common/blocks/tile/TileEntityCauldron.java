@@ -1,60 +1,34 @@
 package betterwithmods.common.blocks.tile;
 
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.registry.bulk.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.CraftingManagerCauldron;
 import betterwithmods.common.registry.bulk.CraftingManagerCauldronStoked;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityCauldron extends TileEntityCookingPot {
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-
-        if (tag.hasKey("CauldronCookTime"))
-            this.cookCounter = tag.getInteger("CauldronCookTime");
-        if (tag.hasKey("RenderCooldown"))
-            this.stokedCooldownCounter = tag.getInteger("RenderCooldown");
-        if (tag.hasKey("ContainsValidIngredients"))
-            this.containsValidIngredients = tag.getBoolean("ContainsValidIngredients");
+    public TileEntityCauldron() {
+        super(CraftingManagerCauldron.getInstance(), CraftingManagerCauldronStoked.getInstance());
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        NBTTagCompound t = super.writeToNBT(tag);
-        t.setInteger("CauldronCookTime", this.cookCounter);
-        t.setInteger("RenderCooldown", this.stokedCooldownCounter);
-        t.setBoolean("ContainsValidIngredients", this.containsValidIngredients);
-        return t;
-    }
-
-    @Override
-    public void validateContents() {
-        this.containsValidIngredients = false;
-
-        if (this.fireIntensity > 0 && this.fireIntensity < 5) {
-            if (InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood()) {
-                this.containsValidIngredients = true;
-            } else if (CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
-                this.containsValidIngredients = true;
-        } else if (this.fireIntensity > 5) {
-            if (containsExplosives())
-                this.containsValidIngredients = true;
-            else if (CraftingManagerCauldronStoked.getInstance().getCraftingResult(inventory) != null)
-                this.containsValidIngredients = true;
+    public boolean validateUnstoked() {
+        if(InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood()) {
+            this.containsValidIngredients = true;
+            return false;
         }
+        return true;
     }
 
     @Override
-    protected CraftingManagerBulk getCraftingManager(boolean stoked) {
-        if (stoked)
-            return CraftingManagerCauldronStoked.getInstance();
-        else
-            return CraftingManagerCauldron.getInstance();
+    public boolean validateStoked() {
+        if (containsExplosives()) {
+            this.containsValidIngredients = true;
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -103,5 +77,4 @@ public class TileEntityCauldron extends TileEntityCookingPot {
     public String getName() {
         return "inv.cauldron.name";
     }
-
 }

@@ -118,8 +118,8 @@ public class BlockMiningCharge extends BWMBlock {
 
     @Override
     public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
-        world.setBlockToAir(pos);
         onBlockDestroyedByExplosion(world, pos, explosion);
+        world.setBlockToAir(pos);
     }
 
     @Override

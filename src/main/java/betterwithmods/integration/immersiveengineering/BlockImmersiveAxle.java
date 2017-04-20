@@ -2,7 +2,7 @@ package betterwithmods.integration.immersiveengineering;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
-import betterwithmods.blocks.BWMBlock;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

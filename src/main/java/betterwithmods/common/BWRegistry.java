@@ -1,21 +1,25 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.BlockBWMPane;
 import betterwithmods.common.blocks.BlockRope;
-import betterwithmods.common.entity.EntityMiningCharge;
+import betterwithmods.common.entity.*;
+import betterwithmods.common.entity.item.EntityFallingBlockCustom;
+import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.ChoppingRecipe;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
-import betterwithmods.config.BWConfig;
-import betterwithmods.util.DispenserBehaviorDynamite;
-import betterwithmods.util.InvUtils;
-import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.HCLumber;
+import betterwithmods.util.*;
+import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockDispenser;
@@ -23,8 +27,6 @@ import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTorch;
-import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
-import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -45,7 +47,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -61,16 +63,47 @@ public class BWRegistry {
     public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
     private static int availableEntityId = 0;
 
-    public static void init() {
+    public static void preInit() {
+        BWMBlocks.registerBlocks();
+        BWMItems.registerItems();
+        BWMBlocks.registerTileEntities();
+        registerEntities();
         registerOres();
         registerPotions();
         registerBlockDispenserBehavior();
         registerHopperFilters();
-
-        if (BWConfig.dropsHempSeeds) {
-            MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
-        }
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
     }
+    public static void init() {
+        GameRegistry.registerFuelHandler(new BWFuelHandler());
+        registerHeatSources();
+        registerNetherWhitelist();
+        BWSounds.registerSounds();
+
+        ItemExt.initBuoyancy();
+        ItemExt.initDesserts();
+        ItemExt.initWeights();
+    }
+    public static void postInit() {
+        RecipeUtils.gatherCookableFood();
+        registerWood();
+        InvUtils.postInitOreDictGathering();
+        ColorUtils.initColors();
+    }
+    /**
+     * All names should be snake_case by convention (enforced in 1.11).
+     */
+    private static void registerEntities() {
+        BWRegistry.registerEntity(EntityExtendingRope.class, "extending_rope", 64, 20, true);
+        BWRegistry.registerEntity(EntityDynamite.class, "bwm_dynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityMiningCharge.class, "bwm_mining_charge", 10, 50, true);
+        BWRegistry.registerEntity(EntityItemBuoy.class, "entity_item_buoy", 64, 20, true);
+        BWRegistry.registerEntity(EntityShearedCreeper.class, "entity_sheared_creeper", 64, 1, true);
+        BWRegistry.registerEntity(EntityBroadheadArrow.class, "entity_broadhead_arrow", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingGourd.class, "entity_falling_gourd", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingBlockCustom.class, "falling_block_custom", 64, 20, true);
+    }
+
 
     public static void registerHopperFilters() {
         HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock);
@@ -84,27 +117,6 @@ public class BWRegistry {
 
     public static void registerBlockDispenserBehavior() {
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
-        if (BWConfig.hardcoreBuckets) {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
-                @Override
-                public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                    ItemStack outputStack = stack;
-                    BlockPos pos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
-                    if (source.getWorld().isAirBlock(pos)
-                            || source.getWorld().getBlockState(pos).getBlock().isReplaceable(source.getWorld(), pos)) {
-                        source.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
-                        for (EnumFacing face : EnumFacing.HORIZONTALS) {
-                            BlockPos off = pos.offset(face);
-                            if (source.getWorld().isAirBlock(off) || source.getWorld().getBlockState(off).getBlock()
-                                    .isReplaceable(source.getWorld(), off))
-                                source.getWorld().setBlockState(off, Blocks.FLOWING_WATER.getStateFromMeta(5));
-                        }
-                        outputStack = new ItemStack(Items.BUCKET, 1);
-                    }
-                    return outputStack;
-                }
-            });
-        }
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.REPEATER, new BehaviorDiodeDispense());
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.COMPARATOR, new BehaviorDiodeDispense());
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE),
@@ -196,9 +208,10 @@ public class BWRegistry {
     }
 
     public static void registerWood() {
+        boolean hardcoreLumber = ModuleLoader.isFeatureEnabled(HCLumber.class);
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             ItemStack log;
-            ItemStack plank = new ItemStack(Blocks.PLANKS, BWConfig.hardcoreLumber ? 4 : 6, type.getMetadata());
+            ItemStack plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 4 : 6, type.getMetadata());
             if (type.getMetadata() < 4) {
                 log = new ItemStack(Blocks.LOG, 1, type.getMetadata());
 
@@ -208,7 +221,7 @@ public class BWRegistry {
             Block block = ((ItemBlock) log.getItem()).getBlock();
             ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
             ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-            if (BWConfig.hardcoreLumber) {
+            if (hardcoreLumber) {
                 removeRecipe(plank, log);
                 if (Loader.isModLoaded("thermalexpansion")) {
                     registerTESawmill(plank, log);
@@ -218,7 +231,7 @@ public class BWRegistry {
             SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
             SawInteraction.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
                     new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
-            plank = new ItemStack(Blocks.PLANKS, BWConfig.hardcoreLumber ? 3 : 5, type.getMetadata());
+            plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 3 : 5, type.getMetadata());
             if (type.getMetadata() < 4) {
                 log = new ItemStack(BWMBlocks.DEBARKED_OLD, 1, type.getMetadata());
             } else {
@@ -238,10 +251,10 @@ public class BWRegistry {
                             ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
                             if (planks != ItemStack.EMPTY) {
                                 ItemStack[] output = new ItemStack[3];
-                                output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
+                                output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
                                 output[1] = new ItemStack(BWMItems.BARK, 1, 0);
                                 output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-                                if (BWConfig.hardcoreLumber) {
+                                if (hardcoreLumber) {
                                     removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
                                     if (Loader.isModLoaded("thermalexpansion")) {
                                         registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
@@ -256,10 +269,10 @@ public class BWRegistry {
                         ItemStack planks = getRecipeOutput(log);
                         if (planks != ItemStack.EMPTY) {
                             ItemStack[] output = new ItemStack[3];
-                            output[0] = new ItemStack(planks.getItem(), BWConfig.hardcoreLumber ? 4 : 6, planks.getMetadata());
+                            output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
                             output[1] = new ItemStack(BWMItems.BARK, 1, 0);
                             output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-                            if (BWConfig.hardcoreLumber) {
+                            if (hardcoreLumber) {
                                 removeRecipe(output[0], log);
                                 if (Loader.isModLoaded("thermalexpansion")) {
                                     registerTESawmill(output[0], log);

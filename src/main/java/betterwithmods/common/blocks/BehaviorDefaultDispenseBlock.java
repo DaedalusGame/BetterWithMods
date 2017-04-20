@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.player.Profiles;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem {
         FakePlayer fake = FakePlayerFactory.get((WorldServer) world, Profiles.BWMDISP);
         fake.setHeldItem(EnumHand.MAIN_HAND, stack);
         DirUtils.setEntityOrientationFacing(fake, facing.getOpposite());
-        if (BWConfig.debug)
+        if (GlobalConfig.debug)
             BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
         if (stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check))) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();

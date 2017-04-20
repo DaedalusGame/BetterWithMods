@@ -21,7 +21,7 @@ public final class ToolsManager {
     }
 
     public static void setAxesAsEffectiveAgainst(Block... blocks) {
-        for (Item item : BWMod.itemRegistry) {
+        for (Item item : Item.REGISTRY) {
             if (!(item instanceof ItemAxe)) continue;
             ItemAxe tool = (ItemAxe) item;
             setToolAsEffectiveAgainst(tool, blocks);
@@ -29,7 +29,7 @@ public final class ToolsManager {
     }
 
     public static void setPickaxesAsEffectiveAgainst(Block... blocks) {
-        for (Item item : BWMod.itemRegistry) {
+        for (Item item : Item.REGISTRY) {
             if (!(item instanceof ItemPickaxe)) continue;
             ItemPickaxe tool = (ItemPickaxe) item;
             setToolAsEffectiveAgainst(tool, blocks);

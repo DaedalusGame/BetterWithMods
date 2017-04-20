@@ -3,10 +3,6 @@ package betterwithmods.event;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.config.BWConfig;
-import betterwithmods.common.entity.EntityShearedCreeper;
-import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import betterwithmods.util.player.Profiles;
 import net.minecraft.block.state.IBlockState;
@@ -16,33 +12,21 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityRabbit;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.Random;
-
 public class MobDropEvent {
-    private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
-    private static final Random rand = new Random();
     public static FakePlayer player;
 
     //Initializing a static fake player for saws, so spawn isn't flooded with player equipping sounds when mobs hit the saw.
@@ -67,38 +51,7 @@ public class MobDropEvent {
         }
     }
 
-    @SubscribeEvent
-    public void mobDungProduction(LivingEvent.LivingUpdateEvent evt) {
-        if (evt.getEntityLiving().getEntityWorld().isRemote)
-            return;
 
-        if (!BWConfig.produceDung && !BWConfig.wolvesOnly)
-            return;
-
-        if (evt.getEntityLiving() instanceof EntityAnimal) {
-            EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
-            if (animal instanceof EntityWolf) {
-                if (!animal.getEntityWorld().canSeeSky(animal.getPosition())) {
-                    if (animal.getGrowingAge() > 99) {
-                        int light = animal.getEntityWorld().getLight(animal.getPosition());
-                        if (animal.getGrowingAge() == fearLevel[light]) {
-                            evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
-                            animal.setGrowingAge(99);
-                        }
-                    }
-                }
-            }
-            if (!(animal instanceof EntityRabbit) && (!BWConfig.wolvesOnly || animal instanceof EntityWolf)) {
-                if (animal.getGrowingAge() == 100) {
-                    evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
-                } else if (animal.isInLove()) {
-                    if (rand.nextInt(1200) == 0) {
-                        evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
-                    }
-                }
-            }
-        }
-    }
 
     @SubscribeEvent
     public void mobDiesBySaw(LivingDropsEvent evt) {
@@ -152,47 +105,12 @@ public class MobDropEvent {
         return false;
     }
 
-    @SubscribeEvent
-    public void mobDrops(LivingDropsEvent evt) {
-        if (!BWConfig.hardcoreGunpowder)
-            return;
-        if (evt.getEntity() instanceof EntityCreeper || evt.getEntity() instanceof EntityGhast) {
-            for (EntityItem item : evt.getDrops()) {
-                ItemStack stack = item.getEntityItem();
-                if (stack.getItem() == Items.GUNPOWDER) {
-                    item.setEntityItemStack(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.getCount()));
-                }
-            }
-        }
-    }
-
     public void addDrop(LivingDropsEvent evt, ItemStack drop) {
         EntityItem item = new EntityItem(evt.getEntityLiving().getEntityWorld(), evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
         item.setDefaultPickupDelay();
         evt.getDrops().add(item);
     }
 
-    @SubscribeEvent
-    public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
-        Entity creeper = e.getTarget();
-        if (creeper instanceof EntityCreeper) {
-            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != ItemStack.EMPTY) {
-                if (e.getItemStack().getItem() instanceof ItemShears) {
-                    InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
-                    EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
-                    creeper.attackEntityFrom(new DamageSource(""), 0);
-                    copyEntityInfo(creeper, shearedCreeper);
-                    e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.HOSTILE, 1, 0.3F);
-                    e.getWorld().playSound(null, shearedCreeper.posX, shearedCreeper.posY, shearedCreeper.posZ, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.HOSTILE, 1, 1F);
-                    creeper.setDead();
-                    e.getWorld().spawnEntity(shearedCreeper);
-                }
-            }
-        }
-    }
 
-    public void copyEntityInfo(Entity copyFrom, Entity copyTo) {
-        copyTo.setPositionAndRotation(copyFrom.posX, copyFrom.posY, copyFrom.posZ, copyFrom.rotationYaw, copyFrom.rotationPitch);
-        copyTo.setRotationYawHead(copyFrom.getRotationYawHead());
-    }
+
 }

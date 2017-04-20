@@ -1,7 +1,8 @@
 package betterwithmods.common.items;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.gameplay.Gameplay;
 
 /**
  * Purpose:
@@ -17,7 +18,7 @@ public class ItemBreedingHarness extends ItemAltName {
 
     @Override
     public String[] getLocations() {
-        if (BWConfig.kidFriendly)
+        if (Gameplay.kidFriendly)
             return new String[]{"breeding_harness_kf"};
         else
             return new String[]{"breeding_harness"};

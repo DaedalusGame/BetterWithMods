@@ -82,6 +82,6 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
         return fill;
     }
 
-    //Mostly for aesthetic purposes, primarily so the filter in the filtered hopper doesn't count.
+    //Mostly for aesthetic purposes, primarily so the filter in the filtered hopper doesn't reclaimCount.
     public abstract int getMaxVisibleSlots();
 }

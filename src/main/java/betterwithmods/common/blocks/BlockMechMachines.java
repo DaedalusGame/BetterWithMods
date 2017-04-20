@@ -10,7 +10,7 @@ import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.blocks.tile.TileEntityMill;
 import betterwithmods.common.blocks.tile.TileEntityPulley;
 import betterwithmods.common.blocks.tile.TileEntityTurntable;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -339,28 +339,28 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     private void breakMill(World world, BlockPos pos) {
-        if (BWConfig.dropsMill)
+        if (MechanicalBreakage.millstone)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/mill"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakPulley(World world, BlockPos pos) {
-        if (BWConfig.dropsPulley)
+        if (MechanicalBreakage.pulley)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/pulley"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     public void breakHopper(World world, BlockPos pos) {
-        if (BWConfig.dropsHopper)
+        if (MechanicalBreakage.hopper)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/hopper"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakTurntable(World world, BlockPos pos) {
-        if (BWConfig.dropsTurntable)
+        if (MechanicalBreakage.turntable)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/turntable"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);

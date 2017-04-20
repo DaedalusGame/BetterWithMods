@@ -2,7 +2,7 @@ package betterwithmods.common.world;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.event.BWMWorldGenEvent;
+import betterwithmods.module.hardcore.HCStructures;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityWitch;
@@ -80,7 +80,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             //Replace Pressure Plate
             this.setBlockState(worldIn, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 10, -11, 10, structureBoundingBoxIn);
 
-            if (BWMWorldGenEvent.isInRadius(worldIn, worldX, worldZ)) {
+            if (HCStructures.isInRadius(worldIn, worldX, worldZ)) {
                 //Dig hole
                 this.setAir(worldIn, 10, 0, 10, structureBoundingBoxIn);
                 this.setAir(worldIn, 11, 0, 10, structureBoundingBoxIn);
@@ -219,7 +219,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setAir(worldIn, 6, 3, 10, structureBoundingBoxIn);
             this.setAir(worldIn, 5, 3, 10, structureBoundingBoxIn);
 
-            if (BWMWorldGenEvent.isInRadius(worldIn, worldX, worldZ)) {
+            if (HCStructures.isInRadius(worldIn, worldX, worldZ)) {
                 //Remove hooks
                 this.setAir(worldIn, 1, -3, 8, structureBoundingBoxIn);
                 this.setAir(worldIn, 4, -3, 8, structureBoundingBoxIn);

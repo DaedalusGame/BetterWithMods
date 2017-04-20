@@ -1,18 +1,20 @@
 package betterwithmods.common;
 
 import betterwithmods.common.blocks.BlockUnfiredPottery.EnumPotteryType;
-import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
 import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
-import betterwithmods.config.BWConfig;
 import betterwithmods.common.registry.*;
 import betterwithmods.common.registry.bulk.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.util.InvUtils;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.hardcore.HCHunger;
+import betterwithmods.module.hardcore.HCLumber;
+import betterwithmods.module.hardcore.HCOres;
 import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
@@ -20,7 +22,6 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -48,17 +49,10 @@ public class BWCrafting {
         addTurntableRecipes();
         addSawRecipes();
         addHERecipes();
-        addHardcoreDiamonds();
         addSteelAnvilRecipes();
-        addHardcoreRedstone();
-        addHardcoreStumping();
         addPileRecipes();
     }
 
-    public static void postInit() {
-        addHardcoreOreRecipes();
-        addKilnOres();
-    }
 
     private static void addHERecipes() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 1), "PIP", "GLG", "PIP", 'P', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
@@ -81,7 +75,7 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.NETHER_BRICK_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.NETHERBRICK.getMetadata())).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.BRICK_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.BRICK.getMetadata())).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.SANDSTONE_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.SANDSTONE.getMetadata())).setMirrored(true));
-        if (BWConfig.hardcoreLumber) {
+        if (ModuleLoader.isFeatureEnabled(HCLumber.class)) {
             for (int i = 0; i < 4; i++)
                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
             for (int i = 0; i < 2; i++)
@@ -261,12 +255,13 @@ public class BWCrafting {
         GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 0), new ItemStack(Items.CAKE), 0.1F);
         addKilnRecipe(BWMBlocks.RAW_PASTRY, 0, new ItemStack(Items.CAKE));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 2), "FCF", 'F', "foodFlour", 'C', "foodChocolatebar"));
-        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 2), new ItemStack(Items.COOKIE, BWConfig.hardcoreHunger ? 8 : 16), 0.1F);
-        addKilnRecipe(BWMBlocks.RAW_PASTRY, 2, new ItemStack(Items.COOKIE, BWConfig.hardcoreHunger ? 8 : 16));
+        boolean hardcoreHunger = ModuleLoader.isFeatureEnabled(HCHunger.class);
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 2), new ItemStack(Items.COOKIE, hardcoreHunger ? 8 : 16), 0.1F);
+        addKilnRecipe(BWMBlocks.RAW_PASTRY, 2, new ItemStack(Items.COOKIE, hardcoreHunger ? 8 : 16));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 1), Blocks.PUMPKIN, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour"));
-        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 1), new ItemStack(Items.PUMPKIN_PIE, BWConfig.hardcoreHunger ? 1 : 2), 0.1F);
-        addKilnRecipe(BWMBlocks.RAW_PASTRY, 1, new ItemStack(Items.PUMPKIN_PIE, BWConfig.hardcoreHunger ? 1 : 2));
-        if (BWConfig.hardcoreHunger) {
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.RAW_PASTRY, 1, 1), new ItemStack(Items.PUMPKIN_PIE, hardcoreHunger ? 1 : 2), 0.1F);
+        addKilnRecipe(BWMBlocks.RAW_PASTRY, 1, new ItemStack(Items.PUMPKIN_PIE, hardcoreHunger ? 1 : 2));
+        if (hardcoreHunger) {
             RecipeUtils.removeRecipes(Items.BREAD, 0);
             RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
             addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
@@ -286,20 +281,6 @@ public class BWCrafting {
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ADVANCED_BELLOWS), " C " , "SBS", " G ",  'B', BWMBlocks.BELLOWS, 'C', Items.CLOCK,'S', ItemMaterial.getMaterial(EnumMaterial.STEEL_SPRING), 'G', ItemMaterial.getMaterial(EnumMaterial.STEEL_GEAR)));
-
-        if (BWConfig.hardcoreOres) {
-            RecipeUtils.removeRecipes(Items.COMPASS, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
-            RecipeUtils.removeRecipes(Items.CLOCK, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
-            RecipeUtils.removeRecipes(Items.BUCKET, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
-        }
-
-        if (BWConfig.hardcoreStructureCraft) {
-            RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
-            RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
-        }
     }
 
     private static void addSawRecipes() {
@@ -400,7 +381,7 @@ public class BWCrafting {
         addStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.TALLOW), new ItemStack[]{new ItemStack(Items.MUTTON, 6)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.TALLOW), new ItemStack[]{new ItemStack(Items.COOKED_MUTTON, 6)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.TALLOW), new ItemStack[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.BRIMSTONE), BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX) : null, new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.ENDER_SLAG)});
+        addStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.BRIMSTONE), Gameplay.requiresEndSlag ? ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX) : null, new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.ENDER_SLAG)});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.POTASH), new Object[]{"logWood"});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.POTASH), new Object[]{new OreStack("plankWood", 6)});
         addOreStokedCauldronRecipe(ItemMaterial.getMaterial(EnumMaterial.POTASH), new Object[]{new OreStack("dustWood", 16)});
@@ -427,18 +408,8 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
-        addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? EnumMaterial.ENDER_SLAG : EnumMaterial.BRIMSTONE));
+        addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(Gameplay.requiresEndSlag ? EnumMaterial.ENDER_SLAG : EnumMaterial.BRIMSTONE));
 
-    }
-
-    private static void addKilnOres() {
-        if (BWConfig.canKilnSmeltOres) {
-            InvUtils.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {
-                ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
-                if (ore != ItemStack.EMPTY && output != ItemStack.EMPTY)
-                    addKilnRecipe(ore, output);
-            });
-        }
     }
 
     public static void addKilnWood() {
@@ -458,59 +429,14 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.DEBARKED_NEW, new ItemStack(Items.COAL, 2, 1));
     }
 
-    private static void addHardcoreOreRecipes() {
-        if (BWConfig.hardcoreOres) {
-            for (ItemStack ore : InvUtils.oreNames) {
-                ItemStack nugget = InvUtils.getMatchingSuffixStack(ore, "ore", "nugget");
-                if (nugget != null) {
-                    RecipeUtils.removeFurnaceRecipe(ore);
-                    FurnaceRecipes.instance().getSmeltingList().put(ore, nugget);
-                    List<ItemStack> dusts = InvUtils.getMatchingSuffix(ore, "ore", "dust");
-                    if (dusts.size() > 0) {
-                        dusts.forEach(RecipeUtils::removeFurnaceRecipe);
-                        dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
-                    }
-                }
-            }
-        }
-    }
-
     private static void addCrucibleRecipes() {
-        addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX) : null});
+        addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", Gameplay.requiresEndSlag ? ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX) : null});
         addOreStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new OreStack("nuggetIron", 9)});
-        if (BWConfig.reclaimCount > 0) {
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 2), new ItemStack[]{new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 2), new ItemStack[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 3), new ItemStack[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 3), new ItemStack[]{new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 3), new ItemStack[]{new ItemStack(BWMItems.STEEL_AXE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack[]{new ItemStack(BWMItems.STEEL_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 4), new ItemStack[]{new ItemStack(BWMItems.STEEL_MATTOCK, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 5), new ItemStack[]{new ItemStack(BWMItems.STEEL_BATTLEAXE, 1, OreDictionary.WILDCARD_VALUE)});
-            addReclaimRecipe(new ItemStack(Items.IRON_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), "Iron", 8);
-            addReclaimRecipe(new ItemStack(Items.IRON_AXE, 1, OreDictionary.WILDCARD_VALUE), "Iron", 3);
-            addReclaimRecipe(new ItemStack(Items.IRON_BOOTS, 1, OreDictionary.WILDCARD_VALUE), "Iron", 4);
-            addReclaimRecipe(new ItemStack(Items.IRON_HELMET, 1, OreDictionary.WILDCARD_VALUE), "Iron", 5);
-            addReclaimRecipe(new ItemStack(Items.IRON_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE), "Iron", 7);
-            addReclaimRecipe(new ItemStack(Items.IRON_HOE, 1, OreDictionary.WILDCARD_VALUE), "Iron", 2);
-            addReclaimRecipe(new ItemStack(Items.IRON_PICKAXE, 1, OreDictionary.WILDCARD_VALUE), "Iron", 3);
-            addReclaimRecipe(new ItemStack(Items.IRON_SHOVEL, 1, OreDictionary.WILDCARD_VALUE), "Iron", 1);
-            addReclaimRecipe(new ItemStack(Items.IRON_SWORD, 1, OreDictionary.WILDCARD_VALUE), "Iron", 2);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), "Gold", 8);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_AXE, 1, OreDictionary.WILDCARD_VALUE), "Gold", 3);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_BOOTS, 1, OreDictionary.WILDCARD_VALUE), "Gold", 4);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_HELMET, 1, OreDictionary.WILDCARD_VALUE), "Gold", 5);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE), "Gold", 7);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_HOE, 1, OreDictionary.WILDCARD_VALUE), "Gold", 2);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_PICKAXE, 1, OreDictionary.WILDCARD_VALUE), "Gold", 3);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_SHOVEL, 1, OreDictionary.WILDCARD_VALUE), "Gold", 1);
-            addReclaimRecipe(new ItemStack(Items.GOLDEN_SWORD, 1, OreDictionary.WILDCARD_VALUE), "Gold", 2);
-            addReclaimRecipe(new ItemStack(Items.SHEARS, 1, OreDictionary.WILDCARD_VALUE), "Iron", 2);
-        }
+
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new ItemStack[]{new ItemStack(Items.IRON_DOOR)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.GOLDEN_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
-        if (BWConfig.hardcoreOres) {
+        if (ModuleLoader.isFeatureEnabled(HCOres.class)) {
             addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
         } else {
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
@@ -530,60 +456,6 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 6), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 7)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack[]{new ItemStack(Blocks.SPONGE, 1, 1)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new ItemStack[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
-        if (BWConfig.reclaimCount > 0) {
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 5), new ItemStack[]{new ItemStack(BWMItems.STEEL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 8), new ItemStack[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 7), new ItemStack[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 4), new ItemStack[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 10), new ItemStack[]{new ItemStack(BWMItems.STEEL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 14), new ItemStack[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 12), new ItemStack[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 8), new ItemStack[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 5), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL)});
-            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 4), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL)});
-            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 20), new ItemStack[]{new ItemStack(Items.CHAINMAIL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 32), new ItemStack[]{new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 28), new ItemStack[]{new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 16), new ItemStack[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 7), new ItemStack[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.ARMOR_PLATE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 16), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 2)});
-        }
-    }
-
-    public static void addHardcoreDiamonds() {
-        if (BWConfig.hardcoreDiamonds) {
-            RecipeUtils.removeRecipes(Items.DIAMOND_AXE, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_HOE, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_PICKAXE, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_SHOVEL, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_SWORD, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_HELMET, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_CHESTPLATE, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_LEGGINGS, 0);
-            RecipeUtils.removeRecipes(Items.DIAMOND_BOOTS, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_AXE, "DD", "DS", " S", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_HOE, "DD", " S", " S", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_PICKAXE, "DDD", " S ", " S ", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), 'S', "stickWood"));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_SHOVEL, "D", "S", "S", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), 'S', "stickWood"));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_SWORD, "D", "D", "S", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), 'S', "stickWood"));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_HELMET, "DDD", "D D", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT)));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_CHESTPLATE, "D D", "DDD", "DDD", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT)));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_LEGGINGS, "DDD", "D D", "D D", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT)));
-            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_BOOTS, "D D", "D D", 'D', ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT)));
-
-            if (BWConfig.reclaimCount > 0) {
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 3), new ItemStack[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 2), new ItemStack[]{new ItemStack(Items.DIAMOND_HOE, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 3), new ItemStack[]{new ItemStack(Items.DIAMOND_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 1), new ItemStack[]{new ItemStack(Items.DIAMOND_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 2), new ItemStack[]{new ItemStack(Items.DIAMOND_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 5), new ItemStack[]{new ItemStack(Items.DIAMOND_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 8), new ItemStack[]{new ItemStack(Items.DIAMOND_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 7), new ItemStack[]{new ItemStack(Items.DIAMOND_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-                addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT, 4), new ItemStack[]{new ItemStack(Items.DIAMOND_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            }
-        }
     }
 
     private static void addSteelAnvilRecipes() {
@@ -614,54 +486,6 @@ public class BWCrafting {
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()));
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_CORNER, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()));
         }
-    }
-
-    private static void addHardcoreRedstone() {
-        if (!BWConfig.hardcoreRedstone)
-            return;
-
-        RecipeUtils.removeRecipes(Blocks.DISPENSER);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.DISPENSER, "CCC", "CBC", "CRC", 'C', "cobblestone", 'B', Items.BOW, 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        RecipeUtils.removeRecipes(Blocks.DROPPER);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.DROPPER, "CCC", "C C", "CRC", 'C', "cobblestone", 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        //Reduce Iron Door & Iron Trapdoor Output?
-        RecipeUtils.removeRecipes(Items.IRON_DOOR, 0);
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.IRON_DOOR, 3), "RII", " II", "RII", 'I', "ingotIron", 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        RecipeUtils.removeRecipes(Blocks.IRON_TRAPDOOR);
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.IRON_TRAPDOOR, 2), "RII", "RII", 'I', "ingotIron", 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        RecipeUtils.removeRecipes(Blocks.LEVER);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.LEVER, "S", "C", "R", 'S', "stickWood", 'C', "cobblestone", 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.PISTON);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.PISTON, "WIW", "CSC", "CRC", 'W', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'C', "cobblestone", 'S', new ItemStack(BWMBlocks.URN, 1, BlockUrn.EnumUrnType.FULL.getMeta()), 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        RecipeUtils.removeRecipes(Blocks.STONE_BUTTON);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_BUTTON, "C", "R", 'C', new ItemStack(BWMBlocks.STONE_CORNER, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.STONE_PRESSURE_PLATE);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.TRIPWIRE_HOOK);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.TRIPWIRE_HOOK, "I", "M", "R", 'I', "nuggetIron", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.WOODEN_BUTTON);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.WOODEN_BUTTON, "C", "R", 'C', new ItemStack(BWMBlocks.WOOD_CORNER, 1, 32767), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.WOODEN_PRESSURE_PLATE);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.WOODEN_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Items.REPEATER, 0);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Items.REPEATER, "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', "stone"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Items.REPEATER, "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())));
-
-        RecipeUtils.removeRecipes(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, "II", "RR", 'I', "ingotIron", 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, "GG", "RR", 'G', "ingotGold", 'R', "dustRedstone"));
-        //Have hopper use Soulforged Steel?
-        RecipeUtils.removeRecipes(Blocks.HOPPER);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.HOPPER, "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())));
-    }
-
-    private static void addHardcoreStumping() {
-        if (!BWConfig.hardcoreStumping)
-            return;
-
-        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
     }
 
     private static void addPileRecipes() {
@@ -747,24 +571,7 @@ public class BWCrafting {
         CraftingManagerCrucibleStoked.getInstance().addOreRecipe(output, inputs);
     }
 
-    public static void addReclaimRecipe(ItemStack input, String oreSuffix, int ingotCount) {
-        int totalNuggets = ingotCount * BWConfig.reclaimCount;
-        int ingots = totalNuggets / 9;
-        int nuggets = totalNuggets % 9;
-        ItemStack ingotStack = null;
-        ItemStack nuggetStack = null;
-        if (ingots > 0 && !OreDictionary.getOres("ingot" + oreSuffix).isEmpty())
-            ingotStack = OreDictionary.getOres("ingot" + oreSuffix).get(0);
-        if (nuggets > 0 && !OreDictionary.getOres("nugget" + oreSuffix).isEmpty())
-            nuggetStack = OreDictionary.getOres("nugget" + oreSuffix).get(0);
-        if (ingotStack == null) {
-            if (nuggetStack != null) {
-                CraftingManagerCrucibleStoked.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), input.copy());
-            }
-        } else {
-            CraftingManagerCrucibleStoked.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : null, input.copy());
-        }
-    }
+
 
     public static void addOreStokedCrucibleRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
         CraftingManagerCrucibleStoked.getInstance().addOreRecipe(output, secondary, inputs);
@@ -829,5 +636,8 @@ public class BWCrafting {
 
     public static ShapelessOreRecipe addShapelessOreRecipe(ItemStack output, Object... input) {
         return SteelCraftingManager.getInstance().addShapelessOreRecipe(output, input);
+    }
+
+    public static void postInit() {
     }
 }

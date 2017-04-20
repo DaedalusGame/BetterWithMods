@@ -2,7 +2,7 @@ package betterwithmods.common.entity;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityPulley;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.AABBArray;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -110,7 +110,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         buf.readBytes(bytes);
         compound.setByteArray("BlockData", bytes);
 
-        if (BWConfig.dumpBlockData) {
+        if (GlobalConfig.debug) {
             for (int i = 0; i < bytes.length; i++) {
                 if (i % 16 == 0) {
                     String text = Integer.toHexString(i);
@@ -200,7 +200,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             }
         }
 
-        this.setPosition(pulley.getX() + 0.5, this.posY + (up ? BWConfig.upSpeed : -BWConfig.downSpeed),
+        this.setPosition(pulley.getX() + 0.5, this.posY + (up ? 0.1 : -0.1),
                 pulley.getZ() + 0.5);
 
     }
@@ -240,7 +240,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         entitiesInBlocks.forEach(e -> e.setPosition(e.posX, Math.max(e.posY, entMaxY.get(e) + newPosY - posY), e.posZ));
         entitiesInBlocks.forEach(e -> e.isAirBorne = false);
         entitiesInBlocks.forEach(e -> e.onGround = true);
-        entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -BWConfig.downSpeed, e.motionY));
+        entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -0.1, e.motionY));
 
     }
 

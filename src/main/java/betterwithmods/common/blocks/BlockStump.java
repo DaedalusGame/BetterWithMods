@@ -5,7 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.util.HardcoreFunctions;
+import betterwithmods.module.hardcore.HCStumping;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
@@ -77,7 +77,7 @@ public class BlockStump extends Block implements IMultiVariants {
      */
     @Nullable
     public static IBlockState getStump(IBlockState log) {
-        BlockPlanks.EnumType variant = HardcoreFunctions.getWoodType(log);
+        BlockPlanks.EnumType variant = HCStumping.getWoodType(log);
         if (variant == null) return null;
         return BWMBlocks.STUMP.getDefaultState().withProperty(BlockPlanks.VARIANT, variant);
     }

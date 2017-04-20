@@ -9,7 +9,6 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.common.items.*;
 import betterwithmods.common.items.tools.*;
-import betterwithmods.config.BWConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.client.renderer.block.model.ModelBakery;

@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.config.BWConfig;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -24,7 +23,7 @@ import java.util.Random;
 
 public class BlockLens extends BWMBlock {
     public static final PropertyBool LIT = PropertyBool.create("lit");
-    public static final int RANGE = BWConfig.lensRange;
+    public static final int RANGE = 256;
 
     public BlockLens() {
         super(Material.IRON);

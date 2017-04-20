@@ -1,7 +1,7 @@
 package betterwithmods.integration;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.hardcore.HCTools;
 import betterwithmods.util.NetherSpawnWhitelist;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class Quark implements ICompatModule {
 
     @Override
     public void postInit() {
-        if (BWConfig.removeLowTools) {
+        if (HCTools.removeLowTools) {
             RecipeUtils.removeRecipes(new ItemStack(Items.STONE_HOE));
             RecipeUtils.removeRecipes(new ItemStack(Items.STONE_SWORD));
         }

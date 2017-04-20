@@ -1,7 +1,8 @@
 package betterwithmods.common.items;
 
 import betterwithmods.api.IMultiLocations;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.gameplay.Gameplay;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +17,7 @@ public class ItemAltNameFood extends ItemFood implements IMultiLocations {
 
     @Override
     public String[] getLocations() {
-        if (BWConfig.kidFriendly)
+        if (Gameplay.kidFriendly)
             return new String[]{"creeper_oyster_kf"};
         else
             return new String[]{"creeper_oyster"};
@@ -24,7 +25,7 @@ public class ItemAltNameFood extends ItemFood implements IMultiLocations {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if (BWConfig.kidFriendly)
+        if (Gameplay.kidFriendly)
             return super.getUnlocalizedName() + "_kf";
         return super.getUnlocalizedName();
     }

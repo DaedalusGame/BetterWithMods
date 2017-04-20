@@ -3,7 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
-import betterwithmods.config.BWConfig;
+import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -68,9 +68,9 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
         int meta = state.getValue(STAGE);
 
         if (meta == 0) {
-            if (BWConfig.crankExhaustion > 0.0F) {
+            if (Gameplay.crankExhaustion > 0.0) {
                 if (player.getFoodStats().getFoodLevel() > 6) {
-                    player.addExhaustion(BWConfig.crankExhaustion);
+                    player.addExhaustion((float) Gameplay.crankExhaustion);
                     if (!world.isRemote) {
                         toggleSwitch(world, pos, state);
                     }

@@ -58,8 +58,10 @@
           "side": "betterwithmods:blocks/vessel_side",
           "top": "betterwithmods:blocks/vessel_bars",
           "bottom": "betterwithmods:blocks/vessel_bottom",
-          "invfill": "betterwithmods:blocks/vessel_contents"
-        }
+          "invfill": "betterwithmods:blocks/vessel_contents",
+          "inside": "betterwithmods:blocks/vessel_top"
+        },
+        "model": "betterwithmods:vessel"
       }
     }
   }

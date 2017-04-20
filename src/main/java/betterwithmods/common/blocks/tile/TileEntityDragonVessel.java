@@ -56,7 +56,6 @@ public class TileEntityDragonVessel extends TileEntity implements ITickable {
     public void update() {
         AxisAlignedBB box = world.getBlockState(pos).getBoundingBox(world,pos).expand(5,5,5);
         List<EntityXPOrb> xp = world.getEntitiesWithinAABB(EntityXPOrb.class, box);
-        System.out.println(xp);
         for (EntityXPOrb entity : xp) {
             double xDist = (getPos().getX() + 0.5D - entity.posX);
             double yDist = (getPos().getY() + 0.5D - entity.posY);

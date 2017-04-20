@@ -56,7 +56,6 @@ public class HCPiles extends Feature {
         }
 
         if (blockToPile.containsKey(block)) {
-            System.out.println(block);
             ItemStack pile = blockToPile.get(block);
             event.getDrops().clear();
             if (event.getWorld().rand.nextFloat() <= event.getDropChance()) {

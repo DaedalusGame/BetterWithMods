@@ -128,7 +128,6 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                     System.out.print(' ');
                 }
             }
-            System.out.println();
         }
     }
 

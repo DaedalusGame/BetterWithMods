@@ -33,7 +33,6 @@ public class NetherCore implements ICompatModule {
     public void postInit() {
         BWMod.logger.info("Replacing " + MODID + " nether spore recipe");
         Item nether_spore = Item.REGISTRY.getObject(new ResourceLocation(MODID, "nether_spore"));
-        System.out.println(nether_spore);
         RecipeUtils.removeRecipes(nether_spore, 0);
         BWCrafting.addCauldronRecipe(new ItemStack(nether_spore),
                 new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Blocks.MYCELIUM), new ItemStack(BWMBlocks.URN, 8, 8), new ItemStack(Items.NETHER_WART)}

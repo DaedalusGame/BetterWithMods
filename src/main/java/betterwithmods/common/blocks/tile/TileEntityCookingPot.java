@@ -491,6 +491,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents) {
-        pastEvents.forEach( e -> System.out.println(e));
+        pastEvents.forEach( e -> {});
     }
 }

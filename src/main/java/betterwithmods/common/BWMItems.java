@@ -62,7 +62,7 @@ public final class BWMItems {
     public static final Item RAW_OMELET = new ItemFood(3, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
     public static final Item COOKED_OMELET = new ItemFood(4, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
     public static final Item HAM_AND_EGGS = new ItemFood(6, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
-    public static final Item TASTY_SANDWICH = new ItemFood(6, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
+    public static final Item TASTY_SANDWICH = new ItemFood(7, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
     public static final Item COMPOSITE_BOW = new ItemCompositeBow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("composite_bow");
     public static final Item BROADHEAD_ARROW = new ItemBroadheadArrow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("broadhead_arrow");
     public static final Item BEEF_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_dinner");

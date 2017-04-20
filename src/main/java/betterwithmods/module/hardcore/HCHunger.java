@@ -56,6 +56,11 @@ public class HCHunger extends Feature {
     }
 
     @Override
+    public String[] getIncompatibleMods() {
+        return new String[]{"applecore"};
+    }
+
+    @Override
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }

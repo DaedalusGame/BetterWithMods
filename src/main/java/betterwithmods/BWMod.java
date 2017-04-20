@@ -82,14 +82,13 @@ public class BWMod {
     }
 
     private static boolean isLoaded(String modId) {
-        boolean loaded = Loader.isModLoaded(modId);/*BWConfig.config.get(BWConfig.MOD_COMPAT, modId.toLowerCase() + "_compat", true).getBoolean();
+        boolean loaded = Loader.isModLoaded(modId) && ModuleLoader.config.get("Mod Compat", modId.toLowerCase() + "_compat", true).getBoolean();
         BWMod.logger.debug("Compat for " + modId + " is " + (loaded ? "loaded" : "not loaded"));
-        BWConfig.config.save();*/
+        ModuleLoader.config.save();
         return loaded;
     }
 
     private static void registerEventHandlers() {
-//        MinecraftForge.EVENT_BUS.register(new BWConfig());
         MinecraftForge.EVENT_BUS.register(new MobDropEvent());
         MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());

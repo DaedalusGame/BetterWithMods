@@ -25,19 +25,21 @@ public class HCPiles extends Feature {
         return true;
     }
 
-    private Map<Block, ItemStack> blockToPile = new HashMap<>();
-
+    public static Map<Block, ItemStack> blockToPile = new HashMap<>();
+    public static void registerPile(Block block, ItemStack stack) {
+        blockToPile.put(block,stack);
+    }
     @Override
     public void init(FMLInitializationEvent event) {
-        blockToPile.put(Blocks.DIRT, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(Blocks.FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(BWMBlocks.FERTILE_FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(Blocks.GRASS, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(Blocks.MYCELIUM, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(Blocks.GRASS_PATH, new ItemStack(BWMItems.DIRT_PILE, 3));
-        blockToPile.put(Blocks.GRAVEL, new ItemStack(BWMItems.GRAVEL_PILE, 3));
-        blockToPile.put(Blocks.SAND, new ItemStack(BWMItems.SAND_PILE, 3));
-        blockToPile.put(BWMBlocks.DIRT_SLAB, new ItemStack(BWMItems.DIRT_PILE, 2));
+        registerPile(Blocks.DIRT, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(BWMBlocks.FERTILE_FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.GRASS, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.MYCELIUM, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.GRASS_PATH, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.GRAVEL, new ItemStack(BWMItems.GRAVEL_PILE, 3));
+        registerPile(Blocks.SAND, new ItemStack(BWMItems.SAND_PILE, 3));
+        registerPile(BWMBlocks.DIRT_SLAB, new ItemStack(BWMItems.DIRT_PILE, 2));
     }
 
     @SubscribeEvent

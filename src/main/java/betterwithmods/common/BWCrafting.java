@@ -53,17 +53,10 @@ public class BWCrafting {
         addTurntableRecipes();
         addSawRecipes();
         addHERecipes();
-        addHardcoreDiamonds();
         addSteelAnvilRecipes();
-        addHardcoreRedstone();
-        addHardcoreStumping();
         addPileRecipes();
     }
 
-    public static void postInit() {
-        addHardcoreOreRecipes();
-        addKilnOres();
-    }
 
     private static void addHERecipes() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.PULLEY.getMeta()), "PIP", "GLG", "PIP", 'P', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(EnumMaterial.REDSTONE_LATCH)));
@@ -403,8 +396,6 @@ public class BWCrafting {
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
         addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(Gameplay.requiresEndSlag ? EnumMaterial.ENDER_SLAG : EnumMaterial.BRIMSTONE));
-
-        addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(BWConfig.steelRequiresEnd ? EnumMaterial.ENDER_SLAG : EnumMaterial.BRIMSTONE));
     }
 
     public static void addKilnWood() {

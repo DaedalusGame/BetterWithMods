@@ -19,6 +19,5 @@ public class NuggetCompression extends Feature {
             if(suffix != null)
                 BWCrafting.addOreCrucibleRecipe(ingot, new Object[]{new OreStack("nugget"+suffix, 9)});
         }
-        BWCrafting.addOreCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
     }
 }

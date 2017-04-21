@@ -185,6 +185,9 @@ public class BWRegistry {
         OreDictionary.registerOre("fiberHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS));
         OreDictionary.registerOre("fabricHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_CLOTH));
 
+        OreDictionary.registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        OreDictionary.registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
+
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_BEEF);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_CHICKEN);

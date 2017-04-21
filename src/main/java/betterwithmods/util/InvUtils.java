@@ -36,15 +36,8 @@ public class InvUtils {
         cropNames = getOreNames("crop");
     }
 
-    public static ItemStack getMatchingSuffixStack(ItemStack stack, String startingPrefix, String resultingPrefix) {
-        List<ItemStack> list = getMatchingSuffix(stack, startingPrefix, resultingPrefix);
-        if (list.size() > 0)
-            return list.get(0);
-        return null;
-    }
-
-    public static List<ItemStack> getMatchingSuffix(ItemStack stack, String startingPrefix, String resultingPrefix) {
-        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).filter(ore -> ore.startsWith(startingPrefix)).map(ore -> OreDictionary.getOres(resultingPrefix + ore.substring(startingPrefix.length()))).flatMap(List::stream).collect(Collectors.toList());
+    public static String getSuffix(ItemStack stack, String startingPrefix) {
+        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).map(ore -> ore.substring(startingPrefix.length())).findFirst().orElse(null);
     }
 
     public static ArrayList<ItemStack> getOreNames(String prefix) {
@@ -437,7 +430,7 @@ public class InvUtils {
         }
     }
 
-    public static void writeToStack (IItemHandler inv, ItemStack stack) {
+    public static void writeToStack(IItemHandler inv, ItemStack stack) {
         NonNullList<ItemStack> list = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
         for (int i = 0; i < inv.getSlots(); i++) {
             if (!inv.getStackInSlot(i).isEmpty()) {
@@ -450,7 +443,7 @@ public class InvUtils {
             stack.setTagCompound(tag);
     }
 
-    public static void readFromStack (IItemHandler inv, ItemStack stack) {
+    public static void readFromStack(IItemHandler inv, ItemStack stack) {
         if (!stack.isEmpty() && stack.hasTagCompound()) {
             NonNullList<ItemStack> list = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
             NBTTagCompound tag = stack.getTagCompound();

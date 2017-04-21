@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.List;
@@ -40,14 +41,17 @@ public class HCOres extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         for (ItemStack ore : InvUtils.oreNames) {
-            ItemStack nugget = InvUtils.getMatchingSuffixStack(ore, "ore", "nugget");
-            if (nugget != null) {
+            String suffix = InvUtils.getSuffix(ore, "ore");
+            if (suffix != null) {
                 RecipeUtils.removeFurnaceRecipe(ore);
-                FurnaceRecipes.instance().getSmeltingList().put(ore, nugget);
-                List<ItemStack> dusts = InvUtils.getMatchingSuffix(ore, "ore", "dust");
-                if (dusts.size() > 0) {
-                    dusts.forEach(RecipeUtils::removeFurnaceRecipe);
-                    dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
+                ItemStack nugget = OreDictionary.getOres("nugget" + suffix).stream().findFirst().orElse(ItemStack.EMPTY);
+                if (!nugget.isEmpty()) {
+                    FurnaceRecipes.instance().getSmeltingList().put(ore,nugget);
+                    List<ItemStack> dusts = OreDictionary.getOres("dust"+suffix);
+                    if (dusts.size() > 0) {
+                        dusts.forEach(RecipeUtils::removeFurnaceRecipe);
+                        dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
+                    }
                 }
             }
         }

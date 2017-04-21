@@ -102,6 +102,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
         BROADHEAD,
         COCOA_POWDER,
         DIAMOND_INGOT,
+        DIAMOND_NUGGET,
         CHAIN_MAIL,
         STEEL_GEAR,
         STEEL_SPRING;

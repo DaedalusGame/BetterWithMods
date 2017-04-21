@@ -259,6 +259,8 @@ public class BWCrafting {
             addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
         }
         GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), "gemDiamond", "ingotIron", BWMItems.CREEPER_OYSTER));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_NUGGET,9), ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT)));
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), "NNN","NNN","NNN", 'N',ItemMaterial.getMaterial(EnumMaterial.DIAMOND_NUGGET)));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_HELMET), "CCC", "C C", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_CHESTPLATE), "C C", "CCC", "CCC", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS), "CCC", "C C", "C C", 'C', ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL));
@@ -415,7 +417,11 @@ public class BWCrafting {
 
     private static void addCrucibleRecipes() {
         addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", Gameplay.requiresEndSlag ? ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX) : null});
+
+        addOreStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{new OreStack("nuggetGold", 9)});
         addOreStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new OreStack("nuggetIron", 9)});
+        addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
+        addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
 
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new ItemStack[]{new ItemStack(Items.IRON_DOOR)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});

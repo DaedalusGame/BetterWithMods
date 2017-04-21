@@ -58,15 +58,15 @@ public class HCTools extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         if (removeLowTools)
             removeLowTierToolRecipes();
-        if(earlyPickaxesRebalance) {
-            Items.WOODEN_PICKAXE.setMaxDamage(1);
-            Items.STONE_PICKAXE.setMaxDamage(6);
-        }
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         changeVanillaToolMaterials();
+        if(earlyPickaxesRebalance) {
+            Items.WOODEN_PICKAXE.setMaxDamage(1);
+            Items.STONE_PICKAXE.setMaxDamage(6);
+        }
     }
 
      /**
@@ -156,7 +156,6 @@ public class HCTools extends Feature {
         if (stack.getItem() == Items.WOODEN_PICKAXE) {
             destroyItem(stack, player);
         }
-
     }
 
     private void destroyItem(ItemStack stack, EntityLivingBase entity) {

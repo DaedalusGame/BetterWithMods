@@ -57,6 +57,14 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
     }
 
     @Override
+    public void grow(World worldIn, BlockPos pos, IBlockState state) {
+        if (!state.getValue(TOP) && state.getValue(AGE).equals(7)) {
+            worldIn.setBlockState(pos.up(), state.withProperty(TOP, true));
+        }
+        super.grow(worldIn, pos, state);
+    }
+
+    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         checkAndDropBlock(world, pos, state);
         BlockPos up = pos.up();

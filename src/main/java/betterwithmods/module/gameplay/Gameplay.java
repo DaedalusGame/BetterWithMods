@@ -14,6 +14,7 @@ public class Gameplay extends Module {
     public void addFeatures() {
         registerFeature(new MechanicalBreakage());
         registerFeature(new MetalReclaming());
+
     }
 
     @Override

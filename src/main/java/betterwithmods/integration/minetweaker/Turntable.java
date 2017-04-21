@@ -1,13 +1,16 @@
 package betterwithmods.integration.minetweaker;
 
+import betterwithmods.common.registry.BlockMetaRecipe;
 import betterwithmods.common.registry.TurntableInteraction;
 import betterwithmods.common.registry.TurntableRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.ArrayUtils;
+import com.google.common.collect.Lists;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
+import scala.actors.threadpool.Arrays;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -33,7 +36,7 @@ public class Turntable {
 
     public static class Add extends BMAdd {
         public Add(ItemStack input, ItemStack output, List<ItemStack> scraps) {
-            super("turntable", TurntableInteraction.INSTANCE, new TurntableRecipe(input,output,scraps));
+            super("turntable", TurntableInteraction.INSTANCE, Lists.newArrayList(new TurntableRecipe(input, output, scraps)));
         }
     }
 

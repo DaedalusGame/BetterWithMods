@@ -4,6 +4,7 @@ import betterwithmods.common.registry.BlockMetaRecipe;
 import betterwithmods.common.registry.KilnInteraction;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -12,7 +13,10 @@ import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -26,18 +30,26 @@ public class Kiln {
     public static final String clazz = "mods.betterwithmods.Kiln";
 
     @ZenMethod
-    public static void add(IItemStack[] output, @NotNull IItemStack input) {
-        ItemStack blockMeta = InputHelper.toStack(input);
-        if(!InputHelper.isABlock(blockMeta))
-            MineTweakerAPI.getLogger().logError(input.getDisplayName() + " is not a Block");
-        Block block = ((ItemBlock)blockMeta.getItem()).getBlock();
+    public static void add(IItemStack[] output, @NotNull IIngredient input) {
 
-        ItemStack[] outputs = InputHelper.toStacks(output);
-        if (output == null) {
-            MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + input.getDisplayName() + ", outputs were null");
+       List<ItemStack> stacks = input.getItems().stream().map(InputHelper::toStack).collect(Collectors.toList());
+        MineTweakerAPI.logInfo(String.valueOf(stacks));
+       List<BlockMetaRecipe> recipes = new ArrayList<>();
+        for(ItemStack stack: stacks) {
+            if (!InputHelper.isABlock(stack)) {
+                MineTweakerAPI.getLogger().logWarning(stack.getDisplayName() + " is not a Block, will not be registered");
+                return;
+            }
+            Block block = ((ItemBlock) stack.getItem()).getBlock();
+            MineTweakerAPI.logInfo(block.getUnlocalizedName());
+            ItemStack[] outputs = InputHelper.toStacks(output);
+            if (output == null) {
+                MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + stack.getDisplayName() + ", outputs were null");
+            }
+            BlockMetaRecipe r = new BlockMetaRecipe("kiln", block, stack.getMetadata(), Arrays.asList(outputs));
+            recipes.add(r);
         }
-        BlockMetaRecipe r = new BlockMetaRecipe("kiln", block, blockMeta.getMetadata(), Arrays.asList(outputs));
-        MineTweakerAPI.apply(new BMAdd("kiln", KilnInteraction.INSTANCE,r));
+        MineTweakerAPI.apply(new BMAdd("kiln", KilnInteraction.INSTANCE, recipes));
     }
     
     @ZenMethod

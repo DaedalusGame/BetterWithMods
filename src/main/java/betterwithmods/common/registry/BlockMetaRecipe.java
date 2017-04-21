@@ -2,6 +2,7 @@ package betterwithmods.common.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class BlockMetaRecipe {
     }
 
     public boolean equals(Block block, int meta) {
-        return this.block == block && this.meta == meta;
+        return this.block == block && (this.meta == meta || meta == OreDictionary.WILDCARD_VALUE || this.meta == OreDictionary.WILDCARD_VALUE);
     }
 
     public List<ItemStack> getOutputs() {

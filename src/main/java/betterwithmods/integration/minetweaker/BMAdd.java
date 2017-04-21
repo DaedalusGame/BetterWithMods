@@ -5,6 +5,8 @@ import betterwithmods.common.registry.BlockMetaRecipe;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.google.common.collect.Lists;
 
+import java.util.List;
+
 /**
  * Purpose:
  *
@@ -13,8 +15,8 @@ import com.google.common.collect.Lists;
  */
 public class BMAdd extends BaseListAddition<BlockMetaRecipe> {
 
-    public BMAdd(String name, BlockMetaHandler recipes, BlockMetaRecipe recipe) {
-        super(name, recipes.getRecipes(), Lists.newArrayList(recipe));
+    public BMAdd(String name, BlockMetaHandler handler, List<BlockMetaRecipe> recipes) {
+        super(name, handler.getRecipes(), recipes);
     }
 
     @Override

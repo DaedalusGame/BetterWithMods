@@ -15,8 +15,10 @@ public class Tweaks extends Module {
         registerFeature(new EquipmentDrop());
         registerFeature(new GroupsFlee());
         registerFeature(new HempSeed());
+        registerFeature(new KilnSmelting());
         registerFeature(new MobSpawning());
         registerFeature(new MossGeneration());
         registerFeature(new RenewableEndstone());
+
     }
 }

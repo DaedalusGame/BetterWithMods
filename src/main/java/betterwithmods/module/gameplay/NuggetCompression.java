@@ -1,7 +1,6 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWCrafting;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;

@@ -2,7 +2,7 @@ package betterwithmods.integration.jei.category;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.SawWrapper;
+import betterwithmods.integration.jei.wrapper.BlockMetaWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -18,9 +18,10 @@ import javax.annotation.Nonnull;
 /**
  * Created by tyler on 9/5/16.
  */
-public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
+public class SawRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
     public static final int width = 82;
     public static final int height = 50;
+    public static final String UID = "bwm.saw";
     @Nonnull
     private final IDrawable background;
     @Nonnull
@@ -35,7 +36,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.saw";
+        return UID;
     }
 
     @Nonnull
@@ -51,7 +52,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<SawWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull SawWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 8, 9);
         guiItemStacks.init(1, false, 57, 9);

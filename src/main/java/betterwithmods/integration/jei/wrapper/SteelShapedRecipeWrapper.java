@@ -23,7 +23,7 @@ public class SteelShapedRecipeWrapper extends BlankRecipeWrapper implements ISha
         for (Object obj : this.recipe.getInput()) {
             if (obj instanceof ItemStack) {
                 ItemStack itemStack = (ItemStack) obj;
-                if (itemStack != null && itemStack.getCount() != 1) {
+                if (!itemStack.isEmpty() && itemStack.getCount() != 1) {
                     itemStack.setCount(1);
                 }
             }

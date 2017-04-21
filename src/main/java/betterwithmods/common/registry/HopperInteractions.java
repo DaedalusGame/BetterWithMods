@@ -28,12 +28,12 @@ import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
  * @version 11/13/16
  */
 public class HopperInteractions {
-    public static final ArrayList<HopperRecipe> recipes = new ArrayList<>();
+    public static final ArrayList<HopperRecipe> RECIPES = new ArrayList<>();
 
     static {
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial(EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST)));
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(EnumMaterial.SAWDUST)));
-        recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
+        RECIPES.add(new SoulUrnRecipe(ItemMaterial.getMaterial(EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST)));
+        RECIPES.add(new SoulUrnRecipe(ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(EnumMaterial.SAWDUST)));
+        RECIPES.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
@@ -46,7 +46,7 @@ public class HopperInteractions {
                 onCraft(world, pos, inputStack);
             }
         });
-        recipes.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
+        RECIPES.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
@@ -67,7 +67,7 @@ public class HopperInteractions {
     }
 
     public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
-        for (HopperRecipe recipe : recipes) {
+        for (HopperRecipe recipe : RECIPES) {
             if (recipe.isRecipe(filterType, input)) {
                 if (recipe.canCraft(world, pos)) {
                     recipe.craft(input, world, pos);
@@ -78,8 +78,8 @@ public class HopperInteractions {
         return false;
     }
 
-    public static class SoulUrn extends HopperRecipe {
-        public SoulUrn(ItemStack input, ItemStack output) {
+    public static class SoulUrnRecipe extends HopperRecipe {
+        public SoulUrnRecipe(ItemStack input, ItemStack output) {
             super(6, input, output, new ItemStack(BWMBlocks.URN, 1, 8));
         }
 

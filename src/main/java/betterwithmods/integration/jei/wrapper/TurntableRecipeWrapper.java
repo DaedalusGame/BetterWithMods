@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.common.registry.TurntableInteraction;
+import betterwithmods.common.registry.TurntableRecipe;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
  * @version 11/11/16
  */
 public class TurntableRecipeWrapper extends BlockMetaWrapper {
-    public TurntableRecipeWrapper(TurntableInteraction.TurntableRecipe recipe) {
+    public TurntableRecipeWrapper(TurntableRecipe recipe) {
         super(recipe);
         ItemStack result = recipe.getResult();
         if (result != ItemStack.EMPTY && result.getItem() != null)

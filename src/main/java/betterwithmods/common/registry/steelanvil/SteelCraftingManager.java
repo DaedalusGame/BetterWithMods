@@ -20,7 +20,7 @@ public class SteelCraftingManager {
      */
     private static final SteelCraftingManager instance = new SteelCraftingManager();
     /**
-     * A list of all the recipes added
+     * A list of all the RECIPES added
      */
     private List<IRecipe> recipes = new ArrayList();
 
@@ -206,7 +206,7 @@ public class SteelCraftingManager {
         return nonnulllist;
     }
     /**
-     * returns the List<> of all recipes
+     * returns the List<> of all RECIPES
      */
     public List<IRecipe> getRecipeList() {
         return this.recipes;

@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.StokedCauldronRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
@@ -12,7 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldronRecipeWrapper> {
+public class StokedCauldronRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper> {
+    public static final String UID = "bwm.cauldron.stoked";
     private static final int inputSlots = 2;
     private static final int outputSlots = 0;
 
@@ -32,7 +33,7 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.cauldron.stoked";
+        return UID;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull StokedCauldronRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BulkRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
@@ -61,6 +62,6 @@ public class StokedCauldronRecipeCategory extends BWMRecipeCategory<StokedCauldr
         if (outputs.size() > 1)
             stacks.set(outputSlots + 1, outputs.get(1));
 
-        craftingGrid.setInputStacks(stacks, inputs);
+        craftingGrid.setInputs(stacks, inputs);
     }
 }

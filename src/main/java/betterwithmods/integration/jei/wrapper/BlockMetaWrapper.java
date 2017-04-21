@@ -6,6 +6,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class BlockMetaWrapper extends BlankRecipeWrapper {
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull  IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, input);
         ingredients.setOutputs(ItemStack.class, outputs);
     }

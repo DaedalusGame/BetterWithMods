@@ -2,6 +2,8 @@ package betterwithmods.integration.jei.category;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
+import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.registry.BlockMetaRecipe;
 import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -25,6 +27,8 @@ import javax.annotation.Nonnull;
 public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrapper> {
     public static final int width = 145;
     public static final int height = 80;
+    public static final String UID = "bwm.hopper";
+
 
     @Nonnull
     private final IDrawable background;
@@ -40,7 +44,7 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.hopper";
+        return UID;
     }
 
     @Nonnull
@@ -72,15 +76,14 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
         guiItemStacks.init(1, true, x, y); //input item
 
         guiItemStacks.init(2, false, x + 28, y); //main output
-
         guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
-
         guiItemStacks.init(4, false, x, y + 27); //hopper
-
+        if(wrapper instanceof HopperRecipeWrapper.SoulUrn) {
+            guiItemStacks.init(5, false, x, y + 45); //urn
+            guiItemStacks.set(5, new ItemStack(BWMBlocks.URN, 1, 0));
+        }
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3, ingredients.getOutputs(ItemStack.class).subList(1, 3).get(0));
-        guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 4));
-
+        guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.HOPPER.getMeta()));
 
     }
 }

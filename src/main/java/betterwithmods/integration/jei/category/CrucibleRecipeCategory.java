@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.CrucibleRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.BulkRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
@@ -12,7 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrapper> {
+public class CrucibleRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper> {
+    public static final String UID = "bwm.crucible";
     private static final int inputSlots = 2;
     private static final int outputSlots = 0;
 
@@ -32,7 +33,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.crucible";
+        return UID;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull CrucibleRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BulkRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);
@@ -55,7 +56,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         }
 
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
-        if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY && wrapper.getRecipe().getSecondary().getItem() != null)
+        if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputs(stacks, inputList);

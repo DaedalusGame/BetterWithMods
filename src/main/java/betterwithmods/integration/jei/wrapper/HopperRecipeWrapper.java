@@ -37,4 +37,10 @@ public class HopperRecipeWrapper extends BlankRecipeWrapper {
         ingredients.setInputs(ItemStack.class, Stream.concat(filter.stream(), input.stream()).collect(Collectors.toList()));
         ingredients.setOutputs(ItemStack.class, outputs);
     }
+
+    public static class SoulUrn extends HopperRecipeWrapper {
+        public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
+            super(recipe);
+        }
+    }
 }

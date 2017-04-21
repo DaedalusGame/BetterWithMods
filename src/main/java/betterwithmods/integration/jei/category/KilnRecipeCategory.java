@@ -2,7 +2,7 @@ package betterwithmods.integration.jei.category;
 
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.KilnWrapper;
+import betterwithmods.integration.jei.wrapper.BlockMetaWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -16,10 +16,11 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 
 
-public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
+public class KilnRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
 
     public static final int width = 145;
     public static final int height = 80;
+    public static final String UID = "bwm.kiln";
 
     @Nonnull
     private final IDrawable background;
@@ -35,7 +36,7 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.kiln";
+        return UID;
     }
 
     @Nonnull
@@ -52,7 +53,7 @@ public class KilnRecipeCategory extends BlankRecipeCategory<KilnWrapper> {
 
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull KilnWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 20, 31);
         guiItemStacks.init(1, false, 94, 31);

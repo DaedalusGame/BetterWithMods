@@ -236,7 +236,7 @@ public class SteelShapedOreRecipe implements IRecipe {
      * Returns the input for this recipe, any mod accessing this value should never
      * manipulate the values in this array as it will effect the recipe itself.
      *
-     * @return The recipes input vales.
+     * @return The RECIPES input vales.
      */
     public Object[] getInput() {
         return this.input;

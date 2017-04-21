@@ -195,7 +195,7 @@ public abstract class CraftingManagerBulk {
                     }
                 }
             }
-            //We're throwing this in the back of the possible valid recipes just in case there's another recipe with the same item alongside another.
+            //We're throwing this in the back of the possible valid RECIPES just in case there's another recipe with the same item alongside another.
             if (single != null) {
                 recipe.put(order, single);
                 order++;

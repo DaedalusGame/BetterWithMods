@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.blocks.tile.TileEntityMill;
 import betterwithmods.common.blocks.tile.TileEntityPulley;
@@ -39,10 +40,13 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
+
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.SINGLE_MACHINES,1, type.getMeta());
+    }
+
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
     public static final PropertyEnum<BlockMechMachines.EnumType> MACHINETYPE = PropertyEnum.create("machinetype", BlockMechMachines.EnumType.class);
-    //Mill, Pulley, Crucible, Cauldron, Hopper, Turntable
-    private static boolean keepInv;
 
     public BlockMechMachines() {
         super(Material.ROCK);
@@ -173,7 +177,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (!keepInv && tile != null) {
+        if (tile != null) {
             if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                 InvUtils.ejectInventoryContents(world, pos, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
                 world.updateComparatorOutputLevel(pos, this);
@@ -202,7 +206,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         if (!isCurrentStateValid(world, pos)) {
             world.scheduleBlockUpdate(pos, this, tickRateForMeta(type.getMeta()), 5);
         }
-
         if (type == BlockMechMachines.EnumType.HOPPER) {
             ((TileEntityFilteredHopper) world.getTileEntity(pos)).outputBlocked = false;
         }

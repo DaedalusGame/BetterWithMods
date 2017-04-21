@@ -4,6 +4,7 @@ import betterwithmods.api.block.ITurnable;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.TurntableInteraction;
+import betterwithmods.common.registry.TurntableRecipe;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
@@ -341,7 +342,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                     block.rotateAroundYAxis(getWorld(), pos, reverse);
             } else if (state != state.withRotation(rot))
                 getWorld().setBlockState(pos, state.withRotation(rot));
-            rotateCraftable(state, (TurntableInteraction.TurntableRecipe) TurntableInteraction.INSTANCE.getRecipe(stack), pos, reverse);
+            rotateCraftable(state, (TurntableRecipe) TurntableInteraction.INSTANCE.getRecipe(stack), pos, reverse);
             this.potteryRotated = true;
         } else if (target instanceof ITurnable) {
             ITurnable block = (ITurnable) target;
@@ -371,7 +372,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
     }
 
-    private void rotateCraftable(IBlockState input, TurntableInteraction.TurntableRecipe craft, BlockPos pos, boolean reverse) {
+    private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos, boolean reverse) {
         Block block = input.getBlock();
         this.potteryRotation++;
         if (this.potteryRotation > 7) {

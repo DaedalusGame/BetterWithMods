@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import betterwithmods.common.blocks.tile.TileEntityDragonVessel;
@@ -38,10 +39,14 @@ import javax.annotation.Nullable;
  * @version 3/3/17
  */
 public class BlockCookingPot extends BWMBlock implements IMultiVariants {
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.COOKING_POTS,1, type.getMeta());
+    }
     public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("type", EnumType.class);
 
     public BlockCookingPot() {
         super(Material.ROCK);
+        this.setHardness(3.5F);
     }
 
     @Override

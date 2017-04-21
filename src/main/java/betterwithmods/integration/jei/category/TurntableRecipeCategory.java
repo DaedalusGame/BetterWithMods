@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipeWrapper> {
     public static final int width = 53;
     public static final int height = 50;
+    public static final String UID = "bwm.turntable";
     @Nonnull
     private final IDrawable background;
     @Nonnull
@@ -38,7 +39,7 @@ public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipe
     @Nonnull
     @Override
     public String getUid() {
-        return "bwm.turntable";
+        return UID;
     }
 
     @Nonnull

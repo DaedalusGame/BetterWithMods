@@ -2,6 +2,7 @@ package betterwithmods.common.world;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.module.hardcore.HCStructures;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -251,7 +252,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                 removeChest(worldIn, 9, -3, 10, randomIn);
             } else {
                 this.setBlockState(worldIn, BWMBlocks.HAND_CRANK.getDefaultState(), 5, 3, 10, structureBoundingBoxIn);
-                //TODO add Vessel of the Dragon @ 6, 3, 10
+                this.setBlockState(worldIn, BWMBlocks.COOKING_POTS.getDefaultState().withProperty(BlockCookingPot.TYPE,BlockCookingPot.EnumType.DRAGONVESSEL), 6, 3, 10, structureBoundingBoxIn);
             }
 
             return result;

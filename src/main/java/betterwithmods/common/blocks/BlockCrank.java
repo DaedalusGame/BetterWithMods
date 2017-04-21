@@ -167,7 +167,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public void overpower(World world, BlockPos pos) {
-        //TODO
     }
 
     @Override
@@ -177,7 +176,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-        //TODO
     }
 
     @Override

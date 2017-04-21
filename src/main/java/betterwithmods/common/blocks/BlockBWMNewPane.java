@@ -3,8 +3,10 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
+import com.sun.org.apache.xerces.internal.parsers.AbstractXMLDocumentParser;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +27,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
@@ -98,26 +102,22 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
         }
     }
 
+    private final Map<PropertyBool, AxisAlignedBB> bounds = new HashMap<PropertyBool, AxisAlignedBB>() {{
+        //new AxisAlignedBB(0.4375F, 0.0F,0.4375F, 0.5625F, 1.0F, 0.5625F)
+        put(DirUtils.NORTH, new AxisAlignedBB(0.4375F, 0.0F, 0.0F, 0.5625F, 1.0F, 0.5625F));
+        put(DirUtils.SOUTH, new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 1.0F));
+        put(DirUtils.WEST, new AxisAlignedBB(0.0F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F));
+        put(DirUtils.EAST, new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 1.0F, 1.0F, 0.5625F));
+    }};
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        //TODO Cache AABB
         state = state.getActualState(world, pos);
-
-        float minY = 0.0F;
-        float maxY = 1.0F;
-        float minX = 0.4375F;
-        float maxX = 0.5625F;
-        float minZ = 0.4375F;
-        float maxZ = 0.5625F;
-        if (state.getValue(DirUtils.NORTH))
-            minZ = 0.0F;
-        if (state.getValue(DirUtils.SOUTH))
-            maxZ = 1.0F;
-        if (state.getValue(DirUtils.WEST))
-            minX = 0.0F;
-        if (state.getValue(DirUtils.EAST))
-            maxX = 1.0F;
-        return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+        AxisAlignedBB bound = new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
+        for (PropertyBool dir : DirUtils.DIR_PROP_HORIZ)
+            if (state.getValue(dir))
+                bound = bound.union(bounds.get(dir));
+        return bound;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class BlockBWMNewPane extends BWMBlock implements IMultiVariants {
     }
 
     public final boolean isCompatibleBlock(Block block) {
-        return block.getDefaultState().isFullBlock() || block == this;
+        return block.getDefaultState().isFullBlock() || block instanceof BlockBWMNewPane || block instanceof BlockBWMPane;
     }
 
     public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir) {

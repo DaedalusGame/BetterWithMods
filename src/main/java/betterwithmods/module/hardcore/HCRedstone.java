@@ -72,45 +72,4 @@ public class HCRedstone extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())));
     }
 
-    //TODO This caused some pretty severe crashes when testing mcmultipart, keep an eye on it.
-//    @SubscribeEvent
-    public void disableRedstone(BlockEvent.NeighborNotifyEvent event) {
-        event.setCanceled(true);
-        World world = event.getWorld();
-        BlockPos pos = event.getPos();
-        for (EnumFacing facing : event.getNotifiedSides()) {
-            IBlockState state = world.getBlockState(pos.offset(facing));
-            Block block = state.getBlock();
-            if (block instanceof BlockDoor || block instanceof BlockFenceGate || block instanceof BlockTrapDoor) {
-                if (!state.getMaterial().equals(Material.IRON))
-                    continue;
-            }
-
-            world.neighborChanged(pos.offset(facing), event.getState().getBlock(), pos);
-            /*
-            for (EnumFacing f1 : EnumFacing.VALUES) {
-                if (f1 != facing.getOpposite())
-                    world.neighborChanged(pos.offset(facing).offset(f1), event.getState().getBlock(), pos.offset(facing));
-            }*/
-        }
-        if (event.getForceRedstoneUpdate()) {
-            event.getWorld().updateObservingBlocksAt(pos, event.getState().getBlock());
-        } else {
-            IBlockState state = world.getBlockState(pos);
-            boolean hasFacingProp = false;
-            IProperty<EnumFacing> dir = null;
-            for (IProperty<?> prop : state.getProperties().keySet()) {
-                if (prop.getName().equals("facing") && prop.getValueClass().equals(EnumFacing.class)) {
-                    dir = ((IProperty<EnumFacing>) prop);
-                    hasFacingProp = true;
-                }
-                if (hasFacingProp)
-                    break;
-            }
-            if (hasFacingProp) {
-                EnumFacing face = state.getValue(dir);
-                world.notifyNeighborsOfStateChange(pos.offset(face.getOpposite()), state.getBlock(), false);
-            }
-        }
-    }
 }

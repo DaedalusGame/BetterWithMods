@@ -53,7 +53,8 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        //TODO: Maybe make this try to work with items that don't have a use action?
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && player.isSneaking();
 
         if (world.isRemote && emptyHands)

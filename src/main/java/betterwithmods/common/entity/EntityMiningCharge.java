@@ -1,5 +1,6 @@
 package betterwithmods.common.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static net.minecraft.util.EnumFacing.*;
 
@@ -137,14 +140,19 @@ public class EntityMiningCharge extends Entity {
         entities.forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
     }
 
+    private HashMap<Block, Block> dropMap = new HashMap<Block, Block>() {{
+        put(Blocks.COBBLESTONE, Blocks.GRAVEL);
+        put(Blocks.GRAVEL, Blocks.SAND);
+    }};
+
     private void explodeBlock(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         float resistance = state.getBlock().getExplosionResistance(world, pos, null, null);
         if (resistance < 100) {
             Explosion explosion = new Explosion(world, igniter, posX, posY, posZ, 0, false, false);
             if (state.getBlock().canDropFromExplosion(explosion)) {
-                if (state.getBlock() == Blocks.COBBLESTONE) //TODO: Possible charge registry to blast a block into an item.
-                    Blocks.GRAVEL.dropBlockAsItem(world, pos, state, 0);
+                if (dropMap.containsKey(state.getBlock()))
+                    dropMap.get(state.getBlock()).dropBlockAsItem(world, pos, state, 0);
                 else
                     state.getBlock().dropBlockAsItem(world, pos, state, 0);
             }

@@ -132,8 +132,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
     }
 
     private void serializeBlockmap(ByteBuf buf, Map<Vec3i, IBlockState> blocks) {
-        // TODO: Maybe add TileEntity support? It would be cool if blocks
-        // directly on top of the platform would be transported with it
+        // TODO: Maybe add TileEntity support? It would be cool if blocks directly on top of the platform would be transported with it
         buf.writeInt(blocks.size());
         blocks.forEach((vec, state) -> {
             buf.writeInt(vec.getX());

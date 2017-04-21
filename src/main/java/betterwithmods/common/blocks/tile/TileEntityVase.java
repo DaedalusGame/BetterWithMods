@@ -42,7 +42,7 @@ public class TileEntityVase extends TileBasicInventory {
     public void onBreak() {
         ItemStack vaseitem = inventory.getStackInSlot(0);
         if (vaseitem != ItemStack.EMPTY && vaseitem.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
-            float intensity = 1.5f; // TODO: fiddle with this.
+            float intensity = 1.5f;
             getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
         } else if (vaseitem != ItemStack.EMPTY) {
             InvUtils.ejectStackWithOffset(getWorld(), pos, vaseitem);

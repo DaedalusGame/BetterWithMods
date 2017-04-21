@@ -121,19 +121,16 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
 
     @Override
     public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        // TODO Auto-generated method stub
     }
 
     @Override

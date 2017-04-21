@@ -20,28 +20,11 @@ public class ItemBark extends Item implements IMultiLocations {
         this.setMaxDamage(0);
     }
 
+    private final static int[] sizes = new int[]{5,3,2,4,2,8};
     public static int getTanningStackSize(int meta) {
-        //TODO fix values for faithful mode
-        if (meta < BlockPlanks.EnumType.values().length) {
-            switch (BlockPlanks.EnumType.byMetadata(meta)) {
-                case OAK:
-                    return 5;
-                case SPRUCE:
-                    return 3;
-                case BIRCH:
-                    return 2;
-                case JUNGLE:
-                    return 4;
-                case ACACIA:
-                    return 2;
-                case DARK_OAK:
-                    return 8;
-                default:
-                    return 8;
-            }
-        } else {
+        if(meta > sizes.length || meta < 0)
             return 8;
-        }
+        return sizes[meta];
     }
 
     @Override

@@ -57,7 +57,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<CrucibleRecipeWrap
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
         if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY && wrapper.getRecipe().getSecondary().getItem() != null)
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
-        List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class); //TODO adapted for JEI 3.11.2. May not be correct.
-        craftingGrid.setInputStacks(stacks, inputList);
+        List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
+        craftingGrid.setInputs(stacks, inputList);
     }
 }

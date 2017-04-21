@@ -78,6 +78,7 @@ public final class BWMItems {
     public static final Item DIRT_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("dirt_pile");
     public static final Item GRAVEL_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("gravel_pile");
     public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
+    public static final Item WOLF_CHOP = new ItemFood(3, 0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
 
     private BWMItems() {
     }
@@ -127,6 +128,7 @@ public final class BWMItems {
         registerItem(DIRT_PILE);
         registerItem(GRAVEL_PILE);
         registerItem(SAND_PILE);
+        registerItem(WOLF_CHOP);
     }
 
     /**
@@ -190,6 +192,7 @@ public final class BWMItems {
         setInventoryModel(DIRT_PILE);
         setInventoryModel(GRAVEL_PILE);
         setInventoryModel(SAND_PILE);
+        setInventoryModel(WOLF_CHOP);
     }
 
     @SideOnly(Side.CLIENT)

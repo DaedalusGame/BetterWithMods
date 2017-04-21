@@ -42,8 +42,8 @@ public class HCTools extends Feature {
         earlyPickaxesRebalance = loadPropBool("Early pickaxes rebalance", "Wooden Pickaxe will have 1 usage and Stone Pickaxe 6.", true);
         removeLowTools = loadPropBool("Remove cheapest tools", "The minimum level of the hoe and the sword is iron, and the axe needs at least stone.", true);
 
-        woodDurability = loadPropInt("Hardcore Hardness Wood Durability", "Number of usages for wooden tools.", "", 1, 1, 60);
-        stoneDurability = loadPropInt("Hardcore Hardness Stone Durability", "Number of usages for stone tools.", "", 50, 2, 132);
+        woodDurability = loadPropInt("Hardcore Hardness Wood Durability", "Number of usages for wooden tools. Does not change Pickaxe if earlyPickaxesRebalanced is enabled", "", 1,1, 60);
+        stoneDurability = loadPropInt("Hardcore Hardness Stone Durability", "Number of usages for stone tools. Does not change Pickaxe if earlyPickaxesRebalanced is enabled", "", 50, 2, 132);
         ironDurability = loadPropInt("Hardcore Hardness Iron Durability", "Number of usages for iron tools.", "", 500, 2, 251);
         diamondDurability = loadPropInt("Hardcore Hardness Diamond Durability", "Number of usages for diamond tools.", "", 1561, 2, 1562);
         goldDurability = loadPropInt("Hardcore Hardness Gold Durability", "Number of usages for golden tools.", "", 32, 2, 33);
@@ -58,6 +58,10 @@ public class HCTools extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         if (removeLowTools)
             removeLowTierToolRecipes();
+        if(earlyPickaxesRebalance) {
+            Items.WOODEN_PICKAXE.setMaxDamage(1);
+            Items.STONE_PICKAXE.setMaxDamage(6);
+        }
     }
 
     @Override
@@ -65,7 +69,7 @@ public class HCTools extends Feature {
         changeVanillaToolMaterials();
     }
 
-    /**
+     /**
      * New values for {@link net.minecraft.item.Item.ToolMaterial}
      */
     private enum ToolMaterialOverride {

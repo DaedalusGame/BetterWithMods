@@ -55,6 +55,7 @@ public class MobDropEvent {
 
     @SubscribeEvent
     public void mobDiesBySaw(LivingDropsEvent evt) {
+
         BlockPos pos = evt.getEntityLiving().getPosition().down();
         if (isChoppingBlock(evt.getEntityLiving().getEntityWorld(), pos) || isBattleAxe(evt.getEntityLiving())) {
             if (!(evt.getEntityLiving() instanceof EntityPlayer)) {

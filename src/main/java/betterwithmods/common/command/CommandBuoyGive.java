@@ -32,7 +32,7 @@ public class CommandBuoyGive extends CommandGive
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length < 2) {
-            throw new WrongUsageException("commands.give.usage", new Object[0]);
+            throw new WrongUsageException("commands.give.usage");
         }
         else {
             EntityPlayer entityplayer = getPlayer(server, sender, args[0]);
@@ -49,14 +49,14 @@ public class CommandBuoyGive extends CommandGive
                     itemstack.setTagCompound(JsonToNBT.getTagFromJson(s));
                 }
                 catch (NBTException nbtexception) {
-                    throw new CommandException("commands.give.tagError", new Object[] {nbtexception.getMessage()});
+                    throw new CommandException("commands.give.tagError", nbtexception.getMessage());
                 }
             }
 
             boolean flag = entityplayer.inventory.addItemStackToInventory(itemstack);
 
             if (flag) {
-                entityplayer.world.playSound((EntityPlayer)null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((entityplayer.getRNG().nextFloat() - entityplayer.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                entityplayer.world.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((entityplayer.getRNG().nextFloat() - entityplayer.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityplayer.inventoryContainer.detectAndSendChanges();
             }
             if (flag && itemstack.isEmpty()) {
@@ -72,7 +72,7 @@ public class CommandBuoyGive extends CommandGive
                 }
             }
 
-            notifyCommandListener(sender, this, "commands.give.success", new Object[] {name, Integer.valueOf(i), entityplayer.getName()});
+            notifyCommandListener(sender, this, "commands.give.success", name, i, entityplayer.getName());
         }
     }
 }

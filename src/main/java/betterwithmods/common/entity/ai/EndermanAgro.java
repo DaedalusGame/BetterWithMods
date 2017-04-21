@@ -27,11 +27,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
 
     private boolean shouldEndermanAttackPlayer(@Nonnull EntityEnderman enderman, @Nonnull EntityPlayer player) {
         ItemStack stack = player.inventory.armorInventory.get(3);
-        if (stack != ItemStack.EMPTY && stack.getItem() == BWMItems.ENDER_SPECTACLES) {
-            return false;
-        } else {
-            return enderman.shouldAttackPlayer(player);
-        }
+        return !(stack != ItemStack.EMPTY && stack.getItem() == BWMItems.ENDER_SPECTACLES) && enderman.shouldAttackPlayer(player);
     }
 
     /**
@@ -71,7 +67,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
                 return true;
             }
         } else {
-            return this.targetEntity != null && ((EntityPlayer) this.targetEntity).isEntityAlive() ? true : super.continueExecuting();
+            return this.targetEntity != null && this.targetEntity.isEntityAlive() || super.continueExecuting();
         }
     }
 

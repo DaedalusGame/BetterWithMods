@@ -2,12 +2,9 @@ package betterwithmods.integration.minetweaker;
 
 import betterwithmods.module.hardcore.HCPiles;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.helpers.StackHelper;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import com.google.common.collect.Maps;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.block.IBlock;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

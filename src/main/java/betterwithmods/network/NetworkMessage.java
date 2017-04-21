@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -93,9 +94,7 @@ public abstract class NetworkMessage<REQ extends NetworkMessage> implements Seri
             return fieldCache.get(clazz);
         else {
             Field[] fields = clazz.getFields();
-            Arrays.sort(fields, (Field f1, Field f2) -> {
-                return f1.getName().compareTo(f2.getName());
-            });
+            Arrays.sort(fields, Comparator.comparing(Field::getName));
             fieldCache.put(clazz, fields);
             return fields;
         }
@@ -120,10 +119,8 @@ public abstract class NetworkMessage<REQ extends NetworkMessage> implements Seri
 
     private static boolean acceptField(Field f, Class<?> type) {
         int mods = f.getModifiers();
-        if (Modifier.isFinal(mods) || Modifier.isStatic(mods) || Modifier.isTransient(mods))
-            return false;
+        return !(Modifier.isFinal(mods) || Modifier.isStatic(mods) || Modifier.isTransient(mods)) && handlers.containsKey(type);
 
-        return handlers.containsKey(type);
     }
 
     public static <T extends Object> void mapHandler(Class<T> type, Reader<T> reader, Writer<T> writer) {
@@ -227,12 +224,12 @@ public abstract class NetworkMessage<REQ extends NetworkMessage> implements Seri
     }
 
     // Functional interfaces
-    public static interface Writer<T extends Object> {
-        public void write(T t, ByteBuf buf);
+    public interface Writer<T extends Object> {
+        void write(T t, ByteBuf buf);
     }
 
-    public static interface Reader<T extends Object> {
-        public T read(ByteBuf buf);
+    public interface Reader<T extends Object> {
+        T read(ByteBuf buf);
     }
 
 }

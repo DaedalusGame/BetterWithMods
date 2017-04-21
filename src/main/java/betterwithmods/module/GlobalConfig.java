@@ -41,10 +41,10 @@ public final class GlobalConfig {
                     case 'S':
                         config.get(fullCategory, key, "").setValue(value);
                 }
-            } catch(IllegalArgumentException e) {}
+            } catch(IllegalArgumentException ignored) {}
 
             if(config.hasChanged()) {
-                ModuleLoader.forEachModule(module -> module.setupConfig());
+                ModuleLoader.forEachModule(Module::setupConfig);
 
                 if(saveToFile)
                     config.save();

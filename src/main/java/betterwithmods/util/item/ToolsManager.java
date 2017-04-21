@@ -1,6 +1,5 @@
 package betterwithmods.util.item;
 
-import betterwithmods.BWMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;

@@ -55,7 +55,7 @@ public class BWGuiFactory implements IModGuiFactory {
         }
 
         public static List<IConfigElement> getAllElements() {
-            List<IConfigElement> list = new ArrayList();
+            List<IConfigElement> list = new ArrayList<>();
 
             Set<String> categories = ModuleLoader.config.getCategoryNames();
             for(String s : categories)

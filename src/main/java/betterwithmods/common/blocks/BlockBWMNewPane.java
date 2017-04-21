@@ -3,7 +3,6 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
-import com.sun.org.apache.xerces.internal.parsers.AbstractXMLDocumentParser;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

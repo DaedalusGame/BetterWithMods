@@ -36,7 +36,7 @@ public class MossGeneration extends Feature {
                     evt.world.setBlockState(check, changeState);
                 }
             });
-        } catch(ConcurrentModificationException e) { }
+        } catch(ConcurrentModificationException ignored) { }
     }
     @Override
     public boolean hasSubscriptions() {

@@ -53,13 +53,13 @@ public class BulkRecipe {
             } else if (in instanceof OreStack) {
                 inputs.add(((OreStack) in).copy());
             } else {
-                String ret = "Invalid " + type + " recipe: ";
+                StringBuilder ret = new StringBuilder("Invalid " + type + " recipe: ");
                 for (Object tmp : input)
-                    ret += tmp + ", ";
-                ret += "Output: " + output;
+                    ret.append(tmp).append(", ");
+                ret.append("Output: ").append(output);
                 if (secondaryOutput != null)
-                    ret += ", Secondary: " + secondaryOutput;
-                throw new RuntimeException(ret);
+                    ret.append(", Secondary: ").append(secondaryOutput);
+                throw new RuntimeException(ret.toString());
             }
         }
         condenseInputs(inputs);

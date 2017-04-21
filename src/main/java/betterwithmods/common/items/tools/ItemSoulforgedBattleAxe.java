@@ -15,7 +15,6 @@ public class ItemSoulforgedBattleAxe extends ItemAxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        if (InvUtils.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel"))) return true;
-        return super.getIsRepairable(toRepair, repair);
+        return InvUtils.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel")) || super.getIsRepairable(toRepair, repair);
     }
 }

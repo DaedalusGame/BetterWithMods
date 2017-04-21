@@ -40,9 +40,7 @@ public abstract class BlockMetaHandler {
     }
 
     public boolean contains(ItemStack stack) {
-        if (stack == null || stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock))
-            return false;
-        return contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
+        return !(stack == null || stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock)) && contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
 
     public boolean contains(Block block, int meta) {
@@ -76,12 +74,8 @@ public abstract class BlockMetaHandler {
 
     public List<BlockMetaRecipe> removeRecipes(ItemStack input) {
         List<BlockMetaRecipe> removed = Lists.newArrayList();
-        Iterator<BlockMetaRecipe> it = recipes.iterator();
-        while(it.hasNext())
-        {
-            BlockMetaRecipe ir = it.next();
-            if(ir.getStack().isItemEqual(input))
-            {
+        for (BlockMetaRecipe ir : recipes) {
+            if (ir.getStack().isItemEqual(input)) {
                 removed.add(ir);
             }
         }

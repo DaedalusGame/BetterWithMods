@@ -1,8 +1,6 @@
 package betterwithmods.network;
 
 import betterwithmods.BWMod;
-import betterwithmods.module.Feature;
-import betterwithmods.module.Module;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.Hardcore;
 import net.minecraft.client.Minecraft;

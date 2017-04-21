@@ -6,7 +6,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class TurntableInteraction extends BlockMetaHandler {
     public static TurntableInteraction INSTANCE = new TurntableInteraction();

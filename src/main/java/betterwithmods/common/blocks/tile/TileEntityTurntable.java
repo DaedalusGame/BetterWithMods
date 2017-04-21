@@ -210,10 +210,8 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 
             return !state.getValue(BlockPistonBase.EXTENDED);
         }
-        if (target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD)
-            return false;
+        return !(target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD) && this.getWorld().isBlockNormalCube(pos, false);
 
-        return this.getWorld().isBlockNormalCube(pos, false);
     }
 
     private boolean canBlockTransmitRotationVertically(BlockPos pos) {
@@ -231,10 +229,8 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
 
             return !state.getValue(BlockPistonBase.EXTENDED);
         }
-        if (target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD)
-            return false;
+        return !(target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD) && this.getWorld().isBlockNormalCube(pos, false);
 
-        return this.getWorld().isBlockNormalCube(pos, false);
     }
 
     private void rotateBlocksAttached(BlockPos pos, boolean reverse) {
@@ -369,7 +365,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
     }
 
     private void spawnParticles(IBlockState state) {
-        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
+        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
     }
 
     private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos, boolean reverse) {

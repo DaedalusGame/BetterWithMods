@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.BWMod;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMItems;
@@ -11,7 +10,6 @@ import betterwithmods.common.registry.heat.BWMHeatSource;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -24,23 +22,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
-import net.minecraftforge.common.animation.ITimeValue;
-import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.model.animation.CapabilityAnimation;
-import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static betterwithmods.common.blocks.tile.TileEntityFilteredHopper.putDropInInventoryAllSlots;
@@ -74,9 +65,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == MechanicalCapability.MECHANICAL_POWER)
-            return true;
-        return super.hasCapability(capability, facing);
+        return capability == MechanicalCapability.MECHANICAL_POWER || super.hasCapability(capability, facing);
     }
 
     @Override

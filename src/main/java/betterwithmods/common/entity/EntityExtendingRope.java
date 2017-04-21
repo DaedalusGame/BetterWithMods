@@ -113,15 +113,15 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         if (GlobalConfig.debug) {
             for (int i = 0; i < bytes.length; i++) {
                 if (i % 16 == 0) {
-                    String text = Integer.toHexString(i);
+                    StringBuilder text = new StringBuilder(Integer.toHexString(i));
                     while (text.length() < 8) {
-                        text = "0" + text;
+                        text.insert(0, "0");
                     }
                     System.out.print("\n" + text + ": ");
                 }
-                String b = Integer.toHexString(Byte.toUnsignedInt(bytes[i]));
+                StringBuilder b = new StringBuilder(Integer.toHexString(Byte.toUnsignedInt(bytes[i])));
                 while (b.length() < 2) {
-                    b = "0" + b;
+                    b.insert(0, "0");
                 }
                 System.out.print(b);
                 if (i % 2 == 1) {

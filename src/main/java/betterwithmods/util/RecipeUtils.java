@@ -26,14 +26,8 @@ public final class RecipeUtils {
     }
 
     public static void removeFurnaceRecipe(ItemStack input) {
-        Iterator<Map.Entry<ItemStack, ItemStack>> iter = FurnaceRecipes.instance().getSmeltingList().entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<ItemStack, ItemStack> next = iter.next();
-            //for some reason mojang put fucking wildcard for their ore meta
-            if (next.getKey().isItemEqual(input) || (next.getKey().getItem() == input.getItem() && next.getKey().getMetadata() == OreDictionary.WILDCARD_VALUE)) {
-                iter.remove();
-            }
-        }
+        //for some reason mojang put fucking wildcard for their ore meta
+        FurnaceRecipes.instance().getSmeltingList().entrySet().removeIf(next -> next.getKey().isItemEqual(input) || (next.getKey().getItem() == input.getItem() && next.getKey().getMetadata() == OreDictionary.WILDCARD_VALUE));
     }
 
     public static IBlockState getStateFromStack(ItemStack stack) {

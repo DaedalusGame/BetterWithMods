@@ -1,7 +1,6 @@
 package betterwithmods.common.items;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 
 /**

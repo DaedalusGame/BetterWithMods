@@ -27,7 +27,7 @@ public class SteelCraftingManager {
     /**
      * Returns the static instance of this class
      */
-    public static final SteelCraftingManager getInstance() {
+    public static SteelCraftingManager getInstance() {
         /** The static instance of this class */
         return instance;
     }
@@ -43,26 +43,25 @@ public class SteelCraftingManager {
     }
 
     public SteelShapedRecipe addRecipe(ItemStack result, Object... recipe) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         int i = 0;
         int width = 0;
         int height = 0;
 
         if (recipe[i] instanceof String[]) {
-            String[] astring = (String[]) ((String[]) recipe[i++]);
+            String[] astring = (String[]) recipe[i++];
 
-            for (int l = 0; l < astring.length; ++l) {
-                String s1 = astring[l];
+            for (String s1 : astring) {
                 ++height;
                 width = s1.length();
-                s = s + s1;
+                s.append(s1);
             }
         } else {
             while (recipe[i] instanceof String) {
                 String s2 = (String) recipe[i++];
                 ++height;
                 width = s2.length();
-                s = s + s2;
+                s.append(s2);
             }
         }
 
@@ -88,8 +87,8 @@ public class SteelCraftingManager {
         for (int i1 = 0; i1 < width * height; ++i1) {
             char c0 = s.charAt(i1);
 
-            if (hashmap.containsKey(Character.valueOf(c0))) {
-                ingredients[i1] = ((ItemStack) hashmap.get(Character.valueOf(c0))).copy();
+            if (hashmap.containsKey(c0)) {
+                ingredients[i1] = ((ItemStack) hashmap.get(c0)).copy();
             } else {
                 ingredients[i1] = ItemStack.EMPTY;
             }
@@ -108,11 +107,10 @@ public class SteelCraftingManager {
 
     public SteelShapelessRecipe addShapelessRecipe(ItemStack result, Object... ingredients) {
         ArrayList arraylist = new ArrayList();
-        Object[] aobject = ingredients;
         int i = ingredients.length;
 
         for (int j = 0; j < i; ++j) {
-            Object object1 = aobject[j];
+            Object object1 = ingredients[j];
 
             if (object1 instanceof ItemStack) {
                 arraylist.add(((ItemStack) object1).copy());
@@ -174,7 +172,7 @@ public class SteelCraftingManager {
             return new ItemStack(itemstack.getItem(), 1, i1);
         } else {
             for (j = 0; j < this.recipes.size(); ++j) {
-                IRecipe irecipe = (IRecipe) this.recipes.get(j);
+                IRecipe irecipe = this.recipes.get(j);
 
                 if (irecipe.matches(matrix, world)) {
                     return irecipe.getCraftingResult(matrix);
@@ -188,7 +186,7 @@ public class SteelCraftingManager {
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting craftMatrix, World worldIn)
     {
-        for (IRecipe irecipe : (List<IRecipe>)this.recipes)
+        for (IRecipe irecipe : this.recipes)
         {
             if (irecipe.matches(craftMatrix, worldIn))
             {
@@ -196,7 +194,7 @@ public class SteelCraftingManager {
             }
         }
 
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(craftMatrix.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(craftMatrix.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i)
         {

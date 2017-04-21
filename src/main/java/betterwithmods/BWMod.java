@@ -4,7 +4,6 @@ import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.BWSounds;
 import betterwithmods.event.*;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.module.ModuleLoader;

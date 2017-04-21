@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import betterwithmods.BWMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;

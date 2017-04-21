@@ -61,12 +61,8 @@ public abstract class CraftingManagerBulk {
 
     public List<BulkRecipe> removeRecipes(ItemStack output) {
         List<BulkRecipe> removed = Lists.newArrayList();
-        Iterator<BulkRecipe> it = recipes.iterator();
-        while(it.hasNext())
-        {
-            BulkRecipe ir = it.next();
-            if(ir.getOutput().isItemEqual(output))
-            {
+        for (BulkRecipe ir : recipes) {
+            if (ir.getOutput().isItemEqual(output)) {
                 removed.add(ir);
             }
         }
@@ -75,10 +71,8 @@ public abstract class CraftingManagerBulk {
 
     public List<BulkRecipe> removeRecipes(ItemStack output, Object... inputs) {
         List<BulkRecipe> removed = Lists.newArrayList();
-        Iterator<BulkRecipe> it = recipes.iterator();
-        while(it.hasNext()) {
-            BulkRecipe ir = it.next();
-            if(ir.getOutput().isItemEqual(output)) {
+        for (BulkRecipe ir : recipes) {
+            if (ir.getOutput().isItemEqual(output)) {
                 if (inputs.length > 0) {
                     boolean match = true;
                     for (Object input : inputs) {
@@ -88,8 +82,7 @@ public abstract class CraftingManagerBulk {
                     }
                     if (match)
                         removed.add(ir);
-                }
-                else {
+                } else {
                     removed.add(ir);
                 }
             }

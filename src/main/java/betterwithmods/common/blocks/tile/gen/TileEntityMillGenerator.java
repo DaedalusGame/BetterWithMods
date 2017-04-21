@@ -147,9 +147,7 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == MechanicalCapability.MECHANICAL_POWER)
-            return true;
-        return super.hasCapability(capability, facing);
+        return capability == MechanicalCapability.MECHANICAL_POWER || super.hasCapability(capability, facing);
     }
 
     @Override

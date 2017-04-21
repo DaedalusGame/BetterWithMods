@@ -12,10 +12,7 @@ package betterwithmods.network;
  * File Created @ [15/07/2016, 06:03:43 (GMT)]
  */
 
-import betterwithmods.module.Module;
-import betterwithmods.module.ModuleLoader;
 import com.google.common.collect.Lists;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;

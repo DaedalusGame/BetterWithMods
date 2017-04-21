@@ -23,8 +23,6 @@ public class FluidTankRestricted extends FluidTank {
     private boolean areFluidsIdentical(Fluid fluid1, Fluid fluid2) {
         if (fluid1 == null)
             return fluid2 == null;
-        if (fluid2 == null)
-            return false;
-        return fluid1 == fluid2 || fluid1.getName().equals(fluid2.getName());
+        return fluid2 != null && (fluid1 == fluid2 || fluid1.getName().equals(fluid2.getName()));
     }
 }

@@ -326,9 +326,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         }
 
         public boolean isType(EnumPlantType type) {
-            if (this.type.length != 0)
-                return Arrays.asList(this.type).contains(type);
-            return false;
+            return this.type.length != 0 && Arrays.asList(this.type).contains(type);
         }
     }
 }

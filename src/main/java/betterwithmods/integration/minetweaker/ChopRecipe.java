@@ -13,6 +13,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @ZenClass(ChopRecipe.clazz)
 public class ChopRecipe {
@@ -26,7 +27,7 @@ public class ChopRecipe {
 
     public static class Add extends BaseListAddition<IRecipe> {
         public Add(IRecipe recipe) {
-            super("chopping", CraftingManager.getInstance().getRecipeList(), Arrays.asList(recipe));
+            super("chopping", CraftingManager.getInstance().getRecipeList(), Collections.singletonList(recipe));
         }
 
         @Override

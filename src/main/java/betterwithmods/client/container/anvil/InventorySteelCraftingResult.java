@@ -22,9 +22,8 @@ public class InventorySteelCraftingResult extends InventoryCraftResult {
         //return craft.decrStackSize(slot, decrement);
         ItemStack stack = craft.getResult();
         if (stack != null) {
-            ItemStack itemstack = stack;
             craft.setResult(null);
-            return itemstack;
+            return stack;
         } else {
             return null;
         }

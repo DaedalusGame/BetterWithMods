@@ -2,7 +2,6 @@ package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
 import betterwithmods.event.BreedingHardnessEvent;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSheep;

@@ -23,7 +23,7 @@ public class SteelShapelessRecipe implements IRecipe {
     /**
      * Is a List of ItemStack that composes the recipe.
      */
-    public final ArrayList<Object> recipeItems = new ArrayList<Object>();
+    public final ArrayList<Object> recipeItems = new ArrayList<>();
 
     public SteelShapelessRecipe(ItemStack result, List ingredients) {
         this.recipeOutput = result;
@@ -50,13 +50,13 @@ public class SteelShapelessRecipe implements IRecipe {
             }
             else
             {
-                String ret = "Invalid shapeless ore recipe: ";
+                StringBuilder ret = new StringBuilder("Invalid shapeless ore recipe: ");
                 for (Object tmp :  ingredients)
                 {
-                    ret += tmp + ", ";
+                    ret.append(tmp).append(", ");
                 }
-                ret += recipeOutput;
-                throw new RuntimeException(ret);
+                ret.append(recipeOutput);
+                throw new RuntimeException(ret.toString());
             }
         }
     }
@@ -82,27 +82,21 @@ public class SteelShapelessRecipe implements IRecipe {
 
                 if (!itemstack.isEmpty()) {
                     boolean flag = false;
-                    Iterator iterator = arraylist.iterator();
 
-                    while (iterator.hasNext()) {
-                        Object next = iterator.next();
-
-                        if(next instanceof ItemStack) {
-                            ItemStack itemstack1 = (ItemStack)next;
+                    for (Object next : arraylist) {
+                        if (next instanceof ItemStack) {
+                            ItemStack itemstack1 = (ItemStack) next;
                             if (itemstack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
                                 flag = true;
                                 arraylist.remove(itemstack1);
                                 break;
                             }
-                        }
-                        else if(next instanceof List)
-                        {
-                            Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
-                            while (itr.hasNext() && !flag)
-                            {
+                        } else if (next instanceof List) {
+                            Iterator<ItemStack> itr = ((List<ItemStack>) next).iterator();
+                            while (itr.hasNext() && !flag) {
                                 flag = OreDictionary.itemMatches(itr.next(), itemstack, false);
                             }
-                            if(flag) {
+                            if (flag) {
                                 arraylist.remove(next);
                                 break;
                             }

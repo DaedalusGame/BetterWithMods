@@ -119,7 +119,7 @@ public final class ModuleLoader {
 	}
 
 	private static void loadModuleConfigs() {
-		forEachModule(module -> module.setupConfig());
+		forEachModule(Module::setupConfig);
 
 		if(config.hasChanged())
 			config.save();

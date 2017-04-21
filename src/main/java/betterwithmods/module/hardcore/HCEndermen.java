@@ -38,7 +38,7 @@ public class HCEndermen extends Feature {
                 EntityEnderman entity = (EntityEnderman) evt.getEntity();
                 entity.targetTasks.taskEntries.clear();
                 entity.targetTasks.addTask(1, new EndermanAgro(entity));
-                entity.targetTasks.addTask(2, new EntityAIHurtByTarget(entity, true, new Class[0]));
+                entity.targetTasks.addTask(2, new EntityAIHurtByTarget(entity, true));
                 entity.targetTasks.addTask(3, new EntityAINearestAttackableTarget(entity, EntityEndermite.class, 10, true, false, mite -> ((EntityEndermite) mite).isSpawnedByPlayer()));
             }
         }

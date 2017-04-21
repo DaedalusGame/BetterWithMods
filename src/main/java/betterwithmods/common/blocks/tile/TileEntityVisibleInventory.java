@@ -21,9 +21,7 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
+        return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override

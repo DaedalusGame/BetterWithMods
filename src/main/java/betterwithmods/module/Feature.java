@@ -41,13 +41,13 @@ public class Feature {
 	public final void setupConstantConfig() {
 		String[] incompat = getIncompatibleMods();
 		if(incompat != null && incompat.length > 0) {
-			String desc = "This feature disables itself if any of the following mods are loaded: \n";
+			StringBuilder desc = new StringBuilder("This feature disables itself if any of the following mods are loaded: \n");
 			for(String s : incompat)
-				desc += (" - " + s + "\n");
-			desc += "This is done to prevent content overlap.\nYou can turn this on to force the feature to be loaded even if the above mods are also loaded.";
+				desc.append(" - ").append(s).append("\n");
+			desc.append("This is done to prevent content overlap.\nYou can turn this on to force the feature to be loaded even if the above mods are also loaded.");
 				
 			ConfigHelper.needsRestart = true;
-			forceLoad = loadPropBool("Force Enabled", desc, false);
+			forceLoad = loadPropBool("Force Enabled", desc.toString(), false);
 		}
 	}
 	

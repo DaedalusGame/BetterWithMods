@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by tyler on 4/20/17.
  */
 public class HCBeds extends Feature {
-    public static final EntityPlayer.SleepResult TOO_RESTLESS = EnumHelper.addEnum(EntityPlayer.SleepResult.class, "TOO_RESTLESS", new Class[0], new Object[0]);
+    public static final EntityPlayer.SleepResult TOO_RESTLESS = EnumHelper.addEnum(EntityPlayer.SleepResult.class, "TOO_RESTLESS", new Class[0]);
 
     @Override
     public String getFeatureDescription() {
@@ -25,7 +25,7 @@ public class HCBeds extends Feature {
     @SubscribeEvent
     public void onSleepInBed(PlayerSleepInBedEvent event) {
         if (EntityPlayerExt.isSurvival(event.getEntityPlayer())) {
-            event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("tile.bed.tooRestless", new Object[0]), true);
+            event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("tile.bed.tooRestless"), true);
             event.setResult(TOO_RESTLESS);
         }
     }

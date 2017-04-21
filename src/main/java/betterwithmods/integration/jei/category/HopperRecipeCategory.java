@@ -3,7 +3,6 @@ package betterwithmods.integration.jei.category;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.common.blocks.BlockMechMachines;
-import betterwithmods.common.registry.BlockMetaRecipe;
 import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;

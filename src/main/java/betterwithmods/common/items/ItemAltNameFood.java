@@ -1,7 +1,6 @@
 package betterwithmods.common.items;
 
 import betterwithmods.api.IMultiLocations;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;

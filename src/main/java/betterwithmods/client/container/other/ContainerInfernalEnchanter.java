@@ -69,8 +69,7 @@ public class ContainerInfernalEnchanter extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         for (IContainerListener listener : this.listeners) {
-            IContainerListener icontainerlistener = listener;
-            this.broadcastData(icontainerlistener);
+            this.broadcastData(listener);
         }
     }
 

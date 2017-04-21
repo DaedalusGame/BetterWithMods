@@ -59,7 +59,7 @@ public class EntityItemBuoy extends EntityItem {
     }
 
     private DataParameter<ItemStack> getITEM() {
-        return this.ITEM;
+        return ITEM;
     }
 
     private int getPickupDelay() {

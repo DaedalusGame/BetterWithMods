@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.event.world.BlockEvent;
@@ -41,7 +42,7 @@ public class HCTools extends Feature {
         earlyPickaxesRebalance = loadPropBool("Early pickaxes rebalance", "Wooden Pickaxe will have 1 usage and Stone Pickaxe 6.", true);
         removeLowTools = loadPropBool("Remove cheapest tools", "The minimum level of the hoe and the sword is iron, and the axe needs at least stone.", true);
 
-        woodDurability = loadPropInt("Hardcore Hardness Wood Durability", "Number of usages for wooden tools.", "", 10, 2, 60);
+        woodDurability = loadPropInt("Hardcore Hardness Wood Durability", "Number of usages for wooden tools.", "", 1, 1, 60);
         stoneDurability = loadPropInt("Hardcore Hardness Stone Durability", "Number of usages for stone tools.", "", 50, 2, 132);
         ironDurability = loadPropInt("Hardcore Hardness Iron Durability", "Number of usages for iron tools.", "", 500, 2, 251);
         diamondDurability = loadPropInt("Hardcore Hardness Diamond Durability", "Number of usages for diamond tools.", "", 1561, 2, 1562);
@@ -55,10 +56,6 @@ public class HCTools extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        if (earlyPickaxesRebalance) {
-            Items.STONE_PICKAXE.setMaxDamage(6 - 1);
-            Items.WOODEN_PICKAXE.setMaxDamage(1);
-        }
         if (removeLowTools)
             removeLowTierToolRecipes();
     }
@@ -72,7 +69,7 @@ public class HCTools extends Feature {
      * New values for {@link net.minecraft.item.Item.ToolMaterial}
      */
     private enum ToolMaterialOverride {
-        WOOD(woodDurability - 1, 1.01F, 0),
+        WOOD(woodDurability, 1.01F, 0),
         STONE(stoneDurability - 1, 1.01F, 5),
         IRON(ironDurability - 1, 6.0F, 14),
         DIAMOND(diamondDurability - 1, 8.0F, 14),
@@ -81,10 +78,10 @@ public class HCTools extends Feature {
         private final float efficiencyOnProperMaterial;
         private final int enchantability;
 
-        ToolMaterialOverride(int par4, float par5, int par7) {
-            this.maxUses = par4;
-            this.efficiencyOnProperMaterial = par5;
-            this.enchantability = par7;
+        ToolMaterialOverride(int maxUses, float efficiency, int enchantability) {
+            this.maxUses = maxUses;
+            this.efficiencyOnProperMaterial = efficiency;
+            this.enchantability = enchantability;
         }
 
         public static ToolMaterialOverride getOverride(Item.ToolMaterial material) {
@@ -155,11 +152,12 @@ public class HCTools extends Feature {
         if (stack.getItem() == Items.WOODEN_PICKAXE) {
             destroyItem(stack, player);
         }
+
     }
 
     private void destroyItem(ItemStack stack, EntityLivingBase entity) {
         //FIXME No sound triggered.
-        int damage = stack.getMaxDamage() + 1;
+        int damage = stack.getMaxDamage();
         stack.damageItem(damage, entity);
     }
 

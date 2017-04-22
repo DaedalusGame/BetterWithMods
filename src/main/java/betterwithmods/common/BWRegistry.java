@@ -102,6 +102,7 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entity_broadhead_arrow", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingGourd.class, "entity_falling_gourd", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingBlockCustom.class, "falling_block_custom", 64, 20, true);
+        BWRegistry.registerEntity(EntitySpiderWeb.class, "bwm_spider_web", 64, 20, true);
     }
 
 
@@ -188,6 +189,15 @@ public class BWRegistry {
         OreDictionary.registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
         OreDictionary.registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
 
+        OreDictionary.registerOre("listAllmeat", Items.PORKCHOP);
+        OreDictionary.registerOre("listAllmeat", Items.BEEF);
+        OreDictionary.registerOre("listAllmeat", Items.CHICKEN);
+        OreDictionary.registerOre("listAllmeat", Items.FISH);
+        OreDictionary.registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+        OreDictionary.registerOre("listAllmeat", Items.MUTTON);
+        OreDictionary.registerOre("listAllmeat", Items.RABBIT);
+
+
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_BEEF);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_CHICKEN);
@@ -195,6 +205,7 @@ public class BWRegistry {
         OreDictionary.registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_MUTTON);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_RABBIT);
+
     }
 
     public static void registerHeatSources() {

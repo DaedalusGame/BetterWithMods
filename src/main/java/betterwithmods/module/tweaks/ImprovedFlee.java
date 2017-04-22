@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Created by tyler on 4/20/17.
  */
-public class GroupsFlee extends Feature {
+public class ImprovedFlee extends Feature {
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent evt) {
         if (evt.getEntity() instanceof EntityLivingBase) {
@@ -32,7 +32,7 @@ public class GroupsFlee extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "When attacking an animal, all surrounding animals will flee";
+        return "Improve fleeing AI for attacked animals";
     }
 
     @Override

@@ -65,7 +65,7 @@ public class HCTools extends Feature {
         changeVanillaToolMaterials();
         if(earlyPickaxesRebalance) {
             Items.WOODEN_PICKAXE.setMaxDamage(1);
-            Items.STONE_PICKAXE.setMaxDamage(6);
+            Items.STONE_PICKAXE.setMaxDamage(5);
         }
     }
 

@@ -32,7 +32,7 @@ public class PartAxle implements IMultipart {
 
     @Override
     public void updateTick(IPartInfo part, Random rand) {
-        part.getState().getBlock().updateTick(part.getWorld(), part.getPos(), part.getState(), rand);
+        part.getState().getBlock().updateTick(part.getPartWorld(), part.getPartPos(), part.getState(), rand);
     }
 
     @Override

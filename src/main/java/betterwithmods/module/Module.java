@@ -90,7 +90,7 @@ public class Module {
 						}
 					
 					if(!failiures.isEmpty())
-						FMLLog.info("[Quark] '" + feature.configName + "' is forcefully disabled as it's incompatible with the following loaded mods: " + failiures);
+						FMLLog.info("[BWM] '" + feature.configName + "' is forcefully disabled as it's incompatible with the following loaded mods: " + failiures);
 				}
 			}
 			
@@ -127,7 +127,10 @@ public class Module {
 	}
 
 	public void preInit(FMLPreInitializationEvent event) {
-		forEachEnabled(feature -> feature.preInit(event));
+		forEachEnabled(feature -> {
+			FMLLog.info("[BWM] Feature PreInit : " + feature.configName);
+			feature.preInit(event);
+		} );
 	}
 
 	public void init(FMLInitializationEvent event) {

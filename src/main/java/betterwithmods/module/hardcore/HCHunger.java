@@ -34,6 +34,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -309,22 +310,22 @@ public class HCHunger extends Feature {
 
         event.setNewfov(f);
     }
-    /*
-        @SubscribeEvent
-        public void onFoodConfigChanged(OnConfigChangedEvent event) {
-            if (!event.getModID().equals(BWMod.MODID))
-                return;
-            if (!event.isWorldRunning())
-                return;
-            if (!Minecraft.getMinecraft().isSingleplayer())
-                return;
-            EntityPlayer player = Minecraft.getMinecraft().player;
-            if (BWConfig.hardcoreHunger)
-                applyFoodSystem(player);
-            else
-                revertFoodSystem(player);
-            // TODO find solution for issue #71
-        }*/
+
+    @SubscribeEvent
+    public void onFoodConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (!event.getModID().equals(BWMod.MODID))
+            return;
+        if (!event.isWorldRunning())
+            return;
+        if (!Minecraft.getMinecraft().isSingleplayer())
+            return;
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if (this.enabled)
+            applyFoodSystem(player);
+        else
+            revertFoodSystem(player);
+        // TODO find solution for issue #71
+    }
 
     @SubscribeEvent
     public void saveSoup(LivingEntityUseItemEvent.Finish event) {
@@ -386,6 +387,6 @@ public class HCHunger extends Feature {
 
     @Override
     public boolean hasSubscriptions() {
-        return super.hasSubscriptions();
+        return true;
     }
 }

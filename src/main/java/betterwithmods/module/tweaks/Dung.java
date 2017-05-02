@@ -1,11 +1,9 @@
 package betterwithmods.module.tweaks;
 
-import betterwithmods.common.BWMItems;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -30,10 +28,6 @@ public class Dung extends Feature {
     public void mobDungProduction(LivingEvent.LivingUpdateEvent evt) {
         if (evt.getEntityLiving().getEntityWorld().isRemote)
             return;
-
-        if (!wolvesOnly)
-            return;
-
         if (evt.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
             if (animal instanceof EntityWolf) {
@@ -41,19 +35,14 @@ public class Dung extends Feature {
                     if (animal.getGrowingAge() > 99) {
                         int light = animal.getEntityWorld().getLight(animal.getPosition());
                         if (animal.getGrowingAge() == fearLevel[light]) {
-                            evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
+                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                             animal.setGrowingAge(99);
                         }
                     }
                 }
-            }
-            if (!(animal instanceof EntityRabbit) && (!wolvesOnly || animal instanceof EntityWolf)) {
-                if (animal.getGrowingAge() == 100) {
-                    evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
-                } else if (animal.isInLove()) {
-                    if (animal.world.rand.nextInt(1200) == 0) {
-                        evt.getEntityLiving().entityDropItem(new ItemStack(BWMItems.MATERIAL, 1, 5), 0.0F);
-                    }
+            } else if(!wolvesOnly){
+                if (animal.world.rand.nextInt(1200) == 0) {
+                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                 }
             }
         }

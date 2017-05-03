@@ -62,4 +62,9 @@ public class HCStructures extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
+    @Override
+    public boolean hasTerrainSubscriptions() {
+        return true;
+    }
 }

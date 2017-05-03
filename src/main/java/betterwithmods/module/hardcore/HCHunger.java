@@ -311,21 +311,21 @@ public class HCHunger extends Feature {
         event.setNewfov(f);
     }
 
-    @SubscribeEvent
-    public void onFoodConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (!event.getModID().equals(BWMod.MODID))
-            return;
-        if (!event.isWorldRunning())
-            return;
-        if (!Minecraft.getMinecraft().isSingleplayer())
-            return;
-        EntityPlayer player = Minecraft.getMinecraft().player;
-        if (this.enabled)
-            applyFoodSystem(player);
-        else
-            revertFoodSystem(player);
-        // TODO find solution for issue #71
-    }
+//    @SubscribeEvent
+//    public void onFoodConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+//        if (!event.getModID().equals(BWMod.MODID))
+//            return;
+//        if (!event.isWorldRunning())
+//            return;
+//        if (!Minecraft.getMinecraft().isSingleplayer())
+//            return;
+//        EntityPlayer player = Minecraft.getMinecraft().player;
+//        if (this.enabled)
+//            applyFoodSystem(player);
+//        else
+//            revertFoodSystem(player);
+//        // TODO find solution for issue #71
+//    }
 
     @SubscribeEvent
     public void saveSoup(LivingEntityUseItemEvent.Finish event) {
@@ -341,46 +341,6 @@ public class HCHunger extends Feature {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void getRawEgg(ThrowableImpactEvent event) {
-        if (event.getEntityThrowable() instanceof EntityEgg) {
-            event.setCanceled(true);
-            RayTraceResult result = event.getRayTraceResult();
-            EntityThrowable egg = event.getEntityThrowable();
-            Random rand = egg.getEntityWorld().rand;
-            if (result.entityHit != null) {
-                result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(egg, egg.getThrower()), 0.0F);
-            }
-
-            if (!egg.getEntityWorld().isRemote) {
-                if (rand.nextInt(8) == 0) {
-                    int i = 1;
-
-                    if (rand.nextInt(32) == 0) {
-                        i = 4;
-                    }
-
-                    for (int j = 0; j < i; ++j) {
-                        EntityChicken entitychicken = new EntityChicken(egg.getEntityWorld());
-                        entitychicken.setGrowingAge(-24000);
-                        entitychicken.setLocationAndAngles(egg.posX, egg.posY, egg.posZ, egg.rotationYaw, 0.0F);
-                        egg.getEntityWorld().spawnEntity(entitychicken);
-                    }
-                } else {
-                    InvUtils.ejectStack(egg.getEntityWorld(), egg.posX, egg.posY, egg.posZ, new ItemStack(BWMItems.RAW_EGG));
-                }
-            }
-
-            for (int k = 0; k < 8; ++k) {
-                egg.getEntityWorld().spawnParticle(EnumParticleTypes.ITEM_CRACK, egg.posX, egg.posY, egg.posZ, ((double) rand.nextFloat() - 0.5D) * 0.08D, ((double) rand.nextFloat() - 0.5D) * 0.08D, ((double) rand.nextFloat() - 0.5D) * 0.08D, Item.getIdFromItem(Items.EGG));
-            }
-
-            if (!egg.getEntityWorld().isRemote) {
-                egg.setDead();
             }
         }
     }

@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -39,7 +40,7 @@ public class BlockRawPastry extends Block implements IMultiLocations {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (BlockRawPastry.EnumType blockrawpastry$enumtype : BlockRawPastry.EnumType.values()) {
+        for (BlockRawPastry.EnumType blockrawpastry$enumtype : EnumType.META_LOOKUP) {
             list.add(new ItemStack(itemIn, 1, blockrawpastry$enumtype.getMetadata()));
         }
     }
@@ -83,12 +84,6 @@ public class BlockRawPastry extends Block implements IMultiLocations {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-        return state.getCollisionBoundingBox(worldIn, pos);
-    }
-
-    @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(VARIANT).getMetadata();
     }
@@ -99,7 +94,8 @@ public class BlockRawPastry extends Block implements IMultiLocations {
     }
 
     private boolean canBlockStay(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+
+        return worldIn.getBlockState(pos.down()).isBlockNormalCube();
     }
 
     @Override
@@ -110,19 +106,16 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         }
         return variants.toArray(new String[variants.size()]);
     }
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.RAW_PASTRY,1, type.getMetadata());
+    }
 
     public enum EnumType implements IStringSerializable {
         CAKE(0, "raw_cake", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
         PUMPKIN(1, "raw_pumpkin_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
-        COOKIE(2, "raw_cookie", new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D));
-
-        private static final BlockRawPastry.EnumType[] META_LOOKUP = new BlockRawPastry.EnumType[values().length];
-
-        static {
-            for (BlockRawPastry.EnumType blockrawpastry$enumtype : values()) {
-                META_LOOKUP[blockrawpastry$enumtype.getMetadata()] = blockrawpastry$enumtype;
-            }
-        }
+        COOKIE(2, "raw_cookie", new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D)),
+        BREAD(3,"raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D));
+        private static final BlockRawPastry.EnumType[] META_LOOKUP = values();
 
         private final int meta;
         private final String name;

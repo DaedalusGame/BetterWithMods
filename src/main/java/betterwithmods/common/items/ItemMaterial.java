@@ -3,10 +3,14 @@ package betterwithmods.common.items;
 import betterwithmods.common.BWMItems;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.BlockRawPastry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,6 +39,13 @@ public class ItemMaterial extends Item implements IMultiLocations {
             names.add(material.getName());
         }
         return names.toArray(new String[EnumMaterial.values().length]);
+    }
+
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        if(stack.getMetadata() == EnumMaterial.FLOUR.getMetadata())
+            tooltip.add("This Item is deprecated. Please use the conversion recipe to receive the correct item");
     }
 
     @Override

@@ -33,6 +33,9 @@
           "top": "betterwithmods:blocks/raw_cookie",
           "bottom": "betterwithmods:blocks/raw_cookie"
         }
+      },
+      "raw_flour": {
+        "model": "betterwithmods:raw_flour"
       }
     }
   }

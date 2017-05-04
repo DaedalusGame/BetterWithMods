@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWSounds;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWSounds;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

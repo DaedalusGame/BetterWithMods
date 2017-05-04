@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.tile.gen;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAxle;
 import betterwithmods.common.blocks.BlockWindmill;
 import betterwithmods.util.InvUtils;
@@ -165,11 +165,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         }
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = this.getUpdateTag();
-        return new SPacketUpdateTileEntity(pos, this.getBlockMetadata(), tag);
-    }
+
 
     @Override
     @SideOnly(Side.CLIENT)

@@ -1,14 +1,12 @@
 package betterwithmods.common.blocks.tile.gen;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAxle;
 import betterwithmods.common.blocks.BlockWindmill;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -141,26 +139,6 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
             }
         }
         return valid && this.getWorld().canBlockSeeSky(pos);
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = this.getUpdateTag();
-        return new SPacketUpdateTileEntity(pos, this.getBlockMetadata(), tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tag = pkt.getNbtCompound();
-        this.readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
     }
 
     //Extend the bounding box if the TESR is bigger than the occupying block.

@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;

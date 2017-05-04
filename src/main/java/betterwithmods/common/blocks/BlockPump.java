@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;

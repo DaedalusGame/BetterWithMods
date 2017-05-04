@@ -1,12 +1,12 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWSounds;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;

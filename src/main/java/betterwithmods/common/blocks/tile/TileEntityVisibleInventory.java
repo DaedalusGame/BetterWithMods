@@ -1,16 +1,11 @@
 package betterwithmods.common.blocks.tile;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
@@ -51,25 +46,6 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
         super.readFromNBT(tag);
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = getUpdateTag();
-        return new SPacketUpdateTileEntity(this.getPos(), getBlockMetadata(), tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tag = pkt.getNbtCompound();
-        readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
 
     public int filledSlots() {
         int fill = 0;

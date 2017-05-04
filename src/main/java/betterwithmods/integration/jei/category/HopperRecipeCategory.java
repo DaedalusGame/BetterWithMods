@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
 import mezz.jei.api.IGuiHelper;

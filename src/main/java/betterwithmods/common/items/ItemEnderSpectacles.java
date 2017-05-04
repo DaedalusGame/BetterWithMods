@@ -1,8 +1,8 @@
 package betterwithmods.common.items;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.BWRegistry;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

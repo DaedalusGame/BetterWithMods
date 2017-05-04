@@ -1,8 +1,8 @@
 package betterwithmods.client.model.render;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.*;
+import betterwithmods.common.BWMBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

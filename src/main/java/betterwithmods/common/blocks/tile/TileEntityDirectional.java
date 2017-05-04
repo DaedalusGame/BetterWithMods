@@ -2,12 +2,11 @@ package betterwithmods.common.blocks.tile;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileEntityDirectional extends TileEntity implements ITickable {
+public abstract class TileEntityDirectional extends TileBasic implements ITickable {
     private int facing;
 
     @Override

@@ -1,9 +1,9 @@
 package betterwithmods.common.items;
 
+import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.BlockPlanter.EnumPlanterType;
-import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.entity.player.EntityPlayer;

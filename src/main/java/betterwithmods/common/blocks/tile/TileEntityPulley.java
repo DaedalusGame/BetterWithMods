@@ -30,11 +30,7 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Formatter;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
 

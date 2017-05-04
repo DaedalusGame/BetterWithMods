@@ -1,10 +1,10 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.common.registry.SawInteraction;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.damagesource.BWDamageSource;
+import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.event.MobDropEvent;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;

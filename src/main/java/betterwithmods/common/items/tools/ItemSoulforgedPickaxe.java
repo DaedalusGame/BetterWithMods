@@ -1,7 +1,7 @@
 package betterwithmods.common.items.tools;
 
-import betterwithmods.common.BWMItems;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMItems;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;

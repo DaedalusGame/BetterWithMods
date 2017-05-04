@@ -1,6 +1,5 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.common.registry.BlockMetaRecipe;
 import betterwithmods.common.registry.TurntableInteraction;
 import betterwithmods.common.registry.TurntableRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
@@ -10,7 +9,6 @@ import com.google.common.collect.Lists;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import scala.actors.threadpool.Arrays;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

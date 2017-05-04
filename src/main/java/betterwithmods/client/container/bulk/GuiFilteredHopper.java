@@ -1,7 +1,6 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.BWMod;
-import betterwithmods.client.container.bulk.ContainerFilteredHopper;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

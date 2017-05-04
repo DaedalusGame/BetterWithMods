@@ -2,9 +2,9 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.SteamCapability;
 import betterwithmods.api.tile.ISteamPower;
-import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.fluid.BWFluidRegistry;
 import betterwithmods.common.fluid.FluidTankRestricted;
+import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

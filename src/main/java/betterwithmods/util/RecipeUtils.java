@@ -1,7 +1,7 @@
 package betterwithmods.util;
 
-import betterwithmods.common.BWCrafting;
 import betterwithmods.BWMod;
+import betterwithmods.common.BWCrafting;
 import betterwithmods.common.registry.bulk.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +16,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;

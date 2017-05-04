@@ -1,7 +1,7 @@
 package betterwithmods.event;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IDebarkable;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;

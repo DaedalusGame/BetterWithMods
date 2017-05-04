@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.integration.jei.wrapper.BlockMetaWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;

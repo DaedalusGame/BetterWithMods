@@ -3,7 +3,6 @@ package betterwithmods.integration.minetweaker;
 import betterwithmods.common.registry.BlockMetaHandler;
 import betterwithmods.common.registry.BlockMetaRecipe;
 import com.blamejared.mtlib.utils.BaseListAddition;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 

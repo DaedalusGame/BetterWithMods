@@ -8,16 +8,7 @@ import betterwithmods.common.registry.TurntableRecipe;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockButton;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockLever;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockPistonExtension;
-import net.minecraft.block.BlockPistonMoving;
-import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.BlockTorch;
-import net.minecraft.block.BlockWallSign;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,23 +16,13 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITickable {
+public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITickable {
     private static final int[] ticksToRotate = {10, 20, 40, 80};
     public byte timerPos = 0;
     private int potteryRotation = 0;
@@ -135,26 +116,6 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
                 this.asynchronous = async;
             }
         }
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = this.getUpdateTag();
-        return new SPacketUpdateTileEntity(pos, this.getBlockMetadata(), tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tag = pkt.getNbtCompound();
-        this.readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
     }
 
     public void rotateTurntable() {

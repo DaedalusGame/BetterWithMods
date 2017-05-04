@@ -1,13 +1,13 @@
 package betterwithmods.common.blocks.tile.gen;
 
-import betterwithmods.common.BWSounds;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockMillGenerator;
+import betterwithmods.common.blocks.tile.TileBasic;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -17,7 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityMillGenerator extends TileEntity implements ITickable, IMechanicalPower {
+public abstract class TileEntityMillGenerator extends TileBasic implements ITickable, IMechanicalPower {
     //Every generator will take up a single block with no extended bounding box
     public int radius;
     public byte runningState = 0;

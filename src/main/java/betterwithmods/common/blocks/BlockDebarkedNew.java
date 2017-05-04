@@ -1,10 +1,10 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMItems;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

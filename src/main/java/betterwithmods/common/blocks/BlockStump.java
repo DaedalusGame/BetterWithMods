@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.hardcore.HCStumping;
 import net.minecraft.block.Block;

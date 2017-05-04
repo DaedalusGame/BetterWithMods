@@ -16,16 +16,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
@@ -248,27 +244,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         this.validateContents = false;
         if (oldGrindType != newGrindType) {
             this.grindType = newGrindType;
-        }
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("t", this.grindType);
-        return new SPacketUpdateTileEntity(this.pos, 4, tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        if (!this.getWorld().isRemote)
-            return;
-
-        NBTTagCompound tag = pkt.getNbtCompound();
-        if (tag.hasKey("t")) {
-            if (tag.getInteger("t") != this.grindType)
-                getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
-            this.grindType = tag.getInteger("t");
         }
     }
 

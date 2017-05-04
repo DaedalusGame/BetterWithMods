@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMItems;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;

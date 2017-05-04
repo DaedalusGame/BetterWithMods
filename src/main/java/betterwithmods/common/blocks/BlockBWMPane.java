@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

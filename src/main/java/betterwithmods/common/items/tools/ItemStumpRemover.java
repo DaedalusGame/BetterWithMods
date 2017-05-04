@@ -1,7 +1,7 @@
 package betterwithmods.common.items.tools;
 
-import betterwithmods.common.blocks.BlockStump;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.BlockStump;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

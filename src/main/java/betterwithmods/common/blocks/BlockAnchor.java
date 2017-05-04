@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.ITurnable;
-import betterwithmods.common.blocks.BlockMechMachines.EnumType;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockMechMachines.EnumType;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;

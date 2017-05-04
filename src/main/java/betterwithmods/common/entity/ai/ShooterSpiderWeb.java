@@ -1,17 +1,11 @@
 package betterwithmods.common.entity.ai;
 
 import betterwithmods.common.entity.EntitySpiderWeb;
-import com.blamejared.mtlib.helpers.ReflectionHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * Created by tyler on 4/22/17.

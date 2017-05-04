@@ -1,16 +1,12 @@
 package betterwithmods.common.blocks.mini;
 
+import betterwithmods.common.blocks.tile.TileBasic;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityMultiType extends TileEntity {
+public class TileEntityMultiType extends TileBasic {
     private int type = 0;
 
     @Override
@@ -39,23 +35,4 @@ public class TileEntityMultiType extends TileEntity {
         this.type = type;
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = this.getUpdateTag();
-        return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tag = pkt.getNbtCompound();
-        this.readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
 }

@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWSounds;
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;

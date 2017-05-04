@@ -1,12 +1,12 @@
 package betterwithmods.common.items;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.IMultiLocations;
+import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAxle;
 import betterwithmods.common.blocks.BlockMillGenerator;
 import betterwithmods.common.blocks.BlockWaterwheel;
 import betterwithmods.common.blocks.BlockWindmill;
-import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;

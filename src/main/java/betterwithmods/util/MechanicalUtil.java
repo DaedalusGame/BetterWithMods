@@ -1,10 +1,10 @@
 package betterwithmods.util;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAxle;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;

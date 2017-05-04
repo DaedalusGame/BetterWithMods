@@ -1,21 +1,15 @@
 package betterwithmods.common.blocks.tile;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by tyler on 9/11/16.
  */
-public class TileEntityInfernalEnchanter extends TileEntity implements ITickable {
+public class TileEntityInfernalEnchanter extends TileBasic implements ITickable {
     private final static int RADIUS = 8;
     private int bookcaseCount;
 
@@ -66,27 +60,6 @@ public class TileEntityInfernalEnchanter extends TileEntity implements ITickable
     public void readFromNBT(NBTTagCompound compound) {
         bookcaseCount = compound.getInteger("bookcaseCount");
         super.readFromNBT(compound);
-    }
-
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = getUpdateTag();
-        return new SPacketUpdateTileEntity(this.getPos(), getBlockMetadata(), tag);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tag = pkt.getNbtCompound();
-        readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
     }
 
     public String getName() {

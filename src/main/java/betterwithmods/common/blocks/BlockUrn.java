@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.ISoulSensitive;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

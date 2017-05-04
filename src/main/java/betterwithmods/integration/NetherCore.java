@@ -1,8 +1,8 @@
 package betterwithmods.integration;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.BWMod;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

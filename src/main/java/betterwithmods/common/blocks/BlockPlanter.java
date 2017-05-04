@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMItems;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMItems;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

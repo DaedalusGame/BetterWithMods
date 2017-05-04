@@ -12,7 +12,6 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @ZenClass(ChopRecipe.clazz)

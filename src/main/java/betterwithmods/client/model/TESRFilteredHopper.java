@@ -1,9 +1,9 @@
 package betterwithmods.client.model;
 
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;

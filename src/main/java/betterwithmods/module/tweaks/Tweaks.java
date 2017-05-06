@@ -20,6 +20,7 @@ public class Tweaks extends Module {
         registerFeature(new MobSpawning());
         registerFeature(new MossGeneration());
         registerFeature(new RenewableEndstone());
+        registerFeature(new Sinkholes());
 
     }
 }

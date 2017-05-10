@@ -5,7 +5,7 @@ import betterwithmods.common.registry.KilnInteraction;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.bulk.*;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
-import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.module.tweaks.MobSpawning;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -133,9 +133,9 @@ public class BWIMCHandler {
                         }
                         if (block != null) {
                             if (meta != OreDictionary.WILDCARD_VALUE)
-                                NetherSpawnWhitelist.addBlock(block, meta);
+                                MobSpawning.NetherSpawnWhitelist.addBlock(block, meta);
                             else
-                                NetherSpawnWhitelist.addBlock(block);
+                                MobSpawning.NetherSpawnWhitelist.addBlock(block);
                         }
                     }
                 }

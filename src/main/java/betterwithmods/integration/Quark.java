@@ -2,7 +2,7 @@ package betterwithmods.integration;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.hardcore.HCTools;
-import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.module.tweaks.MobSpawning;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -25,7 +25,7 @@ public class Quark implements ICompatModule {
 
     @Override
     public void init() {
-        NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "basalt")), 0);
+        MobSpawning.NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "basalt")), 0);
 
         for (int i = 0; i < 5; i++)
             GameRegistry.addShapedRecipe(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, "custom_chest")), 1, i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, i + 1));

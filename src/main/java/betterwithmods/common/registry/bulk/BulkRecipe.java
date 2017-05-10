@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.bulk;
 
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -69,7 +70,7 @@ public class BulkRecipe {
         ArrayList<Object> inputs = new ArrayList<>();
         ArrayList<List<ItemStack>> jeiInputs = new ArrayList<>();
         for (Object obj : list) {
-            int contain = InvUtils.listContains(obj, inputs);
+            int contain = BWOreDictionary.listContains(obj, inputs);
             if (contain > -1) {
                 if (obj instanceof ItemStack) {
                     ((ItemStack) inputs.get(contain)).grow(((ItemStack) obj).getCount());

@@ -1,7 +1,7 @@
 package betterwithmods.common.registry.bulk;
 
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
-import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -97,7 +97,7 @@ public abstract class CraftingManagerBulk {
                         return true;
                 }
                 else if (in instanceof ItemStack) {
-                    if (InvUtils.listContains((ItemStack)in, OreDictionary.getOres((String)input)))
+                    if (BWOreDictionary.listContains((ItemStack)in, OreDictionary.getOres((String)input)))
                         return true;
                 }
             }
@@ -108,7 +108,7 @@ public abstract class CraftingManagerBulk {
                         return true;
                 }
                 else if (in instanceof OreStack) {
-                    if (InvUtils.listContains((ItemStack)input, ((OreStack)in).getOres())) {
+                    if (BWOreDictionary.listContains((ItemStack)input, ((OreStack)in).getOres())) {
                         return true;
                     }
                 }
@@ -203,7 +203,7 @@ public abstract class CraftingManagerBulk {
                     return !((ItemStack) obj).hasTagCompound() || ItemStack.areItemStackTagsEqual(stack, (ItemStack) obj);
                 }
             } else if (obj instanceof OreStack) {
-                if (InvUtils.listContains(stack, ((OreStack) obj).getOres()))
+                if (BWOreDictionary.listContains(stack, ((OreStack) obj).getOres()))
                     return true;
             }
         }

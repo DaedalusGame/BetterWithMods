@@ -1,8 +1,8 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.common.BWCrafting;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
-import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 public class KilnSmelting extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        InvUtils.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {
+        BWOreDictionary.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {
             ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
             if (ore != ItemStack.EMPTY && output != ItemStack.EMPTY)
                 BWCrafting.addKilnRecipe(ore, output);

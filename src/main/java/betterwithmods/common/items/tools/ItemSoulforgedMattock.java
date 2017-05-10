@@ -1,7 +1,7 @@
 package betterwithmods.common.items.tools;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.util.InvUtils;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ public class ItemSoulforgedMattock extends ItemSoulforgedPickaxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return InvUtils.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel")) || super.getIsRepairable(toRepair, repair);
+        return BWOreDictionary.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel")) || super.getIsRepairable(toRepair, repair);
     }
 
 }

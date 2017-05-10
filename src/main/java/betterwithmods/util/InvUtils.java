@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import betterwithmods.common.registry.OreStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
@@ -18,79 +17,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class InvUtils {
-    public static List<ItemStack> dustNames;
-    public static List<ItemStack> oreNames;
-    public static List<ItemStack> ingotNames;
-    public static List<ItemStack> cropNames;
-
-    public static void postInitOreDictGathering() {
-        dustNames = getOreNames("dust");
-        oreNames = getOreNames("ore");
-        ingotNames = getOreNames("ingot");
-        cropNames = getOreNames("crop");
-    }
-
-    public static String getSuffix(ItemStack stack, String startingPrefix) {
-        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).map(ore -> ore.substring(startingPrefix.length())).findFirst().orElse(null);
-    }
-
-    public static ArrayList<ItemStack> getOreNames(String prefix) {
-        ArrayList<ItemStack> list = new ArrayList<>();
-        String[] var2 = OreDictionary.getOreNames();
-        for (String name : var2) {
-            if (name.startsWith(prefix) && OreDictionary.getOres(name).size() > 0) {
-                list.addAll(OreDictionary.getOres(name));
-            }
-        }
-        return list;
-    }
-
-    public static int listContains(Object obj, ArrayList<Object> list) {
-        if (list != null && list.size() > 0 && !list.isEmpty()) {
-            for (int i = 0; i < list.size(); i++) {
-                if (obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
-                    ItemStack stack = (ItemStack) obj;
-                    ItemStack toCheck = (ItemStack) list.get(i);
-                    if (ItemStack.areItemsEqual(stack, toCheck)) {
-                        if (toCheck.hasTagCompound()) {
-                            if (ItemStack.areItemStackTagsEqual(stack, toCheck))
-                                return i;
-                        } else if (stack.hasTagCompound()) {
-                            return -1;
-                        } else
-                            return i;
-                    }
-                } else if (obj instanceof OreStack && list.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack) obj;
-                    OreStack toCheck = (OreStack) list.get(i);
-                    if (stack.getOreName().equals(toCheck.getOreName()))
-                        return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    public static boolean isOre(ItemStack stack, String ore) {
-        return InvUtils.listContains(stack, OreDictionary.getOres(ore));
-    }
-
-    public static boolean listContains(ItemStack check, List<ItemStack> list) {
-        if (list != null) {
-            if (list.isEmpty()) return false;
-            for (ItemStack item : list) {
-                if (ItemStack.areItemsEqual(check, item) || (check.getItem() == item.getItem() && item.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    return !item.hasTagCompound() || ItemStack.areItemStackTagsEqual(check, item);
-                }
-            }
-        }
-        return false;
-    }
 
     public static void ejectInventoryContents(World world, BlockPos pos, IItemHandler inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {

@@ -2,6 +2,7 @@ package betterwithmods.event;
 
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;
@@ -62,7 +63,7 @@ public class LogHarvestEvent {
                     playerStack.damageItem(1, player);
                 } else {
                     IBlockState state = world.getBlockState(pos);
-                    if (SawInteraction.INSTANCE.contains(block, block.getMetaFromState(state)) && InvUtils.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
+                    if (SawInteraction.INSTANCE.contains(block, block.getMetaFromState(state)) && BWOreDictionary.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
                         InvUtils.ejectStackWithOffset(world, playerPos, new ItemStack(BARK, 1, 0));
                         IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
                         world.setBlockState(pos, dbl);

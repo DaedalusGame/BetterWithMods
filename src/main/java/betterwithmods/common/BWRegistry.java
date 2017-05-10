@@ -3,7 +3,10 @@ package betterwithmods.common;
 import betterwithmods.BWMod;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.blocks.*;
+import betterwithmods.common.blocks.BehaviorDiodeDispense;
+import betterwithmods.common.blocks.BlockBDispenser;
+import betterwithmods.common.blocks.BlockBWMPane;
+import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
@@ -15,14 +18,20 @@ import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCLumber;
-import betterwithmods.util.*;
+import betterwithmods.util.ColorUtils;
+import betterwithmods.util.DispenserBehaviorDynamite;
+import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -54,8 +63,9 @@ public class BWRegistry {
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
+        BWOreDictionary.registerOres();
+
         registerEntities();
-        registerOres();
         registerPotions();
         registerBlockDispenserBehavior();
         registerHopperFilters();
@@ -74,7 +84,7 @@ public class BWRegistry {
     public static void postInit() {
         RecipeUtils.gatherCookableFood();
         registerWood();
-        InvUtils.postInitOreDictGathering();
+        BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
     }
     /**
@@ -133,67 +143,6 @@ public class BWRegistry {
         availableEntityId++;
     }
 
-    public static void registerOres() {
-        OreDictionary.registerOre("gearWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
-        OreDictionary.registerOre("cropHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));
-        OreDictionary.registerOre("dyeBrown", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-        OreDictionary.registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-        OreDictionary.registerOre("slimeball", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
-        OreDictionary.registerOre("ingotSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
-        OreDictionary.registerOre("dustNetherrack", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK));
-        OreDictionary.registerOre("dustHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
-        OreDictionary.registerOre("dustSoul", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST));
-        OreDictionary.registerOre("ingotHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE));
-        OreDictionary.registerOre("dustCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST));
-        OreDictionary.registerOre("dustPotash", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH));
-        OreDictionary.registerOre("dustWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST));
-        OreDictionary.registerOre("dustSulfur", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE));
-        OreDictionary.registerOre("dustSaltpeter", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER));
-        OreDictionary.registerOre("nuggetIron", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NUGGET_IRON));
-        OreDictionary.registerOre("nuggetSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NUGGET_STEEL));
-        OreDictionary.registerOre("foodFlour", BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
-        OreDictionary.registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
-        OreDictionary.registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
-        OreDictionary.registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
-
-        OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
-        OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
-        //Added bark subtype entries for Roots compatibility
-        OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("barkOak", new ItemStack(BWMItems.BARK, 1, 0));
-        OreDictionary.registerOre("barkSpruce", new ItemStack(BWMItems.BARK, 1, 1));
-        OreDictionary.registerOre("barkBirch", new ItemStack(BWMItems.BARK, 1, 2));
-        OreDictionary.registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
-        OreDictionary.registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
-        OreDictionary.registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
-        OreDictionary.registerOre("craftingToolKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-        // TFC compatibility
-        OreDictionary.registerOre("itemKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("fiberHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS));
-        OreDictionary.registerOre("fabricHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_CLOTH));
-
-        OreDictionary.registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
-        OreDictionary.registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
-
-        OreDictionary.registerOre("listAllmeat", Items.PORKCHOP);
-        OreDictionary.registerOre("listAllmeat", Items.BEEF);
-        OreDictionary.registerOre("listAllmeat", Items.CHICKEN);
-        OreDictionary.registerOre("listAllmeat", Items.FISH);
-        OreDictionary.registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
-        OreDictionary.registerOre("listAllmeat", Items.MUTTON);
-        OreDictionary.registerOre("listAllmeat", Items.RABBIT);
-
-
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP);
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_BEEF);
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_CHICKEN);
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_FISH);
-        OreDictionary.registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_MUTTON);
-        OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_RABBIT);
-
-    }
 
     public static void registerHeatSources() {
         BWMHeatRegistry.setBlockHeatRegistry(Blocks.FIRE, 3);
@@ -407,14 +356,14 @@ public class BWRegistry {
         Item item = stack.getItem();
         if (item instanceof ItemBlock) {
             Block block = ((ItemBlock) item).getBlock();
-            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack, "treeSapling");
+            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || BWOreDictionary.isOre(stack, "treeSapling");
         }
         return true;
     }
 
     private static boolean isParticulate(ItemStack stack) {
         Item item = stack.getItem();
-        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames)
+        return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) || BWOreDictionary.listContains(stack, BWOreDictionary.dustNames)
                 || item == BWMItems.DIRT_PILE || item == BWMItems.GRAVEL_PILE || item == BWMItems.SAND_PILE;
     }
 
@@ -424,12 +373,12 @@ public class BWRegistry {
         if (item == BWMItems.MATERIAL) {
             return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
         }
-        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || InvUtils.listContains(stack, OreDictionary.getOres("string")) || InvUtils.listContains(stack, OreDictionary.getOres("paper"));
+        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
     }
 
     private static boolean isNarrow(ItemStack stack) {
         Item item = stack.getItem();
         int meta = stack.getMetadata();
-        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) || InvUtils.listContains(stack, InvUtils.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD || (item == BWMItems.MATERIAL && (meta == 8 || meta == 9));
+        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || BWOreDictionary.listContains(stack, OreDictionary.getOres("stickWood")) || BWOreDictionary.listContains(stack, BWOreDictionary.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD || (item == BWMItems.MATERIAL && (meta == 8 || meta == 9));
     }
 }

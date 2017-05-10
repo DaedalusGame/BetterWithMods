@@ -28,6 +28,7 @@ public class Hardcore extends Module {
         registerFeature(new HCStructures());
         registerFeature(new HCStumping());
         registerFeature(new HCTools());
+        registerFeature(new HCTorches());
     }
 
 }

@@ -2,8 +2,11 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.gui.GuiHunger;
+import betterwithmods.common.BWCrafting;
+import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.Feature;
 import betterwithmods.util.BWMFoodStats;
+import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +15,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
@@ -24,8 +28,10 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.UUID;
@@ -34,6 +40,35 @@ import java.util.UUID;
  * Created by tyler on 4/20/17.
  */
 public class HCHunger extends Feature {
+    @Override
+    public void init(FMLInitializationEvent event) {
+
+        RecipeUtils.removeRecipes(Items.BREAD, 0);
+        RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
+        RecipeUtils.removeRecipes(Items.CAKE, 0);
+        RecipeUtils.removeRecipes(Items.COOKIE, 0);
+        RecipeUtils.removeRecipes(Items.PUMPKIN_PIE, 0);
+        RecipeUtils.removeRecipes(Items.RABBIT_STEW, 0);
+        RecipeUtils.removeRecipes(Items.BEETROOT_SOUP, 0);
+
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);
+
+        BWCrafting.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8));
+        BWCrafting.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1));
+
+        BWCrafting.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
+        BWCrafting.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
+    }
+
+    @Override
+    public void disabledInit(FMLInitializationEvent event) {
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2), 0.1F);
+        BWCrafting.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
+        BWCrafting.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2));
+    }
+
     @Override
     public String getFeatureDescription() {
         return "Completely revamps the hunger system of Minecraft. \n" +

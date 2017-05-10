@@ -1,9 +1,9 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.entity.ai.EntityAIEatFood;
 import betterwithmods.common.entity.ai.ShooterSpiderWeb;
 import betterwithmods.module.Feature;
-import betterwithmods.util.InvUtils;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class HCHunting extends Feature {
 
-    private static final Predicate<ItemStack> isMeat = stack -> InvUtils.isOre(stack, "listAllmeat");
+    private static final Predicate<ItemStack> isMeat = stack -> BWOreDictionary.isOre(stack, "listAllmeat");
     public static boolean spidersShootWebs;
 
     public static List<Class> zombiesAttack, spiderAttack;

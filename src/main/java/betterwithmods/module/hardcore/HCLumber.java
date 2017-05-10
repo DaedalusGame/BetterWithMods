@@ -1,13 +1,17 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.items.tools.ItemKnife;
+import betterwithmods.common.registry.ChoppingRecipe;
 import betterwithmods.common.registry.SawInteraction;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -15,7 +19,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -27,6 +33,22 @@ public class HCLumber extends Feature {
     @Override
     public String getFeatureDescription() {
         return "Makes Punching Wood return a single plank and secondary drops instead of a log, to get a log an axe must be used";
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        for (int i = 0; i < 4; i++)
+            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
+        for (int i = 0; i < 2; i++)
+            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, 4 + i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i)));
+    }
+
+    @Override
+    public void disabledInit(FMLInitializationEvent event) {
+        for (int i = 0; i < 4; i++)
+            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
+        for (int i = 0; i < 2; i++)
+            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, 4 + i), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i));
     }
 
     @Override

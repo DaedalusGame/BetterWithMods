@@ -3,9 +3,9 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -48,7 +48,7 @@ public class BlockBrokenGearbox extends Block {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack hold = player.getHeldItem(hand);
         if (hold != ItemStack.EMPTY) {
-            if (InvUtils.listContains(hold, OreDictionary.getOres("gearWood"))) {
+            if (BWOreDictionary.listContains(hold, OreDictionary.getOres("gearWood"))) {
                 if (world.isRemote)
                     return true;
                 else {

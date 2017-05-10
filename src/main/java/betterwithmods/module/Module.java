@@ -30,7 +30,7 @@ public class Module {
 
 	public final String name = makeName();
 	public final Map<String, Feature> features = new HashMap();
-	public final List<Feature> enabledFeatures = new ArrayList();
+	public final List<Feature> enabledFeatures = new ArrayList(), disabledFeatures = new ArrayList<>();
 	public boolean enabled;
 
 	public void addFeatures() {
@@ -103,7 +103,10 @@ public class Module {
 				enabledFeatures.add(feature);
 			else if(!feature.enabled && enabledFeatures.contains(feature))
 				enabledFeatures.remove(feature);
-			
+
+			if(!feature.enabled)
+				disabledFeatures.add(feature);
+
 			feature.setupConfig();
 			
 			if(!feature.enabled && feature.prevEnabled) {
@@ -131,14 +134,17 @@ public class Module {
 			FMLLog.info("[BWM] Feature PreInit : " + feature.configName);
 			feature.preInit(event);
 		} );
+		forEachDisabled(feature -> feature.disabledPreInit(event));
 	}
 
 	public void init(FMLInitializationEvent event) {
 		forEachEnabled(feature -> feature.init(event));
+		forEachDisabled(feature -> feature.disabledInit(event));
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
 		forEachEnabled(feature -> feature.postInit(event));
+		forEachDisabled(feature -> feature.disabledPostInit(event));
 	}
 	
 	public void finalInit(FMLPostInitializationEvent event) {
@@ -186,6 +192,10 @@ public class Module {
 
 	public final void forEachEnabled(Consumer<Feature> consumer) {
 		enabledFeatures.forEach(consumer);
+	}
+
+	public final void forEachDisabled(Consumer<Feature> consumer) {
+		disabledFeatures.forEach(consumer);
 	}
 
 	public final int loadPropInt(String propName, String desc, int default_) {

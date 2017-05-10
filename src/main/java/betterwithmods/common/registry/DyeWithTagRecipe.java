@@ -1,6 +1,6 @@
 package betterwithmods.common.registry;
 
-import betterwithmods.util.InvUtils;
+import betterwithmods.common.BWOreDictionary;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -65,7 +65,7 @@ public class DyeWithTagRecipe extends ShapelessOreRecipe {
                     else
                         return false;
                 }
-                else if (InvUtils.listContains(slot, OreDictionary.getOres(dye))) {
+                else if (BWOreDictionary.listContains(slot, OreDictionary.getOres(dye))) {
                     if(!hasDye) {
                         hasDye = true;
                         inRecipe = true;

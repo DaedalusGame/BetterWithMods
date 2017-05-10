@@ -1,6 +1,6 @@
 package betterwithmods.common.registry;
 
-import betterwithmods.util.InvUtils;
+import betterwithmods.common.BWOreDictionary;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
@@ -69,7 +69,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
                         }
                     }
                     else if (log instanceof String) {
-                        if (InvUtils.listContains(slot, OreDictionary.getOres((String)log))) {
+                        if (BWOreDictionary.listContains(slot, OreDictionary.getOres((String)log))) {
                             if (!hasLog) {
                                 hasLog = true;
                                 inRecipe = true;

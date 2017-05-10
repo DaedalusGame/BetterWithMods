@@ -20,9 +20,7 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
-import betterwithmods.util.NetherSpawnWhitelist;
 import betterwithmods.util.RecipeUtils;
-import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -64,7 +62,6 @@ public class BWRegistry {
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
         BWOreDictionary.registerOres();
-
         registerEntities();
         registerPotions();
         registerBlockDispenserBehavior();
@@ -74,12 +71,7 @@ public class BWRegistry {
     public static void init() {
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         registerHeatSources();
-        registerNetherWhitelist();
         BWSounds.registerSounds();
-
-        ItemExt.initBuoyancy();
-        ItemExt.initDesserts();
-        ItemExt.initWeights();
     }
     public static void postInit() {
         RecipeUtils.gatherCookableFood();
@@ -149,13 +141,6 @@ public class BWRegistry {
         BWMHeatRegistry.setBlockHeatRegistry(BWMBlocks.STOKED_FLAME, 8);
     }
 
-    public static void registerNetherWhitelist() {
-        NetherSpawnWhitelist.addBlock(Blocks.NETHERRACK);
-        NetherSpawnWhitelist.addBlock(Blocks.NETHER_BRICK);
-        NetherSpawnWhitelist.addBlock(Blocks.SOUL_SAND);
-        NetherSpawnWhitelist.addBlock(Blocks.GRAVEL);
-        NetherSpawnWhitelist.addBlock(Blocks.QUARTZ_BLOCK);
-    }
 
     public static void registerWood() {
         boolean hardcoreLumber = ModuleLoader.isFeatureEnabled(HCLumber.class);

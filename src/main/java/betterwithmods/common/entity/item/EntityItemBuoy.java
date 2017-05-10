@@ -1,6 +1,6 @@
 package betterwithmods.common.entity.item;
 
-import betterwithmods.util.item.ItemExt;
+import betterwithmods.module.hardcore.HCBuoy;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -184,7 +184,7 @@ public class EntityItemBuoy extends EntityItem {
 
         if (waterAccumulator > 0.001D) {
             if (!isDrifted()) {
-                float buoyancy = ItemExt.getBuoyancy(getEntityItem()) + 1.0F;
+                float buoyancy = HCBuoy.getBuoyancy(getEntityItem()) + 1.0F;
                 motionY += 0.04D * (double) buoyancy * waterAccumulator;
             }
 

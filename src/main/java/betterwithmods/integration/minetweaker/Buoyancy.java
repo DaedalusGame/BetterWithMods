@@ -1,6 +1,6 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.util.item.ItemExt;
+import betterwithmods.module.hardcore.HCBuoy;
 import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
 import com.blamejared.mtlib.helpers.InputHelper;
@@ -32,7 +32,7 @@ public class Buoyancy {
 
     public static class Add extends BaseMapAddition<Stack, Float> {
         protected Add(StackMap<Float> map) {
-            super("buoyancy", ItemExt.buoyancy, map);
+            super("buoyancy", HCBuoy.buoyancy, map);
         }
 
         @Override

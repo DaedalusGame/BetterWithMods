@@ -8,6 +8,7 @@ import betterwithmods.module.Module;
 public class Hardcore extends Module {
     @Override
     public void addFeatures() {
+        registerFeature(new HCArmor());
         registerFeature(new HCBeds());
         registerFeature(new HCBuckets());
         registerFeature(new HCBuoy());

@@ -1,7 +1,7 @@
 package betterwithmods.util.player;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.util.item.ItemExt;
+import betterwithmods.module.hardcore.HCArmor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -125,12 +125,10 @@ public final class EntityPlayerExt {
 
     private static int getWornArmorWeight(EntityPlayer player) {
         int weight = 0;
-
         for (ItemStack stack : player.inventory.armorInventory) {
             if (stack != null)
-                weight += ItemExt.getWeight(stack);
+                weight += HCArmor.getWeight(stack);
         }
-
         return weight;
     }
 
@@ -149,7 +147,6 @@ public final class EntityPlayerExt {
         if (weight > 0) {
             modifier += (float) weight / 44.0F;
         }
-
         return modifier;
     }
 

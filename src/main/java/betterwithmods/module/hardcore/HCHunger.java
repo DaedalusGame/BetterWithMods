@@ -59,6 +59,8 @@ public class HCHunger extends Feature {
 
         BWCrafting.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
         BWCrafting.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
+
+        initDesserts();
     }
 
     @Override
@@ -269,9 +271,6 @@ public class HCHunger extends Feature {
             return;
         if (!(player.getFoodStats() instanceof BWMFoodStats))
             return;
-        if (player.isInWater() && !EntityPlayerExt.canSwim(player) && !EntityPlayerExt.isNearBottom(player)) {
-            player.motionY -= 0.02;
-        }
     }
 
     @SubscribeEvent
@@ -367,6 +366,17 @@ public class HCHunger extends Feature {
             }
         }
     }
+
+
+    public static void initDesserts() {
+        setDessert((ItemFood) Items.COOKIE);
+        setDessert((ItemFood) Items.PUMPKIN_PIE);
+    }
+
+    private static void setDessert(ItemFood food) {
+        food.setAlwaysEdible();
+    }
+
 
     @Override
     public boolean hasSubscriptions() {

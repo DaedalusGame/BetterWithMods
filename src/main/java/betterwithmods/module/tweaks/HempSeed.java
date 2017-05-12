@@ -15,11 +15,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class HempSeed extends Feature {
 
-    boolean hoeForSeeds = loadPropBool("Hoe for seeds", "Hemp Seeds drop when tilling ground with a hoe", true);
-    boolean tallgrassForSeeds = loadPropBool("Tall grass Hemp Seeds", "Hemp Seeds will drop when breaking Tall Grass",true);
+    boolean hoeForSeeds;
+    boolean tallgrassForSeeds;
     @Override
     public void setupConfig() {
-
+        hoeForSeeds = loadPropBool("Hoe for seeds", "Hemp Seeds drop when tilling ground with a hoe", true);
+        tallgrassForSeeds = loadPropBool("Tall grass Hemp Seeds", "Hemp Seeds will drop when breaking Tall Grass",true);
     }
 
     @Override

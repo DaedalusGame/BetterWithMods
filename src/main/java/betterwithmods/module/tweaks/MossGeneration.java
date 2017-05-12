@@ -42,4 +42,9 @@ public class MossGeneration extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Cobblestone or Stonebrick within the spawning radius of a Mob Spawner will randomly grow into the Mossy version.";
+    }
 }

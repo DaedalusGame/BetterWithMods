@@ -35,6 +35,11 @@ public class MobSpawning extends Feature {
     }
 
     @Override
+    public String getFeatureDescription() {
+        return "Nether Mobs can only spawn on nether blocks and Slimes can only spawn on natural blocks";
+    }
+
+    @Override
     public void setupConfig() {
         slime = loadPropBool("Limit Slime Spawning", "Slimes can only spawn on natural blocks", true);
         nether = loadPropBool("Limit Nether Spawning", "Nether Mobs can only spawn on nether blocks", true);

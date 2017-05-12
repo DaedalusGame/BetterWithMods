@@ -9,6 +9,11 @@ public class MechanicalBreakage extends Feature {
     public static boolean gearbox, saw, hopper, millstone, pulley, turntable;
 
     @Override
+    public String getFeatureDescription() {
+        return "When overpowered the configurable blocks will drop the component items";
+    }
+
+    @Override
     public void setupConfig() {
         gearbox = loadPropBool("Gearbox","generating drops when overpowered", true);
         saw = loadPropBool("Saw","generating drops when overpowered", true);

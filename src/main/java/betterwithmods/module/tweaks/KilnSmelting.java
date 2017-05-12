@@ -12,6 +12,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
  * Created by tyler on 4/20/17.
  */
 public class KilnSmelting extends Feature {
+
+
+
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         BWOreDictionary.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {

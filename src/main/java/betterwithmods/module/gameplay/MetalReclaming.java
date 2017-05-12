@@ -19,6 +19,11 @@ public class MetalReclaming extends Feature {
     public static int reclaimCount;
 
     @Override
+    public String getFeatureDescription() {
+        return "Adds recipes to the Crucible to melt metal items back into their component metals";
+    }
+
+    @Override
     public void setupConfig() {
         reclaimCount = loadPropInt("Reclaming Count","Amount (in nuggets per ingot) tools and armor in the crucible reclaim. Does not affect diamond or soulforged steel ingot reclamation. (Set to 0 to disable reclamation entirely.)", "",9, 0, 9);
     }

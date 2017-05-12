@@ -24,6 +24,7 @@ minecraft {
     version = "1.11.2-13.20.0.2282"
     runDir = "run"
     mappings = "snapshot_20161220"
+    replace "%VERSION%":"${project.version}"
 }
 repositories {
     maven { url 'http://dvs1.progwml6.com/files/maven' }

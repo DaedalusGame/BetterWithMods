@@ -25,7 +25,7 @@ public class MetalReclaming extends Feature {
 
     @Override
     public void setupConfig() {
-        reclaimCount = loadPropInt("Reclaming Count","Amount (in nuggets per ingot) tools and armor in the crucible reclaim. Does not affect diamond or soulforged steel ingot reclamation. (Set to 0 to disable reclamation entirely.)", "",9, 0, 9);
+        reclaimCount = loadPropInt("Reclaming Count","Amount (in nuggets per ingot) tools and armor in the crucible reclaim. Does not affect diamond or soulforged steel ingot reclamation. (Set to 0 to disable reclamation entirely.)", "",6, 0, 9);
     }
 
     @Override

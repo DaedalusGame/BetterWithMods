@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Dung extends Feature {
     private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
     private boolean wolvesOnly;
-    private int dungChance;
 
     @Override
     public String getFeatureDescription() {
@@ -22,8 +21,7 @@ public class Dung extends Feature {
 
     @Override
     public void setupConfig() {
-        wolvesOnly = loadPropBool("Only Wolves", "Only Wolves will produce dung", false);
-        dungChance = loadPropInt("Dung Chance", "Chance for Animals to produce dung.", 3000);
+        wolvesOnly = loadPropBool("Only Wolves", "Only Wolves will produce dung", true);
     }
 
     @SubscribeEvent

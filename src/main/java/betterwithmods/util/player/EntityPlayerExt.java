@@ -1,6 +1,7 @@
 package betterwithmods.util.player;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCArmor;
 import betterwithmods.module.hardcore.HCGloom;
 import net.minecraft.block.Block;
@@ -147,6 +148,15 @@ public final class EntityPlayerExt {
 
     private static boolean hasHeadCrab(EntityPlayer player) {
         return player.isRiding() && player.getRidingEntity() instanceof EntitySquid;
+    }
+
+    public static float getGloomExhaustionModifier(EntityPlayer player) {
+        if(!ModuleLoader.isFeatureEnabled(HCGloom.class))
+            return 1.0f;
+        GloomPenalty gloom = getGloomPenalty(player);
+        if(gloom != null)
+            return gloom.getModifier();
+        return 1.0f;
     }
 
     public static float getArmorExhaustionModifier(EntityPlayer player) {

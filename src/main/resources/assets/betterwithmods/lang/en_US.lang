@@ -380,6 +380,7 @@ subtitles.bwm.wood.bellow=Bellow blowing
 subtitles.bwm.wood.chime=Wood chimes
 subtitles.bwm.metal.chime=Metal chimes
 
+death.attack.gloom=%s was eaten by a Grue
 death.attack.saw=%s forgot the lessons of wood shop safety
 death.attack.chopping_block=%s lost their head
 death.blasting_oil=%s is having a blast

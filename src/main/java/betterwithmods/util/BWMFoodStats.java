@@ -35,7 +35,7 @@ public class BWMFoodStats extends FoodStats {
      */
     @Override
     public void addExhaustion(float exhaustion) {
-        super.addExhaustion(exhaustion * EntityPlayerExt.getArmorExhaustionModifier(player) * EntityPlayerExt.getGloomPenalty(player).getModifier());
+        super.addExhaustion(exhaustion * EntityPlayerExt.getArmorExhaustionModifier(player) * EntityPlayerExt.getGloomExhaustionModifier(player));
     }
 
     /**

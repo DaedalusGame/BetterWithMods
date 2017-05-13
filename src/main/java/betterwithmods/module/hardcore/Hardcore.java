@@ -14,7 +14,7 @@ public class Hardcore extends Module {
         registerFeature(new HCBuoy());
         registerFeature(new HCDiamond());
         registerFeature(new HCEndermen());
-//        registerFeature(new HCGloom());
+        registerFeature(new HCGloom());
         registerFeature(new HCGunpowder());
         registerFeature(new HCHardness());
         registerFeature(new HCHunger());

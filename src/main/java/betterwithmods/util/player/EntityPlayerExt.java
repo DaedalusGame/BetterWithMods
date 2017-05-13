@@ -2,6 +2,7 @@ package betterwithmods.util.player;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.hardcore.HCArmor;
+import betterwithmods.module.hardcore.HCGloom;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,7 +40,15 @@ public final class EntityPlayerExt {
     public static float getHealthAndExhaustionModifier(EntityPlayer player) {
         return getWorstPenalty(player).getModifier();
     }
-
+    public static GloomPenalty getGloomPenalty(EntityPlayer player) {
+        int gloom = HCGloom.getGloomTime(player);
+        GloomPenalty penalty = GloomPenalty.NO_PENALTY;
+        for(GloomPenalty p: GloomPenalty.VALUES) {
+            if(p.isInRange(gloom))
+                penalty = p;
+        }
+        return penalty;
+    }
     public static IPlayerPenalty getWorstPenalty(EntityPlayer player) {
         HealthPenalty healthPenalty = getHealthPenalty(player);
         HungerPenalty hungerPenalty = getHungerPenalty(player);

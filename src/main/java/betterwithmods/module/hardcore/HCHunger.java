@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -49,6 +51,7 @@ import java.util.UUID;
 public class HCHunger extends Feature {
 
     private double jumpExhaustion;
+
     @Override
     public void setupConfig() {
         jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
@@ -57,7 +60,7 @@ public class HCHunger extends Feature {
 
     @Override
     public void initClient(FMLInitializationEvent event) {
-        if(loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid",true))
+        if (loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid", true))
             Minecraft.getMinecraft().gameSettings.autoJump = false;
     }
 
@@ -66,36 +69,36 @@ public class HCHunger extends Feature {
 
 
         //MEATS
-        modifyFoodValue((ItemFood) Items.SPIDER_EYE, 6,0);
+        modifyFoodValue((ItemFood) Items.SPIDER_EYE, 6, 0);
 
-        modifyFoodValue((ItemFood) Items.ROTTEN_FLESH, 9,0);
-        modifyFoodValue((ItemFood) Items.CHICKEN, 9,0);
-        modifyFoodValue((ItemFood) Items.MUTTON, 9,0);
+        modifyFoodValue((ItemFood) Items.ROTTEN_FLESH, 9, 0);
+        modifyFoodValue((ItemFood) Items.CHICKEN, 9, 0);
+        modifyFoodValue((ItemFood) Items.MUTTON, 9, 0);
 
-        modifyFoodValue((ItemFood) Items.COOKED_CHICKEN, 12,0);
-        modifyFoodValue((ItemFood) Items.COOKED_MUTTON, 12,0);
-        modifyFoodValue((ItemFood) Items.BEEF, 12,0);
-        modifyFoodValue((ItemFood) Items.PORKCHOP, 12,0);
-        modifyFoodValue((ItemFood) BWMItems.WOLF_CHOP, 12,0);
+        modifyFoodValue((ItemFood) Items.COOKED_CHICKEN, 12, 0);
+        modifyFoodValue((ItemFood) Items.COOKED_MUTTON, 12, 0);
+        modifyFoodValue((ItemFood) Items.BEEF, 12, 0);
+        modifyFoodValue((ItemFood) Items.PORKCHOP, 12, 0);
+        modifyFoodValue((ItemFood) BWMItems.WOLF_CHOP, 12, 0);
 
-        modifyFoodValue((ItemFood) Items.COOKED_BEEF, 15,0);
-        modifyFoodValue((ItemFood) Items.COOKED_PORKCHOP, 15,0);
+        modifyFoodValue((ItemFood) Items.COOKED_BEEF, 15, 0);
+        modifyFoodValue((ItemFood) Items.COOKED_PORKCHOP, 15, 0);
 
-        modifyFoodValue((ItemFood) Items.FISH, 9,0);
-        modifyFoodValue((ItemFood) Items.COOKED_FISH, 12,0);
+        modifyFoodValue((ItemFood) Items.FISH, 9, 0);
+        modifyFoodValue((ItemFood) Items.COOKED_FISH, 12, 0);
         //OTHER
-        modifyFoodValue((ItemFood) Items.MELON, 2,0);
-        modifyFoodValue((ItemFood) Items.MUSHROOM_STEW, 15,0);
-        modifyFoodValue((ItemFood) Items.BREAD, 12,0);
-        modifyFoodValue((ItemFood) Items.COOKIE, 3,3);
-        modifyFoodValue((ItemFood) Items.PUMPKIN_PIE, 6,15);
+        modifyFoodValue((ItemFood) Items.MELON, 2, 0);
+        modifyFoodValue((ItemFood) Items.MUSHROOM_STEW, 15, 0);
+        modifyFoodValue((ItemFood) Items.BREAD, 12, 0);
+        modifyFoodValue((ItemFood) Items.COOKIE, 3, 3);
+        modifyFoodValue((ItemFood) Items.PUMPKIN_PIE, 6, 15);
         //TODO CAKE????
-        modifyFoodValue((ItemFood) Items.POTATO, 3,0);
-        modifyFoodValue((ItemFood) Items.BAKED_POTATO, 6,0);
-        modifyFoodValue((ItemFood) Items.CARROT, 3,0);
-        modifyFoodValue((ItemFood) Items.APPLE, 3,0);
-        modifyFoodValue((ItemFood) Items.GOLDEN_APPLE, 3,0);
-        modifyFoodValue((ItemFood) Items.GOLDEN_CARROT, 3,0);
+        modifyFoodValue((ItemFood) Items.POTATO, 3, 0);
+        modifyFoodValue((ItemFood) Items.BAKED_POTATO, 6, 0);
+        modifyFoodValue((ItemFood) Items.CARROT, 3, 0);
+        modifyFoodValue((ItemFood) Items.APPLE, 3, 0);
+        modifyFoodValue((ItemFood) Items.GOLDEN_APPLE, 3, 0);
+        modifyFoodValue((ItemFood) Items.GOLDEN_CARROT, 3, 0);
 
         RecipeUtils.removeRecipes(Items.BREAD, 0);
         RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
@@ -210,21 +213,22 @@ public class HCHunger extends Feature {
         event.player.getFoodStats().writeNBT(event.player.getEntityData());
     }
 
+    public Optional<EntityPlayer> isFoodSystemValid(EntityLivingBase entity) {
+        return Optional.ofNullable(entity != null && entity instanceof EntityPlayer && EntityPlayerExt.isSurvival((EntityPlayer) entity) && ((EntityPlayer) entity).getFoodStats() instanceof BWMFoodStats ? (EntityPlayer) entity : null);
+    }
+
     /**
      * Eating is not allowed when food poisoned.
      */
     @SubscribeEvent
     public void onFood(LivingEntityUseItemEvent.Start event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer))
-            return;
         if (!(event.getItem().getItem() instanceof ItemFood))
             return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
-            return;
-        if (player.isPotionActive(MobEffects.HUNGER)) {
-            event.setCanceled(true);
-        }
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (player.isPotionActive(MobEffects.HUNGER)) {
+                event.setCanceled(true);
+            }
+        });
     }
 
     /**
@@ -234,9 +238,10 @@ public class HCHunger extends Feature {
      */
     @SubscribeEvent
     public void breakSpeedPenalty(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
-        EntityPlayer player = event.getEntityPlayer();
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
+        EntityPlayer player = isFoodSystemValid(event.getEntityPlayer()).get();
+        if (player == null)
             return;
+
         IBlockState state = event.getState();
         float f = player.inventory.getStrVsBlock(state);
 
@@ -295,23 +300,25 @@ public class HCHunger extends Feature {
         event.setNewSpeed(f);
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void walkingShaked(LivingEvent.LivingUpdateEvent event) {
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (player.world.isRemote && player.isSprinting())
+                guiHunger.triggerShake();
+        });
+    }
+
     /**
      * Walking speed changed according to health/exhaustion/fat
      */
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer))
-            return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (!EntityPlayerExt.isSurvival(player))
-            return;
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
-            return;
-        final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
-        EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
-                EntityPlayerExt.getHealthAndExhaustionModifier(player));
-        if(player.isSprinting())
-            guiHunger.triggerShake();
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
+            EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
+                    EntityPlayerExt.getHealthAndExhaustionModifier(player));
+        });
     }
 
     /**
@@ -320,31 +327,29 @@ public class HCHunger extends Feature {
      */
     @SubscribeEvent
     public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer))
-            return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (!EntityPlayerExt.isSurvival(player))
-            return;
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
-            return;
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+        });
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void jumpingShaked(LivingEvent.LivingJumpEvent event) {
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (player.world.isRemote)
+                guiHunger.triggerShake();
+        });
     }
 
     @SubscribeEvent
     public void jumpingPenalty(LivingEvent.LivingJumpEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer))
-            return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (!EntityPlayerExt.isSurvival(player))
-            return;
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
-            return;
-        if (!EntityPlayerExt.canJump(player)) {
-            event.getEntityLiving().motionX = 0;
-            event.getEntityLiving().motionY = 0;
-            event.getEntityLiving().motionZ = 0;
-        }
-        guiHunger.triggerShake();
-        player.addExhaustion((float) jumpExhaustion);
+        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (!EntityPlayerExt.canJump(player)) {
+                event.getEntityLiving().motionX = 0;
+                event.getEntityLiving().motionY = 0;
+                event.getEntityLiving().motionZ = 0;
+            }
+            player.addExhaustion((float) jumpExhaustion);
+        });
     }
 
     /**
@@ -425,27 +430,30 @@ public class HCHunger extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void renderPlayer(RenderPlayerEvent.Pre e) {
         EntityPlayer player = e.getEntityPlayer();
-        if(!(player.getFoodStats() instanceof  BWMFoodStats))
+        if (!(player.getFoodStats() instanceof BWMFoodStats))
             return;
         FatPenalty penalty = EntityPlayerExt.getFatPenalty(player);
         RenderPlayer render = e.getRenderer();
     }
 
-    private static Field foodField = ReflectionHelper.findField(ItemFood.class,"healAmount","field_77853_b");
-    private static Field satField = ReflectionHelper.findField(ItemFood.class,"saturationModifier","field_77854_c");
+    private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");
+    private static Field satField = ReflectionHelper.findField(ItemFood.class, "saturationModifier", "field_77854_c");
+
     static {
         foodField.setAccessible(true);
         satField.setAccessible(true);
     }
+
     public static void modifyFoodValue(ItemFood item, int food, float saturation) {
         try {
-            foodField.set(item,food);
-            satField.set(item,saturation);
-            BWMod.logger.info("{},{}",food,saturation);
+            foodField.set(item, food);
+            satField.set(item, saturation);
+//            BWMod.logger.info("{},{}",food,saturation);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

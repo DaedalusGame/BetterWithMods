@@ -22,6 +22,7 @@ public class Tweaks extends Module {
         registerFeature(new MossGeneration());
         registerFeature(new RenewableEndstone());
         registerFeature(new Sinkholes());
+        registerFeature(new PigBreeding());
 
     }
 

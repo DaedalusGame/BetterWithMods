@@ -61,7 +61,7 @@ public final class EntityPlayerExt {
         else return HungerPenalty.DYING;
     }
 
-    private static FatPenalty getFatPenalty(EntityPlayer player) {
+    public static FatPenalty getFatPenalty(EntityPlayer player) {
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 12) return FatPenalty.NO_PENALTY;
         else if (level < 14) return FatPenalty.PLUMP;

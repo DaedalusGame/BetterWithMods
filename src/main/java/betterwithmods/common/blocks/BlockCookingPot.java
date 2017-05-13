@@ -45,6 +45,12 @@ public class BlockCookingPot extends BWMBlock implements IMultiVariants {
         this.setHardness(3.5F);
     }
 
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(TYPE).getMeta();
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {

@@ -3,14 +3,17 @@ package betterwithmods.module.hardcore;
 import betterwithmods.BWMod;
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.common.BWCrafting;
+import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.Feature;
 import betterwithmods.util.BWMFoodStats;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.FatPenalty;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -25,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -33,15 +37,60 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 /**
  * Created by tyler on 4/20/17.
  */
 public class HCHunger extends Feature {
+
+    private double jumpExhaustion;
+    @Override
+    public void setupConfig() {
+        jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
+        if(loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid",true))
+            Minecraft.getMinecraft().gameSettings.autoJump = false;
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
+
+
+        //MEATS
+        modifyFoodValue((ItemFood) Items.SPIDER_EYE, 6,0);
+
+        modifyFoodValue((ItemFood) Items.ROTTEN_FLESH, 9,0);
+        modifyFoodValue((ItemFood) Items.CHICKEN, 9,0);
+        modifyFoodValue((ItemFood) Items.MUTTON, 9,0);
+
+        modifyFoodValue((ItemFood) Items.COOKED_CHICKEN, 12,0);
+        modifyFoodValue((ItemFood) Items.COOKED_MUTTON, 12,0);
+        modifyFoodValue((ItemFood) Items.BEEF, 12,0);
+        modifyFoodValue((ItemFood) Items.PORKCHOP, 12,0);
+        modifyFoodValue((ItemFood) BWMItems.WOLF_CHOP, 12,0);
+
+        modifyFoodValue((ItemFood) Items.COOKED_BEEF, 15,0);
+        modifyFoodValue((ItemFood) Items.COOKED_PORKCHOP, 15,0);
+
+        modifyFoodValue((ItemFood) Items.FISH, 9,0);
+        modifyFoodValue((ItemFood) Items.COOKED_FISH, 12,0);
+        //OTHER
+        modifyFoodValue((ItemFood) Items.MELON, 2,0);
+        modifyFoodValue((ItemFood) Items.MUSHROOM_STEW, 15,0);
+        modifyFoodValue((ItemFood) Items.BREAD, 12,0);
+        modifyFoodValue((ItemFood) Items.COOKIE, 3,3);
+        modifyFoodValue((ItemFood) Items.PUMPKIN_PIE, 6,15);
+        //TODO CAKE????
+        modifyFoodValue((ItemFood) Items.POTATO, 3,0);
+        modifyFoodValue((ItemFood) Items.BAKED_POTATO, 6,0);
+        modifyFoodValue((ItemFood) Items.CARROT, 3,0);
+        modifyFoodValue((ItemFood) Items.APPLE, 3,0);
+        modifyFoodValue((ItemFood) Items.GOLDEN_APPLE, 3,0);
+        modifyFoodValue((ItemFood) Items.GOLDEN_CARROT, 3,0);
 
         RecipeUtils.removeRecipes(Items.BREAD, 0);
         RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
@@ -256,6 +305,8 @@ public class HCHunger extends Feature {
         final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
         EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
                 EntityPlayerExt.getHealthAndExhaustionModifier(player));
+        if(player.isSprinting())
+            guiHunger.triggerShake();
     }
 
     /**
@@ -287,6 +338,8 @@ public class HCHunger extends Feature {
             event.getEntityLiving().motionY = 0;
             event.getEntityLiving().motionZ = 0;
         }
+        guiHunger.triggerShake();
+        player.addExhaustion((float) jumpExhaustion);
     }
 
     /**
@@ -333,22 +386,6 @@ public class HCHunger extends Feature {
         event.setNewfov(f);
     }
 
-//    @SubscribeEvent
-//    public void onFoodConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-//        if (!event.getModID().equals(BWMod.MODID))
-//            return;
-//        if (!event.isWorldRunning())
-//            return;
-//        if (!Minecraft.getMinecraft().isSingleplayer())
-//            return;
-//        EntityPlayer player = Minecraft.getMinecraft().player;
-//        if (this.enabled)
-//            applyFoodSystem(player);
-//        else
-//            revertFoodSystem(player);
-//        // TODO find solution for issue #71
-//    }
-
     @SubscribeEvent
     public void saveSoup(LivingEntityUseItemEvent.Finish event) {
         if (event.getItem() != ItemStack.EMPTY) {
@@ -371,9 +408,10 @@ public class HCHunger extends Feature {
     public static void initDesserts() {
         setDessert((ItemFood) Items.COOKIE);
         setDessert((ItemFood) Items.PUMPKIN_PIE);
+        setDessert((ItemFood) BWMItems.CHOCOLATE);
     }
 
-    private static void setDessert(ItemFood food) {
+    public static void setDessert(ItemFood food) {
         food.setAlwaysEdible();
     }
 
@@ -382,4 +420,31 @@ public class HCHunger extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void renderPlayer(RenderPlayerEvent.Pre e) {
+        EntityPlayer player = e.getEntityPlayer();
+        if(!(player.getFoodStats() instanceof  BWMFoodStats))
+            return;
+        FatPenalty penalty = EntityPlayerExt.getFatPenalty(player);
+        RenderPlayer render = e.getRenderer();
+    }
+
+    private static Field foodField = ReflectionHelper.findField(ItemFood.class,"healAmount","field_77853_b");
+    private static Field satField = ReflectionHelper.findField(ItemFood.class,"saturationModifier","field_77854_c");
+    static {
+        foodField.setAccessible(true);
+        satField.setAccessible(true);
+    }
+    public static void modifyFoodValue(ItemFood item, int food, float saturation) {
+        try {
+            foodField.set(item,food);
+            satField.set(item,saturation);
+            BWMod.logger.info("{},{}",food,saturation);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

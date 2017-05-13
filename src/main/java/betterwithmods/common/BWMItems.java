@@ -37,7 +37,7 @@ public final class BWMItems {
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
-    public static final Item DONUT = new ItemFood(2, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
+    public static final Item DONUT = new ItemFood(3,1.5f, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
     public static final Item KNIFE = new ItemKnife(ToolMaterial.IRON).setRegistryName("knife");
     public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
     public static final Item FERTILIZER = new ItemFertilizer().setRegistryName("fertilizer");
@@ -48,38 +48,38 @@ public final class BWMItems {
     public static final Item STEEL_SWORD = new ItemSoulforgedSword().setRegistryName("steel_sword");
     public static final Item STEEL_MATTOCK = new ItemSoulforgedMattock().setRegistryName("steel_mattock");
     public static final Item STEEL_BATTLEAXE = new ItemSoulforgedBattleAxe().setRegistryName("steel_battleaxe");
-    public static final Item CREEPER_OYSTER = (new ItemAltNameFood(2, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
+    public static final Item CREEPER_OYSTER = (new ItemAltNameFood(6, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 5, 0), 1)).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("creeper_oyster");
     public static final Item ENDER_SPECTACLES = new ItemEnderSpectacles().setRegistryName("ender_spectacles");
     public static final Item STEEL_HELMET = new ItemSoulforgeArmor(EntityEquipmentSlot.HEAD).setRegistryName("steel_helmet");
     public static final Item STEEL_CHEST = new ItemSoulforgeArmor(EntityEquipmentSlot.CHEST).setRegistryName("steel_chest");
     public static final Item STEEL_PANTS = new ItemSoulforgeArmor(EntityEquipmentSlot.LEGS).setRegistryName("steel_pants");
     public static final Item STEEL_BOOTS = new ItemSoulforgeArmor(EntityEquipmentSlot.FEET).setRegistryName("steel_boots");
     public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
-    public static final Item RAW_EGG = new ItemFood(2, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_egg");
-    public static final Item COOKED_EGG = new ItemFood(3, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_egg");
-    public static final Item RAW_SCRAMBLED_EGG = new ItemFood(4, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_scrambled_egg");
-    public static final Item COOKED_SCRAMBLED_EGG = new ItemFood(5, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_scrambled_egg");
-    public static final Item RAW_OMELET = new ItemFood(3, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
-    public static final Item COOKED_OMELET = new ItemFood(4, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
-    public static final Item HAM_AND_EGGS = new ItemFood(6, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
-    public static final Item TASTY_SANDWICH = new ItemFood(7, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
+    public static final Item RAW_EGG = new ItemFood(6, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_egg");
+    public static final Item COOKED_EGG = new ItemFood(9, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_egg");
+    public static final Item RAW_SCRAMBLED_EGG = new ItemFood(12, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_scrambled_egg");
+    public static final Item COOKED_SCRAMBLED_EGG = new ItemFood(15, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_scrambled_egg");
+    public static final Item RAW_OMELET = new ItemFood(9, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_omelet");
+    public static final Item COOKED_OMELET = new ItemFood(12, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_omelet");
+    public static final Item HAM_AND_EGGS = new ItemFood(18, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("ham_and_eggs");
+    public static final Item TASTY_SANDWICH = new ItemFood(18, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("tasty_sandwich");
     public static final Item COMPOSITE_BOW = new ItemCompositeBow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("composite_bow");
     public static final Item BROADHEAD_ARROW = new ItemBroadheadArrow().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("broadhead_arrow");
-    public static final Item BEEF_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_dinner");
-    public static final Item BEEF_POTATOES = new ItemFood(6, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_potatoes");
-    public static final Item CHICKEN_SOUP = new ItemSoup(8).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chicken_soup");
-    public static final Item CHOCOLATE = new ItemFood(2, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chocolate");
-    public static final Item CHOWDER = new ItemSoup(5).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chowder");
-    public static final Item COOKED_KEBAB = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_kebab");
-    public static final Item HEARTY_STEW = new ItemSoup(10).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("hearty_stew");
-    public static final Item RAW_KEBAB = new ItemFood(6, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
-    public static final Item PORK_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
+    public static final Item BEEF_DINNER = new ItemFood(24, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_dinner");
+    public static final Item BEEF_POTATOES = new ItemFood(18, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("beef_potatoes");
+    public static final Item CHICKEN_SOUP = new ItemSoup(24).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chicken_soup");
+    public static final Item CHOCOLATE = new ItemFood(6,3, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chocolate");
+    public static final Item CHOWDER = new ItemSoup(15).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("chowder");
+    public static final Item COOKED_KEBAB = new ItemFood(24, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_kebab");
+    public static final Item HEARTY_STEW = new ItemSoup(30).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("hearty_stew");
+    public static final Item RAW_KEBAB = new ItemFood(18, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
+    public static final Item PORK_DINNER = new ItemFood(24, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
     public static final Item STUMP_REMOVER = new ItemStumpRemover().setRegistryName("stump_remover");
     public static final Item DIRT_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("dirt_pile");
     public static final Item GRAVEL_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("gravel_pile");
     public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
     public static final Item WOLF_CHOP = new ItemFood(3, 0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
-
+    //TODO Cooked wolfchop, Poached egg, Kibble, Wolf Dinner, Cooked Carrot, Mystery Meat
     private BWMItems() {
     }
 

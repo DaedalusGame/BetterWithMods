@@ -69,7 +69,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
         if (meta == 0) {
             if (Gameplay.crankExhaustion > 0.0) {
-                if (player.getFoodStats().getFoodLevel() > 6) {
+                if (player.getFoodStats().getFoodLevel() > 20) {
                     player.addExhaustion((float) Gameplay.crankExhaustion);
                     if (!world.isRemote) {
                         toggleSwitch(world, pos, state);

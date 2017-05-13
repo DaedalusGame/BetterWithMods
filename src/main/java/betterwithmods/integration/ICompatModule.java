@@ -10,18 +10,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Koward
  */
 public interface ICompatModule {
-    void preInit();
+    default void preInit() {}
 
-    void init();
+    default void init() {}
 
-    void postInit();
-
-    @SideOnly(Side.CLIENT)
-    void preInitClient();
+    default void postInit(){}
 
     @SideOnly(Side.CLIENT)
-    void initClient();
+    default void preInitClient(){}
 
     @SideOnly(Side.CLIENT)
-    void postInitClient();
+    default void initClient(){}
+
+    @SideOnly(Side.CLIENT)
+    default void postInitClient(){}
 }

@@ -5,6 +5,7 @@ import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.event.*;
+import betterwithmods.integration.CompatMap;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.network.MessageSyncModule;
@@ -24,7 +25,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "before:survivalist;after:mantle;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:quark;after:mekanism;after:thermalexpansion", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
@@ -46,16 +50,15 @@ public class BWMod {
     public static BWMod instance;
 
     static {
-        //Avoid all direct references to class so
-        //they are actually loaded only if necessary.
-        Map<String, String> map = new HashMap<>();
-        map.put("biomesoplenty", "betterwithmods.integration.BiomesOPlenty");
-        map.put("harvestcraft", "betterwithmods.integration.Harvestcraft");
-        //map.put("immersiveengineering", "betterwithmods.integration.immersiveengineering.ImmersiveEngineering");
-        map.put("crafttweaker", "betterwithmods.integration.minetweaker.MineTweaker");
-        map.put("quark", "betterwithmods.integration.Quark");
+        CompatMap map = new CompatMap(
+                "biomesoplenty", "betterwithmods.integration.BiomesOPlenty",
+                "harvestcraft", "betterwithmods.integration.Harvestcraft",
+                "crafttweaker", "betterwithmods.integration.minetweaker.MineTweaker",
+                "quark", "betterwithmods.integration.Quark",
+                "nethercore", "betterwithmods.integration.NetherCore",
+                "actuallyadditions", "betterwithmods.integration.ActuallyAdditions");
         //map.put("tconstruct", "betterwithmods.integration.tcon.TConstruct");
-        map.put("nethercore", "betterwithmods.integration.NetherCore");
+        //map.put("immersiveengineering", "betterwithmods.integration.immersiveengineering.ImmersiveEngineering");
         compatClasses = Collections.unmodifiableMap(map);
     }
 
@@ -137,10 +140,12 @@ public class BWMod {
             MinecraftForge.EVENT_BUS.register(new ModuleSync());
         proxy.postInit();
     }
+
     @EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
         ModuleLoader.serverStarting(evt);
     }
+
     @Mod.EventHandler
     public void remap(FMLMissingMappingsEvent evt) throws MinecraftException {
         for (FMLMissingMappingsEvent.MissingMapping mapping : evt.get()) {

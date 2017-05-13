@@ -24,6 +24,7 @@ public class GuiHunger {
     private final Random rand = new Random();
     private final Minecraft mc = Minecraft.getMinecraft();
     private int shakeCounter = 0;
+    private boolean shakeTriggered;
 
     public void draw() {
         ScaledResolution scale = ((GuiIngameForge) mc.ingameGUI).getResolution();
@@ -41,8 +42,6 @@ public class GuiHunger {
     }
 
     private void drawFoodOverlay(int left, int top) {
-        boolean shakeTriggered = false; //TODO trigger shake effect
-
         EntityPlayer player = this.mc.player;
         BWMFoodStats foodStats = (BWMFoodStats) player.getFoodStats();
         int foodLevel = foodStats.getFoodLevel();
@@ -72,8 +71,7 @@ public class GuiHunger {
             if (EntityPlayerExt.getHungerPenalty(player) != HungerPenalty.NO_PENALTY && mc.ingameGUI.getUpdateCounter() % (foodLevel * 5 + 1) == 0) {
                 y = top + (rand.nextInt(3) - 1);
             } else if (shakeCounter > 0) {
-                int move = rand.nextInt(2) == 0 ? 1 : -1;
-                y = top + move;
+                y = top + (rand.nextInt(3) - 1);
             }
 
             int x = left - i * 8 - 9;
@@ -121,5 +119,9 @@ public class GuiHunger {
             }
             return false;
         }
+    }
+
+    public void triggerShake() {
+        this.shakeTriggered = true;
     }
 }

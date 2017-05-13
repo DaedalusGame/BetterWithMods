@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Dung extends Feature {
     private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
     private boolean wolvesOnly;
+    private int dungChance;
 
     @Override
     public String getFeatureDescription() {
@@ -22,6 +23,7 @@ public class Dung extends Feature {
     @Override
     public void setupConfig() {
         wolvesOnly = loadPropBool("Only Wolves", "Only Wolves will produce dung", false);
+        dungChance = loadPropInt("Dung Chance", "Chance for Animals to produce dung.", 3000);
     }
 
     @SubscribeEvent
@@ -30,19 +32,15 @@ public class Dung extends Feature {
             return;
         if (evt.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
-            if (animal instanceof EntityWolf) {
-                if (!animal.getEntityWorld().canSeeSky(animal.getPosition())) {
-                    if (animal.getGrowingAge() > 99) {
-                        int light = animal.getEntityWorld().getLight(animal.getPosition());
-                        if (animal.getGrowingAge() == fearLevel[light]) {
-                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
-                            animal.setGrowingAge(99);
-                        }
+            if(wolvesOnly && !(animal instanceof EntityWolf))
+                return;
+            if (!animal.getEntityWorld().canSeeSky(animal.getPosition())) {
+                if (animal.getGrowingAge() > 99) {
+                    int light = animal.getEntityWorld().getLight(animal.getPosition());
+                    if (animal.getGrowingAge() == fearLevel[light]) {
+                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
+                        animal.setGrowingAge(99);
                     }
-                }
-            } else if(!wolvesOnly){
-                if (animal.world.rand.nextInt(1200) == 0) {
-                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                 }
             }
         }

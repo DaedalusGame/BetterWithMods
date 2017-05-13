@@ -32,4 +32,8 @@ public class Hardcore extends Module {
         registerFeature(new HCTorches());
     }
 
+    @Override
+    public String getModuleDescription() {
+        return "Changes to the game that make it more challenging";
+    }
 }

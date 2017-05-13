@@ -6,7 +6,7 @@ import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
-import betterwithmods.event.MobDropEvent;
+import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -104,12 +104,12 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                     IBlockState state = world.getBlockState(check);
                     List<ItemStack> stacks = state.getBlock().getDrops(world, check, state, 0);
                     if (stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
-                        stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
+                        stacks.add(state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player));
                     else if (!stacks.isEmpty()) {
                         for (ItemStack stack : stacks) {
-                            if (ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player))) {
+                            if (ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player))) {
                                 stacks.remove(stack);
-                                stacks.add(state.getBlock().getPickBlock(state, null, world, check, MobDropEvent.player));
+                                stacks.add(state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player));
                                 break;
                             }
                         }

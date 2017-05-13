@@ -103,7 +103,6 @@ public class PotionEventHandler {
             World world = player.getEntityWorld();
 
             if (player.isPotionActive(BWRegistry.POTION_TRUESIGHT)) {
-
                 if (world.isRemote) {
                     Minecraft mc = Minecraft.getMinecraft();
                     int var3 = mc.gameSettings.particleSetting;

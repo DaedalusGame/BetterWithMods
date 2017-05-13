@@ -10,10 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -24,16 +21,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import static betterwithmods.common.BWMItems.BARK;
 
 public class LogHarvestEvent {
-    public static IRecipe findMatchingRecipe(InventoryCrafting inv, World world) {
-        for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
-            IRecipe recipe = CraftingManager.getInstance().getRecipeList().get(i);
-
-            if (recipe.matches(inv, world)) {
-                return recipe;
-            }
-        }
-        return null;
-    }
 
     @SubscribeEvent
     public void debarkLog(PlayerInteractEvent.RightClickBlock evt) {

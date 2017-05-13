@@ -15,6 +15,7 @@ public class Tweaks extends Module {
         registerFeature(new EggDrops());
         registerFeature(new EquipmentDrop());
         registerFeature(new ImprovedFlee());
+        registerFeature(new HeadDrops());
         registerFeature(new HempSeed());
         registerFeature(new KilnSmelting());
         registerFeature(new MobSpawning());
@@ -22,5 +23,10 @@ public class Tweaks extends Module {
         registerFeature(new RenewableEndstone());
         registerFeature(new Sinkholes());
 
+    }
+
+    @Override
+    public String getModuleDescription() {
+        return "General Tweaks to the game, Vanilla or BWM itself";
     }
 }

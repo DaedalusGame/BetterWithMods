@@ -5,7 +5,7 @@ import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.SawInteraction;
-import betterwithmods.event.MobDropEvent;
+import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -168,7 +168,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     private void performLastHit(Entity entity, float damage) {
-        entity.attackEntityFrom(DamageSource.causePlayerDamage(MobDropEvent.player), damage);
+        entity.attackEntityFrom(DamageSource.causePlayerDamage(FakePlayerHandler.player), damage);
     }
 
     @Override

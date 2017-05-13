@@ -52,6 +52,11 @@ public class HCHunger extends Feature {
     @Override
     public void setupConfig() {
         jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
+
+    }
+
+    @Override
+    public void initClient(FMLInitializationEvent event) {
         if(loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid",true))
             Minecraft.getMinecraft().gameSettings.autoJump = false;
     }

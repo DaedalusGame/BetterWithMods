@@ -237,10 +237,10 @@ public class HCHunger extends Feature {
      */
     @SubscribeEvent
     public void breakSpeedPenalty(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
-        EntityPlayer player = isFoodSystemValid(event.getEntityPlayer()).get();
-        if (player == null)
+        Optional<EntityPlayer> playerOptional = isFoodSystemValid(event.getEntityPlayer());
+        EntityPlayer player = playerOptional.get();
+        if(!playerOptional.isPresent())
             return;
-
         IBlockState state = event.getState();
         float f = player.inventory.getStrVsBlock(state);
 

@@ -42,7 +42,7 @@ public class ItemFertilizer extends Item {
         return EnumActionResult.PASS;
     }
 
-    private boolean processBlock(Block block, World world, BlockPos pos) {
+    public static boolean processBlock(Block block, World world, BlockPos pos) {
         if (block == Blocks.FARMLAND) {
             world.setBlockState(pos, BWMBlocks.FERTILE_FARMLAND.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
             world.playEvent(2005, pos.up(), 0);

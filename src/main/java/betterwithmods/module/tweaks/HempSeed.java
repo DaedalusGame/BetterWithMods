@@ -3,8 +3,11 @@ package betterwithmods.module.tweaks;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.BlockGrass;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,9 +46,15 @@ public class HempSeed extends Feature {
     public void onHoe(UseHoeEvent e) {
         if(!hoeForSeeds)
             return;
-        ItemStack stack = ForgeHooks.getGrassSeed(e.getWorld().rand,0);
-        if(stack.isItemEqual(new ItemStack(BWMBlocks.HEMP))) {
-            InvUtils.ejectStackWithOffset(e.getWorld(),e.getPos(),stack);
+        World world = e.getWorld();
+        if(!world.isRemote){
+            BlockPos pos = e.getPos();
+            if(world.isAirBlock(pos.up())){
+                IBlockState state = world.getBlockState(pos);
+                if(state.getBlock() instanceof BlockGrass && world.rand.nextFloat() >= 0.95F){
+                    InvUtils.ejectStackWithOffset(world,pos, new ItemStack(BWMBlocks.HEMP, 1, 0));
+                }
+            }
         }
     }
 }

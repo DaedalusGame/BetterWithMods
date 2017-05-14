@@ -240,10 +240,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 2));
-        list.add(new ItemStack(item, 1, 4));
-        list.add(new ItemStack(item, 1, 6));
+        for(EnumType type: EnumType.META_LOOKUP)
+            list.add(new ItemStack(item, 1, type.getMeta()));
     }
 
     @Override

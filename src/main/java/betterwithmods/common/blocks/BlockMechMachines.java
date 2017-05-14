@@ -42,7 +42,7 @@ import java.util.Random;
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
 
     public static ItemStack getStack(EnumType type) {
-        return new ItemStack(BWMBlocks.SINGLE_MACHINES,1, type.getMeta());
+        return new ItemStack(BWMBlocks.SINGLE_MACHINES,1, type.getMeta() << 1);
     }
 
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
@@ -103,8 +103,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         return type == EnumType.MILL || type == EnumType.PULLEY || type == EnumType.TURNTABLE;
     }
 
-    public int tickRateForMeta(int meta) {
-        if(meta == 1)
+    public int tickRateForMeta(EnumType type) {
+        if(type == EnumType.MILL)
             return 1;
         return 10;
     }
@@ -113,7 +113,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
         BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
-        world.scheduleBlockUpdate(pos, this, tickRateForMeta(type.getMeta()), 5);
+        world.scheduleBlockUpdate(pos, this, tickRateForMeta(type), 5);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     @Override
     public int damageDropped(IBlockState state) {
         BlockMechMachines.EnumType type = state.getValue(MACHINETYPE);
-        return type.getMeta();
+        return type.getMeta() << 1;
     }
 
     @Override
@@ -204,7 +204,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
         if (!isCurrentStateValid(world, pos)) {
-            world.scheduleBlockUpdate(pos, this, tickRateForMeta(type.getMeta()), 5);
+            world.scheduleBlockUpdate(pos, this, tickRateForMeta(type), 5);
         }
         if (type == BlockMechMachines.EnumType.HOPPER) {
             ((TileEntityFilteredHopper) world.getTileEntity(pos)).outputBlocked = false;

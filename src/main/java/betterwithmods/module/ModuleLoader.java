@@ -101,7 +101,7 @@ public final class ModuleLoader {
 		configFile = event.getSuggestedConfigurationFile();
 		config = new Configuration(configFile);
 		config.load();
-		
+
 		GlobalConfig.initGlobalConfig();
 
 		forEachModule(module -> {

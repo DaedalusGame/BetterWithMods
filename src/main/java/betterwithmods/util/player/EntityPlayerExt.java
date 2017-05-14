@@ -39,6 +39,8 @@ public final class EntityPlayerExt {
     }
 
     public static float getHealthAndExhaustionModifier(EntityPlayer player) {
+        if(!isSurvival(player))
+            return 1;
         return getWorstPenalty(player).getModifier();
     }
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {

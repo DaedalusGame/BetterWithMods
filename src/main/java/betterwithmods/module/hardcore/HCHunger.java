@@ -313,11 +313,18 @@ public class HCHunger extends Feature {
      */
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
+        final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
+
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
-            final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
             EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
                     EntityPlayerExt.getHealthAndExhaustionModifier(player));
         });
+        if (event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            if (!EntityPlayerExt.isSurvival(player))
+                EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
+                        EntityPlayerExt.getHealthAndExhaustionModifier(player));
+        }
     }
 
     /**

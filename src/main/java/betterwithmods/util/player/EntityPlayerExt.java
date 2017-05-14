@@ -33,9 +33,7 @@ public final class EntityPlayerExt {
     }
 
     public static boolean isSurvival(EntityPlayer player) {
-        boolean isAdventure = player.getEntityWorld().getWorldInfo().getGameType() == GameType.ADVENTURE;
-        boolean isCreative = player.capabilities.isCreativeMode;
-        return !(isAdventure || isCreative);
+        return player.getEntityWorld().getWorldInfo().getGameType() == GameType.SURVIVAL;
     }
 
     public static float getHealthAndExhaustionModifier(EntityPlayer player) {

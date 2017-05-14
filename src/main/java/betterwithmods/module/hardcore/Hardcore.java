@@ -10,6 +10,7 @@ public class Hardcore extends Module {
     public void addFeatures() {
         registerFeature(new HCArmor());
         registerFeature(new HCBeds());
+        registerFeature(new HCBonemeal());
         registerFeature(new HCBuckets());
         registerFeature(new HCBuoy());
         registerFeature(new HCDiamond());

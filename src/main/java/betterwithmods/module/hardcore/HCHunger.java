@@ -55,7 +55,6 @@ public class HCHunger extends Feature {
     @Override
     public void setupConfig() {
         jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
-
     }
 
     @Override

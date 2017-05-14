@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
@@ -59,7 +58,8 @@ public class TileEntityVase extends TileBasicInventory {
     }
 
     @Override
-    public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler( 1);
+    public int getInventorySize() {
+        return 1;
     }
+
 }

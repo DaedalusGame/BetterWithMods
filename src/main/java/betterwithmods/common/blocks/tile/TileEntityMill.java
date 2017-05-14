@@ -16,13 +16,11 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,8 +103,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     @Override
-    public ItemStackHandler createItemStackHandler() {
-        return new MillInventory(this);
+    public int getInventorySize() {
+        return 3;
     }
 
     @Override
@@ -283,16 +281,4 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         return powerLevel / 3;
     }
 
-    private static class MillInventory extends ItemStackHandler {
-        private TileEntity tile;
-        public MillInventory(TileEntity tile) {
-            super(3);
-            this.tile = tile;
-        }
-
-        @Override
-        public void onContentsChanged(int slot) {
-            tile.markDirty();
-        }
-    }
 }

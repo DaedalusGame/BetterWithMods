@@ -1,51 +1,41 @@
 package betterwithmods.common.blocks.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
+public abstract class TileEntityVisibleInventory extends TileBasicInventory implements ITickable {
     public short occupiedSlots;
-    public ItemStackHandler inventory = createItemStackHandler();
-
-    public abstract ItemStackHandler createItemStackHandler();
+    private int facing;
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
     }
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
-        return super.getCapability(capability, facing);
+    public int getFacing() {
+        return this.facing;
     }
 
-    public abstract String getName();
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentTranslation(getName());
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.merge(inventory.serializeNBT());
-        return super.writeToNBT(tag);
+    public void setFacing(int facing) {
+        this.facing = facing;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        inventory = createItemStackHandler();
-        inventory.deserializeNBT(tag);
         super.readFromNBT(tag);
+        this.facing = tag.getByte("facing");
     }
 
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        NBTTagCompound t = super.writeToNBT(tag);
+        t.setByte("facing", (byte) this.facing);
+        return t;
+    }
 
     public int filledSlots() {
         int fill = 0;
@@ -56,6 +46,9 @@ public abstract class TileEntityVisibleInventory extends TileEntityDirectional {
         return fill;
     }
 
+    public abstract String getName();
+
     //Mostly for aesthetic purposes, primarily so the filter in the filtered hopper doesn't reclaimCount.
     public abstract int getMaxVisibleSlots();
+
 }

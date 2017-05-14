@@ -27,9 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -100,18 +98,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     @Override
-    public ItemStackHandler createItemStackHandler() {
-        return new ItemStackHandler(27);
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        return null;
+    public int getInventorySize() {
+        return 27;
     }
 
     @Override
@@ -119,7 +107,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         super.readFromNBT(tag);
         this.fireIntensity = tag.hasKey("fireIntensity") ? tag.getInteger("fireIntensity") : -1;
         this.facing = tag.hasKey("facing") ? EnumFacing.getFront(tag.getInteger("facing")) : EnumFacing.UP;
-
         if (tag.hasKey("CookTime"))
             this.cookCounter = tag.getInteger("CookTime");
         if (tag.hasKey("ContainsValidIngredients"))
@@ -145,7 +132,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public void update() {
         if (this.getWorld().isRemote)
             return;
-
         if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockCookingPot) {
             IBlockState state = this.getWorld().getBlockState(this.pos);
             if (this.fireIntensity != getFireIntensity()) {
@@ -286,15 +272,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public void validateContents() {
         this.containsValidIngredients = false;
         if (!isStoked()) {
-            if(!validateUnstoked())
-                return;
-            if (unstoked.getCraftingResult(inventory) != null)
-                this.containsValidIngredients = true;
+            containsValidIngredients = validateUnstoked();
         } else {
-            if(!validateStoked())
-                return;
-            else if (stoked.getCraftingResult(inventory) != null)
-                this.containsValidIngredients = true;
+            containsValidIngredients = validateStoked();
         }
     }
 
@@ -400,7 +380,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                     for (ItemStack out : output) {
                         if (out != ItemStack.EMPTY) {
                             ItemStack stack = out.copy();
-                            if (!InvUtils.addItemStackToInv(inventory, stack))
+                            if (!InvUtils.addItemStackToInv(inventory, stack, false))
                                 InvUtils.ejectStackWithOffset(this.getWorld(), this.pos.up(), stack);
                         }
                     }
@@ -479,7 +459,13 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         return 0;
     }
 
-    public void handleEvents(float time, Iterable<Event> pastEvents) {
-        pastEvents.forEach( e -> {});
+    @Override
+    public void readFromTag(NBTTagCompound tag) {
+
+    }
+
+    @Override
+    public NBTTagCompound writeToTag(NBTTagCompound tag) {
+        return tag;
     }
 }

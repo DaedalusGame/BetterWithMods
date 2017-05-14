@@ -102,7 +102,7 @@ public class BreedingHardnessEvent {
             ItemStack held = player.getHeldItemMainhand();
             if (harness != ItemStack.EMPTY) {
                 if (held == ItemStack.EMPTY) {
-                    InvUtils.addItemStackToInv(playerInv, harness);
+                    InvUtils.addItemStackToInv(playerInv, harness, false);
                     animal.getDataManager().set(getHarnessData(animal), ItemStack.EMPTY);
                     animal.getEntityData().setTag(TAG_HARNESS, new NBTTagCompound());
                     world.playSound(null, animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundCategory.NEUTRAL, 0.5f, 1.3f);
@@ -111,7 +111,7 @@ public class BreedingHardnessEvent {
             } else if (held != ItemStack.EMPTY && held.getItem() instanceof ItemBreedingHarness) {
                 if (getHarness(animal) != ItemStack.EMPTY)
                     return;
-                InvUtils.consumeItemsInInventory(playerInv, held, 1);
+                InvUtils.consumeItemsInInventory(playerInv, held, 1, false);
                 ItemStack copyStack = held.copy();
                 copyStack.setCount(1);
                 NBTTagCompound cmp = new NBTTagCompound();

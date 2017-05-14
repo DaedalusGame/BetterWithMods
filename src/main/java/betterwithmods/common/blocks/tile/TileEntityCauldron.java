@@ -15,20 +15,18 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     @Override
     public boolean validateUnstoked() {
-        if(InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood()) {
-            this.containsValidIngredients = true;
-            return false;
-        }
-        return true;
+        if (InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood())
+            return true;
+        else if (CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
+            return true;
+        return false;
     }
 
     @Override
     public boolean validateStoked() {
-        if (containsExplosives()) {
-            this.containsValidIngredients = true;
-            return false;
-        }
-        return true;
+        if (containsExplosives() || CraftingManagerCauldronStoked.getInstance().getCraftingResult(inventory) != null)
+            return true;
+        return false;
     }
 
     @Override
@@ -77,4 +75,5 @@ public class TileEntityCauldron extends TileEntityCookingPot {
     public String getName() {
         return "inv.cauldron.name";
     }
-}
+
+    }

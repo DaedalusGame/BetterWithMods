@@ -377,8 +377,6 @@ public class BWCrafting {
 
     private static void addCrucibleRecipes() {
 
-        addOreStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{new OreStack("nuggetGold", 9)});
-        addOreStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new OreStack("nuggetIron", 9)});
         addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
         addOreStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
 

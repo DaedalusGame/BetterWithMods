@@ -5,22 +5,25 @@ import betterwithmods.common.registry.bulk.CraftingManagerCrucibleStoked;
 
 public class TileEntityCrucible extends TileEntityCookingPot {
     public TileEntityCrucible() {
-        super(CraftingManagerCrucible.getInstance(),CraftingManagerCrucibleStoked.getInstance());
+        super(CraftingManagerCrucible.getInstance(), CraftingManagerCrucibleStoked.getInstance());
     }
 
     @Override
     public boolean validateStoked() {
-        if (containsExplosives()) {
-            this.containsValidIngredients = false;
+        if (containsExplosives())
             return false;
-        }
-        return true;
+        if (CraftingManagerCrucibleStoked.getInstance().getCraftingResult(inventory) != null)
+            return true;
+        return false;
     }
 
     @Override
     public boolean validateUnstoked() {
-        return true;
+        if (CraftingManagerCrucible.getInstance().getCraftingResult(inventory) != null)
+            return true;
+        return false;
     }
+
     @Override
     public String getName() {
         return "inv.crucible.name";

@@ -167,7 +167,7 @@ public class BulkRecipe {
                     ItemStack stack = (ItemStack) obj;
 
                     if (stack != ItemStack.EMPTY) {
-                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.getCount()))
+                        if (!InvUtils.consumeItemsInInventory(inv, stack, stack.getCount(), false))
                             success = false;
                     }
                 } else if (obj instanceof OreStack) {

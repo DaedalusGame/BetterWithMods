@@ -89,13 +89,13 @@ public class InvUtils {
         return insertingStacks(inv, stack, minSlot, maxSlot, true);
     }
 
-    public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta) {
+    public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta, boolean simulate) {
         ItemStack stack = new ItemStack(item, 1, meta);
-        return attemptToInsertStack(inv, stack, 0, inv.getSlots());
+        return attemptToInsertStack(inv, stack, 0, inv.getSlots(), simulate);
     }
 
-    private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-        return insertingStacks(inv, stack, minSlot, maxSlot, false);
+    private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+        return insertingStacks(inv, stack, minSlot, maxSlot, simulate);
     }
 
     private static boolean insertingStacks(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
@@ -187,7 +187,7 @@ public class InvUtils {
         return ret;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack) {
+    public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != ItemStack.EMPTY) {
@@ -199,15 +199,18 @@ public class InvUtils {
                                 return true;
                             }
                             sizeOfStack -= stack.getCount();
-                            inv.setStackInSlot(i, ItemStack.EMPTY);
+                            if(!simulate)
+                                inv.setStackInSlot(i, ItemStack.EMPTY);
                         }
                     } else {
                         if (stack.getCount() >= sizeOfStack) {
-                            decrStackSize(inv, i, sizeOfStack);
+                            if(!simulate)
+                                decrStackSize(inv, i, sizeOfStack);
                             return true;
                         }
                         sizeOfStack -= stack.getCount();
-                        inv.setStackInSlot(i, ItemStack.EMPTY);
+                        if(!simulate)
+                            inv.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
             }
@@ -340,8 +343,8 @@ public class InvUtils {
         ejectStack(world, x, y, z, stack, 10);
     }
 
-    public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack) {
-        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots());
+    public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack, boolean simulate) {
+        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots(),simulate);
     }
 
     public static boolean checkItemStackInsert(IItemHandler inv, ItemStack stack) {

@@ -40,7 +40,7 @@ public class HopperInteractions {
                 TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 ItemStackHandler inventory = tile.inventory;
                 ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
-                if (!InvUtils.addItemStackToInv(inventory, sand)) {
+                if (!InvUtils.addItemStackToInv(inventory, sand, false)) {
                     InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
                 }
                 onCraft(world, pos, inputStack);
@@ -56,7 +56,7 @@ public class HopperInteractions {
                 hopper.soulsRetained -= stackSize;
                 item.getEntityItem().shrink(stackSize);
                 EntityItem soul = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(Blocks.SOUL_SAND, stackSize));
-                if (!InvUtils.addItemStackToInv(hopper.inventory, soul.getEntityItem())) {
+                if (!InvUtils.addItemStackToInv(hopper.inventory, soul.getEntityItem(), false)) {
                     soul.setDefaultPickupDelay();
                     world.spawnEntity(soul);
                 }

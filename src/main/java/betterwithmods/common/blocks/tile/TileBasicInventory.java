@@ -3,16 +3,18 @@ package betterwithmods.common.blocks.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.ItemStackHandler;
 
 /**
  * Created by tyler on 9/4/16.
  */
 public abstract class TileBasicInventory extends TileBasic {
 
-    public ItemStackHandler inventory = createItemStackHandler();
+    public SimpleStackHandler inventory = createItemStackHandler();
+    public abstract int getInventorySize();
 
-    public abstract ItemStackHandler createItemStackHandler();
+    public SimpleStackHandler createItemStackHandler() {
+        return new SimpleStackHandler(getInventorySize(),this);
+    }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
@@ -27,15 +29,22 @@ public abstract class TileBasicInventory extends TileBasic {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.merge(inventory.serializeNBT());
-        return super.writeToNBT(compound);
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag.merge(inventory.serializeNBT());
+        return super.writeToNBT(tag);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        inventory = createItemStackHandler();
+        if(inventory == null)
+            inventory = createItemStackHandler();
         inventory.deserializeNBT(compound);
         super.readFromNBT(compound);
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        writeToNBT(new NBTTagCompound());
     }
 }

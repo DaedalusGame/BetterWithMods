@@ -27,7 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
@@ -338,7 +337,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
 
                     } else if (tile != null) {
-                        if (InvUtils.addItemStackToInv(inventory, ejectStack))
+                        if (InvUtils.addItemStackToInv(inventory, ejectStack, false))
                             inventory.extractItem(stackIndex, ejectStackSize, false);
                     } else
                         this.outputBlocked = true;
@@ -351,7 +350,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         if (cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                             IItemHandler items = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                             int itemsStored;
-                            if (InvUtils.addItemStackToInv(items, ejectStack))
+                            if (InvUtils.addItemStackToInv(items, ejectStack, false))
                                 itemsStored = ejectStackSize;
                             else
                                 itemsStored = ejectStackSize - ejectStack.getCount();
@@ -526,8 +525,13 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public ItemStackHandler createItemStackHandler() {
-        return new HopperHandler(this);
+    public int getInventorySize() {
+        return 19;
+    }
+
+    @Override
+    public SimpleStackHandler createItemStackHandler() {
+        return new HopperHandler(getInventorySize(),this);
     }
 
     @Override
@@ -562,21 +566,13 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return RenderUtils.getModelFromStack(filter);
     }
 
-    private class HopperHandler extends ItemStackHandler {
-        private TileEntityFilteredHopper hopper;
-        public HopperHandler(TileEntityFilteredHopper hopper) {
-            super(19);
-            this.hopper = hopper;
+    private class HopperHandler extends SimpleStackHandler {
+        public HopperHandler(int size, TileEntity hopper) {
+            super(size,hopper);
         }
-
         @Override
         public int getSlotLimit(int slot) {
             return slot == 18 ? 1 : super.getSlotLimit(slot);
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            hopper.markDirty();
         }
     }
 }

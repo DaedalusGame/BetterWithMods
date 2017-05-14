@@ -7,6 +7,7 @@ import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.module.GlobalConfig;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -16,8 +17,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -27,9 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
-import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
@@ -63,8 +60,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     @Override
-    public ItemStackHandler createItemStackHandler() {
-        return new PulleyInventory();
+    public int getInventorySize() {
+        return 4;
+    }
+
+    @Override
+    public SimpleStackHandler createItemStackHandler() {
+        return super.createItemStackHandler();
     }
 
     @Override
@@ -88,7 +90,6 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     public void update() {
         if (this.getWorld().isRemote)
             return;
-
         tryNextOperation();
     }
 
@@ -290,38 +291,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     private boolean takeRope(boolean flag) {
-        for (int i = 0; i < 4; i++) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() > 0) {
-                if (flag) {
-                    stack.shrink(1);
-                    if (stack.getCount() < 1) {
-                        inventory.setStackInSlot(i, ItemStack.EMPTY);
-                    }
-                    this.markDirty();
-                }
-                return true;
-            }
-        }
-        return false;
+        return InvUtils.consumeItemsInInventory(inventory, new ItemStack(BWMBlocks.ROPE), 1, !flag);
     }
 
     private boolean putRope(boolean flag) {
-        for (int i = 0; i < 4; i++) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (stack.isEmpty() || stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE) && stack.getCount() < 64) {
-                if (flag) {
-                    if (stack.isEmpty()) {
-                        inventory.setStackInSlot(i, new ItemStack(BWMBlocks.ROPE, 1));
-                    } else {
-                        stack.grow(1);
-                    }
-                    this.markDirty();
-                }
-                return true;
-            }
-        }
-        return false;
+        return InvUtils.addItemStackToInv(inventory, new ItemStack(BWMBlocks.ROPE, 1), !flag);
     }
 
     public boolean onJobCompleted(boolean up, int targetY, EntityExtendingRope theRope) {
@@ -378,19 +352,21 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         }
     }
 
-    private class PulleyInventory extends ItemStackHandler {
-        public PulleyInventory() {
-            super(4);
-        }
-
-        @Override
-        @Nonnull
-        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE)) {
-                return super.insertItem(slot, stack, simulate);
-            }
-            return ItemStack.EMPTY;
-        }
-    }
+//    private class PulleyInventory extends SimpleStackHandler {
+//
+//        public PulleyInventory(int size, TileEntity tile) {
+//            super(size, tile);
+//        }
+//
+//        @Override
+//        @Nonnull
+//        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+////            if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE)) {
+////
+////            }
+////            return ItemStack.EMPTY;
+//            return super.insertItem(slot, stack, simulate);
+//        }
+//    }
 
 }

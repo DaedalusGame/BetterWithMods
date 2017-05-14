@@ -441,9 +441,9 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
     public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),
-        PULLEY(2, "pulley", true),
-        HOPPER(4, "hopper"),
-        TURNTABLE(6, "turntable", true);
+        PULLEY(1, "pulley", true),
+        HOPPER(2, "hopper"),
+        TURNTABLE(3, "turntable", true);
 
         private static final BlockMechMachines.EnumType[] META_LOOKUP = values();
 

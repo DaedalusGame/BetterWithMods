@@ -102,6 +102,8 @@ public final class ModuleLoader {
 		config = new Configuration(configFile);
 		config.load();
 		
+		GlobalConfig.initGlobalConfig();
+
 		forEachModule(module -> {
 			module.enabled = true;
 			if(module.canBeDisabled()) {

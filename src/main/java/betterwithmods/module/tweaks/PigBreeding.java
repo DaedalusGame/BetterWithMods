@@ -1,11 +1,7 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
-import java.lang.reflect.Field;
 
 /**
  * Created by tyler on 5/13/17.
@@ -18,8 +14,8 @@ public class PigBreeding extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        Field tempationItems = ReflectionHelper.findField(EntityPig.class, "TEMPTATION_ITEMS");
-        System.out.println(tempationItems);
+//        Field tempationItems = ReflectionHelper.findField(EntityPig.class, "TEMPTATION_ITEMS");
+//        System.out.println(tempationItems);
 ////        try {
 
 //            tempationItems.setAccessible(true);

@@ -14,6 +14,8 @@ public class GuiGloom {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     public void draw() {
+        if(!EntityPlayerExt.isSurvival(mc.player))
+            return;
         ScaledResolution scale = ((GuiIngameForge) mc.ingameGUI).getResolution();
         if (!this.mc.player.isInsideOfMaterial(Material.WATER)
                 && this.mc.player.getAir() >= 300) {

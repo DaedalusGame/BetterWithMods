@@ -40,10 +40,12 @@ public class HCGloom extends Feature {
     public void inDarkness(TickEvent.PlayerTickEvent e) {
         EntityPlayer player = e.player;
         World world = player.getEntityWorld();
+        if(!EntityPlayerExt.isSurvival(player))
+            return;
         if (!world.isRemote) {
             int light = world.getLight(player.getPosition());
             int tick = getGloomTime(player);
-            if (light <= 7 && !player.isPotionActive(MobEffects.NIGHT_VISION)) {
+            if (light <= 0 && !player.isPotionActive(MobEffects.NIGHT_VISION)) {
                 incrementGloomTime(player);
             } else if (tick != 0) {
                 setGloomTick(player, 0);
@@ -53,11 +55,17 @@ public class HCGloom extends Feature {
         GloomPenalty gloomPenalty = EntityPlayerExt.getGloomPenalty(player);
         if (gloomPenalty != GloomPenalty.NO_PENALTY) {
             playRandomSound(gloomPenalty, world, player);
-            if(gloomPenalty == GloomPenalty.Dread)
-                player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS,60,3));
-            if (gloomPenalty == GloomPenalty.TERROR && world.rand.nextInt(10) == 0) {
-                player.attackEntityFrom(BWDamageSource.gloom, 1);
-                player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS,60,1));
+            if(gloomPenalty == GloomPenalty.TERROR ) {
+                player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 3));
+                player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 20));
+                if (world.getTotalWorldTime() % 40 == 0) {
+                    if (world.rand.nextInt(2) == 0) {
+                        if(world.isRemote)
+                            player.playSound(SoundEvents.ENTITY_ENDERMEN_STARE,0.7F,0.8F + world.rand.nextFloat() * 0.2F);
+
+                        player.attackEntityFrom(BWDamageSource.gloom, 1);
+                    }
+                }
             }
         }
     }
@@ -68,15 +76,20 @@ public class HCGloom extends Feature {
                 player.playSound(SoundEvents.AMBIENT_CAVE, 0.7F, 0.8F + world.rand.nextFloat() * 0.2F);
                 if (gloom != GloomPenalty.GLOOM && world.rand.nextInt((int) (10 / gloom.getModifier())) == 0)
                     player.playSound(sounds.get(world.rand.nextInt(sounds.size())), 0.7F, 0.8F + world.rand.nextFloat() * 0.2F);
+
             }
         }
     }
-
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent event) {
         GloomPenalty penalty = EntityPlayerExt.getGloomPenalty(event.getEntity());
         if (penalty != GloomPenalty.NO_PENALTY) {
-            event.setNewfov(event.getFov() + 1 / penalty.getModifier());
+            float change;
+            if(penalty != GloomPenalty.TERROR)
+                change = (getGloomTime(event.getEntity())/2400f);
+            else
+                change = -(getGloomTime(event.getEntity())/100000f);
+            event.setNewfov(event.getFov()+change);
         }
     }
 
@@ -113,7 +126,6 @@ public class HCGloom extends Feature {
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
             if (guiGloom == null)
                 guiGloom = new GuiGloom();
-
             guiGloom.draw();
         }
     }

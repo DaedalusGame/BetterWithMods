@@ -6,7 +6,7 @@ package betterwithmods.util.player;
 public enum GloomPenalty implements IPlayerPenalty {
     NO_PENALTY(1.0f, 0, 0, ""),
     GLOOM(1.5f, 1, 1200, "Gloom"),
-    Dread(2f, 1200, 2400, "Dread"),
+    DREAD(2f, 1200, 2400, "Dread"),
     TERROR(3f, 2400, 10000000, "Terror");
 
     private final float modifier;

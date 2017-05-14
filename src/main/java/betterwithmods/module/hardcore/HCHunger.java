@@ -238,9 +238,9 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void breakSpeedPenalty(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
         Optional<EntityPlayer> playerOptional = isFoodSystemValid(event.getEntityPlayer());
-        EntityPlayer player = playerOptional.get();
-        if(!playerOptional.isPresent())
+        if(!playerOptional.isPresent() || !event.getEntity().getEntityWorld().isRemote)
             return;
+        EntityPlayer player = playerOptional.get();
         IBlockState state = event.getState();
         float f = player.inventory.getStrVsBlock(state);
 
@@ -314,7 +314,8 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
         final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
-
+        if(!event.getEntity().getEntityWorld().isRemote)
+            return;
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
             EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
                     EntityPlayerExt.getHealthAndExhaustionModifier(player));

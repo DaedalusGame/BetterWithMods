@@ -223,6 +223,7 @@ public class HCHunger extends Feature {
     public void onFood(LivingEntityUseItemEvent.Start event) {
         if (!(event.getItem().getItem() instanceof ItemFood))
             return;
+
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
             if (player.isPotionActive(MobEffects.HUNGER)) {
                 event.setCanceled(true);
@@ -238,7 +239,7 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void breakSpeedPenalty(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
         Optional<EntityPlayer> playerOptional = isFoodSystemValid(event.getEntityPlayer());
-        if(!playerOptional.isPresent() || !event.getEntity().getEntityWorld().isRemote)
+        if (!playerOptional.isPresent() || !event.getEntity().getEntityWorld().isRemote)
             return;
         EntityPlayer player = playerOptional.get();
         IBlockState state = event.getState();
@@ -314,17 +315,11 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
         final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
-        if(!event.getEntity().getEntityWorld().isRemote)
+        if (!event.getEntity().getEntityWorld().isRemote)
             return;
-        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
-            EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
-                    EntityPlayerExt.getHealthAndExhaustionModifier(player));
-        });
-        if (event.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            if (!EntityPlayerExt.isSurvival(player))
-                EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty",
-                        EntityPlayerExt.getHealthAndExhaustionModifier(player));
+        EntityPlayer player = isFoodSystemValid(event.getEntityLiving()).orElse(null);
+        if (player != null) {
+            EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty", EntityPlayerExt.getHealthAndExhaustionModifier(player));
         }
     }
 
@@ -334,8 +329,6 @@ public class HCHunger extends Feature {
      */
     @SubscribeEvent
     public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
-        isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
-        });
     }
 
     @SideOnly(Side.CLIENT)
@@ -371,7 +364,6 @@ public class HCHunger extends Feature {
         if (!(player.getFoodStats() instanceof BWMFoodStats))
             return;
         float modifier = EntityPlayerExt.getHealthAndExhaustionModifier(player);
-
         float f = 1.0F;
 
         if (player.capabilities.isFlying) {

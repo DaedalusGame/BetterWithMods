@@ -10,6 +10,7 @@
  */
 package betterwithmods.module;
 
+import betterwithmods.api.FeatureEnabledEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
@@ -126,6 +127,7 @@ public class Module {
 			}
 			
 			feature.prevEnabled = feature.enabled;
+			MinecraftForge.EVENT_BUS.post(new FeatureEnabledEvent(name, feature.configName,feature.enabled));
 		});
 	}
 

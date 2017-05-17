@@ -120,8 +120,8 @@ public class HCHardness extends Feature {
     }
 
 
-    @Override
-    public boolean hasSubscriptions() {
-        return true;
-    }
+//    @Override
+//    public boolean hasSubscriptions() {
+//        return true;
+//    }
 }

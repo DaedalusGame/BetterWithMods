@@ -86,6 +86,7 @@ public final class BWMBlocks {
     public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
     public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
+    public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     private BWMBlocks() {
     }
 
@@ -153,6 +154,7 @@ public final class BWMBlocks {
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
         registerBlock(ADVANCED_BELLOWS);
+        registerBlock(IRON_WALL);
     }
 
     public static void registerTileEntities() {
@@ -279,6 +281,7 @@ public final class BWMBlocks {
         setInventoryModel(BROKEN_GEARBOX);
         setInventoryModel(COOKING_POTS);
         setInventoryModel(ADVANCED_BELLOWS);
+        setInventoryModel(IRON_WALL);
     }
 
     @SideOnly(Side.CLIENT)

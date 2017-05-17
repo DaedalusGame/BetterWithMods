@@ -16,7 +16,7 @@ public class HCJumping extends Feature {
     public void onBlockPlace(PlayerInteractEvent.RightClickBlock e) {
         if(!EntityPlayerExt.isSurvival(e.getEntityPlayer()))
             return;
-        if(e.getItemStack().getItem() instanceof ItemBlock) {
+        if(e.getItemStack().getItem() instanceof ItemBlock && e.getEntityPlayer().isAirBorne) {
             e.setResult(Event.Result.DENY);
             e.setCanceled(true);
         }

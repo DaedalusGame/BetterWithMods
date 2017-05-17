@@ -31,8 +31,9 @@ import java.util.*;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
 
-    public static final Block PLATFORM = BWMBlocks.PLATFORM;
-
+    public static final boolean isValidPlatform(Block block) {
+        return block == BWMBlocks.PLATFORM || block == BWMBlocks.IRON_WALL;
+    }
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
 
@@ -173,7 +174,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         HashSet<BlockPos> platformBlocks = new HashSet<>();
         platformBlocks.add(anchor);
         Block b = getWorld().getBlockState(anchor.down()).getBlock();
-        boolean success = getWorld().getBlockState(anchor.down()).getBlock() == PLATFORM
+        boolean success = isValidPlatform(getWorld().getBlockState(anchor.down()).getBlock())
                 ? addToList(platformBlocks, anchor.down(), up) : up || isValidBlock(b, anchor.down());
         if (!success) {
             return false;
@@ -211,7 +212,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     public boolean isValidBlock(Block b, BlockPos pos) {
-        return b == Blocks.AIR || b.isReplaceable(getWorld(), pos) || b == PLATFORM;
+        return b == Blocks.AIR || b.isReplaceable(getWorld(), pos) || isValidPlatform(b);
     }
 
     @SuppressWarnings("unchecked")
@@ -259,14 +260,14 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
         BlockPos blockCheck = up ? p.up() : p.down();
 
-        if (getWorld().getBlockState(p).getBlock() != PLATFORM) {
+        if (!isValidPlatform(getWorld().getBlockState(p).getBlock())) {
             return true;
         }
 
         Block b = getWorld().getBlockState(blockCheck).getBlock();
 
         if (b != Blocks.REDSTONE_WIRE && !(b instanceof BlockRailBase)) {
-            if (!(getWorld().isAirBlock(blockCheck) || b.isReplaceable(getWorld(), blockCheck) || b == PLATFORM)
+            if (!(getWorld().isAirBlock(blockCheck) || b.isReplaceable(getWorld(), blockCheck) || isValidPlatform(b))
                     && !set.contains(blockCheck)) {
                 return false;
             }

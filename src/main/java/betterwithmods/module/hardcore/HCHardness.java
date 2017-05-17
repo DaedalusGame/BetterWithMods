@@ -4,18 +4,13 @@ import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.tweaks.AxeLeaves;
 import betterwithmods.util.item.ToolsManager;
-import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -36,28 +31,6 @@ public class HCHardness extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         applyHCHardness();
     }
-
-    @SubscribeEvent
-    public void breakSpeedPenalty(PlayerEvent.BreakSpeed event) {
-        EntityPlayer player = event.getEntityPlayer();
-        IBlockState state = event.getState();
-
-        boolean canHarvestBlock = ForgeHooks.canHarvestBlock(state.getBlock(), player, player.getEntityWorld(), event.getPos());
-        float f = 0;
-        if (!EntityPlayerExt.isCurrentToolEffectiveOnBlock(player, event.getPos())) {
-            if (!canHarvestBlock) {
-                //Change partially applied (/100.0F) by {@link ForgeHooks.blockStrength}
-                f *= 100.0F / 200.0F;
-            } else {
-                //Change partially applied (/30.0F) by {@link ForgeHooks.blockStrength}
-                f *= 30.0F / 200.0F;
-            }
-        }
-        if (f < 0)
-            f = 0;
-//        event.setNewSpeed(f);
-    }
-
 
     private static void rebalanceVanillaHardness() {
         Blocks.STONE.setHardness(2.25F).setResistance(10.0F);

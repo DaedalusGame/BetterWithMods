@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
@@ -52,10 +53,12 @@ import java.util.UUID;
 public class HCHunger extends Feature {
 
     private double jumpExhaustion;
+    private boolean foodStackSize;
 
     @Override
     public void setupConfig() {
         jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
+        foodStackSize = loadPropBool("Change Food Stacksize", "All Foods all stack up to 16", false);
     }
 
     @Override
@@ -118,6 +121,12 @@ public class HCHunger extends Feature {
         CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
 
         initDesserts();
+        if (foodStackSize) {
+            Item.REGISTRY.forEach(item -> {
+                if (item instanceof ItemFood)
+                    item.setMaxStackSize(16);
+            });
+        }
     }
 
     @Override

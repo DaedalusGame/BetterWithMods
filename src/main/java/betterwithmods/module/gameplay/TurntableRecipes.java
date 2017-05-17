@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
  */
 public class TurntableRecipes extends Feature {
     public TurntableRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     public static void addTurntableRecipe(Block inputBlock, int iMeta, Block outputBlock, int oMeta, ItemStack... scraps) {

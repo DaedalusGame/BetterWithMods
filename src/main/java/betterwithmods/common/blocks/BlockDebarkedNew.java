@@ -25,6 +25,11 @@ public class BlockDebarkedNew extends BlockNewLog implements IDebarkable, ITurna
     }
 
     @Override
+    public IBlockState getStrippedState(IBlockState state) {
+        return null;
+    }
+
+    @Override
     public String[] getVariants() {
         return new String[]{"axis=y,variant=acacia", "axis=y,variant=dark_oak"};
     }

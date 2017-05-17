@@ -24,7 +24,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
  */
 public class CraftingRecipes extends Feature {
     public CraftingRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     @Override

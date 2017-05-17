@@ -37,7 +37,7 @@ public class Feature {
     public String configName;
 
     public boolean forceLoad;
-    protected boolean canDisable;
+    protected boolean canDisable = true;
     public final void setupConstantConfig() {
         String[] incompat = getIncompatibleMods();
         if (incompat != null && incompat.length > 0) {

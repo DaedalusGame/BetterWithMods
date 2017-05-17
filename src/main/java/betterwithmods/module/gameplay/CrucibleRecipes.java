@@ -17,7 +17,7 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CrucibleRecipes extends Feature {
     public CrucibleRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     @Override

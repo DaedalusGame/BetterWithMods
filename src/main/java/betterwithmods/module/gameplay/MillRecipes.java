@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
  */
 public class MillRecipes extends Feature {
     public MillRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     @Override

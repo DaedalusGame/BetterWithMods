@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public class SawRecipes extends Feature {
     public SawRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
  */
 public class KilnRecipes extends Feature {
     public KilnRecipes() {
-        canDisable = true;
+        canDisable = false;
     }
 
     public static void addKilnRecipe(ItemStack inputBlock, ItemStack... output) {

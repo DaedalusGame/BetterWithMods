@@ -30,6 +30,11 @@ public class BlockDebarkedOld extends BlockOldLog implements IDebarkable, ITurna
     }
 
     @Override
+    public IBlockState getStrippedState(IBlockState state) {
+        return null;
+    }
+
+    @Override
     public EnumFacing getFacingFromBlockState(IBlockState state) {
         return null;
     }

@@ -79,7 +79,9 @@ public final class BWMItems {
     public static final Item GRAVEL_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("gravel_pile");
     public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
     public static final Item WOLF_CHOP = new ItemFood(3, 0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
-    //TODO Cooked wolfchop, Poached egg, Kibble, Wolf Dinner, Cooked Carrot, Mystery Meat
+    public static final Item KIBBLE = new ItemFood(9, 0, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("kibble");
+
+    //TODO Cooked wolfchop, Poached egg, Wolf Dinner, Cooked Carrot, Mystery Meat
     private BWMItems() {
     }
 
@@ -129,6 +131,7 @@ public final class BWMItems {
         registerItem(GRAVEL_PILE);
         registerItem(SAND_PILE);
         registerItem(WOLF_CHOP);
+        registerItem(KIBBLE);
     }
 
     /**
@@ -193,6 +196,7 @@ public final class BWMItems {
         setInventoryModel(GRAVEL_PILE);
         setInventoryModel(SAND_PILE);
         setInventoryModel(WOLF_CHOP);
+        setInventoryModel(KIBBLE);
     }
 
     @SideOnly(Side.CLIENT)

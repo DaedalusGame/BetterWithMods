@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.registry.KilnInteraction;
+import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -69,7 +69,7 @@ public class BlockKiln extends BWMBlock {
         boolean canCook = false;
         Block above = world.getBlockState(up).getBlock();
         int aboveMeta = world.getBlockState(up).getBlock().damageDropped(world.getBlockState(up));
-        if (!world.isAirBlock(up) && KilnInteraction.INSTANCE.contains(above, aboveMeta)) {
+        if (!world.isAirBlock(up) && KilnManager.INSTANCE.contains(above, aboveMeta)) {
             if (checkKilnIntegrity(world, pos))
                 canCook = true;
         }
@@ -136,7 +136,7 @@ public class BlockKiln extends BWMBlock {
         IBlockState aboveBlock = world.getBlockState(above);
         IBlockState belowBlock = world.getBlockState(below);
         if (cookTime > 0) {
-            if (!KilnInteraction.INSTANCE.contains(aboveBlock.getBlock(), aboveBlock.getBlock().damageDropped(aboveBlock))) {
+            if (!KilnManager.INSTANCE.contains(aboveBlock.getBlock(), aboveBlock.getBlock().damageDropped(aboveBlock))) {
                 if (!BWMHeatRegistry.contains(belowBlock.getBlock(), belowBlock.getBlock().damageDropped(belowBlock))
                         || (BWMHeatRegistry.contains(belowBlock.getBlock(), belowBlock.getBlock().damageDropped(state))
                         && BWMHeatRegistry.get(belowBlock.getBlock(),
@@ -183,8 +183,8 @@ public class BlockKiln extends BWMBlock {
         Block block = world.getBlockState(pos).getBlock();
         int meta = world.getBlockState(pos).getBlock().damageDropped(world.getBlockState(pos));
         if (block != null) {
-            if (KilnInteraction.INSTANCE.contains(block, meta)) {
-                List<ItemStack> result = KilnInteraction.INSTANCE.getProducts(block, meta);
+            if (KilnManager.INSTANCE.contains(block, meta)) {
+                List<ItemStack> result = KilnManager.INSTANCE.getProducts(block, meta);
                 InvUtils.ejectStackWithOffset(world, pos, result);
                 world.setBlockToAir(pos);
             }

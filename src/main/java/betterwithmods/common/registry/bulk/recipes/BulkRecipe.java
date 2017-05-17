@@ -1,4 +1,4 @@
-package betterwithmods.common.registry.bulk;
+package betterwithmods.common.registry.bulk.recipes;
 
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
@@ -9,53 +9,49 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO Probably this should implement some recipe interface, at the very least.
 public class BulkRecipe {
+    @Nonnull
     protected ItemStack output = ItemStack.EMPTY;
+    @Nonnull
     protected ItemStack secondary = ItemStack.EMPTY;
-    protected ArrayList<Object> input = new ArrayList<>();//Either ItemStack or OreStack
-    protected ArrayList<List<ItemStack>> jeiInput = new ArrayList<>();
-    private String type;
+    @Nonnull
+    protected ArrayList<Object> inputs = new ArrayList<>();//Either ItemStack or OreStack
+    @Nonnull
+    protected ArrayList<List<ItemStack>> jeiInputs = new ArrayList<>();
 
-    public BulkRecipe(String type, ItemStack output, Object... input) {
-        this(type, output, null, input);
+    protected BulkRecipe(ItemStack output, Object... inputs) {
+        this(output, ItemStack.EMPTY, inputs);
     }
 
-    public BulkRecipe(String type, ItemStack output, ItemStack secondaryOutput, Object... input) {
-        this.type = type;
+    public BulkRecipe(ItemStack output, ItemStack secondaryOutput, Object... inputs) {
         this.output = output.copy();
-        if (secondaryOutput != null && secondaryOutput != ItemStack.EMPTY)
-            this.secondary = secondaryOutput.copy();
         int place = -1;
-        ArrayList<Object> inputs = new ArrayList<>();
-        for (Object in : input) {
+        ArrayList<Object> inputList = new ArrayList<>();
+        for (Object in : inputs) {
             if (in instanceof Integer || in == null)
                 continue;
             place++;
             if (in instanceof ItemStack) {
-                inputs.add(((ItemStack) in).copy());
+                inputList.add(((ItemStack) in).copy());
             } else if (in instanceof Item) {
-                inputs.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
+                inputList.add(new ItemStack((Item) in, 1, OreDictionary.WILDCARD_VALUE));
             } else if (in instanceof Block) {
-                inputs.add(new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
+                inputList.add(new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             } else if (in instanceof String) {
-                if (place + 1 < input.length) {
-                    if (input[place + 1] instanceof Integer) {
-                        inputs.add(new OreStack((String) in, (Integer) input[place + 1]));
-                    } else {
-                        inputs.add(new OreStack((String) in, 1));
-                    }
-                } else {
-                    inputs.add(new OreStack((String) in, 1));
-                }
+                int count = place + 1 < inputs.length && inputs[place + 1] instanceof Integer ? (int) inputs[place + 1] : 1;
+                OreStack stack = new OreStack((String) in, count);
+                if (!stack.isEmpty())
+                    inputList.add(stack);
             } else if (in instanceof OreStack) {
-                inputs.add(((OreStack) in).copy());
+                inputList.add(((OreStack) in).copy());
             } else {
-                StringBuilder ret = new StringBuilder("Invalid " + type + " recipe: ");
-                for (Object tmp : input)
+                StringBuilder ret = new StringBuilder("Invalid " + this.getClass().getSimpleName() + " recipe: ");
+                for (Object tmp : inputList)
                     ret.append(tmp).append(", ");
                 ret.append("Output: ").append(output);
                 if (secondaryOutput != null)
@@ -63,12 +59,10 @@ public class BulkRecipe {
                 throw new RuntimeException(ret.toString());
             }
         }
-        condenseInputs(inputs);
+        condenseInputs(inputList);
     }
 
     private void condenseInputs(ArrayList<Object> list) {
-        ArrayList<Object> inputs = new ArrayList<>();
-        ArrayList<List<ItemStack>> jeiInputs = new ArrayList<>();
         for (Object obj : list) {
             int contain = BWOreDictionary.listContains(obj, inputs);
             if (contain > -1) {
@@ -85,23 +79,11 @@ public class BulkRecipe {
             List<ItemStack> in = new ArrayList<>();
             if (obj instanceof ItemStack)
                 in.add((ItemStack) obj);
-            else if (obj instanceof OreStack)
-                in.addAll(getOreList((OreStack) obj));
+            else if (obj instanceof OreStack) {
+                in.addAll(((OreStack) obj).getItems());
+            }
             jeiInputs.add(in);
         }
-        input = inputs;
-        jeiInput = jeiInputs;
-    }
-
-    private List<ItemStack> getOreList(OreStack stack) {
-        int sizeOfStack = stack.getStackSize();
-        List<ItemStack> list = new ArrayList<>();
-        if (stack.getOres() != null && !stack.getOres().isEmpty()) {
-            for (ItemStack s : stack.getOres()) {
-                list.add(new ItemStack(s.getItem(), sizeOfStack, s.getItemDamage()));
-            }
-        }
-        return list;
     }
 
     public ItemStack getOutput() {
@@ -112,16 +94,16 @@ public class BulkRecipe {
         return this.secondary;
     }
 
-    public ArrayList<List<ItemStack>> getInput() {
-        return this.jeiInput;
+    public ArrayList<List<ItemStack>> getInputs() {
+        return this.jeiInputs;
     }
 
     public ArrayList<Object> getRecipeInput() {
-        return this.input;
+        return this.inputs;
     }
 
     public boolean matches(ItemStackHandler inv) {
-        ArrayList<Object> required = new ArrayList<>(input);
+        ArrayList<Object> required = new ArrayList<>(inputs);
 
         if (required.size() > 0) {
             for (Object obj : required) {
@@ -133,10 +115,8 @@ public class BulkRecipe {
                     }
                 } else if (obj instanceof OreStack) {
                     OreStack stack = (OreStack) obj;
-                    if (stack != null) {
-                        if (InvUtils.countOresInInventory(inv, stack.getOres()) < stack.getStackSize())
-                            return false;
-                    }
+                    if (InvUtils.countOresInInventory(inv, stack.getItems()) < stack.getStackSize())
+                        return false;
                 }
             }
             return true;
@@ -159,7 +139,7 @@ public class BulkRecipe {
 
     public boolean consumeInvIngredients(ItemStackHandler inv) {
         boolean success = true;
-        ArrayList<Object> required = input;
+        ArrayList<Object> required = inputs;
 
         if (required != null && required.size() > 0) {
             for (Object obj : required) {
@@ -174,7 +154,7 @@ public class BulkRecipe {
                     OreStack stack = (OreStack) obj;
 
                     if (stack != null) {
-                        if (!InvUtils.consumeOresInInventory(inv, stack.getOres(), stack.getStackSize()))
+                        if (!InvUtils.consumeOresInInventory(inv, stack.getItems(), stack.getStackSize()))
                             success = false;
                     }
                 }
@@ -187,7 +167,12 @@ public class BulkRecipe {
         return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.getCount() == second.getCount();
     }
 
-    public String getType() {
-        return type;
+    public boolean isEmpty() {
+        return this.inputs.isEmpty() || this.output.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s -> %s,%s", getClass().getSimpleName(), this.inputs, this.output, this.secondary);
     }
 }

@@ -1,8 +1,8 @@
 package betterwithmods.util;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.BWCrafting;
-import betterwithmods.common.registry.bulk.*;
+import betterwithmods.common.registry.bulk.manager.*;
+import betterwithmods.module.gameplay.CauldronRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -160,7 +160,7 @@ public final class RecipeUtils {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
                     if (output != ItemStack.EMPTY) {
-                        BWCrafting.addCauldronRecipe(output.copy(), new ItemStack[]{input.copy()});
+                        CauldronRecipes.addCauldronRecipe(output.copy(), new ItemStack[]{input.copy()});
                     }
                 }
             }
@@ -168,10 +168,10 @@ public final class RecipeUtils {
     }
 
     public static void refreshRecipes() {
-        CraftingManagerCauldron.getInstance().refreshRecipes();
-        CraftingManagerCauldronStoked.getInstance().refreshRecipes();
-        CraftingManagerCrucible.getInstance().refreshRecipes();
-        CraftingManagerCrucibleStoked.getInstance().refreshRecipes();
-        CraftingManagerMill.getInstance().refreshRecipes();
+        CauldronManager.getInstance().refreshRecipes();
+        StokedCauldronManager.getInstance().refreshRecipes();
+        CrucibleManager.getInstance().refreshRecipes();
+        StokedCrucibleManager.getInstance().refreshRecipes();
+        MillManager.getInstance().refreshRecipes();
     }
 }

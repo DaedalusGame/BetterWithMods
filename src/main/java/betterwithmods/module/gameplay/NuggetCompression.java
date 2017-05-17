@@ -1,9 +1,9 @@
 package betterwithmods.module.gameplay;
 
-import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.module.Feature;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
@@ -19,10 +19,11 @@ public class NuggetCompression extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+        CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new OreStack("nuggetIron", 9));
         for (ItemStack ingot : BWOreDictionary.ingotNames) {
             String suffix = BWOreDictionary.getSuffix(ingot,"ingot");
             if(suffix != null)
-                BWCrafting.addOreStokedCrucibleRecipe(ingot, new Object[]{new OreStack("nugget"+suffix, 9)});
+                CrucibleRecipes.addStokedCrucibleRecipe(ingot, new Object[]{new OreStack("nugget"+suffix, 9)});
         }
     }
 }

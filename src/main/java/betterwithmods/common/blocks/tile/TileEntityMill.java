@@ -5,7 +5,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockMechMachines;
-import betterwithmods.common.registry.bulk.CraftingManagerMill;
+import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -180,7 +181,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     private boolean grindContents() {
-        CraftingManagerMill mill = CraftingManagerMill.getInstance();
+        MillManager mill = MillManager.getInstance();
         List<Object> ingredients = mill.getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
@@ -196,15 +197,13 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
                     }
                 }
             }
-
-            ItemStack[] output = mill.craftItem(inventory);
-
-            assert (output != null && output.length > 0);
-
-            for (ItemStack anOutput : output) {
-                ItemStack stack = anOutput.copy();
-                if (stack != ItemStack.EMPTY)
-                    ejectStack(stack);
+            NonNullList<ItemStack> output = mill.craftItem(inventory);
+            if (!output.isEmpty()) {
+                for (ItemStack anOutput : output) {
+                    ItemStack stack = anOutput.copy();
+                    if (stack != ItemStack.EMPTY)
+                        ejectStack(stack);
+                }
             }
             return true;
         }
@@ -214,7 +213,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private void validateContents() {
         int oldGrindType = getGrindType();
         int newGrindType = 0;
-        List<Object> ingredients = CraftingManagerMill.getInstance().getValidCraftingIngredients(inventory);
+        List<Object> ingredients = MillManager.getInstance().getValidCraftingIngredients(inventory);
 
         if (ingredients != null) {
             this.containsIngredientsToGrind = true;

@@ -1,8 +1,8 @@
 package betterwithmods.integration.minetweaker;
 
 
-import betterwithmods.common.registry.BlockMetaRecipe;
-import betterwithmods.common.registry.SawInteraction;
+import betterwithmods.common.registry.blockmeta.managers.SawManager;
+import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -45,15 +45,15 @@ public class Saw {
             if (output == null) {
                 MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + stack.getDisplayName() + ", outputs were null");
             }
-            BlockMetaRecipe r = new BlockMetaRecipe("saw", block, stack.getMetadata(), Arrays.asList(outputs));
+            BlockMetaRecipe r = new BlockMetaRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
             recipes.add(r);
         }
-        MineTweakerAPI.apply(new BMAdd("saw", SawInteraction.INSTANCE, recipes));
+        MineTweakerAPI.apply(new BMAdd("saw", SawManager.INSTANCE, recipes));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BMRemove("saw", SawInteraction.INSTANCE, InputHelper.toStack(output)));
+        MineTweakerAPI.apply(new BMRemove("saw", SawManager.INSTANCE, InputHelper.toStack(output)));
     }
 
 

@@ -1,33 +1,22 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OreStack {
     private final String oreName;
     private final List<ItemStack> oreStacks;
     private int stackSize;
 
-    public OreStack(String name) {
-        this(name, 1);
-    }
-
     public OreStack(String name, int stack) {
         this.oreName = name;
         this.stackSize = stack;
-        oreStacks = generateOreStacks(name, stack);
-    }
-
-    //convenience for MineTweaker
-    public OreStack(String name, int stack, ItemStack[] ores) {
-        this.oreName = name;
-        this.stackSize = stack;
-        this.oreStacks = new ArrayList<>();
-        for (ItemStack ore : ores)
-            this.oreStacks.add(ore.copy());
+        this.oreStacks = OreDictionary.getOres(oreName);
+        System.out.println(oreStacks);
     }
 
     public OreStack copy() {
@@ -38,29 +27,32 @@ public class OreStack {
         return this.oreName;
     }
 
-    public List<ItemStack> getOres() {
-        if (OreDictionary.getOres(oreName).size() > 0)
-            return OreDictionary.getOres(oreName);
-        return null;
+    public List<ItemStack> getItems() {
+        return setOreSize(this.oreStacks, getStackSize());
     }
 
-    private List<ItemStack> generateOreStacks(String name, int amount) {
-        List<ItemStack> items = new ArrayList<>();
-        for (ItemStack stack : OreDictionary.getOres(name)) {
-            items.add(new ItemStack(stack.getItem(), amount, stack.getMetadata()));
-        }
-        return items;
+    public List<ItemStack> getOres() {
+        return this.oreStacks;
+    }
+
+    public List<ItemStack> setOreSize(List<ItemStack> list, int count) {
+        return list.stream().map(i -> InvUtils.setCount(i, count)).collect(Collectors.toList());
     }
 
     public void addToStack(int amount) {
         this.stackSize += amount;
     }
 
-    public List<ItemStack> getOreStacks() {
-        return oreStacks;
-    }
-
     public int getStackSize() {
         return this.stackSize;
+    }
+
+    public boolean isEmpty() {
+        return oreStacks.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s", oreName,oreStacks);
     }
 }

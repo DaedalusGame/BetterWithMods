@@ -3,14 +3,14 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.bulk.CraftingManagerCrucibleStoked;
+import betterwithmods.common.registry.bulk.manager.StokedCrucibleManager;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static betterwithmods.common.BWCrafting.addStokedCrucibleRecipe;
+import static betterwithmods.module.gameplay.CrucibleRecipes.addStokedCrucibleRecipe;
 
 /**
  * Created by tyler on 4/20/17.
@@ -87,10 +87,10 @@ public class MetalReclaming extends Feature {
             nuggetStack = OreDictionary.getOres("nugget" + oreSuffix).get(0);
         if (ingotStack == null) {
             if (nuggetStack != null) {
-                CraftingManagerCrucibleStoked.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), input.copy());
+                StokedCrucibleManager.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), input.copy());
             }
         } else {
-            CraftingManagerCrucibleStoked.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : null, input.copy());
+            StokedCrucibleManager.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : null, input.copy());
         }
     }
 }

@@ -13,9 +13,14 @@ import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.ChoppingRecipe;
+import betterwithmods.common.registry.CuttingRecipe;
+import betterwithmods.common.registry.DyeWithTagRecipe;
 import betterwithmods.common.registry.HopperFilters;
-import betterwithmods.common.registry.SawInteraction;
+import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
+import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
+import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
@@ -47,6 +52,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -72,6 +78,14 @@ public class BWRegistry {
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         registerHeatSources();
         BWSounds.registerSounds();
+
+        RecipeSorter.register("bwm:chopping", ChoppingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:cutting", CuttingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:dyetag", DyeWithTagRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:steel_shapeless", SteelShapelessRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:steel_shaped", SteelShapedRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
+        RecipeSorter.register("bwm:steel_shaped_ore", SteelShapedOreRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
+
     }
     public static void postInit() {
         RecipeUtils.gatherCookableFood();
@@ -163,8 +177,8 @@ public class BWRegistry {
                 }
                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
             }
-            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
-            SawInteraction.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
+            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
+            SawManager.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
                     new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
             plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 3 : 5, type.getMetadata());
             if (type.getMetadata() < 4) {
@@ -173,7 +187,7 @@ public class BWRegistry {
                 log = new ItemStack(BWMBlocks.DEBARKED_NEW, 1, type.getMetadata() - 4);
             }
             block = ((ItemBlock) log.getItem()).getBlock();
-            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, sawdust);
+            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, sawdust);
         }
         List<ItemStack> logs = OreDictionary.getOres("logWood");
         for (ItemStack log : logs) {
@@ -196,8 +210,8 @@ public class BWRegistry {
                                     }
                                     GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
                                 }
-                                SawInteraction.INSTANCE.addRecipe(block, i, output);
-                                SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+                                SawManager.INSTANCE.addRecipe(block, i, output);
+                                SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                             }
                         }
                     } else {
@@ -214,24 +228,23 @@ public class BWRegistry {
                                 }
                                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
                             }
-                            SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), output);
-                            SawInteraction.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+                            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), output);
+                            SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
                         }
                     }
                 }
             }
         }
-        BWCrafting.addKilnWood();
     }
 
     private static void registerTESawmill(ItemStack output, ItemStack input) {
         if (output == null || input == null) return;
         NBTTagCompound toSend = new NBTTagCompound();
         toSend.setInteger("energy", 800);
-        toSend.setTag("input", new NBTTagCompound());
+        toSend.setTag("inputs", new NBTTagCompound());
         toSend.setTag("primaryOutput", new NBTTagCompound());
         toSend.setTag("secondaryOutput", new NBTTagCompound());
-        input.writeToNBT(toSend.getCompoundTag("input"));
+        input.writeToNBT(toSend.getCompoundTag("inputs"));
         output.writeToNBT(toSend.getCompoundTag("primaryOutput"));
         ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST).writeToNBT(toSend.getCompoundTag("secondaryOutput"));
         toSend.setInteger("secondaryChance", 100);

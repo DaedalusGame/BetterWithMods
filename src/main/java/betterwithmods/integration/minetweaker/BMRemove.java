@@ -1,7 +1,7 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.common.registry.BlockMetaHandler;
-import betterwithmods.common.registry.BlockMetaRecipe;
+import betterwithmods.common.registry.blockmeta.managers.BlockMetaManager;
+import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
  * @version 1/2/17
  */
 public class BMRemove extends BaseListRemoval<BlockMetaRecipe> {
-    protected BMRemove(String name, BlockMetaHandler recipes, ItemStack output) {
+    protected BMRemove(String name, BlockMetaManager recipes, ItemStack output) {
         super(name, recipes.getRecipes(), recipes.removeRecipes(output));
     }
 

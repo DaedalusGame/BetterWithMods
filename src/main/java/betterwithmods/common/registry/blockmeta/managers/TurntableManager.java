@@ -1,17 +1,19 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.blockmeta.managers;
 
+import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import java.util.Arrays;
+import java.util.List;
 
-public class TurntableInteraction extends BlockMetaHandler {
-    public static TurntableInteraction INSTANCE = new TurntableInteraction();
+public class TurntableManager extends BlockMetaManager<TurntableRecipe> {
+    public static TurntableManager INSTANCE = new TurntableManager();
 
-    private TurntableInteraction() {
-        super("turntable");
+    @Override
+    public TurntableRecipe createRecipe(Block block, int meta, List<ItemStack> outputs) {
+      return null;
     }
 
     public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
@@ -29,7 +31,7 @@ public class TurntableInteraction extends BlockMetaHandler {
     }
 
     public void addTurntableRecipe(Block block, int meta, Block result, int resultMeta, ItemStack... scraps) {
-        addRecipe(new TurntableRecipe(block, meta, result, resultMeta, scraps == null ? Lists.newArrayList() : Arrays.asList(scraps)));
+        addRecipe(new TurntableRecipe(block, meta, result,resultMeta, Lists.newArrayList(scraps)));
     }
 
 

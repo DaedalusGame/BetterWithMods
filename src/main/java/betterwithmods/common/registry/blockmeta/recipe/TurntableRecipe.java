@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.blockmeta.recipe;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -16,7 +16,7 @@ public class TurntableRecipe extends BlockMetaRecipe {
         this(((ItemBlock)inputBlock.getItem()).getBlock(), inputBlock.getMetadata(),((ItemBlock)outputBlock.getItem()).getBlock(), outputBlock.getMetadata(),scraps);
     }
     public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List<ItemStack> scraps) {
-        super("turntable", block, meta, scraps);
+        super(block, meta, scraps);
         this.result = result;
         this.resultMeta = resultMeta;
     }

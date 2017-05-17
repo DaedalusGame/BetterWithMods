@@ -31,7 +31,7 @@ public class BWMFoodStats extends FoodStats {
     }
 
     /**
-     * Adds input to foodExhaustionLevel to a max of 40
+     * Adds inputs to foodExhaustionLevel to a max of 40
      */
     @Override
     public void addExhaustion(float exhaustion) {

@@ -3,8 +3,8 @@ package betterwithmods.common.blocks.tile;
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines;
-import betterwithmods.common.registry.TurntableInteraction;
-import betterwithmods.common.registry.TurntableRecipe;
+import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
+import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
@@ -292,14 +292,14 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         Block target = state.getBlock();
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
-        if (TurntableInteraction.INSTANCE.contains(stack) && TurntableInteraction.INSTANCE.getRecipe(stack) != null) {
+        if (TurntableManager.INSTANCE.contains(stack) && TurntableManager.INSTANCE.getRecipe(stack) != null) {
             if (target instanceof ITurnable) {
                 ITurnable block = (ITurnable) target;
                 if (block.canRotateOnTurntable(getWorld(), pos))
                     block.rotateAroundYAxis(getWorld(), pos, reverse);
             } else if (state != state.withRotation(rot))
                 getWorld().setBlockState(pos, state.withRotation(rot));
-            rotateCraftable(state, (TurntableRecipe) TurntableInteraction.INSTANCE.getRecipe(stack), pos, reverse);
+            rotateCraftable(state, (TurntableRecipe) TurntableManager.INSTANCE.getRecipe(stack), pos, reverse);
             this.potteryRotated = true;
         } else if (target instanceof ITurnable) {
             ITurnable block = (ITurnable) target;

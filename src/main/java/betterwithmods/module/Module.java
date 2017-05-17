@@ -75,9 +75,14 @@ public class Module {
 		
 		forEachFeature(feature -> {
 			ConfigHelper.needsRestart = feature.requiresMinecraftRestartToEnable();
-			feature.enabled = loadPropBool(feature.configName, feature.getFeatureDescription(), feature.enabledByDefault) && enabled;
-			
-			feature.setupConstantConfig();
+			if(feature.canDisable) {
+				feature.enabled = loadPropBool(feature.configName, feature.getFeatureDescription(), feature.enabledByDefault) && enabled;
+				feature.setupConstantConfig();
+			}
+			else {
+				feature.enabled = true;
+				feature.forceLoad = true;
+			}
 			
 			if(!feature.forceLoad) {
 				String[] incompatibilities = feature.getIncompatibleMods();

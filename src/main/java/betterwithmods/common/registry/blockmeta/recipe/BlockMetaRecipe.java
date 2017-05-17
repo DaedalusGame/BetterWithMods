@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.blockmeta.recipe;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -16,13 +16,11 @@ public class BlockMetaRecipe {
     private final Block block;
     private final int meta;
     private final List<ItemStack> outputs;
-    private final String type;
 
-    public BlockMetaRecipe(String type, Block block, int meta, List<ItemStack> outputs) {
+    public BlockMetaRecipe(Block block, int meta, List<ItemStack> outputs) {
         this.block = block;
         this.meta = meta;
         this.outputs = outputs;
-        this.type = type;
     }
 
     public boolean equals(Block block, int meta) {
@@ -35,10 +33,6 @@ public class BlockMetaRecipe {
 
     public ItemStack getStack() {
         return new ItemStack(block, 1, meta);
-    }
-
-    public String getType() {
-        return type;
     }
 
     @Override

@@ -15,6 +15,14 @@ public class Gameplay extends Module {
         registerFeature(new MetalReclaming());
         registerFeature(new NuggetCompression());
         registerFeature(new HarderSteelRecipe());
+        registerFeature(new AnvilRecipes());
+        registerFeature(new CraftingRecipes());
+        registerFeature(new CauldronRecipes());
+        registerFeature(new CrucibleRecipes());
+        registerFeature(new KilnRecipes());
+        registerFeature(new MillRecipes());
+        registerFeature(new SawRecipes());
+        registerFeature(new TurntableRecipes());
     }
 
     @Override
@@ -31,3 +39,4 @@ public class Gameplay extends Module {
 
 
 }
+

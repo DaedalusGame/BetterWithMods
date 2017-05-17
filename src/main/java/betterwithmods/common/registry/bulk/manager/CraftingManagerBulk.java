@@ -1,9 +1,11 @@
-package betterwithmods.common.registry.bulk;
+package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
+import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -11,58 +13,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class CraftingManagerBulk {
-    private final String craftType;
-    private List<BulkRecipe> recipes;
+public abstract class CraftingManagerBulk<T extends BulkRecipe> {
+    private List<T> recipes;
 
-    public CraftingManagerBulk(String craftType) {
-        this.craftType = craftType;
+    protected CraftingManagerBulk() {
         this.recipes = new ArrayList<>();
     }
 
-    public void addOreRecipe(ItemStack output, Object[] inputs) {
-        addOreRecipe(output, null, inputs);
+    public void addRecipe(ItemStack output, Object... inputs) {
+        addRecipe(output, ItemStack.EMPTY, inputs);
     }
 
-    public void addOreRecipe(ItemStack output, ItemStack secondary, Object input) {
-        Object[] inputs = new Object[1];
-        inputs[0] = input;
-        addOreRecipe(output, secondary, inputs);
+    public void addRecipe(ItemStack output, ItemStack secondary, Object input) {
+        addRecipe(output, secondary, new Object[]{input});
     }
 
-    public void addOreRecipe(ItemStack output, Object input) {
-        addOreRecipe(output, null, input);
+    public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        T recipe = createRecipe(output, secondary, inputs);
+        if(!recipe.isEmpty())
+            recipes.add(recipe);
     }
+    public abstract T createRecipe(ItemStack output, ItemStack secondary, Object[] inputs);
 
-    public void addOreRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        BulkRecipe recipe = createRecipe(output, secondary, inputs);
-        this.recipes.add(recipe);
-    }
-
-    public void addRecipe(ItemStack output, ItemStack[] inputs) {
-        addRecipe(output, null, inputs);
-    }
-
-    public void addRecipe(ItemStack output, ItemStack secondary, ItemStack input) {
-        ItemStack[] inputs = new ItemStack[1];
-        inputs[0] = input.copy();
-        addRecipe(output, secondary, inputs);
-    }
-
-    public void addRecipe(ItemStack output, ItemStack input) {
-        addRecipe(output, null, input);
-    }
-
-    public void addRecipe(ItemStack output, ItemStack secondary, ItemStack[] inputs) {
-        BulkRecipe recipe = createRecipe(output, secondary, inputs);
-        this.recipes.add(recipe);
-    }
-
-    public List<BulkRecipe> removeRecipes(ItemStack output) {
-        List<BulkRecipe> removed = Lists.newArrayList();
+    public List<T> removeRecipes(ItemStack output) {
+        List<T> removed = Lists.newArrayList();
         for (BulkRecipe ir : recipes) {
             if (ir.getOutput().isItemEqual(output)) {
-                removed.add(ir);
+                removed.add((T) ir);
             }
         }
         return removed;
@@ -108,7 +85,7 @@ public abstract class CraftingManagerBulk {
                         return true;
                 }
                 else if (in instanceof OreStack) {
-                    if (BWOreDictionary.listContains((ItemStack)input, ((OreStack)in).getOres())) {
+                    if (BWOreDictionary.listContains((ItemStack)input, ((OreStack)in).getItems())) {
                         return true;
                     }
                 }
@@ -203,7 +180,7 @@ public abstract class CraftingManagerBulk {
                     return !((ItemStack) obj).hasTagCompound() || ItemStack.areItemStackTagsEqual(stack, (ItemStack) obj);
                 }
             } else if (obj instanceof OreStack) {
-                if (BWOreDictionary.listContains(stack, ((OreStack) obj).getOres()))
+                if (BWOreDictionary.listContains(stack, ((OreStack) obj).getItems()))
                     return true;
             }
         }
@@ -217,27 +194,23 @@ public abstract class CraftingManagerBulk {
         return null;
     }
 
-    public ItemStack[] craftItem(ItemStackHandler inv) {
+    public NonNullList<ItemStack> craftItem(ItemStackHandler inv) {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if (recipe != null) {
-            ItemStack[] ret = new ItemStack[1];
-            if (recipe.getSecondary() != null) {
-                ret = new ItemStack[2];
-                ret[1] = recipe.getSecondary();
+            NonNullList<ItemStack> list = NonNullList.create();
+            if (!recipe.getSecondary().isEmpty()) {
+                list.add(1, recipe.getSecondary());
             }
-            if (recipe.getOutput() == null) {
-                return null;
+            if (recipe.getOutput().isEmpty()) {
+                return NonNullList.create();
             }
-            ret[0] = recipe.getOutput();
+            list.add(0,recipe.getOutput());
             recipe.consumeInvIngredients(inv);
-            return ret;
+            return list;
         }
         return null;
     }
 
-    private BulkRecipe createRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        return new BulkRecipe(craftType, output, secondary, inputs);
-    }
 
     private int getMatchingRecipeIndex(BulkRecipe recipe) {
         for (int i = 0; i < this.recipes.size(); i++) {
@@ -248,17 +221,17 @@ public abstract class CraftingManagerBulk {
         return -1;
     }
 
-    public List<BulkRecipe> getRecipes() {
+    public List<T> getRecipes() {
         return this.recipes;
     }
 
     //Lazy way of ensuring the ore dictionary entries were properly implemented.
     public void refreshRecipes() {
-        List<BulkRecipe> recipes = getRecipes();
+        List<T> recipes = getRecipes();
         if (!recipes.isEmpty()) {
             this.recipes = new ArrayList<>();
             for (BulkRecipe r : recipes) {
-                this.recipes.add(createRecipe(r.getOutput(), r.getSecondary(), r.input.toArray()));
+                this.recipes.add(createRecipe(r.getOutput(), r.getSecondary(), r.getRecipeInput().toArray()));
             }
         }
     }

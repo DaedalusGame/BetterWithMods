@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.tile;
 
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.registry.bulk.CraftingManagerCauldron;
-import betterwithmods.common.registry.bulk.CraftingManagerCauldronStoked;
+import betterwithmods.common.registry.bulk.manager.CauldronManager;
+import betterwithmods.common.registry.bulk.manager.StokedCauldronManager;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -10,21 +10,21 @@ import net.minecraft.item.ItemStack;
 
 public class TileEntityCauldron extends TileEntityCookingPot {
     public TileEntityCauldron() {
-        super(CraftingManagerCauldron.getInstance(), CraftingManagerCauldronStoked.getInstance());
+        super(CauldronManager.getInstance(), StokedCauldronManager.getInstance());
     }
 
     @Override
     public boolean validateUnstoked() {
         if (InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood())
             return true;
-        else if (CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
+        else if (CauldronManager.getInstance().getCraftingResult(inventory) != null)
             return true;
         return false;
     }
 
     @Override
     public boolean validateStoked() {
-        if (containsExplosives() || CraftingManagerCauldronStoked.getInstance().getCraftingResult(inventory) != null)
+        if (containsExplosives() || StokedCauldronManager.getInstance().getCraftingResult(inventory) != null)
             return true;
         return false;
     }

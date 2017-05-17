@@ -72,7 +72,7 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
         int x = width / 2 - 18, y = 0;
 
         guiItemStacks.init(0, true, x - 27, y + 27); //filter
-        guiItemStacks.init(1, true, x, y); //input item
+        guiItemStacks.init(1, true, x, y); //inputs item
 
         guiItemStacks.init(2, false, x + 28, y); //main output
         guiItemStacks.init(3, false, x + 28, y + 27); //inventory result

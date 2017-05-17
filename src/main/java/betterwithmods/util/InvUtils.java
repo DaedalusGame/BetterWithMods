@@ -199,17 +199,17 @@ public class InvUtils {
                                 return true;
                             }
                             sizeOfStack -= stack.getCount();
-                            if(!simulate)
+                            if (!simulate)
                                 inv.setStackInSlot(i, ItemStack.EMPTY);
                         }
                     } else {
                         if (stack.getCount() >= sizeOfStack) {
-                            if(!simulate)
+                            if (!simulate)
                                 decrStackSize(inv, i, sizeOfStack);
                             return true;
                         }
                         sizeOfStack -= stack.getCount();
-                        if(!simulate)
+                        if (!simulate)
                             inv.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
@@ -344,7 +344,7 @@ public class InvUtils {
     }
 
     public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack, boolean simulate) {
-        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots(),simulate);
+        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots(), simulate);
     }
 
     public static boolean checkItemStackInsert(IItemHandler inv, ItemStack stack) {
@@ -399,5 +399,11 @@ public class InvUtils {
         }
         f = f / (float) inventory.getSlots();
         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+    }
+
+    public static ItemStack setCount(ItemStack itemStack, int count) {
+        ItemStack stack = itemStack.copy();
+        itemStack.setCount(count);
+        return stack;
     }
 }

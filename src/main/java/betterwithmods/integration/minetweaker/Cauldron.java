@@ -1,8 +1,8 @@
 package betterwithmods.integration.minetweaker;
 
 
-import betterwithmods.common.registry.bulk.BulkRecipe;
-import betterwithmods.common.registry.bulk.CraftingManagerCauldron;
+import betterwithmods.common.registry.bulk.manager.CauldronManager;
+import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -25,17 +25,17 @@ public class Cauldron {
 
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        BulkRecipe r = new BulkRecipe("cauldron", InputHelper.toStack(output), InputHelper.toStack(secondaryOutput),InputHelper.toObjects(inputs));
-        MineTweakerAPI.apply(new BulkAdd("cauldron", CraftingManagerCauldron.getInstance(),r));
+        BulkRecipe r = new BulkRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput),InputHelper.toObjects(inputs));
+        MineTweakerAPI.apply(new BulkAdd("cauldron", CauldronManager.getInstance(),r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BulkRemove("cauldron", CraftingManagerCauldron.getInstance(),InputHelper.toStack(output)));
+        MineTweakerAPI.apply(new BulkRemove("cauldron", CauldronManager.getInstance(),InputHelper.toStack(output)));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, @NotNull IIngredient[] inputs) {
-        MineTweakerAPI.apply(new BulkRemove("cauldron", CraftingManagerCauldron.getInstance(),InputHelper.toStack(output), InputHelper.toObjects(inputs)));
+        MineTweakerAPI.apply(new BulkRemove("cauldron", CauldronManager.getInstance(),InputHelper.toStack(output), InputHelper.toObjects(inputs)));
     }
 }

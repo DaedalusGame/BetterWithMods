@@ -4,7 +4,7 @@ import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockCookingPot;
-import betterwithmods.common.registry.bulk.CraftingManagerBulk;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.registry.heat.BWMHeatSource;
 import betterwithmods.util.DirUtils;
@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -374,9 +375,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     private boolean attemptToCookWithManager(CraftingManagerBulk man) {
         if (man != null) {
             if (man.getCraftingResult(inventory) != null) {
-                ItemStack[] output = man.craftItem(inventory);
+                NonNullList<ItemStack> output = man.craftItem(inventory);
 
-                if (output != null) {
+                if (!output.isEmpty()) {
                     for (ItemStack out : output) {
                         if (out != ItemStack.EMPTY) {
                             ItemStack stack = out.copy();

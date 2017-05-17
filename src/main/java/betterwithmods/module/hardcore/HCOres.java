@@ -1,8 +1,8 @@
 package betterwithmods.module.hardcore;
 
-import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -57,12 +57,12 @@ public class HCOres extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
         RecipeUtils.removeRecipes(Items.BUCKET, 0);
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
-        BWCrafting.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        BWCrafting.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override

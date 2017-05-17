@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.common.registry.TurntableRecipe;
+import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 

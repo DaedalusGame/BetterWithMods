@@ -1,7 +1,6 @@
 package betterwithmods;
 
 import betterwithmods.client.container.BWGuiHandler;
-import betterwithmods.common.BWCrafting;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.event.*;
@@ -104,7 +103,6 @@ public class BWMod {
         ModuleLoader.preInit(evt);
         BWRegistry.preInit();
 
-        BWCrafting.init();
         loadCompatibilityModules();
         getLoadedModules().forEach(ICompatModule::preInit);
 
@@ -131,7 +129,6 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-        BWCrafting.postInit();
 
         registerEventHandlers();
         RecipeUtils.refreshRecipes();

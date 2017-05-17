@@ -101,7 +101,7 @@ public class ContainerInfernalEnchanter extends Container {
 
             //1,2,3,4
             //8,15,23,30
-            System.out.println(enchantment.getTranslatedName(-1) + "," + enchantCount + "," + maxBookcase + "," + enchantment.getMaxLevel());
+//            System.out.println(enchantment.getTranslatedName(-1) + "," + enchantCount + "," + maxBookcase + "," + enchantment.getMaxLevel());
 
         }
         for (int i = 1; i <= enchantLevels.length; i++) {

@@ -40,7 +40,6 @@ public class InventorySteelCrafting extends InventoryCrafting implements ISidedI
     public ItemStack decrStackSize(int slot, int decrement) {
         ItemStack stack = handler.getStackInSlot(slot);
         this.container.onCraftMatrixChanged(this);
-        System.out.println("Decrease Stack Size");
         if (stack != null) {
             ItemStack itemstack;
             if (stack.getCount() <= decrement) {

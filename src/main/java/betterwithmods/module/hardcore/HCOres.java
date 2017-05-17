@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class HCOres extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
         RecipeUtils.removeRecipes(Items.BUCKET, 0);
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
+        RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
     }
 

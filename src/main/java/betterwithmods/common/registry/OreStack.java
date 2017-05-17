@@ -16,7 +16,6 @@ public class OreStack {
         this.oreName = name;
         this.stackSize = stack;
         this.oreStacks = OreDictionary.getOres(oreName);
-        System.out.println(oreStacks);
     }
 
     public OreStack copy() {

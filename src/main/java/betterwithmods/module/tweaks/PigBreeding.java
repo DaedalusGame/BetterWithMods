@@ -15,7 +15,6 @@ public class PigBreeding extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
 //        Field tempationItems = ReflectionHelper.findField(EntityPig.class, "TEMPTATION_ITEMS");
-//        System.out.println(tempationItems);
 ////        try {
 
 //            tempationItems.setAccessible(true);

@@ -13,7 +13,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -30,6 +29,16 @@ import java.util.List;
  * Created by tyler on 4/20/17.
  */
 public class HCLumber extends Feature {
+    private int plankAmount, barkAmount, sawDustAmount;
+
+    @Override
+    public void setupConfig() {
+        plankAmount = loadPropInt("Plank Amount", "Amount of Planks dropped when Punching Wood", 2);
+        barkAmount = loadPropInt("Bark Amount", "Amount of Bark dropped when Punching Wood", 1);
+        sawDustAmount = loadPropInt("Sawdust Amount", "Amount of Sawdust dropped when Punching Wood", 3);
+
+    }
+
     @Override
     public String getFeatureDescription() {
         return "Makes Punching Wood return a single plank and secondary drops instead of a log, to get a log an axe must be used";
@@ -38,9 +47,9 @@ public class HCLumber extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         for (int i = 0; i < 4; i++)
-            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
+            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_OLD, barkAmount, i)));
         for (int i = 0; i < 2; i++)
-            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, 4 + i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i)));
+            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, 4 + i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_NEW, barkAmount, i)));
     }
 
     @Override
@@ -66,52 +75,55 @@ public class HCLumber extends Feature {
         Block block = state.getBlock();
         int harvestMeta = state.getBlock().damageDropped(state);
         World world = evt.getWorld();
-        if (!world.isRemote && !evt.isSilkTouching()) {
-            boolean harvest = false;
-            if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.EMPTY) {
-                Item item = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem();
+        int fortune = getFortune(evt);
+        boolean fort = fortune > 0;
+        boolean isLog = isLog(state);
+        if (!hasAxe(evt) && isLog && SawManager.INSTANCE.contains(block, harvestMeta)) {
+            evt.getDrops().stream().filter(stack -> isSameBlock(stack, block)).forEach(log -> {
+                List<ItemStack> outputs = SawManager.INSTANCE.getProducts(block, harvestMeta);
+                List<ItemStack> newOutputs = Lists.newArrayList();
+                if (outputs.size() == 3) {
+                    ItemStack planks = outputs.get(0).copy();
+                    planks.setCount(plankAmount + (fort ? world.rand.nextInt(2) : 0));
+                    int barkStack = fort ? outputs.get(1).getCount() + world.rand.nextInt(fortune) : barkAmount;
 
-                if (item != null) {
-                    if ((item.getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, state) >= 0 || item.getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe")) && !(item instanceof ItemKnife)) {
-                        harvest = true;
-                    }
+                    ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
+                    int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : sawDustAmount;
+                    ItemStack sawdust = new ItemStack(BWMItems.MATERIAL, sawdustStack, 22);
+                    newOutputs.add(planks);
+                    newOutputs.add(bark);
+                    newOutputs.add(sawdust);
                 }
-            }
+                evt.getDrops().remove(log);
+                evt.getDrops().addAll(newOutputs);
+            });
 
-            if (!harvest) {
-                int fortune = player != null && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.EMPTY && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemKnife ? evt.getFortuneLevel() : 0;
-                boolean fort = fortune > 0;
-                List<ItemStack> logs = OreDictionary.getOres("logWood");
-                boolean isLog = logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
-                if (SawManager.INSTANCE.contains(block, harvestMeta) && isLog && !evt.isSilkTouching()) {
-                    for (ItemStack logStack : evt.getDrops()) {
-                        if (logStack.getItem() instanceof ItemBlock) {
-                            ItemBlock iBlock = (ItemBlock) logStack.getItem();
-                            if (iBlock.getBlock() == block) {
-                                List<ItemStack> outputs = SawManager.INSTANCE.getProducts(block, harvestMeta);
-                                List<ItemStack> newOutputs = Lists.newArrayList();
-                                if (outputs.size() == 3) {
-                                    ItemStack planks = outputs.get(0).copy();
-                                    planks.setCount((planks.getCount() / 2) + (fort ? world.rand.nextInt(2) : 0));
-                                    int barkStack = fort ? outputs.get(1).getCount() + world.rand.nextInt(fortune) : outputs.get(1).getCount();
+        }
+    }
 
-                                    ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
-                                    int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack sawdust = new ItemStack(BWMItems.MATERIAL, sawdustStack, 22);
-                                    newOutputs.add(planks);
-                                    newOutputs.add(bark);
-                                    newOutputs.add(sawdust);
-                                }
-                                evt.getDrops().remove(logStack);
-                                evt.getDrops().addAll(newOutputs);
-                                break;
-                            }
-                        }
-                    }
-                }
+    public static boolean hasAxe(BlockEvent.HarvestDropsEvent event) {
+        if (!event.getWorld().isRemote && !event.isSilkTouching()) {
+            EntityPlayer player = event.getHarvester();
+            if (player != null) {
+                ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe") && !(stack.getItem() instanceof ItemKnife);
             }
         }
+        return false;
+    }
 
+    public static int getFortune(BlockEvent.HarvestDropsEvent event) {
+        EntityPlayer player = event.getHarvester();
+        return player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.EMPTY && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemKnife ? event.getFortuneLevel() : 0;
+    }
+
+    public static boolean isLog(IBlockState state) {
+        List<ItemStack> logs = OreDictionary.getOres("logWood");
+        return logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(state.getBlock(), 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
+    }
+
+    public static boolean isSameBlock(ItemStack stack, Block block) {
+        return stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock().equals(block);
     }
 
     @Override

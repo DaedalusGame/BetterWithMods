@@ -5,4 +5,5 @@ import net.minecraft.item.ItemStack;
 
 public interface IDebarkable {
     ItemStack getBark(IBlockState state);
+    IBlockState getStrippedState(IBlockState state);
 }

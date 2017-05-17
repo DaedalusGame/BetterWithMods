@@ -51,8 +51,14 @@ public class LogHarvestEvent {
                 } else {
                     IBlockState state = world.getBlockState(pos);
                     if (SawManager.INSTANCE.contains(block, block.getMetaFromState(state)) && BWOreDictionary.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
-                        InvUtils.ejectStackWithOffset(world, playerPos, new ItemStack(BARK, 1, 0));
+                        ItemStack bark = new ItemStack(BARK, 1, 0);
                         IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+                        if(state.getBlock() instanceof IDebarkable) {
+                            IDebarkable debarkable = (IDebarkable) state.getBlock();
+                            bark = debarkable.getBark(state);
+                            dbl = debarkable.getStrippedState(state);
+                        }
+                        InvUtils.ejectStackWithOffset(world, playerPos, bark);
                         world.setBlockState(pos, dbl);
                         world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 0.5F, 2.5F);
                         playerStack.damageItem(1, player);

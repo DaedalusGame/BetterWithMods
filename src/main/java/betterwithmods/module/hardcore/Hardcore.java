@@ -33,6 +33,7 @@ public class Hardcore extends Module {
         registerFeature(new HCStumping());
         registerFeature(new HCTools());
         registerFeature(new HCTorches());
+        registerFeature(new HCSeeds());
     }
 
     @Override

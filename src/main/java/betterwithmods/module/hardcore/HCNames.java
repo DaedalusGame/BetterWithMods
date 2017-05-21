@@ -16,7 +16,8 @@ public class HCNames extends Feature {
     @Override
     public void serverStarting(FMLServerStartingEvent event) {
         Scoreboard scoreboard = event.getServer().getEntityWorld().getScoreboard();
-        scoreboard.createTeam(TEAM);
+        if(scoreboard.getTeam(TEAM) == null)
+            scoreboard.createTeam(TEAM);
         scoreboard.getTeam(TEAM).setNameTagVisibility(Team.EnumVisible.NEVER);
     }
 
@@ -36,5 +37,10 @@ public class HCNames extends Feature {
     @Override
     public boolean hasSubscriptions() {
         return true;
+    }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Disables Player Name Tags";
     }
 }

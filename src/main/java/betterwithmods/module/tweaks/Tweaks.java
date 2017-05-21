@@ -16,7 +16,6 @@ public class Tweaks extends Module {
         registerFeature(new EquipmentDrop());
         registerFeature(new ImprovedFlee());
         registerFeature(new HeadDrops());
-        registerFeature(new HempSeed());
         registerFeature(new HighEfficiencyRecipes());
         registerFeature(new KilnCharcoal());
         registerFeature(new KilnSmelting());

@@ -3,6 +3,8 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
@@ -30,13 +32,14 @@ public class HCSeeds extends Feature {
     }
 
     @SubscribeEvent
-    public void getDrops(BlockEvent.HarvestDropsEvent event) {
-        World world = event.getWorld();
-        IBlockState state = world.getBlockState(event.getPos());
-        //todo need to check is shearing?
-        if (state.getBlock() instanceof BlockTallGrass) {
+    public void onHarvest(BlockEvent.HarvestDropsEvent event) {
+        Block block = event.getState().getBlock();
+
+        boolean clear = block instanceof BlockTallGrass;
+        if (block instanceof BlockDoublePlant)
+            clear = event.getState().getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || event.getState().getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN;
+        if(clear)
             event.getDrops().clear();
-        }
     }
 
     private static final Random RANDOM = new Random();
@@ -44,7 +47,7 @@ public class HCSeeds extends Feature {
     public NonNullList<ItemStack> getDrops(int fortune) {
         if (RANDOM.nextInt(8) != 0) return NonNullList.create();
         ItemStack seed = net.minecraftforge.common.ForgeHooks.getGrassSeed(RANDOM, 0);
-        if(seed.isItemEqual(new ItemStack(Items.WHEAT_SEEDS)) || seed.isEmpty()) {
+        if (seed.isItemEqual(new ItemStack(Items.WHEAT_SEEDS)) || seed.isEmpty()) {
             return NonNullList.create();
         } else {
             return NonNullList.withSize(1, seed);

@@ -28,6 +28,6 @@ public class HCJumping extends Feature {
 
     @Override
     public boolean hasSubscriptions() {
-        return true;
+        return false;
     }
 }

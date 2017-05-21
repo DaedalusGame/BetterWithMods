@@ -41,7 +41,7 @@ public class BlockWolf extends BWMBlock {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.getHeldItemMainhand() == ItemStack.EMPTY && player.getHeldItemOffhand() == ItemStack.EMPTY) {
+        if (player.getHeldItemMainhand() .isEmpty()  && player.getHeldItemOffhand() .isEmpty() ) {
             if (world.isRemote)
                 world.spawnParticle(EnumParticleTypes.HEART, pos.getX() + world.rand.nextFloat(), pos.getY() + 1.0F, pos.getZ() + world.rand.nextFloat(), 0.0F, 0.1F, 0.0F);
             return true;

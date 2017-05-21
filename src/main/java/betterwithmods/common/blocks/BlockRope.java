@@ -27,7 +27,7 @@ public class BlockRope extends BWMBlock {
     }
 
     public static boolean placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
-        if (stack != ItemStack.EMPTY || player == null) {
+        if (!stack.isEmpty() || player == null) {
             BlockPos bp = getLowestRopeBlock(world, pos).down();
             Block block = world.getBlockState(bp).getBlock();
             if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.ROPE.getDefaultState().getBlock()).canBlockStay(world, bp)) {
@@ -58,7 +58,7 @@ public class BlockRope extends BWMBlock {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (heldItem != ItemStack.EMPTY && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
             return placeRopeUnder(heldItem, worldIn, pos, playerIn);
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);

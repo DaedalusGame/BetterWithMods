@@ -152,7 +152,7 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         int order = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             BulkRecipe single = null;
-            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
                 ItemStack stack = inv.getStackInSlot(i).copy();
                 for (BulkRecipe r : this.recipes) {
                     if (containsIngredient(r.getRecipeInput(), stack)) {

@@ -56,7 +56,7 @@ public class DyeWithTagRecipe extends ShapelessOreRecipe {
             boolean inRecipe = false;
             ItemStack slot = inv.getStackInSlot(x);
 
-            if (slot != ItemStack.EMPTY) {
+            if (!slot.isEmpty()) {
                 if (OreDictionary.itemMatches(taggedItem, slot, false)) {
                     if(!hasItem) {
                         hasItem = true;

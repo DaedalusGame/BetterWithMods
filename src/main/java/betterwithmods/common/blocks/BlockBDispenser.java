@@ -151,7 +151,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
             } else {
                 int index = tile.nextIndex;
                 ItemStack stack = tile.getNextStackFromInv();
-                if (index == -1 || stack == ItemStack.EMPTY)
+                if (index == -1 || stack .isEmpty() )
                     world.playEvent(1001, pos, 0);
                 else {
                     IBehaviorDispenseItem item = this.getBehavior(stack);

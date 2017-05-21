@@ -296,7 +296,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     private boolean putRope(boolean flag) {
-        return InvUtils.addItemStackToInv(inventory, new ItemStack(BWMBlocks.ROPE, 1), !flag);
+        return InvUtils.insert(inventory, new ItemStack(BWMBlocks.ROPE, 1), !flag);
     }
 
     public boolean onJobCompleted(boolean up, int targetY, EntityExtendingRope theRope) {

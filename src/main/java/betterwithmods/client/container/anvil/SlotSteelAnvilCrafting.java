@@ -34,13 +34,13 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
             ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
             ItemStack itemstack1 = aitemstack.get(i);
 
-            if (itemstack != ItemStack.EMPTY) {
+            if (!itemstack.isEmpty()) {
                 this.craftMatrix.decrStackSize(i, 1);
                 itemstack = this.craftMatrix.getStackInSlot(i);
             }
 
-            if (itemstack1 != ItemStack.EMPTY) {
-                if (itemstack == ItemStack.EMPTY) {
+            if (!itemstack1.isEmpty()) {
+                if (itemstack.isEmpty()) {
                     this.craftMatrix.setInventorySlotContents(i, itemstack1);
                 } else if (ItemStack.areItemsEqual(itemstack, itemstack1) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1)) {
                     itemstack1.grow(itemstack.getCount());

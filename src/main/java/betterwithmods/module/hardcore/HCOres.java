@@ -27,7 +27,7 @@ public class HCOres extends Feature {
 
     private static boolean oreNuggetSmelting, dustNuggetSmelting, fixVanillaRecipes;
     private static StringList oreExclude, dustExclude;
-
+    private static int oreProductionCount;
     @Override
     public void setupConfig() {
         oreNuggetSmelting = loadPropBool("Ore to Nugget Smelting", "Make Ores (oredict ore.* )smelt into nuggets instead of ingots", true);
@@ -37,6 +37,8 @@ public class HCOres extends Feature {
 
         dustNuggetSmelting = loadPropBool("Dust to Nugget Smelting", "Make Dusts ( oredict dust.* ) smelt into nuggets instead of ingots", true);
         fixVanillaRecipes = loadPropBool("Fix Vanilla Recipes", "Make certain recipes cheaper to be more reasonable with nugget smelting, including Compass, Clock, and Bucket", true);
+
+        oreProductionCount = loadPropInt("Ore Production Count","Number of Materials returned from Smelting an Ore", 1);
     }
 
     @Override
@@ -51,15 +53,16 @@ public class HCOres extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-
-        RecipeUtils.removeRecipes(Items.COMPASS, 0);
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Items.CLOCK, 0);
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
-        RecipeUtils.removeRecipes(Items.BUCKET, 0);
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
-        RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
+        if(fixVanillaRecipes) {
+            RecipeUtils.removeRecipes(Items.COMPASS, 0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
+            RecipeUtils.removeRecipes(Items.CLOCK, 0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
+            RecipeUtils.removeRecipes(Items.BUCKET, 0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
+            RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
+            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
+        }
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
     }
 
@@ -73,8 +76,10 @@ public class HCOres extends Feature {
         if (oreNuggetSmelting) {
             List<Pair<ItemStack, String>> oreSuffixes = BWOreDictionary.oreNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "ore"))).filter(p -> !oreExclude.contains(p.getValue())).collect(Collectors.toList());
             oreSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
+                ItemStack n = nugget.copy();
+                n.setCount(oreProductionCount);
                 RecipeUtils.removeFurnaceRecipe(pair.getKey());
-                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), nugget);
+                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
             }));
         }
         if (dustNuggetSmelting) {

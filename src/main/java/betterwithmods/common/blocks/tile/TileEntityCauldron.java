@@ -24,9 +24,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     @Override
     public boolean validateStoked() {
-        if (containsExplosives() || StokedCauldronManager.getInstance().getCraftingResult(inventory) != null)
-            return true;
-        return false;
+        return containsExplosives() || StokedCauldronManager.getInstance().getCraftingResult(inventory) != null;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     private boolean hasNonFoulFood() {
         for (int i = 0; i < 27; i++) {
-            if (this.inventory.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!this.inventory.getStackInSlot(i).isEmpty()) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
                     if (item instanceof ItemFood) {
@@ -55,7 +53,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
     private boolean spoilFood() {
         boolean foodSpoiled = false;
         for (int i = 0; i < 27; i++) {
-            if (this.inventory.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!this.inventory.getStackInSlot(i).isEmpty()) {
                 Item item = this.inventory.getStackInSlot(i).getItem();
                 if (item != null) {
                     if (item != BWMItems.FERTILIZER && item instanceof ItemFood) {

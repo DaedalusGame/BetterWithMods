@@ -200,7 +200,7 @@ public class BWRegistry {
                     if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                         for (int i = 0; i < 4; i++) {
                             ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
-                            if (planks != ItemStack.EMPTY) {
+                            if (!planks.isEmpty()) {
 
                                 ItemStack[] output = new ItemStack[3];
                                 output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
@@ -223,7 +223,7 @@ public class BWRegistry {
                         }
                     } else {
                         ItemStack planks = getRecipeOutput(log);
-                        if (planks != ItemStack.EMPTY) {
+                        if (planks.isEmpty()) {
                             ItemStack[] output = new ItemStack[3];
                             output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
                             output[1] = new ItemStack(BWMItems.BARK, 1, 0);

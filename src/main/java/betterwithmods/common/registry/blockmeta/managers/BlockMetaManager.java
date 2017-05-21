@@ -25,7 +25,7 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
     public abstract T createRecipe(Block block, int meta, List<ItemStack> outputs);
 
     public void addRecipe(ItemStack input, ItemStack... products) {
-        if (input != ItemStack.EMPTY && input.getItem() instanceof ItemBlock) {
+        if (!input.isEmpty() && input.getItem() instanceof ItemBlock) {
             addRecipe(((ItemBlock) input.getItem()).getBlock(), input.getMetadata(), products);
         } else {
             BWMod.logger.info("BlockMeta inputs: %s must be a block", input);
@@ -41,7 +41,7 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
     }
 
     public boolean contains(ItemStack stack) {
-        return !(stack == null || stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock)) && contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
+        return !(stack == null || stack.isEmpty() || !(stack.getItem() instanceof ItemBlock)) && contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
 
     public boolean contains(Block block, int meta) {

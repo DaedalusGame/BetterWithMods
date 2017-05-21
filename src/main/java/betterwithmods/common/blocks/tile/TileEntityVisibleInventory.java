@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks.tile;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +39,7 @@ public abstract class TileEntityVisibleInventory extends TileBasicInventory impl
     public int filledSlots() {
         int fill = 0;
         for (int i = 0; i < this.getMaxVisibleSlots(); i++) {
-            if (inventory.getStackInSlot(i) != ItemStack.EMPTY)
+            if (!inventory.getStackInSlot(i).isEmpty())
                 fill++;
         }
         return fill;

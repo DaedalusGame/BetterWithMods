@@ -58,7 +58,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         ItemStack leftover = ItemStack.EMPTY;
         for (int slot = 0; slot < inv.getSlots() - 1; slot++) {
             leftover = inv.insertItem(slot, stack, false);
-            if (leftover == ItemStack.EMPTY)
+            if (leftover.isEmpty())
                 break;
         }
         return leftover;
@@ -71,7 +71,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         } else {
             ItemStack itemstack = entityItem.getEntityItem().copy();
             ItemStack leftovers = attemptToInsert(inv, itemstack);
-            if (leftovers != ItemStack.EMPTY && leftovers.getCount() != 0) {
+            if (!leftovers.isEmpty() && leftovers.getCount() != 0) {
                 entityItem.setEntityItemStack(leftovers);
             } else {
                 putAll = true;
@@ -179,7 +179,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             stateChanged = true;
             if (hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
                 ItemStack stack = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getStackInSlot(18);
-                if (stack != ItemStack.EMPTY) {
+                if (!stack.isEmpty()) {
                     String check = stack.getItem().toString() + stack.getMetadata();
                     if (!filter.equals(check)) {
                         filter = check;
@@ -208,7 +208,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private short getFilterType() {
         ItemStack filter = inventory.getStackInSlot(18);
 
-        if (filter != ItemStack.EMPTY && filter.getCount() > 0) {
+        if (!filter.isEmpty()) {
             filterStack = filter;
             return (short) HopperFilters.getFilterType(filter);
         }
@@ -289,7 +289,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private boolean isFull() {
         for (int i = 0; i < this.inventory.getSlots(); i++) {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (itemstack == ItemStack.EMPTY || itemstack.getCount() != itemstack.getMaxStackSize()) {
+            if (itemstack.isEmpty() || itemstack.getCount() != itemstack.getMaxStackSize()) {
                 return false;
             }
         }
@@ -329,7 +329,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         ItemStack leftover;
                         for (int slot = 0; slot < below.getSlots(); slot++) {
                             leftover = below.insertItem(slot, ejectStack, false);
-                            if (leftover == ItemStack.EMPTY) {
+                            if (leftover .isEmpty()) {
                                 inventory.extractItem(stackIndex, ejectStackSize, false);
                                 break;
                             }
@@ -337,7 +337,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
 
                     } else if (tile != null) {
-                        if (InvUtils.addItemStackToInv(inventory, ejectStack, false))
+                        if (InvUtils.insert(inventory, ejectStack, false))
                             inventory.extractItem(stackIndex, ejectStackSize, false);
                     } else
                         this.outputBlocked = true;
@@ -350,7 +350,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         if (cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                             IItemHandler items = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                             int itemsStored;
-                            if (InvUtils.addItemStackToInv(items, ejectStack, false))
+                            if (InvUtils.insert(items, ejectStack, false))
                                 itemsStored = ejectStackSize;
                             else
                                 itemsStored = ejectStackSize - ejectStack.getCount();
@@ -531,7 +531,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public SimpleStackHandler createItemStackHandler() {
-        return new HopperHandler(getInventorySize(),this);
+        return new HopperHandler(getInventorySize(), this);
     }
 
     @Override
@@ -568,8 +568,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private class HopperHandler extends SimpleStackHandler {
         public HopperHandler(int size, TileEntity hopper) {
-            super(size,hopper);
+            super(size, hopper);
         }
+
         @Override
         public int getSlotLimit(int slot) {
             return slot == 18 ? 1 : super.getSlotLimit(slot);

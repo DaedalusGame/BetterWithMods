@@ -6,43 +6,36 @@ import betterwithmods.common.blocks.tile.TileEntityVase;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Created by Christian on 24.09.2016.
  */
-public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityProvider {
+public class BlockVase extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<EnumDyeColor> Color = BlockColored.COLOR;
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
@@ -54,8 +47,8 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return createTileEntity(world, this.getStateFromMeta(meta));
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
     }
 
     @Override
@@ -102,12 +95,17 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        TileEntity te = worldIn.getTileEntity(pos);
-
-        if (te != null && playerIn != null && !playerIn.isSneaking() && heldItem != ItemStack.EMPTY && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            return ((TileEntityVase) te).onActivated(playerIn, hand, heldItem);
-        }
-
+        if (playerIn.isSneaking())
+            return false;
+        InvUtils.getItemHandler(worldIn, pos, null).ifPresent(inv -> {
+            if (InvUtils.insertSingle(inv, heldItem, false)) {
+                if (!playerIn.isCreative())
+                    heldItem.shrink(1);
+                worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
+                        SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
+                        ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            }
+        });
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
     }
 
@@ -115,14 +113,9 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!world.isRemote && entity != null && entity instanceof EntityArrow) {
             world.playEvent(2001, pos, Block.getStateId(state));
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile != null && tile instanceof TileEntityVase) {
-                ((TileEntityVase)tile).onBreak();
-                world.updateComparatorOutputLevel(pos, this);
-            }
+            world.updateComparatorOutputLevel(pos, this);
             world.setBlockToAir(pos);
         }
-
         super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
@@ -137,55 +130,8 @@ public class BlockVase extends BWMBlock implements IMultiVariants, ITileEntityPr
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile, ItemStack stack) {
-        player.addStat(StatList.getBlockStats(this));
-        player.addExhaustion(0.005F);
-
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-            List<ItemStack> items = new ArrayList<>();
-            ItemStack itemStack = this.getSilkTouchDrop(state);
-
-            if (!itemStack.isEmpty()) {
-                if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-                    InvUtils.writeToStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), itemStack);
-                }
-                items.add(itemStack);
-            }
-
-            ForgeEventFactory.fireBlockHarvesting(items, world, pos, state, 0, 1.0f, true, player);
-            for (ItemStack item : items) {
-                spawnAsEntity(world, pos, item);
-            }
-        }
-        else {
-            if (tile != null && tile instanceof TileEntityVase) {
-                ((TileEntityVase)tile).onBreak();
-            }
-            harvesters.set(player);
-            this.dropBlockAsItem(world, pos, state, 0);
-            harvesters.set(null);
-        }
-    }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tile = world.getTileEntity(pos);
-
-        if (tile != null && tile instanceof TileEntityVase) {
-            world.updateComparatorOutputLevel(pos, this);
-        }
-
-        super.breakBlock(world, pos, state);
-    }
-
-    @Override
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return true;
-    }
-
-    @Override
-    public int quantityDropped(Random random) {
-        return 0;
     }
 
     @Override

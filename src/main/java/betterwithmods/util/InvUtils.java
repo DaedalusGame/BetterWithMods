@@ -5,6 +5,8 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -12,47 +14,33 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 
 public class InvUtils {
 
+    public static Optional<IItemHandler> getItemHandler(World world, BlockPos pos, EnumFacing facing) {
+
+        TileEntity tile = world.getTileEntity(pos);
+        return Optional.ofNullable(world.isRemote || tile == null ? null : tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+    }
+
     public static void ejectInventoryContents(World world, BlockPos pos, IItemHandler inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY) {
-                float fX = world.rand.nextFloat() * 0.7F + 0.15F;
-                float fY = world.rand.nextFloat() * 0.7F + 0.15F;
-                float fZ = world.rand.nextFloat() * 0.7F + 0.15F;
-
-                while (stack.getCount() > 0) {
-                    int j = world.rand.nextInt(21) + 10;
-                    if (j > stack.getCount()) {
-                        j = stack.getCount();
-                    }
-
-                    stack.shrink(j);
-                    EntityItem item = new EntityItem(world, (double) ((float) pos.getX() + fX), (double) ((float) pos.getY() + fY), (double) ((float) pos.getZ() + fZ), new ItemStack(stack.getItem(), j, stack.getItemDamage()));
-                    float f1 = 0.05F;
-                    item.motionX = (double) ((float) world.rand.nextGaussian() * f1);
-                    item.motionY = (double) ((float) world.rand.nextGaussian() * f1 + 0.2F);
-                    item.motionZ = (double) ((float) world.rand.nextGaussian() * f1);
-                    copyTags(item.getEntityItem(), stack);
-                    world.spawnEntity(item);
-                }
-            }
+            ejectStackWithOffset(world, pos, inv.getStackInSlot(i));
         }
-
     }
 
     public static void clearInventory(IItemHandlerModifiable inv) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY) {
+            if (!stack.isEmpty()) {
                 inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
@@ -67,7 +55,7 @@ public class InvUtils {
     }
 
     public static ItemStack decrStackSize(IItemHandlerModifiable inv, int slot, int amount) {
-        if (inv.getStackInSlot(slot) != ItemStack.EMPTY) {
+        if (!inv.getStackInSlot(slot).isEmpty()) {
             ItemStack splitStack;
             if (inv.getStackInSlot(slot).getCount() <= amount) {
                 splitStack = inv.getStackInSlot(slot);
@@ -86,29 +74,43 @@ public class InvUtils {
     }
 
     private static boolean canInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-        return insertingStacks(inv, stack, minSlot, maxSlot, true);
+        return insert(inv, stack, minSlot, maxSlot, true);
     }
 
-    public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta, boolean simulate) {
-        ItemStack stack = new ItemStack(item, 1, meta);
-        return attemptToInsertStack(inv, stack, 0, inv.getSlots(), simulate);
+    public static boolean insertSingle(IItemHandler inv, ItemStack stack, boolean simulate) {
+        ItemStack stack2 = stack.copy();
+        stack2.setCount(1);
+        return insert(inv, stack2, 0, inv.getSlots(), simulate);
     }
 
-    private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
-        return insertingStacks(inv, stack, minSlot, maxSlot, simulate);
+    public static boolean insert(IItemHandler inv, ItemStack stack, boolean simulate) {
+        return insert(inv, stack, 0, inv.getSlots(), simulate);
     }
 
-    private static boolean insertingStacks(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+    public static boolean insert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+        if (isFull(inv))
+            return false;
+        boolean insert = false;
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, simulate) == ItemStack.EMPTY)
-                return true;
+            if (inv.insertItem(slot, stack, simulate).isEmpty())
+                insert = true;
         }
-        return false;
+        return insert;
+    }
+
+    public static boolean isFull(IItemHandler inv) {
+        boolean full = true;
+        for (int slot = 0; slot < inv.getSlots(); slot++) {
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (stack.getCount() != stack.getMaxStackSize())
+                full = false;
+        }
+        return full;
     }
 
     public static int getFirstOccupiedStackInRange(IItemHandler inv, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot <= maxSlot; ++slot) {
-            if (inv.getStackInSlot(slot) != ItemStack.EMPTY) {
+            if (!inv.getStackInSlot(slot).isEmpty()) {
                 return slot;
             }
         }
@@ -117,7 +119,7 @@ public class InvUtils {
 
     public static int getFirstEmptyStackInRange(IItemHandler inv, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot <= maxSlot; ++slot) {
-            if (inv.getStackInSlot(slot) == ItemStack.EMPTY) {
+            if (inv.getStackInSlot(slot).isEmpty()) {
                 return slot;
             }
         }
@@ -133,7 +135,7 @@ public class InvUtils {
         int count = 0;
 
         for (int i = min; i <= max; ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (inv.getStackInSlot(i).isEmpty()) {
                 ++count;
             }
         }
@@ -145,7 +147,7 @@ public class InvUtils {
         int itemCount = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY) {
+            if (!stack.isEmpty()) {
                 if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
@@ -166,7 +168,7 @@ public class InvUtils {
         int itemCount = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY) {
+            if (!stack.isEmpty()) {
                 if (stack.getItem() == item) {
                     if ((meta == OreDictionary.WILDCARD_VALUE) || (stack.getItemDamage() == meta)) {
                         itemCount += inv.getStackInSlot(i).getCount();
@@ -190,7 +192,7 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY) {
+            if (!stack.isEmpty()) {
                 if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
@@ -221,7 +223,7 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, Item item, int meta, int stackSize) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
+            if (!stack.isEmpty() && stack.getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == meta)) {
                 if (stack.getCount() >= stackSize) {
                     decrStackSize(inv, i, stackSize);
                     return false;
@@ -244,7 +246,7 @@ public class InvUtils {
 
                 for (int j = 0; j < inv.getSlots(); ++j) {
                     ItemStack stack = inv.getStackInSlot(j);
-                    if (stack != ItemStack.EMPTY && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
+                    if (!stack.isEmpty() && stack.getItem() == item && (stack.getItemDamage() == meta || meta == OreDictionary.WILDCARD_VALUE)) {
                         if (tempStack.hasTagCompound()) {
                             if (ItemStack.areItemStackTagsEqual(tempStack, stack)) {
                                 if (stack.getCount() >= stackSize) {
@@ -278,7 +280,7 @@ public class InvUtils {
 
     public static int getFirstOccupiedStackNotOfItem(IItemHandler inv, Item item, int meta) {
         for (int i = 0; i < inv.getSlots(); ++i) {
-            if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
                 int tempMeta = inv.getStackInSlot(i).getItemDamage();
                 if (inv.getStackInSlot(i).getItem() != item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta != meta)) {
                     return i;
@@ -343,14 +345,6 @@ public class InvUtils {
         ejectStack(world, x, y, z, stack, 10);
     }
 
-    public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack, boolean simulate) {
-        return attemptToInsertStack(inventory, stack, 0, inventory.getSlots(), simulate);
-    }
-
-    public static boolean checkItemStackInsert(IItemHandler inv, ItemStack stack) {
-        return canInsertStack(inv, stack, 0, inv.getSlots());
-    }
-
     public static void ejectBrokenItems(World world, BlockPos pos, ResourceLocation lootLocation) {
         if (!world.isRemote) {
             LootContext.Builder build = new LootContext.Builder((WorldServer) world);
@@ -392,7 +386,7 @@ public class InvUtils {
         float f = 0.0F;
         for (int j = 0; j < inventory.getSlots(); ++j) {
             ItemStack itemstack = inventory.getStackInSlot(j);
-            if (itemstack != ItemStack.EMPTY) {
+            if (!itemstack.isEmpty()) {
                 f += (float) itemstack.getCount() / (float) itemstack.getMaxStackSize();
                 ++i;
             }
@@ -401,9 +395,10 @@ public class InvUtils {
         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 
-    public static ItemStack setCount(ItemStack itemStack, int count) {
-        ItemStack stack = itemStack.copy();
-        itemStack.setCount(count);
+    public static ItemStack setCount(ItemStack input, int count) {
+        ItemStack stack = input.copy();
+        stack.setCount(count);
         return stack;
     }
+
 }

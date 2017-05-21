@@ -88,4 +88,10 @@ public final class WorldUtils {
             return l;
         }
     }
+
+    public static int getDistance(BlockPos pos1, BlockPos pos2) {
+        if(pos1 != null && pos2 != null)
+            return (int) pos1.getDistance(pos2.getX(),pos2.getY(), pos2.getZ());
+        return 0;
+    }
 }

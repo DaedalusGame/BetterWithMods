@@ -105,7 +105,7 @@ public class HCBuckets extends Feature {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return stack != ItemStack.EMPTY && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
     }
 
     private static boolean isNonVanillaBucket(ItemStack stack) {
@@ -137,7 +137,7 @@ public class HCBuckets extends Feature {
         if (!hardcoreFluidContainer)
             return;
 
-        if (evt.getEmptyBucket() == ItemStack.EMPTY) {
+        if (evt.getEmptyBucket().isEmpty()) {
             evt.setResult(Event.Result.DENY);
             return;
         }
@@ -213,7 +213,7 @@ public class HCBuckets extends Feature {
             return;
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
-        if (toCheck == ItemStack.EMPTY || toCheck.getItem() == Items.WATER_BUCKET || !isNonVanillaBucket(toCheck))
+        if (toCheck.isEmpty() || toCheck.getItem() == Items.WATER_BUCKET || !isNonVanillaBucket(toCheck))
             return;
 
         FluidStack fluid = FluidUtil.getFluidContained(toCheck);
@@ -282,7 +282,7 @@ public class HCBuckets extends Feature {
                         for (int i = 0; i < inv.getSlots(); i++) {
                             ItemStack stack = inv.getStackInSlot(i);
                             if (world.rand.nextInt(50) == 0) {
-                                if (stack != ItemStack.EMPTY && stack.isItemEqual(new ItemStack(Items.LAVA_BUCKET))) {
+                                if (!stack.isEmpty() && stack.isItemEqual(new ItemStack(Items.LAVA_BUCKET))) {
                                     IFluidHandler bucket = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
                                     if (bucket != null) {
                                         bucket.drain(1000, true);

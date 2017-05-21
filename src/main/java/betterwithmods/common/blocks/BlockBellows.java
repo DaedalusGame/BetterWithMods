@@ -51,7 +51,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        boolean emptyHands = playerIn.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && playerIn.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && playerIn.isSneaking();
+        boolean emptyHands = playerIn.getHeldItem(EnumHand.MAIN_HAND) .isEmpty()  && playerIn.getHeldItem(EnumHand.OFF_HAND) .isEmpty()  && playerIn.isSneaking();
 
         if (worldIn.isRemote && emptyHands)
             return true;

@@ -23,7 +23,7 @@ public class NuggetCompression extends Feature {
         for (ItemStack ingot : BWOreDictionary.ingotNames) {
             String suffix = BWOreDictionary.getSuffix(ingot,"ingot");
             if(suffix != null)
-                CrucibleRecipes.addStokedCrucibleRecipe(ingot, new Object[]{new OreStack("nugget"+suffix, 9)});
+                CrucibleRecipes.addStokedCrucibleRecipe(ingot, new OreStack("nugget"+suffix, 9));
         }
     }
 }

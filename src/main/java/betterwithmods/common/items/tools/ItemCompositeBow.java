@@ -34,7 +34,7 @@ public class ItemCompositeBow extends ItemBow {
                 return 0.0F;
             } else {
                 ItemStack itemstack = entityIn.getActiveItemStack();
-                return itemstack != ItemStack.EMPTY && itemstack.getItem() == this ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+                return !itemstack.isEmpty() && itemstack.getItem() == this ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
             }
         });
         this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entityIn) ->
@@ -44,7 +44,7 @@ public class ItemCompositeBow extends ItemBow {
     }
 
     private boolean isBroadHead(ItemStack stack) {
-        return stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBroadheadArrow;
+        return !stack.isEmpty() && stack.getItem() instanceof ItemBroadheadArrow;
     }
 
     @Override
@@ -85,11 +85,11 @@ public class ItemCompositeBow extends ItemBow {
             ItemStack itemstack = this.findAmmo(player);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, itemstack != ItemStack.EMPTY || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, i, !itemstack.isEmpty() || flag);
             if (i < 0) return;
 
-            if (itemstack != ItemStack.EMPTY || flag) {
-                if (itemstack == ItemStack.EMPTY) {
+            if (!itemstack.isEmpty() || flag) {
+                if (itemstack .isEmpty() ) {
                     itemstack = new ItemStack(Items.ARROW);
                 }
 

@@ -192,7 +192,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     private boolean isFull() {
         for (int i = 0; i < this.inventory.getSlots(); i++) {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (itemstack == ItemStack.EMPTY || itemstack.getCount() != itemstack.getMaxStackSize()) {
+            if (itemstack .isEmpty()  || itemstack.getCount() != itemstack.getMaxStackSize()) {
                 return false;
             }
         }
@@ -379,9 +379,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
                 if (!output.isEmpty()) {
                     for (ItemStack out : output) {
-                        if (out != ItemStack.EMPTY) {
+                        if (!out.isEmpty()) {
                             ItemStack stack = out.copy();
-                            if (!InvUtils.addItemStackToInv(inventory, stack, false))
+                            if (!InvUtils.insert(inventory, stack, false))
                                 InvUtils.ejectStackWithOffset(this.getWorld(), this.pos.up(), stack);
                         }
                     }

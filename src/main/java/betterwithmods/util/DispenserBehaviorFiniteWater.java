@@ -36,7 +36,7 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
         BlockPos blockpos = source.getBlockPos().offset(dispenserFacing);
 
         ItemStack result = FluidUtil.tryPickUpFluid(stack, null, world, blockpos, dispenserFacing.getOpposite()).getResult();
-        if (result == ItemStack.EMPTY) {
+        if (result.isEmpty()) {
             return super.dispenseStack(source, stack);
         }
 

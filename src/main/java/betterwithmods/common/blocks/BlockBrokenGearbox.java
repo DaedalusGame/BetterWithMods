@@ -47,7 +47,7 @@ public class BlockBrokenGearbox extends Block {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack hold = player.getHeldItem(hand);
-        if (hold != ItemStack.EMPTY) {
+        if (!hold.isEmpty()) {
             if (BWOreDictionary.listContains(hold, OreDictionary.getOres("gearWood"))) {
                 if (world.isRemote)
                     return true;

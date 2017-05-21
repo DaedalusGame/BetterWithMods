@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by tyler on 9/5/16.
@@ -56,9 +58,9 @@ public class SawRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 8, 9);
         guiItemStacks.init(1, false, 57, 9);
-        guiItemStacks.init(3, false, 32, 27);
+        guiItemStacks.init(2, false, 32, 27);
         guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
-        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class).get(0));
-        guiItemStacks.set(3, new ItemStack(BWMBlocks.SAW));
+        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class).stream().flatMap(List::stream).collect(Collectors.toList()));
+        guiItemStacks.set(2, new ItemStack(BWMBlocks.SAW));
     }
 }

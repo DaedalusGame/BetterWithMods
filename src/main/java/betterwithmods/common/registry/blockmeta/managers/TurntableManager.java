@@ -17,10 +17,10 @@ public class TurntableManager extends BlockMetaManager<TurntableRecipe> {
     }
 
     public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
-        if (inputBlock != ItemStack.EMPTY && inputBlock.getItem() instanceof ItemBlock) {
+        if (!inputBlock.isEmpty() && inputBlock.getItem() instanceof ItemBlock) {
             Block iBlock = ((ItemBlock) inputBlock.getItem()).getBlock();
             int iMeta = inputBlock.getMetadata();
-            if (outputBlock == ItemStack.EMPTY)
+            if (outputBlock.isEmpty())
                 addTurntableRecipe(iBlock, iMeta, null, 0, scraps);
             else if (outputBlock.getItem() instanceof ItemBlock) {
                 Block oBlock = ((ItemBlock) outputBlock.getItem()).getBlock();

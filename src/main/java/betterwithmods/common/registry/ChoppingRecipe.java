@@ -49,7 +49,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
             boolean inRecipe = false;
             ItemStack slot = inventory.getStackInSlot(x);
 
-            if (slot != ItemStack.EMPTY) {
+            if (!slot.isEmpty()) {
                 if (isAxe(slot)) {
                     if(!hasAxe) {
                         hasAxe = true;
@@ -107,7 +107,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         for (int i = 0; i < stacks.size(); i++)
         {
             ItemStack stack = inv.getStackInSlot(i);
-            if(stack != ItemStack.EMPTY && isAxe(stack)) {
+            if(!stack.isEmpty() && isAxe(stack)) {
                 ItemStack copy = stack.copy();
                 if(copy.getItem().getHarvestLevel(copy, "axe", null, null) > 1) {
                     stacks.set(i, copy.copy());
@@ -132,9 +132,9 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         if(isMatch(event.craftMatrix))
         {
             if(!event.player.getEntityWorld().isRemote) {
-                if (sawdust != ItemStack.EMPTY)
+                if (!sawdust.isEmpty())
                     event.player.entityDropItem(sawdust.copy(), 0);
-                if (bark != ItemStack.EMPTY)
+                if (!bark.isEmpty())
                     event.player.entityDropItem(bark.copy(), 0);
             }
             else

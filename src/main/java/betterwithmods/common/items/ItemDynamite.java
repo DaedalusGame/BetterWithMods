@@ -30,7 +30,7 @@ public class ItemDynamite extends Item {
         int flintIndex = -1;
 
         for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-            if (player.inventory.mainInventory.get(i) != ItemStack.EMPTY && player.inventory.mainInventory.get(i).getItem() == Items.FLINT_AND_STEEL) {
+            if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == Items.FLINT_AND_STEEL) {
                 flintIndex = i;
                 break;
             }

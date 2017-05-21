@@ -38,7 +38,6 @@ public final class BWMItems {
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
     public static final Item DONUT = new ItemFood(3,1.5f, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
-    public static final Item KNIFE = new ItemKnife(ToolMaterial.IRON).setRegistryName("knife");
     public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
     public static final Item FERTILIZER = new ItemFertilizer().setRegistryName("fertilizer");
     public static final Item STEEL_AXE = new ItemSoulforgedAxe().setRegistryName("steel_axe");
@@ -90,7 +89,6 @@ public final class BWMItems {
         registerItem(WINDMILL);
         registerItem(BARK);
         registerItem(DONUT);
-        registerItem(KNIFE);
         registerItem(DYNAMITE);
         registerItem(FERTILIZER);
         registerItem(STEEL_AXE);
@@ -155,7 +153,6 @@ public final class BWMItems {
         setInventoryModel(WINDMILL);
         setInventoryModel(BARK);
         setInventoryModel(DONUT);
-        setInventoryModel(KNIFE);
         setInventoryModel(DYNAMITE);
         setInventoryModel(FERTILIZER);
         setInventoryModel(STEEL_AXE);

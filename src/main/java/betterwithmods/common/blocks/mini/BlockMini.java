@@ -53,7 +53,7 @@ public abstract class BlockMini extends BWMBlock {
     }
 
     public boolean rotate(World world, BlockPos pos, IBlockState state, EntityPlayer player, PropertyInteger property) {
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY && player.getHeldItem(EnumHand.OFF_HAND) == ItemStack.EMPTY && player.isSneaking();
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) .isEmpty()  && player.getHeldItem(EnumHand.OFF_HAND) .isEmpty()  && player.isSneaking();
         if (world.isRemote && emptyHands)
             return true;
         else if (!world.isRemote && emptyHands) {

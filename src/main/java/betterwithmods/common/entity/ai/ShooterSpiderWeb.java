@@ -32,9 +32,7 @@ public class ShooterSpiderWeb extends EntityAIBase {
         if (target != null) {
             this.target = target;
             double d = spider.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-            if(Math.sqrt(d) < 3 || target.isInWater() || target.isInWeb)
-                return false;
-            return true;
+            return !(Math.sqrt(d) < 3 || target.isInWater() || target.isInWeb);
         }
         return false;
     }

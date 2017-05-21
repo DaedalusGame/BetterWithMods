@@ -87,6 +87,7 @@ public final class BWMBlocks {
     public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
+    public static final Block STAKE = new BlockStake().setRegistryName("stake");
     private BWMBlocks() {
     }
 
@@ -155,6 +156,7 @@ public final class BWMBlocks {
         registerBlock(TEMP_LIQUID_SOURCE, null);
         registerBlock(ADVANCED_BELLOWS);
         registerBlock(IRON_WALL);
+        registerBlock(STAKE);
     }
 
     public static void registerTileEntities() {
@@ -179,6 +181,7 @@ public final class BWMBlocks {
 
         GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "bwm_gearbox", "gearbox", "bwm.gearbox");
         GameRegistry.registerTileEntityWithAlternatives(TileEntityAdvBellows.class, "bwm_bellows", "bellows", "bwm.bellows");
+        GameRegistry.registerTileEntityWithAlternatives(TileStake.class, "bwm_stake", "stake", "bwm.stake");
 
     }
 
@@ -282,6 +285,7 @@ public final class BWMBlocks {
         setInventoryModel(COOKING_POTS);
         setInventoryModel(ADVANCED_BELLOWS);
         setInventoryModel(IRON_WALL);
+        setInventoryModel(STAKE);
     }
 
     @SideOnly(Side.CLIENT)

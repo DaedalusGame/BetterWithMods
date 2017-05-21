@@ -6,7 +6,6 @@ import betterwithmods.module.gameplay.Gameplay;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPig;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -24,7 +23,7 @@ public class RenderPigHarness extends RenderPig {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityPig entity) {
-        if (BreedingHardnessEvent.getHarness(entity) != ItemStack.EMPTY)
+        if (!BreedingHardnessEvent.getHarness(entity).isEmpty())
             return Gameplay.kidFriendly ? HARNESS_KF : HARNESS;
         return super.getEntityTexture(entity);
     }

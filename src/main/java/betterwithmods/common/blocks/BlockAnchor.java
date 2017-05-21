@@ -87,7 +87,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
         ItemStack heldItem = player.getHeldItem(hand);
         BlockPos down = pos.down();
 
-        if (heldItem != ItemStack.EMPTY) {
+        if (!heldItem.isEmpty()) {
             if (heldItem.getItem() instanceof ItemBlock) {
                 Block block = ((ItemBlock) heldItem.getItem()).getBlock();
                 if (block == BWMBlocks.ROPE) {

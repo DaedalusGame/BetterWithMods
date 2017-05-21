@@ -22,7 +22,7 @@ public class CreeperShearing extends Feature{
     public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
         Entity creeper = e.getTarget();
         if (creeper instanceof EntityCreeper) {
-            if (e.getSide().isServer() && creeper.isEntityAlive() && e.getItemStack() != ItemStack.EMPTY) {
+            if (e.getSide().isServer() && creeper.isEntityAlive() && !e.getItemStack().isEmpty()) {
                 if (e.getItemStack().getItem() instanceof ItemShears) {
                     InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
                     EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());

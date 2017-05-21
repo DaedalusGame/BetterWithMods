@@ -38,8 +38,8 @@ public final class ModuleLoader {
     static {
         moduleClasses = new ArrayList();
         registerModule(Hardcore.class);
-        registerModule(Tweaks.class);
         registerModule(Gameplay.class);
+        registerModule(Tweaks.class);
     }
 
     private static List<Class<? extends Module>> moduleClasses;

@@ -92,7 +92,6 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SHARPENING_STONE), "X ", " X", 'X', Items.FLINT).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.KNIFE_BLADE), "I ", " X", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SHARPENING_STONE), 'I', "ingotIron").setMirrored(true));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.KNIFE), "I ", " X", 'X', "stickWood", 'I', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.KNIFE_BLADE)).setMirrored(true));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.PLATFORM), "MWM", " M ", "MWM", 'M', "plankWood", 'W', new ItemStack(BWMBlocks.PANE, 1, 2)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.MINING_CHARGE), "RSR", "DDD", "DDD", 'R', BWMBlocks.ROPE, 'S', "slimeball", 'D', BWMItems.DYNAMITE));

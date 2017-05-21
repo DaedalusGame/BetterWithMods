@@ -157,7 +157,7 @@ public class EntityItemBuoy extends EntityItem {
                 else
                     this.lifespan += hook;
             }
-            if (item != ItemStack.EMPTY && item.getCount() <= 0) {
+            if (item.getCount() <= 0) {
                 this.setDead();
             }
         }

@@ -72,7 +72,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
         if (world.isRemote) {
             ItemStack item = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (item != ItemStack.EMPTY) {
+            if (!item.isEmpty()) {
                 if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
                     return true;
                 else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.FERTILIZER))
@@ -89,7 +89,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
         if (meta == 0) {
             ItemStack stack = hand == EnumHand.MAIN_HAND ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
-            if (stack != ItemStack.EMPTY) {
+            if (!stack.isEmpty()) {
                 boolean valid = false;
 
                 if (stack.getItem() == Items.WATER_BUCKET) {
@@ -129,7 +129,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 return valid;
             }
         } else if (meta == 1) {
-            if (heldItem != ItemStack.EMPTY) {
+            if (!heldItem.isEmpty()) {
                 if (heldItem.getItem() == Items.DYE && heldItem.getItemDamage() == 15) {
                     world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.FERTILE));
                     if (!player.capabilities.isCreativeMode)
@@ -139,7 +139,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 }
             }
         }
-        if (meta != 6 && heldItem != ItemStack.EMPTY && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1) {
+        if (meta != 6 && !heldItem.isEmpty() && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1) {
             EnumPlanterType type = state.getValue(TYPE);
             if (!player.capabilities.isCreativeMode) {
                 if (!player.inventory.addItemStackToInventory(new ItemStack(type.getFill(), 1, type.getBlockMeta())))

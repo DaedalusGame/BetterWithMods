@@ -27,7 +27,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
 
     private boolean shouldEndermanAttackPlayer(@Nonnull EntityEnderman enderman, @Nonnull EntityPlayer player) {
         ItemStack stack = player.inventory.armorInventory.get(3);
-        return !(stack != ItemStack.EMPTY && stack.getItem() == BWMItems.ENDER_SPECTACLES) && enderman.shouldAttackPlayer(player);
+        return !(!stack.isEmpty() && stack.getItem() == BWMItems.ENDER_SPECTACLES) && enderman.shouldAttackPlayer(player);
     }
 
     /**

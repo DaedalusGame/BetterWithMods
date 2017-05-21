@@ -1,8 +1,11 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * Created by tyler on 9/4/16.
@@ -10,10 +13,11 @@ import net.minecraftforge.common.capabilities.Capability;
 public abstract class TileBasicInventory extends TileBasic {
 
     public SimpleStackHandler inventory = createItemStackHandler();
+
     public abstract int getInventorySize();
 
     public SimpleStackHandler createItemStackHandler() {
-        return new SimpleStackHandler(getInventorySize(),this);
+        return new SimpleStackHandler(getInventorySize(), this);
     }
 
     @Override
@@ -36,7 +40,7 @@ public abstract class TileBasicInventory extends TileBasic {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        if(inventory == null)
+        if (inventory == null)
             inventory = createItemStackHandler();
         inventory.deserializeNBT(compound);
         super.readFromNBT(compound);
@@ -46,5 +50,11 @@ public abstract class TileBasicInventory extends TileBasic {
     public void markDirty() {
         super.markDirty();
         writeToNBT(new NBTTagCompound());
+    }
+    @Override
+    public void onBreak() {
+        IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if(inv != null)
+            InvUtils.ejectInventoryContents(world, pos,inv);
     }
 }

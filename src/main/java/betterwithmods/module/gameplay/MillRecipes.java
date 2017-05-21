@@ -25,7 +25,7 @@ public class MillRecipes extends Feature {
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.WHEAT));
 
         addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack(Items.REEDS));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), new Object[]{"cropHemp"});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), "cropHemp");
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), new ItemStack(Items.COAL, 1, 0));
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST), new ItemStack(Items.COAL, 1, 1));
         addMillRecipe(new ItemStack(Items.DYE, 6, 15), new ItemStack(Items.BONE));
@@ -35,7 +35,6 @@ public class MillRecipes extends Feature {
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ItemStack(Items.LEATHER));
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack(Items.RABBIT_HIDE));
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP));
         addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack(Items.BLAZE_ROD));
 
         //Dyes

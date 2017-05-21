@@ -56,7 +56,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper>
         }
 
         stacks.set(outputSlots, wrapper.getRecipe().getOutput());
-        if (wrapper.getRecipe().getSecondary() != ItemStack.EMPTY)
+        if (!wrapper.getRecipe().getSecondary().isEmpty())
             stacks.set(outputSlots + 1, wrapper.getRecipe().getSecondary());
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputs(stacks, inputList);

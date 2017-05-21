@@ -3,7 +3,6 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.items.tools.ItemKnife;
 import betterwithmods.common.registry.ChoppingRecipe;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.module.Feature;
@@ -106,7 +105,7 @@ public class HCLumber extends Feature {
             EntityPlayer player = event.getHarvester();
             if (player != null) {
                 ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe") && !(stack.getItem() instanceof ItemKnife);
+                return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe");
             }
         }
         return false;
@@ -114,7 +113,7 @@ public class HCLumber extends Feature {
 
     public static int getFortune(BlockEvent.HarvestDropsEvent event) {
         EntityPlayer player = event.getHarvester();
-        return player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND) != ItemStack.EMPTY && player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemKnife ? event.getFortuneLevel() : 0;
+        return !player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty() ? event.getFortuneLevel() : 0;
     }
 
     public static boolean isLog(IBlockState state) {

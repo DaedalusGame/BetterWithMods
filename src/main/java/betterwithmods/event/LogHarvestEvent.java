@@ -30,10 +30,10 @@ public class LogHarvestEvent {
             EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
-            if (playerStack == ItemStack.EMPTY)
+            if (playerStack .isEmpty() )
                 return;
             BlockPos playerPos = pos.offset(evt.getFace());
-            if (playerStack != ItemStack.EMPTY && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
+            if (!playerStack.isEmpty() && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
                 if (block == Blocks.LOG) {
                     IBlockState state = world.getBlockState(pos);
                     IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));

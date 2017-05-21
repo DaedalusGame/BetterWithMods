@@ -109,7 +109,7 @@ public class BulkRecipe {
             for (Object obj : required) {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
-                    if (stack != ItemStack.EMPTY) {
+                    if (!stack.isEmpty()) {
                         if (InvUtils.countItemStacksInInventory(inv, stack) < stack.getCount())
                             return false;
                     }
@@ -125,10 +125,10 @@ public class BulkRecipe {
     }
 
     public boolean matches(BulkRecipe recipe) {
-        if (this.getOutput() != ItemStack.EMPTY && recipe.getOutput() != ItemStack.EMPTY) {
+        if (!this.getOutput().isEmpty() && !recipe.getOutput().isEmpty()) {
             boolean match = this.stacksMatch(this.getOutput(), recipe.getOutput());
-            if (match && (this.getSecondary() != ItemStack.EMPTY || recipe.getSecondary() != ItemStack.EMPTY)) {
-                match = this.getSecondary() != ItemStack.EMPTY && recipe.getSecondary() != ItemStack.EMPTY;
+            if (match && (!this.getSecondary().isEmpty() || !recipe.getSecondary().isEmpty())) {
+                match = !this.getSecondary().isEmpty() && !recipe.getSecondary().isEmpty();
                 if (match)
                     match = this.stacksMatch(this.getSecondary(), recipe.getSecondary());
             }
@@ -146,7 +146,7 @@ public class BulkRecipe {
                 if (obj instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
 
-                    if (stack != ItemStack.EMPTY) {
+                    if (!stack.isEmpty()) {
                         if (!InvUtils.consumeItemsInInventory(inv, stack, stack.getCount(), false))
                             success = false;
                     }

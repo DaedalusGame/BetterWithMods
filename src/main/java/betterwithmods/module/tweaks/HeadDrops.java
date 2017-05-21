@@ -63,7 +63,7 @@ public class HeadDrops extends Feature {
             Entity e = source.getSourceOfDamage();
             if (e instanceof EntityLivingBase) {
                 ItemStack held = ((EntityLivingBase) e).getHeldItemMainhand();
-                if (held != ItemStack.EMPTY && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
+                if (!held.isEmpty() && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
                     return true;
                 }
             }

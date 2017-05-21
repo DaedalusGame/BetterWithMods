@@ -32,7 +32,7 @@ public class CuttingRecipe extends ShapelessOreRecipe {
             boolean inRecipe = false;
             ItemStack slot = inv.getStackInSlot(x);
 
-            if (slot != ItemStack.EMPTY) {
+            if (!slot.isEmpty()) {
                 if (isShears(slot)) {
                     if(!hasShears) {
                         hasShears = true;
@@ -70,7 +70,7 @@ public class CuttingRecipe extends ShapelessOreRecipe {
         for (int i = 0; i < stacks.size(); i++)
         {
             ItemStack stack = inv.getStackInSlot(i);
-            if(stack != ItemStack.EMPTY && isShears(stack)) {
+            if(!stack.isEmpty() && isShears(stack)) {
                 ItemStack copy = stack.copy();
                 if (!copy.attemptDamageItem(1, new Random())) {
                     stacks.set(i, copy.copy());

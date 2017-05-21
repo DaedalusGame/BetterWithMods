@@ -16,4 +16,9 @@ public class SimpleStackHandler extends ItemStackHandler {
     public void onContentsChanged(int slot) {
         tile.markDirty();
     }
+
+    @Override
+    public String toString() {
+        return stacks.toString();
+    }
 }

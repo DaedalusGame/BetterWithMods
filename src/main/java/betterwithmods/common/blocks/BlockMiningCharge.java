@@ -139,7 +139,7 @@ public class BlockMiningCharge extends BWMBlock {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (heldItem != ItemStack.EMPTY && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
+        if (!heldItem.isEmpty() && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
             this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 

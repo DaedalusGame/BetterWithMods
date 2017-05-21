@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.tile.TileBasic;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -51,5 +52,14 @@ public abstract class BWMBlock extends Block implements ITurnable {
 
     @Override
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if(!worldIn.isRemote && worldIn.getTileEntity(pos) instanceof TileBasic) {
+            ((TileBasic) worldIn.getTileEntity(pos)).onBreak();
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
+        super.breakBlock(worldIn,pos,state);
     }
 }

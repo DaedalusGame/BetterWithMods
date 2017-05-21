@@ -83,12 +83,12 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     public boolean processRightClick(EntityPlayer player) {
-        if (player.getHeldItem(EnumHand.MAIN_HAND) != ItemStack.EMPTY) {
+        if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
             if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == Items.CLOCK) {
                 toggleAsynchronous(player);
                 return true;
             }
-        } else if (player.getHeldItemMainhand() == ItemStack.EMPTY) {
+        } else if (player.getHeldItemMainhand().isEmpty()) {
             advanceTimerPos();
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
@@ -299,7 +299,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                     block.rotateAroundYAxis(getWorld(), pos, reverse);
             } else if (state != state.withRotation(rot))
                 getWorld().setBlockState(pos, state.withRotation(rot));
-            rotateCraftable(state, (TurntableRecipe) TurntableManager.INSTANCE.getRecipe(stack), pos, reverse);
+            rotateCraftable(state, TurntableManager.INSTANCE.getRecipe(stack), pos, reverse);
             this.potteryRotated = true;
         } else if (target instanceof ITurnable) {
             ITurnable block = (ITurnable) target;

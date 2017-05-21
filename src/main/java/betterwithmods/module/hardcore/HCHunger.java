@@ -259,7 +259,7 @@ public class HCHunger extends Feature {
             int i = EnchantmentHelper.getEfficiencyModifier(player);
             ItemStack itemstack = player.getHeldItemMainhand();
 
-            if (i > 0 && itemstack != ItemStack.EMPTY) {
+            if (i > 0 && !itemstack.isEmpty()) {
                 float intermediate = (float) (i * i + 1);
 
                 if (!itemstack.canHarvestBlock(state) && f <= 1.0F) {
@@ -388,7 +388,7 @@ public class HCHunger extends Feature {
             f = 1.0F;
         }
 
-        if (player.isHandActive() && player.getActiveItemStack() != ItemStack.EMPTY
+        if (player.isHandActive() && !player.getActiveItemStack().isEmpty()
                 && player.getActiveItemStack().getItem() == Items.BOW) {
             int i = player.getItemInUseMaxCount();
             float f1 = (float) i / 20.0F;
@@ -407,7 +407,7 @@ public class HCHunger extends Feature {
 
     @SubscribeEvent
     public void saveSoup(LivingEntityUseItemEvent.Finish event) {
-        if (event.getItem() != ItemStack.EMPTY) {
+        if (!event.getItem().isEmpty()) {
             if (event.getItem().getItem() instanceof ItemSoup) {
                 if (event.getItem().getCount() > 0) {
                     ItemStack result = event.getResultStack();

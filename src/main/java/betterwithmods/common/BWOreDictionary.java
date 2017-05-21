@@ -60,10 +60,8 @@ public class BWOreDictionary {
         registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
         registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
-        registerOre("craftingToolKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         // TFC compatibility
-        registerOre("itemKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("fiberHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS));
         registerOre("fabricHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_CLOTH));
 

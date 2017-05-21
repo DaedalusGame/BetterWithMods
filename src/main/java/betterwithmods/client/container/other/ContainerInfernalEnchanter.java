@@ -94,7 +94,7 @@ public class ContainerInfernalEnchanter extends Container {
         Enchantment enchantment = null;
         int enchantCount = 1;
         int maxBookcase = tile.getBookcaseCount();
-        if (scroll != ItemStack.EMPTY && toEnchant != ItemStack.EMPTY) {
+        if (!scroll.isEmpty() && !toEnchant.isEmpty()) {
             enchantment = scroll.getTagCompound() != null ? Enchantment.getEnchantmentByID(scroll.getTagCompound().getInteger("enchant")) : null;
             enchantCount = EnchantmentHelper.getEnchantments(toEnchant).size() + 1;
 
@@ -161,7 +161,7 @@ public class ContainerInfernalEnchanter extends Container {
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
 
-            if (stack != ItemStack.EMPTY && !playerIn.getEntityWorld().isRemote)
+            if (!stack.isEmpty() && !playerIn.getEntityWorld().isRemote)
                 InvUtils.ejectStack(playerIn.getEntityWorld(), playerIn.posX, playerIn.posY, playerIn.posZ, stack);
         }
     }

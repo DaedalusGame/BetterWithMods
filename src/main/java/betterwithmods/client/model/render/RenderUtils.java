@@ -24,7 +24,7 @@ public class RenderUtils {
     private static RenderItem renderItem;
 
     public static boolean filterContains(ItemStack stack) {
-        return stack != ItemStack.EMPTY && filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata());
+        return !stack.isEmpty() && filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata());
     }
 
     public static ModelWithResource getModelFromStack(ItemStack stack) {

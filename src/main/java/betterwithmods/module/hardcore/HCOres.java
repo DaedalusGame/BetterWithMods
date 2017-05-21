@@ -4,6 +4,7 @@ import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.util.RecipeUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -15,9 +16,9 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,19 +27,20 @@ import java.util.stream.Collectors;
 public class HCOres extends Feature {
 
     private static boolean oreNuggetSmelting, dustNuggetSmelting, fixVanillaRecipes;
-    private static StringList oreExclude, dustExclude;
+    private static Set<String> oreExclude, dustExclude;
     private static int oreProductionCount;
+
     @Override
     public void setupConfig() {
         oreNuggetSmelting = loadPropBool("Ore to Nugget Smelting", "Make Ores (oredict ore.* )smelt into nuggets instead of ingots", true);
 
-        oreExclude = StringList.asList(loadPropStringList("Ore Exclude", "Oredictionary entries to exclude from ore to nugget smelting. Remove the prefix of the oredictionary. example 'oreIron' would be just 'iron' ", new String[0]));
-        dustExclude = StringList.asList(loadPropStringList("Dust Exclude", "Oredictionary entries to exclude from dust to nugget smelting  Remove the prefix of the oredictionary. example 'dustIron' would be just 'iron'", new String[0]));
+        oreExclude = Arrays.stream(loadPropStringList("Ore Exclude", "Oredictionary entries to exclude from ore to nugget smelting. Remove the prefix of the oredictionary. example 'oreIron' would be just 'iron' ", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
+        dustExclude = Arrays.stream(loadPropStringList("Dust Exclude", "Oredictionary entries to exclude from dust to nugget smelting  Remove the prefix of the oredictionary. example 'dustIron' would be just 'iron'", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
 
         dustNuggetSmelting = loadPropBool("Dust to Nugget Smelting", "Make Dusts ( oredict dust.* ) smelt into nuggets instead of ingots", true);
         fixVanillaRecipes = loadPropBool("Fix Vanilla Recipes", "Make certain recipes cheaper to be more reasonable with nugget smelting, including Compass, Clock, and Bucket", true);
 
-        oreProductionCount = loadPropInt("Ore Production Count","Number of Materials returned from Smelting an Ore", 1);
+        oreProductionCount = loadPropInt("Ore Production Count", "Number of Materials returned from Smelting an Ore", 1);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class HCOres extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        if(fixVanillaRecipes) {
+        if (fixVanillaRecipes) {
             RecipeUtils.removeRecipes(Items.COMPASS, 0);
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
             RecipeUtils.removeRecipes(Items.CLOCK, 0);
@@ -63,18 +65,19 @@ public class HCOres extends Feature {
             RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
         }
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3),new Object[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new Object[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3),new Object[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+        Set<String> oreExcludes = Sets.union(oreExclude, Sets.newHashSet("diamond"));
         if (oreNuggetSmelting) {
-            List<Pair<ItemStack, String>> oreSuffixes = BWOreDictionary.oreNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "ore"))).filter(p -> !oreExclude.contains(p.getValue())).collect(Collectors.toList());
+            List<Pair<ItemStack, String>> oreSuffixes = BWOreDictionary.oreNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "ore"))).filter(p -> !oreExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
             oreSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
                 ItemStack n = nugget.copy();
                 n.setCount(oreProductionCount);
@@ -82,43 +85,13 @@ public class HCOres extends Feature {
                 FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
             }));
         }
+        Set<String> dustExcludes = Sets.union(dustExclude, Sets.newHashSet("diamond"));
         if (dustNuggetSmelting) {
-            List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter(p -> !dustExclude.contains(p.getValue())).collect(Collectors.toList());
+            List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter(p -> !dustExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
             dustSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
                 RecipeUtils.removeFurnaceRecipe(pair.getKey());
                 FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), nugget);
             }));
-        }
-    }
-
-    private static class StringList extends ArrayList<String> {
-        public static StringList asList(String[] array) {
-            StringList list = new StringList();
-            list.addAll(Arrays.asList(array));
-            return list;
-        }
-
-        public boolean contains(String o) {
-            return indexOf(o) >= 0;
-        }
-
-
-        public int indexOf(String var1) {
-            int var2;
-            if(var1 == null) {
-                for(var2 = 0; var2 < this.size(); ++var2) {
-                    if(this.get(var2) == null) {
-                        return var2;
-                    }
-                }
-            } else {
-                for(var2 = 0; var2 < this.size(); ++var2) {
-                    if(var1.equalsIgnoreCase(this.get(var2))) {
-                        return var2;
-                    }
-                }
-            }
-            return -1;
         }
     }
 

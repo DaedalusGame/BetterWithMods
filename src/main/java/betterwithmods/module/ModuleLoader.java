@@ -51,7 +51,7 @@ public final class ModuleLoader {
     public static File configFile;
 
     public static void preInit(FMLPreInitializationEvent event) {
-        moduleClasses.forEach(clazz -> {
+        moduleClasses.stream().forEachOrdered(clazz -> {
             try {
                 moduleInstances.put(clazz, clazz.newInstance());
             } catch (Exception e) {
@@ -156,11 +156,11 @@ public final class ModuleLoader {
     }
 
     public static void forEachModule(Consumer<Module> consumer) {
-        moduleInstances.values().forEach(consumer);
+        moduleInstances.values().stream().forEachOrdered(consumer);
     }
 
     public static void forEachEnabled(Consumer<Module> consumer) {
-        enabledModules.forEach(consumer);
+        enabledModules.stream().forEachOrdered(consumer);
     }
 
     private static void registerModule(Class<? extends Module> clazz) {

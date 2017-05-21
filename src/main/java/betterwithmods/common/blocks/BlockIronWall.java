@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
@@ -15,6 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockIronWall extends BWMBlock {
     public BlockIronWall() {
         super(Material.IRON);
+        setHardness(5.0F);
+        setResistance(10.0F);
+        setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)

@@ -33,8 +33,6 @@ public class BlockIronWall extends BWMBlock {
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         IBlockState state = blockAccess.getBlockState(pos.offset(side));
-        if (state.getBlock() instanceof BlockIronWall)
-            return false;
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return !(state.getBlock() instanceof BlockIronWall) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }

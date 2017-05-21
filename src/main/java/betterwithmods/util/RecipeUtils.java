@@ -50,8 +50,8 @@ public final class RecipeUtils {
             }
         }
 
-        List<IRecipe> toRemove = new ArrayList<IRecipe>();
-        List<Integer> removeIndex = new ArrayList<Integer>();
+        List<IRecipe> toRemove = new ArrayList<>();
+        List<Integer> removeIndex = new ArrayList<>();
         outer:
         for(int i = 0; i < recipes.size(); i++) {
             IRecipe recipe = recipes.get(i);
@@ -160,7 +160,7 @@ public final class RecipeUtils {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
                     if (!output.isEmpty()) {
-                        CauldronRecipes.addCauldronRecipe(output.copy(), new ItemStack[]{input.copy()});
+                        CauldronRecipes.addCauldronRecipe(output.copy(),new Object[]{input.copy()});
                     }
                 }
             }

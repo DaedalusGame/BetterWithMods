@@ -58,6 +58,8 @@ public class Stack {
 
     @Override
     public boolean equals(Object o) {
+        if(!(o instanceof Stack))
+            return false;
         Stack stack = (Stack) o;
         boolean wild = meta == OreDictionary.WILDCARD_VALUE || stack.meta == OreDictionary.WILDCARD_VALUE;
         return wild ? stack.data == this.data : (stack.data == this.data && this.meta == stack.meta);

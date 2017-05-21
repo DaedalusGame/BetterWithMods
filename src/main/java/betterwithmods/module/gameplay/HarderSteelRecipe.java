@@ -18,14 +18,14 @@ public class HarderSteelRecipe extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)});
+        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX),new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)});
         KilnRecipes.addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG));
         CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0), "dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)});
+        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE),new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)});
         KilnRecipes.addKilnRecipe(Blocks.END_STONE, 0, new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE));
         CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0), "dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron");
     }

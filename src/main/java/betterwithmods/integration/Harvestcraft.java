@@ -44,8 +44,8 @@ public class Harvestcraft implements ICompatModule {
         MillRecipes.addMillRecipe(new ItemStack(cinnamonPowder), new ItemStack(cinnamon));
         MillRecipes.addMillRecipe(new ItemStack(nutmegPowder), new ItemStack(nutmeg));
         MillRecipes.addMillRecipe(new ItemStack(curryPowder), new ItemStack(curry));
-        CauldronRecipes.addCauldronRecipe(new ItemStack(boiledEgg), new ItemStack[]{new ItemStack(Items.EGG)});
-        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BREAD), new ItemStack[]{new ItemStack(dough)});
+        CauldronRecipes.addCauldronRecipe(new ItemStack(boiledEgg),new Object[]{new ItemStack(Items.EGG)});
+        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BREAD),new Object[]{new ItemStack(dough)});
         OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan"));
     }

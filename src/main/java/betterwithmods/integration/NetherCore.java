@@ -35,7 +35,7 @@ public class NetherCore implements ICompatModule {
         Item nether_spore = Item.REGISTRY.getObject(new ResourceLocation(MODID, "nether_spore"));
         RecipeUtils.removeRecipes(nether_spore, 0);
         CauldronRecipes.addCauldronRecipe(new ItemStack(nether_spore),
-                new ItemStack[]{new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Blocks.MYCELIUM), new ItemStack(BWMBlocks.URN, 8, 8), new ItemStack(Items.NETHER_WART)}
+               new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Blocks.MYCELIUM), new ItemStack(BWMBlocks.URN, 8, 8), new ItemStack(Items.NETHER_WART)}
         );
     }
 

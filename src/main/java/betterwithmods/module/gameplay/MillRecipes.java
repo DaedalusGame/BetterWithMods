@@ -21,7 +21,7 @@ public class MillRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addMillRecipe(new ItemStack(Items.STRING, 10), new ItemStack(Items.DYE, 3, 1), new ItemStack[]{new ItemStack(BWMBlocks.WOLF)});
+        addMillRecipe(new ItemStack(Items.STRING, 10), new ItemStack(Items.DYE, 3, 1),new Object[]{new ItemStack(BWMBlocks.WOLF)});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.WHEAT));
 
         addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack(Items.REEDS));

@@ -61,9 +61,7 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
 
     public T getRecipe(Block block, int meta) {
         Optional<T> recipe = recipes.stream().filter(r -> r.equals(block, meta)).findFirst();
-        if (recipe.isPresent())
-            return recipe.get();
-        return null;
+        return recipe.orElse(null);
     }
 
     public List<ItemStack> getProducts(Block block, int meta) {

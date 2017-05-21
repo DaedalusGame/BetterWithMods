@@ -63,12 +63,12 @@ public class HCOres extends Feature {
             RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
         }
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3),new Object[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3),new Object[]{new ItemStack(Items.BUCKET)});
     }
 
     @Override

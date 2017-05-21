@@ -1,6 +1,7 @@
 package betterwithmods.util;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class InvUtils {
+
+    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable)player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        if(inventory != null) {
+            return consumeItemsInInventory(inventory, stack, amount, false);
+        }
+        return false;
+    }
+
 
     public static Optional<IItemHandler> getItemHandler(World world, BlockPos pos, EnumFacing facing) {
 

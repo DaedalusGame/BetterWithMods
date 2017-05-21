@@ -25,7 +25,7 @@ public class SawRecipes extends Feature {
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
-        addSawRecipe(block, meta,new Object[]{output});
+        addSawRecipe(block, meta,new ItemStack[]{output});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack... outputs) {

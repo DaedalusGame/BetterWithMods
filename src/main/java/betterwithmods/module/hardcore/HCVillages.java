@@ -68,7 +68,7 @@ public class HCVillages extends Feature {
 
     @Override
     public boolean hasTerrainSubscriptions() {
-        return //intentional compile error;
+        return false;//intentional compile error;
     }
 
 

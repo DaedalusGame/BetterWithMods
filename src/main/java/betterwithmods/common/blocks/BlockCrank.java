@@ -3,7 +3,9 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.hardcore.HCHunger;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -69,7 +71,8 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
         if (meta == 0) {
             if (Gameplay.crankExhaustion > 0.0) {
-                if (player.getFoodStats().getFoodLevel() > 20) {
+                int minHunger = ModuleLoader.isFeatureEnabled(HCHunger.class) ? 20 : 6;
+                if (player.getFoodStats().getFoodLevel() > minHunger) {
                     player.addExhaustion((float) Gameplay.crankExhaustion);
                     if (!world.isRemote) {
                         toggleSwitch(world, pos, state);

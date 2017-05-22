@@ -28,10 +28,10 @@ import java.util.function.Predicate;
  * Created by tyler on 5/21/17.
  */
 public class HCSeeds extends Feature {
-    public static Set<Block> BLOCKS_TO_STOP = Sets.newHashSet();
+    public static Set<IBlockState> BLOCKS_TO_STOP = Sets.newHashSet();
     private static Predicate<IBlockState> STOP_SEEDS = state -> {
         Block block = state.getBlock();
-        return BLOCKS_TO_STOP.contains(block) || block instanceof BlockTallGrass || (block instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN));
+        return BLOCKS_TO_STOP.contains(state) || block instanceof BlockTallGrass || (block instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN));
     };
     @Override
     public String getFeatureDescription() {

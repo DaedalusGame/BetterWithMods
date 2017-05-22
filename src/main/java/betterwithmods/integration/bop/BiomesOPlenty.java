@@ -37,9 +37,10 @@ public class BiomesOPlenty implements ICompatModule {
         NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "flesh")));
         NetherSpawnWhitelist.addBlock(Block.REGISTRY.getObject(new ResourceLocation(MODID, "ash_block")));
 
-        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_0")));
-        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_1")));
-        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "double_plant")));
+        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_0")).getStateFromMeta(0));
+        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_0")).getStateFromMeta(1));
+        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_0")).getStateFromMeta(7));
+        HCSeeds.BLOCKS_TO_STOP.add(Block.REGISTRY.getObject(new ResourceLocation(MODID, "plant_0")).getStateFromMeta(8));
         HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "grass")), 5, new ItemStack(BWMItems.DIRT_PILE, 3));
         HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "grass")), 7, new ItemStack(BWMItems.DIRT_PILE, 3));
 

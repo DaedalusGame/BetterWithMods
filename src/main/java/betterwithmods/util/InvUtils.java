@@ -25,7 +25,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class InvUtils {
-
+    public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable)player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        if(inventory != null) {
+            return consumeItemsInInventoryStrict(inventory, stack, amount, false);
+        }
+        return false;
+    }
     public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable)player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
         if(inventory != null) {
@@ -198,7 +204,36 @@ public class InvUtils {
         }
         return ret;
     }
-
+    public static boolean consumeItemsInInventoryStrict(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
+        for (int i = 0; i < inv.getSlots(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    if (toCheck.hasTagCompound()) {
+                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
+                            if (stack.getCount() >= sizeOfStack) {
+                                decrStackSize(inv, i, sizeOfStack);
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                    } else {
+                        if (stack.getCount() >= sizeOfStack) {
+                            if (!simulate)
+                                decrStackSize(inv, i, sizeOfStack);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);

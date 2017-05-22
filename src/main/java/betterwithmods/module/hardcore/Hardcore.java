@@ -28,12 +28,14 @@ public class Hardcore extends Module {
         registerFeature(new HCOres());
         registerFeature(new HCPiles());
         registerFeature(new HCRedstone());
+        registerFeature(new HCSeeds());
         registerFeature(new HCSpawn());
         registerFeature(new HCStructures());
         registerFeature(new HCStumping());
         registerFeature(new HCTools());
         registerFeature(new HCTorches());
-        registerFeature(new HCSeeds());
+
+        registerFeature(new HCVillages());
     }
 
     @Override

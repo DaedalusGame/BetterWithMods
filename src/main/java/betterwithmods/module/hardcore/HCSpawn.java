@@ -6,10 +6,12 @@ import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -20,7 +22,7 @@ public class HCSpawn extends Feature {
 
     public static final int HARDCORE_SPAWN_RADIUS = 2000;
     public static final int HARDCORE_SPAWN_COOLDOWN_RADIUS = 100;
-    public static final int HARDCORE_SPAWN_COOLDOWN = 0;//24000;//20 min
+    public static final int HARDCORE_SPAWN_COOLDOWN = 24000;//20 min
     public static final int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
 
     @Override
@@ -42,12 +44,30 @@ public class HCSpawn extends Feature {
         EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
         if (EntityPlayerExt.isSurvival(player)) {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
-            int spawnFuzz = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;
+            boolean isNew = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN;
+            int spawnFuzz = isNew ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;
             BlockPos newPos = getRespawnPoint(player, spawnFuzz);
             player.setSpawnPoint(newPos, true);
+            if(isNew) {
+                clearConditions(player);
+            }
         }
     }
 
+
+    public void clearConditions(EntityPlayer player) {
+        World world = player.world;
+        WorldInfo worldinfo = world.getWorldInfo();
+        if(!(player.getServer() instanceof DedicatedServer) && world.playerEntities.size() == 1) {
+            world.setWorldTime(1000); //Early Morning
+            //Clear Weather
+            worldinfo.setCleanWeatherTime(18000);
+            worldinfo.setRainTime(0);
+            worldinfo.setThunderTime(0);
+            worldinfo.setRaining(false);
+            worldinfo.setThundering(false);
+        }
+    }
     /**
      * Find a random position to respawn. Tries 20 times maximum to find a
      * suitable place. Else, the previous SP will remain unchanged.

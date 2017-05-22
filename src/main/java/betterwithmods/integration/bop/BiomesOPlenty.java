@@ -46,7 +46,7 @@ public class BiomesOPlenty implements ICompatModule {
         HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "farmland_0")), 0, new ItemStack(PILES, 3, 0));
         HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "farmland_0")), 1, new ItemStack(PILES, 3, 1));
         HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "farmland_1")), 0, new ItemStack(PILES, 3, 2));
-        
+
         for (int i = 2; i <= 4; i++)
             HCPiles.registerPile(Block.REGISTRY.getObject(new ResourceLocation(MODID, "grass")), i, new ItemStack(PILES, 3, i - 2));
         for (int i = 0; i <= 2; i++) {

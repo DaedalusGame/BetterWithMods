@@ -81,7 +81,6 @@ public class HCPiles extends Feature {
 
         if (blockStateToPile.containsKey(state)) {
             ItemStack pile = blockStateToPile.get(state);
-            System.out.println(state.getBlock().getMetaFromState(state));
             event.getDrops().clear();
             if (event.getWorld().rand.nextFloat() <= event.getDropChance()) {
                 event.getDrops().add(pile);

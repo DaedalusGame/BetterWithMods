@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockGrass;
@@ -20,12 +21,18 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Created by tyler on 5/21/17.
  */
 public class HCSeeds extends Feature {
-
+    public static Set<Block> BLOCKS_TO_STOP = Sets.newHashSet();
+    private static Predicate<IBlockState> STOP_SEEDS = state -> {
+        Block block = state.getBlock();
+        return BLOCKS_TO_STOP.contains(block) || block instanceof BlockTallGrass || (block instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN));
+    };
     @Override
     public String getFeatureDescription() {
         return "Requires Tilling the ground with a hoe to get seeds.";
@@ -33,12 +40,7 @@ public class HCSeeds extends Feature {
 
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
-        Block block = event.getState().getBlock();
-
-        boolean clear = block instanceof BlockTallGrass;
-        if (block instanceof BlockDoublePlant)
-            clear = event.getState().getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || event.getState().getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN;
-        if(clear)
+        if(STOP_SEEDS.test(event.getState()))
             event.getDrops().clear();
     }
 

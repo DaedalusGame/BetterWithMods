@@ -51,7 +51,7 @@ public class BWMod {
 
     static {
         CompatMap map = new CompatMap(
-                "biomesoplenty", "betterwithmods.integration.BiomesOPlenty",
+                "biomesoplenty", "betterwithmods.integration.bop.BiomesOPlenty",
                 "harvestcraft", "betterwithmods.integration.Harvestcraft",
                 "crafttweaker", "betterwithmods.integration.minetweaker.MineTweaker",
                 "quark", "betterwithmods.integration.Quark",

@@ -5,6 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -26,9 +27,18 @@ public class HCPiles extends Feature {
         return true;
     }
 
-    public static Map<Block, ItemStack> blockToPile = new HashMap<>();
+    public static Map<IBlockState, ItemStack> blockStateToPile = new HashMap<>();
+
+    public static void registerPile(Block block, int meta, ItemStack stack) {
+        registerPile(block.getStateFromMeta(meta), stack);
+    }
+
     public static void registerPile(Block block, ItemStack stack) {
-        blockToPile.put(block,stack);
+        registerPile(block.getDefaultState(), stack);
+    }
+
+    public static void registerPile(IBlockState block, ItemStack stack) {
+        blockStateToPile.put(block, stack);
     }
 
     @Override
@@ -58,7 +68,7 @@ public class HCPiles extends Feature {
 
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
-        Block block = event.getState().getBlock();
+        IBlockState state = event.getState();
         boolean shouldDropInferior = true;
         EntityPlayer player = event.getHarvester();
         if (player != null) {
@@ -69,8 +79,9 @@ public class HCPiles extends Feature {
             return;
         }
 
-        if (blockToPile.containsKey(block)) {
-            ItemStack pile = blockToPile.get(block);
+        if (blockStateToPile.containsKey(state)) {
+            ItemStack pile = blockStateToPile.get(state);
+            System.out.println(state.getBlock().getMetaFromState(state));
             event.getDrops().clear();
             if (event.getWorld().rand.nextFloat() <= event.getDropChance()) {
                 event.getDrops().add(pile);

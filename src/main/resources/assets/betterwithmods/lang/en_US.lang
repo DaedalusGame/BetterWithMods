@@ -336,6 +336,10 @@ item.bwm:gravel_pile.name=Pile of Gravel
 item.bwm:dirt_pile.name=Pile of Dirt
 item.bwm:sand_pile.name=Pile of Sand
 
+item.bwm:bop_piles.loamy_dirt_pile.name=Pile of Loamy Dirt
+item.bwm:bop_piles.silty_dirt_pile.name=Pile of Silty Dirt
+item.bwm:bop_piles.sandy_dirt_pile.name=Pile of Sandy Dirt
+
 enchantment.level.-1=
 lore.bwm:dynamite=Dwarven Fishing Pole
 

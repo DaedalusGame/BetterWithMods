@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -29,19 +30,19 @@ public class Piles {
         if (InputHelper.isABlock(block) && (a.getItem() instanceof ItemBlock)) {
             b = ((ItemBlock) a.getItem()).getBlock();
         }
-        HashMap<Block, ItemStack> map = Maps.newHashMap();
-        map.put(b, InputHelper.toStack(stack));
+        HashMap<IBlockState, ItemStack> map = Maps.newHashMap();
+        map.put(b.getStateFromMeta(a.getMetadata()), InputHelper.toStack(stack));
         MineTweakerAPI.apply(new AddPile(map));
     }
 
-    public static class AddPile extends BaseMapAddition<Block, ItemStack> {
-        public AddPile(HashMap<Block, ItemStack> map) {
-            super("piles", HCPiles.blockToPile, map);
+    public static class AddPile extends BaseMapAddition<IBlockState, ItemStack> {
+        public AddPile(HashMap<IBlockState, ItemStack> map) {
+            super("piles", HCPiles.blockStateToPile, map);
         }
 
         @Override
-        protected String getRecipeInfo(Map.Entry<Block, ItemStack> recipe) {
-            return recipe.getKey().getLocalizedName();
+        protected String getRecipeInfo(Map.Entry<IBlockState, ItemStack> recipe) {
+            return recipe.getKey().getBlock().getLocalizedName();
         }
     }
 }

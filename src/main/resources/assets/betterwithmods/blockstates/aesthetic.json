@@ -66,6 +66,18 @@
         "textures": {
           "side": "betterwithmods:blocks/enderblock"
         }
+      },
+	  "padding": {
+        "textures": {
+          "side": "betterwithmods:blocks/padding"
+        }
+      },
+	  "soap": {
+        "textures": {
+          "up": "betterwithmods:blocks/soap_top",
+          "down": "betterwithmods:blocks/soap",
+          "side": "betterwithmods:blocks/soap"
+        }
       }
     }
   }

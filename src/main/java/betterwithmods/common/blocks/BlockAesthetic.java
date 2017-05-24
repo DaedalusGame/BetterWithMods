@@ -61,7 +61,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock"};
+        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock", "blocktype=padding", "blocktype=soap"};
     }
 
     @Override
@@ -107,7 +107,9 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         FLINT(5, "flint", MapColor.STONE),
         WHITESTONE(6, "whitestone", MapColor.CLOTH),
         WHITECOBBLE(7, "whitecobble", MapColor.CLOTH),
-        ENDERBLOCK(8, "enderblock", MapColor.CYAN);
+        ENDERBLOCK(8, "enderblock", MapColor.CYAN),
+        PADDING(9, "padding", MapColor.CLOTH),
+        SOAP(10, "soap", MapColor.PINK);
 
         private static final BlockAesthetic.EnumType[] META_LOOKUP = new BlockAesthetic.EnumType[values().length];
 

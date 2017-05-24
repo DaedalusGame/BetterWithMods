@@ -11,7 +11,7 @@
 package betterwithmods.module;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.CompatModule;
+import betterwithmods.module.compat.CompatModule;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.Hardcore;
 import betterwithmods.module.tweaks.Tweaks;

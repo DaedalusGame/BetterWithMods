@@ -38,5 +38,12 @@
       "betterwithmods:metal/metal_chime_2"
     ],
     "subtitle": "subtitles.bwm.metal.chime"
+  },
+  "entity.player.oof": {
+    "category": "player",
+    "sounds": [
+      "betterwithmods:player/oof"
+    ],
+    "subtitle": "subtitles.bwm.oof"
   }
 }

@@ -10,7 +10,9 @@ import net.minecraftforge.client.GuiIngameForge;
 /**
  * Created by tyler on 5/13/17.
  */
-public class GuiGloom {
+public class GuiStatusEffect {
+    public static GuiStatusEffect INSTANCE = null;
+
     private final Minecraft mc = Minecraft.getMinecraft();
 
     public void draw() {
@@ -30,14 +32,23 @@ public class GuiGloom {
             return false;
         } else {
             FontRenderer fontRenderer = this.mc.fontRendererObj;
-            String text = EntityPlayerExt.getGloomPenalty(mc.player).getDescription();
-            if (!text.equals("")) {
-                int width = fontRenderer.getStringWidth(text);
-                fontRenderer.drawStringWithShadow(text, left - width, top,
+            String status = EntityPlayerExt.getWorstPenalty(mc.player).getDescription();
+            String gloom = EntityPlayerExt.getGloomPenalty(mc.player).getDescription();
+            if (!status.equals("")) {
+                int width = fontRenderer.getStringWidth(status);
+                fontRenderer.drawStringWithShadow(status, left - width, top,
                         16777215);
                 GuiIngameForge.right_height += 10;
                 return true;
             }
+            if (!gloom.equals("")) {
+                int width = fontRenderer.getStringWidth(gloom);
+                fontRenderer.drawStringWithShadow(gloom, left - width, top,
+                        16777215);
+                GuiIngameForge.right_height += 10;
+                return true;
+            }
+
             return false;
         }
     }

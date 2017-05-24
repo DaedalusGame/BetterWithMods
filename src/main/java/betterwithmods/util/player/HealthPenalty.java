@@ -11,7 +11,7 @@ public enum HealthPenalty implements IPlayerPenalty {
     INJURED(0.75F, "Injured"),
     WOUNDED(0.5F, "Wounded"),
     CRIPPLED(0.25F, "Crippled"),
-    DYING(0.25F, "Dying");
+    DYING(0.20F, "Dying");
 
     private final float modifier;
     private final String description;

@@ -43,18 +43,16 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new FeedWolfchopEvent());
+        MinecraftForge.EVENT_BUS.register(new StatusEffectEvent());
     }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
-
         ModuleLoader.preInit(evt);
         BWRegistry.preInit();
-
         NetworkHandler.register(MessageSyncModule.class, Side.CLIENT);
         proxy.preInit(evt);
-
     }
 
     @EventHandler
@@ -71,7 +69,6 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-
         registerEventHandlers();
         RecipeUtils.refreshRecipes();
         if (evt.getSide().isServer())

@@ -1,6 +1,5 @@
 package betterwithmods.module.hardcore;
 
-import betterwithmods.client.gui.GuiGloom;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.EntityPlayerExt;
@@ -16,7 +15,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -119,14 +117,9 @@ public class HCGloom extends Feature {
         return true;
     }
 
-    private GuiGloom guiGloom = null;
-
-    @SubscribeEvent
-    public void renderStatus(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
-            if (guiGloom == null)
-                guiGloom = new GuiGloom();
-            guiGloom.draw();
-        }
+    @Override
+    public boolean requiresMinecraftRestartToEnable() {
+        return true;
     }
+
 }

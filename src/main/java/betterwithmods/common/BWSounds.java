@@ -11,6 +11,7 @@ public class BWSounds {
     public static SoundEvent BELLOW;
     public static SoundEvent WOODCHIME;
     public static SoundEvent METALCHIME;
+    public static SoundEvent OOF;
 
     public static void registerSounds() {
         WOODCREAK = registerSound("block.wood.creak");
@@ -18,6 +19,7 @@ public class BWSounds {
         BELLOW = registerSound("block.wood.bellow");
         WOODCHIME = registerSound("block.wood.chime");
         METALCHIME = registerSound("block.metal.chime");
+        OOF = registerSound("entity.player.oof");
     }
 
     public static SoundEvent registerSound(String soundName) {

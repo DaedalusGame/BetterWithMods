@@ -117,8 +117,8 @@ public class HCHunger extends Feature {
         KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8));
         KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1));
 
-        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET),new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
-        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP),new Object[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
+        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
+        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new Object[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
 
         initDesserts();
         if (foodStackSize) {
@@ -156,6 +156,7 @@ public class HCHunger extends Feature {
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }
+
 
     private static GuiHunger guiHunger = null;
 
@@ -233,7 +234,6 @@ public class HCHunger extends Feature {
     public void onFood(LivingEntityUseItemEvent.Start event) {
         if (!(event.getItem().getItem() instanceof ItemFood))
             return;
-
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
             if (player.isPotionActive(MobEffects.HUNGER)) {
                 event.setCanceled(true);
@@ -322,9 +322,10 @@ public class HCHunger extends Feature {
     /**
      * Walking speed changed according to health/exhaustion/fat
      */
+
+    protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
-        final UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
         if (!event.getEntity().getEntityWorld().isRemote)
             return;
         EntityPlayer player = isFoodSystemValid(event.getEntityLiving()).orElse(null);
@@ -332,7 +333,6 @@ public class HCHunger extends Feature {
             EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty", EntityPlayerExt.getHealthAndExhaustionModifier(player));
         }
     }
-
     /**
      * Disable swimming if needed. FIXME Not able to jump at the bottom.
      * New hook may be required. (Probable workaround implemented)

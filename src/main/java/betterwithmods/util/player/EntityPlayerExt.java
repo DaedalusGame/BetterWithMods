@@ -16,7 +16,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -33,7 +32,7 @@ public final class EntityPlayerExt {
     }
 
     public static boolean isSurvival(EntityPlayer player) {
-        return player.getEntityWorld().getWorldInfo().getGameType() == GameType.SURVIVAL;
+        return !player.isCreative() && !player.isSpectator() && !player.isSpectator();
     }
 
     public static float getHealthAndExhaustionModifier(EntityPlayer player) {
@@ -80,7 +79,7 @@ public final class EntityPlayerExt {
         else return FatPenalty.OBESE;
     }
 
-    private static HealthPenalty getHealthPenalty(EntityPlayer player) {
+    public static HealthPenalty getHealthPenalty(EntityPlayer player) {
         int level = (int) player.getHealth();
         if (level > 10) return HealthPenalty.NO_PENALTY;
         else if (level > 8) return HealthPenalty.HURT;
@@ -110,6 +109,19 @@ public final class EntityPlayerExt {
         Block toCheck = player.getEntityWorld().getBlockState(player.getPosition().down()).getBlock();
         Block toCheck2 = player.getEntityWorld().getBlockState(player.getPosition().down(2)).getBlock();
         return !toCheck.isReplaceable(player.getEntityWorld(), player.getPosition().down()) || !toCheck2.isReplaceable(player.getEntityWorld(), player.getPosition().down(2));
+    }
+
+    public static void changeAttack(EntityLivingBase entity,
+                                   UUID attackModifierUUID, String name, double multiplier) {
+        AttributeModifier attackModifier = (new AttributeModifier(
+                attackModifierUUID, name, multiplier - 1, 2));
+        IAttributeInstance iattributeinstance = entity
+                .getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+
+        if (iattributeinstance.getModifier(attackModifierUUID) != null) {
+            iattributeinstance.removeModifier(attackModifier);
+        }
+        iattributeinstance.applyModifier(attackModifier);
     }
 
     /**

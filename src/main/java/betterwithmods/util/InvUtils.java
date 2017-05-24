@@ -21,20 +21,38 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class InvUtils {
+
+    public static <T> NonNullList<T> asList(T... array) {
+        NonNullList<T> nonNullList = NonNullList.create();
+        if(array != null)
+            nonNullList.addAll(Arrays.stream(array).filter(e -> e != null).collect(Collectors.toList()));
+        return nonNullList;
+    }
+
+    public static <T> NonNullList<T> asList(List<T> list) {
+        NonNullList<T> nonNullList = NonNullList.create();
+        if(list != null)
+            nonNullList.addAll(list.stream().filter(e -> e != null).collect(Collectors.toList()));
+        return nonNullList;
+    }
+
     public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
-        IItemHandlerModifiable inventory = (IItemHandlerModifiable)player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
-        if(inventory != null) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        if (inventory != null) {
             return consumeItemsInInventoryStrict(inventory, stack, amount, false);
         }
         return false;
     }
+
     public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
-        IItemHandlerModifiable inventory = (IItemHandlerModifiable)player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
-        if(inventory != null) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        if (inventory != null) {
             return consumeItemsInInventory(inventory, stack, amount, false);
         }
         return false;
@@ -206,6 +224,7 @@ public class InvUtils {
         }
         return ret;
     }
+
     public static boolean consumeItemsInInventoryStrict(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
@@ -216,8 +235,7 @@ public class InvUtils {
                             if (stack.getCount() >= sizeOfStack) {
                                 decrStackSize(inv, i, sizeOfStack);
                                 return true;
-                            }
-                            else {
+                            } else {
                                 return false;
                             }
                         }
@@ -226,8 +244,7 @@ public class InvUtils {
                             if (!simulate)
                                 decrStackSize(inv, i, sizeOfStack);
                             return true;
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
@@ -236,6 +253,7 @@ public class InvUtils {
         }
         return false;
     }
+
     public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);

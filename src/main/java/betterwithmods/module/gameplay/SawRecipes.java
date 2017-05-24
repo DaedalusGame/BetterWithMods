@@ -5,15 +5,15 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.module.Feature;
-import com.google.common.collect.Lists;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -43,9 +43,9 @@ public class SawRecipes extends Feature {
         addSawRecipe(Blocks.PUMPKIN, 0, new ItemStack(Blocks.PUMPKIN));
         SawManager.INSTANCE.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
             @Override
-            public List<ItemStack> getOutputs() {
+            public NonNullList<ItemStack> getOutputs() {
                 Random random = new Random();
-                return Lists.newArrayList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
+                return InvUtils.asList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
     }

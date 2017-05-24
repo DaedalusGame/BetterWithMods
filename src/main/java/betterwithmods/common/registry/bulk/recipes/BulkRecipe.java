@@ -3,6 +3,7 @@ package betterwithmods.common.registry.bulk.recipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,8 +29,9 @@ public class BulkRecipe {
         this(output, ItemStack.EMPTY, inputs);
     }
 
-    public BulkRecipe(ItemStack output, ItemStack secondaryOutput, Object... inputs) {
+    public BulkRecipe(@Nonnull ItemStack output, @Nonnull ItemStack secondaryOutput, Object... inputs) {
         this.output = output.copy();
+        this.secondary = !secondaryOutput.isEmpty() ? secondaryOutput.copy() : ItemStack.EMPTY;
         int place = -1;
         ArrayList<Object> inputList = new ArrayList<>();
         for (Object in : inputs) {
@@ -54,7 +56,7 @@ public class BulkRecipe {
                 for (Object tmp : inputList)
                     ret.append(tmp).append(", ");
                 ret.append("Output: ").append(output);
-                if (secondaryOutput != null)
+                if (!secondaryOutput.isEmpty())
                     ret.append(", Secondary: ").append(secondaryOutput);
                 throw new RuntimeException(ret.toString());
             }
@@ -86,14 +88,22 @@ public class BulkRecipe {
         }
     }
 
+
+    public List<ItemStack> getOutputs() {
+        return Lists.newArrayList(this.output.copy(), this.secondary.copy());
+    }
+
+    @Nonnull
     public ItemStack getOutput() {
         return this.output;
     }
 
+    @Nonnull
     public ItemStack getSecondary() {
         return this.secondary;
     }
 
+    @Nonnull
     public ArrayList<List<ItemStack>> getInputs() {
         return this.jeiInputs;
     }

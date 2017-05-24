@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,8 +54,6 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
     }
 
     public T getRecipe(ItemStack stack) {
-        if (stack == null)
-            return null;
         assert stack.getItem() instanceof ItemBlock;
         return getRecipe(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
@@ -64,11 +63,11 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
         return recipe.orElse(null);
     }
 
-    public List<ItemStack> getProducts(Block block, int meta) {
+    public NonNullList<ItemStack> getProducts(Block block, int meta) {
         T recipe = getRecipe(block, meta);
         if (recipe != null)
             return recipe.getOutputs();
-        return null;
+        return NonNullList.create();
     }
 
     public List<T> removeRecipes(ItemStack input) {

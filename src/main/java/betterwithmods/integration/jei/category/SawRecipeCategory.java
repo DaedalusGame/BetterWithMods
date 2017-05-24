@@ -54,7 +54,7 @@ public class SawRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 8, 9);
         guiItemStacks.init(1, false, 57, 9);

@@ -9,6 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +31,11 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
 
     public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
         T recipe = createRecipe(output, secondary, inputs);
-        if(!recipe.isEmpty())
+        if (!recipe.isEmpty())
             recipes.add(recipe);
     }
-    public abstract T createRecipe(ItemStack output, ItemStack secondary, Object[] inputs);
+
+    public abstract T createRecipe(@Nonnull ItemStack output, @Nonnull ItemStack secondary, Object[] inputs);
 
     public List<T> removeRecipes(ItemStack output) {
         List<T> removed = Lists.newArrayList();
@@ -70,22 +72,20 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         if (input instanceof String) {
             for (Object in : inputs) {
                 if (in instanceof OreStack) {
-                    if (input.equals(((OreStack)in).getOreName()))
+                    if (input.equals(((OreStack) in).getOreName()))
                         return true;
-                }
-                else if (in instanceof ItemStack) {
-                    if (BWOreDictionary.listContains((ItemStack)in, OreDictionary.getOres((String)input)))
+                } else if (in instanceof ItemStack) {
+                    if (BWOreDictionary.listContains((ItemStack) in, OreDictionary.getOres((String) input)))
                         return true;
                 }
             }
         } else if (input instanceof ItemStack) {
             for (Object in : inputs) {
                 if (in instanceof ItemStack) {
-                    if (((ItemStack)input).isItemEqual((ItemStack)in))
+                    if (((ItemStack) input).isItemEqual((ItemStack) in))
                         return true;
-                }
-                else if (in instanceof OreStack) {
-                    if (BWOreDictionary.listContains((ItemStack)input, ((OreStack)in).getItems())) {
+                } else if (in instanceof OreStack) {
+                    if (BWOreDictionary.listContains((ItemStack) input, ((OreStack) in).getItems())) {
                         return true;
                     }
                 }
@@ -191,24 +191,19 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if (recipe != null)
             return recipe.getRecipeInput();
-        return null;
+        return Lists.newArrayList();
     }
 
     public NonNullList<ItemStack> craftItem(ItemStackHandler inv) {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if (recipe != null) {
-            NonNullList<ItemStack> list = NonNullList.create();
-            if (!recipe.getSecondary().isEmpty()) {
-                list.add(1, recipe.getSecondary());
-            }
-            if (recipe.getOutput().isEmpty()) {
-                return NonNullList.create();
-            }
-            list.add(0,recipe.getOutput());
+            NonNullList<ItemStack> list = NonNullList.withSize(2, ItemStack.EMPTY);
+            list.set(0,recipe.getOutput());
+            list.set(1,recipe.getSecondary());
             recipe.consumeInvIngredients(inv);
             return list;
         }
-        return null;
+        return NonNullList.create();
     }
 
 

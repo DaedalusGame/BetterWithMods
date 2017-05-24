@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class SteelShapedRecipeWrapper extends BlankRecipeWrapper implements ISha
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
         IStackHelper stackHelper = jeiHelpers.getStackHelper();
         ItemStack recipeOutput = recipe.getRecipeOutput();
 

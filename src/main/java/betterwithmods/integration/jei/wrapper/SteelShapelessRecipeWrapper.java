@@ -9,6 +9,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class SteelShapelessRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper {
@@ -30,7 +31,7 @@ public class SteelShapelessRecipeWrapper extends BlankRecipeWrapper implements I
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
         IStackHelper stackHelper = jeiHelpers.getStackHelper();
         ItemStack recipeOutput = recipe.getRecipeOutput();
 

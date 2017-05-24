@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 /**
@@ -100,6 +101,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         return false;
     }
 
+    @Nonnull
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         NonNullList<ItemStack> stacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);

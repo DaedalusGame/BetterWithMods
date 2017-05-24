@@ -79,18 +79,18 @@ public class MetalReclaming extends Feature {
         int totalNuggets = ingotCount * reclaimCount;
         int ingots = totalNuggets / 9;
         int nuggets = totalNuggets % 9;
-        ItemStack ingotStack = null;
-        ItemStack nuggetStack = null;
+        ItemStack ingotStack = ItemStack.EMPTY;
+        ItemStack nuggetStack = ItemStack.EMPTY;
         if (ingots > 0 && !OreDictionary.getOres("ingot" + oreSuffix).isEmpty())
             ingotStack = OreDictionary.getOres("ingot" + oreSuffix).get(0);
         if (nuggets > 0 && !OreDictionary.getOres("nugget" + oreSuffix).isEmpty())
             nuggetStack = OreDictionary.getOres("nugget" + oreSuffix).get(0);
-        if (ingotStack == null) {
-            if (nuggetStack != null) {
+        if (ingotStack.isEmpty()) {
+            if (!nuggetStack.isEmpty()) {
                 StokedCrucibleManager.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), input.copy());
             }
         } else {
-            StokedCrucibleManager.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : null, input.copy());
+            StokedCrucibleManager.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : ItemStack.EMPTY, input.copy());
         }
     }
 }

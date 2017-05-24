@@ -42,7 +42,7 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper>
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BulkRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BulkRecipeWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlots, false, 118, 18);

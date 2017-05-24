@@ -108,8 +108,10 @@ public class InvUtils {
             return false;
         boolean insert = false;
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, simulate).isEmpty())
+            if (inv.insertItem(slot, stack, simulate).isEmpty()) {
                 insert = true;
+                break;
+            }
         }
         return insert;
     }

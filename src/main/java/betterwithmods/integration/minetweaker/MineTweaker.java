@@ -1,24 +1,21 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.integration.ICompatModule;
+import betterwithmods.integration.CompatFeature;
 import minetweaker.MineTweakerAPI;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
  * Created by tyler on 9/4/16.
  */
 @SuppressWarnings("unused")
-public class MineTweaker implements ICompatModule {
-    public static final String MODID = "MineTweaker3";
+public class MineTweaker extends CompatFeature {
 
-    @Override
-    public void preInit() {
-
+    public MineTweaker() {
+        super("minetweaker3");
     }
 
     @Override
-    public void init() {
+    public void init(FMLInitializationEvent event) {
         MineTweakerAPI.registerClass(Saw.class);
         MineTweakerAPI.registerClass(Kiln.class);
         MineTweakerAPI.registerClass(Cauldron.class);
@@ -34,26 +31,4 @@ public class MineTweaker implements ICompatModule {
         MineTweakerAPI.registerClass(Piles.class);
     }
 
-    @Override
-    public void postInit() {
-
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void preInitClient() {
-
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void initClient() {
-
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void postInitClient() {
-
-    }
 }

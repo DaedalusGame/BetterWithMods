@@ -1,6 +1,5 @@
 package betterwithmods.integration;
 
-import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.util.RecipeUtils;
@@ -9,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 /**
  * Purpose:
@@ -16,41 +16,16 @@ import net.minecraft.util.ResourceLocation;
  * @author Tyler Marshall
  * @version 11/26/16
  */
-public class NetherCore implements ICompatModule {
-    public static final String MODID = "nethercore";
-
-    @Override
-    public void preInit() {
-
+public class NetherCore extends CompatFeature {
+    public NetherCore() {
+        super("nethercore");
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void postInit() {
-        BWMod.logger.info("Replacing " + MODID + " nether spore recipe");
-        Item nether_spore = Item.REGISTRY.getObject(new ResourceLocation(MODID, "nether_spore"));
+    public void postInit(FMLPostInitializationEvent event) {
+        Item nether_spore = getItem(new ResourceLocation(modid, "nether_spore"));
         RecipeUtils.removeRecipes(nether_spore, 0);
-        CauldronRecipes.addCauldronRecipe(new ItemStack(nether_spore),
-               new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Blocks.MYCELIUM), new ItemStack(BWMBlocks.URN, 8, 8), new ItemStack(Items.NETHER_WART)}
-        );
+        CauldronRecipes.addCauldronRecipe(new ItemStack(nether_spore), new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Blocks.MYCELIUM), new ItemStack(BWMBlocks.URN, 8, 8), new ItemStack(Items.NETHER_WART)});
     }
 
-    @Override
-    public void preInitClient() {
-
-    }
-
-    @Override
-    public void initClient() {
-
-    }
-
-    @Override
-    public void postInitClient() {
-
-    }
 }

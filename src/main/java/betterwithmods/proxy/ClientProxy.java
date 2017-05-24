@@ -1,6 +1,5 @@
 package betterwithmods.proxy;
 
-import betterwithmods.BWMod;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ColorHandlers;
 import betterwithmods.client.model.*;
@@ -13,7 +12,7 @@ import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
-import betterwithmods.integration.ICompatModule;
+import betterwithmods.module.ModuleLoader;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -30,26 +29,30 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @SuppressWarnings("unused")
 public class ClientProxy implements IProxy {
 
     @Override
-    public void preInit() {
+    public void preInit(FMLPreInitializationEvent event) {
+        ModuleLoader.preInitClient(event);
         registerRenderInformation();
         initRenderers();
-        BWMod.getLoadedModules().forEach(ICompatModule::preInitClient);
     }
 
     @Override
-    public void init() {
+    public void init(FMLInitializationEvent event) {
+        ModuleLoader.initClient(event);
         registerColors();
-        BWMod.getLoadedModules().forEach(ICompatModule::initClient);
+
     }
 
     @Override
-    public void postInit() {
-        BWMod.getLoadedModules().forEach(ICompatModule::postInitClient);
+    public void postInit(FMLPostInitializationEvent event) {
+        ModuleLoader.postInitClient(event);
     }
 
     private void registerRenderInformation() {

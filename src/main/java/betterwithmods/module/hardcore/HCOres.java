@@ -28,7 +28,7 @@ public class HCOres extends Feature {
 
     private static boolean oreNuggetSmelting, dustNuggetSmelting, fixVanillaRecipes;
     private static Set<String> oreExclude, dustExclude;
-    private static int oreProductionCount;
+    private static int oreProductionCount, dustProductionCount;
 
     @Override
     public void setupConfig() {
@@ -41,6 +41,7 @@ public class HCOres extends Feature {
         fixVanillaRecipes = loadPropBool("Fix Vanilla Recipes", "Make certain recipes cheaper to be more reasonable with nugget smelting, including Compass, Clock, and Bucket", true);
 
         oreProductionCount = loadPropInt("Ore Production Count", "Number of Materials returned from Smelting an Ore", 1);
+        dustProductionCount = loadPropInt("Dust Production Count", "Number of Materials returned from Smelting a Dust", 1);
     }
 
     @Override
@@ -89,8 +90,10 @@ public class HCOres extends Feature {
         if (dustNuggetSmelting) {
             List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter(p -> !dustExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
             dustSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
+                ItemStack n = nugget.copy();
+                n.setCount(dustProductionCount);
                 RecipeUtils.removeFurnaceRecipe(pair.getKey());
-                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), nugget);
+                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
             }));
         }
     }

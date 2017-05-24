@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -25,6 +26,7 @@ public class BlockLight extends BWMBlock implements IMultiVariants {
         this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false));
         this.setSoundType(SoundType.GLASS);
+        ToolsManager.setPickaxesAsEffectiveAgainst(this);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class HCLumber extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Makes Punching Wood return a single plank and secondary drops instead of a log, to get a log an axe must be used";
+        return "Makes Punching Wood return a single plank and secondary drops instead of a log, to get a log an axe must be used.";
     }
 
     @Override

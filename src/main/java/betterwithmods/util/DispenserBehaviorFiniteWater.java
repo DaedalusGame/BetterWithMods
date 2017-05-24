@@ -40,13 +40,12 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
             return super.dispenseStack(source, stack);
         }
 
-        stack.shrink(1);
         if (stack.getCount() == 0) {
             stack.deserializeNBT(result.serializeNBT());
         } else if (((TileEntityDispenser) source.getBlockTileEntity()).addItemStack(result) < 0) {
             this.dispenseBehavior.dispense(source, result);
         }
-
+        stack.shrink(1);
         return stack;
     }
 

@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
+import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
@@ -317,7 +318,7 @@ public class HCBuckets extends Feature {
 
     @SubscribeEvent
     public void onFillBucket(FillBucketEvent e) {
-        if (disableLavaBuckets) {
+        if (disableLavaBuckets && EntityPlayerExt.isSurvival(e.getEntityPlayer())) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
             if (e.getTarget() != null && e.getTarget().getBlockPos() != null) {

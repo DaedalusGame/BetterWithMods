@@ -69,7 +69,7 @@ public class HCBuckets extends Feature {
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
             @Override
             public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                ItemStack outputStack = stack;
+                ItemStack outputStack = stack.copy();
                 BlockPos pos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
                 if (source.getWorld().isAirBlock(pos)
                         || source.getWorld().getBlockState(pos).getBlock().isReplaceable(source.getWorld(), pos)) {

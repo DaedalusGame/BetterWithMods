@@ -74,6 +74,9 @@ public class HCPiles extends Feature {
         if (player != null) {
             ItemStack stack = event.getHarvester().getHeldItemMainhand();
             shouldDropInferior = !EntityPlayerExt.isCurrentToolEffectiveOnBlock(stack, event.getState());
+            if (shouldDropInferior) {
+                shouldDropInferior = !stack.getItem().getToolClasses(stack).contains("mattock"); //Tinkers mattock compatibility
+            }
         }
         if (!shouldDropInferior) {
             return;

@@ -192,12 +192,10 @@ public final class EntityPlayerExt {
      */
     public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state) {
         if (stack == null) return false;
-
         //Hardcore Stumping
         if (state.getBlock() == BWMBlocks.STUMP) {
             return false;
         }
-
         for (String type : stack.getItem().getToolClasses(stack)) {
             if (state.getBlock().isToolEffective(type, state))
                 return true;

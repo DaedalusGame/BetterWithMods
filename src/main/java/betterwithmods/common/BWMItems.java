@@ -32,7 +32,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.Objects;
 
 public final class BWMItems {
-    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 3, 1561, 8, 3,
+    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 4, 1561, 12, 3,
             22);
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
     public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");

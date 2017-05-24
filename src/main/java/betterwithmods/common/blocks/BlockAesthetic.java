@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -22,15 +23,43 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
+import static betterwithmods.common.blocks.BlockAesthetic.EnumType.STEEL;
+
 public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<BlockAesthetic.EnumType> blockType = PropertyEnum.create("blocktype", BlockAesthetic.EnumType.class);
 
     //Chopping Block, Chopping Block(dirty), Steel block, Hellfire block, Rope block, Flint block, Barrel (tile entity?) (6 - 11 subtypes)
     public BlockAesthetic() {
         super(Material.ROCK);
-        this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
+        return state.getValue(blockType).getHardness();
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        return state.getValue(blockType).getSoundType();
+    }
+
+    @Override
+    public Material getMaterial(IBlockState state) {
+        return state.getValue(blockType).getMaterial();
+    }
+
+    @Override
+    public MapColor getMapColor(IBlockState state) {
+        return state.getValue(blockType).getMapColor();
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        return state.getValue(blockType) == STEEL ? 4 : 1;
     }
 
     @Override
@@ -46,10 +75,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        if (world.getBlockState(pos).getValue(blockType) != EnumType.STEEL)
-            return 10;
-        else
-            return 2000.0F;
+        return world.getBlockState(pos).getValue(blockType).getResistance();
     }
 
     @Override
@@ -101,33 +127,46 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     public enum EnumType implements IStringSerializable {
         CHOPBLOCK(0, "chopping", MapColor.STONE),
         CHOPBLOCKBLOOD(1, "chopping_blood", MapColor.NETHERRACK),
-        STEEL(2, "steel", MapColor.IRON),
+        STEEL(2, "steel", MapColor.IRON, Material.IRON, SoundType.METAL, 100F, 4000F),
         HELLFIRE(3, "hellfire", MapColor.ADOBE),
-        ROPE(4, "rope", MapColor.DIRT),
+        ROPE(4, "rope", MapColor.DIRT, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
         FLINT(5, "flint", MapColor.STONE),
         WHITESTONE(6, "whitestone", MapColor.CLOTH),
         WHITECOBBLE(7, "whitecobble", MapColor.CLOTH),
         ENDERBLOCK(8, "enderblock", MapColor.CYAN),
-        PADDING(9, "padding", MapColor.CLOTH),
-        SOAP(10, "soap", MapColor.PINK);
+        PADDING(9, "padding", MapColor.CLOTH, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
+        SOAP(10, "soap", MapColor.PINK, Material.GROUND, SoundType.GROUND, 1F, 5F);
 
-        private static final BlockAesthetic.EnumType[] META_LOOKUP = new BlockAesthetic.EnumType[values().length];
-
-        static {
-            for (BlockAesthetic.EnumType blockType : values()) {
-                META_LOOKUP[blockType.getMeta()] = blockType;
-            }
-        }
+        private static final BlockAesthetic.EnumType[] META_LOOKUP = values();
 
         private final int meta;
         private final String name;
         private final MapColor color;
+        private final Material material;
+        private final SoundType soundType;
+        private final float hardness;
+        private final float resistance;
 
         EnumType(int meta, String name, MapColor color) {
             this.meta = meta;
             this.name = name;
             this.color = color;
+            this.material = Material.ROCK;
+            this.soundType = SoundType.STONE;
+            this.hardness = 1.5F;
+            this.resistance = 10F;
         }
+
+        EnumType(int meta, String name, MapColor color, Material material, SoundType soundType, float hardness, float resistance) {
+            this.meta = meta;
+            this.name = name;
+            this.color = color;
+            this.material = material;
+            this.soundType = soundType;
+            this.hardness = hardness;
+            this.resistance = resistance;
+        }
+
 
         public static BlockAesthetic.EnumType byMeta(int meta) {
             return META_LOOKUP[meta];
@@ -144,6 +183,22 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
         public MapColor getMapColor() {
             return color;
+        }
+
+        public Material getMaterial() {
+            return material;
+        }
+
+        public SoundType getSoundType() {
+            return soundType;
+        }
+
+        public float getHardness() {
+            return hardness;
+        }
+
+        public float getResistance() {
+            return resistance;
         }
     }
 }

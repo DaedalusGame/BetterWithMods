@@ -149,4 +149,9 @@ public class BlockStump extends Block implements IMultiVariants {
         }
         return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
     }
+
+    @Override
+    public boolean isToolEffective(String type, IBlockState state) {
+        return false;
+    }
 }

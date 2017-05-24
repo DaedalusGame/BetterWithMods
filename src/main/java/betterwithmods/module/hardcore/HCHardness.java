@@ -82,8 +82,8 @@ public class HCHardness extends Feature {
         Blocks.FIRE.setFireInfo(Blocks.LEAVES2, 60, 100);
         rebalanceVanillaHardness();
 
-        ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL,
-                Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
+        ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
+
         if (ModuleLoader.isFeatureEnabled(AxeLeaves.class)) {
             ToolsManager.setAxesAsEffectiveAgainst(Blocks.LEAVES, Blocks.LEAVES2);
             for (ItemStack stack : OreDictionary.getOres("treeLeaves")) {

@@ -11,6 +11,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by tyler on 5/3/17.
  */
 public class HCJumping extends Feature {
+    public HCJumping() {
+        this.enabled = false;
+    }
 
     @SubscribeEvent
     public void onBlockPlace(PlayerInteractEvent.RightClickBlock e) {

@@ -35,7 +35,7 @@ public final class ToolsManager {
         }
     }
 
-    private static Set<Block> getEffectiveBlocks(ItemTool tool) {
+    public static Set<Block> getEffectiveBlocks(ItemTool tool) {
         return ReflectionHelper.getPrivateValue(ItemTool.class, tool, "field_150914_c", "effectiveBlocks");
     }
 
@@ -43,4 +43,5 @@ public final class ToolsManager {
         Set<Block> effectiveOn = getEffectiveBlocks(tool);
         Collections.addAll(effectiveOn, blocks);
     }
+
 }

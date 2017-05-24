@@ -113,7 +113,8 @@ public class ItemMaterial extends Item implements IMultiLocations {
         DIAMOND_NUGGET,
         CHAIN_MAIL,
         STEEL_GEAR,
-        STEEL_SPRING;
+        STEEL_SPRING,
+        SOAP;
 
         int getMetadata() {
             return this.ordinal();

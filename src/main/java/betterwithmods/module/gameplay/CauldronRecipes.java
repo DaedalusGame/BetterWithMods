@@ -1,6 +1,8 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -47,6 +49,8 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), "dustSulfur", "dustSaltpeter", "dustCoal");
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL, 2), "dustHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW));
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE), Items.GUNPOWDER, "string");
+        addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
+        addCauldronRecipe(new ItemStack(Blocks.PISTON,4), new Object[]{new ItemStack(Blocks.STICKY_PISTON,4), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
 
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE),new Object[]{new ItemStack(Items.LEATHER)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE),new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)});
@@ -66,6 +70,7 @@ public class CauldronRecipes extends Feature {
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW),new Object[]{new ItemStack(Items.MUTTON, 6)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW),new Object[]{new ItemStack(Items.COOKED_MUTTON, 6)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW),new Object[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
+        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP),new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH)});
 
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), "logWood");
         addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new OreStack("plankWood", 6));

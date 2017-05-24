@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.blocks.BlockRawPastry;
@@ -48,6 +49,10 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 4), "XXX", "XXX", "XXX", 'X', new ItemStack(BWMBlocks.ROPE)));
         GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, 3)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 3), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE)));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.PADDING.getMeta())));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.PADDING.getMeta()), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING)));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.SOAP.getMeta())));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.SOAP.getMeta()), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMItems.DYNAMITE), "paper", "paper", "paper", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL), "dustWood"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.LENS), "GDG", "G G", "GLG", 'G', "ingotGold", 'D', "gemDiamond", 'L', "blockGlass"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.WINDMILL, 1, 2), "XXX", "X X", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WINDMILL_BLADE)));

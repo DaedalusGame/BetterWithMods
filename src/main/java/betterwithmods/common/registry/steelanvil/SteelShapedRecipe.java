@@ -11,11 +11,12 @@ public class SteelShapedRecipe implements IRecipe {
     /**
      * How many horizontal slots this recipe is wide.
      */
-    public final int recipeWidth;
+    public final int width;
     /**
      * How many vertical slots this recipe uses.
      */
-    public final int recipeHeight;
+    public final int height;
+
     /**
      * Is a array of ItemStack that composes the recipe.
      */
@@ -26,8 +27,8 @@ public class SteelShapedRecipe implements IRecipe {
     private ItemStack recipeOutput;
 
     public SteelShapedRecipe(int width, int height, ItemStack[] ingredients, ItemStack result) {
-        this.recipeWidth = width;
-        this.recipeHeight = height;
+        this.width = width;
+        this.height = height;
         this.recipeItems = ingredients;
         this.recipeOutput = result;
     }
@@ -45,8 +46,8 @@ public class SteelShapedRecipe implements IRecipe {
      * Used to check if a recipe matches current crafting inventory
      */
     public boolean matches(InventoryCrafting matrix, World world) {
-        for (int i = 0; i <= WIDTH - this.recipeWidth; ++i) {
-            for (int j = 0; j <= HEIGHT - this.recipeHeight; ++j) {
+        for (int i = 0; i <= WIDTH - this.width; ++i) {
+            for (int j = 0; j <= HEIGHT - this.height; ++j) {
                 if (this.checkMatch(matrix, i, j, true)) {
                     return true;
                 }
@@ -70,11 +71,11 @@ public class SteelShapedRecipe implements IRecipe {
                 int j1 = l - y;
                 ItemStack itemstack = ItemStack.EMPTY;
 
-                if (i1 >= 0 && j1 >= 0 && i1 < this.recipeWidth && j1 < this.recipeHeight) {
+                if (i1 >= 0 && j1 >= 0 && i1 < this.width && j1 < this.height) {
                     if (mirrored) {
-                        itemstack = this.recipeItems[this.recipeWidth - i1 - 1 + j1 * this.recipeWidth];
+                        itemstack = this.recipeItems[this.width - i1 - 1 + j1 * this.width];
                     } else {
-                        itemstack = this.recipeItems[i1 + j1 * this.recipeWidth];
+                        itemstack = this.recipeItems[i1 + j1 * this.width];
                     }
                 }
                 ItemStack itemstack1 = matrix.getStackInRowAndColumn(k, l);
@@ -109,6 +110,10 @@ public class SteelShapedRecipe implements IRecipe {
      * Returns the size of the recipe area
      */
     public int getRecipeSize() {
-        return this.recipeWidth * this.recipeHeight;
+        return this.width * this.height;
+    }
+
+    public ItemStack[] getInput() {
+        return recipeItems;
     }
 }

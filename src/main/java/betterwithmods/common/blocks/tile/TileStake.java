@@ -26,13 +26,10 @@ public class TileStake extends TileBasicInventory {
         return Optional.ofNullable(tile instanceof TileStake ? (TileStake) tile : null);
     }
 
-    private BlockPos[] connectedBlock = new BlockPos[getInventorySize()];
+    public BlockPos[] connections = new BlockPos[getInventorySize()];
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote) {
-            connectStake(worldIn, pos, side.getOpposite(), playerIn);
-            System.out.println(inventory);
-        }
+        connectStake(worldIn, pos, side.getOpposite(), playerIn);
         return true;
     }
 
@@ -54,7 +51,7 @@ public class TileStake extends TileBasicInventory {
     }
 
     public boolean isConnected(EnumFacing facing) {
-        return connectedBlock[facing.getIndex()] != null;
+        return connections[facing.getIndex()] != null;
     }
 
     public ItemStack getItemFromDistance(BlockPos pos1, BlockPos pos2) {
@@ -62,7 +59,7 @@ public class TileStake extends TileBasicInventory {
     }
 
     public void setConnected(EnumFacing facing, BlockPos pos) {
-        this.connectedBlock[facing.getIndex()] = pos;
+        this.connections[facing.getIndex()] = pos;
         if (pos == null) {
             inventory.setStackInSlot(facing.getIndex(), ItemStack.EMPTY);
         } else {
@@ -75,13 +72,14 @@ public class TileStake extends TileBasicInventory {
         BlockPos second = findStake(world, first, direction);
         if (first == null || second == null)
             return false;
-        ItemStack string = getItemFromDistance(first,second);
-        if(!InvUtils.usePlayerItemStrict(player, EnumFacing.UP, string,string.getCount()))
-            return false;
+        ItemStack string = getItemFromDistance(first, second);
+
         TileStake firstTile = getStake(world, first).orElse(null), secondTile = getStake(world, second).orElse(null);
         if (firstTile == null || secondTile == null)
             return false;
         if (!firstTile.isConnected(direction) && !secondTile.isConnected(direction)) {
+            if (!InvUtils.usePlayerItemStrict(player, EnumFacing.UP, string, string.getCount()))
+                return false;
             firstTile.setConnected(direction, second);
             secondTile.setConnected(direction.getOpposite(), first);
         }
@@ -90,8 +88,8 @@ public class TileStake extends TileBasicInventory {
 
     @Override
     public void onBreak() {
-        for (int i = 0; i < connectedBlock.length; i++) {
-            BlockPos second = connectedBlock[i];
+        for (int i = 0; i < connections.length; i++) {
+            BlockPos second = connections[i];
             if (second != null) {
                 TileStake stake = getStake(world, second).orElse(null);
                 if (stake != null) {
@@ -105,8 +103,8 @@ public class TileStake extends TileBasicInventory {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         for (EnumFacing facing : EnumFacing.VALUES) {
-            if (connectedBlock[facing.getIndex()] != null)
-                tag.setLong(getKey(facing), connectedBlock[facing.getIndex()].toLong());
+            if (connections[facing.getIndex()] != null)
+                tag.setLong(getKey(facing), connections[facing.getIndex()].toLong());
         }
         return super.writeToNBT(tag);
     }
@@ -115,7 +113,7 @@ public class TileStake extends TileBasicInventory {
     public void readFromNBT(NBTTagCompound compound) {
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (compound.hasKey(getKey(facing)))
-                connectedBlock[facing.getIndex()] = BlockPos.fromLong(compound.getLong(getKey(facing)));
+                connections[facing.getIndex()] = BlockPos.fromLong(compound.getLong(getKey(facing)));
         }
         super.readFromNBT(compound);
     }

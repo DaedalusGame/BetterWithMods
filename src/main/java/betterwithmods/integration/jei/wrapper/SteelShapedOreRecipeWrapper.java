@@ -1,6 +1,6 @@
 package betterwithmods.integration.jei.wrapper;
 
-import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
+import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class SteelShapedRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
+public class SteelShapedOreRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
 
-    private final SteelShapedRecipe recipe;
+    private final SteelShapedOreRecipe recipe;
     private final IJeiHelpers jeiHelpers;
     private int width, height;
 
-    public SteelShapedRecipeWrapper(IJeiHelpers jeiHelpers, SteelShapedRecipe recipe) {
+    public SteelShapedOreRecipeWrapper(IJeiHelpers jeiHelpers, SteelShapedOreRecipe recipe) {
         this.jeiHelpers = jeiHelpers;
         this.recipe = recipe;
         for (Object obj : this.recipe.getInput()) {

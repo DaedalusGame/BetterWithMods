@@ -48,7 +48,8 @@ import net.minecraftforge.items.IItemHandler;
  */
 public class HCBuckets extends Feature {
     private static boolean hardcoreFluidContainer;
-    private static boolean hardcoreLavaBuckets;
+    private static boolean disableLavaBuckets;
+    private static boolean riskyLavaBuckets;
 
     @Override
     public String getFeatureDescription() {
@@ -58,7 +59,8 @@ public class HCBuckets extends Feature {
     @Override
     public void setupConfig() {
         hardcoreFluidContainer = loadPropBool("Hardcore Fluid Container","Hardcore Buckets Affects Modded Fluid Containers", true);
-        hardcoreLavaBuckets = loadPropBool("Hardcore Lava Buckets","Makes Lava Buckets really hot, be careful you might need some resistance to it!", true);
+        disableLavaBuckets = loadPropBool("Hardcore Lava Buckets","You can't put Lava in a metal bucket! Are you crazy!?", false);
+        riskyLavaBuckets = loadPropBool("Risky Lava Buckets","Makes Lava Buckets really hot, be careful. If only you could have some Resistance to Fire! ", true);
     }
     @Override
     public boolean requiresMinecraftRestartToEnable() {
@@ -273,7 +275,7 @@ public class HCBuckets extends Feature {
     @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
-        if (hardcoreLavaBuckets) {
+        if (riskyLavaBuckets) {
             if (world.getTotalWorldTime() % 10 == 0) {
                 if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE) && !e.player.capabilities.isCreativeMode) {
                     IItemHandler inv = e.player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -315,7 +317,7 @@ public class HCBuckets extends Feature {
 
     @SubscribeEvent
     public void onFillBucket(FillBucketEvent e) {
-        if (hardcoreLavaBuckets) {
+        if (disableLavaBuckets) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
             if (e.getTarget() != null && e.getTarget().getBlockPos() != null) {

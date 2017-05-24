@@ -20,6 +20,7 @@ import betterwithmods.common.registry.bulk.manager.*;
 import betterwithmods.common.registry.bulk.recipes.*;
 import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
 import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
+import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
 import betterwithmods.integration.jei.category.*;
 import betterwithmods.integration.jei.wrapper.*;
@@ -61,7 +62,8 @@ public class JEI extends BlankModPlugin {
         reg.handleRecipes(SawRecipe.class, BlockMetaWrapper::new, SawRecipeCategory.UID);
         reg.handleRecipes(TurntableRecipe.class, TurntableRecipeWrapper::new, TurntableRecipeCategory.UID);
         reg.handleRecipes(HopperInteractions.HopperRecipe.class, recipe -> recipe instanceof HopperInteractions.SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((HopperInteractions.SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe) , HopperRecipeCategory.UID);
-        reg.handleRecipes(SteelShapedOreRecipe.class, recipe -> new SteelShapedRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
+        reg.handleRecipes(SteelShapedOreRecipe.class, recipe -> new SteelShapedOreRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
+        reg.handleRecipes(SteelShapedRecipe.class, recipe -> new SteelShapedRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(SteelShapelessRecipe.class, recipe -> new SteelShapelessRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
 
         reg.addRecipes(CauldronManager.getInstance().getRecipes(), CauldronRecipeCategory.UID);

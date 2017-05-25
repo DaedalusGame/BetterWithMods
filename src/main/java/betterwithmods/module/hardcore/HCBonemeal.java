@@ -5,8 +5,8 @@ import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockSapling;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -45,8 +45,11 @@ public class HCBonemeal extends Feature {
     public void onBonemeal(BonemealEvent e) {
         if(!EntityPlayerExt.isSurvival(e.getEntityPlayer()))
             return;
-        if (e.getBlock().getBlock() instanceof BlockCrops || e.getBlock().getBlock() instanceof BlockSapling)
+        if (e.getBlock().getBlock() instanceof IGrowable) {
+            IBlockState below = e.getWorld().getBlockState(e.getPos().down());
+            below.getBlock().onBlockClicked(e.getWorld(),e.getPos().down(),e.getEntityPlayer());
             e.setCanceled(true);
+        }
     }
 
     @SubscribeEvent

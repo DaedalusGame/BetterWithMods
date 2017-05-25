@@ -44,7 +44,6 @@ public class ImmersiveEngineering extends CompatFeature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-
         BWMBlocks.registerBlock(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
         if (overrideIndustrialHempDrops) {

@@ -6,6 +6,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.hardcore.HCStumping;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
@@ -41,7 +42,7 @@ public class BlockStump extends Block implements IMultiVariants {
     public BlockStump() {
         super(Material.WOOD);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
-        this.setHardness(6.0F);
+        this.setHardness(40F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK));
         this.setHarvestLevel("axe", 0);
@@ -83,15 +84,25 @@ public class BlockStump extends Block implements IMultiVariants {
     }
 
     @Override
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
+            BlockPlanks.EnumType type = state.getValue(BlockPlanks.VARIANT);
+            if (type.getMetadata() < 4)
+                return new ItemStack(Blocks.LOG, 1, type.getMetadata());
+            else
+                return new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        List<ItemStack> ret = new java.util.ArrayList<>();
+        List<ItemStack> ret = Lists.newArrayList();
 
         if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
             ret.add(new ItemStack(BWMItems.BARK, 1, state.getValue(BlockPlanks.VARIANT).getMetadata()));
         }
-        for (int i = 0; i < 6; ++i) {
-            ret.add(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST));
-        }
+        ret.add(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 16));
         return ret;
     }
 
@@ -149,6 +160,7 @@ public class BlockStump extends Block implements IMultiVariants {
         }
         return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
     }
+
 
     @Override
     public boolean isToolEffective(String type, IBlockState state) {

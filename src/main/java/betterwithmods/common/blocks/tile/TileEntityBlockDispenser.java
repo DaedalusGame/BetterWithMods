@@ -19,7 +19,6 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
         return oldState.getBlock() != newState.getBlock();
     }
 
-
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -71,6 +70,10 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
                 return i;
         }
         return -1;
+    }
+
+    public ItemStack getCurrentSlot() {
+        return inventory.getStackInSlot(nextIndex%16);
     }
 
     public ItemStack getNextStackFromInv() {

@@ -30,14 +30,14 @@ public class InvUtils {
 
     public static <T> NonNullList<T> asList(T... array) {
         NonNullList<T> nonNullList = NonNullList.create();
-        if(array != null)
+        if (array != null)
             nonNullList.addAll(Arrays.stream(array).filter(e -> e != null).collect(Collectors.toList()));
         return nonNullList;
     }
 
     public static <T> NonNullList<T> asList(List<T> list) {
         NonNullList<T> nonNullList = NonNullList.create();
-        if(list != null)
+        if (list != null)
             nonNullList.addAll(list.stream().filter(e -> e != null).collect(Collectors.toList()));
         return nonNullList;
     }
@@ -115,6 +115,10 @@ public class InvUtils {
         ItemStack stack2 = stack.copy();
         stack2.setCount(1);
         return insert(inv, stack2, 0, inv.getSlots(), simulate);
+    }
+
+    public static void insert(IItemHandler inv, NonNullList<ItemStack> stacks, boolean simulate) {
+        stacks.forEach(stack -> insert(inv, stack, 0, inv.getSlots(), simulate));
     }
 
     public static boolean insert(IItemHandler inv, ItemStack stack, boolean simulate) {

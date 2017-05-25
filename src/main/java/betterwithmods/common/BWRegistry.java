@@ -4,10 +4,11 @@ import betterwithmods.BWMod;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.blocks.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.BlockBWMPane;
 import betterwithmods.common.blocks.BlockRope;
+import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
+import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
@@ -26,9 +27,14 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -43,6 +49,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -75,6 +82,7 @@ public class BWRegistry {
         registerHopperFilters();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
     }
+
     public static void init() {
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         registerHeatSources();
@@ -88,12 +96,14 @@ public class BWRegistry {
         RecipeSorter.register("bwm:steel_shaped_ore", SteelShapedOreRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
 
     }
+
     public static void postInit() {
         RecipeUtils.gatherCookableFood();
         registerWood();
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
     }
+
     /**
      * All names should be snake_case by convention (enforced in 1.11).
      */
@@ -137,6 +147,37 @@ public class BWRegistry {
                             SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return stack;
                 });
+        BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(Blocks.STONE, new BehaviorSilkTouch());
+        BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(BWMBlocks.STUMP, new BehaviorSilkTouch());
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityWolf.class, (world, pos, entity, stack) -> {
+            InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STRING, 1 + world.rand.nextInt(3)));
+            world.playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
+            entity.setDead();
+            return InvUtils.asList(new ItemStack(BWMBlocks.WOLF));
+        });
+
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntitySheep.class, (world, pos, entity, stack) -> {
+            EntitySheep sheep = (EntitySheep) entity;
+            if(sheep.isShearable(new ItemStack(Items.SHEARS),world,pos)) {
+                return InvUtils.asList(sheep.onSheared(new ItemStack(Items.SHEARS),world,pos,0));
+            }
+            return NonNullList.create();
+        });
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityChicken.class, (world, pos, entity, stack) -> {
+            InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.FEATHER, 1 + world.rand.nextInt(2)));
+            world.playSound(null, pos, SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
+            entity.setDead();
+            return InvUtils.asList(new ItemStack(Items.EGG));
+        });
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityCow.class, (world, pos, entity, stack) -> {
+            if(stack.isItemEqual(new ItemStack(Items.BUCKET))) {
+                stack.shrink(1);
+                world.playSound(null, pos, SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.MILK_BUCKET));
+            }
+            return NonNullList.create();
+        });
     }
 
     /**
@@ -207,7 +248,7 @@ public class BWRegistry {
                                 output[1] = new ItemStack(BWMItems.BARK, 1, 0);
                                 output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
 
-                                if(block instanceof IDebarkable)
+                                if (block instanceof IDebarkable)
                                     output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
 
                                 if (hardcoreLumber) {
@@ -229,7 +270,7 @@ public class BWRegistry {
                             output[1] = new ItemStack(BWMItems.BARK, 1, 0);
                             output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
 
-                            if(block instanceof IDebarkable)
+                            if (block instanceof IDebarkable)
                                 output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
 
                             if (hardcoreLumber) {
@@ -272,12 +313,11 @@ public class BWRegistry {
                         return shaped.getRecipeOutput();
                     }
                 }
-            }
-            else if (recipe instanceof ShapedOreRecipe) {
+            } else if (recipe instanceof ShapedOreRecipe) {
                 ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
                 if (shaped.getRecipeSize() == 1) {
                     if (shaped.getInput()[0] instanceof ItemStack) {
-                        ItemStack stack = (ItemStack)shaped.getInput()[0];
+                        ItemStack stack = (ItemStack) shaped.getInput()[0];
                         if (stack.isItemEqual(input)) {
                             return shaped.getRecipeOutput();
                         }
@@ -311,27 +351,25 @@ public class BWRegistry {
                 ShapedRecipes shaped = (ShapedRecipes) recipe;
                 if (shaped.getRecipeSize() == 1) {
                     if (shaped.recipeItems[0].isItemEqual(input)) {
-                        if(output.isItemEqual(shaped.getRecipeOutput()))
+                        if (output.isItemEqual(shaped.getRecipeOutput()))
                             toRemove.add(recipe);
                     }
                 }
-            }
-            else if (recipe instanceof ShapedOreRecipe) {
+            } else if (recipe instanceof ShapedOreRecipe) {
                 ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
                 if (shaped.getRecipeSize() == 1) {
                     if (shaped.getInput()[0] instanceof ItemStack) {
-                        ItemStack stack = (ItemStack)shaped.getInput()[0];
+                        ItemStack stack = (ItemStack) shaped.getInput()[0];
                         if (stack.isItemEqual(input)) {
                             if (output.isItemEqual(shaped.getRecipeOutput()))
                                 toRemove.add(recipe);
                         }
                     }
                 }
-            }
-            else if (recipe instanceof ShapelessRecipes) {
+            } else if (recipe instanceof ShapelessRecipes) {
                 ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
                 if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
-                    if(output.isItemEqual(shapeless.getRecipeOutput()))
+                    if (output.isItemEqual(shapeless.getRecipeOutput()))
                         toRemove.add(recipe);
                 }
             } else if (recipe instanceof ShapelessOreRecipe) {
@@ -339,14 +377,14 @@ public class BWRegistry {
                 if (shapeless.getRecipeSize() == 1) {
                     if (shapeless.getInput().get(0) instanceof ItemStack) {
                         if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
-                            if(output.isItemEqual(shapeless.getRecipeOutput()))
+                            if (output.isItemEqual(shapeless.getRecipeOutput()))
                                 toRemove.add(recipe);
                         }
                     }
                 }
             }
         }
-        for(IRecipe remove : toRemove) {
+        for (IRecipe remove : toRemove) {
             CraftingManager.getInstance().getRecipeList().remove(remove);
         }
     }

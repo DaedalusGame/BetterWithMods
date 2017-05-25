@@ -1,6 +1,7 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.behaviors;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.player.Profiles;

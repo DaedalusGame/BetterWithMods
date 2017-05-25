@@ -3,27 +3,28 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.ITurnable;
+import betterwithmods.api.tile.IBehaviorCollect;
+import betterwithmods.api.tile.IBehaviorEntity;
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.behaviors.BehaviorBreakBlock;
+import betterwithmods.common.blocks.behaviors.BehaviorDefaultDispenseBlock;
+import betterwithmods.common.blocks.behaviors.BehaviorEntity;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
-import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
@@ -36,6 +37,8 @@ import java.util.List;
 
 public class BlockBDispenser extends BlockDispenser implements ITurnable, IMultiVariants {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<>(new BehaviorDefaultDispenseBlock());
+    public static final RegistryDefaulted<Block, IBehaviorCollect> BLOCK_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorBreakBlock());
+    public static final RegistryDefaulted<Class<? extends Entity>, IBehaviorEntity> ENTITY_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorEntity());
 
     public BlockBDispenser() {
         super();
@@ -76,7 +79,6 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos other) {
         boolean flag = isRedstonePowered(state, world, pos);
         boolean flag1 = state.getValue(TRIGGERED);
-
         if (flag && !flag1) {
             world.scheduleUpdate(pos, this, this.tickRate(world));
             world.setBlockState(pos, state.withProperty(TRIGGERED, true), 5);
@@ -86,6 +88,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
         }
     }
 
+
     @Override
     protected void dispense(World world, BlockPos pos) {
         BlockSourceImpl impl = new BlockSourceImpl(world, pos);
@@ -93,65 +96,26 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
         if (tile != null) {
             if (!world.getBlockState(pos).getValue(TRIGGERED)) {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
-                if (world.getBlockState(check).getBlock() instanceof BlockShulkerBox) {
-                    IBlockState state = world.getBlockState(check);
-                    world.playSound(null, check, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
-                    state.getBlock().breakBlock(world, check, state);
-                    world.setBlockToAir(check);
+                Block block = world.getBlockState(check).getBlock();
+                if (world.getBlockState(check).getBlockHardness(world, check) < 0)
                     return;
+                IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
+                if (behavior != null) {
+                    if(!world.isAirBlock(check) || !block.isReplaceable(world,check)) {
+                        NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
+                        InvUtils.insert(tile.inventory, stacks, false);
+                    }
                 }
-                else if (!world.isAirBlock(check) && !world.getBlockState(check).getBlock().isReplaceable(world, check) && world.getBlockState(check).getBlockHardness(world, check) != -1.0F) {
-                    IBlockState state = world.getBlockState(check);
-                    List<ItemStack> stacks = state.getBlock().getDrops(world, check, state, 0);
-                    if (stacks.isEmpty() && state.getBlock().canSilkHarvest(world, check, state, null))
-                        stacks.add(state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player));
-                    else if (!stacks.isEmpty()) {
-                        for (ItemStack stack : stacks) {
-                            if (ItemStack.areItemsEqual(stack, state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player))) {
-                                stacks.remove(stack);
-                                stacks.add(state.getBlock().getPickBlock(state, null, world, check, FakePlayerHandler.player));
-                                break;
-                            }
-                        }
-                    }
-                    if (!stacks.isEmpty()) {
-                        for (ItemStack stack : stacks)
-                            tile.addStackToInventory(stack, check);
-                    }
-                    world.playSound(null, check, state.getBlock().getSoundType(state, world, check, null).getPlaceSound(), SoundCategory.BLOCKS, 0.7F, 1.0F);
-                    state.getBlock().breakBlock(world, check, state);
-                    world.setBlockToAir(check);
-                    return;
-                }
-                List<EntityLivingBase> creatures = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(check, check.add(1, 1, 1)), entity -> !entity.isDead && (entity instanceof EntityWolf || entity instanceof EntitySheep || entity instanceof EntityChicken));
-                if (!creatures.isEmpty() && creatures.size() > 0) {
-                    for (EntityLivingBase creature : creatures) {
-                        if (creature instanceof EntityWolf) {
-                            tile.addStackToInventory(new ItemStack(BWMBlocks.WOLF), check);
-                            InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(3)));
-                            world.playSound(null, check, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
-                            creature.setDead();
-                        } else if (creature instanceof EntitySheep) {
-                            EntitySheep sheep = (EntitySheep) creature;
-                            if (!sheep.getSheared() && sheep.getGrowingAge() > -1) {
-                                List<ItemStack> shear = sheep.onSheared(new ItemStack(Items.SHEARS), world, check, 0);
-                                for (ItemStack wool : shear) {
-                                    tile.addStackToInventory(wool, check);
-                                }
-                                InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.STRING, 1 + rand.nextInt(2)));
-                            }
-                        } else if (creature instanceof EntityChicken) {
-                            tile.addStackToInventory(new ItemStack(Items.EGG), check);
-                            InvUtils.ejectStackWithOffset(world, check, new ItemStack(Items.FEATHER, 1 + rand.nextInt(2)));
-                            world.playSound(null, check, SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
-                            creature.setDead();
-                        }
-                    }
+                List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(check, check.add(1, 1, 1)), entity -> !entity.isDead);
+                if (!entities.isEmpty()) {
+                    IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(entities.get(0).getClass());
+                    NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, entities.get(0),tile.getCurrentSlot());
+                    InvUtils.insert(tile.inventory, stacks, false);
                 }
             } else {
                 int index = tile.nextIndex;
                 ItemStack stack = tile.getNextStackFromInv();
-                if (index == -1 || stack .isEmpty() )
+                if (index == -1 || stack.isEmpty())
                     world.playEvent(1001, pos, 0);
                 else {
                     IBehaviorDispenseItem item = this.getBehavior(stack);
@@ -228,3 +192,5 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
         return 0;
     }
 }
+
+

@@ -48,5 +48,6 @@ public class SawRecipes extends Feature {
                 return InvUtils.asList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
+
     }
 }

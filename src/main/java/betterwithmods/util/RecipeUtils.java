@@ -97,6 +97,9 @@ public final class RecipeUtils {
         return toRemove.size();
     }
 
+    public static void removeRecipes(Item item) {
+        removeRecipes(item,OreDictionary.WILDCARD_VALUE);
+    }
     /**
      * Remove all recipes.
      *

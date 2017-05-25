@@ -30,6 +30,7 @@ public class Hardcore extends Module {
         registerFeature(new HCPiles());
         registerFeature(new HCRedstone());
         registerFeature(new HCSeeds());
+        registerFeature(new HCSaw());
         registerFeature(new HCSpawn());
         registerFeature(new HCStructures());
         registerFeature(new HCStumping());

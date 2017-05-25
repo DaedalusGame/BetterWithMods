@@ -10,10 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class CraftingManagerBulk<T extends BulkRecipe> {
@@ -23,21 +20,10 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         this.recipes = new ArrayList<>();
     }
 
-    public void addRecipe(ItemStack output, Object... inputs) {
-        addRecipe(output, ItemStack.EMPTY, inputs);
-    }
-
-    public void addRecipe(ItemStack output, ItemStack secondary, Object input) {
-        addRecipe(output, secondary, new Object[]{input});
-    }
-
-    public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        T recipe = createRecipe(output, secondary, inputs);
+    public void addRecipe(T recipe) {
         if (!recipe.isEmpty())
             recipes.add(recipe);
     }
-
-    public abstract T createRecipe(@Nonnull ItemStack output, @Nonnull ItemStack secondary, Object[] inputs);
 
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary) {
         return recipes.stream().filter(recipe -> recipe.matches(output, secondary)).collect(Collectors.toList());
@@ -115,7 +101,7 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
 
 
     public ItemStack[] getCraftingResult(ItemStackHandler inv) {
-        BulkRecipe recipe = getMostValidRecipe(inv);
+        T recipe = getMostValidRecipe(inv);
         if (recipe != null) {
             if (recipe.matches(inv)) {
                 ItemStack[] ret = new ItemStack[1];
@@ -130,26 +116,25 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return null;
     }
 
-    private BulkRecipe getMostValidRecipe(ItemStackHandler inv) {
-        HashMap<Integer, BulkRecipe> recipes = getValidRecipes(inv);
-        if (!recipes.isEmpty()) {
-            for (int i = 0; i < recipes.size(); i++) {
-                BulkRecipe recipe = recipes.get(i);
-                if (recipe.matches(inv))
-                    return recipe;
-            }
+    public T getMostValidRecipe(ItemStackHandler inv) {
+        HashMap<Integer, T> recipes = getValidRecipes(inv);
+        for (Map.Entry<Integer, T> entry : recipes.entrySet()) {
+            if (entry.getValue().matches(inv))
+                return entry.getValue();
         }
         return null;
     }
 
-    private HashMap<Integer, BulkRecipe> getValidRecipes(ItemStackHandler inv) {
-        HashMap<Integer, BulkRecipe> recipe = new HashMap<>();
+    private HashMap<Integer, T> getValidRecipes(ItemStackHandler inv) {
+        HashMap<Integer, T> recipe = new HashMap<>();
+
+
         int order = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
-            BulkRecipe single = null;
+            T single = null;
             if (!inv.getStackInSlot(i).isEmpty()) {
                 ItemStack stack = inv.getStackInSlot(i).copy();
-                for (BulkRecipe r : this.recipes) {
+                for (T r : this.recipes) {
                     if (containsIngredient(r.getRecipeInput(), stack)) {
                         if (r.getRecipeInput().size() > 1) {
                             recipe.put(order, r);
@@ -182,15 +167,16 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return false;
     }
 
+
     public List<Object> getValidCraftingIngredients(ItemStackHandler inv) {
-        BulkRecipe recipe = getMostValidRecipe(inv);
+        T recipe = getMostValidRecipe(inv);
         if (recipe != null)
             return recipe.getRecipeInput();
         return Lists.newArrayList();
     }
 
     public NonNullList<ItemStack> craftItem(ItemStackHandler inv) {
-        BulkRecipe recipe = getMostValidRecipe(inv);
+        T recipe = getMostValidRecipe(inv);
         if (recipe != null) {
             NonNullList<ItemStack> list = NonNullList.withSize(2, ItemStack.EMPTY);
             list.set(0, recipe.getOutput());
@@ -205,14 +191,4 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return this.recipes;
     }
 
-    //Lazy way of ensuring the ore dictionary entries were properly implemented.
-    public void refreshRecipes() {
-        List<T> recipes = getRecipes();
-        if (!recipes.isEmpty()) {
-            this.recipes = new ArrayList<>();
-            for (BulkRecipe r : recipes) {
-                this.recipes.add(createRecipe(r.getOutput(), r.getSecondary(), r.getRecipeInput().toArray()));
-            }
-        }
-    }
 }

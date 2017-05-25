@@ -1,7 +1,6 @@
 package betterwithmods.util;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.registry.bulk.manager.*;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -170,11 +169,11 @@ public final class RecipeUtils {
         }
     }
 
-    public static void refreshRecipes() {
-        CauldronManager.getInstance().refreshRecipes();
-        StokedCauldronManager.getInstance().refreshRecipes();
-        CrucibleManager.getInstance().refreshRecipes();
-        StokedCrucibleManager.getInstance().refreshRecipes();
-        MillManager.getInstance().refreshRecipes();
-    }
+//    public static void refreshRecipes() {
+//        CauldronManager.getInstance().refreshRecipes();
+//        StokedCauldronManager.getInstance().refreshRecipes();
+//        CrucibleManager.getInstance().refreshRecipes();
+//        StokedCrucibleManager.getInstance().refreshRecipes();
+//        MillManager.getInstance().refreshRecipes();
+//    }
 }

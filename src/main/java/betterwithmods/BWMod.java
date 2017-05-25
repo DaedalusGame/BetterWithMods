@@ -9,7 +9,6 @@ import betterwithmods.network.MessageSyncModule;
 import betterwithmods.network.ModuleSync;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.world.MinecraftException;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -70,7 +69,7 @@ public class BWMod {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
         registerEventHandlers();
-        RecipeUtils.refreshRecipes();
+//        RecipeUtils.refreshRecipes();
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ModuleSync());
         proxy.postInit(evt);

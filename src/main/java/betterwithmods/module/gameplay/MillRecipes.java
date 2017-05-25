@@ -19,58 +19,67 @@ public class MillRecipes extends Feature {
         canDisable = false;
     }
 
+    public static int millstoneCraftSpeed;
+
+    @Override
+    public void setupConfig() {
+        millstoneCraftSpeed = loadPropInt("Millstone Crafting Speed", "Speed at which the Millstone will finish a recipe in ticks", "", 1000, 200, 4000);
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
-        addMillRecipe(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED,3),new Object[]{new ItemStack(BWMBlocks.WOLF)});
-        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.WHEAT));
-        addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack(Items.REEDS));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), "cropHemp");
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), new ItemStack(Items.COAL, 1, 0));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST), new ItemStack(Items.COAL, 1, 1));
-        addMillRecipe(getDye(EnumDyeColor.WHITE,6), new ItemStack(Items.BONE));
-        addMillRecipe(getDye(EnumDyeColor.WHITE,10), new ItemStack(Items.SKULL, 1, 0));
-        addMillRecipe(getDye(EnumDyeColor.WHITE,10), new ItemStack(Items.SKULL, 1, 1));
-        addMillRecipe(getDye(EnumDyeColor.WHITE,9), new ItemStack(Blocks.BONE_BLOCK));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new ItemStack(Blocks.NETHERRACK));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ItemStack(Items.LEATHER));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack(Items.RABBIT_HIDE));
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT));
-        addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack(Items.BLAZE_ROD));
-
+        addMillRecipe(1, new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3), new Object[]{new ItemStack(BWMBlocks.WOLF)});
+        addMillRecipe(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new ItemStack[]{new ItemStack(Blocks.NETHERRACK)});
+        addMillRecipe(2, new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack[]{new ItemStack(Items.BLAZE_ROD)});
+        addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack[]{new ItemStack(Items.REEDS)});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), new String[]{"cropHemp"});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 0)});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 1)});
+        addMillRecipe(getDye(EnumDyeColor.WHITE, 6), new ItemStack[]{new ItemStack(Items.BONE)});
+        addMillRecipe(getDye(EnumDyeColor.WHITE, 10), new ItemStack[]{new ItemStack(Items.SKULL, 1, 0)});
+        addMillRecipe(getDye(EnumDyeColor.WHITE, 10), new ItemStack[]{new ItemStack(Items.SKULL, 1, 1)});
+        addMillRecipe(getDye(EnumDyeColor.WHITE, 9), new ItemStack[]{new ItemStack(Blocks.BONE_BLOCK)});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ItemStack[]{new ItemStack(Items.LEATHER)});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{new ItemStack(Items.RABBIT_HIDE)});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT)});
         //Dyes
-        addMillRecipe(getDye(EnumDyeColor.RED,2), new ItemStack(Items.BEETROOT));
-        addMillRecipe(getDye(EnumDyeColor.RED,4), new ItemStack(Blocks.RED_FLOWER, 1, 0));
-        addMillRecipe(getDye(EnumDyeColor.RED,4), new ItemStack(Blocks.RED_FLOWER, 1, 4));
-        addMillRecipe(getDye(EnumDyeColor.YELLOW,4), new ItemStack(Blocks.YELLOW_FLOWER, 1, 0));
-        addMillRecipe(getDye(EnumDyeColor.LIGHT_BLUE,4), new ItemStack(Blocks.RED_FLOWER, 1, 1));
-        addMillRecipe(getDye(EnumDyeColor.MAGENTA,4), new ItemStack(Blocks.RED_FLOWER, 1, 2));
-        addMillRecipe(getDye(EnumDyeColor.SILVER,4), new ItemStack(Blocks.RED_FLOWER, 1, 3));
-        addMillRecipe(getDye(EnumDyeColor.ORANGE,4), new ItemStack(Blocks.RED_FLOWER, 1, 5));
-        addMillRecipe(getDye(EnumDyeColor.SILVER,4), new ItemStack(Blocks.RED_FLOWER, 1, 6));
-        addMillRecipe(getDye(EnumDyeColor.PINK,6), new ItemStack(Blocks.RED_FLOWER, 1, 7));
-        addMillRecipe(getDye(EnumDyeColor.SILVER,4), new ItemStack(Blocks.RED_FLOWER, 1, 8));
-        addMillRecipe(getDye(EnumDyeColor.YELLOW,6), new ItemStack(Blocks.DOUBLE_PLANT, 1, 0));
-        addMillRecipe(getDye(EnumDyeColor.MAGENTA,6), new ItemStack(Blocks.DOUBLE_PLANT, 1, 1));
-        addMillRecipe(getDye(EnumDyeColor.RED,6), new ItemStack(Blocks.DOUBLE_PLANT, 1, 4));
-        addMillRecipe(getDye(EnumDyeColor.PINK,6), new ItemStack(Blocks.DOUBLE_PLANT, 1, 5));
-        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), "cropBarley");
-        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), "cropOats");
-        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), "cropRye");
-        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), "cropRice");
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER), new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()));
+        addMillRecipe(getDye(EnumDyeColor.RED, 2), new ItemStack[]{new ItemStack(Items.BEETROOT)});
+        addMillRecipe(getDye(EnumDyeColor.RED, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 0)});
+        addMillRecipe(getDye(EnumDyeColor.RED, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 4)});
+        addMillRecipe(getDye(EnumDyeColor.YELLOW, 4), new ItemStack[]{new ItemStack(Blocks.YELLOW_FLOWER, 1, 0)});
+        addMillRecipe(getDye(EnumDyeColor.LIGHT_BLUE, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 1)});
+        addMillRecipe(getDye(EnumDyeColor.MAGENTA, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 2)});
+        addMillRecipe(getDye(EnumDyeColor.SILVER, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 3)});
+        addMillRecipe(getDye(EnumDyeColor.ORANGE, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 5)});
+        addMillRecipe(getDye(EnumDyeColor.SILVER, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 6)});
+        addMillRecipe(getDye(EnumDyeColor.PINK, 6), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 7)});
+        addMillRecipe(getDye(EnumDyeColor.SILVER, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 8)});
+        addMillRecipe(getDye(EnumDyeColor.YELLOW, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 0)});
+        addMillRecipe(getDye(EnumDyeColor.MAGENTA, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 1)});
+        addMillRecipe(getDye(EnumDyeColor.RED, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 4)});
+        addMillRecipe(getDye(EnumDyeColor.PINK, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 5)});
+        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropBarley"});
+        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropOats"});
+        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropRye"});
+        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropRice"});
+        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER), new ItemStack[]{new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage())});
 
     }
 
-    public static void addMillRecipe(ItemStack output, Object... inputs) {
-        MillManager.getInstance().addRecipe(output, ItemStack.EMPTY, inputs);
+    public static void addMillRecipe(ItemStack output, Object[] inputs) {
+        MillManager.getInstance().addRecipe(0, output, ItemStack.EMPTY, inputs);
     }
 
-    public static void addMillRecipe(ItemStack output, ItemStack inputs) {
-        MillManager.getInstance().addRecipe(output, ItemStack.EMPTY, inputs);
+    public static void addMillRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        MillManager.getInstance().addRecipe(0, output, secondary, inputs);
     }
 
-    public static void addMillRecipe(ItemStack output, ItemStack secondary, Object... inputs) {
-        MillManager.getInstance().addRecipe(output, secondary, inputs);
+    public static void addMillRecipe(int grindType, ItemStack output, Object[] inputs) {
+        MillManager.getInstance().addRecipe(grindType, output, ItemStack.EMPTY, inputs);
+    }
+
+    public static void addMillRecipe(int grindType, ItemStack output, ItemStack secondary, Object[] inputs) {
+        MillManager.getInstance().addRecipe(grindType, output, secondary, inputs);
     }
 
     public static ItemStack getDye(EnumDyeColor color, int count) {

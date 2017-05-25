@@ -3,10 +3,13 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.items.ItemFertilizer;
 import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
+import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,8 +23,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by tyler on 5/14/17.
  */
 public class HCBonemeal extends Feature {
-    private static final ItemStack BONEMEAL = new ItemStack(Items.DYE, 1, 15);
-
     private static boolean removeBonemealRecipe;
     @Override
     public void setupConfig() {
@@ -30,25 +31,28 @@ public class HCBonemeal extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Removes the ability to instant-grow crops with bonemeal";
+        return "Removes the ability to instant-grow crops and trees with bonemeal";
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         if(removeBonemealRecipe)
-            RecipeUtils.removeShaped(BONEMEAL, new ItemStack[][]{new ItemStack[]{new ItemStack(Items.BONE)}});
+            RecipeUtils.removeRecipes( new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage()));
+
     }
 
     @SubscribeEvent
     public void onBonemeal(BonemealEvent e) {
-        if (e.getBlock().getBlock() instanceof BlockCrops)
+        if(!EntityPlayerExt.isSurvival(e.getEntityPlayer()))
+            return;
+        if (e.getBlock().getBlock() instanceof BlockCrops || e.getBlock().getBlock() instanceof BlockSapling)
             e.setCanceled(true);
     }
 
     @SubscribeEvent
     public void onItemUse(PlayerInteractEvent.RightClickBlock e) {
         ItemStack stack = e.getItemStack();
-        if (!stack.isItemEqual(BONEMEAL))
+        if (!stack.isItemEqual( new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())))
             return;
         World world = e.getWorld();
         BlockPos pos = e.getPos();

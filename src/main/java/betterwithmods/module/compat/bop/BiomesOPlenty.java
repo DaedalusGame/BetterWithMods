@@ -29,17 +29,14 @@ public class BiomesOPlenty extends CompatFeature {
         BWMItems.registerItem(PILES);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient(FMLPreInitializationEvent event) {
         BWMItems.setInventoryModel(PILES);
     }
 
-    @SideOnly(Side.CLIENT)
-
-
     @Override
     public void init(FMLInitializationEvent event) {
-
         NetherSpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "grass")), 1);
         NetherSpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "grass")), 6);
         NetherSpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "flesh")));

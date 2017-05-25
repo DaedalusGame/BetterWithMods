@@ -11,7 +11,6 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -39,16 +38,13 @@ public class ImmersiveEngineering extends CompatFeature {
 
     @Override
     public void setupConfig() {
-        loadPropBool("Override Industrial Hemp Drops", "Replaces Hemp Fiber with BWM Hemp, making it require a Millstone", true);
+        overrideIndustrialHempDrops = loadPropBool("Override Industrial Hemp Drops", "Replaces Hemp Fiber with BWM Hemp, making it require a Millstone", true);
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         BWMBlocks.registerBlock(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
-        if (overrideIndustrialHempDrops) {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
     }
 
     @Override
@@ -67,6 +63,8 @@ public class ImmersiveEngineering extends CompatFeature {
 
     @SubscribeEvent
     public void overrideHempDrops(BlockEvent.HarvestDropsEvent e) {
+        if(!overrideIndustrialHempDrops)
+            return;
         IBlockState state = e.getState();
         if (state.getBlock() instanceof BlockIECrop) {
             e.getDrops().clear();
@@ -76,5 +74,10 @@ public class ImmersiveEngineering extends CompatFeature {
                 e.getDrops().add(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));
             }
         }
+    }
+
+    @Override
+    public boolean hasSubscriptions() {
+        return true;
     }
 }

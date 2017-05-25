@@ -112,6 +112,10 @@ public class BulkRecipe {
         return this.inputs;
     }
 
+    public boolean matches(ItemStack output, ItemStack secondary) {
+        return this.output.isItemEqual(output) && (secondary.isEmpty() && this.secondary.isEmpty()) || this.secondary.isItemEqual(secondary);
+    }
+
     public boolean matches(ItemStackHandler inv) {
         ArrayList<Object> required = new ArrayList<>(inputs);
 
@@ -130,19 +134,6 @@ public class BulkRecipe {
                 }
             }
             return true;
-        }
-        return false;
-    }
-
-    public boolean matches(BulkRecipe recipe) {
-        if (!this.getOutput().isEmpty() && !recipe.getOutput().isEmpty()) {
-            boolean match = this.stacksMatch(this.getOutput(), recipe.getOutput());
-            if (match && (!this.getSecondary().isEmpty() || !recipe.getSecondary().isEmpty())) {
-                match = !this.getSecondary().isEmpty() && !recipe.getSecondary().isEmpty();
-                if (match)
-                    match = this.stacksMatch(this.getSecondary(), recipe.getSecondary());
-            }
-            return match;
         }
         return false;
     }
@@ -171,10 +162,6 @@ public class BulkRecipe {
             }
         }
         return success;
-    }
-
-    private boolean stacksMatch(ItemStack first, ItemStack second) {
-        return first.getItem() == second.getItem() && first.getItemDamage() == second.getItemDamage() && first.getCount() == second.getCount();
     }
 
     public boolean isEmpty() {

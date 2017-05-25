@@ -13,12 +13,12 @@ import net.minecraft.item.ItemStack;
  * @version 1/2/17
  */
 public class BulkRemove extends BaseListRemoval<BulkRecipe> {
-    protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output) {
-        super(name, recipes.getRecipes(), recipes.removeRecipes(output));
+    protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output, ItemStack secondary) {
+        super(name, recipes.getRecipes(), recipes.findRecipeForRemoval(output,secondary));
     }
 
-    protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output, Object... inputs) {
-        super(name, recipes.getRecipes(), recipes.removeRecipes(output, inputs));
+    protected BulkRemove(String name, CraftingManagerBulk recipes, ItemStack output, ItemStack secondary, Object... inputs) {
+        super(name, recipes.getRecipes(), recipes.findRecipeForRemoval(output, secondary, inputs));
     }
 
     @Override

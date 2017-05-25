@@ -80,7 +80,7 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET),new Object[]{new ItemStack(Items.COOKED_FISH), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET),new Object[]{new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
         addCauldronRecipe(new ItemStack(BWMItems.HEARTY_STEW, 5), "listAllmeatcooked", Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.BROWN_MUSHROOM, 3), "foodFlour");
-        addCauldronRecipe(new ItemStack(BWMItems.KIBBLE,2), new ItemStack(Items.DYE,4, EnumDyeColor.WHITE.getMetadata()),new ItemStack(Items.ROTTEN_FLESH,4), new ItemStack(Items.SUGAR));
+        addCauldronRecipe(new ItemStack(BWMItems.KIBBLE,2), ItemStack.EMPTY, new ItemStack(Items.DYE,4, EnumDyeColor.WHITE.getDyeDamage()),new ItemStack(Items.ROTTEN_FLESH,4), new ItemStack(Items.SUGAR));
     }
 
     public static void addCauldronRecipe(ItemStack output, Object... inputs) {

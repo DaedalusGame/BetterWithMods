@@ -6,6 +6,7 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -30,11 +31,11 @@ public class Mill {
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BulkRemove("mill", MillManager.getInstance(),InputHelper.toStack(output)));
+        MineTweakerAPI.apply(new BulkRemove("mill", MillManager.getInstance(),InputHelper.toStack(output), ItemStack.EMPTY));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, IIngredient[] inputs) {
-        MineTweakerAPI.apply(new BulkRemove("mill", MillManager.getInstance(),InputHelper.toStack(output), InputHelper.toObjects(inputs)));
+        MineTweakerAPI.apply(new BulkRemove("mill", MillManager.getInstance(),InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

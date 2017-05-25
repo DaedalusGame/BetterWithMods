@@ -12,7 +12,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     private List<T> recipes;
@@ -37,35 +39,52 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
 
     public abstract T createRecipe(@Nonnull ItemStack output, @Nonnull ItemStack secondary, Object[] inputs);
 
-    public List<T> removeRecipes(ItemStack output) {
+    public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary) {
+        return recipes.stream().filter(recipe -> recipe.matches(output, secondary)).collect(Collectors.toList());
+    }
+
+    public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary, @Nonnull Object... inputs) {
         List<T> removed = Lists.newArrayList();
-        for (BulkRecipe ir : recipes) {
-            if (ir.getOutput().isItemEqual(output)) {
-                removed.add((T) ir);
+        for (T recipe : recipes) {
+            if (recipe.matches(output, secondary)) {
+                if (inputs.length > 0) {
+                    boolean match = true;
+                    for (Object input : inputs) {
+                        match = hasMatch(input, recipe.getRecipeInput());
+                        if (!match)
+                            break;
+                    }
+                    if (match)
+                        removed.add(recipe);
+                } else {
+                    removed.add(recipe);
+                }
             }
         }
         return removed;
     }
 
-    public List<BulkRecipe> removeRecipes(ItemStack output, Object... inputs) {
-        List<BulkRecipe> removed = Lists.newArrayList();
-        for (BulkRecipe ir : recipes) {
-            if (ir.getOutput().isItemEqual(output)) {
-                if (inputs.length > 0) {
-                    boolean match = true;
-                    for (Object input : inputs) {
-                        match = hasMatch(input, ir.getRecipeInput());
-                        if (!match)
-                            break;
-                    }
-                    if (match)
-                        removed.add(ir);
-                } else {
-                    removed.add(ir);
-                }
-            }
+
+    public boolean removeRecipe(ItemStack output, ItemStack secondary) {
+        Iterator<T> iterator = recipes.iterator();
+        List<T> remove = findRecipeForRemoval(output, secondary);
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            if (remove.contains(next))
+                iterator.remove();
         }
-        return removed;
+        return remove.isEmpty();
+    }
+
+    public boolean removeRecipe(ItemStack output, ItemStack secondary, Object... inputs) {
+        Iterator<T> iterator = recipes.iterator();
+        List<T> remove = findRecipeForRemoval(output, secondary, inputs);
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            if (remove.contains(next))
+                iterator.remove();
+        }
+        return remove.isEmpty();
     }
 
     private boolean hasMatch(Object input, List<Object> inputs) {
@@ -94,30 +113,6 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return false;
     }
 
-    public boolean removeRecipe(ItemStack output, Object[] inputs) {
-        return removeRecipe(output, null, inputs);
-    }
-
-    public boolean removeRecipe(ItemStack output, ItemStack secondary, Object input) {
-        Object[] inputs = new Object[1];
-        inputs[0] = input;
-        return removeRecipe(output, secondary, inputs);
-    }
-
-    public boolean removeRecipe(ItemStack output, Object input) {
-        return removeRecipe(output, null, input);
-    }
-
-    public boolean removeRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        BulkRecipe recipe = createRecipe(output, secondary, inputs);
-        int matchingIndex = getMatchingRecipeIndex(recipe);
-
-        if (matchingIndex >= 0) {
-            this.recipes.remove(matchingIndex);
-            return true;
-        }
-        return false;
-    }
 
     public ItemStack[] getCraftingResult(ItemStackHandler inv) {
         BulkRecipe recipe = getMostValidRecipe(inv);
@@ -198,22 +193,12 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         BulkRecipe recipe = getMostValidRecipe(inv);
         if (recipe != null) {
             NonNullList<ItemStack> list = NonNullList.withSize(2, ItemStack.EMPTY);
-            list.set(0,recipe.getOutput());
-            list.set(1,recipe.getSecondary());
+            list.set(0, recipe.getOutput());
+            list.set(1, recipe.getSecondary());
             recipe.consumeInvIngredients(inv);
             return list;
         }
         return NonNullList.create();
-    }
-
-
-    private int getMatchingRecipeIndex(BulkRecipe recipe) {
-        for (int i = 0; i < this.recipes.size(); i++) {
-            BulkRecipe tempRecipe = this.recipes.get(i);
-            if (tempRecipe.matches(recipe))
-                return i;
-        }
-        return -1;
     }
 
     public List<T> getRecipes() {

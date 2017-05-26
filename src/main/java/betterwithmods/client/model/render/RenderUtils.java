@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class RenderUtils {
     protected static final Minecraft minecraft = Minecraft.getMinecraft();
 
-    private static HashMap<String, ModelWithResource> filterLocations;
+    private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
 
     public static boolean filterContains(ItemStack stack) {
@@ -33,12 +33,6 @@ public class RenderUtils {
         return null;
     }
 
-    public static ModelWithResource getModelFromStack(String stack) {
-        if (filterLocations.containsKey(stack))
-            return filterLocations.get(stack);
-        return null;
-    }
-
     public static void addFilter(ItemStack stack, ModelWithResource resource) {
         String stackString = stack.getItem().toString() + stack.getMetadata();
         filterLocations.put(stackString, resource);
@@ -46,7 +40,6 @@ public class RenderUtils {
 
     public static void registerFilters() {
         String[] woodTypes = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"};
-        filterLocations = new HashMap<>();
         for (int i = 0; i < 6; i++) {
             addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
             addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));

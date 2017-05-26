@@ -99,28 +99,17 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        readFromTag(tag);
+        powerLevel = tag.getInteger("Power");
+        outputs = tag.getByte("Outputs");
     }
 
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
-        writeToTag(t);
-        return t;
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-        powerLevel = tag.getInteger("Power");
-        outputs = tag.getByte("Outputs");
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
         tag.setInteger("Power", powerLevel);
         tag.setByte("Outputs", outputs);
-        return tag;
+        return t;
     }
 
     @Override

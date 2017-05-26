@@ -1,14 +1,11 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
@@ -24,7 +21,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower {
+public class TileEntityMill extends TileBasicInventory implements ITickable {
 
     public static int GRIND_TIME = MillRecipes.millstoneCraftSpeed;
 
@@ -33,17 +30,10 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private int grindType = 0;
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
-    private int powerLevel;
-    private int counter;
 
     public TileEntityMill() {
         this.grindCounter = 0;
         this.validateContents = true;
-    }
-
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 1;
     }
 
     @Override
@@ -62,13 +52,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             return;
 
         BlockMechMachines mill = (BlockMechMachines) block;
-        if (counter == 20) {
-            powerLevel = getMechanicalInput(EnumFacing.DOWN);
-            powerLevel = Math.min(powerLevel + getMechanicalInput(EnumFacing.UP), getMaximumInput(EnumFacing.UP));
-            counter = 0;
-        } else {
-            counter++;
-        }
 
         if (this.validateContents)
             validateContents();
@@ -89,7 +72,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
                 }
             }
             this.grindCounter++;
-            if (this.grindCounter > GRIND_TIME-1) {
+            if (this.grindCounter > GRIND_TIME - 1) {
                 grindContents();
                 this.grindCounter = 0;
                 this.validateContents = true;
@@ -199,42 +182,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         if (oldGrindType != newGrindType) {
             this.grindType = newGrindType;
         }
-    }
-
-    @Override
-    public int getMechanicalOutput(EnumFacing facing) {
-        return 0;
-    }
-
-    @Override
-    public int getMechanicalInput(EnumFacing facing) {
-        int power = 0;
-        if (getBlockType() instanceof IMechanicalBlock) {
-            if (((IMechanicalBlock) getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
-                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(), getPos(), facing), getMaximumInput(facing));
-            }
-        }
-        return power;
-    }
-
-    @Override
-    public int getMaximumInput(EnumFacing facing) {
-        return 10;
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-        powerLevel = tag.getInteger("Power");
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        tag.setInteger("Power", powerLevel);
-        return tag;
-    }
-
-    private int getGrindingBonus() {
-        return powerLevel / 10;
     }
 
 }

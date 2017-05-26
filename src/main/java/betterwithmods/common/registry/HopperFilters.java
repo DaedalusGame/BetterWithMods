@@ -56,8 +56,6 @@ public class HopperFilters {
         Optional<Integer> type = filterTypes.entrySet().stream().
                 filter(e -> e.getKey().getItem() == filter.getItem() && (e.getKey().getMetadata() == filter.getMetadata() || e.getKey().getMetadata() == OreDictionary.WILDCARD_VALUE))
                 .map(Map.Entry::getValue).findAny();
-        if (type.isPresent())
-            return type.get();
-        return 0;
+        return type.orElse(0);
     }
 }

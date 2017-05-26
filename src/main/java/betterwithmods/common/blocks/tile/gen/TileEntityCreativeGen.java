@@ -3,7 +3,6 @@ package betterwithmods.common.blocks.tile.gen;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -58,12 +57,4 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
         return 0;
     }
 
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        return new NBTTagCompound();
-    }
 }

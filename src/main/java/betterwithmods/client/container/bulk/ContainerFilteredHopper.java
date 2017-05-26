@@ -43,12 +43,6 @@ public class ContainerFilteredHopper extends Container {
             addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), i, 8 + i * 18, 169));
         }
     }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return tile.isUseableByPlayer(player);
-    }
-
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack clickedStack = ItemStack.EMPTY;
@@ -106,6 +100,11 @@ public class ContainerFilteredHopper extends Container {
     public void updateProgressBar(int index, int value) {
         if (index == 0)
             this.tile.power = (byte) value;
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return tile.isUseableByPlayer(playerIn);
     }
 
 }

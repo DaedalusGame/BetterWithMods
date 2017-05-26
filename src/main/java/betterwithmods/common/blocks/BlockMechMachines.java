@@ -12,7 +12,6 @@ import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -39,7 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITileEntityProvider, IMultiVariants {
+public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMultiVariants {
 
     public static ItemStack getStack(EnumType type) {
         return new ItemStack(BWMBlocks.SINGLE_MACHINES,1, type.getMeta() << 1);
@@ -193,9 +192,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         if (!isCurrentStateValid(world, pos)) {
             world.scheduleBlockUpdate(pos, this, tickRateForMeta(type), 5);
         }
-        if (type == BlockMechMachines.EnumType.HOPPER) {
-            ((TileEntityFilteredHopper) world.getTileEntity(pos)).outputBlocked = false;
-        }
     }
 
     public boolean isCurrentStateValid(World world, BlockPos pos) {
@@ -205,10 +201,10 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return createTileEntity(world, this.getStateFromMeta(meta));
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
     }
-
+    
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         switch (state.getValue(MACHINETYPE)) {

@@ -176,14 +176,4 @@ public abstract class TileEntityMillGenerator extends TileBasic implements ITick
     public int getMaximumInput(EnumFacing facing) {
         return 0;
     }
-
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        return null;
-    }
 }

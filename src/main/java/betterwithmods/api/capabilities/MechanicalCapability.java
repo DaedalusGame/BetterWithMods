@@ -2,7 +2,6 @@ package betterwithmods.api.capabilities;
 
 import betterwithmods.api.tile.IMechanicalPower;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -45,14 +44,5 @@ public class MechanicalCapability {
             return 0;
         }
 
-
-        @Override
-        public void readFromTag(NBTTagCompound tag) {
-        }
-
-        @Override
-        public NBTTagCompound writeToTag(NBTTagCompound tag) {
-            return new NBTTagCompound();
-        }
     }
 }

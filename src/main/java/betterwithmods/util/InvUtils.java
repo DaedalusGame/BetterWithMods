@@ -1,5 +1,6 @@
 package betterwithmods.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
@@ -10,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -60,9 +62,19 @@ public class InvUtils {
 
 
     public static Optional<IItemHandler> getItemHandler(World world, BlockPos pos, EnumFacing facing) {
-
-        TileEntity tile = world.getTileEntity(pos);
-        return Optional.ofNullable(world.isRemote || tile == null ? null : tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+        if (!world.isRemote) {
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile != null) {
+                return Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+            } else {
+                List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), entity -> entity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+                Optional<Entity> entity = entities.stream().findFirst();
+                if (entity.isPresent()) {
+                    return Optional.ofNullable(entity.get().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+                }
+            }
+        }
+        return Optional.ofNullable(null);
     }
 
     public static void ejectInventoryContents(World world, BlockPos pos, IItemHandler inv) {
@@ -112,9 +124,15 @@ public class InvUtils {
     }
 
     public static boolean insertSingle(IItemHandler inv, ItemStack stack, boolean simulate) {
-        ItemStack stack2 = stack.copy();
-        stack2.setCount(1);
-        return insert(inv, stack2, 0, inv.getSlots(), simulate);
+        return insert(inv, stack, 1, simulate);
+    }
+
+    public static boolean insert(IItemHandler inv, ItemStack stack, int count, boolean simulate) {
+        ItemStack copy = stack.copy();
+        if (copy.getCount() > count) {
+            copy.setCount(count);
+        }
+        return insert(inv, copy, simulate);
     }
 
     public static void insert(IItemHandler inv, NonNullList<ItemStack> stacks, boolean simulate) {
@@ -126,27 +144,45 @@ public class InvUtils {
     }
 
     public static boolean insert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+        return attemptInsert(inv, stack, minSlot, maxSlot, simulate).isEmpty();
+    }
+
+    private static ItemStack attemptInsert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
         if (isFull(inv))
-            return false;
-        boolean insert = false;
+            return stack;
+        ItemStack leftover = ItemStack.EMPTY;
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, simulate).isEmpty()) {
-                insert = true;
+            leftover = inv.insertItem(slot, stack, simulate);
+            if (leftover.isEmpty())
                 break;
-            }
         }
-        return insert;
+        return leftover;
+    }
+
+    public static boolean insertFromWorld(IItemHandler inv, EntityItem entity, int minSlot, int maxSlot, boolean simulate) {
+        ItemStack stack = entity.getEntityItem().copy();
+        ItemStack leftover = attemptInsert(inv, stack, minSlot, maxSlot, simulate);
+        if (leftover.isEmpty()) {
+            entity.setDead();
+            return true;
+        } else {
+            entity.setEntityItemStack(leftover);
+            return false;
+        }
     }
 
     public static boolean isFull(IItemHandler inv) {
         boolean full = true;
         for (int slot = 0; slot < inv.getSlots(); slot++) {
             ItemStack stack = inv.getStackInSlot(slot);
-            if (stack.getCount() != stack.getMaxStackSize())
+            if (stack.getCount() != inv.getSlotLimit(slot)) {
                 full = false;
+                break;
+            }
         }
         return full;
     }
+
 
     public static int getFirstOccupiedStackInRange(IItemHandler inv, int minSlot, int maxSlot) {
         for (int slot = minSlot; slot <= maxSlot; ++slot) {
@@ -233,7 +269,7 @@ public class InvUtils {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                if (toCheck.isItemEqual(stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
                             if (stack.getCount() >= sizeOfStack) {
@@ -258,34 +294,45 @@ public class InvUtils {
         return false;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
+        int originalSize = toCheck.getCount();
         for (int i = 0; i < inv.getSlots(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if (toCheck.hasTagCompound()) {
-                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
-                            if (stack.getCount() >= sizeOfStack) {
-                                decrStackSize(inv, i, sizeOfStack);
-                                return true;
-                            }
-                            sizeOfStack -= stack.getCount();
-                            if (!simulate)
-                                inv.setStackInSlot(i, ItemStack.EMPTY);
-                        }
-                    } else {
-                        if (stack.getCount() >= sizeOfStack) {
-                            if (!simulate)
-                                decrStackSize(inv, i, sizeOfStack);
-                            return true;
-                        }
-                        sizeOfStack -= stack.getCount();
-                        if (!simulate)
-                            inv.setStackInSlot(i, ItemStack.EMPTY);
-                    }
+            ItemStack inSlot = inv.getStackInSlot(i);
+            if (toCheck.isItemEqual(inSlot) || (toCheck.getItem() == inSlot.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                if (toCheck.hasTagCompound() && ItemStack.areItemStackTagsEqual(toCheck, inSlot)) {
+                    return inv.extractItem(i, sizeOfStack, simulate).getCount() < originalSize;
+                } else {
+                    return inv.extractItem(i, sizeOfStack, simulate).getCount() < originalSize;
                 }
             }
         }
+//        for (int i = 0; i < inv.getSlots(); i++) {
+//            ItemStack stack = inv.getStackInSlot(i);
+//            if (!stack.isEmpty()) {
+//                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+//                    if (toCheck.hasTagCompound()) {
+//                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
+//                            if (stack.getCount() >= sizeOfStack) {
+//                                decrStackSize(inv, i, sizeOfStack);
+//                                return true;
+//                            }
+//                            sizeOfStack -= stack.getCount();
+//                            if (!simulate)
+//                                inv.setStackInSlot(i, ItemStack.EMPTY);
+//                        }
+//                    } else {
+//                        if (stack.getCount() >= sizeOfStack) {
+//                            if (!simulate)
+//                                decrStackSize(inv, i, sizeOfStack);
+//                            return true;
+//                        }
+//                        sizeOfStack -= stack.getCount();
+//                        if (!simulate)
+//                            inv.setStackInSlot(i, ItemStack.EMPTY);
+//                    }
+//                }
+//            }
+//        }
         return false;
     }
 
@@ -377,6 +424,22 @@ public class InvUtils {
         return -1;
     }
 
+    public static boolean spawnStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {
+        EntityItem item = new EntityItem(world, x, y, z, stack);
+        item.motionX = 0;
+        item.motionY = 0;
+        item.motionZ = 0;
+        item.setPickupDelay(pickupDelay);
+        return world.spawnEntity(item);
+    }
+
+    public static void spawnStack(World world, double x, double y, double z, int count, ItemStack stack) {
+        ItemStack copy = stack.copy();
+        if (copy.getCount() > count)
+            copy.setCount(count);
+        spawnStack(world, x, y, z, copy, 10);
+    }
+
     public static void ejectStackWithOffset(World world, BlockPos pos, List<ItemStack> stacks) {
         for (ItemStack stack : stacks) {
             if (!stack.isEmpty())
@@ -413,6 +476,7 @@ public class InvUtils {
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack) {
         ejectStack(world, x, y, z, stack, 10);
     }
+
 
     public static void ejectBrokenItems(World world, BlockPos pos, ResourceLocation lootLocation) {
         if (!world.isRemote) {
@@ -469,5 +533,6 @@ public class InvUtils {
         stack.setCount(count);
         return stack;
     }
+
 
 }

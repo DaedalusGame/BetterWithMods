@@ -1,6 +1,5 @@
 package betterwithmods.api.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
 public interface IMechanicalPower {
@@ -11,8 +10,4 @@ public interface IMechanicalPower {
     int getMaximumInput(EnumFacing facing);
 
     int getMinimumInput(EnumFacing facing);
-
-    void readFromTag(NBTTagCompound tag);
-
-    NBTTagCompound writeToTag(NBTTagCompound tag);
 }

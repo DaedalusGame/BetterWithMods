@@ -33,7 +33,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-import static betterwithmods.common.blocks.tile.TileEntityFilteredHopper.putDropInInventoryAllSlots;
+//import static betterwithmods.common.blocks.tile.TileEntityFilteredHopper.putDropInInventoryAllSlots;
 
 public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower {
     public int cookCounter;
@@ -86,6 +86,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         }
         return null;
     }
+
     private boolean isPowered() {
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             if (isInputtingPower(facing))
@@ -168,7 +169,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                 ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
             }
 
-            if(facing != state.getValue(DirUtils.TILTING)) {
+            if (facing != state.getValue(DirUtils.TILTING)) {
                 world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
             }
 
@@ -180,23 +181,13 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     private void entityCollision() {
         boolean flag = false;
-        if (!isFull()) {
+        if (!InvUtils.isFull(inventory)) {
             flag = captureDroppedItems();
         }
         if (flag) {
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(this.getPos());
             this.markDirty();
         }
-    }
-
-    private boolean isFull() {
-        for (int i = 0; i < this.inventory.getSlots(); i++) {
-            ItemStack itemstack = this.inventory.getStackInSlot(i);
-            if (itemstack .isEmpty()  || itemstack.getCount() != itemstack.getMaxStackSize()) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public List<EntityItem> getCaptureItems(World worldIn, BlockPos pos) {
@@ -208,7 +199,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         if (items.size() > 0) {
             boolean flag = false;
             for (EntityItem item : items) {
-                flag = putDropInInventoryAllSlots(inventory, item) || flag;
+                //TODO flag = putDropInInventoryAllSlots(inventory, item) || flag;
             }
             if (flag) {
                 this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -267,7 +258,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public boolean isUseableByPlayer(EntityPlayer player) {
         return this.getWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
+
     public abstract boolean validateStoked();
+
     public abstract boolean validateUnstoked();
 
     public void validateContents() {
@@ -411,6 +404,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
             IBlockState state = getWorld().getBlockState(pos);
             getWorld().notifyBlockUpdate(pos, state, state, 3);
         }
+
         return stateChanged;
     }
 
@@ -447,7 +441,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        return MechanicalUtil.isBlockPoweredByAxleOnSide(world,pos,facing) || MechanicalUtil.isPoweredByCrankOnSide(world,pos,facing)? 1 : 0;
+        return MechanicalUtil.isBlockPoweredByAxleOnSide(world, pos, facing) || MechanicalUtil.isPoweredByCrankOnSide(world, pos, facing) ? 1 : 0;
     }
 
     @Override
@@ -458,15 +452,5 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     @Override
     public int getMinimumInput(EnumFacing facing) {
         return 0;
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound tag) {
-
-    }
-
-    @Override
-    public NBTTagCompound writeToTag(NBTTagCompound tag) {
-        return tag;
     }
 }

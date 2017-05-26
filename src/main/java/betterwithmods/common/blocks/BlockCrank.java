@@ -33,7 +33,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
     public static final float BASE_HEIGHT = 0.25F;
     private static final int TICK_RATE = 3;
-    private static final int DELAY_BEFORE_RESET = 15;
+    private static final int DELAY_BEFORE_RESET = 20;
     private static final AxisAlignedBB CRANK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BASE_HEIGHT, 1.0F);
 
     public BlockCrank() {
@@ -189,7 +189,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         int stage = state.getValue(STAGE);
-
         if (stage > 0) {
             if (stage < 7) {
                 if (stage <= 6)

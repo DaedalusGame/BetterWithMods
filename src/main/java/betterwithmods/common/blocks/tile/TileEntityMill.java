@@ -66,8 +66,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             powerLevel = getMechanicalInput(EnumFacing.DOWN);
             powerLevel = Math.min(powerLevel + getMechanicalInput(EnumFacing.UP), getMaximumInput(EnumFacing.UP));
             counter = 0;
-        } else
+        } else {
             counter++;
+        }
 
         if (this.validateContents)
             validateContents();
@@ -88,7 +89,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
                 }
             }
             this.grindCounter++;
-            if (this.grindCounter > GRIND_TIME) {
+            if (this.grindCounter > GRIND_TIME-1) {
                 grindContents();
                 this.grindCounter = 0;
                 this.validateContents = true;

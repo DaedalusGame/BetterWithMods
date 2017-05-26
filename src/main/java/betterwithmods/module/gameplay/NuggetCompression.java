@@ -21,14 +21,14 @@ public class NuggetCompression extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        Set<String> exclude = Sets.newHashSet("diamond","soulforgedsteel");
+        Set<String> exclude = Sets.newHashSet("diamond", "soulforgedsteel");
         for (ItemStack ingot : BWOreDictionary.ingotNames) {
-            String suffix = BWOreDictionary.getSuffix(ingot,"ingot");
+            String suffix = BWOreDictionary.getSuffix(ingot, "ingot");
 
-            if(suffix != null && !exclude.contains(suffix.toLowerCase())) {
-                OreStack nugget = new OreStack("nugget"+suffix, 9);
-                if(!nugget.isEmpty())
-                    CrucibleRecipes.addStokedCrucibleRecipe(ingot, nugget);
+            if (suffix != null && !exclude.contains(suffix.toLowerCase())) {
+                OreStack nugget = new OreStack("nugget" + suffix, 9);
+                if (!nugget.isEmpty())
+                    CrucibleRecipes.addStokedCrucibleRecipe(ingot, new Object[]{nugget});
             }
 
         }

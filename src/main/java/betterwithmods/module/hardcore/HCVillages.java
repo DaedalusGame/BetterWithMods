@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.world.BWMapGenVillage;
 import betterwithmods.common.world.gen.village.Church;
@@ -9,6 +10,7 @@ import betterwithmods.common.world.gen.village.WoodHut;
 import betterwithmods.module.Feature;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.BiomeDictionary;
@@ -24,15 +26,17 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 public class HCVillages extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
-        MapGenStructureIO.registerStructure(BWMapGenVillage.AbandonedStart.class, "BWAbandonedStart");
-        MapGenStructureIO.registerStructureComponent(Field1.class, "BWMEmptyField");
-        MapGenStructureIO.registerStructureComponent(Field2.class, "BWMEmptyField2");
-        MapGenStructureIO.registerStructureComponent(Church.class, "BWMEmptyChurch");
-        MapGenStructureIO.registerStructureComponent(WoodHut.class, "BWMEmptyWoodHut");
+
         VillagerRegistry.instance().registerVillageCreationHandler(new Field1());
         VillagerRegistry.instance().registerVillageCreationHandler(new Field2());
         VillagerRegistry.instance().registerVillageCreationHandler(new Church());
         VillagerRegistry.instance().registerVillageCreationHandler(new WoodHut());
+
+        MapGenStructureIO.registerStructure(BWMapGenVillage.AbandonedStart.class, new ResourceLocation(BWMod.MODID,"BWAbandonedStart").toString());
+        MapGenStructureIO.registerStructureComponent(Field1.class, new ResourceLocation(BWMod.MODID,"EmptyField").toString());
+        MapGenStructureIO.registerStructureComponent(Field2.class, new ResourceLocation(BWMod.MODID,"EmptyField2").toString());
+        MapGenStructureIO.registerStructureComponent(Church.class, new ResourceLocation(BWMod.MODID,"EmptyChurch").toString());
+        MapGenStructureIO.registerStructureComponent(WoodHut.class, new ResourceLocation(BWMod.MODID,"EmptyWoodHut").toString());
     }
 
     @SubscribeEvent
@@ -68,7 +72,7 @@ public class HCVillages extends Feature {
 
     @Override
     public boolean hasTerrainSubscriptions() {
-        return false;//intentional compile error;
+        return true;
     }
 
 

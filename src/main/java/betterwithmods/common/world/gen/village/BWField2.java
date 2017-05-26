@@ -16,19 +16,19 @@ import java.util.Random;
 /**
  * Created by tyler on 5/21/17.
  */
-public class Field2 extends AbandonedVillagePiece {
+public class BWField2 extends AbandonedVillagePiece {
 
-    public Field2() {
+    public BWField2() {
     }
 
-    public Field2(StructureVillagePieces.Start start, int p_i45569_2_, Random rand, StructureBoundingBox p_i45569_4_, EnumFacing facing) {
+    public BWField2(StructureVillagePieces.Start start, int p_i45569_2_, Random rand, StructureBoundingBox p_i45569_4_, EnumFacing facing) {
         super(start, p_i45569_2_);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45569_4_;
     }
     @Override
     public Class<?> getComponentClass() {
-        return Field2.class;
+        return BWField2.class;
     }
 
     /**
@@ -73,12 +73,12 @@ public class Field2 extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field2.class, 3, MathHelper.getInt(random, 2 + size, 4 + size * 2));
+        return new StructureVillagePieces.PieceWeight(BWField2.class, 3, MathHelper.getInt(random, 2 + size, 4 + size * 2));
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 7, 4, 9, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new StructureVillagePieces.Field2(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWField2(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

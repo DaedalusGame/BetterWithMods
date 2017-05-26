@@ -3,10 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.world.BWMapGenVillage;
-import betterwithmods.common.world.gen.village.Church;
-import betterwithmods.common.world.gen.village.Field1;
-import betterwithmods.common.world.gen.village.Field2;
-import betterwithmods.common.world.gen.village.WoodHut;
+import betterwithmods.common.world.gen.village.*;
 import betterwithmods.module.Feature;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Biomes;
@@ -27,16 +24,29 @@ public class HCVillages extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
 
-        VillagerRegistry.instance().registerVillageCreationHandler(new Field1());
-        VillagerRegistry.instance().registerVillageCreationHandler(new Field2());
-        VillagerRegistry.instance().registerVillageCreationHandler(new Church());
-        VillagerRegistry.instance().registerVillageCreationHandler(new WoodHut());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWField1());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWField2());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWChurch());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWWoodHut());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse1());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse2());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse3());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse4());
+        VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse5());
 
-        MapGenStructureIO.registerStructure(BWMapGenVillage.AbandonedStart.class, new ResourceLocation(BWMod.MODID,"BWAbandonedStart").toString());
-        MapGenStructureIO.registerStructureComponent(Field1.class, new ResourceLocation(BWMod.MODID,"EmptyField").toString());
-        MapGenStructureIO.registerStructureComponent(Field2.class, new ResourceLocation(BWMod.MODID,"EmptyField2").toString());
-        MapGenStructureIO.registerStructureComponent(Church.class, new ResourceLocation(BWMod.MODID,"EmptyChurch").toString());
-        MapGenStructureIO.registerStructureComponent(WoodHut.class, new ResourceLocation(BWMod.MODID,"EmptyWoodHut").toString());
+
+        MapGenStructureIO.registerStructure(BWMapGenVillage.AbandonedStart.class, new ResourceLocation(BWMod.MODID, "BWAbandonedStart").toString());
+        MapGenStructureIO.registerStructureComponent(BWField1.class, new ResourceLocation(BWMod.MODID, "EmptyField").toString());
+        MapGenStructureIO.registerStructureComponent(BWField2.class, new ResourceLocation(BWMod.MODID, "EmptyField2").toString());
+        MapGenStructureIO.registerStructureComponent(BWChurch.class, new ResourceLocation(BWMod.MODID, "EmptyChurch").toString());
+        MapGenStructureIO.registerStructureComponent(BWWoodHut.class, new ResourceLocation(BWMod.MODID, "EmptyWoodHut").toString());
+        MapGenStructureIO.registerStructureComponent(BWHouse1.class, new ResourceLocation(BWMod.MODID, "EmptyHouse1").toString());
+        MapGenStructureIO.registerStructureComponent(BWHouse2.class, new ResourceLocation(BWMod.MODID, "EmptyHouse2").toString());
+        MapGenStructureIO.registerStructureComponent(BWHouse3.class, new ResourceLocation(BWMod.MODID, "EmptyHouse3").toString());
+        MapGenStructureIO.registerStructureComponent(BWHouse4.class, new ResourceLocation(BWMod.MODID, "EmptyHouse4").toString());
+        MapGenStructureIO.registerStructureComponent(BWHouse5.class, new ResourceLocation(BWMod.MODID, "EmptyHouse5").toString());
+        MapGenStructureIO.registerStructureComponent(BWStart.class, new ResourceLocation(BWMod.MODID, "Start").toString());
+
     }
 
     @SubscribeEvent
@@ -47,7 +57,9 @@ public class HCVillages extends Feature {
     }
 
     public BlockPlanks.EnumType plankFromBiome(Biome biome) {
-        if (BiomeDictionary.areSimilar(biome, Biomes.TAIGA)) {
+        if (biome == null)
+            return BlockPlanks.EnumType.OAK;
+        else if (BiomeDictionary.areSimilar(biome, Biomes.TAIGA)) {
             return BlockPlanks.EnumType.SPRUCE;
         } else if (BiomeDictionary.areSimilar(biome, Biomes.FOREST)) {
             return BlockPlanks.EnumType.OAK;
@@ -59,8 +71,10 @@ public class HCVillages extends Feature {
             return BlockPlanks.EnumType.BIRCH;
         } else if (BiomeDictionary.areSimilar(biome, Biomes.SAVANNA)) {
             return BlockPlanks.EnumType.ACACIA;
+        } else {
+
+            return BlockPlanks.EnumType.OAK;
         }
-        return BlockPlanks.EnumType.OAK;
     }
 
     @SubscribeEvent

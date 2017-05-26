@@ -16,18 +16,18 @@ import java.util.Random;
 /**
  * Created by tyler on 5/21/17.
  */
-public class Field1 extends AbandonedVillagePiece {
-    public Field1() {
+public class BWField1 extends AbandonedVillagePiece {
+    public BWField1() {
     }
 
-    public Field1(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45570_4_, EnumFacing facing) {
+    public BWField1(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45570_4_, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45570_4_;
     }
     @Override
     public Class<?> getComponentClass() {
-        return Field1.class;
+        return BWField1.class;
     }
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
@@ -70,18 +70,17 @@ public class Field1 extends AbandonedVillagePiece {
                 this.replaceAirAndLiquidDownwards(worldIn, Blocks.DIRT.getDefaultState(), k2, -1, j2, structureBoundingBoxIn);
             }
         }
-
         return true;
     }
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(Field1.class, 3, MathHelper.getInt(random, 1 + size, 4 + size));
+        return new StructureVillagePieces.PieceWeight(BWField1.class, 3, MathHelper.getInt(random, 1 + size, 4 + size));
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 13, 4, 9, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new Field1(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWField1(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

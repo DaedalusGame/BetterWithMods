@@ -20,14 +20,14 @@ import java.util.Random;
 /**
  * Created by tyler on 5/21/17.
  */
-public class WoodHut extends AbandonedVillagePiece {
+public class BWWoodHut extends AbandonedVillagePiece {
     private boolean isTallHouse;
     private int tablePosition;
 
-    public WoodHut() {
+    public BWWoodHut() {
     }
 
-    public WoodHut(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structurebb, EnumFacing facing) {
+    public BWWoodHut(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structurebb, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = structurebb;
@@ -37,7 +37,7 @@ public class WoodHut extends AbandonedVillagePiece {
 
     @Override
     public Class<?> getComponentClass() {
-        return WoodHut.class;
+        return BWWoodHut.class;
     }
     /**
      * (abstract) Helper method to write subclass data to NBT
@@ -105,12 +105,13 @@ public class WoodHut extends AbandonedVillagePiece {
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 3, 1, 1, 3, 3, 3, secondary, secondary, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 0, 2, 3, 0, secondary, secondary, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 4, 2, 3, 4, secondary, secondary, false);
+        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 0, 2, 2, structureBoundingBoxIn);
+        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 3, 2, 2, structureBoundingBoxIn);
         if (tablePosition > 0)
             this.setBlockState(worldIn, table, this.tablePosition, 1, 3, structureBoundingBoxIn);
 
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 1, 0, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 2, 0, structureBoundingBoxIn);
-        this.createVillageDoor(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
 
         if (this.getBlockStateFromPos(worldIn, 1, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR) {
             this.setBlockState(worldIn, stair, 1, 0, -1, structureBoundingBoxIn);
@@ -133,12 +134,12 @@ public class WoodHut extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(StructureVillagePieces.WoodHut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3));
+        return new StructureVillagePieces.PieceWeight(BWWoodHut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3));
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 4, 6, 5, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new StructureVillagePieces.WoodHut(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWWoodHut(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

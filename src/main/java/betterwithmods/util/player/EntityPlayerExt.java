@@ -209,6 +209,8 @@ public final class EntityPlayerExt {
             return false;
         }
         for (String type : stack.getItem().getToolClasses(stack)) {
+            if(type == "mattock")
+                return state.getBlock().isToolEffective("shovel",state) || state.getBlock().isToolEffective("axe",state);
             if (state.getBlock().isToolEffective(type, state))
                 return true;
         }

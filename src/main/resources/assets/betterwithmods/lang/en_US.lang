@@ -225,6 +225,58 @@ tile.bwm:rustic_compat_corner.2.name=Slate Corner
 
 
 
+tile.bwm:bop_compat_siding.0.name=Sacred Oak Wood Siding
+tile.bwm:bop_compat_siding.1.name=Cherry Wood Siding
+tile.bwm:bop_compat_siding.2.name=Umbran Wood Siding
+tile.bwm:bop_compat_siding.3.name=Fir Wood Siding
+tile.bwm:bop_compat_siding.4.name=Ethereal Wood Siding
+tile.bwm:bop_compat_siding.5.name=Magic Wood Siding
+tile.bwm:bop_compat_siding.6.name=Mangrove Wood Siding
+tile.bwm:bop_compat_siding.7.name=Palm Wood Siding
+tile.bwm:bop_compat_siding.8.name=Redwood Siding
+tile.bwm:bop_compat_siding.9.name=Willow Wood Siding
+tile.bwm:bop_compat_siding.10.name=Pine Wood Siding
+tile.bwm:bop_compat_siding.11.name=Hellbark Siding
+tile.bwm:bop_compat_siding.12.name=Jacaranda Siding
+tile.bwm:bop_compat_siding.13.name=Mahogany Siding
+tile.bwm:bop_compat_siding.14.name=Ebony Wood Siding
+tile.bwm:bop_compat_siding.15.name=Eucalyptus Wood Siding
+
+tile.bwm:bop_compat_moulding.0.name=Sacred Oak Wood Moulding
+tile.bwm:bop_compat_moulding.1.name=Cherry Wood Moulding
+tile.bwm:bop_compat_moulding.2.name=Umbran Wood Moulding
+tile.bwm:bop_compat_moulding.3.name=Fir Wood Moulding
+tile.bwm:bop_compat_moulding.4.name=Ethereal Wood Moulding
+tile.bwm:bop_compat_moulding.5.name=Magic Wood Moulding
+tile.bwm:bop_compat_moulding.6.name=Mangrove Wood Moulding
+tile.bwm:bop_compat_moulding.7.name=Palm Wood Moulding
+tile.bwm:bop_compat_moulding.8.name=Redwood Moulding
+tile.bwm:bop_compat_moulding.9.name=Willow Wood Moulding
+tile.bwm:bop_compat_moulding.10.name=Pine Wood Moulding
+tile.bwm:bop_compat_moulding.11.name=Hellbark Moulding
+tile.bwm:bop_compat_moulding.12.name=Jacaranda Moulding
+tile.bwm:bop_compat_moulding.13.name=Mahogany Moulding
+tile.bwm:bop_compat_moulding.14.name=Ebony Wood Moulding
+tile.bwm:bop_compat_moulding.15.name=Eucalyptus Wood Moulding
+
+tile.bwm:bop_compat_corner.0.name=Sacred Oak Wood Corner
+tile.bwm:bop_compat_corner.1.name=Cherry Wood Corner
+tile.bwm:bop_compat_corner.2.name=Umbran Wood Corner
+tile.bwm:bop_compat_corner.3.name=Fir Wood Corner
+tile.bwm:bop_compat_corner.4.name=Ethereal Wood Corner
+tile.bwm:bop_compat_corner.5.name=Magic Wood Corner
+tile.bwm:bop_compat_corner.6.name=Mangrove Wood Corner
+tile.bwm:bop_compat_corner.7.name=Palm Wood Corner
+tile.bwm:bop_compat_corner.8.name=Redwood Corner
+tile.bwm:bop_compat_corner.9.name=Willow Wood Corner
+tile.bwm:bop_compat_corner.10.name=Pine Wood Corner
+tile.bwm:bop_compat_corner.11.name=Hellbark Corner
+tile.bwm:bop_compat_corner.12.name=Jacaranda Corner
+tile.bwm:bop_compat_corner.13.name=Mahogany Corner
+tile.bwm:bop_compat_corner.14.name=Ebony Wood Corner
+tile.bwm:bop_compat_corner.15.name=Eucalyptus Wood Corner
+
+
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
 item.bwm:material.hemp.name=Hemp

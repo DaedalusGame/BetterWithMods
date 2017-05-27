@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @SuppressWarnings("unused")
 public class BiomesOPlenty extends CompatFeature {
@@ -70,7 +71,7 @@ public class BiomesOPlenty extends CompatFeature {
         BWMBlocks.setInventoryModel(CORNER);
     }
 
-    public final String[] woods = new String[]{};
+    public final String[] woods = new String[]{"sacred_oak", "cherry", "umbran", "fir", "ethereal", "magic", "mangrove", "palm", "redwood", "willow", "pine", "hellbark", "jacaranda", "mahogany", "ebony", "eucalyptus",};
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -110,11 +111,11 @@ public class BiomesOPlenty extends CompatFeature {
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = new ItemStack(MOULDING, 1, i);
-                ItemStack siding = new ItemStack(SIDING, 1, i );
-                GameRegistry.addShapedRecipe(new ItemStack(getBlock("rustic:chair_" + woods[i]), 4), "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
-                GameRegistry.addShapedRecipe(new ItemStack(getBlock("rustic:table_" + woods[i]), 2), "SSS", "M M", 'S', siding, 'M', moulding);
-                GameRegistry.addRecipe(new ItemStack(getBlock("rustic:fence_gate_" + woods[i])), "MSM", 'S', siding, 'M', moulding);
-                GameRegistry.addRecipe(new ItemStack(getBlock("rustic:fence_" + woods[i]), 3), "MMM", 'M', moulding);
+                ItemStack siding = new ItemStack(SIDING, 1, i);
+                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding);
+                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding);
+                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding);
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true));
             }
         }
     }

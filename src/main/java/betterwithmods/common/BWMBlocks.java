@@ -88,6 +88,9 @@ public final class BWMBlocks {
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
+
+
+
     private BWMBlocks() {
     }
 
@@ -157,6 +160,7 @@ public final class BWMBlocks {
         registerBlock(ADVANCED_BELLOWS);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
+
     }
 
     public static void registerTileEntities() {

@@ -1,15 +1,16 @@
 {
+  "parent":"block/block",
   "elements": [
     {
       "from": [
         0,
         0,
-        0
+        8
       ],
       "to": [
-        16,
-        16,
-        8
+        8,
+        8,
+        16
       ],
       "faces": {
         "down": {

@@ -33,6 +33,7 @@ public class Module {
 	public final Map<String, Feature> features = new HashMap();
 	public final List<Feature> enabledFeatures = new ArrayList(), disabledFeatures = new ArrayList<>();
 	public boolean enabled;
+	protected int priority = 0;
 
 	public void addFeatures() {
 		// NO-OP
@@ -225,4 +226,7 @@ public class Module {
 		return ConfigHelper.loadPropString(propName, name, desc, default_);
 	}
 
+	public int getPriority() {
+		return priority;
+	}
 }

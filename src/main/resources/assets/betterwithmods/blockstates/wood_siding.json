@@ -5,7 +5,7 @@
       "side": "blocks/planks_oak",
       "particle": "#side"
     },
-    "model": "betterwithmods:mini/siding/siding_west",
+    "model": "betterwithmods:mini/siding",
     "uvlock": false
   },
   "variants": {
@@ -55,23 +55,24 @@
       }
     },
     "orientation": {
-      "0": {
-        "model": "betterwithmods:mini/siding/siding_down"
-      },
+      "0": {},
       "1": {
-        "model": "betterwithmods:mini/siding/siding_up"
+        "x": 180
       },
       "2": {
-        "model": "betterwithmods:mini/siding/siding_north"
+        "x": 270
       },
       "3": {
-        "model": "betterwithmods:mini/siding/siding_south"
+        "x": 270,
+        "y": 180
       },
       "4": {
-        "model": "betterwithmods:mini/siding/siding_west"
+        "x": 270,
+        "y": 270
       },
       "5": {
-        "model": "betterwithmods:mini/siding/siding_east"
+        "x": 270,
+        "y": 90
       }
     }
   }

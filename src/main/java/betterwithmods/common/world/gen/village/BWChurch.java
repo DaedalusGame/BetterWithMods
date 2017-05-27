@@ -124,10 +124,6 @@ public class BWChurch extends AbandonedVillagePiece {
         return true;
     }
 
-    protected int chooseProfession(int villagersSpawnedIn, int currentVillagerProfession) {
-        return 2;
-    }
-
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
         return new StructureVillagePieces.PieceWeight(BWChurch.class, 20, MathHelper.getInt(random, 0 + size, 1 + size));

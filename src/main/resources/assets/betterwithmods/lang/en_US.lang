@@ -213,6 +213,15 @@ tile.bwm:broken_gearbox.name=Broken Gearbox
 
 tile.bwm:iron_wall.name=Iron Wall
 
+tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
+tile.bwm:rustic_compat_siding.1.name=Ironwood Siding
+tile.bwm:rustic_compat_moulding.0.name=Olive Wood Moulding
+tile.bwm:rustic_compat_moulding.1.name=Ironwood Moulding
+tile.bwm:rustic_compat_corner.0.name=Olive Wood Corner
+tile.bwm:rustic_compat_corner.1.name=Ironwood Corner
+
+
+
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
 item.bwm:material.hemp.name=Hemp

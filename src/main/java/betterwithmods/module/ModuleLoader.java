@@ -28,10 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public final class ModuleLoader {
@@ -64,8 +61,11 @@ public final class ModuleLoader {
         setupConfig(event);
 
         forEachModule(module -> FMLLog.info("[BWM] Module " + module.name + " is " + (module.enabled ? "enabled" : "disabled")));
-
-        forEachEnabled(module -> module.preInit(event));
+        Collections.sort(enabledModules, (a,b) -> Integer.compare(b.getPriority(),a.getPriority()));
+        forEachEnabled(module -> {
+            FMLLog.info("[BWM] Module PreInit : " + module.name);
+            module.preInit(event);
+        });
     }
 
     public static void init(FMLInitializationEvent event) {

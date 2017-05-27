@@ -1,9 +1,11 @@
 package betterwithmods.common.blocks.mini;
 
+import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -29,7 +31,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockMini extends BWMBlock {
+import java.util.ArrayList;
+
+public abstract class BlockMini extends BWMBlock implements IMultiVariants {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
     public static final PropertyInteger ORIENTATION = createOrientation();
@@ -44,6 +48,19 @@ public abstract class BlockMini extends BWMBlock {
             this.setHarvestLevel("pickaxe", 0);
     }
 
+    public int getUsedTypes() {
+        return 6;
+    }
+
+    @Override
+    public String[] getVariants() {
+        ArrayList<String> variants = Lists.newArrayList();
+        for (int i = 0; i < getUsedTypes(); i++) {
+            variants.add(String.format("orientation=3,type=%s", i));
+        }
+        return variants.toArray(new String[variants.size()]);
+    }
+
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 5);
     }
@@ -53,7 +70,7 @@ public abstract class BlockMini extends BWMBlock {
     }
 
     public boolean rotate(World world, BlockPos pos, IBlockState state, EntityPlayer player, PropertyInteger property) {
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) .isEmpty()  && player.getHeldItem(EnumHand.OFF_HAND) .isEmpty()  && player.isSneaking();
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
         if (world.isRemote && emptyHands)
             return true;
         else if (!world.isRemote && emptyHands) {
@@ -108,7 +125,7 @@ public abstract class BlockMini extends BWMBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < getUsedTypes(); i++) {
             list.add(new ItemStack(this, 1, i));
         }
     }

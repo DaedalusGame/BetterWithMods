@@ -6,6 +6,10 @@ import betterwithmods.module.Module;
  * Created by tyler on 4/20/17.
  */
 public class Hardcore extends Module {
+    public Hardcore() {
+        priority = 1;
+    }
+
     @Override
     public void addFeatures() {
         registerFeature(new HCArmor());

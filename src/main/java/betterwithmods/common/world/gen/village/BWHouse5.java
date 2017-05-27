@@ -148,7 +148,7 @@ public class BWHouse5 extends AbandonedVillagePiece {
             }
         }
 
-        this.spawnVillagers(worldIn, structureBoundingBoxIn, 4, 1, 2, 2);
+        this.spawnVillagers(worldIn, structureBoundingBoxIn, 4, 1, 2, 1);
         return true;
     }
 

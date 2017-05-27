@@ -1,6 +1,10 @@
 package betterwithmods.common.world.gen.village;
 
+import betterwithmods.common.world.BWMapGenVillage;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
@@ -12,18 +16,41 @@ import java.util.Random;
  * Created by tyler on 5/21/17.
  */
 public abstract class AbandonedVillagePiece extends StructureVillagePieces.Village implements VillagerRegistry.IVillageCreationHandler {
+    BWMapGenVillage.VillageStatus status;
+    private int villagersSpawned;
+
     public AbandonedVillagePiece() {
     }
 
     public AbandonedVillagePiece(StructureVillagePieces.Start start, int type) {
         super(start, type);
+        if (start instanceof BWStart) {
+            this.status = ((BWStart) start).status;
+        }
     }
 
 
     @Override
     protected void spawnVillagers(World worldIn, StructureBoundingBox structurebb, int x, int y, int z, int count) {
-        //NO-OP
-//        super.spawnVillagers(worldIn,structurebb,x,y,z,count);
+
+        if (this.villagersSpawned < count) {
+            for (int i = this.villagersSpawned; i < count; ++i) {
+                int j = this.getXWithOffset(x + i, z);
+                int k = this.getYWithOffset(y);
+                int l = this.getZWithOffset(x + i, z);
+
+                if (!structurebb.isVecInside(new BlockPos(j, k, l))) {
+                    break;
+                }
+
+                ++this.villagersSpawned;
+                EntityVillager entityvillager = new EntityVillager(worldIn);
+                entityvillager.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                entityvillager.setProfession(this.chooseForgeProfession(i, entityvillager.getProfessionForge()));
+                entityvillager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityvillager)), null, false);
+                worldIn.spawnEntity(entityvillager);
+            }
+        }
     }
 
     @Override
@@ -31,6 +58,26 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
         //NO-OP
     }
 
+
     @Override
     public abstract StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size);
+
+    @Override
+    protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof) {
+        switch (status) {
+            case SEMIABANDONED:
+                VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
+                String name = profession.getRegistryName().toString();
+                System.out.println(name);
+                if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
+                    return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
+                else
+                    return profession;
+            default:
+                return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
+
+        }
+    }
+
+
 }

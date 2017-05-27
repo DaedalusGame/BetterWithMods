@@ -5,7 +5,7 @@
       "side": "blocks/planks_oak",
       "particle": "#side"
     },
-    "model": "betterwithmods:mini/corner",
+    "model": "betterwithmods:mini/moulding",
     "uvlock": false
   },
   "variants": {
@@ -20,12 +20,13 @@
     "type": {
       "0": {
         "textures": {
-          "side": "blocks/planks_oak"
+          "side": "rustic:blocks/planks_olive"
         }
       },
       "1": {
         "textures": {
-          "side": "blocks/planks_spruce"
+
+          "side": "rustic:blocks/planks_ironwood"
         }
       },
       "2": {
@@ -55,30 +56,46 @@
       }
     },
     "orientation": {
-      "0": {},
+      "0": {
+        "y":180
+      },
       "1": {
-        "y":90
+        "y":270
       },
       "2": {
-        "y":270
+        "y":90
       },
       "3": {
-        "y":180
+
       },
       "4": {
-        "x":90
+        "x":180,
+        "y":180
       },
       "5": {
+        "y":270,
+        "x":180
+      },
+      "6": {
+        "y":90,
+        "x":180
+      },
+      "7": {
+        "x":180
+      },
+      "8": {
+        "x":90,
+        "y":180
+      },
+      "9": {
+        "x":270
+      },
+      "10": {
         "x":90,
         "y":90
       },
-      "6": {
-        "x":90,
-        "y":270
-      },
-      "7": {
-        "x":90,
-        "y":180
+      "11": {
+        "x":90
       }
     }
   }

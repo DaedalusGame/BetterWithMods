@@ -142,4 +142,6 @@ public class BWWoodHut extends AbandonedVillagePiece {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 4, 6, 5, facing);
         return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWWoodHut(startPiece, p5, random, structureboundingbox, facing) : null;
     }
+
+
 }

@@ -5,7 +5,7 @@
       "side": "blocks/stone",
       "particle": "#side"
     },
-    "model": "betterwithmods:mini/siding/siding_west",
+    "model": "betterwithmods:mini/corner",
     "uvlock": false
   },
   "variants": {
@@ -55,29 +55,30 @@
       }
     },
     "orientation": {
-      "0": {
-        "model": "betterwithmods:mini/corner/d_s_w"
-      },
+      "0": {},
       "1": {
-        "model": "betterwithmods:mini/corner/d_n_w"
+        "y":90
       },
       "2": {
-        "model": "betterwithmods:mini/corner/d_s_e"
+        "y":270
       },
       "3": {
-        "model": "betterwithmods:mini/corner/d_n_e"
+        "y":180
       },
       "4": {
-        "model": "betterwithmods:mini/corner/u_s_w"
+        "x":90
       },
       "5": {
-        "model": "betterwithmods:mini/corner/u_n_w"
+        "x":90,
+        "y":90
       },
       "6": {
-        "model": "betterwithmods:mini/corner/u_s_e"
+        "x":90,
+        "y":270
       },
       "7": {
-        "model": "betterwithmods:mini/corner/u_n_e"
+        "x":90,
+        "y":180
       }
     }
   }

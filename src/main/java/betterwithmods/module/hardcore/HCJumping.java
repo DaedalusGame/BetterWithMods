@@ -19,7 +19,7 @@ public class HCJumping extends Feature {
     public void onBlockPlace(PlayerInteractEvent.RightClickBlock e) {
         if(!EntityPlayerExt.isSurvival(e.getEntityPlayer()))
             return;
-        if(e.getItemStack().getItem() instanceof ItemBlock && e.getEntityPlayer().isAirBorne) {
+        if(e.getItemStack().getItem() instanceof ItemBlock && !e.getEntityPlayer().onGround) {
             e.setResult(Event.Result.DENY);
             e.setCanceled(true);
         }
@@ -31,6 +31,6 @@ public class HCJumping extends Feature {
 
     @Override
     public boolean hasSubscriptions() {
-        return false;
+        return true;
     }
 }

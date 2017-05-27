@@ -33,7 +33,6 @@ public class TESRCookingPot extends TileEntitySpecialRenderer<TileEntityCookingP
     }
 
     private ResourceLocation getResource(TileEntityCookingPot tile) {
-        ResourceLocation resource = null;
         if (tile instanceof TileEntityCauldron) {
             return new ResourceLocation(BWMod.MODID, "blocks/cauldron_contents");
         } else if (tile instanceof TileEntityCrucible) {

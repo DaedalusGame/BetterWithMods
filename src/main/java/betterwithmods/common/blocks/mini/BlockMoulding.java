@@ -17,15 +17,11 @@ public class BlockMoulding extends BlockMini {
     public static final PropertyInteger ORIENTATION = createOrientation();
 
     public BlockMoulding(Material mat) {
-        super(mat, mat == Material.WOOD ? "wood_moulding" : "stone_moulding");
+        super(mat);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        if (mat == Material.WOOD) {
-            this.setHardness(2.0F);
-        } else {
-            this.setHardness(3.0F);
-            this.setResistance(5.0F);
-        }
     }
+
+
 
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 11);
@@ -73,7 +69,7 @@ public class BlockMoulding extends BlockMini {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta);
+        return this.getDefaultState().withProperty(ORIENTATION, meta%getMaxOrientation());
     }
 
     @Override

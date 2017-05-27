@@ -14,7 +14,7 @@ public class ItemBlockMini extends ItemBlock {
     public int getMetadata(int meta) {
         return meta;
     }
-
+    
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();

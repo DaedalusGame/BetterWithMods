@@ -17,14 +17,8 @@ public class BlockCorner extends BlockMini {
     public static final PropertyInteger ORIENTATION = createOrientation();
 
     public BlockCorner(Material mat) {
-        super(mat, mat == Material.WOOD ? "wood_corner" : "stone_corner");
+        super(mat);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        if (mat == Material.WOOD) {
-            this.setHardness(2.0F);
-        } else {
-            this.setHardness(3.0F);
-            this.setResistance(5.0F);
-        }
     }
 
     public static PropertyInteger createOrientation() {
@@ -38,7 +32,6 @@ public class BlockCorner extends BlockMini {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        //TODO: Maybe make this try to work with items that don't have a use action?
         return rotate(worldIn, pos, state, playerIn, ORIENTATION);
     }
 
@@ -70,7 +63,7 @@ public class BlockCorner extends BlockMini {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta);
+        return this.getDefaultState().withProperty(ORIENTATION, meta%getMaxOrientation());
     }
 
     @Override

@@ -10,15 +10,10 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockSiding extends BlockMini {
     public BlockSiding(Material mat) {
-        super(mat, mat == Material.WOOD ? "wood_siding" : "stone_siding");
+        super(mat);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        if (mat == Material.WOOD) {
-            this.setHardness(2.0F);
-        } else {
-            this.setHardness(3.0F);
-            this.setResistance(5.0F);
-        }
     }
+
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

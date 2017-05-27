@@ -215,10 +215,13 @@ tile.bwm:iron_wall.name=Iron Wall
 
 tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
 tile.bwm:rustic_compat_siding.1.name=Ironwood Siding
+tile.bwm:rustic_compat_siding.2.name=Slate Siding
 tile.bwm:rustic_compat_moulding.0.name=Olive Wood Moulding
 tile.bwm:rustic_compat_moulding.1.name=Ironwood Moulding
+tile.bwm:rustic_compat_moulding.2.name=Slate Moulding
 tile.bwm:rustic_compat_corner.0.name=Olive Wood Corner
 tile.bwm:rustic_compat_corner.1.name=Ironwood Corner
+tile.bwm:rustic_compat_corner.2.name=Slate Corner
 
 
 

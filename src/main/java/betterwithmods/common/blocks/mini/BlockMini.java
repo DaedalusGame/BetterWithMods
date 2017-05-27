@@ -14,6 +14,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,21 +32,38 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public abstract class BlockMini extends BWMBlock implements IMultiVariants {
     public static final Material MINI = new Material(MapColor.WOOD);
-    public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
+    public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
     public static final PropertyInteger ORIENTATION = createOrientation();
 
-    public BlockMini(Material material, String name) {
+    public BlockMini(Material material) {
         super(material);
-        //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        this.setSoundType(material == MINI ? SoundType.WOOD : SoundType.STONE);
-        if (material == MINI)
-            this.setHarvestLevel("axe", 0);
-        else
-            this.setHarvestLevel("pickaxe", 0);
+    }
+
+
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return getMaterial(blockState) == Material.WOOD ? 2.0F : 3.0F;
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        return getMaterial(state) == Material.ROCK ? SoundType.STONE : SoundType.WOOD;
+    }
+
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return getMaterial(state) == Material.ROCK ? "pickaxe" : "axe";
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        return 1;
     }
 
     public int getUsedTypes() {
@@ -166,7 +184,7 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta);
+        return this.getDefaultState().withProperty(ORIENTATION, meta%getMaxOrientation());
     }
 
     @Override

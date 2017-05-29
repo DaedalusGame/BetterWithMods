@@ -34,6 +34,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     public static final boolean isValidPlatform(Block block) {
         return block == BWMBlocks.PLATFORM || block == BWMBlocks.IRON_WALL;
     }
+
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
 
@@ -123,7 +124,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
                 IBlockState state = getWorld().getBlockState(newPos);
                 boolean flag = !isMoving && state.getBlock() == BWMBlocks.ANCHOR
                         && ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
-                if ((getWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getWorld(), newPos) || flag)
+                if (newPos.getY() > 0 && (getWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getWorld(), newPos) || flag)
                         && newPos.up().getY() > 0) {
                     return true;
                 }
@@ -303,9 +304,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         BlockPos ropePos = new BlockPos(pos.getX(), targetY - (up ? 1 : 0), pos.getZ());
         IBlockState state = getWorld().getBlockState(ropePos);
         if (!up) {
-            if ((getWorld().isAirBlock(ropePos) || state.getBlock().isReplaceable(getWorld(), ropePos)) && takeRope(true)) {
+            if ((getWorld().isAirBlock(ropePos) || state.getBlock().isReplaceable(getWorld(), ropePos)) && BWMBlocks.ROPE.canPlaceBlockAt(getWorld(), ropePos) && takeRope(true)) {
                 getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.4F, 1.0F);
                 getWorld().setBlockState(ropePos, BWMBlocks.ROPE.getDefaultState());
+            } else {
+                tryNextOperation();
+                theRope.setDead();
+                return false;
             }
         }
         if ((theRope.getUp() ? canGoUp() : canGoDown(true)) && !theRope.isPathBlocked()) {

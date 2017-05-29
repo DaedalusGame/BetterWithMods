@@ -295,15 +295,14 @@ public class InvUtils {
     }
 
     public static boolean consumeItemsInInventory(IItemHandler inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
-        int originalSize = toCheck.getCount();
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (toCheck.isItemEqual(inSlot) || (toCheck.getItem() == inSlot.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                if (toCheck.hasTagCompound() && ItemStack.areItemStackTagsEqual(toCheck, inSlot)) {
-                    return inv.extractItem(i, sizeOfStack, simulate).getCount() < originalSize;
-                } else {
-                    return inv.extractItem(i, sizeOfStack, simulate).getCount() < originalSize;
-                }
+//                if (toCheck.hasTagCompound() && ItemStack.areItemStackTagsEqual(toCheck, inSlot)) {
+                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+//                } else {
+//                    return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+//                }
             }
         }
 //        for (int i = 0; i < inv.getSlots(); i++) {

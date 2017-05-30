@@ -10,9 +10,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -59,17 +57,6 @@ public class BWMapGenVillage extends MapGenVillage {
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
     }
 
-    public static final Field zombify = ReflectionHelper.findField(Village.class, "isZombieInfested");
-
-    public static void setZombify(Village village, boolean status) {
-        zombify.setAccessible(true);
-        try {
-            zombify.set(village, status);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static class AbandonedStart extends StructureStart {
         private boolean hasMoreThanTwoComponents;
         private VillageStatus status;
@@ -103,7 +90,7 @@ public class BWMapGenVillage extends MapGenVillage {
                 if (road instanceof Village) {
                     Village h = (Village) road;
                     if(status != VillageStatus.NORMAL)
-                        setZombify(h, true);
+                        h.isZombieInfested = true;
                 }
                 road.buildComponent(start, this.components, rand);
             }
@@ -113,7 +100,7 @@ public class BWMapGenVillage extends MapGenVillage {
                 if (house instanceof Village) {
                     Village h = (Village) house;
                     if(status != VillageStatus.NORMAL)
-                        setZombify(h, true);
+                        h.isZombieInfested = true;
                 }
                 house.buildComponent(start, this.components, rand);
             }

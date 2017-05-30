@@ -1,12 +1,10 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines.EnumType;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,7 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockAnchor extends BlockDirectional implements ITurnable {
+import static betterwithmods.util.DirUtils.FACING;
+
+public class BlockAnchor extends BWMBlock{
     public static final PropertyBool LINKED = PropertyBool.create("linked");
     private static final float HEIGHT = 0.375F;
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -39,6 +39,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
         setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(2.0F);
         this.setHarvestLevel("pickaxe", 0);
+
     }
 
     @Override

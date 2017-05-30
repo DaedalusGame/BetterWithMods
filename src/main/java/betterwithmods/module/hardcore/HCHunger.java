@@ -61,6 +61,7 @@ public class HCHunger extends Feature {
         foodStackSize = loadPropBool("Change Food Stacksize", "All Foods all stack up to 16", false);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient(FMLInitializationEvent event) {
         if (loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid", true))
@@ -69,8 +70,29 @@ public class HCHunger extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+        //MOD FOODS: makes it so when HCHunger is disabled our foods are balanced.
 
-
+        modifyFood((ItemFood) BWMItems.BEEF_DINNER, 24);
+        modifyFood((ItemFood) BWMItems.BEEF_POTATOES, 18);
+        modifyFood((ItemFood) BWMItems.RAW_KEBAB, 19);
+        modifyFood((ItemFood) BWMItems.COOKED_KEBAB, 24);
+        modifyFood((ItemFood) BWMItems.CHICKEN_SOUP, 24);
+        modifyFood((ItemFood) BWMItems.CHOWDER, 15);
+        modifyFood((ItemFood) BWMItems.HEARTY_STEW, 30);
+        modifyFood((ItemFood) BWMItems.PORK_DINNER, 24);
+        modifyFood((ItemFood) BWMItems.RAW_EGG, 6);
+        modifyFood((ItemFood) BWMItems.COOKED_EGG, 9);
+        modifyFood((ItemFood) BWMItems.RAW_SCRAMBLED_EGG, 12);
+        modifyFood((ItemFood) BWMItems.COOKED_SCRAMBLED_EGG, 15);
+        modifyFood((ItemFood) BWMItems.RAW_OMELET, 9);
+        modifyFood((ItemFood) BWMItems.COOKED_OMELET, 12);
+        modifyFood((ItemFood) BWMItems.HAM_AND_EGGS, 18);
+        modifyFood((ItemFood) BWMItems.TASTY_SANDWICH, 18);
+        modifyFood((ItemFood) BWMItems.CREEPER_OYSTER, 6);
+        modifyFood((ItemFood) BWMItems.WOLF_CHOP, 3);
+        modifyFoodValue((ItemFood) BWMItems.CHOCOLATE, 6, 3);
+        modifyFoodValue((ItemFood) BWMItems.DONUT,  3, 1.5f);
+        modifyFoodValue((ItemFood) BWMItems.KIBBLE, 9, 0);
         //MEATS
         modifyFoodValue((ItemFood) Items.SPIDER_EYE, 6, 0);
 
@@ -159,7 +181,7 @@ public class HCHunger extends Feature {
 
 
     private static GuiHunger guiHunger = null;
-
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void replaceHungerGui(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
@@ -457,16 +479,25 @@ public class HCHunger extends Feature {
         foodField.setAccessible(true);
         satField.setAccessible(true);
     }
-
-    public static void modifyFoodValue(ItemFood item, int food, float saturation) {
+    public static void modifySaturation(ItemFood item, float saturation) {
         try {
-            foodField.set(item, food);
             satField.set(item, saturation);
-//            BWMod.logger.info("{},{}",food,saturation);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
+    public static void modifyFood(ItemFood item, int food) {
+        try {
+            foodField.set(item, food);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void modifyFoodValue(ItemFood item, int food, float saturation) {
+        modifyFood(item,food);
+        modifySaturation(item,saturation);
+    }
 
 }
+
 

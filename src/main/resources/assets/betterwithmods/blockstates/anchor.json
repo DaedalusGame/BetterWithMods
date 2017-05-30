@@ -5,7 +5,8 @@
         "facing": "down"
       },
       "apply": {
-        "model": "betterwithmods:anchor"
+        "model": "betterwithmods:anchor",
+        "x": 180
       }
     },
     {
@@ -13,13 +14,21 @@
         "facing": "up"
       },
       "apply": {
-        "model": "betterwithmods:anchor",
-        "x": 180
+        "model": "betterwithmods:anchor"
       }
     },
     {
       "when": {
         "facing": "north"
+      },
+      "apply": {
+        "model": "betterwithmods:anchor",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
       },
       "apply": {
         "model": "betterwithmods:anchor",
@@ -29,21 +38,12 @@
     },
     {
       "when": {
-        "facing": "south"
-      },
-      "apply": {
-        "model": "betterwithmods:anchor",
-        "x": 90
-      }
-    },
-    {
-      "when": {
         "facing": "west"
       },
       "apply": {
         "model": "betterwithmods:anchor",
         "x": 90,
-        "y": 90
+        "y": 270
       }
     },
     {
@@ -53,7 +53,7 @@
       "apply": {
         "model": "betterwithmods:anchor",
         "x": 90,
-        "y": 270
+        "y": 90
       }
     },
     {

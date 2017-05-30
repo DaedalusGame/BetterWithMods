@@ -1,4 +1,5 @@
 {
+  "parent": "block/block",
   "textures": {
     "side": "blocks/stone_slab_top",
     "knob": "blocks/iron_block",
@@ -8,12 +9,12 @@
     {
       "from": [
         0,
-        10,
+        0,
         0
       ],
       "to": [
         16,
-        16,
+        6,
         16
       ],
       "faces": {

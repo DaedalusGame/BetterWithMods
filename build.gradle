@@ -39,8 +39,7 @@ dependencies {
     deobfCompile "com.blamejared:MTLib:2.+"
     runtime "MineTweaker3:MineTweaker3-MC1112-Main:+"
     deobfCompile "MCMultiPart2:MCMultiPart-exp:+"
-
-//    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-97:deobf"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
 }
 
 jar {

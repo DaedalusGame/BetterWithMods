@@ -1,6 +1,7 @@
 package betterwithmods.common.world;
 
 import betterwithmods.common.world.gen.village.*;
+import betterwithmods.module.hardcore.HCVillages;
 import com.google.common.collect.Sets;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -24,8 +25,8 @@ import static net.minecraft.world.gen.structure.StructureVillagePieces.*;
  */
 public class BWMapGenVillage extends MapGenVillage {
     public enum VillageStatus {
-        NORMAL(3000/16),
-        SEMIABANDONED(2000/16),
+        NORMAL(HCVillages.normalRadius.get()/16),
+        SEMIABANDONED(HCVillages.semiabandonedRadius.get()/16),
         ABANDONED(0);
         public static final VillageStatus[] VALUES = values();
         private int radius;

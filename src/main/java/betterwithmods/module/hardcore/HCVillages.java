@@ -17,10 +17,29 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by tyler on 5/21/17.
  */
 public class HCVillages extends Feature {
+    public static AtomicInteger semiabandonedRadius = new AtomicInteger(), normalRadius = new AtomicInteger();
+    @Override
+    public String getFeatureDescription() {
+        return "Makes it so villages with in the reaches of the spawn zone are abandoned and gradually gain more resources the further out. What this means to be gained by the player.";
+    }
+
+    @Override
+    public void setupConfig() {
+        semiabandonedRadius.set( loadPropInt("Semi-Abandoned Village Radius", "Block radius from 0,0 at which villages are now semi-abandoned, all villages inside this radius are abandoned", 2000));
+        normalRadius.set( loadPropInt("Normal Village Radius", "Block radius from 0,0 at which villages are now normal, all villages in between this and semi-abandoned are semi-abandoned", 3000));
+    }
+
+    @Override
+    public boolean requiresMinecraftRestartToEnable() {
+        return true;
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
 

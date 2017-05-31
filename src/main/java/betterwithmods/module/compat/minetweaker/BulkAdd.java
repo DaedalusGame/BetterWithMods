@@ -11,14 +11,19 @@ import com.google.common.collect.Lists;
  * @author Tyler Marshall
  * @version 1/2/17
  */
-public class BulkAdd extends BaseListAddition<BulkRecipe> {
+public class BulkAdd<T extends BulkRecipe> extends BaseListAddition<T> {
 
-    public BulkAdd(String name, CraftingManagerBulk recipes, BulkRecipe recipe) {
+    public BulkAdd(String name, CraftingManagerBulk<T> recipes, T recipe) {
         super(name, recipes.getRecipes(), Lists.newArrayList(recipe));
     }
 
     @Override
-    protected String getRecipeInfo(BulkRecipe recipe) {
+    protected String getRecipeInfo(T recipe) {
         return recipe.getOutput().getDisplayName();
+    }
+
+    @Override
+    public String getJEICategory(T recipe) {
+        return name;
     }
 }

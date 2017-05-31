@@ -39,5 +39,6 @@ public class Buoyancy {
         protected String getRecipeInfo(Map.Entry<Stack, Float> recipe) {
             return recipe.getKey().toString() + " -> " + recipe.getValue();
         }
+
     }
 }

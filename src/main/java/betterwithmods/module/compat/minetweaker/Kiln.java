@@ -2,6 +2,8 @@ package betterwithmods.module.compat.minetweaker;
 
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
+import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
+import betterwithmods.module.compat.jei.category.KilnRecipeCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -46,15 +48,15 @@ public class Kiln {
             if (output == null) {
                 MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + stack.getDisplayName() + ", outputs were null");
             }
-            BlockMetaRecipe r = new BlockMetaRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
+            KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
             recipes.add(r);
         }
-        MineTweakerAPI.apply(new BMAdd("kiln", KilnManager.INSTANCE, recipes));
+        MineTweakerAPI.apply(new BMAdd(KilnRecipeCategory.UID, KilnManager.INSTANCE, recipes));
     }
     
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BMRemove("kiln", KilnManager.INSTANCE,InputHelper.toStack(output)));
+        MineTweakerAPI.apply(new BMRemove(KilnRecipeCategory.UID, KilnManager.INSTANCE,InputHelper.toStack(output)));
     }
 
 

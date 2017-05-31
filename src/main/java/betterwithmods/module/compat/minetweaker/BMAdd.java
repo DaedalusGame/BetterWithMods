@@ -12,14 +12,19 @@ import java.util.List;
  * @author Tyler Marshall
  * @version 1/2/17
  */
-public class BMAdd extends BaseListAddition<BlockMetaRecipe> {
+public class BMAdd<T extends BlockMetaRecipe> extends BaseListAddition<T> {
 
-    public BMAdd(String name, BlockMetaManager handler, List<BlockMetaRecipe> recipes) {
+    public BMAdd(String name, BlockMetaManager<T> handler, List<T> recipes) {
         super(name, handler.getRecipes(), recipes);
     }
 
     @Override
     protected String getRecipeInfo(BlockMetaRecipe recipe) {
         return recipe.getStack().getDisplayName();
+    }
+
+    @Override
+    public String getJEICategory(BlockMetaRecipe recipe) {
+        return name;
     }
 }

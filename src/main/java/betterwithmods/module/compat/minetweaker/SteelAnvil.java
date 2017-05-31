@@ -3,6 +3,7 @@ package betterwithmods.module.compat.minetweaker;
 import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
 import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
+import betterwithmods.module.compat.jei.category.SteelCraftingCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
@@ -68,24 +69,34 @@ public class SteelAnvil {
 
     public static class Add extends BaseListAddition<IRecipe> {
         protected Add(IRecipe recipe) {
-            super("steelanvil", SteelCraftingManager.getInstance().getRecipeList(), Lists.newArrayList(recipe));
+            super(SteelCraftingCategory.UID, SteelCraftingManager.getInstance().getRecipeList(), Lists.newArrayList(recipe));
         }
 
         @Override
         protected String getRecipeInfo(IRecipe recipe) {
             return LogHelper.getCraftingDescription(recipe);
+        }
+
+        @Override
+        public String getJEICategory(IRecipe recipe) {
+            return name;
         }
     }
 
     public static class Remove extends BaseListRemoval<IRecipe> {
 
         public Remove(List<IRecipe> list) {
-            super("steelanvil", SteelCraftingManager.getInstance().getRecipeList(), list);
+            super(SteelCraftingCategory.UID, SteelCraftingManager.getInstance().getRecipeList(), list);
         }
 
         @Override
         protected String getRecipeInfo(IRecipe recipe) {
             return LogHelper.getCraftingDescription(recipe);
+        }
+
+        @Override
+        public String getJEICategory(IRecipe recipe) {
+            return name;
         }
     }
 

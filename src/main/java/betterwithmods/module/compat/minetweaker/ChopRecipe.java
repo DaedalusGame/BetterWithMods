@@ -3,6 +3,7 @@ package betterwithmods.module.compat.minetweaker;
 import betterwithmods.common.registry.ChoppingRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -26,7 +27,7 @@ public class ChopRecipe {
 
     public static class Add extends BaseListAddition<IRecipe> {
         public Add(IRecipe recipe) {
-            super("chopping", CraftingManager.getInstance().getRecipeList(), Collections.singletonList(recipe));
+            super(VanillaRecipeCategoryUid.CRAFTING, CraftingManager.getInstance().getRecipeList(), Collections.singletonList(recipe));
         }
 
         @Override

@@ -2,7 +2,8 @@ package betterwithmods.module.compat.minetweaker;
 
 
 import betterwithmods.common.registry.bulk.manager.StokedCrucibleManager;
-import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
+import betterwithmods.common.registry.bulk.recipes.StokedCrucibleRecipe;
+import betterwithmods.module.compat.jei.category.StokedCrucibleRecipeCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -26,17 +27,17 @@ public class StokedCrucible {
 
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        BulkRecipe r = new BulkRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        MineTweakerAPI.apply(new BulkAdd("crucibleStoked", StokedCrucibleManager.getInstance(), r));
+        StokedCrucibleRecipe r = new StokedCrucibleRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
+        MineTweakerAPI.apply(new BulkAdd(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BulkRemove("crucibleStoked", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
+        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, @NotNull IIngredient[] inputs) {
-        MineTweakerAPI.apply(new BulkRemove("crucibleStoked", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

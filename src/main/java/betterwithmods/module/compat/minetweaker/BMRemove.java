@@ -20,4 +20,9 @@ public class BMRemove extends BaseListRemoval<BlockMetaRecipe> {
     protected String getRecipeInfo(BlockMetaRecipe recipe) {
         return recipe.getStack().getDisplayName();
     }
+
+    @Override
+    public String getJEICategory(BlockMetaRecipe recipe) {
+        return name;
+    }
 }

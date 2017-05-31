@@ -3,6 +3,7 @@ package betterwithmods.module.compat.minetweaker;
 
 import betterwithmods.common.registry.bulk.manager.CrucibleManager;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
+import betterwithmods.module.compat.jei.category.CrucibleRecipeCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -27,16 +28,16 @@ public class Crucible {
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         BulkRecipe r = new BulkRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        MineTweakerAPI.apply(new BulkAdd("crucible", CrucibleManager.getInstance(), r));
+        MineTweakerAPI.apply(new BulkAdd(CrucibleRecipeCategory.UID, CrucibleManager.getInstance(), r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BulkRemove("crucible", CrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
+        MineTweakerAPI.apply(new BulkRemove(CrucibleRecipeCategory.UID, CrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, IIngredient[] inputs) {
-        MineTweakerAPI.apply(new BulkRemove("crucible", CrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+        MineTweakerAPI.apply(new BulkRemove(CrucibleRecipeCategory.UID, CrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

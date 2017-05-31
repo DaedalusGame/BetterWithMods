@@ -2,6 +2,7 @@ package betterwithmods.module.compat.minetweaker;
 
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
+import betterwithmods.module.compat.jei.category.TurntableRecipeCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.ArrayUtils;
@@ -34,7 +35,7 @@ public class Turntable {
 
     public static class Add extends BMAdd {
         public Add(ItemStack input, ItemStack output, List<ItemStack> scraps) {
-            super("turntable", TurntableManager.INSTANCE, Lists.newArrayList(new TurntableRecipe(input, output, scraps)));
+            super(TurntableRecipeCategory.UID, TurntableManager.INSTANCE, Lists.newArrayList(new TurntableRecipe(input, output, scraps)));
         }
     }
 

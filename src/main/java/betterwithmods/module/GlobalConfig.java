@@ -1,5 +1,6 @@
 package betterwithmods.module;
 
+import betterwithmods.client.gui.GuiStatusEffect;
 import net.minecraftforge.common.config.Configuration;
 
 public final class GlobalConfig {
@@ -13,8 +14,11 @@ public final class GlobalConfig {
 
         debug = ConfigHelper.loadPropBool("Debug", category, "Enables debug features", false);
         maxPlatformBlocks = ConfigHelper.loadPropInt("Max Platform Blocks", category, "Max blocks a platform can have", 128);
+        GuiStatusEffect.offsetY = ConfigHelper.loadPropInt("Status Effect Offset Y", "gui","Y Offset for the Hunger, Injury and Gloom Status effects.",0);
+        GuiStatusEffect.offsetX = ConfigHelper.loadPropInt("Status Effect Offset X", "gui","X Offset for the Hunger, Injury and Gloom Status effects.",0);
         ConfigHelper.needsRestart = ConfigHelper.allNeedRestart = false;
     }
+
     public static void changeConfig(String moduleName, String category, String key, String value, boolean saveToFile) {
         Configuration config = ModuleLoader.config;
         String fullCategory = moduleName;

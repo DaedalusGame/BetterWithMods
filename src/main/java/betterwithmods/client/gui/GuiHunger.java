@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -23,7 +25,7 @@ public class GuiHunger {
     private final Minecraft mc = Minecraft.getMinecraft();
     private int shakeCounter = 0;
     private boolean shakeTriggered;
-
+    @SideOnly(Side.CLIENT)
     public void draw() {
         ScaledResolution scale = ((GuiIngameForge) mc.ingameGUI).getResolution();
 
@@ -32,7 +34,7 @@ public class GuiHunger {
 
         drawFoodOverlay(left, top);
     }
-
+    @SideOnly(Side.CLIENT)
     private void drawFoodOverlay(int left, int top) {
         EntityPlayer player = this.mc.player;
         BWMFoodStats foodStats = (BWMFoodStats) player.getFoodStats();

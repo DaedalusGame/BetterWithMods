@@ -470,6 +470,8 @@ public class HCHunger extends Feature {
             return;
         FatPenalty penalty = EntityPlayerExt.getFatPenalty(player);
         RenderPlayer render = e.getRenderer();
+
+
     }
 
     private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");

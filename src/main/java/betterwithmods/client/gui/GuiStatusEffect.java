@@ -1,5 +1,9 @@
 package betterwithmods.client.gui;
 
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.HCGloom;
+import betterwithmods.module.hardcore.HCHunger;
+import betterwithmods.module.hardcore.HCInjury;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,7 +16,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by tyler on 5/13/17.
  */
 public class GuiStatusEffect {
+
     public static GuiStatusEffect INSTANCE = null;
+    public static boolean isGloomLoaded, isHungerLoaded, isInjuryLoaded;
+
+    public GuiStatusEffect() {
+        isGloomLoaded = ModuleLoader.isFeatureEnabled(HCGloom.class);
+        isHungerLoaded = ModuleLoader.isFeatureEnabled(HCHunger.class);
+        isInjuryLoaded = ModuleLoader.isFeatureEnabled(HCInjury.class);
+    }
 
     private final Minecraft mc = Minecraft.getMinecraft();
     public static int offsetX, offsetY;
@@ -27,6 +39,7 @@ public class GuiStatusEffect {
         drawPenaltyText(left, top);
     }
 
+
     @SideOnly(Side.CLIENT)
     private boolean drawPenaltyText(int left, int top) {
         if (this.mc.player.isDead) {
@@ -34,23 +47,24 @@ public class GuiStatusEffect {
         } else {
             int y = top;
             FontRenderer fontRenderer = this.mc.fontRendererObj;
-            String status = EntityPlayerExt.getHealthPenalty(mc.player).getDescription();
+            String injury = EntityPlayerExt.getHealthPenalty(mc.player).getDescription();
             String gloom = EntityPlayerExt.getGloomPenalty(mc.player).getDescription();
             String hunger = EntityPlayerExt.getHungerPenalty(mc.player).getDescription();
 
-            if (!status.isEmpty()) {
-                int width = fontRenderer.getStringWidth(status);
-                fontRenderer.drawStringWithShadow(status, left - width, y,
+            if (isInjuryLoaded && !injury.isEmpty()) {
+                int width = fontRenderer.getStringWidth(injury);
+                fontRenderer.drawStringWithShadow(injury, left - width, y,
                         16777215);
                 y-=10;
             }
-            if (!gloom.isEmpty()) {
+
+            if (isGloomLoaded && !gloom.isEmpty()) {
                 int width = fontRenderer.getStringWidth(gloom);
                 fontRenderer.drawStringWithShadow(gloom, left - width, y,
                         16777215);
                 y-=10;
             }
-            if (!hunger.isEmpty()) {
+            if (isHungerLoaded && !hunger.isEmpty()) {
                 int width = fontRenderer.getStringWidth(hunger);
                 fontRenderer.drawStringWithShadow(hunger, left - width, y,
                         16777215);

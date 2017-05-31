@@ -34,5 +34,10 @@ public class ChopRecipe {
         protected String getRecipeInfo(IRecipe recipe) {
             return recipe.getRecipeOutput().getDisplayName();
         }
+
+        @Override
+        public String getJEICategory(IRecipe recipe) {
+            return VanillaRecipeCategoryUid.CRAFTING;
+        }
     }
 }

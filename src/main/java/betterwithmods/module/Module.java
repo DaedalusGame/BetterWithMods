@@ -133,7 +133,6 @@ public class Module {
 			}
 			
 			feature.prevEnabled = feature.enabled;
-			MinecraftForge.EVENT_BUS.post(new FeatureEnabledEvent(name, feature.configName,feature.enabled));
 		});
 	}
 
@@ -153,6 +152,7 @@ public class Module {
 	public void postInit(FMLPostInitializationEvent event) {
 		forEachEnabled(feature -> feature.postInit(event));
 		forEachDisabled(feature -> feature.disabledPostInit(event));
+		forEachFeature(feature -> MinecraftForge.EVENT_BUS.post(new FeatureEnabledEvent(name, feature.configName,feature.enabled)));
 	}
 	
 	public void finalInit(FMLPostInitializationEvent event) {

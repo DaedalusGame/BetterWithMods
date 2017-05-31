@@ -150,9 +150,11 @@ public class Module {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-		forEachEnabled(feature -> feature.postInit(event));
+		forEachEnabled(feature -> {
+			feature.postInit(event);
+			MinecraftForge.EVENT_BUS.post(new FeatureEnabledEvent(name.toLowerCase(), feature.configName.toLowerCase(),feature.enabled));
+		});
 		forEachDisabled(feature -> feature.disabledPostInit(event));
-		forEachFeature(feature -> MinecraftForge.EVENT_BUS.post(new FeatureEnabledEvent(name.toLowerCase(), feature.configName.toLowerCase(),feature.enabled)));
 	}
 	
 	public void finalInit(FMLPostInitializationEvent event) {

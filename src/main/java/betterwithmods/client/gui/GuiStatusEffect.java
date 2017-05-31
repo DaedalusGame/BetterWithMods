@@ -34,7 +34,7 @@ public class GuiStatusEffect {
         } else {
             int y = top;
             FontRenderer fontRenderer = this.mc.fontRendererObj;
-            String status = EntityPlayerExt.getWorstPenalty(mc.player).getDescription();
+            String status = EntityPlayerExt.getHealthPenalty(mc.player).getDescription();
             String gloom = EntityPlayerExt.getGloomPenalty(mc.player).getDescription();
             String hunger = EntityPlayerExt.getHungerPenalty(mc.player).getDescription();
 

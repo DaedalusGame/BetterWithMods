@@ -17,6 +17,14 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
  * Created by tyler on 4/20/17.
  */
 public class HCRedstone extends Feature {
+
+    public static boolean stoneDeviceRecipesAnvil;
+
+    @Override
+    public void setupConfig() {
+        stoneDeviceRecipesAnvil = loadPropBool("Stone Device Recipes Require Anvil", "Makes it so stone buttons and pressure plates require cut stone, which must be done in the anvil", true);
+    }
+
     @Override
     public String getFeatureDescription() {
         return "Changes the recipes for Redstone devices to be more complex";
@@ -24,6 +32,15 @@ public class HCRedstone extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+
+        RecipeUtils.removeRecipes(Blocks.STONE_BUTTON);
+        RecipeUtils.removeRecipes(Blocks.STONE_PRESSURE_PLATE);
+        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_BUTTON, "C", "R", 'C', new ItemStack(BWMBlocks.STONE_CORNER, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
+        if (!stoneDeviceRecipesAnvil) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_BUTTON, "C", "R", 'C', new ItemStack(Blocks.STONE), 'R', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(Blocks.STONE), 'R', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
+        }
         RecipeUtils.removeRecipes(Blocks.DISPENSER);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.DISPENSER, "CCC", "CBC", "CRC", 'C', "cobblestone", 'B', Items.BOW, 'R', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
         RecipeUtils.removeRecipes(Blocks.DROPPER);
@@ -37,10 +54,7 @@ public class HCRedstone extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.LEVER, "S", "C", "R", 'S', "stickWood", 'C', "cobblestone", 'R', "dustRedstone"));
         RecipeUtils.removeRecipes(Blocks.PISTON);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.PISTON, "WIW", "CSC", "CRC", 'W', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'C', "cobblestone", 'S', new ItemStack(BWMBlocks.URN, 1, BlockUrn.EnumUrnType.FULL.getMeta()), 'R', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
-        RecipeUtils.removeRecipes(Blocks.STONE_BUTTON);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_BUTTON, "C", "R", 'C', new ItemStack(BWMBlocks.STONE_CORNER, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
-        RecipeUtils.removeRecipes(Blocks.STONE_PRESSURE_PLATE);
-        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.STONE_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone"));
+
         RecipeUtils.removeRecipes(Blocks.TRIPWIRE_HOOK);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.TRIPWIRE_HOOK, "I", "M", "R", 'I', "nuggetIron", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), 'R', "dustRedstone"));
         RecipeUtils.removeRecipes(Blocks.WOODEN_BUTTON);

@@ -151,7 +151,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
     }
 
     private boolean detectStorming(World world, BlockPos pos) {
-        return isNearOpenAir(world, pos) && (world.isRaining() || world.isThundering());
+        return (world.isRaining() || world.isThundering()) && isNearOpenAir(world, pos);
     }
 
     private boolean isNearOpenAir(World world, BlockPos pos) {

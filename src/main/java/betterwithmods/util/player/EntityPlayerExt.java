@@ -50,14 +50,12 @@ public final class EntityPlayerExt {
         return penalty;
     }
     public static IPlayerPenalty getWorstPenalty(EntityPlayer player) {
-        HealthPenalty healthPenalty = getHealthPenalty(player);
         HungerPenalty hungerPenalty = getHungerPenalty(player);
         FatPenalty fatPenalty = getFatPenalty(player);
-        int maximumOrdinal = Math.max(healthPenalty.ordinal(), Math.max(hungerPenalty.ordinal(), fatPenalty.ordinal()));
-        if (maximumOrdinal == healthPenalty.ordinal()) return healthPenalty;
-        else if (maximumOrdinal == hungerPenalty.ordinal()) return hungerPenalty;
+        int maximumOrdinal = Math.max(hungerPenalty.ordinal(), fatPenalty.ordinal());
+        if (maximumOrdinal == hungerPenalty.ordinal()) return hungerPenalty;
         else if (maximumOrdinal == fatPenalty.ordinal()) return fatPenalty;
-        else return healthPenalty;
+        else return hungerPenalty;
     }
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {

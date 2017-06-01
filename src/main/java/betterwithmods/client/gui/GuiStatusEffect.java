@@ -49,7 +49,7 @@ public class GuiStatusEffect {
             FontRenderer fontRenderer = this.mc.fontRenderer;
             String injury = EntityPlayerExt.getHealthPenalty(mc.player).getDescription();
             String gloom = EntityPlayerExt.getGloomPenalty(mc.player).getDescription();
-            String hunger = EntityPlayerExt.getHungerPenalty(mc.player).getDescription();
+            String hunger = EntityPlayerExt.getWorstPenalty(mc.player).getDescription();
 
             if (isInjuryLoaded && !injury.isEmpty()) {
                 int width = fontRenderer.getStringWidth(injury);

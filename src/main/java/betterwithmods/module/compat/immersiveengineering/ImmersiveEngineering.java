@@ -73,7 +73,6 @@ public class ImmersiveEngineering extends CompatFeature {
         public IBlockState[] getRenderedPlant(ItemStack seed, ItemStack soil, float growth, TileEntity tile)
         {
             int age = Math.min(7, Math.round(growth*7));
-            System.out.println(age);
             if(age > 6)
                 return new IBlockState[]{BWMBlocks.HEMP.getStateFromMeta(age),BWMBlocks.HEMP.getStateFromMeta(8)};
             return new IBlockState[]{BWMBlocks.HEMP.getStateFromMeta(age)};

@@ -5,6 +5,7 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.compat.CompatFeature;
 import blusunrize.immersiveengineering.api.ComparableItemStack;
 import blusunrize.immersiveengineering.api.crafting.SqueezerRecipe;
+import blusunrize.immersiveengineering.api.energy.ThermoelectricHandler;
 import blusunrize.immersiveengineering.api.tool.BelljarHandler;
 import blusunrize.immersiveengineering.api.tool.ConveyorHandler;
 import blusunrize.immersiveengineering.common.IEContent;
@@ -55,6 +56,7 @@ public class ImmersiveEngineering extends CompatFeature {
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient(FMLPreInitializationEvent event) {
         BWMBlocks.setInventoryModel(TREATED_AXLE);
@@ -99,6 +101,7 @@ public class ImmersiveEngineering extends CompatFeature {
             BelljarHandler.DefaultPlantHandler ieHempHandler = (BelljarHandler.DefaultPlantHandler) BelljarHandler.getHandler(new ItemStack(IEContent.itemSeeds));
             ieHempHandler.register(new ItemStack(IEContent.itemSeeds), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), new ItemStack(IEContent.itemSeeds)}, new ItemStack(Blocks.DIRT), IEContent.blockCrop.getDefaultState());
         }
+        ThermoelectricHandler.registerSourceInKelvin("blockHellfire", 4000);
     }
 
     @SubscribeEvent

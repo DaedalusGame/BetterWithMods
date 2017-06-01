@@ -14,6 +14,7 @@ import betterwithmods.util.player.FatPenalty;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -468,10 +469,10 @@ public class HCHunger extends Feature {
         EntityPlayer player = e.getEntityPlayer();
         if (!(player.getFoodStats() instanceof BWMFoodStats))
             return;
-        FatPenalty penalty = EntityPlayerExt.getFatPenalty(player);
+        FatPenalty fat = EntityPlayerExt.getFatPenalty(player);
         RenderPlayer render = e.getRenderer();
-
-
+        render.getMainModel().bipedBody = new ModelRenderer(render.getMainModel(), 16, 16);
+        render.getMainModel().bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, fat != FatPenalty.NO_PENALTY ? Math.max(0,fat.ordinal()/4f) : 0.0f);
     }
 
     private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");

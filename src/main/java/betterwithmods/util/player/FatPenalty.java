@@ -7,7 +7,7 @@ package betterwithmods.util.player;
  */
 public enum FatPenalty implements IPlayerPenalty {
     NO_PENALTY(1, ""),
-    PLUMP(1, "Plump"),
+    PLUMP(0.9f, "Plump"),
     CHUBBY(0.75F, "Chubby"),
     FAT(0.5F, "Fat"),
     OBESE(0.25F, "Obese");

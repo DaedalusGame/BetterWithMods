@@ -471,8 +471,12 @@ public class HCHunger extends Feature {
             return;
         FatPenalty fat = EntityPlayerExt.getFatPenalty(player);
         RenderPlayer render = e.getRenderer();
+        float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0,fat.ordinal()/4f) : 0.0f;
         render.getMainModel().bipedBody = new ModelRenderer(render.getMainModel(), 16, 16);
-        render.getMainModel().bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, fat != FatPenalty.NO_PENALTY ? Math.max(0,fat.ordinal()/4f) : 0.0f);
+        render.getMainModel().bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
+        render.getMainModel().bipedBodyWear = new ModelRenderer(render.getMainModel(), 16, 32);
+        render.getMainModel().bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4,  0.25F + scale);
+
     }
 
     private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");

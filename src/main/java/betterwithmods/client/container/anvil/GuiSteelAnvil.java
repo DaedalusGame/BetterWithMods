@@ -20,8 +20,8 @@ public class GuiSteelAnvil extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        this.fontRendererObj.drawString(I18n.format(tile.getName()), 10, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 3, 4210752);
+        this.fontRenderer.drawString(I18n.format(tile.getName()), 10, 6, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 3, 4210752);
     }
 
     @Override

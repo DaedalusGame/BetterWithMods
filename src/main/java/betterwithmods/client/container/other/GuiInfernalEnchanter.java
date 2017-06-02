@@ -50,9 +50,9 @@ public class GuiInfernalEnchanter extends GuiContainer {
                     color = 0x80FF20;
                 }
                 String s = String.valueOf(val);
-                this.fontRendererObj.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRendererObj.getStringWidth(s), yPos + 8 + 19 * (i + 1), color);
+                this.fontRenderer.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRenderer.getStringWidth(s), yPos + 8 + 19 * (i + 1), color);
                 FontRenderer fontrenderer = this.mc.standardGalacticFontRenderer;
-                String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRendererObj, 86 - this.fontRendererObj.getStringWidth(s));
+                String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, 86 - this.fontRenderer.getStringWidth(s));
                 fontrenderer.drawSplitString(s1, xPos + 62, yPos + 19 + 19 * i, 108, (6839882 & 16711422) >> 1);
             }
         }
@@ -62,17 +62,17 @@ public class GuiInfernalEnchanter extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String s = I18n.format(tile.getName());
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 0x404040);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 0x404040);
         s = "I";
-        this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 22, 0x404040);
+        this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 22, 0x404040);
         s = "II";
-        this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 41, 0x404040);
+        this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 41, 0x404040);
         s = "III";
-        this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 60, 0x404040);
+        this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 60, 0x404040);
         s = "IV";
-        this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 79, 0x404040);
+        this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 79, 0x404040);
         s = "V";
-        this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 98, 0x404040);
+        this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 98, 0x404040);
 
 
     }

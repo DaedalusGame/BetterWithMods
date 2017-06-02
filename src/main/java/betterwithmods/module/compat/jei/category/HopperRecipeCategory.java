@@ -14,6 +14,8 @@ import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -58,12 +60,13 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
         return background;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void drawExtras(Minecraft minecraft) {
-        int l = minecraft.fontRendererObj.getStringWidth("Throw");
-        minecraft.fontRendererObj.drawString("Throw", width / 2 - l + 5, -11, 0x808080);
-        minecraft.fontRendererObj.drawString("Filter", width / 2 - 50, 16, 0x808080);
-        minecraft.fontRendererObj.drawString("Outputs", width / 2 + 10, -11, 0x808080);
+        int l = minecraft.fontRenderer.getStringWidth("Throw");
+        minecraft.fontRenderer.drawString("Throw", width / 2 - l + 5, -11, 0x808080);
+        minecraft.fontRenderer.drawString("Filter", width / 2 - 50, 16, 0x808080);
+        minecraft.fontRenderer.drawString("Outputs", width / 2 + 10, -11, 0x808080);
     }
 
     @Override

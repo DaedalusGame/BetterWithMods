@@ -23,7 +23,7 @@ public class GuiCookingPot extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         String s = I18n.format(tile.getName());
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
     }
 
     @Override

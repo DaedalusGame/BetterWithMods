@@ -5,6 +5,7 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.module.hardcore.HCHunger;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -33,7 +34,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
     public static final float BASE_HEIGHT = 0.25F;
     private static final int TICK_RATE = 3;
-    private static final int DELAY_BEFORE_RESET = 20;
     private static final AxisAlignedBB CRANK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BASE_HEIGHT, 1.0F);
 
     public BlockCrank() {
@@ -43,6 +43,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
         this.setTickRandomly(true);
         this.setDefaultState(getDefaultState().withProperty(STAGE, 0));
         this.setHarvestLevel("pickaxe", 0);
+
     }
 
     @Override
@@ -82,8 +83,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                         player.sendStatusMessage(new TextComponentTranslation("bwm.message.exhaustion"), true);
                     return false;
                 }
-            }
-            else
+            } else
                 toggleSwitch(world, pos, state);
             return true;
         }
@@ -196,7 +196,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 if (stage <= 5)
                     world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
                 else
-                    world.scheduleBlockUpdate(pos, this, DELAY_BEFORE_RESET, 5);
+                    world.scheduleBlockUpdate(pos, this, MillRecipes.millstoneCraftSpeed/7, 5);
 
                 world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
             } else {

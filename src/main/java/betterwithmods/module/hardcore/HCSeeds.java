@@ -4,10 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockGrass;
-import net.minecraft.block.BlockTallGrass;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -63,7 +60,7 @@ public class HCSeeds extends Feature {
             BlockPos pos = e.getPos();
             if (world.isAirBlock(pos.up())) {
                 IBlockState state = world.getBlockState(pos);
-                if (state.getBlock() instanceof BlockGrass) {
+                if (state.getBlock() instanceof BlockGrass || state.getBlock() instanceof BlockDirt) {
                     InvUtils.ejectStackWithOffset(world, pos.up(), getDrops(0));
                 }
             }

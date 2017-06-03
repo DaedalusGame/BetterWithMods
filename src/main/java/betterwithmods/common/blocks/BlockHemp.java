@@ -6,6 +6,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,6 +26,9 @@ import java.util.Random;
 
 public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
     public static final PropertyBool TOP = PropertyBool.create("top");
+    public static double growthChance, lampModifier, fertileModifier, neighborModifier;
+
+
 
     public BlockHemp() {
         super();
@@ -72,22 +76,20 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         int meta = state.getValue(AGE);
         boolean isTop = state.getValue(TOP);
 
-        double growthChance = 30D;
+        double growthChance = BlockHemp.growthChance;
 
         if (world.getBlockState(pos.up(2)).getBlock() instanceof BlockLight && world.isAirBlock(pos.up())) {
             if (world.getBlockState(pos.up(2)).getValue(BlockLight.ACTIVE))
-                growthChance /= 1.5D;
+                growthChance /= lampModifier;
         }
         if (world.getBlockState(pos.down()).getBlock().isFertile(world, pos.down()))
-            growthChance /= 1.33D;
-        else if (world.getBlockState(pos.down()).getBlock().canSustainPlant(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP, this))
-            growthChance /= 1.2D;
+            growthChance /= fertileModifier;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             IBlockState check = world.getBlockState(pos.offset(facing));
-            if (check.getBlock() instanceof BlockCrops)
-                growthChance /= 1.1D;
+            if (check.getBlock() instanceof IGrowable)
+                growthChance /= neighborModifier;
         }
-
+        System.out.println(growthChance);
         if (meta < 7) {
             if (world.getLightFromNeighbors(up) > 12) {
                 if (rand.nextInt(MathHelper.floor(growthChance)) == 0)

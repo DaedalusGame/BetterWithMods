@@ -5,6 +5,7 @@ import betterwithmods.module.Feature;
 import betterwithmods.util.player.EntityPlayerExt;
 import betterwithmods.util.player.GloomPenalty;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -18,14 +19,22 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by tyler on 5/13/17.
  */
 public class HCGloom extends Feature {
     private static final DataParameter<Integer> GLOOM_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
+    private static Set<Integer> dimensionWhitelist;
+
+    @Override
+    public void setupConfig() {
+        dimensionWhitelist = Sets.newHashSet(ArrayUtils.toObject(loadPropIntList("Gloom Dimension Whitelist", "Gloom is only available in these dimensions", new int[]{0})));
+    }
 
     @SubscribeEvent
     public void onEntityInit(EntityEvent.EntityConstructing event) {
@@ -36,9 +45,11 @@ public class HCGloom extends Feature {
 
     @SubscribeEvent
     public void inDarkness(TickEvent.PlayerTickEvent e) {
+
         EntityPlayer player = e.player;
         World world = player.getEntityWorld();
-        if(!EntityPlayerExt.isSurvival(player))
+
+        if (!EntityPlayerExt.isSurvival(player) || !dimensionWhitelist.contains(world.provider.getDimension()))
             return;
         if (!world.isRemote) {
             int light = world.getLight(player.getPosition());
@@ -53,13 +64,13 @@ public class HCGloom extends Feature {
         GloomPenalty gloomPenalty = EntityPlayerExt.getGloomPenalty(player);
         if (gloomPenalty != GloomPenalty.NO_PENALTY) {
             playRandomSound(gloomPenalty, world, player);
-            if(gloomPenalty == GloomPenalty.TERROR ) {
+            if (gloomPenalty == GloomPenalty.TERROR) {
                 player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 3));
                 player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 20));
                 if (world.getTotalWorldTime() % 40 == 0) {
                     if (world.rand.nextInt(2) == 0) {
-                        if(world.isRemote)
-                            player.playSound(SoundEvents.ENTITY_ENDERMEN_STARE,0.7F,0.8F + world.rand.nextFloat() * 0.2F);
+                        if (world.isRemote)
+                            player.playSound(SoundEvents.ENTITY_ENDERMEN_STARE, 0.7F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                         player.attackEntityFrom(BWDamageSource.gloom, 1);
                     }
@@ -67,9 +78,11 @@ public class HCGloom extends Feature {
             }
         }
     }
-    private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER,SoundEvents.ENTITY_ENDERMEN_TELEPORT,SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
+
+    private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
+
     public void playRandomSound(GloomPenalty gloom, World world, EntityPlayer player) {
-        if(world.isRemote) {
+        if (world.isRemote) {
             if (world.rand.nextInt((int) (200 / gloom.getModifier())) == 0) {
                 player.playSound(SoundEvents.AMBIENT_CAVE, 0.7F, 0.8F + world.rand.nextFloat() * 0.2F);
                 if (gloom != GloomPenalty.GLOOM && world.rand.nextInt((int) (10 / gloom.getModifier())) == 0)
@@ -78,16 +91,17 @@ public class HCGloom extends Feature {
             }
         }
     }
+
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent event) {
         GloomPenalty penalty = EntityPlayerExt.getGloomPenalty(event.getEntity());
         if (penalty != GloomPenalty.NO_PENALTY) {
             float change;
-            if(penalty != GloomPenalty.TERROR)
-                change = (getGloomTime(event.getEntity())/2400f);
+            if (penalty != GloomPenalty.TERROR)
+                change = (getGloomTime(event.getEntity()) / 2400f);
             else
-                change = -(getGloomTime(event.getEntity())/100000f);
-            event.setNewfov(event.getFov()+change);
+                change = -(getGloomTime(event.getEntity()) / 100000f);
+            event.setNewfov(event.getFov() + change);
         }
     }
 

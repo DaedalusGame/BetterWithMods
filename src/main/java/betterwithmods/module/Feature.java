@@ -158,4 +158,9 @@ public class Feature {
         return ConfigHelper.loadPropStringList(propName, configCategory, desc, default_);
     }
 
+    public final int[] loadPropIntList(String propName, String comment, int[] default_) {
+        return ConfigHelper.loadPropIntList(propName, configCategory, comment, default_);
+    }
+
+
 }

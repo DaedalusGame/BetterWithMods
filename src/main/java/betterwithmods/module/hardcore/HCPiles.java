@@ -66,6 +66,12 @@ public class HCPiles extends Feature {
 
     }
 
+    @Override
+    public void disabledInit(FMLInitializationEvent event) {
+        GameRegistry.addShapelessRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMBlocks.DIRT_SLAB));
+        GameRegistry.addRecipe(new ItemStack(BWMBlocks.DIRT_SLAB, 4), "##", '#', Blocks.DIRT);
+    }
+
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
         IBlockState state = event.getState();
@@ -80,13 +86,12 @@ public class HCPiles extends Feature {
         }
 
         if (blockStateToPile.containsKey(state)) {
-            ItemStack pile = blockStateToPile.get(state);
+            ItemStack pile = blockStateToPile.get(state).copy();
             event.getDrops().clear();
             if (event.getWorld().rand.nextFloat() <= event.getDropChance()) {
                 event.getDrops().add(pile);
             }
         }
-
     }
 
     @Override

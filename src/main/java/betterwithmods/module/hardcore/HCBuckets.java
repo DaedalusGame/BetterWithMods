@@ -27,6 +27,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.DispenseFluidContainer;
@@ -126,7 +127,8 @@ public class HCBuckets extends Feature {
             if (fluid == null || fluid.getFluid() == null) {
                 if (!player.capabilities.isCreativeMode) {
                     if (stack.getItem() == Items.BUCKET) {
-                        fluidContainerUse(new FillBucketEvent(player, stack, e.getWorld(), new RayTraceResult(e.getHitVec(), e.getFace())));
+                        MinecraftForge.EVENT_BUS.post(new FillBucketEvent(player, stack, e.getWorld(), new RayTraceResult(e.getHitVec(), e.getFace())));
+                        return;
                     }
                     e.setResult(Event.Result.ALLOW);
                 }
@@ -166,7 +168,7 @@ public class HCBuckets extends Feature {
                                 fill.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(new FluidStack(FluidRegistry.WATER, 1000), true);
                                 evt.setFilledBucket(fill);
                             }
-                            evt.setResult(Event.Result.ALLOW);
+                            evt.setResult(Event.Result.DENY);
                         }
                     }
                 } else if (fluid != null && fluid.getFluid() != null && fluid.getFluid() == FluidRegistry.WATER) {
@@ -277,7 +279,8 @@ public class HCBuckets extends Feature {
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
         if (riskyLavaBuckets) {
-            if (world.getTotalWorldTime() % 10 == 0) {
+            boolean isPlayerRisky = e.player.isSprinting() || !e.player.onGround;
+            if (isPlayerRisky && world.getTotalWorldTime() % 10 == 0) {
                 if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE) && !e.player.capabilities.isCreativeMode) {
                     IItemHandler inv = e.player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                     BlockPos pos = e.player.getPosition();

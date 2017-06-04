@@ -34,8 +34,8 @@ public class GuiMill extends GuiContainer {
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
         if (this.mill.isGrinding()) {
-            int scaledIcon = this.mill.getGrindProgressScaled(12);
-            drawTexturedModalRect(xPos + 80, yPos + 18 + 12 - scaledIcon, 176, 12 - scaledIcon, 14, scaledIcon + 2);
+            int progress = (int) (12 * this.mill.getGrindProgress());
+            drawTexturedModalRect(xPos + 80, yPos + 18 + 12-progress, 176, 12-progress, 14, 14);
         }
     }
 }

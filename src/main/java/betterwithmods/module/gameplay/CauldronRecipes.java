@@ -36,7 +36,10 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE), new Object[]{new OreStack("dustHellfire", 8)});
         addCauldronRecipe(new ItemStack(Items.DYE, 1, 2), new Object[]{"blockCactus"});
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"string", "dustGlowstone", "dustRedstone"});
+        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"fiberHemp", "dustGlowstone", "dustRedstone"});
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
+        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "fiberHemp"});
+
         String[] barkNames = {"barkOak", "barkSpruce", "barkBirch", "barkJungle", "barkAcacia", "barkDarkOak"};
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             int meta = type.getMetadata();

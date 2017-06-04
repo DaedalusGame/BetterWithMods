@@ -25,7 +25,7 @@ public class SawRecipes extends Feature {
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
-        addSawRecipe(block, meta,new ItemStack[]{output});
+        addSawRecipe(block, meta, new ItemStack[]{output});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack... outputs) {
@@ -38,6 +38,7 @@ public class SawRecipes extends Feature {
             addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
             addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
             addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
+            addSawRecipe(Blocks.WOODEN_SLAB, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
         }
         addSawRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
         addSawRecipe(Blocks.PUMPKIN, 0, new ItemStack(Blocks.PUMPKIN));

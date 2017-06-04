@@ -89,7 +89,6 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
             if (check.getBlock() instanceof IGrowable)
                 growthChance /= neighborModifier;
         }
-        System.out.println(growthChance);
         if (meta < 7) {
             if (world.getLightFromNeighbors(up) > 12) {
                 if (rand.nextInt(MathHelper.floor(growthChance)) == 0)

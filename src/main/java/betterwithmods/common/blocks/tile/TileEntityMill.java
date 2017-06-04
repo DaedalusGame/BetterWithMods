@@ -139,8 +139,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         InvUtils.ejectStackWithOffset(getWorld(), offset, stack);
     }
 
-    public int getGrindProgressScaled(int scale) {
-        return this.grindCounter * scale / GRIND_TIME;
+    public double getGrindProgress() {
+        return this.grindCounter / (double)GRIND_TIME;
     }
 
     public boolean isGrinding() {

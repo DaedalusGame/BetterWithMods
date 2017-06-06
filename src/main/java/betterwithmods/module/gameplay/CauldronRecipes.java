@@ -14,9 +14,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFishFood;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Map;
 
 /**
  * Created by tyler on 5/16/17.
@@ -84,6 +89,22 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
         addCauldronRecipe(new ItemStack(BWMItems.HEARTY_STEW, 5), new Object[]{"listAllmeatcooked", Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.BROWN_MUSHROOM, 3), "foodFlour"});
         addCauldronRecipe(new ItemStack(BWMItems.KIBBLE, 2), new ItemStack[]{new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(Items.ROTTEN_FLESH, 4), new ItemStack(Items.SUGAR)});
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        //Add all food recipes
+        Map<ItemStack, ItemStack> furnace = FurnaceRecipes.instance().getSmeltingList();
+        for (ItemStack input : furnace.keySet()) {
+            if (input != null) {
+                if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
+                    ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
+                    if (!output.isEmpty()) {
+                        CauldronRecipes.addCauldronRecipe(output.copy(),new Object[]{input.copy()});
+                    }
+                }
+            }
+        }
     }
 
     public static void addCauldronRecipe(ItemStack output, Object[] inputs) {

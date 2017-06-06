@@ -25,7 +25,6 @@ import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
@@ -98,7 +97,6 @@ public class BWRegistry {
     }
 
     public static void postInit() {
-        RecipeUtils.gatherCookableFood();
         registerWood();
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();

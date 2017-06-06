@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.registry.KilnStructureManger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockTNT;
@@ -55,13 +56,9 @@ public class BlockFireStoked extends BlockFire {
             return;
         }
         BlockPos above = pos.up();
-        if (world.getBlockState(above).getBlock() == Blocks.BRICK_BLOCK) {
-            if (this.isValidKiln(world, above))
-                world.setBlockState(above, BWMBlocks.KILN.getDefaultState());
-        } else if (Loader.isModLoaded("terrafirmacraft") && world.getBlockState(above).getBlock() == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))) {
-            if (this.isValidKiln(world, above))
-                world.setBlockState(above, BWMBlocks.KILN.getDefaultState());
-        }
+
+        KilnStructureManger.createKiln(world,above);
+        
         if (world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME) { //Attempt at alleviating an OptiFine crash
             int meta = world.getBlockState(pos).getValue(AGE);
 

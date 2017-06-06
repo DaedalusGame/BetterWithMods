@@ -69,7 +69,6 @@ public class BWMod {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
         registerEventHandlers();
-//        RecipeUtils.refreshRecipes();
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ModuleSync());
         proxy.postInit(evt);

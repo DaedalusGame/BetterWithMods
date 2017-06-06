@@ -187,6 +187,8 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityAdvBellows.class, "bwm_bellows", "bellows", "bwm.bellows");
         GameRegistry.registerTileEntityWithAlternatives(TileStake.class, "bwm_stake", "stake", "bwm.stake");
 
+        GameRegistry.registerTileEntityWithAlternatives(TileCamo.class, "bwm_camo", "camo", "bwm.camo");
+
     }
 
     /**

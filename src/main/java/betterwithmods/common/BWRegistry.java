@@ -14,10 +14,7 @@ import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.potion.BWPotion;
-import betterwithmods.common.registry.ChoppingRecipe;
-import betterwithmods.common.registry.CuttingRecipe;
-import betterwithmods.common.registry.DyeWithTagRecipe;
-import betterwithmods.common.registry.HopperFilters;
+import betterwithmods.common.registry.*;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
@@ -81,6 +78,9 @@ public class BWRegistry {
         registerBlockDispenserBehavior();
         registerHopperFilters();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
+
+        KilnStructureManger.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
+        KilnStructureManger.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }
 
     public static void init() {

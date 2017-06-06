@@ -1,29 +1,40 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.api.block.PropertyObject;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.registry.KilnStructureManger;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
 public class BlockKiln extends BWMBlock {
     public static final PropertyInteger COOK = PropertyInteger.create("cook", 0, 8);
+    public static final PropertyObject<IBlockState> HELD_STATE = new PropertyObject<>("held_state", IBlockState.class);
+    public static final PropertyObject<IBlockAccess> HELD_WORLD = new PropertyObject<>("held_world", IBlockAccess.class);
+    public static final PropertyObject<BlockPos> HELD_POS = new PropertyObject<>("held_pos", BlockPos.class);
 
     public BlockKiln() {
         super(Material.ROCK);
@@ -70,7 +81,7 @@ public class BlockKiln extends BWMBlock {
         Block above = world.getBlockState(up).getBlock();
         int aboveMeta = world.getBlockState(up).getBlock().damageDropped(world.getBlockState(up));
         if (!world.isAirBlock(up) && KilnManager.INSTANCE.contains(above, aboveMeta)) {
-            if (checkKilnIntegrity(world, pos))
+            if (KilnStructureManger.isValidKiln(world, pos))
                 canCook = true;
         }
 
@@ -148,7 +159,6 @@ public class BlockKiln extends BWMBlock {
                 }
             }
         }
-
         world.scheduleBlockUpdate(pos, this, 20, 5);
     }
 
@@ -191,20 +201,6 @@ public class BlockKiln extends BWMBlock {
         }
     }
 
-    private boolean checkKilnIntegrity(IBlockAccess world, BlockPos pos) {
-        int brickCount = 0;
-        for (int i = 1; i <= 5; i++) {
-            Block block = world.getBlockState(pos.up().offset(EnumFacing.getFront(i))).getBlock();
-
-            if (block == Blocks.BRICK_BLOCK || block == BWMBlocks.KILN)
-                brickCount++;
-            else if (Loader.isModLoaded("terrafirmacraft")
-                    && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick")))
-                brickCount++;
-        }
-        return brickCount > 2;
-    }
-
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(COOK, meta);
@@ -217,6 +213,34 @@ public class BlockKiln extends BWMBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, COOK);
+        return new ExtendedBlockState(this, new IProperty[]{COOK}, new IUnlistedProperty[]{HELD_WORLD, HELD_POS, HELD_STATE});
     }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        state = ((IExtendedBlockState) state).withProperty(HELD_WORLD, world)
+                .withProperty(HELD_POS, pos);
+
+        TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
+        if (te instanceof TileCamo) {
+            TileCamo tile = (TileCamo) te;
+            IExtendedBlockState camo = ((IExtendedBlockState) state).withProperty(HELD_STATE, tile.camoState);
+            return camo;
+        } else {
+            return state;
+        }
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileCamo();
+    }
+
+
 }

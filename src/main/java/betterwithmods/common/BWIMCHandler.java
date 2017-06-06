@@ -1,8 +1,13 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.module.ModuleLoader;
+import betterwithmods.common.registry.KilnStructureManger;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -12,23 +17,31 @@ import java.util.function.Consumer;
 
 public class BWIMCHandler {
 
-    private static final HashMap<String,Consumer<Object>> IMC_HANDLER = new HashMap<>();
+    private static final HashMap<String, Consumer<Object>> IMC_HANDLER = new HashMap<>();
+
     public static void registerIMC(String key, Consumer<Object> function) {
-        IMC_HANDLER.put(key,function);
+        IMC_HANDLER.put(key, function);
     }
+
     static {
-        registerIMC("isFeatureEnabled",s -> ModuleLoader.isFeatureEnabled((String)s));
+        registerIMC("registerKilnBlock", object -> {
+            ItemStack stack = (ItemStack) object;
+            if(stack.getItem() instanceof ItemBlock) {
+                Block block = ((ItemBlock) stack.getItem()).getBlock();
+                IBlockState state = block.getStateFromMeta(stack.getMetadata());
+                KilnStructureManger.registerKilnBlock(state);
+            }
+        });
     }
+
     public static void processIMC(ImmutableList<IMCMessage> message) {
         Logger log = BWMod.logger;
         for (IMCMessage m : message) {
             try {
                 String k = m.key;
                 log.debug("[BWIMCHandler] %s from %s", k, m.getSender());
-                if(IMC_HANDLER.containsKey(k)) {
-                    if(m.getMessageType().equals(String.class)) {
-                        IMC_HANDLER.get(k).accept(m.getStringValue());
-                    }
+                if (IMC_HANDLER.containsKey(k)) {
+                    IMC_HANDLER.get(k).accept(ObfuscationReflectionHelper.getPrivateValue(IMCMessage.class, m, 3));
                 }
                 //TODO reimplement IMC for recipes
             } catch (Throwable t) {

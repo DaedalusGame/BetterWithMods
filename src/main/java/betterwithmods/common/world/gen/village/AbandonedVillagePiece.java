@@ -16,7 +16,7 @@ import java.util.Random;
  * Created by tyler on 5/21/17.
  */
 public abstract class AbandonedVillagePiece extends StructureVillagePieces.Village implements VillagerRegistry.IVillageCreationHandler {
-    BWMapGenVillage.VillageStatus status;
+    protected BWMapGenVillage.VillageStatus status =BWMapGenVillage.VillageStatus.NORMAL;
     private int villagersSpawned;
 
     public AbandonedVillagePiece() {
@@ -65,6 +65,8 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
     @Override
     protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof) {
         switch (status) {
+            case NORMAL:
+                return super.chooseForgeProfession(count, prof);
             case SEMIABANDONED:
                 VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
                 String name = profession.getRegistryName().toString();

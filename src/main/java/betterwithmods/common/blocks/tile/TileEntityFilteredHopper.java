@@ -326,6 +326,12 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         }
 
         @Override
+        public void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            world.markBlockRangeForRenderUpdate(pos,pos);
+        }
+
+        @Override
         public int getSlotLimit(int slot) {
             return slot == 18 ? 1 : super.getSlotLimit(slot);
         }

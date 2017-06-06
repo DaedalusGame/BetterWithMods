@@ -13,8 +13,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -135,11 +133,6 @@ public class BlockKiln extends BWMBlock {
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(Blocks.BRICK_BLOCK);
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         int cookTime = getCookCounter(world, pos);
         BlockPos above = pos.up();
@@ -220,7 +213,6 @@ public class BlockKiln extends BWMBlock {
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         state = ((IExtendedBlockState) state).withProperty(HELD_WORLD, world)
                 .withProperty(HELD_POS, pos);
-
         TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
         if (te instanceof TileCamo) {
             TileCamo tile = (TileCamo) te;
@@ -241,6 +233,5 @@ public class BlockKiln extends BWMBlock {
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileCamo();
     }
-
 
 }

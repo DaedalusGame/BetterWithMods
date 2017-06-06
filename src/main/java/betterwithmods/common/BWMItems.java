@@ -72,6 +72,7 @@ public final class BWMItems {
     public static final Item DIRT_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("dirt_pile");
     public static final Item GRAVEL_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("gravel_pile");
     public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
+    public static final Item RED_SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("red_sand_pile");
     public static final Item WOLF_CHOP = new ItemFood(3,0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
     public static final Item KIBBLE = new ItemFood(5, 0, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("kibble");
 
@@ -123,6 +124,7 @@ public final class BWMItems {
         registerItem(DIRT_PILE);
         registerItem(GRAVEL_PILE);
         registerItem(SAND_PILE);
+        registerItem(RED_SAND_PILE);
         registerItem(WOLF_CHOP);
         registerItem(KIBBLE);
     }
@@ -187,6 +189,7 @@ public final class BWMItems {
         setInventoryModel(DIRT_PILE);
         setInventoryModel(GRAVEL_PILE);
         setInventoryModel(SAND_PILE);
+        setInventoryModel(RED_SAND_PILE);
         setInventoryModel(WOLF_CHOP);
         setInventoryModel(KIBBLE);
     }

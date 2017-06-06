@@ -401,6 +401,7 @@ item.bwm:stump_remover.name=Stump Remover
 item.bwm:gravel_pile.name=Pile of Gravel
 item.bwm:dirt_pile.name=Pile of Dirt
 item.bwm:sand_pile.name=Pile of Sand
+item.bwm:red_sand_pile.name=Pile of Red Sand
 
 item.bwm:bop_piles.loamy_dirt_pile.name=Pile of Loamy Dirt
 item.bwm:bop_piles.silty_dirt_pile.name=Pile of Silty Dirt

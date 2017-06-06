@@ -1,9 +1,10 @@
-package betterwithmods.event;
+package betterwithmods.module.gameplay;
 
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
+import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +21,20 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static betterwithmods.common.BWMItems.BARK;
 
-public class LogHarvestEvent {
+/**
+ * Created by primetoxinz on 6/6/17.
+ */
+public class Debarking extends Feature {
+    public static boolean requiresSneaking;
+    @Override
+    public void setupConfig() {
+        requiresSneaking = loadPropBool("Requires Sneaking", "Making Debarking Wood Require the Player to be Sneaking", true);
+    }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Allows Right-Clicking Logs with an Axe to remove the Bark";
+    }
 
     @SubscribeEvent
     public void debarkLog(PlayerInteractEvent.RightClickBlock evt) {
@@ -30,7 +44,7 @@ public class LogHarvestEvent {
             EntityPlayer player = evt.getEntityPlayer();
             Block block = world.getBlockState(pos).getBlock();
             ItemStack playerStack = player.getHeldItem(evt.getHand());
-            if (playerStack .isEmpty() )
+            if (playerStack.isEmpty())
                 return;
             BlockPos playerPos = pos.offset(evt.getFace());
             if (!playerStack.isEmpty() && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
@@ -53,7 +67,7 @@ public class LogHarvestEvent {
                     if (SawManager.INSTANCE.contains(block, block.getMetaFromState(state)) && BWOreDictionary.listContains(new ItemStack(block, 1, block.damageDropped(state)), OreDictionary.getOres("logWood"))) {
                         ItemStack bark = new ItemStack(BARK, 1, 0);
                         IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
-                        if(state.getBlock() instanceof IDebarkable) {
+                        if (state.getBlock() instanceof IDebarkable) {
                             IDebarkable debarkable = (IDebarkable) state.getBlock();
                             bark = debarkable.getBark(state);
                             dbl = debarkable.getStrippedState(state);
@@ -69,4 +83,8 @@ public class LogHarvestEvent {
         }
     }
 
+    @Override
+    public boolean hasSubscriptions() {
+        return true;
+    }
 }

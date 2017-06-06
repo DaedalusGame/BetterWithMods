@@ -17,13 +17,14 @@ public class TileBasic extends TileEntity {
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbtTag = new NBTTagCompound();
         this.writeToNBT(nbtTag);
-        return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
+        return new SPacketUpdateTileEntity(getPos(), -999, nbtTag);
     }
 
 
     @SideOnly(Side.CLIENT)
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        super.onDataPacket(net,packet);
         this.readFromNBT(packet.getNbtCompound());
     }
 

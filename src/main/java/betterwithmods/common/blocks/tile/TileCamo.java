@@ -12,15 +12,15 @@ package betterwithmods.common.blocks.tile;
  */
 
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileCamo extends TileBasic {
 
@@ -51,7 +51,6 @@ public class TileCamo extends TileBasic {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet) {
         super.onDataPacket(manager, packet);
@@ -61,5 +60,12 @@ public class TileCamo extends TileBasic {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
+    }
+
+    @Override
+    public void onBreak() {
+        Block block = camoState.getBlock();
+        int meta = block.getMetaFromState(camoState);
+        InvUtils.ejectStackWithOffset(world,pos, new ItemStack(block, 1,meta));
     }
 }

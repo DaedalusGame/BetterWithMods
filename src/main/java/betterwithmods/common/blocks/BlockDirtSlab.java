@@ -2,6 +2,8 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.HCPiles;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -69,7 +71,12 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
-        drops.add(new ItemStack(BWMItems.DIRT_PILE, 2));
+        if(ModuleLoader.isFeatureEnabled(HCPiles.class)) {
+            drops.add(new ItemStack(BWMItems.DIRT_PILE, 2));
+        }
+        else {
+            drops.add(new ItemStack(this));
+        }
         return drops;
     }
 

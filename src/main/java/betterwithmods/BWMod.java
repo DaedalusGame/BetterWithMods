@@ -37,7 +37,6 @@ public class BWMod {
 
     private static void registerEventHandlers() {
         MinecraftForge.EVENT_BUS.register(new FakePlayerHandler());
-        MinecraftForge.EVENT_BUS.register(new LogHarvestEvent());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());

@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.mini;
 
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -54,12 +53,12 @@ public class BlockCorner extends BlockMini {
         return bounds[ori];
     }
 
-    @Override
-    public IBlockState metaBlockPlace(EnumFacing facing, float hitX, float hitY, float hitZ) {
-        IBlockState state = this.getDefaultState();
-        int ori = DirUtils.getPlacementMeta("corner", facing, hitX, hitY, hitZ);
-        return state.withProperty(ORIENTATION, ori);
-    }
+//    @Override
+//    public IBlockState metaBlockPlace(EnumFacing facing, float hitX, float hitY, float hitZ) {
+//        IBlockState state = this.getDefaultState();
+//        int ori = DirUtils.getPlacementMeta("corner", facing, hitX, hitY, hitZ);
+//        return state.withProperty(ORIENTATION, ori);
+//    }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {

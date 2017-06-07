@@ -46,6 +46,7 @@ public class BWHouse4 extends AbandonedVillagePiece {
         IBlockState iblockstate2 = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
         IBlockState iblockstate4 = this.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState());
+        IBlockState iblockstate5 = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.SOUTH);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 4, 0, 4, iblockstate, iblockstate, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 4, 0, 4, 4, 4, iblockstate3, iblockstate3, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 4, 1, 3, 4, 3, iblockstate1, iblockstate1, false);
@@ -105,7 +106,7 @@ public class BWHouse4 extends AbandonedVillagePiece {
         this.setBlockState(worldIn, iblockstate4, 0, 5, 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate4, 0, 5, 2, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate4, 0, 5, 3, structureBoundingBoxIn);
-        IBlockState iblockstate5 = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.SOUTH);
+
         this.setBlockState(worldIn, iblockstate5, 3, 1, 3, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate5, 3, 2, 3, structureBoundingBoxIn);
         this.setBlockState(worldIn, iblockstate5, 3, 3, 3, structureBoundingBoxIn);

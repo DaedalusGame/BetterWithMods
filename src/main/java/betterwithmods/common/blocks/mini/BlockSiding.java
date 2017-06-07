@@ -1,9 +1,7 @@
 package betterwithmods.common.blocks.mini;
 
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -35,10 +33,10 @@ public class BlockSiding extends BlockMini {
         }
     }
 
-    @Override
-    public IBlockState metaBlockPlace(EnumFacing facing, float hitX, float hitY, float hitZ) {
-        IBlockState state = this.getDefaultState();
-        int ori = DirUtils.getPlacementMeta("siding", facing, hitX, hitY, hitZ);
-        return state.withProperty(ORIENTATION, ori);
-    }
+//    @Override
+//    public IBlockState metaBlockPlace(EnumFacing facing, float hitX, float hitY, float hitZ) {
+//        IBlockState state = this.getDefaultState();
+//        int ori = DirUtils.getPlacementMeta("siding", facing, hitX, hitY, hitZ);
+//        return state.withProperty(ORIENTATION, ori);
+//    }
 }

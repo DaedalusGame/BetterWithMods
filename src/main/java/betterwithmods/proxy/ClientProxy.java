@@ -1,6 +1,7 @@
 package betterwithmods.proxy;
 
 import betterwithmods.client.BWStateMapper;
+import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.ColorHandlers;
 import betterwithmods.client.model.*;
 import betterwithmods.client.model.render.RenderUtils;
@@ -28,6 +29,7 @@ import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,6 +45,7 @@ public class ClientProxy implements IProxy {
         ModuleLoader.preInitClient(event);
         registerRenderInformation();
         initRenderers();
+        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
     }
 
     @Override

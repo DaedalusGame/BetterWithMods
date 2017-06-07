@@ -7,7 +7,7 @@
       "particle": "#side"
     },
     "model": "betterwithmods:bench_supported",
-    "uvlock": false
+    "uvlock": true
   },
   "variants": {
     "normal": [

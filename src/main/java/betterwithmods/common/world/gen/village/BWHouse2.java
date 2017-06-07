@@ -45,7 +45,7 @@ public class BWHouse2 extends AbandonedVillagePiece {
         }
 
         IBlockState table = this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
-        IBlockState iblockstate = Blocks.COBBLESTONE.getDefaultState();
+        IBlockState iblockstate = this.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getDefaultState());
         IBlockState iblockstate1 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState iblockstate2 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST));
         IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState());

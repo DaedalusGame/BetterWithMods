@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks.mini;
 
+import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
@@ -35,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public abstract class BlockMini extends BWMBlock implements IMultiVariants {
+public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdvancedRotationPlacement {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
     public static final PropertyInteger ORIENTATION = createOrientation();
@@ -120,7 +121,7 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return metaBlockPlace(facing, flX, flY, flZ);
+        return getStateForAdvancedRotationPlacement(getDefaultState(),ORIENTATION,facing,flX,flY,flZ);
     }
 
     @Override
@@ -156,8 +157,6 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants {
         stack = new ItemStack(this, 1, state.getValue(TYPE));
         InvUtils.ejectStackWithOffset(world, pos, stack);
     }
-
-    public abstract IBlockState metaBlockPlace(EnumFacing facing, float flX, float flY, float flZ);
 
     @Override
     public boolean hasTileEntity(IBlockState state) {

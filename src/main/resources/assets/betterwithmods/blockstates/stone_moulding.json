@@ -6,7 +6,7 @@
       "particle": "#side"
     },
     "model": "betterwithmods:mini/moulding",
-    "uvlock": false
+    "uvlock": true
   },
   "variants": {
     "normal": [

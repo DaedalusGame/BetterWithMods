@@ -88,7 +88,7 @@ public class HCVillages extends Feature {
             return BlockPlanks.EnumType.JUNGLE;
         } else if (BiomeDictionary.areSimilar(biome, Biomes.BIRCH_FOREST)) {
             return BlockPlanks.EnumType.BIRCH;
-        } else if (BiomeDictionary.areSimilar(biome, Biomes.SAVANNA)) {
+        } else if (BiomeDictionary.areSimilar(biome, Biomes.SAVANNA) || BiomeDictionary.areSimilar(biome, Biomes.DESERT)) {
             return BlockPlanks.EnumType.ACACIA;
         } else {
 

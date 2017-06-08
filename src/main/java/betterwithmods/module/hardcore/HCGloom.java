@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -44,6 +45,12 @@ public class HCGloom extends Feature {
     }
 
     @SubscribeEvent
+    public void onRespawn(PlayerEvent.PlayerRespawnEvent e) {
+        //FIXME hopefully fixes permanent gloom after dying???
+        setGloomTick(e.player,0);
+    }
+
+    @SubscribeEvent
     public void inDarkness(TickEvent.PlayerTickEvent e) {
 
         EntityPlayer player = e.player;
@@ -52,7 +59,7 @@ public class HCGloom extends Feature {
         if (!EntityPlayerExt.isSurvival(player) || !dimensionWhitelist.contains(world.provider.getDimension()))
             return;
         if (!world.isRemote) {
-            int light = world.getLight(player.getPosition());
+            int light = world.getLight(player.getPosition().up());
             int tick = getGloomTime(player);
             if (light <= 0 && !player.isPotionActive(MobEffects.NIGHT_VISION)) {
                 incrementGloomTime(player);

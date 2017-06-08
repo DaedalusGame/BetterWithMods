@@ -3,7 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.PropertyObject;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileCamo;
-import betterwithmods.common.registry.KilnStructureManger;
+import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.util.InvUtils;
@@ -79,7 +79,7 @@ public class BlockKiln extends BWMBlock {
         Block above = world.getBlockState(up).getBlock();
         int aboveMeta = world.getBlockState(up).getBlock().damageDropped(world.getBlockState(up));
         if (!world.isAirBlock(up) && KilnManager.INSTANCE.contains(above, aboveMeta)) {
-            if (KilnStructureManger.isValidKiln(world, pos))
+            if (KilnStructureManager.isValidKiln(world, pos))
                 canCook = true;
         }
 

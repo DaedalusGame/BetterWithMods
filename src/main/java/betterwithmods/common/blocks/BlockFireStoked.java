@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.registry.KilnStructureManger;
+import betterwithmods.common.registry.KilnStructureManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockTNT;
@@ -57,7 +57,7 @@ public class BlockFireStoked extends BlockFire {
         }
         BlockPos above = pos.up();
 
-        KilnStructureManger.createKiln(world,above);
+        KilnStructureManager.createKiln(world,above);
         
         if (world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME) { //Attempt at alleviating an OptiFine crash
             int meta = world.getBlockState(pos).getValue(AGE);

@@ -121,7 +121,12 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getStateForAdvancedRotationPlacement(getDefaultState(),ORIENTATION,facing,flX,flY,flZ);
+        return getStateForAdvancedRotationPlacement(getDefaultState(),facing,flX,flY,flZ);
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getStateForPlacement(worldIn,pos,facing,hitX,hitY,hitZ,meta,placer,placer.getActiveHand());
     }
 
     @Override
@@ -170,10 +175,9 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        int type = 0;
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
-            type = ((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType();
-        return state.withProperty(TYPE, type);
+        if (!((World)world).isRemote && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
+            return state.withProperty(TYPE,((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType());
+        return state;
     }
 
     @Override
@@ -194,6 +198,11 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, TYPE, ORIENTATION);
+    }
+
+    @Override
+    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
+        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
     }
 
     public enum EnumType {

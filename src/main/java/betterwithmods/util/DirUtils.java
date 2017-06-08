@@ -10,8 +10,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Objects;
-
 import static net.minecraft.util.EnumFacing.Axis.*;
 
 public class DirUtils {
@@ -168,139 +166,6 @@ public class DirUtils {
         return facing;
     }
 
-    public static int getPlacementMeta(String type, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (Objects.equals(type, "siding")) {
-            return side.getOpposite().ordinal();
-        } else if (Objects.equals(type, "moulding")) {// X: East-West; Z: North-South
-            return getMoulding(side, hitX, hitY, hitZ).getMeta();
-        } else if (Objects.equals(type, "corner")) {
-            if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
-                boolean up = side == EnumFacing.UP;
-                if (hitX < 0.5F && hitZ < 0.5F)
-                    return up ? 1 : 5;
-                else if (hitX < 0.5F && hitZ > 0.5F)
-                    return up ? 0 : 4;
-                else if (hitX > 0.5F && hitZ < 0.5F)
-                    return up ? 3 : 7;
-                else
-                    return up ? 2 : 6;
-            } else if (side == EnumFacing.SOUTH || side == EnumFacing.NORTH) {
-                boolean south = side == EnumFacing.SOUTH;
-                if (hitX < 0.5F && hitY < 0.5F)
-                    return south ? 1 : 0;
-                else if (hitX < 0.5F && hitY > 0.5F)
-                    return south ? 5 : 4;
-                else if (hitX > 0.5F && hitY < 0.5F)
-                    return south ? 3 : 2;
-                else
-                    return south ? 7 : 6;
-            } else if (side == EnumFacing.EAST || side == EnumFacing.WEST) {
-                boolean east = side == EnumFacing.EAST;
-                if (hitZ > 0.5F && hitY < 0.5F)
-                    return east ? 0 : 2;
-                else if (hitZ > 0.5F && hitY > 0.5F)
-                    return east ? 4 : 6;
-                else if (hitZ < 0.5F && hitY < 0.5F)
-                    return east ? 1 : 3;
-                else
-                    return east ? 5 : 7;
-            }
-        }
-        return 0;
-    }
-
-    private static EnumMoulding getMoulding(EnumFacing side, float hitX, float hitY, float hitZ) {
-        float rX = 1.0F - hitX;
-        float rY = 1.0F - hitY;
-        float rZ = 1.0F - hitZ;
-        if (side == EnumFacing.DOWN || side == EnumFacing.UP) {
-            if (hitX < 0.25F && hitZ < 0.25F)
-                return EnumMoulding.VERTNORTHWEST;
-            else if (hitX > 0.75F && hitZ < 0.25F)
-                return EnumMoulding.VERTNORTHEAST;
-            else if (hitX < 0.25F && hitZ > 0.75F)
-                return EnumMoulding.VERTSOUTHWEST;
-            else if (hitX > 0.75F && hitZ > 0.75F)
-                return EnumMoulding.VERTSOUTHEAST;
-            else if (side == EnumFacing.UP) {
-                if (hitX < 0.5F && hitZ < 0.5F)
-                    return hitX < hitZ ? EnumMoulding.DOWNWEST : EnumMoulding.DOWNNORTH;
-                else if (hitX < 0.5F && hitZ > 0.5F)
-                    return hitX < rZ ? EnumMoulding.DOWNWEST : EnumMoulding.DOWNSOUTH;
-                else if (hitX > 0.5F && hitZ < 0.5F)
-                    return rX < hitZ ? EnumMoulding.DOWNEAST : EnumMoulding.DOWNSOUTH;
-                else
-                    return hitX < hitZ ? EnumMoulding.DOWNNORTH : EnumMoulding.DOWNEAST;
-            } else {
-                if (hitX < 0.5F && hitZ < 0.5F)
-                    return hitX < hitZ ? EnumMoulding.UPWEST : EnumMoulding.UPNORTH;
-                else if (hitX < 0.5F && hitZ > 0.5F)
-                    return hitX < rZ ? EnumMoulding.UPWEST : EnumMoulding.UPSOUTH;
-                else if (hitX > 0.5F && hitZ < 0.5F)
-                    return rX < hitZ ? EnumMoulding.UPEAST : EnumMoulding.UPSOUTH;
-                else
-                    return hitX < hitZ ? EnumMoulding.UPNORTH : EnumMoulding.UPEAST;
-            }
-        } else if (side == EnumFacing.NORTH || side == EnumFacing.SOUTH) {
-            if (hitX < 0.25F && hitY < 0.25F)
-                return EnumMoulding.DOWNWEST;
-            else if (hitX > 0.75F && hitY < 0.25F)
-                return EnumMoulding.DOWNEAST;
-            else if (hitX < 0.25F && hitY > 0.75F)
-                return EnumMoulding.UPWEST;
-            else if (hitX > 0.75F && hitY > 0.75F)
-                return EnumMoulding.UPEAST;
-            else if (side == EnumFacing.SOUTH) {
-                if (hitX < 0.5F && hitY < 0.5F)
-                    return hitX < hitY ? EnumMoulding.VERTNORTHWEST : EnumMoulding.DOWNNORTH;
-                else if (hitX < 0.5F && hitY > 0.5F)
-                    return hitX < rY ? EnumMoulding.VERTNORTHWEST : EnumMoulding.UPNORTH;
-                else if (hitX > 0.5F && hitY < 0.5F)
-                    return rX < hitY ? EnumMoulding.VERTNORTHEAST : EnumMoulding.DOWNNORTH;
-                else
-                    return hitX < hitY ? EnumMoulding.VERTNORTHEAST : EnumMoulding.UPNORTH;
-            } else {
-                if (hitX < 0.5F && hitY < 0.5F)
-                    return hitX < hitY ? EnumMoulding.VERTSOUTHWEST : EnumMoulding.DOWNSOUTH;
-                else if (hitX < 0.5F && hitY > 0.5F)
-                    return hitX < rY ? EnumMoulding.VERTSOUTHWEST : EnumMoulding.UPSOUTH;
-                else if (hitX > 0.5F && hitY < 0.5F)
-                    return rX < hitY ? EnumMoulding.VERTSOUTHEAST : EnumMoulding.DOWNSOUTH;
-                else
-                    return hitX < hitY ? EnumMoulding.VERTSOUTHEAST : EnumMoulding.UPSOUTH;
-            }
-        } else if (side == EnumFacing.WEST || side == EnumFacing.EAST) {
-            if (hitZ < 0.25F && hitY < 0.25F)
-                return EnumMoulding.DOWNNORTH;
-            else if (hitZ > 0.75F && hitY < 0.25F)
-                return EnumMoulding.DOWNSOUTH;
-            else if (hitZ < 0.25F && hitY > 0.75F)
-                return EnumMoulding.UPNORTH;
-            else if (hitZ > 0.75F && hitY > 0.75F)
-                return EnumMoulding.UPSOUTH;
-            else if (side == EnumFacing.EAST) {
-                if (hitZ < 0.5F && hitY < 0.5F)
-                    return hitZ < hitY ? EnumMoulding.VERTNORTHWEST : EnumMoulding.DOWNWEST;
-                else if (hitZ < 0.5F && hitY > 0.5F)
-                    return hitZ < rY ? EnumMoulding.VERTNORTHWEST : EnumMoulding.UPWEST;
-                else if (hitZ > 0.5F && hitY < 0.5F)
-                    return rZ < hitY ? EnumMoulding.VERTSOUTHWEST : EnumMoulding.DOWNWEST;
-                else
-                    return hitZ < hitY ? EnumMoulding.VERTSOUTHWEST : EnumMoulding.UPWEST;
-            } else {
-                if (hitZ < 0.5F && hitY < 0.5F)
-                    return hitZ < hitY ? EnumMoulding.VERTNORTHEAST : EnumMoulding.DOWNEAST;
-                else if (hitZ < 0.5F && hitY > 0.5F)
-                    return hitZ < rY ? EnumMoulding.VERTNORTHEAST : EnumMoulding.UPEAST;
-                else if (hitZ > 0.5F && hitY < 0.5F)
-                    return rZ < hitY ? EnumMoulding.VERTSOUTHEAST : EnumMoulding.DOWNEAST;
-                else
-                    return hitZ < hitY ? EnumMoulding.VERTSOUTHEAST : EnumMoulding.UPEAST;
-            }
-        }
-        return EnumMoulding.DOWNWEST;
-    }
-
     public static BlockPos movePos(BlockPos source, EnumFacing facing) {
         return source.add(facing.getDirectionVec());
     }
@@ -356,21 +221,6 @@ public class DirUtils {
             case 2:
             default:
                 return X;
-        }
-    }
-
-    private enum EnumMoulding {
-        DOWNWEST(0), DOWNNORTH(1), DOWNSOUTH(2), DOWNEAST(3), UPWEST(4), UPNORTH(5), UPSOUTH(6), UPEAST(
-                7), VERTNORTHWEST(8), VERTNORTHEAST(9), VERTSOUTHWEST(10), VERTSOUTHEAST(11);
-
-        private final int meta;
-
-        EnumMoulding(int meta) {
-            this.meta = meta;
-        }
-
-        public int getMeta() {
-            return meta;
         }
     }
 }

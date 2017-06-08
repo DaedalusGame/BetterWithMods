@@ -1,7 +1,7 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.registry.KilnStructureManger;
+import betterwithmods.common.registry.KilnStructureManager;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,7 +29,7 @@ public class BWIMCHandler {
             if(stack.getItem() instanceof ItemBlock) {
                 Block block = ((ItemBlock) stack.getItem()).getBlock();
                 IBlockState state = block.getStateFromMeta(stack.getMetadata());
-                KilnStructureManger.registerKilnBlock(state);
+                KilnStructureManager.registerKilnBlock(state);
             }
         });
     }

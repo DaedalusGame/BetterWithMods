@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by primetoxinz on 6/6/17.
  */
-public class KilnStructureManger {
+public class KilnStructureManager {
 
     public static Set<IBlockState> KILN_BLOCKS = new HashSet<>();
 

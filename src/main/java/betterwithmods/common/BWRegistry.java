@@ -78,8 +78,8 @@ public class BWRegistry {
         registerHopperFilters();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
 
-        KilnStructureManger.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
-        KilnStructureManger.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
+        KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
+        KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }
 
     public static void init() {

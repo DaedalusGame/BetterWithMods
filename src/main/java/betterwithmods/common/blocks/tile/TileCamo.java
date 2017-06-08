@@ -36,6 +36,7 @@ public class TileCamo extends TileBasic {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
         if (camoState != null) {
             compound.setString(TAG_CAMO, Block.REGISTRY.getNameForObject(camoState.getBlock()).toString());
             compound.setInteger(TAG_CAMO_META, camoState.getBlock().getMetaFromState(camoState));
@@ -45,6 +46,7 @@ public class TileCamo extends TileBasic {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
         Block b = Block.getBlockFromName(compound.getString(TAG_CAMO));
         if (b != null) {
             camoState = b.getStateFromMeta(compound.getInteger(TAG_CAMO_META));

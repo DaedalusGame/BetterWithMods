@@ -48,21 +48,16 @@ public class BlockCorner extends BlockMini {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         int ori = state.getValue(ORIENTATION);
-        if(ori > 7 || ori < 1)
-           return bounds[0];
+        if (ori > 7 || ori < 1)
+            return bounds[0];
         return bounds[ori];
     }
 
-//    @Override
-//    public IBlockState metaBlockPlace(EnumFacing facing, float hitX, float hitY, float hitZ) {
-//        IBlockState state = this.getDefaultState();
-//        int ori = DirUtils.getPlacementMeta("corner", facing, hitX, hitY, hitZ);
-//        return state.withProperty(ORIENTATION, ori);
-//    }
+
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta%getMaxOrientation());
+        return this.getDefaultState().withProperty(ORIENTATION, meta % getMaxOrientation());
     }
 
     @Override
@@ -73,5 +68,55 @@ public class BlockCorner extends BlockMini {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, TYPE, ORIENTATION);
+    }
+
+    @Override
+    public IBlockState getStateForAdvancedRotationPlacement(IBlockState defaultState, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        PropertyInteger facingProperty = ORIENTATION;
+        IBlockState state = defaultState;
+        float hitXFromCenter = hitX - 0.5F;
+        float hitYFromCenter = hitY - 0.5F;
+        float hitZFromCenter = hitZ - 0.5F;
+        switch (facing.getAxis()) {
+            case Y:
+                int corner = getCorner(hitXFromCenter, hitZFromCenter);
+                if (corner != -1) {
+                    int[] corners = hitYFromCenter > 0 ? new int[]{2, 3,1, 0} : new int[]{6,7,5,4};
+                    state = state.withProperty(facingProperty, corners[corner]);
+                }
+                break;
+            case X:
+                corner = getCorner(hitYFromCenter, hitZFromCenter);
+                if (corner != -1) {
+                    int[] corners = hitXFromCenter > 0 ? new int[]{4, 5, 1, 0} : new int[]{6, 7,3, 2};
+                    state = state.withProperty(facingProperty, corners[corner]);
+                }
+                break;
+            case Z:
+                corner = getCorner(hitYFromCenter, hitXFromCenter);
+                if (corner != -1) {
+                    int[] corners = hitZFromCenter > 0 ? new int[]{7, 5, 1, 3} : new int[]{6, 4,0,2};
+                    state = state.withProperty(facingProperty, corners[corner]);
+                }
+                break;
+            default:
+                state = state.withProperty(facingProperty, facing.getOpposite().getIndex());
+                break;
+        }
+
+        return state;
+    }
+
+    private int getCorner(float hitXFromCenter, float hitZFromCenter) {
+        boolean positiveX = hitXFromCenter > 0, positiveZ = hitZFromCenter > 0;
+        if (positiveX && positiveZ)
+            return 0;
+        if (positiveX && !positiveZ)
+            return 1;
+        if (!positiveX && !positiveZ)
+            return 2;
+        if (!positiveX && positiveZ)
+            return 3;
+        return -1;
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 import java.util.Random;
 
 public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechanical {
@@ -36,6 +38,12 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         this.setHardness(2.0F);
         this.setTickRandomly(true);
         this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.UP).withProperty(ISACTIVE, false));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("tooltip.rotate_with_hand.name"));
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override
@@ -58,7 +66,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         //TODO: Maybe make this try to work with items that don't have a use action?
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) .isEmpty()  && player.getHeldItem(EnumHand.OFF_HAND) .isEmpty()  && player.isSneaking();
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
 
         if (world.isRemote && emptyHands)
             return true;

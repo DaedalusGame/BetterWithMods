@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static betterwithmods.common.BWMBlocks.registerBlock;
 import static betterwithmods.common.BWMBlocks.setInventoryModel;
+import static betterwithmods.common.BWOreDictionary.registerOre;
 
 /**
  * Created by tyler on 5/27/17.
@@ -115,6 +116,9 @@ public class Rustic extends CompatFeature {
         AnvilRecipes.addSteelShapedRecipe(new ItemStack(MOULDING, 8, 2), "SSSS", 'S', new ItemStack(SIDING, 1, 2));
         AnvilRecipes.addSteelShapedRecipe(new ItemStack(CORNER, 8, 2), "SSSS", 'S', new ItemStack(MOULDING, 1, 2));
 
+        registerOre("sidingWood", new ItemStack(SIDING, 1, 0),new ItemStack(SIDING, 1, 1));
+        registerOre("mouldingWood", new ItemStack(MOULDING, 1, 0),new ItemStack(MOULDING, 1, 1));
+        registerOre("cornerWood", new ItemStack(CORNER, 1, 0),new ItemStack(CORNER, 1, 1));
     }
 }
 

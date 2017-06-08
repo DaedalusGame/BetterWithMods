@@ -2,6 +2,7 @@ package betterwithmods.module.compat.bop;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.ModuleLoader;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @SuppressWarnings("unused")
@@ -118,5 +120,9 @@ public class BiomesOPlenty extends CompatFeature {
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true));
             }
         }
+
+        BWOreDictionary.registerOre("sidingWood", new ItemStack(SIDING, 1, OreDictionary.WILDCARD_VALUE));
+        BWOreDictionary.registerOre("mouldingWood", new ItemStack(MOULDING, 1, OreDictionary.WILDCARD_VALUE));
+        BWOreDictionary.registerOre("cornerWood", new ItemStack(CORNER, 1, OreDictionary.WILDCARD_VALUE));
     }
 }

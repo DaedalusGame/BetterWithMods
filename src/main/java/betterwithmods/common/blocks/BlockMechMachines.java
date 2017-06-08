@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -41,7 +42,7 @@ import java.util.Random;
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMultiVariants {
 
     public static ItemStack getStack(EnumType type) {
-        return new ItemStack(BWMBlocks.SINGLE_MACHINES,1, type.getMeta() << 1);
+        return new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, type.getMeta() << 1);
     }
 
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
@@ -56,6 +57,16 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
                 .withProperty(ISACTIVE, false)
         );
         this.useNeighborBrightness = true;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        switch (state.getValue(MACHINETYPE)) {
+            case HOPPER:
+                return new AxisAlignedBB(0,4/16d,0,1,1,1);
+            default:
+                return super.getBoundingBox(state, source, pos);
+        }
     }
 
     @Override
@@ -103,7 +114,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     }
 
     public int tickRateForMeta(EnumType type) {
-        if(type == EnumType.MILL)
+        if (type == EnumType.MILL)
             return 1;
         return 10;
     }
@@ -134,11 +145,27 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
+
         return state.getValue(MACHINETYPE).getSolidity();
     }
 
     @Override
     public boolean isFullCube(IBlockState state) {
+        return state.getValue(MACHINETYPE).getSolidity();
+    }
+
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+        return state.getValue(MACHINETYPE).getSolidity();
+    }
+
+    @Override
+    public boolean isFullyOpaque(IBlockState state) {
+        return state.getValue(MACHINETYPE).getSolidity();
+    }
+
+    @Override
+    public boolean causesSuffocation(IBlockState state) {
         return state.getValue(MACHINETYPE).getSolidity();
     }
 
@@ -204,7 +231,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     public boolean hasTileEntity(IBlockState state) {
         return true;
     }
-    
+
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         switch (state.getValue(MACHINETYPE)) {
@@ -223,7 +250,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for(EnumType type: EnumType.META_LOOKUP)
+        for (EnumType type : EnumType.META_LOOKUP)
             list.add(new ItemStack(item, 1, type.getMeta() << 1));
     }
 
@@ -412,13 +439,15 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(MACHINETYPE, EnumType.byMeta(meta >> 1)).withProperty(ISACTIVE,(meta & 1) == 1);
+        return getDefaultState().withProperty(MACHINETYPE, EnumType.byMeta(meta >> 1)).withProperty(ISACTIVE, (meta & 1) == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(MACHINETYPE).getMeta() << 1 | (state.getValue(ISACTIVE) ? 1 : 0);
     }
+
+
 
     public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),
@@ -443,7 +472,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
         }
 
         public static BlockMechMachines.EnumType byMeta(int meta) {
-            return META_LOOKUP[meta%META_LOOKUP.length];
+            return META_LOOKUP[meta % META_LOOKUP.length];
         }
 
         @Override

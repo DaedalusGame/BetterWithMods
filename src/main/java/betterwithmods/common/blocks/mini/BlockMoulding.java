@@ -59,6 +59,7 @@ public class BlockMoulding extends BlockMini {
     }
 
 
+
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(ORIENTATION, meta % getMaxOrientation());

@@ -206,6 +206,12 @@ public final class EntityPlayerExt {
         if (state.getBlock() == BWMBlocks.STUMP) {
             return false;
         }
+        if(stack.hasTagCompound()) {
+            NBTTagCompound stats = stack.getSubCompound("Stats");
+            if(stats != null) {
+             return stats.getByte("Broken") != 1;
+            }
+        }
         for (String type : stack.getItem().getToolClasses(stack)) {
             if(type == "mattock")
                 return state.getBlock().isToolEffective("shovel",state) || state.getBlock().isToolEffective("axe",state);

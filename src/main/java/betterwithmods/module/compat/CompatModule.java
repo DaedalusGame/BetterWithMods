@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -59,11 +60,11 @@ public class CompatModule extends Module {
                 ItemStack chisel_diamond = getItem("chisel:chisel_diamond");
                 RecipeUtils.removeRecipes(chisel_diamond);
                 GameRegistry.addRecipe(new ShapedOreRecipe(chisel_diamond, " D","S ",'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
-                CrucibleRecipes.addCrucibleRecipe( ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond")});
+                CrucibleRecipes.addCrucibleRecipe( ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond",1, OreDictionary.WILDCARD_VALUE)});
             }
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron")});
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron")});
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech")});
+            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech",1, OreDictionary.WILDCARD_VALUE)});
         });
         this.load();
     }

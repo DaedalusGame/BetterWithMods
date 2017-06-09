@@ -367,13 +367,16 @@ item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel
 item.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
-item.bwm:bark.0.name=Oak Bark
-item.bwm:bark.1.name=Spruce Bark
-item.bwm:bark.2.name=Birch Bark
-item.bwm:bark.3.name=Jungle Bark
-item.bwm:bark.4.name=Acacia Bark
-item.bwm:bark.5.name=Dark Oak Bark
-item.bwm:bark.6.name=Bloody Bark
+item.bwm:bark.oak.name=Oak Bark
+item.bwm:bark.spruce.name=Spruce Bark
+item.bwm:bark.birch.name=Birch Bark
+item.bwm:bark.jungle.name=Jungle Bark
+item.bwm:bark.acacia.name=Acacia Bark
+item.bwm:bark.dark_oak.name=Dark Oak Bark
+item.bwm:bark.bloody.name=Bloody Bark
+item.bwm:bark.olive.name=Olive Bark
+item.bwm:bark.ironwood.name=Ironwood Bark
+
 
 item.bwm:steel_axe.name=Soulforged Steel Axe
 item.bwm:steel_hoe.name=Soulforged Steel Hoe

@@ -21,9 +21,14 @@ public class CompatFeature extends Feature {
         return Item.REGISTRY.getObject(location);
     }
 
+    public Item getItem(String location) {
+        return Item.REGISTRY.getObject(new ResourceLocation(location));
+    }
+
     public Block getBlock(ResourceLocation location) {
         return Block.REGISTRY.getObject(location);
     }
+
     public Block getBlock(String location) {
         return Block.REGISTRY.getObject(new ResourceLocation(location));
     }

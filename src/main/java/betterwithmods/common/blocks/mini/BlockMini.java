@@ -177,7 +177,8 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if (!((World)world).isRemote && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
+
+        if ((world instanceof World) && !((World) world).isRemote && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
             return state.withProperty(TYPE,((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType());
         return state;
     }

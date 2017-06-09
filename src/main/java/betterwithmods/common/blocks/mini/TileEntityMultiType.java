@@ -27,11 +27,11 @@ public class TileEntityMultiType extends TileBasic {
         return t;
     }
 
-    public int getCosmeticType() {
+    public int getType() {
         return type;
     }
 
-    public void setCosmeticType(int type) {
+    public void setType(int type) {
         this.type = type;
     }
 

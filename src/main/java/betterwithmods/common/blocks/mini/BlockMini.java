@@ -22,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -110,7 +109,6 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
         return rotate(worldIn, pos, state, playerIn, ORIENTATION);
     }
 
-
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
@@ -122,28 +120,23 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getStateForAdvancedRotationPlacement(getDefaultState(),facing,flX,flY,flZ);
-    }
-
-    @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getStateForPlacement(worldIn,pos,facing,hitX,hitY,hitZ,meta,placer,placer.getActiveHand());
+        return getStateForAdvancedRotationPlacement(getDefaultState(), facing, hitX, hitY, hitZ);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
-            int meta = stack.getItemDamage();
-            ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
-            world.setBlockState(pos, state.withProperty(TYPE, meta));
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        TileEntityMultiType tile = getTile(worldIn,pos);
+        if(tile != null) {
+            tile.setType(stack.getMetadata());
         }
     }
 
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
-            return new ItemStack(this, 1, ((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType());
+        TileEntityMultiType tile = getTile(world, pos);
+        if (tile != null) {
+            return new ItemStack(this, 1, tile.getType());
         }
         return new ItemStack(this, 1, 0);
     }
@@ -157,12 +150,17 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-        player.addStat(StatList.getBlockStats(this));
-        player.addExhaustion(0.025F);
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        InvUtils.ejectStackWithOffset(worldIn,pos,getDrops(worldIn,pos,state,0));
+    }
 
-        stack = new ItemStack(this, 1, state.getValue(TYPE));
-        InvUtils.ejectStackWithOffset(world, pos, stack);
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        TileEntityMultiType tile = getTile(world,pos);
+        if(tile != null) {
+            return Lists.newArrayList(new ItemStack(this, 1, tile.getType()));
+        }
+        return Lists.newArrayList();
     }
 
     @Override
@@ -177,15 +175,11 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-
-        if ((world instanceof World) && !((World) world).isRemote && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType)
-            return state.withProperty(TYPE,((TileEntityMultiType) world.getTileEntity(pos)).getCosmeticType());
+        TileEntityMultiType tile = getTile(world, pos);
+        if (tile != null) {
+            return state.withProperty(TYPE, tile.getType());
+        }
         return state;
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return state.getValue(TYPE);
     }
 
     @Override
@@ -205,7 +199,7 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
+        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE,meta);
     }
 
 
@@ -213,6 +207,10 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("tooltip.rotate_with_hand.name"));
         super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    public TileEntityMultiType getTile(IBlockAccess world, BlockPos pos) {
+        return (TileEntityMultiType) world.getTileEntity(pos);
     }
 
     public enum EnumType {
@@ -224,13 +222,7 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
         BRICK(4, "brick", Blocks.BRICK_BLOCK),
         SANDSTONE(5, "sandstone", Blocks.SANDSTONE);
 
-        private static final BlockMini.EnumType[] META_LOOKUP = new BlockMini.EnumType[values().length];
-
-        static {
-            for (BlockMini.EnumType blockmini$enumtype : values()) {
-                META_LOOKUP[blockmini$enumtype.getMetadata()] = blockmini$enumtype;
-            }
-        }
+        public static final BlockMini.EnumType[] VALUES = values();
 
         private final int meta;
         private final String name;
@@ -244,14 +236,6 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
             this.meta = metaIn;
             this.name = nameIn;
             this.block = blockIn;
-        }
-
-        public static BlockMini.EnumType byMetadata(int meta) {
-            if (meta < 0 || meta >= META_LOOKUP.length) {
-                meta = 0;
-            }
-
-            return META_LOOKUP[meta];
         }
 
         public int getMetadata() {

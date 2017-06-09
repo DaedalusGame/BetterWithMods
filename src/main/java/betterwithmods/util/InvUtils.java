@@ -463,6 +463,8 @@ public class InvUtils {
     }
 
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {
+        if(world.isRemote)
+            return;
         EntityItem item = new EntityItem(world, x, y, z, stack);
         float velocity = 0.05F;
         item.motionX = (double) ((float) world.rand.nextGaussian() * velocity);

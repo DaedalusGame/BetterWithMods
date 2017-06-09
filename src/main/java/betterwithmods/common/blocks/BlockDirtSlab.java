@@ -58,7 +58,6 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = playerIn.getHeldItem(hand);
-        System.out.println(held.getItem().getToolClasses(held));
         if (held.getItem().getToolClasses(held).contains("shovel")) {
             return worldIn.setBlockState(pos,state.withProperty(VARIANT,DirtSlabType.PATH));
         }

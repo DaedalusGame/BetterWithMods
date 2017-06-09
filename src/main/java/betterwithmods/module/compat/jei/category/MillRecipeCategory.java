@@ -37,6 +37,11 @@ public class MillRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper> {
     }
 
     @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
+    @Override
     public void drawExtras(@Nonnull Minecraft minecraft) {
         gear.draw(minecraft, 80, 19);
     }

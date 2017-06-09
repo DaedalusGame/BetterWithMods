@@ -73,7 +73,7 @@ public class EntityAISearchFood extends EntityAIBase {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (targetItem.isDead || targetItem.getEntityItem().getCount() < 1) {
             BlockPos entityPos = entity.getPosition();
             List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));

@@ -14,10 +14,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,6 +49,23 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     }
 
     @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if(state.getValue(VARIANT) == DirtSlabType.PATH)
+            return new AxisAlignedBB(0,0,0,1,7/16d,1);
+        return super.getBoundingBox(state, source, pos);
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack held = playerIn.getHeldItem(hand);
+        System.out.println(held.getItem().getToolClasses(held));
+        if (held.getItem().getToolClasses(held).contains("shovel")) {
+            return worldIn.setBlockState(pos,state.withProperty(VARIANT,DirtSlabType.PATH));
+        }
+        return false;
+    }
+
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return isOverSupport(worldIn, pos);
     }
@@ -71,10 +90,9 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
-        if(ModuleLoader.isFeatureEnabled(HCPiles.class)) {
+        if (ModuleLoader.isFeatureEnabled(HCPiles.class)) {
             drops.add(new ItemStack(BWMItems.DIRT_PILE, 2));
-        }
-        else {
+        } else {
             drops.add(new ItemStack(this));
         }
         return drops;
@@ -87,6 +105,8 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        if (state.getValue(VARIANT) == DirtSlabType.PATH)
+            return state;
         boolean snowy = false;
         for (EnumFacing facing : CHECKED_FACINGS_FOR_SNOW) {
             BlockPos checkedPos = pos.offset(facing);
@@ -164,7 +184,6 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
 
     }
 
-
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
         switch (blockState.getValue(VARIANT)) {
             case DIRT:
@@ -219,8 +238,8 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     public enum DirtSlabType implements IStringSerializable {
         DIRT(0, "dirt", Material.GROUND),
         GRASS(1, "grass", Material.GRASS),
-        MYCELIUM(2, "mycelium", MapColor.PURPLE, Material.GRASS);
-
+        MYCELIUM(2, "mycelium", MapColor.PURPLE, Material.GRASS),
+        PATH(3, "path", Material.GROUND);
         private static final DirtSlabType[] METADATA_LOOKUP = new DirtSlabType[values().length];
 
         static {

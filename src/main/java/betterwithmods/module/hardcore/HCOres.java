@@ -5,6 +5,7 @@ import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Sets;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -65,13 +66,22 @@ public class HCOres extends Feature {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
             RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
+
         }
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new Object[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 4), new Object[]{new ItemStack(Items.COMPASS)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_NUGGET, 4), new Object[]{new ItemStack(Items.CLOCK)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4), new Object[]{new ItemStack(Items.COMPASS)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 4), new Object[]{new ItemStack(Items.CLOCK)});
     }
 
     @Override

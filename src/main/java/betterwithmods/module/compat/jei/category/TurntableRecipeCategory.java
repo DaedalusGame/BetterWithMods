@@ -43,6 +43,11 @@ public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipe
         return UID;
     }
 
+    @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
     @Nonnull
     @Override
     public String getTitle() {

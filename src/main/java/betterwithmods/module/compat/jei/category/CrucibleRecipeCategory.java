@@ -61,4 +61,10 @@ public class CrucibleRecipeCategory extends BWMRecipeCategory<BulkRecipeWrapper>
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputs(stacks, inputList);
     }
+
+    @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
 }

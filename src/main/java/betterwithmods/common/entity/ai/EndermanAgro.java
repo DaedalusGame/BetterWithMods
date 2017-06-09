@@ -67,7 +67,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
                 return true;
             }
         } else {
-            return this.targetEntity != null && this.targetEntity.isEntityAlive() || super.continueExecuting();
+            return this.targetEntity != null && this.targetEntity.isEntityAlive() || super.shouldContinueExecuting();
         }
     }
 

@@ -37,6 +37,11 @@ public class StokedCrucibleRecipeCategory extends BWMRecipeCategory<BulkRecipeWr
     }
 
     @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
+    @Override
     public void drawExtras(@Nonnull Minecraft minecraft) {
         flame.draw(minecraft, 80, 19);
     }

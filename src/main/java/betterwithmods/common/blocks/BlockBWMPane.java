@@ -152,7 +152,7 @@ public class BlockBWMPane extends BWMBlock implements IMultiVariants {
     }
 
     public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        return world.getBlockState(pos).isOpaqueCube() || world.getBlockState(pos).getBlock().isBlockSolid(world, pos, dir.getOpposite());
+        return world.getBlockState(pos).isOpaqueCube() || world.getBlockState(pos).getMaterial().isSolid();
     }
 
     @Override

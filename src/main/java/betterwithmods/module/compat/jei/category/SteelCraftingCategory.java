@@ -50,6 +50,12 @@ public class SteelCraftingCategory extends BlankRecipeCategory<IRecipeWrapper> {
     }
 
     @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
+
+    @Override
     public IDrawable getBackground() {
         return background;
     }

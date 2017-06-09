@@ -33,9 +33,9 @@ public class EntityAIFlee extends EntityAIBase {
 
         if (this.theEntityCreature.isBurning()) {
             vec3d = RandomPositionGenerator.findRandomTarget(this.theEntityCreature, 5, 4);
-        } else if (this.theEntityCreature.getAITarget() != null) {
+        } else if (this.theEntityCreature.getRevengeTarget() != null) {
             vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntityCreature, 5, 4,
-                    new Vec3d(this.theEntityCreature.getAITarget().posX, this.theEntityCreature.getAITarget().posY, this.theEntityCreature.getAITarget().posZ));
+                    new Vec3d(this.theEntityCreature.getRevengeTarget().posX, this.theEntityCreature.getRevengeTarget().posY, this.theEntityCreature.getRevengeTarget().posZ));
         }
 
         if (vec3d != null) {
@@ -60,9 +60,9 @@ public class EntityAIFlee extends EntityAIBase {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean continueExecuting() {
-        if (!this.theEntityCreature.getNavigator().noPath() && this.theEntityCreature.getAITarget() != null) {
-            EntityLivingBase target = this.theEntityCreature.getAITarget();
+    public boolean shouldContinueExecuting() {
+        if (!this.theEntityCreature.getNavigator().noPath() && this.theEntityCreature.getRevengeTarget() != null) {
+            EntityLivingBase target = this.theEntityCreature.getRevengeTarget();
 
             if (target == null) {
                 return true;

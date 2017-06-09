@@ -1,6 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
+    "model": "betterwithmods:dirt_slab",
     "textures": {
       "top": "blocks/dirt",
       "bottom": "blocks/dirt",
@@ -8,44 +9,40 @@
     }
   },
   "variants": {
-    "snowy=false,variant=dirt": {
-      "model": "betterwithmods:dirt_slab"
-    },
-    "snowy=true,variant=dirt": {
-      "model": "betterwithmods:dirt_slab",
-      "textures": {
-        "top": "blocks/snow"
+    "variant": {
+      "dirt": {},
+      "grass": {
+        "model": "betterwithmods:grass_slab",
+        "textures": {
+          "bottom": "blocks/dirt",
+          "top": "blocks/grass_top",
+          "side": "blocks/grass_side",
+          "overlay": "blocks/grass_side_overlay"
+        }
+      },
+      "mycelium": {
+        "textures": {
+          "top": "blocks/mycelium_top",
+          "side": "blocks/mycelium_side"
+        }
+      },
+      "path": {
+        "model": "betterwithmods:path_slab",
+        "textures": {
+          "top": "blocks/grass_path_top",
+          "side": "betterwithmods:blocks/path_side"
+        }
       }
     },
-    "snowy=false,variant=grass": {
-      "model": "betterwithmods:grass_slab",
-      "textures": {
-        "bottom": "blocks/dirt",
-        "top": "blocks/grass_top",
-        "side": "blocks/grass_side",
-        "overlay": "blocks/grass_side_overlay"
-      }
-    },
-    "snowy=true,variant=grass": {
-      "model": "betterwithmods:dirt_slab",
-      "textures": {
-        "top": "blocks/snow",
-        "side": "blocks/grass_side_snowed"
-      }
-    },
-    "snowy=false,variant=mycelium": {
-      "model": "betterwithmods:dirt_slab",
-      "textures": {
-        "top": "blocks/mycelium_top",
-        "side": "blocks/mycelium_side"
-      }
-    },
-    "snowy=true,variant=mycelium": {
-      "model": "betterwithmods:dirt_slab",
-      "textures": {
-        "top": "blocks/snow",
-        "side": "blocks/mycelium_side"
-      }
+    "snowy": {
+      "true": {
+        "model": "betterwithmods:dirt_slab",
+        "textures": {
+          "top": "blocks/snow",
+          "side": "blocks/grass_side_snowed"
+        }
+      },
+      "false": {}
     }
   }
 }

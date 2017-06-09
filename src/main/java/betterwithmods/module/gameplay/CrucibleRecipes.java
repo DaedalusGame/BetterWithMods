@@ -31,7 +31,11 @@ public class CrucibleRecipes extends Feature {
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.CHEST_MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.FURNACE_MINECART)});
+        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.HOPPER_MINECART)});
+        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.TNT_MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.RAIL, 8)});
+        addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 6), new Object[]{new ItemStack(Blocks.GOLDEN_RAIL, 6)});
+        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 6), new Object[]{new ItemStack(Blocks.ACTIVATOR_RAIL, 6)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.IRON_BARS, 8)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7), new Object[]{new ItemStack(Items.CAULDRON)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 31), new Object[]{new ItemStack(Blocks.ANVIL, 1, OreDictionary.WILDCARD_VALUE)});

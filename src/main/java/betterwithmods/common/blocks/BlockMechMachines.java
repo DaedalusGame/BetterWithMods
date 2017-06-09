@@ -159,10 +159,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
         return state.getValue(MACHINETYPE).getSolidity();
     }
 
-    @Override
-    public boolean isFullyOpaque(IBlockState state) {
-        return state.getValue(MACHINETYPE).getSolidity();
-    }
 
     @Override
     public boolean causesSuffocation(IBlockState state) {

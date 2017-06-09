@@ -39,6 +39,12 @@ public class KilnRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
         return UID;
     }
 
+    @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
+
     @Nonnull
     @Override
     public String getTitle() {

@@ -5,6 +5,7 @@ import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -69,10 +70,16 @@ public class HCRedstone extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, "II", "RR", 'I', "ingotIron", 'R', "dustRedstone"));
         RecipeUtils.removeRecipes(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, "GG", "RR", 'G', "ingotGold", 'R', "dustRedstone"));
-        //Have hopper use Soulforged Steel?
+
         RecipeUtils.removeRecipes(Blocks.HOPPER);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.HOPPER, "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
         GameRegistry.addRecipe(new ShapedOreRecipe(Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())));
+
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4, 0), new Object[]{new ItemStack(Blocks.TRAPDOOR, 2)});
     }
 
+    @Override
+    public void disabledInit(FMLInitializationEvent event) {
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 6, 0), new Object[]{new ItemStack(Blocks.TRAPDOOR, 2)});
+    }
 }

@@ -48,6 +48,11 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
         return UID;
     }
 
+    @Override
+    public String getModName() {
+        return BWMod.NAME;
+    }
+
     @Nonnull
     @Override
     public String getTitle() {

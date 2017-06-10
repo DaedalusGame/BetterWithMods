@@ -108,7 +108,7 @@ public class CompatModule extends Module {
             if (isLoaded(modId)) try {
                 registerFeature(Class.forName(classPath).asSubclass(CompatFeature.class).newInstance());
                 FMLLog.info(" [BWM] Successfully load compat for " + modId);
-            } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+            } catch (ExceptionInInitializerError | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
                 FMLLog.info(" [BWM] Compatibility class " + classPath + " could not be loaded. Report this!");
                 e.printStackTrace();
             }

@@ -11,12 +11,17 @@ import net.minecraft.world.IBlockAccess;
 public class BlockSiding extends BlockMini {
     public BlockSiding(Material mat) {
         super(mat);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(getOrientationProperty(), 0));
+    }
+
+    @Override
+    public PropertyOrientation getOrientationProperty() {
+        return SIDING_ORIENTATION;
     }
 
     @Override
     public IBlockState getStateForAdvancedRotationPlacement(IBlockState defaultState, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        PropertyInteger facingProperty = ORIENTATION;
+        PropertyInteger facingProperty = getOrientationProperty();
         IBlockState state = defaultState;
         float hitXFromCenter = hitX - 0.5F;
         float hitYFromCenter = hitY - 0.5F;
@@ -60,7 +65,7 @@ public class BlockSiding extends BlockMini {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         //TODO Cache AABB
-        int ori = state.getValue(ORIENTATION);
+        int ori = getActualState(state,source,pos).getValue(getOrientationProperty());
         switch (ori) {
             case 1:
                 return new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);

@@ -2,36 +2,23 @@ package betterwithmods.common.blocks.mini;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockCorner extends BlockMini {
-    public static final PropertyInteger ORIENTATION = createOrientation();
+
 
     public BlockCorner(Material mat) {
         super(mat);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-    }
-
-    public static PropertyInteger createOrientation() {
-        return PropertyInteger.create("orientation", 0, 7);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(CORNER_ORIENTATION, 0));
     }
 
     @Override
-    public int getMaxOrientation() {
-        return 7;
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return rotate(worldIn, pos, state, playerIn, ORIENTATION);
+    public PropertyOrientation getOrientationProperty() {
+        return CORNER_ORIENTATION;
     }
 
     private static final AxisAlignedBB[] bounds = new AxisAlignedBB[]{
@@ -47,32 +34,15 @@ public class BlockCorner extends BlockMini {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        int ori = state.getValue(ORIENTATION);
+        int ori = getActualState(state,source,pos).getValue(getOrientationProperty());
         if (ori > 7 || ori < 1)
             return bounds[0];
         return bounds[ori];
     }
 
-
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta % getMaxOrientation());
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(ORIENTATION);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPE, ORIENTATION);
-    }
-
     @Override
     public IBlockState getStateForAdvancedRotationPlacement(IBlockState defaultState, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        PropertyInteger facingProperty = ORIENTATION;
+        PropertyInteger facingProperty = getOrientationProperty();
         IBlockState state = defaultState;
         float hitXFromCenter = hitX - 0.5F;
         float hitYFromCenter = hitY - 0.5F;

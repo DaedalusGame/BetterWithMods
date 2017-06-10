@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,12 +42,15 @@ import java.util.List;
 public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdvancedRotationPlacement {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
-    public static final PropertyInteger ORIENTATION = createOrientation();
+    public static final PropertyOrientation SIDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 5);
+    public static final PropertyOrientation MOULDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 11);
+    public static final PropertyOrientation CORNER_ORIENTATION = PropertyOrientation.create("orientation", 0, 7);
 
     public BlockMini(Material material) {
         super(material);
     }
 
+    public abstract PropertyOrientation getOrientationProperty();
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
@@ -81,32 +86,40 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
         return variants.toArray(new String[variants.size()]);
     }
 
-    public static PropertyInteger createOrientation() {
-        return PropertyInteger.create("orientation", 0, 5);
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
     }
 
-    public int getMaxOrientation() {
-        return 5;
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState();
     }
 
-    public boolean rotate(World world, BlockPos pos, IBlockState state, EntityPlayer player, PropertyInteger property) {
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
-        if (world.isRemote && emptyHands)
-            return true;
-        else if (!world.isRemote && emptyHands) {
-            int nextOrient = (state.getValue(property) + 1) % (getMaxOrientation() + 1);
-            world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(property, nextOrient));
-            world.notifyNeighborsOfStateChange(pos, this, false);
-            world.scheduleBlockUpdate(pos, this, 10, 5);
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        TileEntityMultiType tile = getTile(world, pos);
+        if (tile != null) {
+            tile.setOrientation((tile.getOrientation()+1)%getOrientationProperty().getMax());
+            IBlockState state = world.getBlockState(pos);
+            world.setBlockState(pos,getActualState(state,world,pos));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return rotate(worldIn, pos, state, playerIn, ORIENTATION);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
+        if (emptyHands) {
+            if(rotateBlock(world, pos, facing)) {
+                world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+                world.notifyNeighborsOfStateChange(pos, this, false);
+                world.scheduleBlockUpdate(pos, this, 10, 1);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -126,9 +139,10 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        TileEntityMultiType tile = getTile(worldIn,pos);
-        if(tile != null) {
+        TileEntityMultiType tile = getTile(worldIn, pos);
+        if (tile != null) {
             tile.setType(stack.getMetadata());
+            tile.setOrientation(state.getValue(getOrientationProperty()));
         }
     }
 
@@ -151,13 +165,20 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        InvUtils.ejectStackWithOffset(worldIn,pos,getDrops(worldIn,pos,state,0));
+        if(!player.isCreative())
+            InvUtils.ejectStackWithOffset(worldIn, pos, getDrops(worldIn, pos, state, 0));
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+
+        return new ItemStack(this, 1, getActualState(state,world,pos).getValue(TYPE));
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        TileEntityMultiType tile = getTile(world,pos);
-        if(tile != null) {
+        TileEntityMultiType tile = getTile(world, pos);
+        if (tile != null) {
             return Lists.newArrayList(new ItemStack(this, 1, tile.getType()));
         }
         return Lists.newArrayList();
@@ -173,33 +194,25 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
         return new TileEntityMultiType();
     }
 
+
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntityMultiType tile = getTile(world, pos);
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        TileEntityMultiType tile = getTile(worldIn, pos);
         if (tile != null) {
-            return state.withProperty(TYPE, tile.getType());
+            return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), tile.getOrientation());
         }
         return state;
     }
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ORIENTATION, meta%getMaxOrientation());
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(ORIENTATION);
-    }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPE, ORIENTATION);
+        return new BlockStateContainer(this, new IProperty[]{TYPE, getOrientationProperty()});
     }
 
     @Override
     public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE,meta);
+        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
     }
 
 
@@ -248,6 +261,28 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
         public ItemStack getBlock() {
             return this.block;
+        }
+    }
+
+    public static class PropertyOrientation extends PropertyInteger {
+        private int min, max;
+
+        private PropertyOrientation(String name, int min, int max) {
+            super(name, min, max);
+            this.min = min;
+            this.max = max;
+        }
+
+        public int getMin() {
+            return min;
+        }
+
+        public int getMax() {
+            return max;
+        }
+
+        public static PropertyOrientation create(String name, int min, int max) {
+            return new PropertyOrientation(name, min, max);
         }
     }
 }

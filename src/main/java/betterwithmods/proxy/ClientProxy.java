@@ -16,6 +16,9 @@ import betterwithmods.common.entity.*;
 import betterwithmods.module.ModuleLoader;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -25,16 +28,21 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import javax.annotation.Nonnull;
 
 @SuppressWarnings("unused")
 
@@ -103,5 +111,29 @@ public class ClientProxy implements IProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntitySpiderWeb.class, manager -> new RenderSnowball<>(manager, Item.getItemFromBlock(Blocks.WEB), Minecraft.getMinecraft().getRenderItem()));
     }
 
+
+    public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
+
+        public final Fluid fluid;
+        public final ModelResourceLocation location;
+
+        public FluidStateMapper(Fluid fluid) {
+            this.fluid = fluid;
+            // have each block hold its fluid per nbt? hm
+            this.location = new ModelResourceLocation(new ResourceLocation("betterwithmods", "fluid_block"), fluid.getName());
+        }
+
+        @Nonnull
+        @Override
+        protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
+            return location;
+        }
+
+        @Nonnull
+        @Override
+        public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
+            return location;
+        }
+    }
 
 }

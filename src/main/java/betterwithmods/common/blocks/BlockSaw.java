@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.event.FakePlayerHandler;
@@ -325,8 +326,14 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         if (world.isRemote || !(world instanceof WorldServer))
             return;
         BlockPos pos2 = pos.offset(getFacing(world, pos));
-        Block block = world.getBlockState(pos2).getBlock();
-        int harvestMeta = block.damageDropped(world.getBlockState(pos2));
+        if(world.isAirBlock(pos2))
+            return;
+        IBlockState state = world.getBlockState(pos2);
+        Block block = state.getBlock();
+        int harvestMeta = block.damageDropped(state);
+        if(block instanceof IDamageDropped)
+            harvestMeta = ((IDamageDropped) block).damageDropped(state,world,pos2);
+
         if (SawManager.INSTANCE.contains(block, harvestMeta)) {
             List<ItemStack> products = SawManager.INSTANCE.getProducts(block, harvestMeta);
             world.setBlockToAir(pos2);

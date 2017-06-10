@@ -56,4 +56,10 @@ public class BlockSimpleSlab extends Block {
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return !(side != EnumFacing.UP && side != EnumFacing.DOWN && !super.shouldSideBeRendered(blockState, blockAccess, pos, side)) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
+
+    @Override
+    public int getLightOpacity(IBlockState state) {
+        return 255;
+    }
+
 }

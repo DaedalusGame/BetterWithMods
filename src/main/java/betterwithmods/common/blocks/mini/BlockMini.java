@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdvancedRotationPlacement {
+public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdvancedRotationPlacement, IDamageDropped {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
     public static final PropertyOrientation SIDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 5);
@@ -94,6 +94,21 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState();
+    }
+
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(TYPE);
+    }
+
+    @Override
+    public int damageDropped(IBlockState state, World world, BlockPos pos) {
+        TileEntityMultiType tile = getTile(world,pos);
+        if(tile != null) {
+            return tile.getType();
+        }
+        return 0;
     }
 
     @Override

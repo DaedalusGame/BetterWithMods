@@ -29,6 +29,7 @@ public class MineTweaker extends CompatFeature {
         MineTweakerAPI.registerClass(ChopRecipe.class);
         MineTweakerAPI.registerClass(Turntable.class);
         MineTweakerAPI.registerClass(Piles.class);
+        MineTweakerAPI.registerClass(FoodValue.class);
     }
 
 }

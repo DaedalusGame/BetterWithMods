@@ -25,6 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
+import static betterwithmods.common.blocks.BlockAesthetic.EnumType.HELLFIRE;
 import static betterwithmods.common.blocks.BlockAesthetic.EnumType.STEEL;
 
 public class BlockAesthetic extends BWMBlock implements IMultiVariants {
@@ -105,8 +106,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {
-        int meta = (world.getBlockState(pos).getValue(blockType)).getMeta();
-        return meta == 3;
+        return (world.getBlockState(pos).getValue(blockType)) == HELLFIRE;
     }
 
     @Override

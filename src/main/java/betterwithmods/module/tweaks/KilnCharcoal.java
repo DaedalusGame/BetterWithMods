@@ -45,6 +45,7 @@ public class KilnCharcoal extends Feature {
     public void init(FMLInitializationEvent event) {
         List<ItemStack> logs = Lists.newArrayList(new ItemStack(BWMBlocks.DEBARKED_OLD), new ItemStack(BWMBlocks.DEBARKED_NEW));
         logs.addAll(OreDictionary.getOres("logWood"));
+
         for (ItemStack stack : logs) {
             if (stack.getItem() instanceof ItemBlock) {
                 Item item = stack.getItem();
@@ -52,18 +53,13 @@ public class KilnCharcoal extends Feature {
                 int meta = stack.getItemDamage();
                 if (disableFurnaceCharcoal)
                     RecipeUtils.removeFurnaceRecipe(stack);
-                if (meta == OreDictionary.WILDCARD_VALUE)
-                    addKilnRecipe(block, CHARCOAL);
-                else {
-                    addKilnRecipe(block, meta, CHARCOAL);
-                }
+                addKilnRecipe(block, meta, CHARCOAL);
             }
         }
         if (!disableFurnaceCharcoal) {
             GameRegistry.addSmelting(BWMBlocks.DEBARKED_OLD, CHARCOAL, 0.1F);
             GameRegistry.addSmelting(BWMBlocks.DEBARKED_NEW, CHARCOAL, 0.1F);
         }
-
     }
 
 

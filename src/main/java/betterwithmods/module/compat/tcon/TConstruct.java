@@ -1,12 +1,21 @@
 package betterwithmods.module.compat.tcon;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockBWMFluid;
 import betterwithmods.module.compat.CompatFeature;
 import betterwithmods.module.tweaks.MobSpawning;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,25 +40,23 @@ import slimeknights.tconstruct.library.smeltery.OreCastingRecipe;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
-import slimeknights.tconstruct.smeltery.block.BlockTinkerFluid;
 import slimeknights.tconstruct.tools.TinkerMaterials;
 import slimeknights.tconstruct.tools.TinkerTraits;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
 
 import static slimeknights.tconstruct.smeltery.TinkerSmeltery.*;
-import static slimeknights.tconstruct.smeltery.TinkerSmeltery.castGear;
-import static slimeknights.tconstruct.smeltery.TinkerSmeltery.castPlate;
 
 public class TConstruct extends CompatFeature {
-    public final Material soulforgedSteel = newTinkerMaterial("soulforgedSteel", 5066061);
-    public final Material hellfire = newTinkerMaterial("hellfire", 14426647);
+    public final Material MATERIAL_SOULFORGED_STEEL = newTinkerMaterial("soulforged_steel", 5066061);
+    public final Material MATERIAL_CONCENTRATED_HELLFIRE = newTinkerMaterial("hellfire", 14426647);
     public AbstractTrait mending;
-    public FluidMolten soulforgeFluid;
-    public FluidMolten hellfireFluid;
-    public Block blockSoulforgeFluid;
-    public Block blockHellfireFluid;
+    public FluidMolten FLUID_SOULFORGED_STEEL;
+    public FluidMolten FLUID_CONCENTRATED_HELLFIRE;
+    public Block BLOCK_FLUID_SOULFORGED_STEEL;
+    public Block BLOCK_FLUID_HELLFIRE;
 
     public TConstruct() {
         super("tconstruct");
@@ -57,35 +64,47 @@ public class TConstruct extends CompatFeature {
 
     @Override
     public void preInit(FMLPreInitializationEvent evt) {
-        soulforgeFluid = fluidMetal("soulforged_steel", 5066061);
-        soulforgeFluid.setTemperature(681);
-        blockSoulforgeFluid = new BlockTinkerFluid(soulforgeFluid, net.minecraft.block.material.Material.LAVA).setRegistryName("molten_soulforged_steel");
-        hellfireFluid = fluidMetal("hellfire", 14426647);
-        hellfireFluid.setTemperature(850);
-        blockHellfireFluid = new BlockTinkerFluid(hellfireFluid, net.minecraft.block.material.Material.LAVA).setRegistryName("molten_hellfire");
+        FLUID_SOULFORGED_STEEL = fluidMetal("soulforged_steel", 5066061);
+        FLUID_SOULFORGED_STEEL.setTemperature(681);
+        BLOCK_FLUID_SOULFORGED_STEEL = new BlockBWMFluid(FLUID_SOULFORGED_STEEL, net.minecraft.block.material.Material.LAVA).setRegistryName("soulforged_steel");
+
+        FLUID_CONCENTRATED_HELLFIRE = fluidMetal("hellfire", 14426647);
+        FLUID_CONCENTRATED_HELLFIRE.setTemperature(850);
+        BLOCK_FLUID_HELLFIRE = new BlockBWMFluid(FLUID_CONCENTRATED_HELLFIRE, net.minecraft.block.material.Material.LAVA).setRegistryName("hellfire");
+        BWMBlocks.registerBlock(BLOCK_FLUID_SOULFORGED_STEEL);
+        BWMBlocks.registerBlock(BLOCK_FLUID_HELLFIRE);
+    }
+
+    @Override
+    public void preInitClient(FMLPreInitializationEvent event) {
+        registerFluidModels(FLUID_CONCENTRATED_HELLFIRE);
+        registerFluidModels(FLUID_SOULFORGED_STEEL);
     }
 
     @Override
     public void init(FMLInitializationEvent evt) {
         mending = new TraitMending();
-        soulforgedSteel.addItem("ingotSoulforgedSteel", 1, Material.VALUE_Ingot);
-        soulforgedSteel.addTrait(mending);
-        hellfire.addItem("ingotHellfire", 1, Material.VALUE_Ingot);
-        hellfire.addTrait(TinkerTraits.autosmelt);
+        MATERIAL_SOULFORGED_STEEL.addTrait(mending);
+        MATERIAL_SOULFORGED_STEEL.addItem("nuggetSoulforgedSteel", 1, Material.VALUE_Nugget);
+        MATERIAL_SOULFORGED_STEEL.addItem("ingotSoulforgedSteel", 1, Material.VALUE_Ingot);
+        MATERIAL_SOULFORGED_STEEL.addItem("blockSoulforgedSteel", 1, Material.VALUE_Block);
+        TinkerRegistry.addMaterialStats(MATERIAL_SOULFORGED_STEEL, new HeadMaterialStats(875, 12.0F, 6.0F, HarvestLevels.OBSIDIAN), new HandleMaterialStats(1.0F, 225), new ExtraMaterialStats(50));
+        registerMaterial(MATERIAL_SOULFORGED_STEEL, FLUID_SOULFORGED_STEEL, "SoulforgedSteel", 16);
 
-        TinkerRegistry.addMaterialStats(soulforgedSteel, new HeadMaterialStats(875, 12.0F, 6.0F, HarvestLevels.OBSIDIAN), new HandleMaterialStats(1.0F, 225), new ExtraMaterialStats(50));
-        TinkerRegistry.addMaterialStats(hellfire, new HeadMaterialStats(325, 8.0F, 4.0F, HarvestLevels.DIAMOND), new HandleMaterialStats(0.75F, 75), new ExtraMaterialStats(25));
-        registerMaterial(soulforgedSteel, soulforgeFluid, "SoulforgedSteel", 16);
-        registerMaterial(hellfire, hellfireFluid, "Hellfire", 9, 8);
-        //fixHellfireDust();
+        MATERIAL_CONCENTRATED_HELLFIRE.addTrait(TinkerTraits.autosmelt);
+        MATERIAL_CONCENTRATED_HELLFIRE.addItem("ingotConcentratedHellfire", 1, Material.VALUE_Ingot);
+        MATERIAL_CONCENTRATED_HELLFIRE.addItem("blockConcentratedHellfire", 1, Material.VALUE_Block);
+
+        TinkerRegistry.addMaterialStats(MATERIAL_CONCENTRATED_HELLFIRE, new HeadMaterialStats(325, 8.0F, 4.0F, HarvestLevels.DIAMOND), new HandleMaterialStats(0.75F, 75), new ExtraMaterialStats(25));
+        registerMaterial(MATERIAL_CONCENTRATED_HELLFIRE, FLUID_CONCENTRATED_HELLFIRE, "ConcentratedHellfire", 9, 8);
         netherWhitelist();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void initClient(FMLInitializationEvent evt) {
-        registerRenderInfo(soulforgedSteel, 5066061, 0.1F, 0.3F, 0.1F);
-        registerRenderInfo(hellfire, 14426647, 0.0F, 0.2F, 0.0F);
+        registerRenderInfo(MATERIAL_SOULFORGED_STEEL, 5066061, 0.1F, 0.3F, 0.1F);
+        registerRenderInfo(MATERIAL_CONCENTRATED_HELLFIRE, 14426647, 0.0F, 0.2F, 0.0F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -152,7 +171,7 @@ public class TConstruct extends CompatFeature {
 
 
         // register oredicts
-        for(Pair<List<ItemStack>, Integer> pair : knownOres) {
+        for (Pair<List<ItemStack>, Integer> pair : knownOres) {
             TinkerRegistry.registerMelting(new MeltingRecipe(RecipeMatch.of(pair.getLeft(), pair.getRight()), fluid));
         }
 
@@ -184,11 +203,55 @@ public class TConstruct extends CompatFeature {
                 gearOre.getRight()));
 
         // and also cast creation!
-        for(FluidStack fs : castCreationFluids) {
+        for (FluidStack fs : castCreationFluids) {
             TinkerRegistry.registerTableCasting(new CastingRecipe(castIngot, RecipeMatch.of(ingotOre.getLeft()), fs, true, true));
             TinkerRegistry.registerTableCasting(new CastingRecipe(castNugget, RecipeMatch.of(nuggetOre.getLeft()), fs, true, true));
             TinkerRegistry.registerTableCasting(new CastingRecipe(castPlate, RecipeMatch.of(plateOre.getLeft()), fs, true, true));
             TinkerRegistry.registerTableCasting(new CastingRecipe(castGear, RecipeMatch.of(gearOre.getLeft()), fs, true, true));
+        }
+    }
+
+
+    public void registerFluidModels(Fluid fluid) {
+        if (fluid == null) {
+            return;
+        }
+
+        Block block = fluid.getBlock();
+        if (block != null) {
+            Item item = Item.getItemFromBlock(block);
+            FluidStateMapper mapper = new FluidStateMapper(fluid);
+            // item-model
+            if (item != Items.AIR) {
+                ModelLoader.registerItemVariants(item);
+                ModelLoader.setCustomMeshDefinition(item, mapper);
+            }
+            // block-model
+            ModelLoader.setCustomStateMapper(block, mapper);
+        }
+    }
+
+    public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
+
+        public final Fluid fluid;
+        public final ModelResourceLocation location;
+
+        public FluidStateMapper(Fluid fluid) {
+            this.fluid = fluid;
+            // have each block hold its fluid per nbt? hm
+            this.location = new ModelResourceLocation(new ResourceLocation("betterwithmods", "fluid_block"), fluid.getName());
+        }
+
+        @Nonnull
+        @Override
+        protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
+            return location;
+        }
+
+        @Nonnull
+        @Override
+        public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
+            return location;
         }
     }
 }

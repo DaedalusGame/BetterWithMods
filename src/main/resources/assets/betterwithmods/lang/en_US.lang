@@ -213,6 +213,19 @@ tile.bwm:broken_gearbox.name=Broken Gearbox
 
 tile.bwm:iron_wall.name=Iron Wall
 
+tile.bwm:ie_siding.0.name=Horizontal Treated Wood Siding
+tile.bwm:ie_moulding.0.name=Horizontal Treated Wood Moulding
+tile.bwm:ie_corner.0.name=Horizontal Treated Wood Corner
+
+tile.bwm:ie_siding.1.name=Vertical Treated Wood Siding
+tile.bwm:ie_moulding.1.name=Vertical Treated Wood Moulding
+tile.bwm:ie_corner.1.name=Vertical Treated Wood Corner
+
+tile.bwm:ie_siding.2.name=Packaged Treated Wood Siding
+tile.bwm:ie_moulding.2.name=Packaged Treated Wood Moulding
+tile.bwm:ie_corner.2.name=Packaged Treated Wood Corner
+
+
 tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
 tile.bwm:rustic_compat_siding.1.name=Ironwood Siding
 tile.bwm:rustic_compat_siding.2.name=Slate Siding

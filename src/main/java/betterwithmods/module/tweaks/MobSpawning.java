@@ -6,6 +6,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
@@ -99,6 +101,12 @@ public class MobSpawning extends Feature {
 
         public static void addBlock(Block block, int meta) {
             whitelist.add(block + ":" + meta);
+        }
+
+        public static void addBlock(ItemStack stack) {
+            if(stack.getItem() instanceof ItemBlock) {
+                addBlock(((ItemBlock) stack.getItem()).getBlock(),stack.getMetadata());
+            }
         }
 
         public static boolean contains(Block block, int meta) {

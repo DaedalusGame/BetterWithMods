@@ -329,6 +329,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         public void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
             world.markBlockRangeForRenderUpdate(pos,pos);
+            getWorld().notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         }
 
         @Override

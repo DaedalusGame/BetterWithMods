@@ -58,7 +58,8 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting() {
+    @Override
+    public boolean shouldContinueExecuting() {
         if (this.player != null) {
             if (!shouldEndermanAttackPlayer(enderman, player)) {
                 return false;

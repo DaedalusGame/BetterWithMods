@@ -1,22 +1,26 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Sets;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -75,6 +79,19 @@ public class HCSeeds extends Feature {
     @Override
     public void disabledInit(FMLInitializationEvent event) {
         MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
+    }
+
+    @SubscribeEvent
+    public void mobDrop(LivingDropsEvent e) {
+        Iterator<EntityItem> iter = e.getDrops().iterator();
+        EntityItem item;
+        while(iter.hasNext()) {
+            item = iter.next();
+            ItemStack stack = item.getEntityItem();
+            if(BWOreDictionary.hasSuffix(stack,"crop"))
+                iter.remove();
+        }
+
     }
 
     @Override

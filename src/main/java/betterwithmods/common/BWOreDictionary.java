@@ -153,4 +153,8 @@ public class BWOreDictionary {
         }
         return false;
     }
+
+    public static boolean hasSuffix(ItemStack stack, String suffix) {
+        return listContains(stack,getOreNames(suffix));
+    }
 }

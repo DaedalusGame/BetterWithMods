@@ -62,9 +62,9 @@ public class CompatModule extends Module {
                 GameRegistry.addRecipe(new ShapedOreRecipe(chisel_diamond, " D","S ",'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
                 CrucibleRecipes.addCrucibleRecipe( ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond",1, OreDictionary.WILDCARD_VALUE)});
             }
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech",1, OreDictionary.WILDCARD_VALUE)});
         });
         this.load();
     }

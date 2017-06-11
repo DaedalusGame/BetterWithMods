@@ -105,13 +105,16 @@ public class Rustic extends CompatFeature {
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+            GameRegistry.addRecipe(new ItemStack(plank,1,i), "MM", 'M', new ItemStack(SIDING, 1, i));
+            GameRegistry.addRecipe(new ItemStack(SIDING,1,i), "MM", 'M', new ItemStack(MOULDING, 1, i));
+            GameRegistry.addRecipe(new ItemStack(MOULDING,1,i), "MM", 'M', new ItemStack(CORNER, 1, i));
         }
         boolean isHCSawEnabled = ModuleLoader.isFeatureEnabled(HCSaw.class);
         Block wooden_stake = getBlock("rustic:crop_stake");
-        if(isHCSawEnabled) {
+        if (isHCSawEnabled) {
             RecipeUtils.removeRecipes(wooden_stake);
         }
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wooden_stake,3), "M","M","M",'M',"mouldingWood"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood"));
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
@@ -127,7 +130,7 @@ public class Rustic extends CompatFeature {
                 if (i >= 6) {
                     ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
                     ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
-                    if(isHCSawEnabled) {
+                    if (isHCSawEnabled) {
                         RecipeUtils.removeRecipes(fencegate);
                         RecipeUtils.removeRecipes(fence);
                     }

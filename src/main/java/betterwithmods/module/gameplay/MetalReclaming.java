@@ -5,6 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.bulk.manager.StokedCrucibleManager;
 import betterwithmods.module.Feature;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -32,7 +33,7 @@ public class MetalReclaming extends Feature {
     public void init(FMLInitializationEvent event) {
         if (reclaimCount > 0) {
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 2), new Object[]{new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE)});
-            //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 2),new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 2),new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 3), new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 3), new Object[]{new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 3), new Object[]{new ItemStack(BWMItems.STEEL_AXE, 1, OreDictionary.WILDCARD_VALUE)});
@@ -71,6 +72,22 @@ public class MetalReclaming extends Feature {
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 7), new Object[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 16), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 2)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 1), new Object[]{new ItemStack(Items.SHIELD, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new Object[]{new ItemStack(Items.IRON_DOOR)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new Object[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 8, 0), new Object[]{new ItemStack(Items.GOLDEN_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.MINECART)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.CHEST_MINECART)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.FURNACE_MINECART)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.HOPPER_MINECART)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Items.TNT_MINECART)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.RAIL, 8)});
+            addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 6), new Object[]{new ItemStack(Blocks.GOLDEN_RAIL, 6)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 6), new Object[]{new ItemStack(Blocks.ACTIVATOR_RAIL, 6)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.IRON_BARS, 8)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7), new Object[]{new ItemStack(Items.CAULDRON)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 31), new Object[]{new ItemStack(Blocks.ANVIL, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
         }
 
 

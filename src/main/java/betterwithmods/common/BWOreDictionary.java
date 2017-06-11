@@ -27,6 +27,8 @@ public class BWOreDictionary {
     public static List<ItemStack> ingotNames;
 
     public static void registerOres() {
+
+
         registerOre("gearSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR));
         registerOre("gearWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
         registerOre("cropHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));
@@ -48,7 +50,7 @@ public class BWOreDictionary {
         registerOre("foodFlour", BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
-
+        registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("coal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
 

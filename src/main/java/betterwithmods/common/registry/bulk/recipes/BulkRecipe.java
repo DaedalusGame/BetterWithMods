@@ -165,7 +165,7 @@ public class BulkRecipe {
     }
 
     public boolean isEmpty() {
-        return this.inputs.isEmpty() || this.output.isEmpty();
+        return this.inputs.isEmpty() || getOutputs().isEmpty();
     }
 
     @Override

@@ -20,7 +20,7 @@ public class EquipmentDrop extends Feature {
             if(entity instanceof EntityZombie || entity instanceof EntitySkeleton) {
                 entity.setCanPickUpLoot(true);
                 for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-                    entity.setDropChance(slot, 2);
+                    entity.setDropChance(slot, 1);
                 }
             }
         }

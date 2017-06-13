@@ -46,6 +46,12 @@ public class BlockStump extends Block implements IMultiVariants {
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK));
         this.setHarvestLevel("axe", 0);
+        Blocks.FIRE.setFireInfo(this, 5, 5);
+    }
+
+    @Override
+    public boolean isWood(IBlockAccess world, BlockPos pos) {
+        return true;
     }
 
     /**

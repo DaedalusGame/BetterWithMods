@@ -58,6 +58,7 @@ public class MillRecipes extends Feature {
         addMillRecipe(getDye(EnumDyeColor.MAGENTA, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 1)});
         addMillRecipe(getDye(EnumDyeColor.RED, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 4)});
         addMillRecipe(getDye(EnumDyeColor.PINK, 6), new ItemStack[]{new ItemStack(Blocks.DOUBLE_PLANT, 1, 5)});
+        addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropWheat"});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropBarley"});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropOats"});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropRye"});

@@ -9,11 +9,11 @@ import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -252,7 +252,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             } else if (isPowered())
                 this.soulsRetained = 0;
             else if (soulsRetained > 7) {
-                if (spawnGhast())
+                if (WorldUtils.spawnGhast(world,pos))
                     this.getWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getWorld().rand.nextFloat() * 0.1F + 0.8F);
                 if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)
                     ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).breakHopper(getWorld(), pos);
@@ -260,23 +260,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         } else {
             this.soulsRetained = 0;
         }
-    }
-
-    private boolean spawnGhast() {
-        EntityGhast ghast = new EntityGhast(this.getWorld());
-        for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (this.getWorld().rand.nextDouble() - this.getWorld().rand.nextDouble()) * 10.0D;
-            double yPos = pos.getY() + this.getWorld().rand.nextInt(21) - 10;
-            double zPos = pos.getZ() + (this.getWorld().rand.nextDouble() - this.getWorld().rand.nextDouble()) * 10.0D;
-
-            ghast.setLocationAndAngles(xPos, yPos, zPos, this.getWorld().rand.nextFloat() * 360.0F, 0.0F);
-
-            if (ghast.getCanSpawnHere()) {
-                this.getWorld().spawnEntity(ghast);
-                return true;
-            }
-        }
-        return false;
     }
 
     public void increaseSoulCount(int numSouls) {

@@ -110,7 +110,7 @@ public final class BWMBlocks {
         registerBlock(SLATS, new ItemBlockPane(SLATS));
         registerBlock(PLANTER, new ItemBlockPlanter(PLANTER));
         registerBlock(VASE, new ItemBlockMeta(VASE));
-        registerBlock(URN, new ItemBlockMeta(URN));
+        registerBlock(URN, new ItemBlockUrn(URN));
         registerBlock(UNFIRED_POTTERY, new ItemBlockMeta(UNFIRED_POTTERY));
         registerBlock(STOKED_FLAME, null);
         registerBlock(HIBACHI);

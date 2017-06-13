@@ -34,6 +34,10 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     private static final AxisAlignedBB URN_AABB = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 0.625D, 0.6875D);
     private static final AxisAlignedBB UNDER_HOPPER_AABB = URN_AABB.offset(0, OFFSET, 0);
 
+
+    public static ItemStack getStack(EnumUrnType type) {
+        return new ItemStack(BWMBlocks.URN, 1, type.getMeta());
+    }
     public BlockUrn() {
         super(Material.ROCK);
         this.setHardness(2.0F);

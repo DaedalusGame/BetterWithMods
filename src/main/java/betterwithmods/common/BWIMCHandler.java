@@ -2,6 +2,7 @@ package betterwithmods.common;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.module.hardcore.HCBonemeal;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -31,6 +32,11 @@ public class BWIMCHandler {
                 IBlockState state = block.getStateFromMeta(stack.getMetadata());
                 KilnStructureManager.registerKilnBlock(state);
             }
+        });
+
+        registerIMC("registerFertilizer", object -> {
+            ItemStack stack = (ItemStack) object;
+            HCBonemeal.registerFertilzier(stack);
         });
     }
 

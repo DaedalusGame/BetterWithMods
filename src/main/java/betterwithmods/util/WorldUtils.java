@@ -1,5 +1,6 @@
 package betterwithmods.util;
 
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -94,4 +95,22 @@ public final class WorldUtils {
             return (int) pos1.getDistance(pos2.getX(),pos2.getY(), pos2.getZ());
         return 0;
     }
+
+    public static boolean spawnGhast(World world, BlockPos pos) {
+        EntityGhast ghast = new EntityGhast(world);
+        for (int i = 0; i < 200; i++) {
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 10.0D;
+            double yPos = pos.getY() + world.rand.nextInt(21) - 10;
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 10.0D;
+
+            ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
+
+            if (ghast.getCanSpawnHere()) {
+                world.spawnEntity(ghast);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

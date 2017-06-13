@@ -109,6 +109,7 @@ public class BWRegistry {
     private static void registerEntities() {
         BWRegistry.registerEntity(EntityExtendingRope.class, "extending_rope", 64, 20, true);
         BWRegistry.registerEntity(EntityDynamite.class, "bwm_dynamite", 10, 50, true);
+        BWRegistry.registerEntity(EntityUrn.class, "bwm_urn", 10, 50, true);
         BWRegistry.registerEntity(EntityMiningCharge.class, "bwm_mining_charge", 10, 50, true);
         BWRegistry.registerEntity(EntityItemBuoy.class, "entity_item_buoy", 64, 20, true);
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entity_sheared_creeper", 64, 1, true);

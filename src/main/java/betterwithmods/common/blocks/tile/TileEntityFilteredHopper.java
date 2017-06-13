@@ -97,14 +97,16 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private void insert() {
         if (!InvUtils.isFull(inventory)) {
-            List<EntityItem> items = getCollidingItems(world, pos);
-            items.forEach(item -> {
-                if (HopperInteractions.attemptToCraft(filterType, getWorld(), getPos(), item))
+            EntityItem item = getCollidingItems(world, pos).stream().findFirst().orElse(null);
+            if (item != null) {
+                if (HopperInteractions.attemptToCraft(filterType, getWorld(), getPos(), item)) {
                     this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if (canFilterProcessItem(item.getEntityItem())) {
-                    InvUtils.insertFromWorld(inventory, item, 0, 18, false);
                 }
-            });
+                if (canFilterProcessItem(item.getEntityItem())) {
+                    if(InvUtils.insertFromWorld(inventory, item, 0, 18, false))
+                        this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                }
+            }
         }
 
         if (!isXPFull() && filterType == 6) {
@@ -138,7 +140,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE, false);
                 } else {
                     InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE, false);
-                    InvUtils.spawnStack(world, pos.getX()+0.5, pos.getY() - 0.5, pos.getZ()+0.5, STACK_SIZE, stack);
+                    InvUtils.spawnStack(world, pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, STACK_SIZE, stack);
                 }
             }
             ejectCounter = 0;
@@ -161,7 +163,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Override
     public void update() {
         boolean isPowered = isPowered();
-        if( (isPowered ? 1 : 0) != power)
+        if ((isPowered ? 1 : 0) != power)
             this.power = (byte) (isPowered() ? 1 : 0);
 
         if (!this.world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockMechMachines && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER) {
@@ -220,6 +222,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private boolean canFilterProcessItem(ItemStack stack) {
         if (this.filterType > 0) {
+            if (!this.isPowered())
+                return false;
             if (HopperFilters.getAllowedItems(filterType) != null)
                 return HopperFilters.getAllowedItems(filterType).test(stack);
         }
@@ -328,7 +332,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         @Override
         public void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            world.markBlockRangeForRenderUpdate(pos,pos);
+            world.markBlockRangeForRenderUpdate(pos, pos);
             getWorld().notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         }
 

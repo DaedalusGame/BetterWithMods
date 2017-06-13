@@ -25,6 +25,7 @@ import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
@@ -119,13 +120,13 @@ public class BWRegistry {
 
 
     public static void registerHopperFilters() {
-        HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock);
-        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack));
-        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack));
-        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> isParticulate(stack) || isFlat(stack));
-        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), BWRegistry::isParticulate);
-        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> false);
-        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1);
+        HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock, Lists.newArrayList("Allows Non-Solid Blocks and Items."));
+        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack), Lists.newArrayList("Allows Narrow Items and Small Particulates."));
+        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack), Lists.newArrayList("Allows Narrow Items, Flat Items and Small Particulates."));
+        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> isParticulate(stack) || isFlat(stack), Lists.newArrayList("Allows Small Particulates and Flat Items"));
+        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), BWRegistry::isParticulate, Lists.newArrayList("Allows Small Particulates."));
+        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> false, Lists.newArrayList("Allows nothing."));
+        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1, Lists.newArrayList("Allows Items which can stack."));
     }
 
     public static void registerBlockDispenserBehavior() {

@@ -2,6 +2,7 @@ package betterwithmods.module.compat.minetweaker;
 
 import betterwithmods.common.registry.HopperFilters;
 import com.blamejared.mtlib.utils.BaseMultiModification;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -34,7 +35,7 @@ public class HopperFilter {
     public static class Add extends BaseMultiModification {
         protected Add(ItemStack filter, Set<ItemStack> allowed) {
             super("hopperfilter");
-            HopperFilters.addFilter(filter, allowed);
+            HopperFilters.addFilter(filter, allowed, Lists.newArrayList());
         }
         @Override
         public boolean canUndo() {

@@ -338,7 +338,8 @@ public class HCHunger extends Feature {
     public void walkingShaked(LivingEvent.LivingUpdateEvent event) {
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
             if (player.world.isRemote && player.isSprinting())
-                guiHunger.triggerShake();
+                if(guiHunger != null)
+                    guiHunger.triggerShake();
         });
     }
 

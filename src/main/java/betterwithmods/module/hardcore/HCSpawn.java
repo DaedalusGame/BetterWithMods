@@ -6,12 +6,10 @@ import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -49,25 +47,25 @@ public class HCSpawn extends Feature {
             BlockPos newPos = getRespawnPoint(player, spawnFuzz);
             player.setSpawnPoint(newPos, true);
             if(isNew) {
-                clearConditions(player);
+//                clearConditions(player);
             }
         }
     }
 
-
-    public void clearConditions(EntityPlayer player) {
-        World world = player.world;
-        WorldInfo worldinfo = world.getWorldInfo();
-        if(!(player.getServer() instanceof DedicatedServer) && world.playerEntities.size() == 1) {
-            world.setWorldTime(1000); //Early Morning
-            //Clear Weather
-            worldinfo.setCleanWeatherTime(18000);
-            worldinfo.setRainTime(0);
-            worldinfo.setThunderTime(0);
-            worldinfo.setRaining(false);
-            worldinfo.setThundering(false);
-        }
-    }
+//
+//    public void clearConditions(EntityPlayer player) {
+//        World world = player.world;
+//        WorldInfo worldinfo = world.getWorldInfo();
+//        if(!(player.getServer() instanceof DedicatedServer) && world.playerEntities.size() == 1) {
+//            world.setWorldTime(1000); //Early Morning
+//            //Clear Weather
+//            worldinfo.setCleanWeatherTime(18000);
+//            worldinfo.setRainTime(0);
+//            worldinfo.setThunderTime(0);
+//            worldinfo.setRaining(false);
+//            worldinfo.setThundering(false);
+//        }
+//    }
     /**
      * Find a random position to respawn. Tries 20 times maximum to find a
      * suitable place. Else, the previous SP will remain unchanged.

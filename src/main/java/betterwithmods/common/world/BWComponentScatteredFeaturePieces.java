@@ -25,7 +25,10 @@ import java.util.Random;
  */
 public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeaturePieces {
     public static class DesertPyramid extends ComponentScatteredFeaturePieces.DesertPyramid {
-        final int worldX, worldZ;
+        private int worldX, worldZ;
+
+        public DesertPyramid() {
+        }
 
         DesertPyramid(Random random, int x, int z) {
             super(random, x, z);
@@ -120,8 +123,11 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
     public static class SwampHut extends ComponentScatteredFeaturePieces.SwampHut {
         private boolean hasWitch;
 
-        public SwampHut(Random p_i2066_1_, int p_i2066_2_, int p_i2066_3_) {
-            super(p_i2066_1_, p_i2066_2_, p_i2066_3_);
+        public SwampHut() {
+        }
+
+        public SwampHut(Random random, int x, int y) {
+            super(random, x, y);
         }
 
         @Override
@@ -204,7 +210,10 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
     }
 
     public static class JunglePyramid extends ComponentScatteredFeaturePieces.JunglePyramid {
-        final int worldX, worldZ;
+        private int worldX, worldZ;
+
+        public JunglePyramid() {
+        }
 
         JunglePyramid(Random rand, int x, int z) {
             super(rand, x, z);

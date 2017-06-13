@@ -1,6 +1,7 @@
 package betterwithmods.common.world;
 
 import betterwithmods.common.world.gen.village.*;
+import betterwithmods.module.GlobalConfig;
 import betterwithmods.module.hardcore.HCVillages;
 import com.google.common.collect.Sets;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +34,8 @@ public class BWMapGenVillage extends MapGenVillage {
         }
 
         public boolean inRadius(int x, int z) {
-            System.out.printf("Checking %s @a <%s,%s> r:%s\n", this.name(),x,z,radius);
+            if(GlobalConfig.debug)
+                System.out.printf("Checking %s @a <%s,%s> r:%s\n", this.name(),x,z,radius);
             return Math.abs(x) >=  radius || Math.abs(z) >= radius;
         }
 
@@ -53,7 +55,8 @@ public class BWMapGenVillage extends MapGenVillage {
     @Override
     protected StructureStart getStructureStart(int x, int z) {
         VillageStatus status = VillageStatus.getStatus(x, z);
-        System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x,z,x * 16, z * 16);
+        if(GlobalConfig.debug)
+            System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x,z,x * 16, z * 16);
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
     }
 

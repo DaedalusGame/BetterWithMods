@@ -1,6 +1,7 @@
 package betterwithmods.client;
 
 import betterwithmods.api.block.IAdvancedRotationPlacement;
+import betterwithmods.common.registry.HopperFilters;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,6 +31,16 @@ import org.lwjgl.opengl.GL11;
  */
 public class ClientEventHandler {
     Minecraft mc = Minecraft.getMinecraft();
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void putTooltip(ItemTooltipEvent e) {
+        int type = HopperFilters.getFilterType(e.getItemStack());
+        if(type > 0) {
+            e.getToolTip().addAll(HopperFilters.tooltips.get(type));
+        }
+
+    }
 
 
     @SideOnly(Side.CLIENT)

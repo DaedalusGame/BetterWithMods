@@ -45,6 +45,7 @@ public class BWField2 extends AbandonedVillagePiece {
         }
 
         IBlockState iblockstate = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
+        IBlockState filler = this.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState());
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 1, 0, 6, 4, 8, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 0, 1, 2, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 4, 0, 1, 5, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
@@ -64,7 +65,7 @@ public class BWField2 extends AbandonedVillagePiece {
         for (int j1 = 0; j1 < 9; ++j1) {
             for (int k1 = 0; k1 < 7; ++k1) {
                 this.clearCurrentPositionBlocksUpwards(worldIn, k1, 4, j1, structureBoundingBoxIn);
-                this.replaceAirAndLiquidDownwards(worldIn, Blocks.DIRT.getDefaultState(), k1, -1, j1, structureBoundingBoxIn);
+                this.replaceAirAndLiquidDownwards(worldIn, filler, k1, -1, j1, structureBoundingBoxIn);
             }
         }
 

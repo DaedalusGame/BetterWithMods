@@ -7,6 +7,7 @@ import betterwithmods.common.world.gen.village.*;
 import betterwithmods.module.Feature;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -72,6 +73,11 @@ public class HCVillages extends Feature {
     public void biomeSpecificVillage(BiomeEvent.GetVillageBlockID event) {
         if (event.getOriginal() == BWMBlocks.WOOD_TABLE.getDefaultState()) {
             event.setReplacement(event.getOriginal().withProperty(BlockPlanks.VARIANT, plankFromBiome(event.getBiome())));
+        }
+        if(event.getOriginal() == Blocks.DIRT) {
+           if(BiomeDictionary.hasType(event.getBiome(), BiomeDictionary.Type.SANDY)) {
+               event.setReplacement(Blocks.SAND.getDefaultState());
+           }
         }
     }
 

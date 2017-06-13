@@ -50,8 +50,8 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if(state.getValue(VARIANT) == DirtSlabType.PATH)
-            return new AxisAlignedBB(0,0,0,1,7/16d,1);
+        if (state.getValue(VARIANT) == DirtSlabType.PATH)
+            return new AxisAlignedBB(0, 0, 0, 1, 7 / 16d, 1);
         return super.getBoundingBox(state, source, pos);
     }
 
@@ -59,7 +59,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = playerIn.getHeldItem(hand);
         if (held.getItem().getToolClasses(held).contains("shovel")) {
-            return worldIn.setBlockState(pos,state.withProperty(VARIANT,DirtSlabType.PATH));
+            return worldIn.setBlockState(pos, state.withProperty(VARIANT, DirtSlabType.PATH));
         }
         return false;
     }
@@ -217,7 +217,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
                 BlockGrassCustom.handleGrassSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
             } else if (state.getValue(VARIANT) == DirtSlabType.MYCELIUM) {
                 BlockMyceliumCustom.handleMyceliumSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
-            } else
+            } else if (state.getValue(VARIANT) == DirtSlabType.DIRT)
                 handleSubtypeChange(worldIn, pos, state, rand);
         }
     }

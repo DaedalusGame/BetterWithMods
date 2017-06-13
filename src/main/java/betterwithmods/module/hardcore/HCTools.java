@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -14,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Set;
 
 /**
  * Created by tyler on 4/20/17.
@@ -117,6 +120,14 @@ public class HCTools extends Feature {
         }
     }
 
+    private static final Set<Item> TOOLS = Sets.newHashSet(
+            Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SWORD, Items.DIAMOND_SHOVEL, Items.DIAMOND_HOE,
+            Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SWORD, Items.IRON_SHOVEL, Items.IRON_HOE,
+            Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_SWORD, Items.STONE_SHOVEL, Items.STONE_HOE,
+            Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SWORD, Items.GOLDEN_SHOVEL, Items.GOLDEN_HOE,
+            Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_SWORD, Items.WOODEN_SHOVEL, Items.WOODEN_HOE
+    );
+
     /**
      * Edit the values of {@link Item.ToolMaterial}.
      * The new values are described in {@link ToolMaterialOverride}.
@@ -131,7 +142,8 @@ public class HCTools extends Feature {
             ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEnchantability(), "field_78008_j", "enchantability");
         }
         // Change values already taken from material at that time
-        for (Item item : Item.REGISTRY) {
+
+        for (Item item : TOOLS) {
             if (!(item instanceof ItemTool)) continue;
             ItemTool tool = (ItemTool) item;
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(tool.getToolMaterial());

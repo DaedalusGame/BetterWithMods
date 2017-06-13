@@ -10,6 +10,7 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.CuttingRecipe;
 import betterwithmods.common.registry.DyeWithTagRecipe;
 import betterwithmods.module.Feature;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -77,6 +78,7 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.PULLEY.getMeta() << 1), "PIP", "GLG", "PIP", 'P', "plankWood", 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.COOKING_POTS, 1, BlockCookingPot.EnumType.CAULDRON.getMeta()), "XBX", "XWX", "XXX", 'X', "ingotCopper", 'B', Items.BONE, 'W', Items.WATER_BUCKET));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.COOKING_POTS, 1, BlockCookingPot.EnumType.CAULDRON.getMeta()), "XBX", "XWX", "XXX", 'X', "ingotIron", 'B', Items.BONE, 'W', Items.WATER_BUCKET));
+        RecipeUtils.removeFurnaceRecipe(new ItemStack(Items.NETHERBRICK));
         GameRegistry.addSmelting(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE), new ItemStack(Items.NETHERBRICK), 0.2F);
         GameRegistry.addSmelting(new ItemStack(BWMBlocks.AESTHETIC, 1, 7), new ItemStack(BWMBlocks.AESTHETIC, 1, 6), 0.1F);
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT), "S", "G", "X", 'S', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP), 'G', "slimeball", 'X', BWMBlocks.WOOD_MOULDING));

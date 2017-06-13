@@ -22,7 +22,7 @@ import static betterwithmods.module.gameplay.KilnRecipes.addKilnRecipe;
  */
 public class KilnCharcoal extends Feature {
 
-    private static final ItemStack CHARCOAL = new ItemStack(Items.COAL, 2, 1);
+    private static final ItemStack CHARCOAL = new ItemStack(Items.COAL, 1, 1);
     boolean disableFurnaceCharcoal;
 
     @Override

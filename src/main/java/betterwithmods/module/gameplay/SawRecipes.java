@@ -6,6 +6,7 @@ import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -32,6 +33,10 @@ public class SawRecipes extends Feature {
         SawManager.INSTANCE.addRecipe(block, meta, outputs);
     }
 
+    public static void addSelfSawRecipe(Block block, int meta) {
+        SawManager.INSTANCE.addRecipe(new SawSelfDropRecipe(block, meta));
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
@@ -40,8 +45,13 @@ public class SawRecipes extends Feature {
             addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
             addSawRecipe(Blocks.WOODEN_SLAB, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
         }
-        addSawRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
-        addSawRecipe(Blocks.PUMPKIN, 0, new ItemStack(Blocks.PUMPKIN));
+        addSelfSawRecipe(Blocks.PUMPKIN, 0);
+        addSelfSawRecipe(Blocks.VINE, 0);
+        for (int i = 0; i < 9; i++)
+            addSelfSawRecipe(Blocks.RED_FLOWER, i);
+        addSelfSawRecipe(Blocks.YELLOW_FLOWER, 0);
+        addSelfSawRecipe(Blocks.BROWN_MUSHROOM, 0);
+        addSelfSawRecipe(Blocks.RED_MUSHROOM, 0);
         SawManager.INSTANCE.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
             @Override
             public NonNullList<ItemStack> getOutputs() {
@@ -50,5 +60,11 @@ public class SawRecipes extends Feature {
             }
         });
 
+    }
+
+    public static class SawSelfDropRecipe extends SawRecipe {
+        public SawSelfDropRecipe(Block block, int meta) {
+            super(block, meta, Lists.newArrayList(new ItemStack(block, 1, meta)));
+        }
     }
 }

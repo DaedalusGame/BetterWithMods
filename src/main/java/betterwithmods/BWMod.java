@@ -10,6 +10,7 @@ import betterwithmods.network.ModuleSync;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
 import net.minecraft.world.MinecraftException;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -44,6 +45,10 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new StatusEffectEvent());
     }
 
+    @EventHandler
+    public void onConstruct(FMLConstructionEvent event) {
+        ForgeModContainer.fullBoundingBoxLadders = true;
+    }
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();

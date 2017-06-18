@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks;
+package betterwithmods.module.compat.immersiveengineering;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;

@@ -25,26 +25,28 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
             recipes.add(recipe);
     }
 
+    public List<T> findRecipeForRemoval(@Nonnull ItemStack output) {
+        return recipes.stream().filter(recipe -> recipe.matches(output)).collect(Collectors.toList());
+    }
+
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary) {
         return recipes.stream().filter(recipe -> recipe.matches(output, secondary)).collect(Collectors.toList());
     }
 
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary, @Nonnull Object... inputs) {
         List<T> removed = Lists.newArrayList();
-        for (T recipe : recipes) {
-            if (recipe.matches(output, secondary)) {
-                if (inputs.length > 0) {
-                    boolean match = true;
-                    for (Object input : inputs) {
-                        match = hasMatch(input, recipe.getRecipeInput());
-                        if (!match)
-                            break;
-                    }
-                    if (match)
-                        removed.add(recipe);
-                } else {
-                    removed.add(recipe);
+        if (inputs.length > 0) {
+            List<T> found = findRecipeForRemoval(output, secondary);
+
+            for (T recipe : found) {
+                boolean match = true;
+                for (Object input : inputs) {
+                    match = hasMatch(input, recipe.getRecipeInput());
+                    if (!match)
+                        break;
                 }
+                if (match)
+                    removed.add(recipe);
             }
         }
         return removed;
@@ -74,6 +76,7 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     private boolean hasMatch(Object input, List<Object> inputs) {
+        System.out.println(input);
         if (input instanceof String) {
             for (Object in : inputs) {
                 if (in instanceof OreStack) {

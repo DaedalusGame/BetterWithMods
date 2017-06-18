@@ -2,7 +2,9 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,12 +18,14 @@ public abstract class BWMBlock extends Block implements ITurnable {
     public BWMBlock(Material material) {
         super(material);
         setCreativeTab(BWCreativeTabs.BWTAB);
-        if (material == Material.WOOD) {
+        if (material == Material.WOOD || material == BlockMini.MINI) {
+            ToolsManager.setAxesAsEffectiveAgainst(this);
             this.setSoundType(SoundType.WOOD);
             this.setHarvestLevel("axe", 0);
         } else if (material == Material.ROCK) {
             this.setSoundType(SoundType.STONE);
             setHarvestLevel("pickaxe", 1);
+            ToolsManager.setPickaxesAsEffectiveAgainst(this);
         }
     }
 

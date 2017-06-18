@@ -23,11 +23,6 @@ import java.util.Map;
  */
 public class HCPiles extends Feature {
 
-    @Override
-    public boolean requiresMinecraftRestartToEnable() {
-        return true;
-    }
-
     public static Map<IBlockState, ItemStack> blockStateToPile = new HashMap<>();
 
     public static void registerPile(Block block, int meta, ItemStack stack) {
@@ -43,8 +38,15 @@ public class HCPiles extends Feature {
     }
 
     @Override
+    public boolean requiresMinecraftRestartToEnable() {
+        return true;
+    }
+
+    @Override
     public void init(FMLInitializationEvent event) {
         registerPile(Blocks.DIRT, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.DIRT, 1, new ItemStack(BWMItems.DIRT_PILE, 3));
+        registerPile(Blocks.DIRT, 2, new ItemStack(BWMItems.DIRT_PILE, 3));
         registerPile(Blocks.FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
         registerPile(BWMBlocks.FERTILE_FARMLAND, new ItemStack(BWMItems.DIRT_PILE, 3));
         registerPile(Blocks.GRASS, new ItemStack(BWMItems.DIRT_PILE, 3));

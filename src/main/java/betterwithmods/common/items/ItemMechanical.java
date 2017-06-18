@@ -9,6 +9,7 @@ import betterwithmods.common.blocks.BlockWaterwheel;
 import betterwithmods.common.blocks.BlockWindmill;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,6 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+
 public class ItemMechanical extends Item implements IMultiLocations {
     private final String[] names = {"windmill", "waterwheel", "windmill_vertical"};
 
@@ -37,6 +40,15 @@ public class ItemMechanical extends Item implements IMultiLocations {
     @Override
     public String[] getLocations() {
         return names;
+    }
+
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        if (names[stack.getMetadata()].contains("windmill")) {
+            tooltip.add(I18n.format("tooltip.windmill.name"));
+        }
+        super.addInformation(stack, playerIn, tooltip, advanced);
     }
 
     @Override

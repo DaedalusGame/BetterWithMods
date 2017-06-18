@@ -42,6 +42,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("tooltip.gearbox.name"));
         tooltip.add(I18n.format("tooltip.rotate_with_hand.name"));
         super.addInformation(stack, player, tooltip, advanced);
     }
@@ -237,7 +238,16 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     public void breakGearbox(World world, BlockPos pos, IBlockState state) {
-        world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
+        for (int i = 0; i < 10; i++) {
+            world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
+        }
+        for (int i = 0; i < 5; i++) {
+            float flX = pos.getX() + world.rand.nextFloat();
+            float flY = pos.getY() + world.rand.nextFloat() * 0.5F + 1.0F;
+            float flZ = pos.getZ() + world.rand.nextFloat();
+
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
+        }
         world.setBlockState(pos, BWMBlocks.BROKEN_GEARBOX.getDefaultState().withProperty(DirUtils.FACING, state.getValue(DirUtils.FACING)));
     }
 

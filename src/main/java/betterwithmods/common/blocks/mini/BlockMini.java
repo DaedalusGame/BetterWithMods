@@ -54,18 +54,32 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return getMaterial(blockState) == Material.WOOD ? 2.0F : 3.0F;
+        Material mat = getMaterial(blockState);
+        if (mat == Material.WOOD || mat == MINI)
+            return 2.0F;
+        return 3.0F;
     }
 
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        return getMaterial(state) == Material.ROCK ? SoundType.STONE : SoundType.WOOD;
+        Material mat = getMaterial(state);
+        if (mat == Material.WOOD || mat == MINI)
+            return SoundType.WOOD;
+        return SoundType.STONE;
+    }
+
+    @Override
+    public boolean isToolEffective(String type, IBlockState state) {
+        return type != null && type.equals(getHarvestTool(state));
     }
 
     @Nullable
     @Override
     public String getHarvestTool(IBlockState state) {
-        return getMaterial(state) == Material.ROCK ? "pickaxe" : "axe";
+        Material mat = getMaterial(state);
+        if (mat == Material.WOOD || mat == MINI)
+            return "axe";
+        return "pickaxe";
     }
 
     @Override
@@ -104,8 +118,8 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public int damageDropped(IBlockState state, World world, BlockPos pos) {
-        TileEntityMultiType tile = getTile(world,pos);
-        if(tile != null) {
+        TileEntityMultiType tile = getTile(world, pos);
+        if (tile != null) {
             return tile.getType();
         }
         return 0;
@@ -115,9 +129,9 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
         TileEntityMultiType tile = getTile(world, pos);
         if (tile != null) {
-            tile.setOrientation((tile.getOrientation()+1)%getOrientationProperty().getMax());
+            tile.setOrientation((tile.getOrientation() + 1) % getOrientationProperty().getMax());
             IBlockState state = world.getBlockState(pos);
-            world.setBlockState(pos,getActualState(state,world,pos));
+            world.setBlockState(pos, getActualState(state, world, pos));
             return true;
         }
         return false;
@@ -127,7 +141,7 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
         if (emptyHands) {
-            if(rotateBlock(world, pos, facing)) {
+            if (rotateBlock(world, pos, facing)) {
                 world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                 world.notifyNeighborsOfStateChange(pos, this, false);
                 world.scheduleBlockUpdate(pos, this, 10, 1);
@@ -180,14 +194,14 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
 
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        if(!player.isCreative())
+        if (!player.isCreative())
             InvUtils.ejectStackWithOffset(worldIn, pos, getDrops(worldIn, pos, state, 0));
     }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 
-        return new ItemStack(this, 1, getActualState(state,world,pos).getValue(TYPE));
+        return new ItemStack(this, 1, getActualState(state, world, pos).getValue(TYPE));
     }
 
     @Override
@@ -288,16 +302,16 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
             this.max = max;
         }
 
+        public static PropertyOrientation create(String name, int min, int max) {
+            return new PropertyOrientation(name, min, max);
+        }
+
         public int getMin() {
             return min;
         }
 
         public int getMax() {
             return max;
-        }
-
-        public static PropertyOrientation create(String name, int min, int max) {
-            return new PropertyOrientation(name, min, max);
         }
     }
 }

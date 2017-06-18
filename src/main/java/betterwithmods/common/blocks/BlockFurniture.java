@@ -25,7 +25,6 @@ public abstract class BlockFurniture extends BWMBlock {
 
     public BlockFurniture(Material material) {
         super(material);
-
         this.setHardness(3.5F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
     }

@@ -2,10 +2,11 @@ package betterwithmods.common.items.tools;
 
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.BlockStump;
+import betterwithmods.common.items.ItemAltName;
+import betterwithmods.module.gameplay.Gameplay;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 /**
  * @author Koward
  */
-public class ItemStumpRemover extends Item {
+public class ItemStumpRemover extends ItemAltName {
     public ItemStumpRemover() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
@@ -50,5 +51,13 @@ public class ItemStumpRemover extends Item {
             }
         }
         return EnumActionResult.FAIL;
+    }
+
+    @Override
+    public String[] getLocations() {
+        if (Gameplay.kidFriendly)
+            return new String[]{"stump_remover_kf"};
+        else
+            return new String[]{"stump_remover"};
     }
 }

@@ -41,8 +41,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public boolean containsValidIngredients;
     public int fireIntensity;
     public EnumFacing facing;
-    private boolean forceValidation;
     protected CraftingManagerBulk unstoked, stoked;
+    private boolean forceValidation;
 
     public TileEntityCookingPot(CraftingManagerBulk unstoked, CraftingManagerBulk stoked) {
         this.unstoked = unstoked;
@@ -368,7 +368,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                     for (ItemStack out : output) {
                         if (!out.isEmpty()) {
                             ItemStack stack = out.copy();
-                            if (!InvUtils.insert(inventory, stack, false))
+                            if (!InvUtils.insert(inventory, stack, false).isEmpty())
                                 InvUtils.ejectStackWithOffset(this.getWorld(), this.pos.up(), stack);
                         }
                     }

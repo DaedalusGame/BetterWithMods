@@ -98,7 +98,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
         if (playerIn.isSneaking())
             return false;
         InvUtils.getItemHandler(worldIn, pos, null).ifPresent(inv -> {
-            if (InvUtils.insertSingle(inv, heldItem, false)) {
+            if (InvUtils.insertSingle(inv, heldItem, false).isEmpty()) {
                 if (!playerIn.isCreative())
                     heldItem.shrink(1);
                 worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(),

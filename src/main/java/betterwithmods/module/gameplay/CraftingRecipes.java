@@ -134,6 +134,7 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), "SSS", "MEM", "FFF", 'S', Items.SUGAR, 'M', Items.MILK_BUCKET, 'E', BWMItems.RAW_EGG, 'F', "foodFlour"));
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), "FCF", 'F', "foodFlour", 'C', "foodChocolatebar"));
         GameRegistry.addRecipe(new ShapelessOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), Blocks.PUMPKIN, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour"));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), Items.APPLE, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour"));
         GameRegistry.addShapelessRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FLOUR));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE), 0.1F);

@@ -3,7 +3,7 @@
   "defaults": {
     "textures": {
       "bottom": "blocks/planks_oak",
-      "side": "betterwithmods:blocks/wood_side_oak",
+      "side": "#bottom",
       "particle": "#side"
     },
     "model": "betterwithmods:table_supported",
@@ -27,38 +27,32 @@
     "variant": {
       "oak": {
         "textures": {
-          "bottom": "blocks/planks_oak",
-          "side": "betterwithmods:blocks/wood_side_oak"
+          "bottom": "blocks/planks_oak"
         }
       },
       "spruce": {
         "textures": {
-          "bottom": "blocks/planks_spruce",
-          "side": "betterwithmods:blocks/wood_side_spruce"
+          "bottom": "blocks/planks_spruce"
         }
       },
       "birch": {
         "textures": {
-          "bottom": "blocks/planks_birch",
-          "side": "betterwithmods:blocks/wood_side_birch"
+          "bottom": "blocks/planks_birch"
         }
       },
       "jungle": {
         "textures": {
-          "bottom": "blocks/planks_jungle",
-          "side": "betterwithmods:blocks/wood_side_jungle"
+          "bottom": "blocks/planks_jungle"
         }
       },
       "acacia": {
         "textures": {
-          "bottom": "blocks/planks_acacia",
-          "side": "betterwithmods:blocks/wood_side_acacia"
+          "bottom": "blocks/planks_acacia"
         }
       },
       "dark_oak": {
         "textures": {
-          "bottom": "blocks/planks_big_oak",
-          "side": "betterwithmods:blocks/wood_side_dark_oak"
+          "bottom": "blocks/planks_big_oak"
         }
       }
     }

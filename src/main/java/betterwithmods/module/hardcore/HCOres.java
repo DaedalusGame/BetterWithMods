@@ -79,7 +79,7 @@ public class HCOres extends Feature {
     public void disabledInit(FMLInitializationEvent event) {
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Items.BUCKET)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4), new Object[]{new ItemStack(Items.COMPASS)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 4), new Object[]{new ItemStack(Items.CLOCK)});
     }

@@ -19,6 +19,25 @@ import static betterwithmods.module.gameplay.CrucibleRecipes.addStokedCrucibleRe
 public class MetalReclaming extends Feature {
     public static int reclaimCount;
 
+    public static void addReclaimRecipe(ItemStack input, String oreSuffix, int ingotCount) {
+        int totalNuggets = ingotCount * reclaimCount;
+        int ingots = totalNuggets / 9;
+        int nuggets = totalNuggets % 9;
+        ItemStack ingotStack = ItemStack.EMPTY;
+        ItemStack nuggetStack = ItemStack.EMPTY;
+        if (ingots > 0 && !OreDictionary.getOres("ingot" + oreSuffix).isEmpty())
+            ingotStack = OreDictionary.getOres("ingot" + oreSuffix).get(0);
+        if (nuggets > 0 && !OreDictionary.getOres("nugget" + oreSuffix).isEmpty())
+            nuggetStack = OreDictionary.getOres("nugget" + oreSuffix).get(0);
+        if (ingotStack.isEmpty()) {
+            if (!nuggetStack.isEmpty()) {
+                StokedCrucibleManager.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), new Object[]{input.copy()});
+            }
+        } else {
+            StokedCrucibleManager.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : ItemStack.EMPTY, new Object[]{input.copy()});
+        }
+    }
+
     @Override
     public String getFeatureDescription() {
         return "Adds recipes to the Crucible to melt metal items back into their component metals";
@@ -87,28 +106,8 @@ public class MetalReclaming extends Feature {
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.IRON_BARS, 8)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7), new Object[]{new ItemStack(Items.CAULDRON)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 31), new Object[]{new ItemStack(Blocks.ANVIL, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
         }
 
 
-    }
-
-    public static void addReclaimRecipe(ItemStack input, String oreSuffix, int ingotCount) {
-        int totalNuggets = ingotCount * reclaimCount;
-        int ingots = totalNuggets / 9;
-        int nuggets = totalNuggets % 9;
-        ItemStack ingotStack = ItemStack.EMPTY;
-        ItemStack nuggetStack = ItemStack.EMPTY;
-        if (ingots > 0 && !OreDictionary.getOres("ingot" + oreSuffix).isEmpty())
-            ingotStack = OreDictionary.getOres("ingot" + oreSuffix).get(0);
-        if (nuggets > 0 && !OreDictionary.getOres("nugget" + oreSuffix).isEmpty())
-            nuggetStack = OreDictionary.getOres("nugget" + oreSuffix).get(0);
-        if (ingotStack.isEmpty()) {
-            if (!nuggetStack.isEmpty()) {
-                StokedCrucibleManager.getInstance().addRecipe(new ItemStack(nuggetStack.getItem(), totalNuggets > nuggets ? totalNuggets : nuggets, nuggetStack.getMetadata()), new Object[]{input.copy()});
-            }
-        } else {
-            StokedCrucibleManager.getInstance().addRecipe(new ItemStack(ingotStack.getItem(), ingots, ingotStack.getMetadata()), nuggetStack != null ? new ItemStack(nuggetStack.getItem(), nuggets, nuggetStack.getMetadata()) : ItemStack.EMPTY, new Object[]{input.copy()});
-        }
     }
 }

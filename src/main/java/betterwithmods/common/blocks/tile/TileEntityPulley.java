@@ -31,12 +31,12 @@ import java.util.*;
 
 public class TileEntityPulley extends TileEntityVisibleInventory {
 
+    private EntityExtendingRope rope;
+    private NBTTagCompound ropeTag = null;
+
     public static final boolean isValidPlatform(Block block) {
         return block == BWMBlocks.PLATFORM || block == BWMBlocks.IRON_WALL;
     }
-
-    private EntityExtendingRope rope;
-    private NBTTagCompound ropeTag = null;
 
     private boolean isRedstonePowered() {
         return getWorld().getBlockState(pos).getBlock() != null && getWorld().isBlockPowered(pos);
@@ -297,7 +297,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     private boolean putRope(boolean flag) {
-        return InvUtils.insert(inventory, new ItemStack(BWMBlocks.ROPE, 1), !flag);
+        return InvUtils.insert(inventory, new ItemStack(BWMBlocks.ROPE, 1), !flag).isEmpty();
     }
 
     public boolean onJobCompleted(boolean up, int targetY, EntityExtendingRope theRope) {

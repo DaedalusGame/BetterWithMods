@@ -11,12 +11,9 @@ import betterwithmods.util.BWMFoodStats;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import betterwithmods.util.player.FatPenalty;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -53,20 +50,52 @@ import java.util.UUID;
  */
 public class HCHunger extends Feature {
 
+    /**
+     * Walking speed changed according to health/exhaustion/fat
+     */
+
+    protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
+    private static GuiHunger guiHunger = null;
+    private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");
+    private static Field satField = ReflectionHelper.findField(ItemFood.class, "saturationModifier", "field_77854_c");
+
+    static {
+        foodField.setAccessible(true);
+        satField.setAccessible(true);
+    }
+
     private double jumpExhaustion;
     private boolean foodStackSize;
+
+    public static void setDessert(ItemFood food) {
+        food.setAlwaysEdible();
+    }
+
+    public static void modifySaturation(ItemFood item, float saturation) {
+        try {
+            satField.set(item, saturation);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void modifyFood(ItemFood item, int food) {
+        try {
+            foodField.set(item, food);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void modifyFoodValue(ItemFood item, int food, float saturation) {
+        modifyFood(item, food);
+        modifySaturation(item, saturation);
+    }
 
     @Override
     public void setupConfig() {
         jumpExhaustion = loadPropDouble("Jump Exhaustion", "Exhaustion penalty from jumping", 0.09);
         foodStackSize = loadPropBool("Change Food Stacksize", "All Foods all stack up to 16", false);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void initClient(FMLInitializationEvent event) {
-        if (loadPropBool("Kill Autojump", "Automatically Disable Autojump, because it's stupid", true))
-            Minecraft.getMinecraft().gameSettings.autoJump = false;
     }
 
     @Override
@@ -80,6 +109,7 @@ public class HCHunger extends Feature {
         modifyFood((ItemFood) BWMItems.CHICKEN_SOUP, 24);
         modifyFood((ItemFood) BWMItems.CHOWDER, 15);
         modifyFood((ItemFood) BWMItems.HEARTY_STEW, 30);
+        modifyFood((ItemFood) Items.RABBIT_STEW, 30);
         modifyFood((ItemFood) BWMItems.PORK_DINNER, 24);
         modifyFood((ItemFood) BWMItems.RAW_EGG, 6);
         modifyFood((ItemFood) BWMItems.COOKED_EGG, 9);
@@ -91,8 +121,9 @@ public class HCHunger extends Feature {
         modifyFood((ItemFood) BWMItems.TASTY_SANDWICH, 18);
         modifyFood((ItemFood) BWMItems.CREEPER_OYSTER, 6);
         modifyFood((ItemFood) BWMItems.WOLF_CHOP, 3);
+        modifyFoodValue((ItemFood) BWMItems.APPLE_PIE, 15, 15);
         modifyFoodValue((ItemFood) BWMItems.CHOCOLATE, 6, 3);
-        modifyFoodValue((ItemFood) BWMItems.DONUT,  3, 1.5f);
+        modifyFoodValue((ItemFood) BWMItems.DONUT, 3, 1.5f);
         modifyFoodValue((ItemFood) BWMItems.KIBBLE, 9, 0);
         //MEATS
         modifyFoodValue((ItemFood) Items.SPIDER_EYE, 6, 0);
@@ -103,28 +134,38 @@ public class HCHunger extends Feature {
 
         modifyFoodValue((ItemFood) Items.COOKED_CHICKEN, 12, 0);
         modifyFoodValue((ItemFood) Items.COOKED_MUTTON, 12, 0);
+
+
         modifyFoodValue((ItemFood) Items.BEEF, 12, 0);
         modifyFoodValue((ItemFood) Items.PORKCHOP, 12, 0);
+        modifyFoodValue((ItemFood) Items.RABBIT, 12, 0);
         modifyFoodValue((ItemFood) BWMItems.WOLF_CHOP, 12, 0);
 
         modifyFoodValue((ItemFood) Items.COOKED_BEEF, 15, 0);
         modifyFoodValue((ItemFood) Items.COOKED_PORKCHOP, 15, 0);
+        modifyFoodValue((ItemFood) Items.COOKED_RABBIT, 15, 0);
 
         modifyFoodValue((ItemFood) Items.FISH, 9, 0);
         modifyFoodValue((ItemFood) Items.COOKED_FISH, 12, 0);
         //OTHER
         modifyFoodValue((ItemFood) Items.MELON, 2, 0);
         modifyFoodValue((ItemFood) Items.MUSHROOM_STEW, 15, 0);
+        modifyFoodValue((ItemFood) Items.BEETROOT, 15, 0);
         modifyFoodValue((ItemFood) Items.BREAD, 12, 0);
         modifyFoodValue((ItemFood) Items.COOKIE, 3, 3);
-        modifyFoodValue((ItemFood) Items.PUMPKIN_PIE, 6, 15);
+        modifyFoodValue((ItemFood) Items.PUMPKIN_PIE, 15, 15);
         //TODO CAKE????
         modifyFoodValue((ItemFood) Items.POTATO, 3, 0);
         modifyFoodValue((ItemFood) Items.BAKED_POTATO, 6, 0);
         modifyFoodValue((ItemFood) Items.CARROT, 3, 0);
+        modifyFoodValue((ItemFood) Items.BEETROOT, 3, 0);
         modifyFoodValue((ItemFood) Items.APPLE, 3, 0);
         modifyFoodValue((ItemFood) Items.GOLDEN_APPLE, 3, 0);
         modifyFoodValue((ItemFood) Items.GOLDEN_CARROT, 3, 0);
+
+        setDessert((ItemFood) Items.COOKIE);
+        setDessert((ItemFood) Items.PUMPKIN_PIE);
+        setDessert((ItemFood) BWMItems.CHOCOLATE);
 
         RecipeUtils.removeRecipes(Items.BREAD, 0);
         RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
@@ -136,14 +177,16 @@ public class HCHunger extends Feature {
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1), 0.1F);
 
         KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8));
         KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1));
+        KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1));
 
         CauldronRecipes.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
         CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new Object[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
+        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.RABBIT_STEW, 5), new Object[]{Items.COOKED_RABBIT, Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.RED_MUSHROOM, 3), "foodFlour"});
 
-        initDesserts();
         if (foodStackSize) {
             Item.REGISTRY.forEach(item -> {
                 if (item instanceof ItemFood)
@@ -180,8 +223,6 @@ public class HCHunger extends Feature {
         return true;
     }
 
-
-    private static GuiHunger guiHunger = null;
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void replaceHungerGui(RenderGameOverlayEvent.Pre event) {
@@ -218,25 +259,6 @@ public class HCHunger extends Feature {
     }
 
     /**
-     * Revert player's food system to vanilla {@link FoodStats}.
-     */
-    private void revertFoodSystem(EntityPlayer player) {
-        if (!(player.getFoodStats() instanceof BWMFoodStats))
-            return;
-        BWMFoodStats originalFS = (BWMFoodStats) player.getFoodStats();
-        FoodStats newFS = new FoodStats();
-        NBTTagCompound compound = player.getEntityData();
-        newFS.readNBT(compound);
-        if (compound.hasKey("bwmAdjustedFoodStats")) {
-            newFS.setFoodLevel(originalFS.getFoodLevel() / 3);
-            compound.setBoolean("bwmAdjustedFoodStats", false);
-            newFS.writeNBT(compound);
-        }
-        setFoodStats(player, newFS);
-        BWMod.logger.debug("Vanilla food system " + newFS + " applied on " + player.getName() + ".");
-    }
-
-    /**
      * The FoodStats must be manually saved with event. Why is not known.
      */
     @SubscribeEvent
@@ -264,90 +286,16 @@ public class HCHunger extends Feature {
         });
     }
 
-    /**
-     * Mining speed changed according to health/exhaustion/fat. Complete rework
-     * of EntityPlayer.getDigSpeed() to also check if using right item to
-     * harvest.
-     */
-    @SubscribeEvent
-    public void breakSpeedPenalty(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
-        Optional<EntityPlayer> playerOptional = isFoodSystemValid(event.getEntityPlayer());
-        if (!playerOptional.isPresent() || !event.getEntity().getEntityWorld().isRemote)
-            return;
-        EntityPlayer player = playerOptional.get();
-        IBlockState state = event.getState();
-        float f = player.inventory.getStrVsBlock(state);
-
-        if (f > 1.0F) {
-            int i = EnchantmentHelper.getEfficiencyModifier(player);
-            ItemStack itemstack = player.getHeldItemMainhand();
-
-            if (i > 0 && !itemstack.isEmpty()) {
-                float intermediate = (float) (i * i + 1);
-
-                if (!itemstack.canHarvestBlock(state) && f <= 1.0F) {
-                    f += intermediate * 0.08F;
-                } else {
-                    f += intermediate;
-                }
-            }
-        }
-
-        if (player.isPotionActive(MobEffects.HASTE)) {
-            f *= 1.0F + (float) (player.getActivePotionEffect(MobEffects.HASTE).getAmplifier() + 1) * 0.2F;
-        }
-
-        if (player.isPotionActive(MobEffects.MINING_FATIGUE)) {
-            float f1;
-
-            switch (player.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) {
-                case 0:
-                    f1 = 0.3F;
-                    break;
-                case 1:
-                    f1 = 0.09F;
-                    break;
-                case 2:
-                    f1 = 0.0027F;
-                    break;
-                case 3:
-                default:
-                    f1 = 8.1E-4F;
-            }
-
-            f *= f1;
-        }
-
-        if (player.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(player)) {
-            f /= 5.0F;
-        }
-
-        if (!player.onGround) {
-            f /= 5.0F;
-        }
-
-        f *= EntityPlayerExt.getHealthAndExhaustionModifier(player);
-
-        if (f < 0)
-            f = 0;
-        event.setNewSpeed(f);
-    }
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void walkingShaked(LivingEvent.LivingUpdateEvent event) {
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
             if (player.world.isRemote && player.isSprinting())
-                if(guiHunger != null)
+                if (guiHunger != null)
                     guiHunger.triggerShake();
         });
     }
 
-    /**
-     * Walking speed changed according to health/exhaustion/fat
-     */
-
-    protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
     @SubscribeEvent
     public void walkingPenalty(LivingEvent.LivingUpdateEvent event) {
         if (!event.getEntity().getEntityWorld().isRemote)
@@ -356,13 +304,6 @@ public class HCHunger extends Feature {
         if (player != null) {
             EntityPlayerExt.changeSpeed(player, penaltySpeedUUID, "Health speed penalty", EntityPlayerExt.getHealthAndExhaustionModifier(player));
         }
-    }
-    /**
-     * Disable swimming if needed. FIXME Not able to jump at the bottom.
-     * New hook may be required. (Probable workaround implemented)
-     */
-    @SubscribeEvent
-    public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
     }
 
     @SideOnly(Side.CLIENT)
@@ -447,18 +388,6 @@ public class HCHunger extends Feature {
         }
     }
 
-
-    public static void initDesserts() {
-        setDessert((ItemFood) Items.COOKIE);
-        setDessert((ItemFood) Items.PUMPKIN_PIE);
-        setDessert((ItemFood) BWMItems.CHOCOLATE);
-    }
-
-    public static void setDessert(ItemFood food) {
-        food.setAlwaysEdible();
-    }
-
-
     @Override
     public boolean hasSubscriptions() {
         return true;
@@ -472,38 +401,12 @@ public class HCHunger extends Feature {
             return;
         FatPenalty fat = EntityPlayerExt.getFatPenalty(player);
         RenderPlayer render = e.getRenderer();
-        float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0,fat.ordinal()/4f) : 0.0f;
+        float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 4f) : 0.0f;
         render.getMainModel().bipedBody = new ModelRenderer(render.getMainModel(), 16, 16);
         render.getMainModel().bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
         render.getMainModel().bipedBodyWear = new ModelRenderer(render.getMainModel(), 16, 32);
-        render.getMainModel().bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4,  0.25F + scale);
+        render.getMainModel().bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.25F + scale);
 
-    }
-
-    private static Field foodField = ReflectionHelper.findField(ItemFood.class, "healAmount", "field_77853_b");
-    private static Field satField = ReflectionHelper.findField(ItemFood.class, "saturationModifier", "field_77854_c");
-
-    static {
-        foodField.setAccessible(true);
-        satField.setAccessible(true);
-    }
-    public static void modifySaturation(ItemFood item, float saturation) {
-        try {
-            satField.set(item, saturation);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void modifyFood(ItemFood item, int food) {
-        try {
-            foodField.set(item, food);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void modifyFoodValue(ItemFood item, int food, float saturation) {
-        modifyFood(item,food);
-        modifySaturation(item,saturation);
     }
 
 }

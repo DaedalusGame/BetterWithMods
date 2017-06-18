@@ -36,6 +36,11 @@
       },
       "raw_flour": {
         "model": "betterwithmods:raw_flour"
+      },
+      "raw_apple_pie": {
+        "textures": {
+          "top": "betterwithmods:blocks/apple_pie_top"
+        }
       }
     }
   }

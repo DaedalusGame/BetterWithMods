@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,6 +36,10 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         this.setHardness(0.1F);
         this.setSoundType(SoundType.CLOTH);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
+    }
+
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.RAW_PASTRY, 1, type.getMetadata());
     }
 
     @Override
@@ -94,8 +99,7 @@ public class BlockRawPastry extends Block implements IMultiLocations {
     }
 
     private boolean canBlockStay(World worldIn, BlockPos pos) {
-
-        return worldIn.getBlockState(pos.down()).isBlockNormalCube();
+        return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos, EnumFacing.UP);
     }
 
     @Override
@@ -106,15 +110,14 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         }
         return variants.toArray(new String[variants.size()]);
     }
-    public static ItemStack getStack(EnumType type) {
-        return new ItemStack(BWMBlocks.RAW_PASTRY,1, type.getMetadata());
-    }
 
     public enum EnumType implements IStringSerializable {
         CAKE(0, "raw_cake", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
         PUMPKIN(1, "raw_pumpkin_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
         COOKIE(2, "raw_cookie", new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D)),
-        BREAD(3,"raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D));
+        BREAD(3, "raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D)),
+        APPLE(4, "raw_apple_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D));
+
         private static final BlockRawPastry.EnumType[] META_LOOKUP = values();
 
         private final int meta;

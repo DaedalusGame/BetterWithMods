@@ -1,6 +1,7 @@
 package betterwithmods.util;
 
 import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.HungerPenalty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -75,7 +76,6 @@ public class BWMFoodStats extends FoodStats {
             setSaturation(
                     Math.min(this.getSaturationLevel() + (float) overWeight * foodSaturationModifier / 3.0F, 20.0F));
         }
-
     }
 
     /**
@@ -97,17 +97,15 @@ public class BWMFoodStats extends FoodStats {
                 setExhaustion(getExhaustion() - 0.5F);
                 setSaturation(Math.max(this.getSaturationLevel() - 0.125F, 0.0F));
             }
-        } else
+        } else {
             setExhaustion(0.0F);
+        }
 
-        if (player.getEntityWorld().getGameRules().getBoolean("naturalRegeneration") && this.getFoodLevel() >= 24
-                && player.shouldHeal()) {
+        if (player.getEntityWorld().getGameRules().getBoolean("naturalRegeneration") && EntityPlayerExt.getHungerPenalty(player) == HungerPenalty.NO_PENALTY && player.shouldHeal()) {
             setFoodTimer(getFoodTimer() + 1);
 
             if (this.getFoodTimer() >= 600) {
                 player.heal(1.0F);
-                // Healing doesn't add exhaustion anymore
-                // this.addExhaustion(3.0F);
                 setFoodTimer(0);
             }
         } else if (this.getFoodLevel() <= 0 && this.getSaturationLevel() <= 0.01F) {

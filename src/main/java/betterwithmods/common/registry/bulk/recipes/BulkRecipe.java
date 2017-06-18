@@ -112,8 +112,12 @@ public class BulkRecipe {
         return this.inputs;
     }
 
+    public boolean matches(ItemStack output) {
+        return this.output.isItemEqual(output);
+    }
+
     public boolean matches(ItemStack output, ItemStack secondary) {
-        return this.output.isItemEqual(output) && (secondary.isEmpty() && this.secondary.isEmpty()) || this.secondary.isItemEqual(secondary);
+        return this.matches(output) && (secondary.isEmpty() && this.secondary.isEmpty()) || this.secondary.isItemEqual(secondary);
     }
 
     public boolean matches(ItemStackHandler inv) {

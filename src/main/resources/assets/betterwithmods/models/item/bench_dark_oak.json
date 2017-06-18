@@ -1,7 +1,0 @@
-{
-  "parent": "betterwithmods:block/bench_supported",
-  "textures": {
-    "side": "betterwithmods:blocks/woodSideDarkOak",
-    "bottom": "blocks/planks_big_oak"
-  }
-}

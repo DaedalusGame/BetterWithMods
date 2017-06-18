@@ -197,8 +197,9 @@ tile.bwm:fertile_farmland.name=Fertile Farmland
 tile.bwm:advanced_gearbox.name=Advanced Gearbox
 tile.bwm:raw_pastry.0.name=Cake Batter
 tile.bwm:raw_pastry.1.name=Oven Ready Pumpkin Pie
-tile.bwm:raw_pastry.2.name=Cookie Dough
+tile.bwm:raw_pastry.2.name=Raw Cookie Dough
 tile.bwm:raw_pastry.3.name=Flour
+tile.bwm:raw_pastry.4.name=Oven Ready Apple Pie
 tile.bwm:stump.0.name=Oak Stump
 tile.bwm:stump.1.name=Spruce Stump
 tile.bwm:stump.2.name=Birch Stump
@@ -374,6 +375,7 @@ item.bwm:pork_dinner.name=Pork Dinner
 item.bwm:raw_kebab.name=Uncooked Kebab
 item.bwm:wolf_chop.name=Wolf Chop
 item.bwm:kibble.name=Kibble
+item.bwm:apple_pie.name=Apple Pie
 
 
 item.bwm:windmill.windmill.name=Windmill
@@ -495,3 +497,7 @@ config.sync.ok=Changes to the configs successful. If you see issues from not res
 tile.bed.tooRestless=You are too restless to sleep
 
 tooltip.rotate_with_hand.name=Shift-Click with an Empty Hand to rotate this Block
+tooltip.chime.name=Emits a Redstone Single when Raining, or when an Entity passes through it.
+tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
+tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
+tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, check your Gearboxes!

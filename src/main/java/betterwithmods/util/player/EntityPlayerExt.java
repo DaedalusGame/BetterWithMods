@@ -4,6 +4,8 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCArmor;
 import betterwithmods.module.hardcore.HCGloom;
+import betterwithmods.module.hardcore.HCHunger;
+import betterwithmods.module.hardcore.HCInjury;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,19 +38,21 @@ public final class EntityPlayerExt {
     }
 
     public static float getHealthAndExhaustionModifier(EntityPlayer player) {
-        if(!isSurvival(player))
+        if (!isSurvival(player))
             return 1;
         return getWorstPenalty(player).getModifier();
     }
+
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
         int gloom = HCGloom.getGloomTime(player);
         GloomPenalty penalty = GloomPenalty.NO_PENALTY;
-        for(GloomPenalty p: GloomPenalty.VALUES) {
-            if(p.isInRange(gloom))
+        for (GloomPenalty p : GloomPenalty.VALUES) {
+            if (p.isInRange(gloom))
                 penalty = p;
         }
         return penalty;
     }
+
     public static IPlayerPenalty getWorstPenalty(EntityPlayer player) {
         HungerPenalty hungerPenalty = getHungerPenalty(player);
         FatPenalty fatPenalty = getFatPenalty(player);
@@ -88,9 +92,12 @@ public final class EntityPlayerExt {
     }
 
     public static boolean canJump(EntityPlayer player) {
-        return player.getHealth() > 4
-                && player.getFoodStats().getFoodLevel() > 12
-                && player.getFoodStats().getSaturationLevel() < 18.0;
+        boolean canJump = true;
+        if (ModuleLoader.isFeatureEnabled(HCHunger.class))
+            canJump &= player.getFoodStats().getFoodLevel() > 12 && player.getFoodStats().getSaturationLevel() < 18.0;
+        if (ModuleLoader.isFeatureEnabled(HCInjury.class))
+            canJump &= player.getHealth() > 4;
+        return canJump;
     }
 
     public static boolean canSwim(EntityPlayer player) {
@@ -110,7 +117,7 @@ public final class EntityPlayerExt {
     }
 
     public static void changeAttack(EntityLivingBase entity,
-                                   UUID attackModifierUUID, String name, double multiplier) {
+                                    UUID attackModifierUUID, String name, double multiplier) {
         AttributeModifier attackModifier = (new AttributeModifier(
                 attackModifierUUID, name, multiplier - 1, 2));
         IAttributeInstance iattributeinstance = entity
@@ -161,10 +168,10 @@ public final class EntityPlayerExt {
     }
 
     public static float getGloomExhaustionModifier(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCGloom.class))
+        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
             return 1.0f;
         GloomPenalty gloom = getGloomPenalty(player);
-        if(gloom != null)
+        if (gloom != null)
             return gloom.getModifier();
         return 1.0f;
     }
@@ -206,15 +213,15 @@ public final class EntityPlayerExt {
         if (state.getBlock() == BWMBlocks.STUMP) {
             return false;
         }
-        if(stack.hasTagCompound()) {
+        if (stack.hasTagCompound()) {
             NBTTagCompound stats = stack.getSubCompound("Stats");
-            if(stats != null) {
-             return stats.getByte("Broken") != 1;
+            if (stats != null) {
+                return stats.getByte("Broken") != 1;
             }
         }
         for (String type : stack.getItem().getToolClasses(stack)) {
-            if(type == "mattock")
-                return state.getBlock().isToolEffective("shovel",state) || state.getBlock().isToolEffective("axe",state);
+            if (type == "mattock")
+                return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("axe", state);
             if (state.getBlock().isToolEffective(type, state))
                 return true;
         }

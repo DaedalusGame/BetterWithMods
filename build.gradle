@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.2.27-1.11.2"
+version = "1.2.28-1.11.2"
 group = "betterwithmods" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Better With Mods"
 
@@ -37,7 +37,7 @@ dependencies {
 	deobfCompile "slimeknights:TConstruct:1.11.2+"
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     deobfCompile "com.blamejared:MTLib:2.+"
-    deobfCompile "MCMultiPart2:MCMultiPart-exp:+"
+//    deobfCompile "MCMultiPart2:MCMultiPart-exp:+"
 //    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
     files("libs/*")
 }

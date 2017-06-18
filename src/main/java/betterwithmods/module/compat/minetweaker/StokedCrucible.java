@@ -8,7 +8,6 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -33,11 +32,15 @@ public class StokedCrucible {
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
+        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output)));
+    }
+    @ZenMethod
+    public static void remove(IItemStack output, IItemStack secondary) {
+        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), InputHelper.toStack(secondary)));
     }
 
     @ZenMethod
-    public static void remove(IItemStack output, @NotNull IIngredient[] inputs) {
-        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+    public static void remove(IItemStack output, @Optional IItemStack secondary, @NotNull IIngredient[] inputs) {
+        MineTweakerAPI.apply(new BulkRemove(StokedCrucibleRecipeCategory.UID, StokedCrucibleManager.getInstance(), InputHelper.toStack(output), InputHelper.toStack(secondary), InputHelper.toObjects(inputs)));
     }
 }

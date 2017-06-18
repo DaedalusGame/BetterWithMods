@@ -119,15 +119,11 @@ public class InvUtils {
         }
     }
 
-    private static boolean canInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
-        return insert(inv, stack, minSlot, maxSlot, true);
-    }
-
-    public static boolean insertSingle(IItemHandler inv, ItemStack stack, boolean simulate) {
+    public static ItemStack insertSingle(IItemHandler inv, ItemStack stack, boolean simulate) {
         return insert(inv, stack, 1, simulate);
     }
 
-    public static boolean insert(IItemHandler inv, ItemStack stack, int count, boolean simulate) {
+    public static ItemStack insert(IItemHandler inv, ItemStack stack, int count, boolean simulate) {
         ItemStack copy = stack.copy();
         if (copy.getCount() > count) {
             copy.setCount(count);
@@ -135,19 +131,32 @@ public class InvUtils {
         return insert(inv, copy, simulate);
     }
 
+    public static boolean canInsert(IItemHandler inv, ItemStack stack, int count) {
+        ItemStack copy = stack.copy();
+        if (copy.getCount() > count) {
+            copy.setCount(count);
+        }
+        ItemStack inserted = insert(inv, copy, true);
+        if (inserted.equals(copy)) {
+            return false;
+        }
+        return true;
+    }
+
+
     public static void insert(IItemHandler inv, NonNullList<ItemStack> stacks, boolean simulate) {
         stacks.forEach(stack -> insert(inv, stack, 0, inv.getSlots(), simulate));
     }
 
-    public static boolean insert(IItemHandler inv, ItemStack stack, boolean simulate) {
+    public static ItemStack insert(IItemHandler inv, ItemStack stack, boolean simulate) {
         return insert(inv, stack, 0, inv.getSlots(), simulate);
     }
 
-    public static boolean insert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
-        return attemptInsert(inv, stack, minSlot, maxSlot, simulate).isEmpty();
+    public static ItemStack insert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+        return attemptInsert(inv, stack, minSlot, maxSlot, simulate);
     }
 
-    private static ItemStack attemptInsert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+    public static ItemStack attemptInsert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
         if (isFull(inv))
             return stack;
         ItemStack leftover = ItemStack.EMPTY;
@@ -463,7 +472,7 @@ public class InvUtils {
     }
 
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {
-        if(world.isRemote)
+        if (world.isRemote)
             return;
         EntityItem item = new EntityItem(world, x, y, z, stack);
         float velocity = 0.05F;

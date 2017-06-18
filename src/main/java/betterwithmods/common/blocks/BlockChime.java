@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +41,12 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK));
         this.setSoundType(SoundType.WOOD);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("tooltip.chime.name"));
+        super.addInformation(stack, player, tooltip, advanced);
     }
 
     @Override

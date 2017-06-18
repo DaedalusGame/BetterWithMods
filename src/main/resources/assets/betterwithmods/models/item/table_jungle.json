@@ -1,7 +1,0 @@
-{
-  "parent": "betterwithmods:block/table_supported",
-  "textures": {
-    "side": "betterwithmods:blocks/woodSideJungle",
-    "bottom": "blocks/planks_jungle"
-  }
-}

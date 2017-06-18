@@ -1,36 +1,66 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IAxle;
+import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
+import java.util.Random;
 
-public class BlockBrokenGearbox extends Block {
+public class BlockBrokenGearbox extends BWMBlock implements IMechanicalBlock {
     public static final PropertyInteger STAGE = PropertyInteger.create("repair", 0, 1);
     public BlockBrokenGearbox() {
         super (Material.WOOD);
         this.setHardness(2.0F);
         this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.UP).withProperty(STAGE, 0));
         this.setCreativeTab(BWCreativeTabs.BWTAB);
+        setTickRandomly(true);
     }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add(I18n.format("tooltip.broken_gearbox.name"));
+        super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (MechanicalUtil.isBlockPoweredByAxle(worldIn, pos, this)) {
+            for (int i = 0; i < 5; i++) {
+                float flX = pos.getX() + rand.nextFloat();
+                float flY = pos.getY() + rand.nextFloat() * 0.5F + 1.0F;
+                float flZ = pos.getZ() + rand.nextFloat();
+
+                worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
+            }
+            worldIn.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.45F);
+        }
+        super.randomTick(worldIn, pos, state, rand);
+    }
+
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
@@ -118,5 +148,51 @@ public class BlockBrokenGearbox extends Block {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING, STAGE, DirUtils.UP, DirUtils.DOWN, DirUtils.NORTH, DirUtils.SOUTH, DirUtils.WEST, DirUtils.EAST);
+    }
+
+    @Override
+    public boolean canOutputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean isInputtingMechPower(World world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean isOutputtingMechPower(World world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
+        EnumFacing facing = world.getBlockState(pos).getValue(DirUtils.FACING);
+        return dir == facing;
+    }
+
+    @Override
+    public void overpower(World world, BlockPos pos) {
+
+    }
+
+    @Override
+    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
+
+    }
+
+    @Override
+    public boolean isMechanicalOnFromState(IBlockState state) {
+        return false;
     }
 }

@@ -31,13 +31,28 @@ public class CauldronRecipes extends Feature {
         canDisable = false;
     }
 
+    public static void addCauldronRecipe(ItemStack output, Object[] inputs) {
+        CauldronManager.getInstance().addRecipe(output, inputs);
+    }
+
+    public static void addCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        CauldronManager.getInstance().addRecipe(output, secondary, inputs);
+    }
+
+    public static void addStokedCauldronRecipe(ItemStack output, Object[] inputs) {
+        StokedCauldronManager.getInstance().addRecipe(output, inputs);
+    }
+
+    public static void addStokedCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        StokedCauldronManager.getInstance().addRecipe(output, secondary, inputs);
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8), new Object[]{"dustPotash", new OreStack("dustHellfire", 4)});
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL, 4), new Object[]{"dustHellfire", "dustCarbon"});
         //Flour OreDict is foodFlour, Donuts need sugar
         addCauldronRecipe(new ItemStack(BWMItems.DONUT, 4, 0), new Object[]{"foodFlour", Items.SUGAR});
-        addCauldronRecipe(new ItemStack(Items.BREAD), new Object[]{"foodFlour"});
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE), new Object[]{new OreStack("dustHellfire", 8)});
         addCauldronRecipe(new ItemStack(Items.DYE, 1, 2), new Object[]{"blockCactus"});
         addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"string", "dustGlowstone", "dustRedstone"});
@@ -87,6 +102,7 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
         addCauldronRecipe(new ItemStack(BWMItems.HEARTY_STEW, 5), new Object[]{"listAllmeatcooked", Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.BROWN_MUSHROOM, 3), "foodFlour"});
+
         addCauldronRecipe(new ItemStack(BWMItems.KIBBLE, 2), new ItemStack[]{new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(Items.ROTTEN_FLESH, 4), new ItemStack(Items.SUGAR)});
     }
 
@@ -99,26 +115,10 @@ public class CauldronRecipes extends Feature {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
                     if (!output.isEmpty()) {
-                        CauldronRecipes.addCauldronRecipe(output.copy(),new Object[]{input.copy()});
+                        CauldronRecipes.addCauldronRecipe(output.copy(), new Object[]{input.copy()});
                     }
                 }
             }
         }
-    }
-
-    public static void addCauldronRecipe(ItemStack output, Object[] inputs) {
-        CauldronManager.getInstance().addRecipe(output, inputs);
-    }
-
-    public static void addCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        CauldronManager.getInstance().addRecipe(output, secondary, inputs);
-    }
-
-    public static void addStokedCauldronRecipe(ItemStack output, Object[] inputs) {
-        StokedCauldronManager.getInstance().addRecipe(output, inputs);
-    }
-
-    public static void addStokedCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        StokedCauldronManager.getInstance().addRecipe(output, secondary, inputs);
     }
 }

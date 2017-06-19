@@ -291,6 +291,8 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void walkingShaked(LivingEvent.LivingUpdateEvent event) {
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (player != Minecraft.getMinecraft().player)
+                return;
             if (player.world.isRemote && player.isSprinting())
                 if (guiHunger != null)
                     guiHunger.triggerShake();
@@ -311,6 +313,8 @@ public class HCHunger extends Feature {
     @SubscribeEvent
     public void jumpingShaked(LivingEvent.LivingJumpEvent event) {
         isFoodSystemValid(event.getEntityLiving()).ifPresent(player -> {
+            if (player != Minecraft.getMinecraft().player)
+                return;
             if (player.world.isRemote)
                 guiHunger.triggerShake();
         });

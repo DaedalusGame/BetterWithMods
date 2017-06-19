@@ -39,7 +39,8 @@ public final class Document {
             new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
             new PatternMapping("(\\*\\*|__)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | __...__
             new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
-            new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment) // strikethrough: ~~...~~
+            new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment), // strikethrough: ~~...~~
+            new PatternMapping("\\{([^\\?]+)\\?([^\\[]+):([^\\[]+)\\}", Document::FeatureSegment)
     };
 
     private Document() {
@@ -235,6 +236,10 @@ public final class Document {
         } catch (final Throwable t) {
             return new TextSegment(s, Strings.isNullOrEmpty(t.toString()) ? "Unknown error." : t.toString());
         }
+    }
+
+    private static Segment FeatureSegment(final Segment s, final Matcher m) {
+        return new FeatureSegment(s, m.group(1), m.group(2), m.group(3));
     }
 
     private static final class PatternMapping {

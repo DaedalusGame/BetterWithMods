@@ -121,6 +121,15 @@ public final class ManualAPIImpl implements ManualAPI {
         INSTANCE.reset();
     }
 
+    public static String fixLanguage(final String path) {
+        return fixLanguage(path, FMLCommonHandler.instance().getCurrentLanguage());
+    }
+
+    public static String fixLanguage(final String path, String language) {
+        final String cleanPath = Files.simplifyPath(path);
+        return PATTERN_LANGUAGE_KEY.matcher(cleanPath).replaceAll(language);
+    }
+
     @Override
     public void addTab(final TabIconRenderer renderer, @Nullable final String tooltip, final String path) {
         tabs.add(new Tab(renderer, tooltip, path));
@@ -169,13 +178,11 @@ public final class ManualAPIImpl implements ManualAPI {
     @Override
     @Nullable
     public Iterable<String> contentFor(final String path) {
-        final String cleanPath = Files.simplifyPath(path);
-        final String language = FMLCommonHandler.instance().getCurrentLanguage();
-        final Optional<Iterable<String>> result = contentForWithRedirects(PATTERN_LANGUAGE_KEY.matcher(cleanPath).replaceAll(language));
+        final Optional<Iterable<String>> result = contentForWithRedirects(fixLanguage(path));
         if (result.isPresent()) {
             return result.get();
         }
-        return contentForWithRedirects(PATTERN_LANGUAGE_KEY.matcher(cleanPath).replaceAll(FALLBACK_LANGUAGE)).orElse(null);
+        return contentForWithRedirects(fixLanguage(path, FALLBACK_LANGUAGE)).orElse(null);
     }
 
     @Override

@@ -377,7 +377,7 @@ item.bwm:wolf_chop.name=Wolf Chop
 item.bwm:kibble.name=Kibble
 item.bwm:apple_pie.name=Apple Pie
 
-item.bwm:manual.name=Instruction Manual
+item.bwm:manual.name=Book of Single
 
 item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel
@@ -507,3 +507,5 @@ bwm.manual.home=Home
 bwm.manual.blocks=Block
 bwm.manual.items=Items
 bwm.manual.mechanical=Mechanical Power
+bwm.manual.error.0=Document not found:
+bwm.manual.error.1=Please report this to

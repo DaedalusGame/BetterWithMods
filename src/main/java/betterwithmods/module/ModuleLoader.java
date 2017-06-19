@@ -33,6 +33,13 @@ import java.util.function.Consumer;
 
 public final class ModuleLoader {
 
+    public static Map<Class<? extends Module>, Module> moduleInstances = new HashMap();
+    public static Map<Class<? extends Feature>, Feature> featureInstances = new HashMap();
+    public static List<Module> enabledModules;
+    public static Configuration config;
+    public static File configFile;
+    private static List<Class<? extends Module>> moduleClasses;
+
     static {
         moduleClasses = new ArrayList();
         registerModule(Hardcore.class);
@@ -40,14 +47,6 @@ public final class ModuleLoader {
         registerModule(Tweaks.class);
         registerModule(CompatModule.class);
     }
-
-    private static List<Class<? extends Module>> moduleClasses;
-    public static Map<Class<? extends Module>, Module> moduleInstances = new HashMap();
-    public static Map<Class<? extends Feature>, Feature> featureInstances = new HashMap();
-    public static List<Module> enabledModules;
-
-    public static Configuration config;
-    public static File configFile;
 
     public static void preInit(FMLPreInitializationEvent event) {
         moduleClasses.stream().forEachOrdered(clazz -> {
@@ -143,9 +142,20 @@ public final class ModuleLoader {
         return moduleInstances.get(clazz).enabled;
     }
 
-    public static boolean isFeatureEnabled(String name) {
+    public static boolean isFeatureEnabledSimple(String name) {
+        for (Module module : enabledModules) {
+            for (Feature feature : module.enabledFeatures) {
+                if (feature.configName.equalsIgnoreCase(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isFeatureEnabled(String clazzName) {
         try {
-            Class clazz = Class.forName(name);
+            Class clazz = Class.forName(clazzName);
             return isFeatureEnabled(clazz);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

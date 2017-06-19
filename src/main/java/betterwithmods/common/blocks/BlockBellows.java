@@ -201,7 +201,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public boolean isInputtingMechPower(World world, BlockPos pos) {
-        return MechanicalUtil.isBlockPoweredByAxle(world, pos, this) || MechanicalUtil.isPoweredByCrank(world, pos);
+        return MechanicalUtil.isBlockPoweredByAxle(world, pos, this);
     }
 
     @Override

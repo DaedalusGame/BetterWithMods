@@ -1,5 +1,6 @@
 package betterwithmods.client.gui;
 
+import com.google.common.collect.Lists;
 import li.cil.manual.api.ManualAPI;
 import li.cil.manual.client.manual.Document;
 import li.cil.manual.client.manual.segment.InteractiveSegment;
@@ -100,7 +101,7 @@ public final class GuiManual extends GuiScreen {
 
         scrollButton.enabled = canScroll();
         scrollButton.hoverOverride = isDragging;
-
+        scrollButton.visible = scrollButton.enabled;
         for (int i = 0; i < ManualAPIImpl.getTabs().size() && i < maxTabsPerSide; i++) {
             final ManualAPIImpl.Tab tab = ManualAPIImpl.getTabs().get(i);
             final ImageButton button = (ImageButton) buttonList.get(i);
@@ -217,7 +218,7 @@ public final class GuiManual extends GuiScreen {
 
     private void refreshPage() {
         final Iterable<String> content = ManualAPI.contentFor(ManualAPIImpl.peekPath());
-        document = Document.parse(content != null ? content : Collections.singletonList("Document not found: " + ManualAPIImpl.peekPath()));
+        document = Document.parse(content != null ? content : Lists.newArrayList(I18n.format("bwm.manual.error.0"), "`" + ManualAPIImpl.fixLanguage(ManualAPIImpl.peekPath()) + "`", I18n.format("bwm.manual.error.1") + " [here](https://github.com/BeetoGuy/BetterWithMods/issues)"));
         documentHeight = Document.height(document, documentMaxWidth, getFontRenderer());
         scrollTo(offset());
     }

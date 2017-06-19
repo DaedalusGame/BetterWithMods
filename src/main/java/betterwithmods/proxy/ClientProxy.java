@@ -1,5 +1,6 @@
 package betterwithmods.proxy;
 
+import betterwithmods.BWMod;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.ColorHandlers;
@@ -14,10 +15,12 @@ import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.ModuleLoader;
 import li.cil.manual.api.ManualAPI;
 import li.cil.manual.api.prefab.manual.ItemStackTabIconRenderer;
 import li.cil.manual.api.prefab.manual.ResourceContentProvider;
+import li.cil.manual.api.prefab.manual.TextureTabIconRenderer;
 import li.cil.manual.client.manual.provider.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -71,10 +74,10 @@ public class ClientProxy implements IProxy {
         ManualAPI.addProvider("item", new ItemImageProvider());
         ManualAPI.addProvider("block", new BlockImageProvider());
         ManualAPI.addProvider("oredict", new OreDictImageProvider());
-        ManualAPI.addTab(new ItemStackTabIconRenderer(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+        ManualAPI.addTab(new TextureTabIconRenderer(new ResourceLocation(BWMod.MODID, "textures/gui/manual_home.png")), "bwm.manual.home", "%LANGUAGE%/index.md");
         ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.mechanical", "%LANGUAGE%/mechanical/index.md");
-        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
-        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+        ManualAPI.addTab(new ItemStackTabIconRenderer(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+        ManualAPI.addTab(new ItemStackTabIconRenderer(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), "bwm.manual.items", "%LANGUAGE%/items/index.md");
 
 
     }
@@ -117,7 +120,7 @@ public class ClientProxy implements IProxy {
 
     private void initRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityDynamite.class, manager -> new RenderSnowball<>(manager, BWMItems.DYNAMITE, Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityUrn.class,RenderUrn::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityUrn.class, RenderUrn::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityMiningCharge.class, RenderMiningCharge::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityExtendingRope.class, RenderExtendingRope::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShearedCreeper.class, RenderShearedCreeper::new);

@@ -71,8 +71,8 @@ public class BWGuiHandler implements IGuiHandler {
     }
 
     public enum Gui {
-        MANUAL,
-        TILE;
+        TILE,
+        MANUAL;
 
         public static Gui[] VALUES = values();
     }

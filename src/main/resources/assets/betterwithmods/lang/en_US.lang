@@ -377,6 +377,7 @@ item.bwm:wolf_chop.name=Wolf Chop
 item.bwm:kibble.name=Kibble
 item.bwm:apple_pie.name=Apple Pie
 
+item.bwm:manual.name=Instruction Manual
 
 item.bwm:windmill.windmill.name=Windmill
 item.bwm:windmill.waterwheel.name=Water Wheel
@@ -502,5 +503,7 @@ tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quick
 tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, check your Gearboxes!
 
-
+bwm.manual.home=Home
 bwm.manual.blocks=Block
+bwm.manual.items=Items
+bwm.manual.mechanical=Mechanical Power

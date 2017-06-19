@@ -41,6 +41,7 @@ public class DefinitionPathProvider implements PathProvider {
         if (isBlacklisted(stack) || !stack.getItem().getRegistryName().getResourceDomain().equals(BWMod.MODID))
             return null;
         String path = stack.getUnlocalizedName().replace("tile.bwm:", "");
+
         return "%LANGUAGE%/blocks/" + path + ".md";
     }
 }

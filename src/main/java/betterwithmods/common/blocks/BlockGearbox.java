@@ -193,7 +193,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     @Override
     public boolean isInputtingMechPower(World world, BlockPos pos) {
         EnumFacing dir = getFacing(world, pos);
-        return MechanicalUtil.isBlockPoweredByAxleOnSide(world, pos, dir) || MechanicalUtil.isPoweredByCrankOnSide(world, pos, dir);
+        return MechanicalUtil.isBlockPoweredByAxleOnSide(world, pos, dir);
     }
 
     @Override

@@ -1,4 +1,4 @@
-## Gearbox
+# Gearbox
 
 ![Gearbox](block:betterwithmods:gearbox@0)
 

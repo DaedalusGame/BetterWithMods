@@ -6,7 +6,6 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -86,7 +85,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
             growthChance /= fertileModifier;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             IBlockState check = world.getBlockState(pos.offset(facing));
-            if (check.getBlock() instanceof IGrowable)
+            if (check.getBlock() == this)
                 growthChance /= neighborModifier;
         }
         if (meta < 7) {

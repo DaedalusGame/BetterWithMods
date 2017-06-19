@@ -31,20 +31,20 @@ import java.util.Optional;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @SideOnly(Side.CLIENT)
 public final class GuiManual extends GuiScreen {
-    private static final int documentMaxWidth = 220;
-    private static final int documentMaxHeight = 192;
-    private static final int scrollPosX = 250;
+    private static final int documentMaxWidth = 330;//220;
+    private static final int documentMaxHeight = 288;//192;
+    private static final int scrollPosX = 373;//250;
     private static final int scrollPosY = 48;
     private static final int scrollWidth = 26;
-    private static final int scrollHeight = 180;
+    private static final int scrollHeight = 270;//180
     private static final int tabPosX = -52;
     private static final int tabPosY = 40;
     private static final int tabWidth = 64;
     private static final int tabHeight = 32;
     private static final int tabOverlap = 8;
     private static final int maxTabsPerSide = 7;
-    private static final int windowWidth = 256;
-    private static final int windowHeight = 256;
+    private static final int windowWidth = 384;
+    private static final int windowHeight = 384;
 
     private int guiLeft = 0;
     private int guiTop = 0;
@@ -77,7 +77,6 @@ public final class GuiManual extends GuiScreen {
         guiTop = midY - guiSize.scaledHeight / 2;
         xSize = guiSize.scaledWidth;
         ySize = guiSize.scaledHeight;
-
         for (int i = 0; i < ManualAPIImpl.getTabs().size() && i < maxTabsPerSide; i++) {
             final int x = guiLeft + tabPosX;
             final int y = guiTop + tabPosY + i * (tabHeight - tabOverlap);
@@ -111,7 +110,7 @@ public final class GuiManual extends GuiScreen {
             GlStateManager.popMatrix();
         }
 
-        currentSegment = Document.render(document, guiLeft + 16, guiTop + 32, documentMaxWidth, documentMaxHeight, offset(), getFontRenderer(), mouseX, mouseY);
+        currentSegment = Document.render(document, guiLeft + 20, guiTop + 32, documentMaxWidth, documentMaxHeight, offset(), getFontRenderer(), mouseX, mouseY);
 
         if (!isDragging) {
             currentSegment.ifPresent(s -> s.tooltip().ifPresent(t -> drawHoveringText(Collections.singletonList(I18n.format(t)), mouseX, mouseY, getFontRenderer())));

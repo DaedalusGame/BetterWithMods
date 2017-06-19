@@ -144,6 +144,7 @@ public class HCHunger extends Feature {
         modifyFoodValue((ItemFood) Items.COOKED_BEEF, 15, 0);
         modifyFoodValue((ItemFood) Items.COOKED_PORKCHOP, 15, 0);
         modifyFoodValue((ItemFood) Items.COOKED_RABBIT, 15, 0);
+        modifyFoodValue((ItemFood) BWMItems.COOKED_WOLF_CHOP, 15, 0);
 
         modifyFoodValue((ItemFood) Items.FISH, 9, 0);
         modifyFoodValue((ItemFood) Items.COOKED_FISH, 12, 0);

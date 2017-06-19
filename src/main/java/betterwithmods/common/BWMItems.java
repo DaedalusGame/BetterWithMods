@@ -74,6 +74,7 @@ public final class BWMItems {
     public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
     public static final Item RED_SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("red_sand_pile");
     public static final Item WOLF_CHOP = new ItemFood(3,0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
+    public static final Item COOKED_WOLF_CHOP = new ItemFood(8, 0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_wolf_chop");
     public static final Item KIBBLE = new ItemFood(5, 0, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("kibble");
     public static final Item APPLE_PIE = new ItemFood(15, 6, false).setRegistryName("apple_pie").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Item MANUAL = new ItemBookManual().setRegistryName("manual").setCreativeTab(BWCreativeTabs.BWTAB);
@@ -130,6 +131,7 @@ public final class BWMItems {
         registerItem(KIBBLE);
         registerItem(APPLE_PIE);
         registerItem(MANUAL);
+        registerItem(COOKED_WOLF_CHOP);
     }
 
     /**
@@ -197,6 +199,7 @@ public final class BWMItems {
         setInventoryModel(KIBBLE);
         setInventoryModel(APPLE_PIE);
         setInventoryModel(MANUAL);
+        setInventoryModel(COOKED_WOLF_CHOP);
     }
 
     @SideOnly(Side.CLIENT)

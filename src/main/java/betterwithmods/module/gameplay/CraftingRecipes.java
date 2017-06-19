@@ -151,6 +151,8 @@ public class CraftingRecipes extends Feature {
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ADVANCED_BELLOWS), " C " , "SBS", " G ",  'B', BWMBlocks.BELLOWS, 'C', Items.CLOCK,'S', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING), 'G', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR)));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMItems.MANUAL), "gearWood", Items.BOOK));
+
+        GameRegistry.addSmelting(BWMItems.WOLF_CHOP, new ItemStack(BWMItems.COOKED_WOLF_CHOP), 0.5f);
     }
 
     @Override

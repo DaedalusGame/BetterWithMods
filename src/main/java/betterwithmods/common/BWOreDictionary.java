@@ -84,7 +84,7 @@ public class BWOreDictionary {
 
         registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
 
-
+        registerOre("blockPlanter", new ItemStack(BWMBlocks.PLANTER, 1, OreDictionary.WILDCARD_VALUE));
 
 
     }

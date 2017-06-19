@@ -37,7 +37,7 @@ dependencies {
 	deobfCompile "slimeknights:TConstruct:1.11.2+"
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     deobfCompile "com.blamejared:MTLib:2.+"
-//    deobfCompile "MCMultiPart2:MCMultiPart-exp:+"
+    deobfCompile "MCMultiPart2:MCMultiPart:2.0.1"
 //    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
     files("libs/*")
 }

@@ -59,12 +59,12 @@ public class CompatModule extends Module {
             if (ModuleLoader.isFeatureEnabled(HCDiamond.class)) {
                 ItemStack chisel_diamond = getItem("chisel:chisel_diamond");
                 RecipeUtils.removeRecipes(chisel_diamond);
-                GameRegistry.addRecipe(new ShapedOreRecipe(chisel_diamond, " D","S ",'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
-                CrucibleRecipes.addCrucibleRecipe( ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond",1, OreDictionary.WILDCARD_VALUE)});
+                GameRegistry.addRecipe(new ShapedOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
+                CrucibleRecipes.addCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond", 1, OreDictionary.WILDCARD_VALUE)});
             }
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron",1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech",1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});
+            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech", 1, OreDictionary.WILDCARD_VALUE)});
         });
         this.load();
     }
@@ -108,9 +108,8 @@ public class CompatModule extends Module {
             if (isLoaded(modId)) try {
                 registerFeature(Class.forName(classPath).asSubclass(CompatFeature.class).newInstance());
                 FMLLog.info(" [BWM] Successfully load compat for " + modId);
-            } catch (ExceptionInInitializerError | InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+            } catch (ExceptionInInitializerError | InstantiationException | ClassNotFoundException | IllegalAccessException ignore) {
                 FMLLog.info(" [BWM] Compatibility class " + classPath + " could not be loaded. Report this!");
-                e.printStackTrace();
             }
         }
     }
@@ -123,6 +122,7 @@ public class CompatModule extends Module {
     public ItemStack getItem(String location) {
         return getItem(new ResourceLocation(location), 1, 0);
     }
+
     public ItemStack getItem(ResourceLocation location, int count, int meta) {
         return new ItemStack(Item.REGISTRY.getObject(location), count, meta);
     }
@@ -140,6 +140,6 @@ public class CompatModule extends Module {
     }
 
     public ItemStack getBlock(String location) {
-        return getBlock(new ResourceLocation(location), 1,0);
+        return getBlock(new ResourceLocation(location), 1, 0);
     }
 }

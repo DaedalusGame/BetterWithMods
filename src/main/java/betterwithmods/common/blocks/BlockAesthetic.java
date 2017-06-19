@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.BWMBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -36,6 +37,10 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         super(Material.ROCK);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));
+    }
+
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.AESTHETIC, 1, type.getMeta());
     }
 
     @Override

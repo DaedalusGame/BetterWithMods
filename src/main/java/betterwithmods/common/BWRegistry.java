@@ -26,6 +26,8 @@ import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
+import li.cil.manual.api.API;
+import li.cil.manual.common.api.ManualAPIImpl;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
@@ -69,6 +71,8 @@ public class BWRegistry {
     private static int availableEntityId = 0;
 
     public static void preInit() {
+        API.manualAPI = ManualAPIImpl.INSTANCE;
+
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
@@ -84,6 +88,8 @@ public class BWRegistry {
     }
 
     public static void init() {
+
+
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         registerHeatSources();
         BWSounds.registerSounds();

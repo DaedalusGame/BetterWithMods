@@ -28,7 +28,7 @@ public class BWOreDictionary {
 
     public static void registerOres() {
 
-
+        registerOre("book", BWMItems.MANUAL);
         registerOre("gearSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR));
         registerOre("gearWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
         registerOre("cropHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));

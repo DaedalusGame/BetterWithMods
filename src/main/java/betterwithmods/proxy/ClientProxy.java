@@ -8,12 +8,17 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
 import betterwithmods.module.ModuleLoader;
+import li.cil.manual.api.ManualAPI;
+import li.cil.manual.api.prefab.manual.ItemStackTabIconRenderer;
+import li.cil.manual.api.prefab.manual.ResourceContentProvider;
+import li.cil.manual.client.manual.provider.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -60,6 +65,17 @@ public class ClientProxy implements IProxy {
     public void init(FMLInitializationEvent event) {
         ModuleLoader.initClient(event);
         registerColors();
+        ManualAPI.addProvider(new DefinitionPathProvider());
+        ManualAPI.addProvider(new ResourceContentProvider("betterwithmods", "docs/"));
+        ManualAPI.addProvider("", new TextureImageProvider());
+        ManualAPI.addProvider("item", new ItemImageProvider());
+        ManualAPI.addProvider("block", new BlockImageProvider());
+        ManualAPI.addProvider("oredict", new OreDictImageProvider());
+        ManualAPI.addTab(new ItemStackTabIconRenderer(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.mechanical", "%LANGUAGE%/mechanical/index.md");
+        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
+
 
     }
 

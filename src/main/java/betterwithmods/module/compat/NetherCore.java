@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Blocks;

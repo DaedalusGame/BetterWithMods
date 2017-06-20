@@ -1,6 +1,6 @@
 package betterwithmods.common.registry.steelanvil;
 
-import com.blamejared.mtlib.utils.ArrayUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -21,11 +21,10 @@ public class SteelShapedOreRecipe implements IRecipe {
     //Added in for future ease of change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 4;
     private static final int MAX_CRAFT_GRID_HEIGHT = 4;
-
-    private ItemStack output = ItemStack.EMPTY;
-    private Object[] input = null;
     public int width = 0;
     public int height = 0;
+    private ItemStack output = ItemStack.EMPTY;
+    private Object[] input = null;
     private boolean mirrored = true;
 
     public SteelShapedOreRecipe(Block result, Object... recipe) {
@@ -249,6 +248,6 @@ public class SteelShapedOreRecipe implements IRecipe {
 
     @Override
     public String toString() {
-        return String.format("%s -> %s", ArrayUtils.toArrayList(input), output);
+        return String.format("%s -> %s", Lists.newArrayList(input), output);
     }
 }

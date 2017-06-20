@@ -4,6 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.SawRecipes;

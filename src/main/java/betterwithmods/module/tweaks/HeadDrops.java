@@ -4,7 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -89,7 +89,7 @@ public class HeadDrops extends Feature {
         else if (evt.getEntityLiving() instanceof EntityCreeper)
             addDrop(evt, new ItemStack(Items.SKULL, 1, 4));
         else if (evt.getEntityLiving() instanceof EntityPlayer) {
-            addDrop(evt, EntityPlayerExt.getPlayerHead((EntityPlayer) evt.getEntityLiving()));
+            addDrop(evt, PlayerHelper.getPlayerHead((EntityPlayer) evt.getEntityLiving()));
         }
     }
 

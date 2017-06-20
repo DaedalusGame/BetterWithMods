@@ -2,10 +2,10 @@
 
 Mechanical Power is a simple gear based system that can be used for many complex machines.
 
-The first step to Mechanical Power is the [Hand Crank](../blocks/hand_crank.md) this allows for manually powering certain machines directly, such as the [Millstone](../blocks/single_machine.0.md), for early production.
+The first step to Mechanical Power is the [Hand Crank](../blocks/hand_crank.md) this allows for manually powering certain machines directly, such as the [Millstone](../blocks/mill.md), for early production.
 
 The next step is to make continuous Mechanical Power through a Windmill, to do this a strong fibrous material is necessary.
-[Hemp](../blocks/hemp.md) is exactly that, put this plant into the [Millstone](../blocks/single_machine.0.md) to create Hemp Fibers, to make [Rope](../items/rope.md) or [Fabric](../items/fabric.md).
+[Hemp](../blocks/hemp.md) is exactly that, put this plant into the [Millstone](../blocks/mill.md) to create Hemp Fibers, to make [Rope](../items/rope.md) or [Fabric](../items/fabric.md).
 
 Once enough Hemp Fiber is gathered, create a [Windmill](../blocks/windmill.md) to create continous Mechanical Power.
 The Windmill must be placed on an [Axle](../blocks/axle.md) and need a 13x13 vertical area to be placed.
@@ -16,6 +16,11 @@ Be careful though, the Windmill has one downside; When the Weather gets too roug
 ![Basic Windmill Setup](betterwithmods:docs/imgs/mechanical-power.png)
 
 With Continuous Mechanical Power now, more machines are available to use.
+
+The next step to using Mechanical Power is [Tanned Leather], which is created in a [Cauldron](../blocks/cauldron.md).
+A Cauldron requires a uninterrupted fire source below it, this can be from burning Netherrack or an activated [Hibachi](../blocks/hib)
+
+
 
 The [Saw](../blocks/saw.md) gives access to better Log cutting as well as creating [Minimized Wood](../blocks/minimized_wood.md) for making more complex wooden items
 

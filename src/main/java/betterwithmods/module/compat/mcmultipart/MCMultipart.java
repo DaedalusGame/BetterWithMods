@@ -2,7 +2,7 @@ package betterwithmods.module.compat.mcmultipart;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mini.BlockSiding;
-import betterwithmods.module.compat.CompatFeature;
+import betterwithmods.module.CompatFeature;
 import mcmultipart.api.addon.IMCMPAddon;
 import mcmultipart.api.addon.IWrappedBlock;
 import mcmultipart.api.multipart.IMultipartRegistry;

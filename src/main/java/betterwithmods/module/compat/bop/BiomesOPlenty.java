@@ -6,7 +6,7 @@ import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.compat.CompatFeature;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.HCPiles;
 import betterwithmods.module.hardcore.HCSeeds;

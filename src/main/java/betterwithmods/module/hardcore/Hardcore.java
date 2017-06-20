@@ -1,17 +1,26 @@
 package betterwithmods.module.hardcore;
 
-import betterwithmods.module.Module;
+import betterwithmods.client.gui.GuiStatus;
+import betterwithmods.module.CompatModule;
+import betterwithmods.module.ModuleLoader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
  * Created by tyler on 4/20/17.
  */
-public class Hardcore extends Module {
+public class Hardcore extends CompatModule {
     public Hardcore() {
         priority = 1;
     }
 
     @Override
+    public void addCompatFeatures() {
+        registerCompatFeature("applecore", "betterwithmods.module.hardcore.HCHunger");
+    }
+
+    @Override
     public void addFeatures() {
+        this.addCompatFeatures();
         registerFeature(new HCArmor());
         registerFeature(new HCBeds());
         registerFeature(new HCBonemeal());
@@ -22,7 +31,6 @@ public class Hardcore extends Module {
         registerFeature(new HCGloom());
         registerFeature(new HCGunpowder());
         registerFeature(new HCHardness());
-        registerFeature(new HCHunger());
         registerFeature(new HCHunting());
         registerFeature(new HCInfo());
         registerFeature(new HCInjury());
@@ -40,8 +48,16 @@ public class Hardcore extends Module {
         registerFeature(new HCStumping());
         registerFeature(new HCTools());
         registerFeature(new HCTorches());
-
         registerFeature(new HCVillages());
+        this.load();
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+        GuiStatus.isGloomLoaded = ModuleLoader.isFeatureEnabled(HCGloom.class);
+        GuiStatus.isHungerLoaded = ModuleLoader.isFeatureEnabled(HCHunger.class);
+        GuiStatus.isInjuryLoaded = ModuleLoader.isFeatureEnabled(HCInjury.class);
     }
 
     @Override

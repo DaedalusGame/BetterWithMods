@@ -1,7 +1,7 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.EnumHelper;
@@ -24,7 +24,7 @@ public class HCBeds extends Feature {
      */
     @SubscribeEvent
     public void onSleepInBed(PlayerSleepInBedEvent event) {
-        if (EntityPlayerExt.isSurvival(event.getEntityPlayer())) {
+        if (PlayerHelper.isSurvival(event.getEntityPlayer())) {
             event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("tile.bed.tooRestless"), true);
             event.setResult(TOO_RESTLESS);
         }

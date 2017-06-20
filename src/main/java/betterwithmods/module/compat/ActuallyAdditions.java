@@ -1,6 +1,8 @@
 package betterwithmods.module.compat;
 
-import betterwithmods.module.hardcore.HCHunger;
+import betterwithmods.module.CompatFeature;
+import betterwithmods.util.FoodHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
@@ -14,7 +16,7 @@ public class ActuallyAdditions extends CompatFeature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        HCHunger.setDessert(getItemFood(new ResourceLocation(this.modid, "item_food")));
+        FoodHelper.setAlwaysEdible(new ItemStack(getItemFood(new ResourceLocation(this.modid, "item_food"))));
     }
 
 }

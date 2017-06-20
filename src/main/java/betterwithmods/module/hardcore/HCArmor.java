@@ -3,7 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.StackMap;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,16 +17,6 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class HCArmor extends Feature {
     public static final StackMap<Integer> weights = new StackMap<>(0);
-
-    @Override
-    public String getFeatureDescription() {
-        return "Gives Armor weight values that effect movement.";
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
-        initWeights();
-    }
 
     public static void initWeights() {
         weights.put(Items.CHAINMAIL_HELMET, OreDictionary.WILDCARD_VALUE, 3);
@@ -56,12 +46,22 @@ public class HCArmor extends Feature {
         return weights.get(stack);
     }
 
+    @Override
+    public String getFeatureDescription() {
+        return "Gives Armor weight values that effect movement.";
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        initWeights();
+    }
+
     @SubscribeEvent
     public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
         if (!(event.getEntityLiving() instanceof EntityPlayer))
             return;
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (EntityPlayerExt.isSurvival(player) && player.isInWater() && !EntityPlayerExt.canSwim(player) && !EntityPlayerExt.isNearBottom(player)) {
+        if (PlayerHelper.isSurvival(player) && player.isInWater() && !PlayerHelper.canSwim(player) && !PlayerHelper.isNearBottom(player)) {
             player.motionY -= 0.02;
         }
     }

@@ -1,7 +1,7 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -17,7 +17,7 @@ public class HCJumping extends Feature {
 
     @SubscribeEvent
     public void onBlockPlace(PlayerInteractEvent.RightClickBlock e) {
-        if(!EntityPlayerExt.isSurvival(e.getEntityPlayer()) || e.getEntityPlayer().isInWater() || e.getEntityPlayer().isOnLadder())
+        if (!PlayerHelper.isSurvival(e.getEntityPlayer()) || e.getEntityPlayer().isInWater() || e.getEntityPlayer().isOnLadder())
             return;
         if(e.getItemStack().getItem() instanceof ItemBlock && !e.getEntityPlayer().onGround) {
             e.setResult(Event.Result.DENY);

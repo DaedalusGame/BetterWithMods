@@ -2,8 +2,8 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.EntityPlayerExt;
 import betterwithmods.util.player.GloomPenalty;
+import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +30,24 @@ import java.util.Set;
  */
 public class HCGloom extends Feature {
     private static final DataParameter<Integer> GLOOM_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
+    private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
     private static Set<Integer> dimensionWhitelist;
+
+    public static int getGloomTime(EntityPlayer player) {
+        try {
+            return player.getDataManager().get(GLOOM_TICK);
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public static void incrementGloomTime(EntityPlayer player) {
+        setGloomTick(player, getGloomTime(player) + 1);
+    }
+
+    public static void setGloomTick(EntityPlayer player, int value) {
+        player.getDataManager().set(GLOOM_TICK, value);
+    }
 
     @Override
     public void setupConfig() {
@@ -56,7 +73,7 @@ public class HCGloom extends Feature {
         EntityPlayer player = e.player;
         World world = player.getEntityWorld();
 
-        if (!EntityPlayerExt.isSurvival(player) || !dimensionWhitelist.contains(world.provider.getDimension()))
+        if (!PlayerHelper.isSurvival(player) || !dimensionWhitelist.contains(world.provider.getDimension()))
             return;
         if (!world.isRemote) {
             int light = world.getLight(player.getPosition().up());
@@ -68,7 +85,7 @@ public class HCGloom extends Feature {
             }
         }
 
-        GloomPenalty gloomPenalty = EntityPlayerExt.getGloomPenalty(player);
+        GloomPenalty gloomPenalty = PlayerHelper.getGloomPenalty(player);
         if (gloomPenalty != GloomPenalty.NO_PENALTY) {
             playRandomSound(gloomPenalty, world, player);
             if (gloomPenalty == GloomPenalty.TERROR) {
@@ -86,8 +103,6 @@ public class HCGloom extends Feature {
         }
     }
 
-    private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
-
     public void playRandomSound(GloomPenalty gloom, World world, EntityPlayer player) {
         if (world.isRemote) {
             if (world.rand.nextInt((int) (200 / gloom.getModifier())) == 0) {
@@ -101,7 +116,7 @@ public class HCGloom extends Feature {
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent event) {
-        GloomPenalty penalty = EntityPlayerExt.getGloomPenalty(event.getEntity());
+        GloomPenalty penalty = PlayerHelper.getGloomPenalty(event.getEntity());
         if (penalty != GloomPenalty.NO_PENALTY) {
             float change;
             if (penalty != GloomPenalty.TERROR)
@@ -110,22 +125,6 @@ public class HCGloom extends Feature {
                 change = -(getGloomTime(event.getEntity()) / 100000f);
             event.setNewfov(event.getFov() + change);
         }
-    }
-
-    public static int getGloomTime(EntityPlayer player) {
-        try {
-            return player.getDataManager().get(GLOOM_TICK);
-        } catch (NullPointerException e) {
-            return 0;
-        }
-    }
-
-    public static void incrementGloomTime(EntityPlayer player) {
-        setGloomTick(player, getGloomTime(player) + 1);
-    }
-
-    public static void setGloomTick(EntityPlayer player, int value) {
-        player.getDataManager().set(GLOOM_TICK, value);
     }
 
     @Override

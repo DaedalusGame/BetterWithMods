@@ -1,8 +1,6 @@
-package betterwithmods.module.compat;
+package betterwithmods.module;
 
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.module.Module;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.module.hardcore.HCDiamond;
 import betterwithmods.util.RecipeUtils;
@@ -41,8 +39,7 @@ public class CompatModule extends Module {
         quickCompat.put(Pair.of(state, modid), runnable);
     }
 
-    @Override
-    public void addFeatures() {
+    public void addCompatFeatures() {
         registerCompatFeature("biomesoplenty", "betterwithmods.module.compat.bop.BiomesOPlenty");
         registerCompatFeature("harvestcraft", "betterwithmods.module.compat.Harvestcraft");
         registerCompatFeature("crafttweaker", "betterwithmods.module.compat.minetweaker.MineTweaker");
@@ -64,6 +61,11 @@ public class CompatModule extends Module {
             CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});
             CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech", 1, OreDictionary.WILDCARD_VALUE)});
         });
+    }
+
+    @Override
+    public void addFeatures() {
+        this.addCompatFeatures();
         this.load();
     }
 
@@ -75,7 +77,6 @@ public class CompatModule extends Module {
                 entry.getValue().run();
             }
         }
-
     }
 
     @Override
@@ -86,7 +87,6 @@ public class CompatModule extends Module {
                 entry.getValue().run();
             }
         }
-
     }
 
     @Override

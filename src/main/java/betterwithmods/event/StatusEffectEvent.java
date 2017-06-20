@@ -1,6 +1,6 @@
 package betterwithmods.event;
 
-import betterwithmods.client.gui.GuiStatusEffect;
+import betterwithmods.client.gui.GuiStatus;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -11,9 +11,7 @@ public class StatusEffectEvent {
     @SubscribeEvent
     public void renderStatus(RenderGameOverlayEvent.Post event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
-            if (GuiStatusEffect.INSTANCE == null)
-                GuiStatusEffect.INSTANCE = new GuiStatusEffect();
-            GuiStatusEffect.INSTANCE.draw();
+            GuiStatus.INSTANCE.draw();
         }
     }
 }

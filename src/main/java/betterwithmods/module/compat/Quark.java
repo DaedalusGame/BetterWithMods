@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.HCTools;
 import betterwithmods.module.tweaks.MobSpawning;
 import betterwithmods.util.RecipeUtils;

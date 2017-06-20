@@ -3,6 +3,7 @@ package li.cil.manual.client.manual.provider;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockCookingPot;
+import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.blocks.mini.BlockMini;
 import com.google.common.collect.Sets;
 import li.cil.manual.api.manual.PathProvider;
@@ -60,6 +61,9 @@ public class DefinitionPathProvider implements PathProvider {
             return "%LANGUAGE%/blocks/gearbox.md";
         if (block instanceof BlockCookingPot) {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
+        }
+        if (block instanceof BlockMechMachines) {
+            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.MACHINETYPE).getName() + ".md";
         }
         if (block instanceof BlockMini) {
             Material mat = block.getMaterial(state);

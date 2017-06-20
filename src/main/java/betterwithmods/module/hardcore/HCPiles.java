@@ -4,7 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +83,7 @@ public class HCPiles extends Feature {
         EntityPlayer player = event.getHarvester();
         if (player != null) {
             ItemStack stack = event.getHarvester().getHeldItemMainhand();
-            shouldDropInferior = !EntityPlayerExt.isCurrentToolEffectiveOnBlock(stack, event.getState());
+            shouldDropInferior = !PlayerHelper.isCurrentToolEffectiveOnBlock(stack, event.getState());
         }
         if (!shouldDropInferior) {
             return;

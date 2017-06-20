@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMItems;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.util.RecipeUtils;

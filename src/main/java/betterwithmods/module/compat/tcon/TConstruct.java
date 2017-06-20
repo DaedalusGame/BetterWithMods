@@ -3,7 +3,7 @@ package betterwithmods.module.compat.tcon;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockBWMFluid;
-import betterwithmods.module.compat.CompatFeature;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.tweaks.MobSpawning;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;

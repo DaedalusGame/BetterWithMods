@@ -2,7 +2,7 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
@@ -53,6 +53,26 @@ public class HCBuckets extends Feature {
     private static boolean disableLavaBuckets;
     private static boolean riskyLavaBuckets;
 
+    public static void editModdedFluidDispenseBehavior() {
+        if (!hardcoreFluidContainer)
+            return;
+        RegistryDefaulted<Item, IBehaviorDispenseItem> reg = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY;
+        for (Item item : Item.REGISTRY) {
+            if (isFluidContainer(new ItemStack(item))) {
+                if (reg.getObject(item) instanceof DispenseFluidContainer)
+                    reg.putObject(item, new DispenserBehaviorFiniteWater());
+            }
+        }
+    }
+
+    private static boolean isFluidContainer(ItemStack stack) {
+        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+    }
+
+    private static boolean isNonVanillaBucket(ItemStack stack) {
+        return stack.getItem() != Items.BUCKET && stack.getItem() != Items.WATER_BUCKET && stack.getItem() != Items.LAVA_BUCKET && stack.getItem() != Items.MILK_BUCKET && isFluidContainer(stack);
+    }
+
     @Override
     public String getFeatureDescription() {
         return "Makes it so water buckets cannot move an entire source block, making water a more valuable resource";
@@ -64,10 +84,12 @@ public class HCBuckets extends Feature {
         disableLavaBuckets = loadPropBool("Hardcore Lava Buckets","You can't put Lava in a metal bucket! Are you crazy!?", false);
         riskyLavaBuckets = loadPropBool("Risky Lava Buckets","Makes Lava Buckets really hot, be careful. If only you could have some Resistance to Fire! ", true);
     }
+
     @Override
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }
+
     @Override
     public void init(FMLInitializationEvent event) {
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Items.WATER_BUCKET, new BehaviorDefaultDispenseItem() {
@@ -94,26 +116,6 @@ public class HCBuckets extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         editModdedFluidDispenseBehavior();
-    }
-
-    public static void editModdedFluidDispenseBehavior() {
-        if (!hardcoreFluidContainer)
-            return;
-        RegistryDefaulted<Item, IBehaviorDispenseItem> reg = BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY;
-        for (Item item : Item.REGISTRY) {
-            if (isFluidContainer(new ItemStack(item))) {
-                if (reg.getObject(item) instanceof DispenseFluidContainer)
-                    reg.putObject(item, new DispenserBehaviorFiniteWater());
-            }
-        }
-    }
-
-    private static boolean isFluidContainer(ItemStack stack) {
-        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
-    }
-
-    private static boolean isNonVanillaBucket(ItemStack stack) {
-        return stack.getItem() != Items.BUCKET && stack.getItem() != Items.WATER_BUCKET && stack.getItem() != Items.LAVA_BUCKET && stack.getItem() != Items.MILK_BUCKET && isFluidContainer(stack);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -321,7 +323,7 @@ public class HCBuckets extends Feature {
 
     @SubscribeEvent
     public void onFillBucket(FillBucketEvent e) {
-        if (disableLavaBuckets && EntityPlayerExt.isSurvival(e.getEntityPlayer())) {
+        if (disableLavaBuckets && PlayerHelper.isSurvival(e.getEntityPlayer())) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
             if (e.getTarget() != null && e.getTarget().getBlockPos() != null) {

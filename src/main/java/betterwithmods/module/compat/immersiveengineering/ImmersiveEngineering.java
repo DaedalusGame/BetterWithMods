@@ -6,8 +6,8 @@ import betterwithmods.common.blocks.mini.BlockMoulding;
 import betterwithmods.common.blocks.mini.BlockSiding;
 import betterwithmods.common.blocks.mini.ItemBlockMini;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.module.CompatFeature;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.compat.CompatFeature;
 import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.HCSaw;
 import betterwithmods.module.tweaks.HighEfficiencyRecipes;
@@ -54,16 +54,6 @@ public class ImmersiveEngineering extends CompatFeature {
     public static final Block TREATED_AXLE = new BlockImmersiveAxle().setRegistryName("immersive_axle");
 
     public static boolean overrideIndustrialHempDrops;
-
-    public ImmersiveEngineering() {
-        super("immersiveengineering");
-    }
-
-    @Override
-    public void setupConfig() {
-        overrideIndustrialHempDrops = loadPropBool("Override Industrial Hemp Drops", "Replaces Hemp Fiber with BWM Hemp, making it require a Millstone", true);
-    }
-
     public static Block SIDING = new BlockSiding(Material.WOOD) {
         @Override
         public int getUsedTypes() {
@@ -84,25 +74,6 @@ public class ImmersiveEngineering extends CompatFeature {
             return 3;
         }
     }.setRegistryName("ie_corner");
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        BWMBlocks.registerBlock(SIDING, new ItemBlockMini(SIDING));
-        BWMBlocks.registerBlock(MOULDING, new ItemBlockMini(MOULDING));
-        BWMBlocks.registerBlock(CORNER, new ItemBlockMini(CORNER));
-        BWMBlocks.registerBlock(TREATED_AXLE);
-        GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
-        BWMBlocks.setInventoryModel(SIDING);
-        BWMBlocks.setInventoryModel(MOULDING);
-        BWMBlocks.setInventoryModel(CORNER);
-        BWMBlocks.setInventoryModel(TREATED_AXLE);
-    }
-
     BelljarHandler.DefaultPlantHandler bwmHempHandler = new BelljarHandler.DefaultPlantHandler() {
         private HashSet<ComparableItemStack> validSeeds = new HashSet<>();
 
@@ -127,6 +98,33 @@ public class ImmersiveEngineering extends CompatFeature {
         }
     };
 
+    public ImmersiveEngineering() {
+        super("immersiveengineering");
+    }
+
+    @Override
+    public void setupConfig() {
+        overrideIndustrialHempDrops = loadPropBool("Override Industrial Hemp Drops", "Replaces Hemp Fiber with BWM Hemp, making it require a Millstone", true);
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        BWMBlocks.registerBlock(SIDING, new ItemBlockMini(SIDING));
+        BWMBlocks.registerBlock(MOULDING, new ItemBlockMini(MOULDING));
+        BWMBlocks.registerBlock(CORNER, new ItemBlockMini(CORNER));
+        BWMBlocks.registerBlock(TREATED_AXLE);
+        GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void preInitClient(FMLPreInitializationEvent event) {
+        BWMBlocks.setInventoryModel(SIDING);
+        BWMBlocks.setInventoryModel(MOULDING);
+        BWMBlocks.setInventoryModel(CORNER);
+        BWMBlocks.setInventoryModel(TREATED_AXLE);
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         ItemStack conveyorStack = ConveyorHandler.getConveyorStack("immersiveengineering:conveyor");
@@ -140,7 +138,8 @@ public class ImmersiveEngineering extends CompatFeature {
         bwmHempHandler.register(new ItemStack(BWMBlocks.HEMP), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), new ItemStack(BWMBlocks.HEMP)}, new ItemStack(Blocks.DIRT), BWMBlocks.HEMP.getDefaultState());
         if (overrideIndustrialHempDrops) {
             BelljarHandler.DefaultPlantHandler ieHempHandler = (BelljarHandler.DefaultPlantHandler) BelljarHandler.getHandler(new ItemStack(IEContent.itemSeeds));
-            ieHempHandler.register(new ItemStack(IEContent.itemSeeds), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), new ItemStack(IEContent.itemSeeds)}, new ItemStack(Blocks.DIRT), IEContent.blockCrop.getDefaultState());
+            if (ieHempHandler != null)
+                ieHempHandler.register(new ItemStack(IEContent.itemSeeds), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), new ItemStack(IEContent.itemSeeds)}, new ItemStack(Blocks.DIRT), IEContent.blockCrop.getDefaultState());
         }
         ThermoelectricHandler.registerSourceInKelvin("blockHellfire", 4000);
 

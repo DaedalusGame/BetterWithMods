@@ -29,15 +29,17 @@ import java.util.UUID;
  *
  * @author Koward
  */
-public final class EntityPlayerExt {
-    private EntityPlayerExt() {
+public final class PlayerHelper {
+    protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
+
+    private PlayerHelper() {
     }
 
     public static boolean isSurvival(EntityPlayer player) {
         return !player.isCreative() && !player.isSpectator() && !player.isSpectator();
     }
 
-    public static float getHealthAndExhaustionModifier(EntityPlayer player) {
+    public static float getSpeedModifier(EntityPlayer player) {
         if (!isSurvival(player))
             return 1;
         return getWorstPenalty(player).getModifier();
@@ -74,10 +76,10 @@ public final class EntityPlayerExt {
 
     public static FatPenalty getFatPenalty(EntityPlayer player) {
         int level = (int) player.getFoodStats().getSaturationLevel();
-        if (level < 12) return FatPenalty.NO_PENALTY;
-        else if (level < 14) return FatPenalty.PLUMP;
-        else if (level < 16) return FatPenalty.CHUBBY;
-        else if (level < 18) return FatPenalty.FAT;
+        if (level < 36) return FatPenalty.NO_PENALTY;
+        else if (level < 42) return FatPenalty.PLUMP;
+        else if (level < 48) return FatPenalty.CHUBBY;
+        else if (level < 52) return FatPenalty.FAT;
         else return FatPenalty.OBESE;
     }
 
@@ -132,19 +134,18 @@ public final class EntityPlayerExt {
     /**
      * Edit the speed of an entity.
      *
-     * @param entity            The entity whose speed will be changed.
-     * @param speedModifierUUID Unique UUID for modification
-     * @param name              Unique name for easier debugging
-     * @param modifier          The speed will be multiplied by this number
+     * @param entity   The entity whose speed will be changed.
+     * @param name     Unique name for easier debugging
+     * @param modifier The speed will be multiplied by this number
      */
     public static void changeSpeed(EntityLivingBase entity,
-                                   UUID speedModifierUUID, String name, double modifier) {
+                                   String name, double modifier) {
         AttributeModifier speedModifier = (new AttributeModifier(
-                speedModifierUUID, name, modifier - 1, 2));
+                penaltySpeedUUID, name, modifier - 1, 2));
         IAttributeInstance iattributeinstance = entity
                 .getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
-        if (iattributeinstance.getModifier(speedModifierUUID) != null) {
+        if (iattributeinstance.getModifier(penaltySpeedUUID) != null) {
             iattributeinstance.removeModifier(speedModifier);
         }
         iattributeinstance.applyModifier(speedModifier);

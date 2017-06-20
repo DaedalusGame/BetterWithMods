@@ -2,7 +2,7 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.EntityPlayerExt;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,7 +40,7 @@ public class HCSpawn extends Feature {
     public void randomRespawn(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof EntityPlayerMP)) return;
         EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
-        if (EntityPlayerExt.isSurvival(player)) {
+        if (PlayerHelper.isSurvival(player)) {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
             boolean isNew = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN;
             int spawnFuzz = isNew ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;

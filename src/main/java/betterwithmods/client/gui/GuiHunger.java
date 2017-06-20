@@ -1,14 +1,14 @@
 package betterwithmods.client.gui;
 
 
-import betterwithmods.util.BWMFoodStats;
-import betterwithmods.util.player.EntityPlayerExt;
 import betterwithmods.util.player.HungerPenalty;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,10 +21,13 @@ import java.util.Random;
  * @author Koward
  */
 public class GuiHunger {
+
+    public static GuiHunger INSTANCE = new GuiHunger();
     private final Random rand = new Random();
     private final Minecraft mc = Minecraft.getMinecraft();
     private int shakeCounter = 0;
     private boolean shakeTriggered;
+
     @SideOnly(Side.CLIENT)
     public void draw() {
         ScaledResolution scale = ((GuiIngameForge) mc.ingameGUI).getResolution();
@@ -34,13 +37,16 @@ public class GuiHunger {
 
         drawFoodOverlay(left, top);
     }
+
     @SideOnly(Side.CLIENT)
     private void drawFoodOverlay(int left, int top) {
         EntityPlayer player = this.mc.player;
-        BWMFoodStats foodStats = (BWMFoodStats) player.getFoodStats();
-        int foodLevel = foodStats.getFoodLevel();
-        int castedFat = (int) ((foodStats.getSaturationLevel() + 0.124F) * 4.0F);
-        int level = foodLevel / 6;
+        FoodStats foodStats = player.getFoodStats();
+        int food = foodStats.getFoodLevel();
+        int fat = (int) foodStats.getSaturationLevel();
+
+        int roll = fat / 6;
+        int shank = food / 6;
 
         if (shakeTriggered) {
             this.shakeCounter = 20;
@@ -58,11 +64,11 @@ public class GuiHunger {
             if (player.isPotionActive(MobEffects.HUNGER)) {
                 icon += 36;
                 background = 13;
-            } else if (i < castedFat >> 3) {
+            } else if (i < roll) {
                 background = 1;
             }
 
-            if (EntityPlayerExt.getHungerPenalty(player) != HungerPenalty.NO_PENALTY && mc.ingameGUI.getUpdateCounter() % (foodLevel * 5 + 1) == 0) {
+            if (PlayerHelper.getHungerPenalty(player) != HungerPenalty.NO_PENALTY && mc.ingameGUI.getUpdateCounter() % (food * 5 + 1) == 0) {
                 y = top + (rand.nextInt(3) - 1);
             } else if (shakeCounter > 0) {
                 y = top + (rand.nextInt(3) - 1);
@@ -73,19 +79,23 @@ public class GuiHunger {
             mc.ingameGUI.drawTexturedModalRect(x, y, 16 + background * 9, 27, 9, 9);
 
             int remainder;
-            if (i == castedFat >> 3 && !player.isPotionActive(MobEffects.HUNGER)) {
-                remainder = castedFat % 8;
+            if (!player.isPotionActive(MobEffects.HUNGER)) {
+                if (i < roll) {
+                    mc.ingameGUI.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
+                } else if (i == roll) {
+                    remainder = food % 6;
 
-                if (remainder != 0) {
-                    mc.ingameGUI.drawTexturedModalRect(x + 8 - remainder, y, 33 - remainder,
-                            27, 1 + remainder, 9);
+                    if (remainder != 0) {
+                        mc.ingameGUI.drawTexturedModalRect(x + 7 - remainder, y, icon + 36 + 7
+                                - remainder, 27, 3 + remainder, 9);
+                    }
                 }
             }
 
-            if (i < level) {
+            if (i < shank) {
                 mc.ingameGUI.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
-            } else if (i == level) {
-                remainder = foodLevel % 6;
+            } else if (i == shank) {
+                remainder = food % 6;
 
                 if (remainder != 0) {
                     mc.ingameGUI.drawTexturedModalRect(x + 7 - remainder, y, icon + 36 + 7
@@ -98,7 +108,7 @@ public class GuiHunger {
         GuiIngameForge.right_height += 10;
     }
 
-    public void triggerShake() {
+    public void shake() {
         this.shakeTriggered = true;
     }
 }

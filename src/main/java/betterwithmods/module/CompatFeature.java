@@ -1,6 +1,5 @@
-package betterwithmods.module.compat;
+package betterwithmods.module;
 
-import betterwithmods.module.Feature;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;

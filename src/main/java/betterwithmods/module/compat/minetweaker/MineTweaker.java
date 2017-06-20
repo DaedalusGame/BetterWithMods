@@ -1,6 +1,6 @@
 package betterwithmods.module.compat.minetweaker;
 
-import betterwithmods.module.compat.CompatFeature;
+import betterwithmods.module.CompatFeature;
 import minetweaker.MineTweakerAPI;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 

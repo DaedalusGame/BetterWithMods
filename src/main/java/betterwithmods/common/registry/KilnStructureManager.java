@@ -53,4 +53,7 @@ public class KilnStructureManager {
     }
 
 
+    public static void removeKilnBlock(IBlockState state) {
+        KILN_BLOCKS.remove(state);
+    }
 }

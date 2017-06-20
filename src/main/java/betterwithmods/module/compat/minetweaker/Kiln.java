@@ -1,14 +1,18 @@
 package betterwithmods.module.compat.minetweaker;
 
+import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.module.compat.jei.category.KilnRecipeCategory;
+import betterwithmods.util.RecipeUtils;
 import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.utils.BaseUndoable;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.NotNull;
@@ -60,4 +64,28 @@ public class Kiln {
     }
 
 
+    @ZenMethod
+    public static void registerBlock(IItemStack block) {
+        MineTweakerAPI.apply(new KilnBlock(RecipeUtils.getStateFromStack(InputHelper.toStack(block))));
+    }
+
+
+    public static class KilnBlock extends BaseUndoable {
+        private IBlockState state;
+
+        protected KilnBlock(IBlockState state) {
+            super("kiln_block");
+            this.state = state;
+        }
+
+        @Override
+        public void apply() {
+            KilnStructureManager.registerKilnBlock(state);
+        }
+
+        @Override
+        public void undo() {
+            KilnStructureManager.removeKilnBlock(state);
+        }
+    }
 }

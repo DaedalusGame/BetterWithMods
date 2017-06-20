@@ -17,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static betterwithmods.common.BWMBlocks.registerBlock;
 import static betterwithmods.common.BWMBlocks.setInventoryModel;
@@ -65,6 +63,7 @@ public class Rustic extends CompatFeature {
             return type < 2 ? BlockMini.MINI : Material.ROCK;
         }
     }.setRegistryName("rustic_compat_corner");
+    public String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "big_oak", "olive", "ironwood"};
 
     public Rustic() {
         super("rustic");
@@ -87,16 +86,14 @@ public class Rustic extends CompatFeature {
 
     }
 
-    public String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "big_oak", "olive", "ironwood"};
-
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
         ItemStack rope = new ItemStack(getBlock(new ResourceLocation("rustic", "rope")));
         RecipeUtils.removeRecipes(rope);
-        GameRegistry.addRecipe(new ShapedOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron"));
+        RecipeUtils.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
+        RecipeUtils.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
         Block plank = getBlock("rustic:planks");
         Block log = getBlock("rustic:log");
         for (int i = 0; i < 2; i++) {
@@ -105,16 +102,16 @@ public class Rustic extends CompatFeature {
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            GameRegistry.addRecipe(new ItemStack(plank,1,i), "MM", 'M', new ItemStack(SIDING, 1, i));
-            GameRegistry.addRecipe(new ItemStack(SIDING,1,i), "MM", 'M', new ItemStack(MOULDING, 1, i));
-            GameRegistry.addRecipe(new ItemStack(MOULDING,1,i), "MM", 'M', new ItemStack(CORNER, 1, i));
+            RecipeUtils.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
+            RecipeUtils.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
+            RecipeUtils.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
         }
         boolean isHCSawEnabled = ModuleLoader.isFeatureEnabled(HCSaw.class);
         Block wooden_stake = getBlock("rustic:crop_stake");
         if (isHCSawEnabled) {
             RecipeUtils.removeRecipes(wooden_stake);
         }
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood"));
+        RecipeUtils.addOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood");
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
@@ -125,8 +122,8 @@ public class Rustic extends CompatFeature {
                     RecipeUtils.removeRecipes(chair);
                     RecipeUtils.removeRecipes(table);
                 }
-                GameRegistry.addShapedRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
-                GameRegistry.addShapedRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
+                RecipeUtils.addOreRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
+                RecipeUtils.addOreRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
                 if (i >= 6) {
                     ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
                     ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
@@ -134,8 +131,8 @@ public class Rustic extends CompatFeature {
                         RecipeUtils.removeRecipes(fencegate);
                         RecipeUtils.removeRecipes(fence);
                     }
-                    GameRegistry.addRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
-                    GameRegistry.addRecipe(fence, "MMM", 'M', moulding);
+                    RecipeUtils.addOreRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
+                    RecipeUtils.addOreRecipe(fence, "MMM", 'M', moulding);
                 }
             }
         }

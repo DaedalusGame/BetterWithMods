@@ -3,14 +3,13 @@ package betterwithmods.module.compat;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.MillRecipes;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @SuppressWarnings("unused")
 public class Harvestcraft extends CompatFeature {
@@ -45,7 +44,7 @@ public class Harvestcraft extends CompatFeature {
         CauldronRecipes.addCauldronRecipe(new ItemStack(boiledEgg), new Object[]{new ItemStack(Items.EGG)});
         CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BREAD), new Object[]{new ItemStack(dough)});
         OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan"));
+        RecipeUtils.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
     }
 
 }

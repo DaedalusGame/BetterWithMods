@@ -8,7 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
@@ -17,6 +19,23 @@ import java.util.ListIterator;
 
 public final class RecipeUtils {
     private RecipeUtils() {
+    }
+
+    public static IRecipe addRecipe(IRecipe recipe) {
+        GameRegistry.addRecipe(recipe);
+        return recipe;
+    }
+
+    public static ShapedOreRecipe addOreRecipe(ItemStack output, Object... inputs) {
+        ShapedOreRecipe recipe = new ShapedOreRecipe(output, inputs);
+        GameRegistry.addRecipe(recipe);
+        return recipe;
+    }
+
+    public static ShapelessOreRecipe addShapelessOreRecipe(ItemStack output, Object... inputs) {
+        ShapelessOreRecipe recipe = new ShapelessOreRecipe(output, inputs);
+        GameRegistry.addRecipe(recipe);
+        return recipe;
     }
 
     public static void removeFurnaceRecipe(ItemStack input) {

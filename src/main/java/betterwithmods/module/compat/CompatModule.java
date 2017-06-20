@@ -18,9 +18,7 @@ import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
@@ -59,7 +57,7 @@ public class CompatModule extends Module {
             if (ModuleLoader.isFeatureEnabled(HCDiamond.class)) {
                 ItemStack chisel_diamond = getItem("chisel:chisel_diamond");
                 RecipeUtils.removeRecipes(chisel_diamond);
-                GameRegistry.addRecipe(new ShapedOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true));
+                RecipeUtils.addOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
                 CrucibleRecipes.addCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond", 1, OreDictionary.WILDCARD_VALUE)});
             }
             CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});

@@ -12,17 +12,16 @@ import betterwithmods.module.hardcore.HCPiles;
 import betterwithmods.module.hardcore.HCSeeds;
 import betterwithmods.module.tweaks.HighEfficiencyRecipes;
 import betterwithmods.module.tweaks.MobSpawning.NetherSpawnWhitelist;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @SuppressWarnings("unused")
 public class BiomesOPlenty extends CompatFeature {
@@ -48,6 +47,7 @@ public class BiomesOPlenty extends CompatFeature {
         }
 
     }.setRegistryName("bop_compat_corner");
+    public final String[] woods = new String[]{"sacred_oak", "cherry", "umbran", "fir", "ethereal", "magic", "mangrove", "palm", "redwood", "willow", "pine", "hellbark", "jacaranda", "mahogany", "ebony", "eucalyptus",};
 
     public BiomesOPlenty() {
         super("biomesoplenty");
@@ -72,8 +72,6 @@ public class BiomesOPlenty extends CompatFeature {
         BWMBlocks.setInventoryModel(MOULDING);
         BWMBlocks.setInventoryModel(CORNER);
     }
-
-    public final String[] woods = new String[]{"sacred_oak", "cherry", "umbran", "fir", "ethereal", "magic", "mangrove", "palm", "redwood", "willow", "pine", "hellbark", "jacaranda", "mahogany", "ebony", "eucalyptus",};
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -100,7 +98,7 @@ public class BiomesOPlenty extends CompatFeature {
             HCPiles.registerPile(dirt, i, new ItemStack(PILES, 3, i));
             HCPiles.registerPile(getBlock(new ResourceLocation(modid, "grass_path")), i, new ItemStack(PILES, 3, i));
 
-            GameRegistry.addShapedRecipe(new ItemStack(dirt, 1, i), new Object[]{"PP", "PP", 'P', new ItemStack(PILES, 1, i)});
+            RecipeUtils.addOreRecipe(new ItemStack(dirt, 1, i), "PP", "PP", 'P', new ItemStack(PILES, 1, i));
         }
 
         Block plank = getBlock("biomesoplenty:planks_0");
@@ -114,10 +112,10 @@ public class BiomesOPlenty extends CompatFeature {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = new ItemStack(MOULDING, 1, i);
                 ItemStack siding = new ItemStack(SIDING, 1, i);
-                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding);
-                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding);
-                GameRegistry.addRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding);
-                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true));
+                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding);
+                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding);
+                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding);
+                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true);
             }
         }
 

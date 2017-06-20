@@ -4,6 +4,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockStump;
 import betterwithmods.common.world.gen.feature.*;
 import betterwithmods.module.Feature;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -18,7 +19,6 @@ import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -27,21 +27,6 @@ import java.util.Random;
  * Created by tyler on 4/20/17.
  */
 public class HCStumping extends Feature {
-    @Override
-    public String getFeatureDescription() {
-        return "Makes the bottom block of trees into stumps which cannot be removed by hand, making your mark on the world more obvious";
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
-        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
-    }
-
-    @Override
-    public boolean requiresMinecraftRestartToEnable() {
-        return true;
-    }
-
     /**
      * Leaves and logs are skipped to reach the raw terrain surface
      *
@@ -64,48 +49,6 @@ public class HCStumping extends Feature {
     private static boolean canSustainTree(IBlockState state) {
         return state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.FARMLAND;
     }
-
-    /**
-     * Add stumps to trees added during world generation.
-     *
-     * @param event Triggered for each chunk cross-shaped intersection (hence the +8 offsets)
-     */
-    @SubscribeEvent
-    public void addStumpsToGeneratedTrees(DecorateBiomeEvent.Post event) {
-        if (!event.getWorld().provider.isSurfaceWorld()) return;
-        for (int dx = 0; dx < 16; dx++) {
-            int x = event.getPos().getX() + dx;
-            x += 8;
-            for (int dz = 0; dz < 16; dz++) {
-                int z = event.getPos().getZ() + dz;
-                z += 8;
-                Chunk chunk = event.getWorld().getChunkFromBlockCoords(new BlockPos(x, 0, z));
-                int y = chunk.getHeightValue(x & 15, z & 15) - 1;
-                BlockPos pos = new BlockPos(x, y, z);
-                IBlockState state = event.getWorld().getBlockState(pos);
-                while (shouldBeSkipped(state)) {
-                    y--;
-                    pos = new BlockPos(x, y, z);
-                    state = event.getWorld().getBlockState(pos);
-                }
-                if (BlockStump.canPlaceStump(event.getWorld(), pos.up()) && canSustainTree(state)) {
-                    IBlockState stump = BlockStump.getStump(event.getWorld().getBlockState(pos.up()));
-                    if (stump != null) {
-                        event.getWorld().setBlockState(pos.up(), stump);
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void addStumpToTree(SaplingGrowTreeEvent event) {
-        IBlockState state = event.getWorld().getBlockState(event.getPos());
-        if (state.getBlock() != Blocks.SAPLING)/*(!(state.getBlock() instanceof BlockSapling))*/ return;
-        event.setResult(Event.Result.DENY);
-        generateTreeWithStump(event.getWorld(), event.getPos(), state, event.getRand());
-    }
-
 
     /**
      * Hardcore Stumping
@@ -238,6 +181,63 @@ public class HCStumping extends Feature {
             }
         }
     }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Makes the bottom block of trees into stumps which cannot be removed by hand, making your mark on the world more obvious";
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        RecipeUtils.addShapelessOreRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
+    }
+
+    @Override
+    public boolean requiresMinecraftRestartToEnable() {
+        return true;
+    }
+
+    /**
+     * Add stumps to trees added during world generation.
+     *
+     * @param event Triggered for each chunk cross-shaped intersection (hence the +8 offsets)
+     */
+    @SubscribeEvent
+    public void addStumpsToGeneratedTrees(DecorateBiomeEvent.Post event) {
+        if (!event.getWorld().provider.isSurfaceWorld()) return;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = event.getPos().getX() + dx;
+            x += 8;
+            for (int dz = 0; dz < 16; dz++) {
+                int z = event.getPos().getZ() + dz;
+                z += 8;
+                Chunk chunk = event.getWorld().getChunkFromBlockCoords(new BlockPos(x, 0, z));
+                int y = chunk.getHeightValue(x & 15, z & 15) - 1;
+                BlockPos pos = new BlockPos(x, y, z);
+                IBlockState state = event.getWorld().getBlockState(pos);
+                while (shouldBeSkipped(state)) {
+                    y--;
+                    pos = new BlockPos(x, y, z);
+                    state = event.getWorld().getBlockState(pos);
+                }
+                if (BlockStump.canPlaceStump(event.getWorld(), pos.up()) && canSustainTree(state)) {
+                    IBlockState stump = BlockStump.getStump(event.getWorld().getBlockState(pos.up()));
+                    if (stump != null) {
+                        event.getWorld().setBlockState(pos.up(), stump);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void addStumpToTree(SaplingGrowTreeEvent event) {
+        IBlockState state = event.getWorld().getBlockState(event.getPos());
+        if (state.getBlock() != Blocks.SAPLING)/*(!(state.getBlock() instanceof BlockSapling))*/ return;
+        event.setResult(Event.Result.DENY);
+        generateTreeWithStump(event.getWorld(), event.getPos(), state, event.getRand());
+    }
+
     @Override
     public boolean hasSubscriptions() {
         return true;

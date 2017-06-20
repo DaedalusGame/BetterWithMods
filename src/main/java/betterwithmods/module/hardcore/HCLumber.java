@@ -6,6 +6,7 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.ChoppingRecipe;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.module.Feature;
+import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -29,6 +29,31 @@ import java.util.List;
  */
 public class HCLumber extends Feature {
     private int plankAmount, barkAmount, sawDustAmount;
+
+    public static boolean hasAxe(BlockEvent.HarvestDropsEvent event) {
+        if (!event.getWorld().isRemote && !event.isSilkTouching()) {
+            EntityPlayer player = event.getHarvester();
+            if (player != null) {
+                ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe");
+            }
+        }
+        return false;
+    }
+
+    public static int getFortune(BlockEvent.HarvestDropsEvent event) {
+        EntityPlayer player = event.getHarvester();
+        return !player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty() ? event.getFortuneLevel() : 0;
+    }
+
+    public static boolean isLog(IBlockState state) {
+        List<ItemStack> logs = OreDictionary.getOres("logWood");
+        return logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(state.getBlock(), 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
+    }
+
+    public static boolean isSameBlock(ItemStack stack, Block block) {
+        return stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock().equals(block);
+    }
 
     @Override
     public void setupConfig() {
@@ -46,17 +71,17 @@ public class HCLumber extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         for (int i = 0; i < 4; i++)
-            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_OLD, barkAmount, i)));
+            RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_OLD, barkAmount, i)));
         for (int i = 0; i < 2; i++)
-            GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, 4 + i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_NEW, barkAmount, i)));
+            RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, plankAmount, 4 + i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawDustAmount), new ItemStack(BWMBlocks.DEBARKED_NEW, barkAmount, i)));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
         for (int i = 0; i < 4; i++)
-            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
+            RecipeUtils.addShapelessOreRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
         for (int i = 0; i < 2; i++)
-            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, 4 + i), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i));
+            RecipeUtils.addShapelessOreRecipe(new ItemStack(Blocks.PLANKS, 3, 4 + i), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i));
     }
 
     @Override
@@ -98,31 +123,6 @@ public class HCLumber extends Feature {
             });
 
         }
-    }
-
-    public static boolean hasAxe(BlockEvent.HarvestDropsEvent event) {
-        if (!event.getWorld().isRemote && !event.isSilkTouching()) {
-            EntityPlayer player = event.getHarvester();
-            if (player != null) {
-                ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
-                return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe");
-            }
-        }
-        return false;
-    }
-
-    public static int getFortune(BlockEvent.HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        return !player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty() ? event.getFortuneLevel() : 0;
-    }
-
-    public static boolean isLog(IBlockState state) {
-        List<ItemStack> logs = OreDictionary.getOres("logWood");
-        return logs.stream().filter(stack -> stack.isItemEqual(new ItemStack(state.getBlock(), 1, OreDictionary.WILDCARD_VALUE))).findAny().isPresent();
-    }
-
-    public static boolean isSameBlock(ItemStack stack, Block block) {
-        return stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock().equals(block);
     }
 
     @Override

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("unused")
 public class Quark extends CompatFeature {
@@ -24,7 +23,7 @@ public class Quark extends CompatFeature {
     public void init(FMLInitializationEvent event) {
         MobSpawning.NetherSpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "basalt")), 0);
         for (int i = 0; i < 5; i++)
-            GameRegistry.addShapedRecipe(new ItemStack(getBlock(new ResourceLocation(modid, "custom_chest")), 1, i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, i + 1));
+            RecipeUtils.addOreRecipe(new ItemStack(getBlock(new ResourceLocation(modid, "custom_chest")), 1, i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, i + 1));
     }
 
     @Override

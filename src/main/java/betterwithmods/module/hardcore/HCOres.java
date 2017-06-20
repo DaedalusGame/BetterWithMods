@@ -11,10 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -59,14 +56,14 @@ public class HCOres extends Feature {
     public void init(FMLInitializationEvent event) {
         if (fixVanillaRecipes) {
             RecipeUtils.removeRecipes(Items.COMPASS, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone"));
             RecipeUtils.removeRecipes(Items.CLOCK, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz"));
             RecipeUtils.removeRecipes(Items.BUCKET, 0);
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
             RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron"));
 
+            RecipeUtils.addOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone");
+            RecipeUtils.addOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz");
+            RecipeUtils.addOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron");
+            RecipeUtils.addShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron");
         }
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new Object[]{new ItemStack(Items.BUCKET)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 4), new Object[]{new ItemStack(Items.COMPASS)});

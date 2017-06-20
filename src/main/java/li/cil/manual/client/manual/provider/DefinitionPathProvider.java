@@ -3,9 +3,11 @@ package li.cil.manual.client.manual.provider;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockCookingPot;
+import betterwithmods.common.blocks.mini.BlockMini;
 import com.google.common.collect.Sets;
 import li.cil.manual.api.manual.PathProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +16,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.function.BiFunction;
+
+import static net.minecraft.block.material.Material.WOOD;
 
 /**
  * Created by primetoxinz on 6/18/17.
@@ -56,6 +60,12 @@ public class DefinitionPathProvider implements PathProvider {
             return "%LANGUAGE%/blocks/gearbox.md";
         if (block instanceof BlockCookingPot) {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
+        }
+        if (block instanceof BlockMini) {
+            Material mat = block.getMaterial(state);
+            if (mat == WOOD || mat == BlockMini.MINI) {
+                return "%LANGUAGE%/blocks/minimized_wood.md";
+            }
         }
         String path = stack.getUnlocalizedName().replace("tile.bwm:", "");
         return "%LANGUAGE%/blocks/" + path + ".md";

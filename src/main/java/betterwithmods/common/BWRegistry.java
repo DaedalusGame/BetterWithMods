@@ -25,6 +25,7 @@ import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import li.cil.manual.api.API;
 import li.cil.manual.common.api.ManualAPIImpl;
@@ -164,8 +165,8 @@ public class BWRegistry {
 
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntitySheep.class, (world, pos, entity, stack) -> {
             EntitySheep sheep = (EntitySheep) entity;
-            if(sheep.isShearable(new ItemStack(Items.SHEARS),world,pos)) {
-                return InvUtils.asList(sheep.onSheared(new ItemStack(Items.SHEARS),world,pos,0));
+            if (sheep.isShearable(new ItemStack(Items.SHEARS), world, pos)) {
+                return InvUtils.asList(sheep.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
             }
             return NonNullList.create();
         });
@@ -176,7 +177,7 @@ public class BWRegistry {
             return InvUtils.asList(new ItemStack(Items.EGG));
         });
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityCow.class, (world, pos, entity, stack) -> {
-            if(stack.isItemEqual(new ItemStack(Items.BUCKET))) {
+            if (stack.isItemEqual(new ItemStack(Items.BUCKET))) {
                 stack.shrink(1);
                 world.playSound(null, pos, SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
@@ -223,7 +224,7 @@ public class BWRegistry {
                 if (Loader.isModLoaded("thermalexpansion")) {
                     registerTESawmill(plank, log);
                 }
-                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
+                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
             }
             SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
             SawManager.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
@@ -262,7 +263,7 @@ public class BWRegistry {
                                     if (Loader.isModLoaded("thermalexpansion")) {
                                         registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
                                     }
-                                    GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
+                                    RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
                                 }
                                 SawManager.INSTANCE.addRecipe(block, i, output);
                                 SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
@@ -284,7 +285,7 @@ public class BWRegistry {
                                 if (Loader.isModLoaded("thermalexpansion")) {
                                     registerTESawmill(output[0], log);
                                 }
-                                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
+                                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
                             }
                             SawManager.INSTANCE.addRecipe(block, log.getMetadata(), output);
                             SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));

@@ -62,7 +62,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
     }
 
     private static AxisAlignedBB createAABB(Vec3d part1, Vec3d part2) {
-        return new AxisAlignedBB(part1.xCoord, part1.yCoord, part1.zCoord, part2.xCoord, part2.yCoord, part2.zCoord);
+        return new AxisAlignedBB(part1.x, part1.y, part1.z, part2.x, part2.y, part2.z);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 getEntityWorld().getEntitiesWithinAABBExcludingEntity(this,
                         createAABB(pos, pos.addVector(1, getBlockStateHeight(state), 1))).forEach(e -> {
                     if (!(e instanceof EntityExtendingRope)) {
-                        double targetY = pos.yCoord + getBlockStateHeight(state) - 0.01;
+                        double targetY = pos.y + getBlockStateHeight(state) - 0.01;
                         if (!entMaxY.containsKey(e) || entMaxY.get(e) < targetY) {
                             if ((!getEntityWorld().isRemote ^ e instanceof EntityPlayer) || b) {
                                 entitiesInBlocks.add(e);

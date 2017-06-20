@@ -74,7 +74,7 @@ public class ContainerCookingPot extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, this.tile.scaledCookCounter);
+        listener.sendWindowProperty(this, 0, this.tile.scaledCookCounter);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ContainerCookingPot extends Container {
 
         for (IContainerListener craft : this.listeners) {
             if (this.lastCookCounter != this.tile.scaledCookCounter)
-                craft.sendProgressBarUpdate(this, 0, this.tile.scaledCookCounter);
+                craft.sendWindowProperty(this, 0, this.tile.scaledCookCounter);
         }
         this.lastCookCounter = this.tile.scaledCookCounter;
     }

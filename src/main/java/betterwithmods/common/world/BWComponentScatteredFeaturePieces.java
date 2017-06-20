@@ -54,7 +54,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 10, 0, 12, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 10, 0, 13, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 10, 0, 10, structureBoundingBoxIn);
-            for (int j2 = 0; j2 <= this.scatteredFeatureSizeX - 1; j2 += this.scatteredFeatureSizeX - 1) {
+            for (int j2 = 0; j2 <= this.width - 1; j2 += this.width - 1) {
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), j2, 2, 2, structureBoundingBoxIn);
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), j2, 3, 2, structureBoundingBoxIn);
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), j2, 4, 1, structureBoundingBoxIn);
@@ -66,7 +66,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), j2, 7, 2, structureBoundingBoxIn);
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), j2, 7, 3, structureBoundingBoxIn);
             }
-            for (int k2 = 2; k2 <= this.scatteredFeatureSizeX - 3; k2 += this.scatteredFeatureSizeX - 3 - 2) {
+            for (int k2 = 2; k2 <= this.width - 3; k2 += this.width - 3 - 2) {
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), k2, 2, 0, structureBoundingBoxIn);
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), k2, 3, 0, structureBoundingBoxIn);
                 this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), k2 - 1, 4, 0, structureBoundingBoxIn);

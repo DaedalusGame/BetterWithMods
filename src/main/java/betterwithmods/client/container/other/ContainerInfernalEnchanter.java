@@ -80,10 +80,10 @@ public class ContainerInfernalEnchanter extends Container {
     }
 
     public void broadcastData(IContainerListener listener) {
-        listener.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
-        listener.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
-        listener.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
-        listener.sendProgressBarUpdate(this, 3, this.xpSeed & -16);
+        listener.sendWindowProperty(this, 0, this.enchantLevels[0]);
+        listener.sendWindowProperty(this, 1, this.enchantLevels[1]);
+        listener.sendWindowProperty(this, 2, this.enchantLevels[2]);
+        listener.sendWindowProperty(this, 3, this.xpSeed & -16);
     }
 
     public void onContextChanged(IItemHandler handler) {

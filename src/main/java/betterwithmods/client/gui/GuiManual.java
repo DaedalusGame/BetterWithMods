@@ -105,7 +105,7 @@ public final class GuiManual extends GuiScreen {
             final ManualAPIImpl.Tab tab = ManualAPIImpl.getTabs().get(i);
             final ImageButton button = (ImageButton) buttonList.get(i);
             GlStateManager.pushMatrix();
-            GlStateManager.translate(button.xPosition + 30, button.yPosition + 4 - tabOverlap / 2, zLevel);
+            GlStateManager.translate(button.x + 30, button.y + 4 - tabOverlap / 2, zLevel);
             tab.renderer.render();
             GlStateManager.popMatrix();
         }
@@ -118,7 +118,7 @@ public final class GuiManual extends GuiScreen {
             for (int i = 0; i < ManualAPIImpl.getTabs().size() && i < maxTabsPerSide; i++) {
                 final ManualAPIImpl.Tab tab = ManualAPIImpl.getTabs().get(i);
                 final ImageButton button = (ImageButton) buttonList.get(i);
-                if (mouseX > button.xPosition && mouseX < button.xPosition + button.width && mouseY > button.yPosition && mouseY < button.yPosition + button.height) {
+                if (mouseX > button.x && mouseX < button.x + button.width && mouseY > button.y && mouseY < button.y + button.height) {
                     if (tab.tooltip != null) {
                         drawHoveringText(Collections.singletonList(I18n.format(tab.tooltip)), mouseX, mouseY, getFontRenderer());
                     }
@@ -127,7 +127,7 @@ public final class GuiManual extends GuiScreen {
         }
 
         if (canScroll() && (isCoordinateOverScrollBar(mouseX - guiLeft, mouseY - guiTop) || isDragging)) {
-            drawHoveringText(Collections.singletonList(100 * offset() / maxOffset() + "%"), guiLeft + scrollPosX + scrollWidth, scrollButton.yPosition + scrollButton.height + 1, getFontRenderer());
+            drawHoveringText(Collections.singletonList(100 * offset() / maxOffset() + "%"), guiLeft + scrollPosX + scrollWidth, scrollButton.y + scrollButton.height + 1, getFontRenderer());
         }
     }
 
@@ -247,9 +247,9 @@ public final class GuiManual extends GuiScreen {
         ManualAPIImpl.setOffset(Math.max(0, Math.min(maxOffset(), row)));
         final int yMin = guiTop + scrollPosY;
         if (maxOffset() > 0) {
-            scrollButton.yPosition = yMin + (scrollHeight - 13) * offset() / maxOffset();
+            scrollButton.y = yMin + (scrollHeight - 13) * offset() / maxOffset();
         } else {
-            scrollButton.yPosition = yMin;
+            scrollButton.y = yMin;
         }
     }
 
@@ -285,12 +285,12 @@ public final class GuiManual extends GuiScreen {
                 mc.getTextureManager().bindTexture(image);
                 GlStateManager.color(1, 1, 1, 1);
 
-                hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+                hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-                final int x0 = xPosition;
-                final int x1 = xPosition + width;
-                final int y0 = yPosition + verticalImageOffset;
-                final int y1 = yPosition + verticalImageOffset + ((imageHeightOverride > 0) ? imageHeightOverride : height);
+                final int x0 = x;
+                final int x1 = x + width;
+                final int y0 = y + verticalImageOffset;
+                final int y1 = y + verticalImageOffset + ((imageHeightOverride > 0) ? imageHeightOverride : height);
 
                 final double u0 = 0;
                 final double u1 = u0 + 1;

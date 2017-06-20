@@ -169,13 +169,13 @@ public class InvUtils {
     }
 
     public static boolean insertFromWorld(IItemHandler inv, EntityItem entity, int minSlot, int maxSlot, boolean simulate) {
-        ItemStack stack = entity.getEntityItem().copy();
+        ItemStack stack = entity.getItem().copy();
         ItemStack leftover = attemptInsert(inv, stack, minSlot, maxSlot, simulate);
         if (leftover.isEmpty()) {
             entity.setDead();
             return true;
         } else {
-            entity.setEntityItemStack(leftover);
+            entity.setItem(leftover);
             return false;
         }
     }

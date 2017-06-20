@@ -51,16 +51,16 @@ public class HopperInteractions {
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 int stackSize = hopper.soulsRetained;
-                if (stackSize > item.getEntityItem().getCount())
-                    stackSize = item.getEntityItem().getCount();
+                if (stackSize > item.getItem().getCount())
+                    stackSize = item.getItem().getCount();
                 hopper.soulsRetained -= stackSize;
-                item.getEntityItem().shrink(stackSize);
+                item.getItem().shrink(stackSize);
                 EntityItem soul = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(Blocks.SOUL_SAND, stackSize));
-                if (!InvUtils.insert(hopper.inventory, soul.getEntityItem(), false).isEmpty()) {
+                if (!InvUtils.insert(hopper.inventory, soul.getItem(), false).isEmpty()) {
                     soul.setDefaultPickupDelay();
                     world.spawnEntity(soul);
                 }
-                if (item.getEntityItem().getCount() < 1)
+                if (item.getItem().getCount() < 1)
                     item.setDead();
             }
         });
@@ -120,7 +120,7 @@ public class HopperInteractions {
         public boolean isRecipe(int filterType, EntityItem inputStack) {
             if (filterType == this.filterType) {
                 if (inputStack != null) {
-                    ItemStack i = inputStack.getEntityItem();
+                    ItemStack i = inputStack.getItem();
                     return i.getItem().equals(input.getItem()) && i.getMetadata() == input.getMetadata() && i.getCount() >= input.getCount();
                 }
                 return false;
@@ -130,14 +130,14 @@ public class HopperInteractions {
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
             InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
-            for (int i = 0; i < inputStack.getEntityItem().getCount(); i++)
+            for (int i = 0; i < inputStack.getItem().getCount(); i++)
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
             onCraft(world, pos, inputStack);
         }
 
         public void onCraft(World world, BlockPos pos, EntityItem item) {
-            item.getEntityItem().shrink(1);
-            if (item.getEntityItem().getCount() <= 0)
+            item.getItem().shrink(1);
+            if (item.getItem().getCount() <= 0)
                 item.setDead();
         }
 

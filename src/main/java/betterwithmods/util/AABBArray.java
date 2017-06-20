@@ -140,19 +140,19 @@ public class AABBArray extends AxisAlignedBB {
     }
 
     @Override
-    public boolean intersectsWith(AxisAlignedBB other) {
+    public boolean intersects(AxisAlignedBB other) {
         boolean flag = false;
         for (AxisAlignedBB axisAlignedBB : boundingBoxes) {
-            flag |= axisAlignedBB.intersectsWith(other);
+            flag |= axisAlignedBB.intersects(other);
         }
         return flag;
     }
 
     @Override
-    public boolean isVecInside(Vec3d vec) {
+    public boolean contains(Vec3d vec) {
         boolean flag = false;
         for (AxisAlignedBB axisAlignedBB : getParts(this)) {
-            flag |= axisAlignedBB.isVecInside(vec);
+            flag |= axisAlignedBB.contains(vec);
         }
         return flag;
     }
@@ -185,16 +185,16 @@ public class AABBArray extends AxisAlignedBB {
     }
 
     @Override
-    public AxisAlignedBB expand(double x, double y, double z) {
+    public AxisAlignedBB grow(double x, double y, double z) {
         if (x == 0 && y == 0 && z == 0) {
             return new AABBArray(boundingBoxes);
         }
-        return super.expand(x, y, z);
+        return super.grow(x, y, z);
     }
 
     @Override
-    public AxisAlignedBB expandXyz(double value) {
-        return this.expand(value, value, value);
+    public AxisAlignedBB grow(double value) {
+        return this.grow(value, value, value);
     }
 
     @Override
@@ -221,15 +221,15 @@ public class AABBArray extends AxisAlignedBB {
     // to implement
 
     @Override
-    public AxisAlignedBB addCoord(double x, double y, double z) {
+    public AxisAlignedBB expand(double x, double y, double z) {
         System.err.println("AABBArray.addCoord() is stub");
-        return super.addCoord(x, y, z);
+        return super.expand(x, y, z);
     }
 
     @Override
-    public AxisAlignedBB contract(double value) {
+    public AxisAlignedBB shrink(double value) {
         System.err.println("AABBArray.contract() is stub");
-        return super.contract(value);
+        return super.shrink(value);
     }
 
     @Override

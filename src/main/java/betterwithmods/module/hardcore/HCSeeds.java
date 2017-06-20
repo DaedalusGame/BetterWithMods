@@ -29,11 +29,13 @@ import java.util.function.Predicate;
  * Created by tyler on 5/21/17.
  */
 public class HCSeeds extends Feature {
+    private static final Random RANDOM = new Random();
     public static Set<IBlockState> BLOCKS_TO_STOP = Sets.newHashSet();
     private static Predicate<IBlockState> STOP_SEEDS = state -> {
         Block block = state.getBlock();
         return BLOCKS_TO_STOP.contains(state) || block instanceof BlockTallGrass || (block instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN));
     };
+
     @Override
     public String getFeatureDescription() {
         return "Requires Tilling the ground with a hoe to get seeds.";
@@ -44,8 +46,6 @@ public class HCSeeds extends Feature {
         if(STOP_SEEDS.test(event.getState()))
             event.getDrops().clear();
     }
-
-    private static final Random RANDOM = new Random();
 
     public NonNullList<ItemStack> getDrops(int fortune) {
         if (RANDOM.nextInt(8) != 0) return NonNullList.create();
@@ -87,7 +87,7 @@ public class HCSeeds extends Feature {
         EntityItem item;
         while(iter.hasNext()) {
             item = iter.next();
-            ItemStack stack = item.getEntityItem();
+            ItemStack stack = item.getItem();
             if(BWOreDictionary.hasSuffix(stack,"crop"))
                 iter.remove();
         }

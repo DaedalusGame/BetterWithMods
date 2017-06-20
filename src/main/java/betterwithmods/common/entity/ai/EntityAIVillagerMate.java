@@ -89,7 +89,7 @@ public class EntityAIVillagerMate extends EntityAIBase {
      * valid mate found.
      */
     private EntityVillager getNearbyMate() {
-        List<EntityVillager> list = this.world.getEntitiesWithinAABB(this.villager.getClass(), this.villager.getEntityBoundingBox().expandXyz(8.0D));
+        List<EntityVillager> list = this.world.getEntitiesWithinAABB(this.villager.getClass(), this.villager.getEntityBoundingBox().grow(8.0D));
         double d0 = Double.MAX_VALUE;
         EntityVillager mate = null;
         for (EntityVillager current : list) {

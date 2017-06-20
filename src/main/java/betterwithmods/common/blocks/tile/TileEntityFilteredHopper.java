@@ -100,7 +100,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 if (HopperInteractions.attemptToCraft(filterType, getWorld(), getPos(), item)) {
                     this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
-                if (canFilterProcessItem(item.getEntityItem())) {
+                if (canFilterProcessItem(item.getItem())) {
                     if (InvUtils.insertFromWorld(inventory, item, 0, 18, false))
                         this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }

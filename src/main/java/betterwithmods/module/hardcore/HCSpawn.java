@@ -77,7 +77,7 @@ public class HCSpawn extends Feature {
     private BlockPos getRespawnPoint(EntityPlayer player, int spawnFuzz) {
         World world = player.getEntityWorld();
         BlockPos ret = world.getSpawnPoint();
-        if (!world.provider.hasNoSky()) {
+        if (!world.provider.isNether()) {
             boolean found = false;
             for (int tryCounter = 0; tryCounter < HARDCORE_SPAWN_MAX_ATTEMPTS; tryCounter++) {
                 ret = world.getSpawnPoint();

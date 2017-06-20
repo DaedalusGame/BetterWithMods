@@ -23,16 +23,6 @@ import net.minecraftforge.oredict.OreDictionary;
  * @author Koward
  */
 public class HCBuoy extends Feature {
-    @Override
-    public String getFeatureDescription() {
-        return "Makes it so items float or not depending on their material properties";
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
-        initBuoyancy();
-    }
-
     public static final StackMap<Float> buoyancy = new StackMap<>(-1.0F);
 
     public static float getBuoyancy(ItemStack stack) {
@@ -223,6 +213,16 @@ public class HCBuoy extends Feature {
     }
 
     @Override
+    public String getFeatureDescription() {
+        return "Makes it so items float or not depending on their material properties";
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        initBuoyancy();
+    }
+
+    @Override
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }
@@ -237,7 +237,7 @@ public class HCBuoy extends Feature {
         if (!(event.getEntity().getClass() == EntityItem.class)) return;
         EntityItem entityItem = (EntityItem) event.getEntity();
 
-        if (entityItem.getEntityItem().getCount() > 0) {
+        if (entityItem.getItem().getCount() > 0) {
             event.setResult(Event.Result.DENY);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
             if (entityItem.delayBeforeCanPickup == 40) {

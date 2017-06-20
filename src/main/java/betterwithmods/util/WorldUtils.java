@@ -77,9 +77,9 @@ public final class WorldUtils {
         ExtendedBlockStorage extendedblockstorage = chunkIn.getBlockStorageArray()[j >> 4];
 
         if (extendedblockstorage == NULL_BLOCK_STORAGE) {
-            return !chunkIn.getWorld().provider.hasNoSky() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
+            return !chunkIn.getWorld().provider.isNether() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
         } else {
-            int l = chunkIn.getWorld().provider.hasNoSky() ? 0 : extendedblockstorage.getExtSkylightValue(i, j & 15, k);
+            int l = chunkIn.getWorld().provider.isNether() ? 0 : extendedblockstorage.getSkyLight(i, j & 15, k);
             l = l - amount;
 
             if (l < 0) {

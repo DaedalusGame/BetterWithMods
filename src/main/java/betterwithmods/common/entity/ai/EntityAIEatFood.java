@@ -30,7 +30,7 @@ public class EntityAIEatFood extends EntityAIBase {
             return null;
         EntityItem target = null;
         for (EntityItem item : items) {
-            if(validItem.test(item.getEntityItem())) {
+            if (validItem.test(item.getItem())) {
                 target = item;
                 break;
             }
@@ -52,7 +52,7 @@ public class EntityAIEatFood extends EntityAIBase {
         }
         if (targetItem != null) {
             BlockPos targetPos = targetItem.getPosition();
-            if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getEntityItem().getCount() > 0) {
+            if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getItem().getCount() > 0) {
                 processItemEating();
                 return false;
             } else {
@@ -64,7 +64,7 @@ public class EntityAIEatFood extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (targetItem.isDead || targetItem.getEntityItem().getCount() < 1) {
+        if (targetItem.isDead || targetItem.getItem().getCount() < 1) {
             BlockPos entityPos = entity.getPosition();
             List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
             targetItem = getTargetItem(entityItems);
@@ -86,7 +86,7 @@ public class EntityAIEatFood extends EntityAIBase {
      */
     @Override
     public void updateTask() {
-        if (entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getEntityItem().getCount() > 0) {
+        if (entity.getDistanceSq(targetItem.posX, targetItem.posY, targetItem.posZ) <= 2.0D && targetItem.getItem().getCount() > 0) {
             processItemEating();
         } else {
             ++timeoutCounter;
@@ -96,7 +96,7 @@ public class EntityAIEatFood extends EntityAIBase {
         }
     }
     private void processItemEating() {
-        ItemStack foodStack = targetItem.getEntityItem().splitStack(1);
+        ItemStack foodStack = targetItem.getItem().splitStack(1);
         entity.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1.0F, (entity.world.rand.nextFloat() - entity.world.rand.nextFloat()) * 0.2F + 1.0F);
         foodStack.shrink(1);
     }

@@ -82,7 +82,7 @@ public class ContainerFilteredHopper extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, this.tile.power);
+        listener.sendWindowProperty(this, 0, this.tile.power);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ContainerFilteredHopper extends Container {
 
         for (IContainerListener craft : this.listeners) {
             if (this.lastMechPower != this.tile.power)
-                craft.sendProgressBarUpdate(this, 0, this.tile.power);
+                craft.sendWindowProperty(this, 0, this.tile.power);
         }
         this.lastMechPower = this.tile.power;
     }

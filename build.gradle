@@ -23,13 +23,20 @@ compileJava {
 minecraft {
     version = "1.11.2-13.20.0.2282"
     runDir = "run"
-    mappings = "snapshot_20170608"
+    mappings = "snapshot_20170612"
     replace "%VERSION%":"${project.version}"
 }
 repositories {
     maven { url 'http://dvs1.progwml6.com/files/maven' }
     maven { url "http://blamejared.com/maven" }
     maven { url "http://maven.amadornes.com/" }
+    repositories {//Need for IE
+        //TODO remove this once IC2's build server is back online
+        maven {
+            name = "CurseForge"
+            url = "https://minecraft.curseforge.com/api/maven/"
+        }
+    }
 }
 dependencies {
     deobfCompile "mezz.jei:jei_1.11.2:+"
@@ -38,7 +45,7 @@ dependencies {
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     deobfCompile "com.blamejared:MTLib:2.+"
     deobfCompile "MCMultiPart2:MCMultiPart:2.0.1"
-//    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
+//    deobfCompile "blusunrize:ImmersiveEngineering:0.11-63-145:deobf"
     files("libs/*")
 }
 

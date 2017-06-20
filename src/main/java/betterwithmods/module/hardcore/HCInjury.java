@@ -22,8 +22,8 @@ public class HCInjury extends Feature {
     @SubscribeEvent
     public void attack(LivingAttackEvent event) {
 
-        if (event.getSource().getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
+        if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
             if (EntityPlayerExt.isSurvival(player)) {
                 HealthPenalty healthPenalty = EntityPlayerExt.getHealthPenalty(player);
                 double mod = healthPenalty.getModifier();

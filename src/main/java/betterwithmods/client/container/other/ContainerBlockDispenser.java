@@ -74,7 +74,7 @@ public class ContainerBlockDispenser extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, this.tile.nextIndex);
+        listener.sendWindowProperty(this, 0, this.tile.nextIndex);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ContainerBlockDispenser extends Container {
 
         for (IContainerListener craft : this.listeners) {
             if (this.nextSlot != this.tile.nextIndex)
-                craft.sendProgressBarUpdate(this, 0, this.tile.nextIndex);
+                craft.sendWindowProperty(this, 0, this.tile.nextIndex);
         }
 
         this.nextSlot = this.tile.nextIndex;

@@ -47,9 +47,9 @@ public class HCGunpowder extends Feature {
         }
         if (contained) {
             for (EntityItem item : evt.getDrops()) {
-                ItemStack stack = item.getEntityItem();
+                ItemStack stack = item.getItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    item.setEntityItemStack(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.getCount()));
+                    item.setItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.getCount()));
                 }
             }
         }

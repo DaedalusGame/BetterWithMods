@@ -28,7 +28,7 @@ public class EntityItemBuoy extends EntityItem {
      * Wrapper around EntityItem.
      */
     public EntityItemBuoy(EntityItem orig) {
-        super(orig.getEntityWorld(), orig.posX, orig.posY, orig.posZ, orig.getEntityItem());
+        super(orig.getEntityWorld(), orig.posX, orig.posY, orig.posZ, orig.getItem());
         NBTTagCompound originalData = new NBTTagCompound();
         orig.writeEntityToNBT(originalData);
         this.readEntityFromNBT(originalData);
@@ -84,7 +84,7 @@ public class EntityItemBuoy extends EntityItem {
         ItemStack stack = this.getDataManager().get(getITEM());
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem().onEntityItemUpdate(this))
             return;
-        if (this.getEntityItem().isEmpty()) {
+        if (this.getItem().isEmpty()) {
             this.setDead();
         } else {
             // super.super.onUpdate() START
@@ -184,7 +184,7 @@ public class EntityItemBuoy extends EntityItem {
 
         if (waterAccumulator > 0.001D) {
             if (!isDrifted()) {
-                float buoyancy = HCBuoy.getBuoyancy(getEntityItem()) + 1.0F;
+                float buoyancy = HCBuoy.getBuoyancy(getItem()) + 1.0F;
                 motionY += 0.04D * (double) buoyancy * waterAccumulator;
             }
 
@@ -280,6 +280,6 @@ public class EntityItemBuoy extends EntityItem {
     }
 
     private boolean isEntityItemFake(EntityItem item) {
-        return item.delayBeforeCanPickup == 32767 && item.age == item.getEntityItem().getItem().getEntityLifespan(item.getEntityItem(), item.getEntityWorld()) - 1;
+        return item.delayBeforeCanPickup == 32767 && item.age == item.getItem().getItem().getEntityLifespan(item.getItem(), item.getEntityWorld()) - 1;
     }
 }

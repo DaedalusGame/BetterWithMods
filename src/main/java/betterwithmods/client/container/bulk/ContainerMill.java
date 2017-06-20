@@ -61,7 +61,7 @@ public class ContainerMill extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, this.mill.grindCounter);
+        listener.sendWindowProperty(this, 0, this.mill.grindCounter);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ContainerMill extends Container {
         super.detectAndSendChanges();
         for (IContainerListener craft : this.listeners) {
             if (this.lastMillCounter != this.mill.grindCounter) {
-                craft.sendProgressBarUpdate(this, 0, this.mill.grindCounter);
+                craft.sendWindowProperty(this, 0, this.mill.grindCounter);
             }
         }
         this.lastMillCounter = this.mill.grindCounter;

@@ -23,10 +23,6 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
         this.radius = 7;
     }
 
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 0;
-    }
 
     public int getBladeColor(int blade) {
         return bladeMeta[blade];

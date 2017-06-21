@@ -76,7 +76,6 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     private boolean hasMatch(Object input, List<Object> inputs) {
-        System.out.println(input);
         if (input instanceof String) {
             for (Object in : inputs) {
                 if (in instanceof OreStack) {

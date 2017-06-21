@@ -132,7 +132,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
         BlockPos up = pos.up();
         Block block = world.getBlockState(up).getBlock();
         if (block != null && block == BWMBlocks.SINGLE_MACHINES) {
-            if (world.getBlockState(up).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER) {
+            if (world.getBlockState(up).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER) {
                 return state.withProperty(UNDERHOPPER, true);
             }
         }

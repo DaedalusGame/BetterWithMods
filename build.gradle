@@ -44,8 +44,8 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.11.2:+"
 
     //All have old MCP Mappings, causing issues in environment
-    deobfCompile "slimeknights.mantle:Mantle:1.11.2+"
-    deobfCompile "slimeknights:TConstruct:1.11.2+"
+//    deobfCompile "slimeknights.mantle:Mantle:1.11.2+"
+//    deobfCompile "slimeknights:TConstruct:1.11.2+"
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
     deobfCompile "com.blamejared:MTLib:2.+"
     deobfCompile "blusunrize:ImmersiveEngineering:0.11-63-145"

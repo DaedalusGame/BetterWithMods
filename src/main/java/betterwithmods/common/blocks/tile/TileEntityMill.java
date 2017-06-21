@@ -1,27 +1,28 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
+import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable {
+public class TileEntityMill extends TileMachineInventory implements ITickable {
 
     public static int GRIND_TIME = MillRecipes.millstoneCraftSpeed;
 
@@ -45,22 +46,16 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
     public void update() {
         if (this.getWorld().isRemote)
             return;
-
-        Block block = this.getWorld().getBlockState(this.pos).getBlock();
-
-        if (block == null || !(block instanceof BlockMechMachines))
-            return;
-
-        BlockMechMachines mill = (BlockMechMachines) block;
+        validate(world,pos);
 
         if (this.validateContents)
             validateContents();
 
-        if (mill.isMechanicalOn(getWorld(), pos))
+        if (isActive())
             if (getWorld().rand.nextInt(20) == 0)
                 getWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getWorld().rand.nextFloat() * 0.1F, 0.5F + getWorld().rand.nextFloat() * 0.1F);
 
-        if (this.containsIngredientsToGrind && mill.isMechanicalOn(getWorld(), pos)) {
+        if (this.containsIngredientsToGrind && isActive()) {
             if (!this.getWorld().isRemote) {
                 if (grindType == 2) {
                     if (this.getWorld().rand.nextInt(25) < 2) {
@@ -72,7 +67,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
                 }
             }
             this.grindCounter++;
-            if (this.grindCounter > GRIND_TIME - 1) {
+            if (this.grindCounter > (GRIND_TIME - 1)) {
                 grindContents();
                 this.grindCounter = 0;
                 this.validateContents = true;
@@ -140,7 +135,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
     }
 
     public double getGrindProgress() {
-        return this.grindCounter / (double)GRIND_TIME;
+        return this.grindCounter / (double) GRIND_TIME;
     }
 
     public boolean isGrinding() {
@@ -166,8 +161,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         }
         return false;
     }
+    @Override
+    public void validateContents() {
 
-    private void validateContents() {
         int oldGrindType = getGrindType();
         int newGrindType = 0;
         MillRecipe recipe = MillManager.getInstance().getMostValidRecipe(inventory);
@@ -184,4 +180,23 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         }
     }
 
+    @Override
+    public Set<Mode> getModes() {
+        return ImmutableSet.of(Mode.AXLE,Mode.CRANK);
+    }
+
+    @Override
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        if (mode == Mode.AXLE)
+            return facing.getAxis().isVertical();
+        return true;
+    }
+
+    @Override
+    public void overload(World world, BlockPos pos) {
+        if (MechanicalBreakage.millstone)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/mill"));
+        world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
+        world.setBlockToAir(pos);
+    }
 }

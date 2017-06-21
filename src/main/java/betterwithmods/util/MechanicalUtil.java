@@ -34,7 +34,7 @@ public class MechanicalUtil {
                         if (world.getTileEntity(off) != null) {
                             TileEntity tile = world.getTileEntity(off);
                             if (tile.hasCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite())) {
-                                power = tile.getCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(dir.getOpposite());
+                                power = tile.getCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(world,pos,dir.getOpposite());
                             }
                         }
                         break;
@@ -78,7 +78,6 @@ public class MechanicalUtil {
 
         if (block == BWMBlocks.HAND_CRANK) {
             IMechanicalBlock mech = (IMechanicalBlock) block;
-
             if (mech.isOutputtingMechPower(world, offset))
                 return true;
         }

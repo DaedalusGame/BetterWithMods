@@ -159,7 +159,7 @@ public abstract class TileEntityMillGenerator extends TileBasic implements ITick
     }
 
     @Override
-    public int getMechanicalOutput(EnumFacing facing) {
+    public int getMechanicalOutput(World world, BlockPos pos, EnumFacing facing) {
         if (getBlockType() instanceof IMechanical) {
             if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0)
                 return 20;
@@ -167,13 +167,15 @@ public abstract class TileEntityMillGenerator extends TileBasic implements ITick
         return 0;
     }
 
+
     @Override
-    public int getMechanicalInput(EnumFacing facing) {
+    public int getMechanicalInput(World world, BlockPos pos, EnumFacing facing) {
         return 0;
     }
 
     @Override
-    public int getMaximumInput(EnumFacing facing) {
-        return 0;
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        return false;
     }
+
 }

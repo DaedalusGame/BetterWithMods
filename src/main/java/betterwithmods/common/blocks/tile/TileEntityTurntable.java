@@ -1,10 +1,13 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.BWMod;
 import betterwithmods.api.block.ITurnable;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
+import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
@@ -22,7 +25,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITickable {
+public class TileEntityTurntable extends TileMachine implements IMechSubtype, ITickable {
     private static final int[] ticksToRotate = {10, 20, 40, 80};
     public byte timerPos = 0;
     private int potteryRotation = 0;
@@ -66,7 +69,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public void update() {
         if (!this.getWorld().isRemote) {
-            if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockMechMachines && ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).isMechanicalOn(getWorld(), pos)) {
+            if (isActive()) {
                 if (!asynchronous && getWorld().getTotalWorldTime() % (long) ticksToRotate[timerPos] == 0) {
                     this.getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.05F, 1.0F);
                     rotateTurntable();
@@ -79,6 +82,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                     }
                 }
             }
+            validate(world,pos);
         }
     }
 
@@ -326,7 +330,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     private void spawnParticles(IBlockState state) {
-        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
     }
 
     private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos, boolean reverse) {
@@ -354,5 +358,18 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public void setSubtype(int type) {
         this.timerPos = (byte) Math.min(type, 3);
+    }
+
+    @Override
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        return facing == EnumFacing.DOWN;
+    }
+
+    @Override
+    public void overload(World world, BlockPos pos) {
+        if (MechanicalBreakage.turntable)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/turntable"));
+        world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
+        world.setBlockToAir(pos);
     }
 }

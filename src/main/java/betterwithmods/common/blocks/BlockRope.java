@@ -85,7 +85,7 @@ public class BlockRope extends BWMBlock {
             supported = true;
         }
         if (blockAbove == BWMBlocks.SINGLE_MACHINES) {
-            if (world.getBlockState(pos.up()).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.PULLEY) {
+            if (world.getBlockState(pos.up()).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.PULLEY) {
                 supported = true;
             }
         }

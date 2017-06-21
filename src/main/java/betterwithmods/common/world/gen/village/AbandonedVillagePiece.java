@@ -70,7 +70,6 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
             case SEMIABANDONED:
                 VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
                 String name = profession.getRegistryName().toString();
-                System.out.println(name);
                 if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
                     return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
                 else

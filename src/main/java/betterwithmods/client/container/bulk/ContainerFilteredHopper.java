@@ -43,6 +43,7 @@ public class ContainerFilteredHopper extends Container {
             addSlotToContainer(new SlotItemHandler(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), i, 8 + i * 18, 169));
         }
     }
+
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack clickedStack = ItemStack.EMPTY;
@@ -82,7 +83,7 @@ public class ContainerFilteredHopper extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendWindowProperty(this, 0, this.tile.power);
+        listener.sendWindowProperty(this, 0, this.tile.isActive() ? 1 : 0);
     }
 
     @Override
@@ -90,16 +91,15 @@ public class ContainerFilteredHopper extends Container {
         super.detectAndSendChanges();
 
         for (IContainerListener craft : this.listeners) {
-            if (this.lastMechPower != this.tile.power)
-                craft.sendWindowProperty(this, 0, this.tile.power);
+            if (this.lastMechPower != (this.tile.isActive() ? 1 : 0))
+                craft.sendWindowProperty(this, 0, (this.tile.isActive() ? 1 : 0));
         }
-        this.lastMechPower = this.tile.power;
+        this.lastMechPower = (byte) (this.tile.isActive() ? 1 : 0);
     }
 
     @Override
     public void updateProgressBar(int index, int value) {
-        if (index == 0)
-            this.tile.power = (byte) value;
+
     }
 
     @Override

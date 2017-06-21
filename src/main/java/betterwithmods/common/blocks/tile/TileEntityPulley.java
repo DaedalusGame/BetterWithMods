@@ -1,12 +1,15 @@
 package betterwithmods.common.blocks.tile;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.tile.IMechanicalMachine;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.module.GlobalConfig;
+import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -21,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -29,7 +33,8 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 
 import java.util.*;
 
-public class TileEntityPulley extends TileEntityVisibleInventory {
+public class TileEntityPulley extends TileVisibleMachine {
+
 
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
@@ -43,9 +48,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     public boolean isMechanicallyPowered() {
-        return getWorld().getBlockState(pos).getBlock() != null
-                && getWorld().getBlockState(pos).getBlock() instanceof BlockMechMachines
-                && ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).isMechanicalOn(getWorld(), pos);
+        return isActive();
     }
 
     @Override
@@ -92,6 +95,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     public void update() {
         if (this.getWorld().isRemote)
             return;
+        validate(world,pos);
         tryNextOperation();
     }
 
@@ -343,6 +347,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+
         this.ropeTag = (NBTTagCompound) tag.getTag("Rope");
     }
 
@@ -358,7 +363,20 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         }
     }
 
-//    private class PulleyInventory extends SimpleStackHandler {
+    @Override
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        return facing.getAxis().isHorizontal();
+    }
+
+    @Override
+    public void overload(World world, BlockPos pos) {
+        if (MechanicalBreakage.pulley)
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/pulley"));
+        world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
+        world.setBlockToAir(pos);
+    }
+
+    //    private class PulleyInventory extends SimpleStackHandler {
 //
 //        public PulleyInventory(int size, TileEntity tile) {
 //            super(size, tile);

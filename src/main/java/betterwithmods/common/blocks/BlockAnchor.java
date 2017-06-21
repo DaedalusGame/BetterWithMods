@@ -184,7 +184,7 @@ public class BlockAnchor extends BWMBlock{
 
     private boolean isPulley(IBlockAccess world, BlockPos origin, EnumFacing facing) {
         BlockPos pos = origin.offset(facing);
-        return world.getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == EnumType.PULLEY;
+        return world.getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES && world.getBlockState(pos).getValue(BlockMechMachines.TYPE) == EnumType.PULLEY;
     }
 
     @Override

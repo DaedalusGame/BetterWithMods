@@ -23,11 +23,6 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     private int refreshTime = 0;
 
     @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 1;
-    }
-
-    @Override
     public void update() {
         if (getBlockType() instanceof BlockAdvGearbox) {
             if (((BlockAdvGearbox) getBlockType()).isGearboxOn(getWorld(), pos)) {
@@ -45,8 +40,8 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
         outputs = 0;
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(getWorld(), pos, facing)) {
-                if (powerLevel != getMechanicalInput(facing))
-                    powerLevel = getMechanicalInput(facing);
+                if (powerLevel != getMechanicalInput(world,pos,facing))
+                    powerLevel = getMechanicalInput(world,pos,facing);
             } else if (MechanicalUtil.isAxle(getWorld().getBlockState(pos.offset(facing)).getBlock())) {
                 outputs++;
             }
@@ -68,35 +63,6 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     }
 
     @Override
-    public int getMechanicalOutput(EnumFacing facing) {
-        if (getBlockType() instanceof IMechanical) {
-            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0) {
-                if (outputs > 0)
-                    return powerLevel / outputs;
-                else
-                    return powerLevel;
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public int getMechanicalInput(EnumFacing facing) {
-        int power = powerLevel;
-        if (getBlockType() instanceof IMechanicalBlock) {
-            if (((IMechanicalBlock) getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
-                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(), getPos(), facing), getMaximumInput(facing));
-            }
-        }
-        return power;
-    }
-
-    @Override
-    public int getMaximumInput(EnumFacing facing) {
-        return 100;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         powerLevel = tag.getInteger("Power");
@@ -115,5 +81,34 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
+    }
+
+    @Override
+    public int getMechanicalOutput(World world, BlockPos pos, EnumFacing facing) {
+        if (getBlockType() instanceof IMechanical) {
+            if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0) {
+                if (outputs > 0)
+                    return powerLevel / outputs;
+                else
+                    return powerLevel;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int getMechanicalInput(World world, BlockPos pos, EnumFacing facing) {
+        int power = powerLevel;
+        if (getBlockType() instanceof IMechanicalBlock) {
+            if (((IMechanicalBlock) getBlockType()).canInputPowerToSide(getWorld(), getPos(), facing)) {
+                power = Math.min(MechanicalUtil.searchForAdvMechanical(getWorld(), getPos(), facing), 100);
+            }
+        }
+        return power;
+    }
+
+    @Override
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        return false;
     }
 }

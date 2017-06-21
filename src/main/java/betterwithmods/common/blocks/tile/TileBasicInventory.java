@@ -57,4 +57,6 @@ public abstract class TileBasicInventory extends TileBasic {
         if(inv != null)
             InvUtils.ejectInventoryContents(world, pos,inv);
     }
+
+    public abstract void validateContents();
 }

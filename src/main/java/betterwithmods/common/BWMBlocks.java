@@ -192,6 +192,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileStake.class, "bwm_stake", "stake", "bwm.stake");
 
         GameRegistry.registerTileEntityWithAlternatives(TileCamo.class, "bwm_camo", "camo", "bwm.camo");
+        GameRegistry.registerTileEntityWithAlternatives(TileHandCrank.class, "bwm_crank", "crank", "bwm.crank");
 
     }
 

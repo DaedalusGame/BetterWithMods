@@ -3,11 +3,13 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.tile.TileHandCrank;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.module.hardcore.HCHunger;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,6 +21,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -28,27 +32,45 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVariants {
-    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
+    public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 8);
     public static final float BASE_HEIGHT = 0.25F;
-    private static final int TICK_RATE = 3;
     private static final AxisAlignedBB CRANK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BASE_HEIGHT, 1.0F);
 
     public BlockCrank() {
         super(Material.ROCK);
         this.setHardness(0.5F);
         this.setSoundType(SoundType.WOOD);
-        this.setTickRandomly(true);
         this.setDefaultState(getDefaultState().withProperty(STAGE, 0));
         this.setHarvestLevel("pickaxe", 0);
 
     }
 
     @Override
-    public int tickRate(World worldIn) {
-        return TICK_RATE;
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileHandCrank();
+    }
+
+    public TileHandCrank getTile(IBlockAccess world, BlockPos pos) {
+        return (TileHandCrank) world.getTileEntity(pos);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        TileHandCrank tile = getTile(worldIn, pos);
+        if(tile != null) {
+            return getDefaultState().withProperty(STAGE, tile.getStage());
+        }
+        return getDefaultState();
     }
 
     @Override
@@ -68,38 +90,35 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        int meta = state.getValue(STAGE);
-
-        if (meta == 0) {
-            if (Gameplay.crankExhaustion > 0.0) {
-                int minHunger = ModuleLoader.isFeatureEnabled(HCHunger.class) ? 20 : 6;
-                if (player.getFoodStats().getFoodLevel() > minHunger) {
-                    player.addExhaustion((float) Gameplay.crankExhaustion);
-                    if (!world.isRemote) {
-                        toggleSwitch(world, pos, state);
-                    }
-                } else if (world.isRemote) {
-                    if (hand == EnumHand.MAIN_HAND)
-                        player.sendStatusMessage(new TextComponentTranslation("bwm.message.exhaustion"), true);
-                    return false;
-                }
-            } else
-                toggleSwitch(world, pos, state);
-            return true;
+        EnumActionResult result = toggleSwitch(player, world, pos);
+        if (result == EnumActionResult.PASS) {
+            if (world.isRemote) {
+                if (hand == EnumHand.MAIN_HAND)
+                    player.sendStatusMessage(new TextComponentTranslation("bwm.message.exhaustion"), true);
+            }
         }
-        return false;
+        return result == EnumActionResult.SUCCESS;
     }
 
-    private void toggleSwitch(World world, BlockPos pos, IBlockState state) {
-        if (!world.isRemote) {
-            if (!checkForOverpower(world, pos)) {
-                world.setBlockState(pos, state.withProperty(STAGE, 1));
-                world.markBlockRangeForRenderUpdate(pos, pos);
-                world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            } else
-                breakCrank(world, pos);
+    private boolean canCrank(EntityPlayer player) {
+        return PlayerHelper.getHungerPenalty(player).ordinal() < 2 && player.getFoodStats().getFoodLevel() > 6;
+    }
+
+    private EnumActionResult toggleSwitch(EntityPlayer player, World world, BlockPos pos) {
+        TileHandCrank tile = getTile(world, pos);
+        if (tile != null) {
+            if(tile.getStage() > 0)
+                return EnumActionResult.FAIL;
+            if (canCrank(player)) {
+                if(Gameplay.getCrankExhaustion() > 0)
+                    player.addExhaustion((float) Gameplay.getCrankExhaustion());
+                tile.setStage(1);
+                return EnumActionResult.SUCCESS;
+            } else {
+                return EnumActionResult.PASS;
+            }
         }
+        return EnumActionResult.FAIL;
     }
 
     @Override
@@ -114,8 +133,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        //if(side != 1)
-        //return super.shouldSideBeRendered(world, x, y, z, side);
         return true;
     }
 
@@ -160,8 +177,9 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(STAGE) > 1;
+        return getActualState(world.getBlockState(pos),world,pos).getValue(STAGE) > 0;
     }
+
 
     @Override
     public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
@@ -187,28 +205,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     }
 
     @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        int stage = state.getValue(STAGE);
-        if (stage > 0) {
-            if (stage < 7) {
-                if (stage <= 6)
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
-                if (stage <= 5)
-                    world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
-                else
-                    world.scheduleBlockUpdate(pos, this, MillRecipes.millstoneCraftSpeed/7, 5);
-
-                world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
-            } else {
-                world.setBlockState(pos, state.withProperty(STAGE, 0));
-                world.markBlockRangeForRenderUpdate(pos, pos);
-                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-                world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.7F);
-            }
-        }
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         BlockPos down = pos.down();
         if (!world.isSideSolid(down, EnumFacing.UP)) {
@@ -219,12 +215,12 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(STAGE, meta);
+        return getDefaultState();
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(STAGE);
+        return 0;
     }
 
     @Override

@@ -5,6 +5,8 @@ import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,11 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by tyler on 8/5/16.
  */
 public class TileEntityCreativeGen extends TileEntity implements IMechanicalPower {
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 0;
-    }
-
     //Unless you increase this, expect to see the TESR to pop in as you approach.
     @Override
     @SideOnly(Side.CLIENT)
@@ -39,7 +36,7 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
     }
 
     @Override
-    public int getMechanicalOutput(EnumFacing facing) {
+    public int getMechanicalOutput(World world, BlockPos pos, EnumFacing facing) {
         if (getBlockType() instanceof IMechanical) {
             if (((IMechanical) getBlockType()).getMechPowerLevelToFacing(getWorld(), pos, facing) > 0)
                 return 20;
@@ -48,13 +45,12 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
     }
 
     @Override
-    public int getMechanicalInput(EnumFacing facing) {
+    public int getMechanicalInput(World world, BlockPos pos, EnumFacing facing) {
         return 0;
     }
 
     @Override
-    public int getMaximumInput(EnumFacing facing) {
-        return 0;
+    public boolean canInputPower(Mode mode, EnumFacing facing) {
+        return false;
     }
-
 }

@@ -101,6 +101,11 @@ public class TileStake extends TileBasicInventory {
     }
 
     @Override
+    public void validateContents() {
+
+    }
+
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (connections[facing.getIndex()] != null)

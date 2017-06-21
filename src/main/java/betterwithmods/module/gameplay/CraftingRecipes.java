@@ -51,7 +51,7 @@ public class CraftingRecipes extends Feature {
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.SLATS, 4, 0), "SS", "SS", 'S', "sidingWood");
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.GRATE, 4, 0), "WSW", "WSW", 'S', "stickWood", 'W', "mouldingWood");
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.PANE, 4, 2), "RRR", "RRR", 'R', Items.REEDS);
-        RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.PULLEY.getMeta() << 1), "PIP", "GLG", "PIP", 'P', "plankWood", 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
+
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.ROPE), "XX", "XX", "XX", 'X', "fiberHemp");
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.PLATFORM), "MWM", " M ", "MWM", 'M', "plankWood", 'W', new ItemStack(BWMBlocks.PANE, 1, 2));
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.MINING_CHARGE), "RSR", "DDD", "DDD", 'R', BWMBlocks.ROPE, 'S', "slimeball", 'D', BWMItems.DYNAMITE);
@@ -93,6 +93,7 @@ public class CraftingRecipes extends Feature {
         RecipeUtils.addOreRecipe(BlockMechMachines.getStack(BlockMechMachines.EnumType.TURNTABLE), "LLL", "SCS", "SWS", 'L', "sidingWood", 'S', "stone", 'W', "gearWood", 'C', Items.CLOCK);
         RecipeUtils.addOreRecipe(BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER), "S S", "GPG", " C ", 'C', "cornerWood", 'S', "sidingWood", 'G', "gearWood", 'P', Blocks.WOODEN_PRESSURE_PLATE);
         RecipeUtils.addOreRecipe(BlockMechMachines.getStack(BlockMechMachines.EnumType.MILL), "XWX", "XXX", "XXX", 'X', "stone", 'W', "gearWood");
+        RecipeUtils.addOreRecipe(BlockMechMachines.getStack(BlockMechMachines.EnumType.PULLEY), "PIP", "GLG", "PIP", 'P', "plankWood", 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
         RecipeUtils.addOreRecipe(BlockCookingPot.getStack(BlockCookingPot.EnumType.CAULDRON), "XBX", "XWX", "XXX", 'X', "ingotCopper", 'B', Items.BONE, 'W', Items.WATER_BUCKET);
         RecipeUtils.addOreRecipe(BlockCookingPot.getStack(BlockCookingPot.EnumType.CAULDRON), "XBX", "XWX", "XXX", 'X', "ingotIron", 'B', Items.BONE, 'W', Items.WATER_BUCKET);
 

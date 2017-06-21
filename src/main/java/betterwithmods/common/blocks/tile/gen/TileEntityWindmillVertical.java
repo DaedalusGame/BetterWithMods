@@ -28,10 +28,6 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         return bladeMeta[blade];
     }
 
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 0;
-    }
 
     @Override
     public int getColorFromBlade(int blade) {

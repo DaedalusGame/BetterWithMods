@@ -27,9 +27,6 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
     }
 
     @Override
-    public void validateContents() {}
-
-    @Override
     public int getInventorySize() {
         return 16;
     }

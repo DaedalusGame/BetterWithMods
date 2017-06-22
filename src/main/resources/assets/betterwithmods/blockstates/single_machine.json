@@ -21,7 +21,7 @@
         "transform": "forge:default-block"
       }
     ],
-    "type": {
+    "machinetype": {
       "mill": {
         "model": "betterwithmods:mill"
       },
@@ -51,7 +51,7 @@
         }
       }
     },
-    "active": {
+    "ison": {
       "true": {},
       "false": {}
     }

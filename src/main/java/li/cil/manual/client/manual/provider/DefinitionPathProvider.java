@@ -63,7 +63,7 @@ public class DefinitionPathProvider implements PathProvider {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
         }
         if (block instanceof BlockMechMachines) {
-            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.TYPE).getName() + ".md";
+            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.MACHINETYPE).getName() + ".md";
         }
         if (block instanceof BlockMini) {
             Material mat = block.getMaterial(state);

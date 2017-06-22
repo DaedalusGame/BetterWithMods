@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.MechanicalCapability;
-import betterwithmods.api.tile.IMechanicalMachine;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockCookingPot;
@@ -11,7 +10,6 @@ import betterwithmods.common.registry.heat.BWMHeatSource;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -34,10 +32,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
-import java.util.Set;
 
 
-public abstract class TileEntityCookingPot extends TileVisibleMachine {
+public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower {
     public int cookCounter;
     public int stokedCooldownCounter;
     public int scaledCookCounter;
@@ -75,6 +72,26 @@ public abstract class TileEntityCookingPot extends TileVisibleMachine {
             return MechanicalCapability.MECHANICAL_POWER.cast(this);
         }
         return super.getCapability(capability, facing);
+    }
+
+    private boolean isInputtingPower(EnumFacing facing) {
+        return getMechanicalInput(facing) > 0;
+    }
+
+    private EnumFacing getPoweredSide() {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (isInputtingPower(facing))
+                return facing;
+        }
+        return null;
+    }
+
+    private boolean isPowered() {
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (isInputtingPower(facing))
+                return true;
+        }
+        return false;
     }
 
     protected boolean isStoked() {
@@ -116,54 +133,53 @@ public abstract class TileEntityCookingPot extends TileVisibleMachine {
     public void update() {
         if (this.getWorld().isRemote)
             return;
-
-        validate(world, pos);
-
-        IBlockState state = this.getWorld().getBlockState(this.pos);
-        if (this.fireIntensity != getFireIntensity()) {
-            validateFireIntensity();
-            this.forceValidation = true;
-        }
-
-        if (!isActive()) {
-            this.facing = EnumFacing.UP;
-            entityCollision();
-            if (this.fireIntensity > 0) {
-                if (this.forceValidation) {
-                    validateContents();
-                    this.forceValidation = false;
-                }
-                if (this.fireIntensity > 4) {
-                    if (this.stokedCooldownCounter < 1)
-                        this.cookCounter = 0;
-                    this.stokedCooldownCounter = 20;
-                    performStokedFireUpdate(getCurrentFireIntensity());
-                } else if (this.stokedCooldownCounter > 0) {
-                    this.stokedCooldownCounter -= 1;
-
-                    if (this.stokedCooldownCounter < 1) {
-                        this.cookCounter = 0;
+        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockCookingPot) {
+            IBlockState state = this.getWorld().getBlockState(this.pos);
+            if (this.fireIntensity != getFireIntensity()) {
+                validateFireIntensity();
+                this.forceValidation = true;
+            }
+            if (!isPowered()) {
+                this.facing = EnumFacing.UP;
+                entityCollision();
+                if (this.fireIntensity > 0) {
+                    if (this.forceValidation) {
+                        validateContents();
+                        this.forceValidation = false;
                     }
-                } else if (this.stokedCooldownCounter == 0 && this.fireIntensity > 0 && this.fireIntensity < 5)
-                    performNormalFireUpdate(getCurrentFireIntensity());
-            } else
+                    if (this.fireIntensity > 4) {
+                        if (this.stokedCooldownCounter < 1)
+                            this.cookCounter = 0;
+                        this.stokedCooldownCounter = 20;
+                        performStokedFireUpdate(getCurrentFireIntensity());
+                    } else if (this.stokedCooldownCounter > 0) {
+                        this.stokedCooldownCounter -= 1;
+
+                        if (this.stokedCooldownCounter < 1) {
+                            this.cookCounter = 0;
+                        }
+                    } else if (this.stokedCooldownCounter == 0 && this.fireIntensity > 0 && this.fireIntensity < 5)
+                        performNormalFireUpdate(getCurrentFireIntensity());
+                } else
+                    this.cookCounter = 0;
+            } else {
                 this.cookCounter = 0;
-        } else {
-            this.cookCounter = 0;
-            this.facing = getPoweredSide(world, pos);
-            ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
-        }
+                this.facing = getPoweredSide();
+                ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
+            }
 
-        if (facing != state.getValue(DirUtils.TILTING)) {
-            world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
-        }
+            if (facing != state.getValue(DirUtils.TILTING)) {
+                world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
+            }
 
+
+        }
         validateInventory();
         this.scaledCookCounter = this.cookCounter * 1000 / 4350;
     }
 
     private void entityCollision() {
-        if (captureDroppedItems()) {
+        if(captureDroppedItems()) {
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             this.markDirty();
         }
@@ -241,7 +257,6 @@ public abstract class TileEntityCookingPot extends TileVisibleMachine {
 
     public abstract boolean validateUnstoked();
 
-    @Override
     public void validateContents() {
         this.containsValidIngredients = false;
         if (!isStoked()) {
@@ -249,7 +264,6 @@ public abstract class TileEntityCookingPot extends TileVisibleMachine {
         } else {
             containsValidIngredients = validateStoked();
         }
-        super.validateContents();
     }
 
     protected CraftingManagerBulk getCraftingManager(boolean stoked) {
@@ -415,12 +429,22 @@ public abstract class TileEntityCookingPot extends TileVisibleMachine {
     }
 
     @Override
-    public Set<Mode> getModes() {
-        return ImmutableSet.of(Mode.AXLE, Mode.CRANK);
+    public int getMechanicalOutput(EnumFacing facing) {
+        return 0;
     }
 
     @Override
-    public boolean canInputPower(Mode mode, EnumFacing facing) {
-        return facing.getAxis().isHorizontal();
+    public int getMechanicalInput(EnumFacing facing) {
+        return MechanicalUtil.isBlockPoweredByAxleOnSide(world, pos, facing) || MechanicalUtil.isPoweredByCrankOnSide(world, pos, facing) ? 1 : 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
     }
 }

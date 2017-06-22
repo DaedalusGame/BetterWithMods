@@ -26,9 +26,6 @@ public class TileEntitySteelAnvil extends TileBasicInventory {
         return 17;
     }
 
-    @Override
-    public void validateContents() {}
-
     public void setInventorySlotContents(int slot, ItemStack stack) {
         inventory.setStackInSlot(slot, stack);
     }

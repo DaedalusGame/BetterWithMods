@@ -32,19 +32,20 @@ import java.util.UUID;
 public final class PlayerHelper {
     protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
 
+    private PlayerHelper() {
+    }
+
     public static boolean isSurvival(EntityPlayer player) {
         return !player.isCreative() && !player.isSpectator() && !player.isSpectator();
     }
 
-    public static double getSpeedModifier(EntityPlayer player) {
-        double hunger = getHungerPenalty(player).getModifier();
-        double fat = getFatPenalty(player).getModifier();
-        return Math.min(fat, hunger);
+    public static float getSpeedModifier(EntityPlayer player) {
+        if (!isSurvival(player))
+            return 1;
+        return getWorstPenalty(player).getModifier();
     }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCGloom.class))
-            return GloomPenalty.NO_PENALTY;
         int gloom = HCGloom.getGloomTime(player);
         GloomPenalty penalty = GloomPenalty.NO_PENALTY;
         for (GloomPenalty p : GloomPenalty.VALUES) {
@@ -64,8 +65,6 @@ public final class PlayerHelper {
     }
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
-            return HungerPenalty.NO_PENALTY;
         int level = player.getFoodStats().getFoodLevel();
         if (level > 24) return HungerPenalty.NO_PENALTY;
         else if (level > 18) return HungerPenalty.PECKISH;
@@ -76,8 +75,6 @@ public final class PlayerHelper {
     }
 
     public static FatPenalty getFatPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
-            return FatPenalty.NO_PENALTY;
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 36) return FatPenalty.NO_PENALTY;
         else if (level < 42) return FatPenalty.PLUMP;
@@ -87,8 +84,6 @@ public final class PlayerHelper {
     }
 
     public static HealthPenalty getHealthPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCInjury.class))
-            return HealthPenalty.NO_PENALTY;
         int level = (int) player.getHealth();
         if (level > 10) return HealthPenalty.NO_PENALTY;
         else if (level > 8) return HealthPenalty.HURT;
@@ -99,7 +94,12 @@ public final class PlayerHelper {
     }
 
     public static boolean canJump(EntityPlayer player) {
-        return getHungerPenalty(player).canJump() && getFatPenalty(player).canJump() && getHealthPenalty(player).canJump() && getGloomPenalty(player).canJump();
+        boolean canJump = true;
+        if (ModuleLoader.isFeatureEnabled(HCHunger.class))
+            canJump &= player.getFoodStats().getFoodLevel() > 12 && player.getFoodStats().getSaturationLevel() < 18.0;
+        if (ModuleLoader.isFeatureEnabled(HCInjury.class))
+            canJump &= player.getHealth() > 4;
+        return canJump;
     }
 
     public static boolean canSwim(EntityPlayer player) {

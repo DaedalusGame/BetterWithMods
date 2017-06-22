@@ -6,20 +6,19 @@ package betterwithmods.util.player;
  * @author Koward
  */
 public enum HealthPenalty implements IPlayerPenalty {
-    NO_PENALTY(1, "", true),
-    HURT(1, "Hurt", true),
-    INJURED(0.75F, "Injured", true),
-    WOUNDED(0.5F, "Wounded", true),
-    CRIPPLED(0.25F, "Crippled", false),
-    DYING(0.20F, "Dying", false);
+    NO_PENALTY(1, ""),
+    HURT(1, "Hurt"),
+    INJURED(0.75F, "Injured"),
+    WOUNDED(0.5F, "Wounded"),
+    CRIPPLED(0.25F, "Crippled"),
+    DYING(0.20F, "Dying");
 
     private final float modifier;
     private final String description;
-    private final boolean canJump;
-    HealthPenalty(float modifier, String description, boolean canJump) {
+
+    HealthPenalty(float modifier, String description) {
         this.modifier = modifier;
         this.description = description;
-        this.canJump = canJump;
     }
 
     @Override
@@ -30,10 +29,5 @@ public enum HealthPenalty implements IPlayerPenalty {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public boolean canJump() {
-        return canJump;
     }
 }

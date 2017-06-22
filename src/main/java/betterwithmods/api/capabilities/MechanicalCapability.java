@@ -3,8 +3,6 @@ package betterwithmods.api.capabilities;
 import betterwithmods.api.tile.IMechanicalPower;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
@@ -26,21 +24,25 @@ public class MechanicalCapability {
     }
 
     public static class DefaultMechanicalPower implements IMechanicalPower {
-
-
         @Override
-        public int getMechanicalOutput(World world, BlockPos pos, EnumFacing facing) {
+        public int getMechanicalOutput(EnumFacing facing) {
             return 0;
         }
 
         @Override
-        public int getMechanicalInput(World world, BlockPos pos, EnumFacing facing) {
+        public int getMechanicalInput(EnumFacing facing) {
             return 0;
         }
 
         @Override
-        public boolean canInputPower(Mode mode, EnumFacing facing) {
-            return false;
+        public int getMaximumInput(EnumFacing facing) {
+            return 0;
         }
+
+        @Override
+        public int getMinimumInput(EnumFacing facing) {
+            return 0;
+        }
+
     }
 }

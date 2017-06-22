@@ -33,7 +33,7 @@ public class GuiFilteredHopper extends GuiContainer {
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
-        if (this.tile.isActive()) {
+        if (this.tile.power > 0) {
             drawTexturedModalRect(xPos + 80, yPos + 18, 176, 0, 14, 14);
         }
 

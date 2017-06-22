@@ -47,7 +47,6 @@ public class HCHunger extends CompatFeature {
     @Override
     public void init(FMLInitializationEvent event) {
 
-        FoodHelper.registerFood(new ItemStack(Items.BEEF), 12);
         FoodHelper.registerFood(new ItemStack(Items.PORKCHOP), 12);
         FoodHelper.registerFood(new ItemStack(Items.RABBIT), 12);
         FoodHelper.registerFood(new ItemStack(Items.CHICKEN), 9);
@@ -163,21 +162,14 @@ public class HCHunger extends CompatFeature {
         FoodStats stats = event.player.getFoodStats();
         int playerFoodLevel = stats.getFoodLevel();
         int foodLevel = event.foodValues.hunger;
-        int newLevel = playerFoodLevel + foodLevel;
-        float max = AppleCoreAPI.accessor.getMaxHunger(event.player);
-        int diff = (int) (newLevel - max);
-
+        float fat = (foodLevel + playerFoodLevel) - AppleCoreAPI.accessor.getMaxHunger(event.player);
         if (!FoodHelper.isDessert(event.food)) {
-            if (diff < 0) {
+            if (fat < 0) {
                 event.foodValues = new FoodValues(foodLevel, 0);
             } else {
-                event.foodValues = new FoodValues(foodLevel, diff / 30f);
+                event.foodValues = new FoodValues(foodLevel, fat / 4);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void addFoodStats(FoodEvent.FoodStatsAddition event) {
     }
 
     //Changes exhaustion to reduce food first, then fat.

@@ -34,9 +34,4 @@ public enum GloomPenalty implements IPlayerPenalty {
     public String getDescription() {
         return description;
     }
-
-    @Override
-    public boolean canJump() {
-        return true;
-    }
 }

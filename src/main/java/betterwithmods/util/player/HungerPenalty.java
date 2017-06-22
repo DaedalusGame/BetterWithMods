@@ -6,20 +6,19 @@ package betterwithmods.util.player;
  * @author Koward
  */
 public enum HungerPenalty implements IPlayerPenalty {
-    NO_PENALTY(1, "", true),
-    PECKISH(1, "Peckish", true),
-    HUNGRY(0.75F, "Hungry", true),
-    FAMISHED(0.5F, "Famished", false),
-    STARVING(0.25F, "Starving", false),
-    DYING(0.25F, "Dying", false);
+    NO_PENALTY(1, ""),
+    PECKISH(1, "Peckish"),
+    HUNGRY(0.75F, "Hungry"),
+    FAMISHED(0.5F, "Famished"),
+    STARVING(0.25F, "Starving"),
+    DYING(0.25F, "Dying");
 
     private final float modifier;
     private final String description;
-    private final boolean canJump;
-    HungerPenalty(float modifier, String description, boolean canJump) {
+
+    HungerPenalty(float modifier, String description) {
         this.modifier = modifier;
         this.description = description;
-        this.canJump = canJump;
     }
 
     @Override
@@ -30,10 +29,5 @@ public enum HungerPenalty implements IPlayerPenalty {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public boolean canJump() {
-        return canJump;
     }
 }

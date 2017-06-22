@@ -23,7 +23,7 @@ public class MillRecipes extends Feature {
 
     @Override
     public void setupConfig() {
-        millstoneCraftSpeed = loadPropInt("Millstone Crafting Speed", "Speed at which the Millstone will finish a recipe in ticks", "", 200, 200, 4000);
+        millstoneCraftSpeed = loadPropInt("Millstone Crafting Speed", "Speed at which the Millstone will finish a recipe in ticks", "", 500, 200, 4000);
     }
 
     @Override

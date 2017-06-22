@@ -1,8 +1,6 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.module.Module;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCHunger;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -11,7 +9,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Gameplay extends Module {
     public static double crankExhaustion;
     public static boolean kidFriendly;
-
     @Override
     public void addFeatures() {
         registerFeature(new Debarking());
@@ -37,12 +34,8 @@ public class Gameplay extends Module {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
-        crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0);
-        kidFriendly = loadPropBool("Kid Friendly", "Makes some features more kid friendly", false);
-    }
-
-    public static double getCrankExhaustion() {
-        return crankExhaustion * (ModuleLoader.isFeatureEnabled(HCHunger.class) ? 3 : 1);
+        crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0 );
+        kidFriendly = loadPropBool("Kid Friendly","Makes some features more kid friendly", false);
     }
 
 

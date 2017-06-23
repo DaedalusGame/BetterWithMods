@@ -23,7 +23,7 @@ import java.util.List;
 
 public class TileEntityMill extends TileBasicInventory implements ITickable {
 
-    public static int GRIND_TIME = MillRecipes.millstoneCraftSpeed;
+    public static final int GRIND_TIME = 200;
 
     public int grindCounter;
 

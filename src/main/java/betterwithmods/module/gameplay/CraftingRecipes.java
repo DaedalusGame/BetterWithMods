@@ -140,9 +140,9 @@ public class CraftingRecipes extends Feature {
         RecipeUtils.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT, 2), new ItemStack(Items.LEATHER)));
         RecipeUtils.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
         RecipeUtils.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)));
-
-        for (EnumDyeColor dye : EnumDyeColor.values()) {
-            RecipeUtils.addRecipe(new DyeWithTagRecipe(new ItemStack(BWMBlocks.VASE, 1, dye.getMetadata()), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + StringUtils.capitalize(dye.getName())));
+        String[] dyes = new String[]{"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black",};
+        for (int i = 0; i < dyes.length; i++) {
+            RecipeUtils.addRecipe(new DyeWithTagRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]));
         }
 
         GameRegistry.addSmelting(BWMItems.RAW_EGG, new ItemStack(BWMItems.COOKED_EGG), 0.1F);

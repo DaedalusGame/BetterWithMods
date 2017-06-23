@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.tile.TileEntityMill;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.gameplay.MillRecipes;
@@ -196,7 +197,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 if (stage <= 5)
                     world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
                 else
-                    world.scheduleBlockUpdate(pos, this, MillRecipes.millstoneCraftSpeed/7, 5);
+                    world.scheduleBlockUpdate(pos, this, TileEntityMill.GRIND_TIME, 5);
 
                 world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
             } else {

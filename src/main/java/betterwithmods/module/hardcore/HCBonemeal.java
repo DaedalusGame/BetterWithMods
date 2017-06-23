@@ -30,7 +30,7 @@ public class HCBonemeal extends Feature {
     private static boolean removeBonemealRecipe;
 
 
-    private static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
+    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     public static void registerFertilzier(ItemStack stack) {
         FERTILIZERS.add(stack);
     }

@@ -2,6 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
+import betterwithmods.module.hardcore.HCBonemeal;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -75,7 +76,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             if (!item.isEmpty()) {
                 if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
                     return true;
-                else if (meta == 1 && ((item.getItem() == Items.DYE && item.getItemDamage() == 15) || item.getItem() == BWMItems.FERTILIZER))
+                else if (meta == 1 && (HCBonemeal.FERTILIZERS.stream().anyMatch( item::isItemEqual)))
                     return true;
                 else if (meta == 2 && item.getItem() instanceof ItemHoe)
                     return true;

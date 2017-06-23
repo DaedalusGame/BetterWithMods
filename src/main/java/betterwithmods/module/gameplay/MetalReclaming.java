@@ -106,6 +106,7 @@ public class MetalReclaming extends Feature {
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Blocks.IRON_BARS, 8)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7), new Object[]{new ItemStack(Items.CAULDRON)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 31), new Object[]{new ItemStack(Blocks.ANVIL, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new Object[]{new ItemStack(Blocks.HOPPER, 1, OreDictionary.WILDCARD_VALUE)});
         }
 
 

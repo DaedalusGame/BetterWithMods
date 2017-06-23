@@ -2,6 +2,7 @@ package betterwithmods.module.compat.minetweaker;
 
 import betterwithmods.module.CompatFeature;
 import minetweaker.MineTweakerAPI;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
@@ -29,7 +30,9 @@ public class MineTweaker extends CompatFeature {
         MineTweakerAPI.registerClass(ChopRecipe.class);
         MineTweakerAPI.registerClass(Turntable.class);
         MineTweakerAPI.registerClass(Piles.class);
-        MineTweakerAPI.registerClass(FoodValue.class);
+        if(Loader.isModLoaded("applecore")) {
+            MineTweakerAPI.registerClass(FoodValue.class);
+        }
     }
 
 }

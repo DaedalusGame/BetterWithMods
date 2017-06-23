@@ -1,4 +1,4 @@
-package betterwithmods.util;
+package betterwithmods.module.hardcore.hchunger;
 
 import com.google.common.collect.Maps;
 import net.minecraft.block.BlockCake;
@@ -19,7 +19,11 @@ import java.util.Optional;
 public class FoodHelper {
     private static final HashMap<ItemStack, FoodValues> FOOD_VALUES = Maps.newHashMap();
 
-    public static boolean isDessert(ItemStack stack) {
+    public static HashMap<ItemStack, FoodValues> getFoodValues() {
+        return FOOD_VALUES;
+    }
+
+    protected static boolean isDessert(ItemStack stack) {
         if (stack.getItem() instanceof ItemBlock) {
             return ((ItemBlock) stack.getItem()).getBlock() instanceof BlockCake;
         } else if (stack.getItem() instanceof ItemFood) {
@@ -29,7 +33,7 @@ public class FoodHelper {
         return false;
     }
 
-    public static Optional<FoodValues> getFoodValue(ItemStack stack) {
+    protected static Optional<FoodValues> getFoodValue(ItemStack stack) {
         return FOOD_VALUES.entrySet().stream().filter(entry -> match(entry.getKey(), stack)).map(Map.Entry::getValue).findFirst();
     }
 
@@ -46,7 +50,7 @@ public class FoodHelper {
         registerFood(stack, new FoodValues(hunger, saturation), alwaysEdible);
     }
 
-    public static void registerFood(ItemStack stack, FoodValues values) {
+    protected static void registerFood(ItemStack stack, FoodValues values) {
         registerFood(stack, values, false);
     }
 
@@ -65,7 +69,7 @@ public class FoodHelper {
         }
     }
 
-    private static boolean match(ItemStack a, ItemStack b) {
+    protected static boolean match(ItemStack a, ItemStack b) {
         return a.getItem().equals(b.getItem()) && (a.getMetadata() == b.getMetadata() || (a.getMetadata() == OreDictionary.WILDCARD_VALUE || b.getMetadata() == OreDictionary.WILDCARD_VALUE));
     }
 }

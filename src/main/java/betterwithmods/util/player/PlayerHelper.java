@@ -4,7 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCArmor;
 import betterwithmods.module.hardcore.HCGloom;
-import betterwithmods.module.hardcore.HCHunger;
+import betterwithmods.module.hardcore.hchunger.HCHunger;
 import betterwithmods.module.hardcore.HCInjury;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

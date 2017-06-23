@@ -1,4 +1,4 @@
-package betterwithmods.module.hardcore;
+package betterwithmods.module.hardcore.hchunger;
 
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.common.BWMItems;
@@ -6,7 +6,7 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.KilnRecipes;
-import betterwithmods.util.FoodHelper;
+import betterwithmods.module.hardcore.hchunger.FoodHelper;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;

@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.module.CompatModule;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.hchunger.HCHunger;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
@@ -15,7 +16,7 @@ public class Hardcore extends CompatModule {
 
     @Override
     public void addCompatFeatures() {
-        registerCompatFeature("applecore", "betterwithmods.module.hardcore.HCHunger");
+        registerCompatFeature("applecore", "betterwithmods.module.hardcore.hchunger.HCHunger");
     }
 
     @Override

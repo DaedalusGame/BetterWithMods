@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWSounds;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.hchunger.HCHunger;
 import betterwithmods.util.player.HealthPenalty;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;

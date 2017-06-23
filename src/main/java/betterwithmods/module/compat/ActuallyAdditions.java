@@ -1,7 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.module.CompatFeature;
-import betterwithmods.util.FoodHelper;
+import betterwithmods.module.hardcore.hchunger.FoodHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

@@ -163,7 +163,9 @@ public final class ModuleLoader {
     }
 
     public static boolean isFeatureEnabled(Class<? extends Feature> clazz) {
-        return featureInstances.get(clazz).enabled;
+        if(featureInstances.containsKey(clazz))
+            return featureInstances.get(clazz).enabled;
+        return false;
     }
 
     public static void forEachModule(Consumer<Module> consumer) {

@@ -255,7 +255,10 @@ public class HCHunger extends CompatFeature {
     //Shake Hunger bar whenever any exhaustion is given?
     @SubscribeEvent
     public void onExhaust(ExhaustionEvent.ExhaustionAddition event) {
-        NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+        if(event.player.world.getTotalWorldTime()%20==0 && event.deltaExhaustion > 0.05) {
+            NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+        }
+
     }
     //TODO fix Hunger starting as vanilla 20.
     @SubscribeEvent

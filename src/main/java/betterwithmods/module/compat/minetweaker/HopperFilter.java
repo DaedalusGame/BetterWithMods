@@ -35,7 +35,7 @@ public class HopperFilter {
     public static class Add extends BaseMultiModification {
         protected Add(ItemStack filter, Set<ItemStack> allowed) {
             super("hopperfilter");
-            HopperFilters.addFilter(filter, allowed, Lists.newArrayList());
+            HopperFilters.addFilter(filter, allowed);
         }
         @Override
         public boolean canUndo() {

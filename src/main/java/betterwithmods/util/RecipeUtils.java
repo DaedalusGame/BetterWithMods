@@ -169,4 +169,91 @@ public final class RecipeUtils {
             BWMod.logger.error("No matching recipe found.");
 
     }
+
+    public static void removeRecipe(ItemStack output, ItemStack input) {
+        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+        List<IRecipe> toRemove = new ArrayList<>();
+        for (IRecipe recipe : recipes) {
+            if (recipe instanceof ShapedRecipes) {
+                ShapedRecipes shaped = (ShapedRecipes) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.recipeItems[0].isItemEqual(input)) {
+                        if (output.isItemEqual(shaped.getRecipeOutput()))
+                            toRemove.add(recipe);
+                    }
+                }
+            } else if (recipe instanceof ShapedOreRecipe) {
+                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.getInput()[0] instanceof ItemStack) {
+                        ItemStack stack = (ItemStack) shaped.getInput()[0];
+                        if (stack.isItemEqual(input)) {
+                            if (output.isItemEqual(shaped.getRecipeOutput()))
+                                toRemove.add(recipe);
+                        }
+                    }
+                }
+            } else if (recipe instanceof ShapelessRecipes) {
+                ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
+                if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
+                    if (output.isItemEqual(shapeless.getRecipeOutput()))
+                        toRemove.add(recipe);
+                }
+            } else if (recipe instanceof ShapelessOreRecipe) {
+                ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
+                if (shapeless.getRecipeSize() == 1) {
+                    if (shapeless.getInput().get(0) instanceof ItemStack) {
+                        if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
+                            if (output.isItemEqual(shapeless.getRecipeOutput()))
+                                toRemove.add(recipe);
+                        }
+                    }
+                }
+            }
+        }
+        for (IRecipe remove : toRemove) {
+            CraftingManager.getInstance().getRecipeList().remove(remove);
+        }
+    }
+
+    public static ItemStack getRecipeOutput(ItemStack input) {
+        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+        for (IRecipe recipe : recipes) {
+            if (recipe instanceof ShapedRecipes) {
+                ShapedRecipes shaped = (ShapedRecipes) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.recipeItems[0].isItemEqual(input)) {
+                        return shaped.getRecipeOutput();
+                    }
+                }
+            } else if (recipe instanceof ShapedOreRecipe) {
+                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.getInput()[0] instanceof ItemStack) {
+                        ItemStack stack = (ItemStack) shaped.getInput()[0];
+                        if (stack.isItemEqual(input)) {
+                            return shaped.getRecipeOutput();
+                        }
+                    }
+                }
+            }
+            if (recipe instanceof ShapelessRecipes) {
+                ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
+                if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
+                    return shapeless.getRecipeOutput();
+                }
+            } else if (recipe instanceof ShapelessOreRecipe) {
+                ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
+                if (shapeless.getRecipeSize() == 1) {
+                    if (shapeless.getInput().get(0) instanceof ItemStack) {
+                        if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
+                            return shapeless.getRecipeOutput();
+                        }
+                    }
+                }
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
 }

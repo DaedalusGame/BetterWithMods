@@ -79,7 +79,6 @@ public class ClientProxy implements IProxy {
         ManualAPI.addTab(new ItemStackTabIconRenderer(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
         ManualAPI.addTab(new ItemStackTabIconRenderer(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), "bwm.manual.items", "%LANGUAGE%/items/index.md");
 
-
     }
 
     @Override

@@ -544,5 +544,11 @@ public class InvUtils {
         return stack;
     }
 
-
+    public static boolean matches(ItemStack one, ItemStack two) {
+        if (one.isItemEqual(two))
+            return true;
+        if (one.getItem() == two.getItem() && (one.getMetadata() == OreDictionary.WILDCARD_VALUE || two.getMetadata() == OreDictionary.WILDCARD_VALUE))
+            return true;
+        return false;
+    }
 }

@@ -35,10 +35,6 @@ public class ClientEventHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void putTooltip(ItemTooltipEvent e) {
-        int type = HopperFilters.getFilterType(e.getItemStack());
-        if(type > 0) {
-            e.getToolTip().addAll(HopperFilters.tooltips.get(type));
-        }
 
     }
 

@@ -24,6 +24,7 @@ public class Gameplay extends Module {
         registerFeature(new MillRecipes());
         registerFeature(new SawRecipes());
         registerFeature(new TurntableRecipes());
+        registerFeature(new HopperRecipes());
     }
 
     @Override

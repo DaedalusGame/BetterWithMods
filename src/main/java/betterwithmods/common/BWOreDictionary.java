@@ -10,7 +10,6 @@ import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +63,9 @@ public class BWOreDictionary {
         registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
         registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
+
+        registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+
         registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("sidingWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("mouldingWood", new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
@@ -90,6 +92,7 @@ public class BWOreDictionary {
 
         registerOre("blockPlanter", new ItemStack(BWMBlocks.PLANTER, 1, OreDictionary.WILDCARD_VALUE));
 
+        registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
 
     }
 
@@ -118,7 +121,7 @@ public class BWOreDictionary {
         return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).flatMap(n -> OreDictionary.getOres(n).stream()).collect(Collectors.toList());
     }
 
-    public static int listContains(Object obj, ArrayList<Object> list) {
+    public static int listContains(Object obj, List<Object> list) {
         if (list != null && list.size() > 0 && !list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 if (obj instanceof ItemStack && list.get(i) instanceof ItemStack) {

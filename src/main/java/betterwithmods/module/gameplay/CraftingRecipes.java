@@ -156,6 +156,7 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD), 0.1F);
 
 
+
         RecipeUtils.removeFurnaceRecipe(new ItemStack(Items.NETHERBRICK));
     }
 

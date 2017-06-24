@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -29,12 +30,20 @@ public final class BlockImageProvider implements ImageProvider {
             name = data;
             optMeta = "";
         }
-        final int meta = (Strings.isNullOrEmpty(optMeta)) ? 0 : Integer.parseInt(optMeta.substring(1));
+        final int meta = (Strings.isNullOrEmpty(optMeta)) ? 0 : parseMeta(optMeta.substring(1));
         final Block block = Block.REGISTRY.getObject(new ResourceLocation(name));
         if (Item.getItemFromBlock(block) != Items.AIR) {
             return new ItemStackImageRenderer(new ItemStack(block, 1, meta));
         } else {
             return new MissingItemRenderer(WARNING_BLOCK_MISSING);
+        }
+    }
+
+    public int parseMeta(String optMeta) {
+        if(optMeta=="*") {
+            return OreDictionary.WILDCARD_VALUE;
+        } else {
+            return Integer.parseInt(optMeta);
         }
     }
 }

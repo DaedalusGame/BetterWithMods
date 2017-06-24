@@ -81,7 +81,6 @@ public class BWRegistry {
         registerEntities();
         registerPotions();
         registerBlockDispenserBehavior();
-        registerHopperFilters();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
 
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
@@ -89,8 +88,6 @@ public class BWRegistry {
     }
 
     public static void init() {
-
-
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         registerHeatSources();
         BWSounds.registerSounds();
@@ -124,17 +121,6 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntityFallingGourd.class, "entity_falling_gourd", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingBlockCustom.class, "falling_block_custom", 64, 20, true);
         BWRegistry.registerEntity(EntitySpiderWeb.class, "bwm_spider_web", 64, 20, true);
-    }
-
-
-    public static void registerHopperFilters() {
-        HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock, Lists.newArrayList("Allows Non-Solid Blocks and Items."));
-        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack), Lists.newArrayList("Allows Narrow Items and Small Particulates."));
-        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack), Lists.newArrayList("Allows Narrow Items, Flat Items and Small Particulates."));
-        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> isParticulate(stack) || isFlat(stack), Lists.newArrayList("Allows Small Particulates and Flat Items"));
-        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), BWRegistry::isParticulate, Lists.newArrayList("Allows Small Particulates."));
-        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> false, Lists.newArrayList("Allows nothing."));
-        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1, Lists.newArrayList("Allows Items which can stack."));
     }
 
     public static void registerBlockDispenserBehavior() {
@@ -220,7 +206,7 @@ public class BWRegistry {
             ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
             ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
             if (hardcoreLumber) {
-                removeRecipe(plank, log);
+                RecipeUtils.removeRecipe(plank, log);
                 if (Loader.isModLoaded("thermalexpansion")) {
                     registerTESawmill(plank, log);
                 }
@@ -247,7 +233,7 @@ public class BWRegistry {
                 if (!block.getRegistryName().getResourceDomain().equals("minecraft")) {
                     if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                         for (int i = 0; i < 4; i++) {
-                            ItemStack planks = getRecipeOutput(new ItemStack(log.getItem(), 1, i));
+                            ItemStack planks = RecipeUtils.getRecipeOutput(new ItemStack(log.getItem(), 1, i));
                             if (!planks.isEmpty()) {
 
                                 ItemStack[] output = new ItemStack[3];
@@ -259,7 +245,7 @@ public class BWRegistry {
                                     output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
 
                                 if (hardcoreLumber) {
-                                    removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
+                                    RecipeUtils.removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
                                     if (Loader.isModLoaded("thermalexpansion")) {
                                         registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
                                     }
@@ -270,7 +256,7 @@ public class BWRegistry {
                             }
                         }
                     } else {
-                        ItemStack planks = getRecipeOutput(log);
+                        ItemStack planks = RecipeUtils.getRecipeOutput(log);
                         if (planks.isEmpty()) {
                             ItemStack[] output = new ItemStack[3];
                             output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
@@ -281,7 +267,7 @@ public class BWRegistry {
                                 output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
 
                             if (hardcoreLumber) {
-                                removeRecipe(output[0], log);
+                                RecipeUtils.removeRecipe(output[0], log);
                                 if (Loader.isModLoaded("thermalexpansion")) {
                                     registerTESawmill(output[0], log);
                                 }
@@ -310,91 +296,6 @@ public class BWRegistry {
         FMLInterModComms.sendMessage("thermalexpansion", "addsawmillrecipe", toSend);
     }
 
-    private static ItemStack getRecipeOutput(ItemStack input) {
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-        for (IRecipe recipe : recipes) {
-            if (recipe instanceof ShapedRecipes) {
-                ShapedRecipes shaped = (ShapedRecipes) recipe;
-                if (shaped.getRecipeSize() == 1) {
-                    if (shaped.recipeItems[0].isItemEqual(input)) {
-                        return shaped.getRecipeOutput();
-                    }
-                }
-            } else if (recipe instanceof ShapedOreRecipe) {
-                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
-                if (shaped.getRecipeSize() == 1) {
-                    if (shaped.getInput()[0] instanceof ItemStack) {
-                        ItemStack stack = (ItemStack) shaped.getInput()[0];
-                        if (stack.isItemEqual(input)) {
-                            return shaped.getRecipeOutput();
-                        }
-                    }
-                }
-            }
-            if (recipe instanceof ShapelessRecipes) {
-                ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
-                if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
-                    return shapeless.getRecipeOutput();
-                }
-            } else if (recipe instanceof ShapelessOreRecipe) {
-                ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
-                if (shapeless.getRecipeSize() == 1) {
-                    if (shapeless.getInput().get(0) instanceof ItemStack) {
-                        if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
-                            return shapeless.getRecipeOutput();
-                        }
-                    }
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static void removeRecipe(ItemStack output, ItemStack input) {
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-        List<IRecipe> toRemove = new ArrayList<>();
-        for (IRecipe recipe : recipes) {
-            if (recipe instanceof ShapedRecipes) {
-                ShapedRecipes shaped = (ShapedRecipes) recipe;
-                if (shaped.getRecipeSize() == 1) {
-                    if (shaped.recipeItems[0].isItemEqual(input)) {
-                        if (output.isItemEqual(shaped.getRecipeOutput()))
-                            toRemove.add(recipe);
-                    }
-                }
-            } else if (recipe instanceof ShapedOreRecipe) {
-                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
-                if (shaped.getRecipeSize() == 1) {
-                    if (shaped.getInput()[0] instanceof ItemStack) {
-                        ItemStack stack = (ItemStack) shaped.getInput()[0];
-                        if (stack.isItemEqual(input)) {
-                            if (output.isItemEqual(shaped.getRecipeOutput()))
-                                toRemove.add(recipe);
-                        }
-                    }
-                }
-            } else if (recipe instanceof ShapelessRecipes) {
-                ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
-                if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
-                    if (output.isItemEqual(shapeless.getRecipeOutput()))
-                        toRemove.add(recipe);
-                }
-            } else if (recipe instanceof ShapelessOreRecipe) {
-                ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
-                if (shapeless.getRecipeSize() == 1) {
-                    if (shapeless.getInput().get(0) instanceof ItemStack) {
-                        if (((ItemStack) shapeless.getInput().get(0)).isItemEqual(input)) {
-                            if (output.isItemEqual(shapeless.getRecipeOutput()))
-                                toRemove.add(recipe);
-                        }
-                    }
-                }
-            }
-        }
-        for (IRecipe remove : toRemove) {
-            CraftingManager.getInstance().getRecipeList().remove(remove);
-        }
-    }
 
     private static void registerPotions() {
         registerPotion(POTION_TRUESIGHT);
@@ -406,33 +307,5 @@ public class BWRegistry {
         GameRegistry.register(potion);
     }
 
-    private static boolean isNotBlock(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof ItemBlock) {
-            Block block = ((ItemBlock) item).getBlock();
-            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || BWOreDictionary.isOre(stack, "treeSapling");
-        }
-        return true;
-    }
 
-    private static boolean isParticulate(ItemStack stack) {
-        Item item = stack.getItem();
-        return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) || BWOreDictionary.listContains(stack, BWOreDictionary.dustNames)
-                || item == BWMItems.DIRT_PILE || item == BWMItems.GRAVEL_PILE || item == BWMItems.SAND_PILE;
-    }
-
-    private static boolean isFlat(ItemStack stack) {
-        Item item = stack.getItem();
-        int meta = stack.getMetadata();
-        if (item == BWMItems.MATERIAL) {
-            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
-        }
-        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
-    }
-
-    private static boolean isNarrow(ItemStack stack) {
-        Item item = stack.getItem();
-        int meta = stack.getMetadata();
-        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || BWOreDictionary.listContains(stack, OreDictionary.getOres("stickWood")) || BWOreDictionary.listContains(stack, BWOreDictionary.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD || (item == BWMItems.MATERIAL && (meta == 8 || meta == 9));
-    }
 }

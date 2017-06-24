@@ -314,19 +314,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
         }
     }
 
-    @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if (!world.isRemote) {
-            BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
-            if (type == BlockMechMachines.EnumType.HOPPER) {
-                if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityFilteredHopper) {
-                    if (entity instanceof EntityItem || entity instanceof EntityXPOrb)
-                        world.scheduleBlockUpdate(pos, this, tickRate(world), 5);//world.markBlockForUpdate(pos);
-                }
-            }
-        }
-    }
-
     private void breakMill(World world, BlockPos pos) {
         if (MechanicalBreakage.millstone)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/mill"));

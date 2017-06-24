@@ -30,40 +30,11 @@ import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
 public class HopperInteractions {
     public static final ArrayList<HopperRecipe> RECIPES = new ArrayList<>();
 
+    public static void addHopperRecipe(HopperRecipe recipe) {
+        RECIPES.add(recipe);
+    }
     static {
-        RECIPES.add(new SoulUrnRecipe(ItemMaterial.getMaterial(EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST)));
-        RECIPES.add(new SoulUrnRecipe(ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(EnumMaterial.SAWDUST)));
-        RECIPES.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
-            @Override
-            public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
-                TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                ItemStackHandler inventory = tile.inventory;
-                ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
-                if (!InvUtils.insert(inventory, sand, false).isEmpty()) {
-                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
-                }
-                onCraft(world, pos, inputStack);
-            }
-        });
-        RECIPES.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
-            @Override
-            public void onCraft(World world, BlockPos pos, EntityItem item) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                int stackSize = hopper.soulsRetained;
-                if (stackSize > item.getItem().getCount())
-                    stackSize = item.getItem().getCount();
-                hopper.soulsRetained -= stackSize;
-                item.getItem().shrink(stackSize);
-                EntityItem soul = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(Blocks.SOUL_SAND, stackSize));
-                if (!InvUtils.insert(hopper.inventory, soul.getItem(), false).isEmpty()) {
-                    soul.setDefaultPickupDelay();
-                    world.spawnEntity(soul);
-                }
-                if (item.getItem().getCount() < 1)
-                    item.setDead();
-            }
-        });
+
     }
 
     public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
@@ -105,9 +76,9 @@ public class HopperInteractions {
     }
 
     public static abstract class HopperRecipe {
-        final ItemStack input;
-        final ItemStack output;
-        final List<ItemStack> secondaryOutput;
+        public final ItemStack input;
+        public final ItemStack output;
+        public final List<ItemStack> secondaryOutput;
         private final int filterType;
 
         public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
@@ -121,7 +92,7 @@ public class HopperInteractions {
             if (filterType == this.filterType) {
                 if (inputStack != null) {
                     ItemStack i = inputStack.getItem();
-                    return i.getItem().equals(input.getItem()) && i.getMetadata() == input.getMetadata() && i.getCount() >= input.getCount();
+                    return InvUtils.matches(i,input);
                 }
                 return false;
             }

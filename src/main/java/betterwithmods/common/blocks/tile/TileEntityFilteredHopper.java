@@ -32,7 +32,7 @@ import java.util.Optional;
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
 
     private final int STACK_SIZE = 8;
-    public short filterType;
+    public int filterType;
     public byte power;
     public int soulsRetained;
     private int ejectCounter, ejectXPCounter;
@@ -70,14 +70,14 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         NBTTagCompound t = super.writeToNBT(tag);
         t.setInteger("EjectCounter", this.ejectCounter);
         t.setInteger("XPCount", this.experienceCount);
-        t.setShort("FilterType", this.filterType);
+        t.setShort("FilterType", (short) this.filterType);
         t.setInteger("Souls", this.soulsRetained);
         t.setBoolean("IsPowered", power > 1);
         return t;
     }
 
     private List<EntityItem> getCollidingItems(World world, BlockPos pos) {
-        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY() +1, pos.getZ(), pos.getX() + 1D, pos.getY() + 1.0001D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
     }
 
     private List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
@@ -192,7 +192,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private boolean validateInventory() {
         boolean stateChanged = false;
-        short currentFilter = getFilterType();
+        int currentFilter = getFilterType();
         if (currentFilter != this.filterType) {
             this.filterType = currentFilter;
             stateChanged = true;
@@ -210,15 +210,21 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return stateChanged;
     }
 
-    private short getFilterType() {
+    private int getFilterType() {
         ItemStack filter = getFilterStack();
-        if (!filter.isEmpty()) {
+        if (filter.isEmpty()) {
+            return -1;
+        } else {
             return (short) HopperFilters.getFilterType(filter);
         }
-        return 0;
     }
 
     private boolean canFilterProcessItem(ItemStack stack) {
+        validateInventory();
+        if (this.filterType == -1)
+            return true;
+        else if (this.filterType == 0)
+            return this.getFilterStack().isItemEqual(stack);
         if (this.filterType > 0) {
             if (!this.isPowered())
                 return false;
@@ -247,9 +253,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 int soulsConsumed = ((ISoulSensitive) blockBelow).processSouls(this.getWorld(), down, this.soulsRetained);
                 if (((ISoulSensitive) blockBelow).consumeSouls(this.getWorld(), down, soulsConsumed))
                     this.soulsRetained -= soulsConsumed;
-            } else if (isPowered())
-                this.soulsRetained = 0;
-            else if (soulsRetained > 7) {
+            } else if (soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getWorld().rand.nextFloat() * 0.1F + 0.8F);
                 if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)

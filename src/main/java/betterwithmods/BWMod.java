@@ -42,7 +42,6 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new FeedWolfchopEvent());
-        MinecraftForge.EVENT_BUS.register(new StatusEffectEvent());
     }
 
     @EventHandler

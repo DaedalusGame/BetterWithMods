@@ -1,6 +1,7 @@
 package betterwithmods.client;
 
 import betterwithmods.api.block.IAdvancedRotationPlacement;
+import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.common.registry.HopperFilters;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -94,4 +96,12 @@ public class ClientEventHandler {
         tessellator.draw();
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void renderStatus(RenderGameOverlayEvent.Post event) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
+            GuiStatus.INSTANCE.draw();
+        }
+    }
 }
+

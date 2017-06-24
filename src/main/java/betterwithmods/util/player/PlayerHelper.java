@@ -46,6 +46,8 @@ public final class PlayerHelper {
     }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
+        if(!ModuleLoader.isFeatureEnabled(HCGloom.class))
+            return GloomPenalty.NO_PENALTY;
         int gloom = HCGloom.getGloomTime(player);
         GloomPenalty penalty = GloomPenalty.NO_PENALTY;
         for (GloomPenalty p : GloomPenalty.VALUES) {
@@ -65,6 +67,8 @@ public final class PlayerHelper {
     }
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {
+        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
+            return HungerPenalty.NO_PENALTY;
         int level = player.getFoodStats().getFoodLevel();
         if (level > 24) return HungerPenalty.NO_PENALTY;
         else if (level > 18) return HungerPenalty.PECKISH;
@@ -75,6 +79,8 @@ public final class PlayerHelper {
     }
 
     public static FatPenalty getFatPenalty(EntityPlayer player) {
+        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
+            return FatPenalty.NO_PENALTY;
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 36) return FatPenalty.NO_PENALTY;
         else if (level < 42) return FatPenalty.PLUMP;
@@ -84,6 +90,8 @@ public final class PlayerHelper {
     }
 
     public static HealthPenalty getHealthPenalty(EntityPlayer player) {
+        if(!ModuleLoader.isFeatureEnabled(HCInjury.class))
+            return HealthPenalty.NO_PENALTY;
         int level = (int) player.getHealth();
         if (level > 10) return HealthPenalty.NO_PENALTY;
         else if (level > 8) return HealthPenalty.HURT;

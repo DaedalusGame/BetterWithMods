@@ -6,19 +6,31 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.KilnRecipes;
-import betterwithmods.module.hardcore.hchunger.FoodHelper;
+import betterwithmods.network.MessageFat;
+import betterwithmods.network.MessageGuiShake;
+import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.RecipeUtils;
+import betterwithmods.util.player.FatPenalty;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -26,6 +38,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -134,10 +147,15 @@ public class HCHunger extends CompatFeature {
         super.preInitClient(event);
     }
 
-
     @SubscribeEvent
     public void respawn(PlayerEvent.PlayerRespawnEvent event) {
-        event.player.getFoodStats().setFoodSaturationLevel(0);
+        if (event.isEndConquered())
+            return;
+        if (event.player != null) {
+            AppleCoreAPI.mutator.setSaturation(event.player, 0);
+            AppleCoreAPI.mutator.setHunger(event.player, AppleCoreAPI.accessor.getMaxHunger(event.player));
+        }
+
     }
 
     //Changes food to correct value.
@@ -167,7 +185,7 @@ public class HCHunger extends CompatFeature {
             if (fat < 0) {
                 event.foodValues = new FoodValues(foodLevel, 0);
             } else {
-                event.foodValues = new FoodValues(foodLevel, fat / 4);
+                event.foodValues = new FoodValues(foodLevel, fat / 60f);
             }
         }
     }
@@ -234,6 +252,19 @@ public class HCHunger extends CompatFeature {
         event.setResult(Event.Result.DENY);
     }
 
+    //Shake Hunger bar whenever any exhaustion is given?
+    @SubscribeEvent
+    public void onExhaust(ExhaustionEvent.ExhaustionAddition event) {
+        NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+    }
+    //TODO fix Hunger starting as vanilla 20.
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if(event.player.world.getTotalWorldTime()%20==0) {
+            NetworkHandler.INSTANCE.sendToAll(new MessageFat(event.player.getName()));
+        }
+    }
+
     public String getFeatureDescription() {
         return "Completely revamps the hunger system of Minecraft. \n" +
                 "The Saturation value is replaced with Fat. \n" +
@@ -248,10 +279,10 @@ public class HCHunger extends CompatFeature {
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     public static class ClientSide {
 
         //Replaces Hunger Gui with HCHunger
-        @SideOnly(Side.CLIENT)
         @SubscribeEvent
         public static void replaceHungerGui(RenderGameOverlayEvent.Pre event) {
             if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
@@ -260,13 +291,34 @@ public class HCHunger extends CompatFeature {
             }
         }
 
-        //Shake Hunger bar whenever any exhaustion is given?
-        @SideOnly(Side.CLIENT)
-        @SubscribeEvent
-        public static void onExhaust(ExhaustionEvent.ExhaustionAddition event) {
-            GuiHunger.INSTANCE.shake();
+        private static RenderPlayer getRenderPlayer(AbstractClientPlayer player) {
+            Minecraft mc = Minecraft.getMinecraft();
+            RenderManager manager = mc.getRenderManager();
+            return manager.getSkinMap().get(player.getSkinType());
         }
+
+        private static ModelBiped getPlayerModel(AbstractClientPlayer player) {
+            return getRenderPlayer(player).getMainModel();
+        }
+
+        public static void putFat(AbstractClientPlayer player, FatPenalty fat) {
+            ModelBiped model = getPlayerModel(player);
+            float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 4f) : 0.0f;
+            model.bipedBody = new ModelRenderer(model, 16, 16);
+            model.bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
+        }
+
+        public static void doFat(String playerName) {
+            World world = Minecraft.getMinecraft().world;
+            EntityPlayer player = world.getPlayerEntityByName(playerName);
+            FatPenalty fat = PlayerHelper.getFatPenalty(player);
+            if (player != null && player instanceof AbstractClientPlayer)
+                putFat((AbstractClientPlayer) player, fat);
+        }
+
     }
+
+
 }
 
 

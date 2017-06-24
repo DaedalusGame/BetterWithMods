@@ -94,12 +94,7 @@ public final class PlayerHelper {
     }
 
     public static boolean canJump(EntityPlayer player) {
-        boolean canJump = true;
-        if (ModuleLoader.isFeatureEnabled(HCHunger.class))
-            canJump &= player.getFoodStats().getFoodLevel() > 12 && player.getFoodStats().getSaturationLevel() < 18.0;
-        if (ModuleLoader.isFeatureEnabled(HCInjury.class))
-            canJump &= player.getHealth() > 4;
-        return canJump;
+        return getHungerPenalty(player).canJump() && getHealthPenalty(player).canJump() && getFatPenalty(player).canJump() && getGloomPenalty(player).canJump();
     }
 
     public static boolean canSwim(EntityPlayer player) {

@@ -5,9 +5,7 @@ import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.event.*;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.network.MessageSyncModule;
-import betterwithmods.network.ModuleSync;
-import betterwithmods.network.NetworkHandler;
+import betterwithmods.network.*;
 import betterwithmods.proxy.IProxy;
 import net.minecraft.world.MinecraftException;
 import net.minecraftforge.common.ForgeModContainer;
@@ -54,6 +52,8 @@ public class BWMod {
         ModuleLoader.preInit(evt);
         BWRegistry.preInit();
         NetworkHandler.register(MessageSyncModule.class, Side.CLIENT);
+        NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
+        NetworkHandler.register(MessageFat.class, Side.CLIENT);
         proxy.preInit(evt);
     }
 

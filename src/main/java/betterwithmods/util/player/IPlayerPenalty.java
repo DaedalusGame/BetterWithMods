@@ -9,4 +9,6 @@ public interface IPlayerPenalty {
     float getModifier();
 
     String getDescription();
+
+    boolean canJump();
 }

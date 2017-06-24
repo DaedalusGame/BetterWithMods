@@ -13,7 +13,7 @@ public class Debarking extends Feature {
     public void setupConfig() {
         requiresSneaking = loadPropBool("Requires Sneaking", "Deprecated", true);
     }
-    
+
     @Override
     public String getFeatureDescription() {
         return "Deprecated";

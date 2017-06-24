@@ -11,8 +11,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by tyler on 5/13/17.
  */
+@SideOnly(Side.CLIENT)
 public class GuiStatus {
 
+    @SideOnly(Side.CLIENT)
     public static GuiStatus INSTANCE = new GuiStatus();
     public static boolean isGloomLoaded, isHungerLoaded, isInjuryLoaded;
     public static int offsetX, offsetY;

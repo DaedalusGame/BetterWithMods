@@ -80,11 +80,13 @@ public final class ModuleLoader {
 
     @SideOnly(Side.CLIENT)
     public static void preInitClient(FMLPreInitializationEvent event) {
+        GlobalConfig.initGlobalClient();
         forEachEnabled(module -> module.preInitClient(event));
     }
 
     @SideOnly(Side.CLIENT)
     public static void initClient(FMLInitializationEvent event) {
+
         forEachEnabled(module -> module.initClient(event));
     }
 

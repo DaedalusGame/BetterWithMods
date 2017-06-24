@@ -15,8 +15,7 @@ public final class GlobalConfig {
 
         debug = ConfigHelper.loadPropBool("Debug", category, "Enables debug features", false);
         maxPlatformBlocks = ConfigHelper.loadPropInt("Max Platform Blocks", category, "Max blocks a platform can have", 128);
-        GuiStatus.offsetY = ConfigHelper.loadPropInt("Status Effect Offset Y", "gui", "Y Offset for the Hunger, Injury and Gloom Status effects.", 0);
-        GuiStatus.offsetX = ConfigHelper.loadPropInt("Status Effect Offset X", "gui", "X Offset for the Hunger, Injury and Gloom Status effects.", 0);
+
         ConfigHelper.needsRestart = ConfigHelper.allNeedRestart = false;
 
         BlockHemp.growthChance = ConfigHelper.loadPropDouble("Growth Chance","Hemp","Hemp has a 1/X chance of growing where X is this value, the following modifiers divide this value", 15D);
@@ -26,7 +25,11 @@ public final class GlobalConfig {
 
 
     }
+    public static void initGlobalClient() {
 
+        GuiStatus.offsetY = ConfigHelper.loadPropInt("Status Effect Offset Y", "gui", "Y Offset for the Hunger, Injury and Gloom Status effects.", 0);
+        GuiStatus.offsetX = ConfigHelper.loadPropInt("Status Effect Offset X", "gui", "X Offset for the Hunger, Injury and Gloom Status effects.", 0);
+    }
     public static void changeConfig(String moduleName, String category, String key, String value, boolean saveToFile) {
         Configuration config = ModuleLoader.config;
         String fullCategory = moduleName;

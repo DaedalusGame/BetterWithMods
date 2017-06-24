@@ -2,18 +2,31 @@ package betterwithmods.common;
 
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
+import betterwithmods.util.RecipeUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import li.cil.manual.client.manual.provider.OreDictImageProvider;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Created by tyler on 5/10/17.
@@ -24,6 +37,11 @@ public class BWOreDictionary {
     public static List<ItemStack> dustNames;
     public static List<ItemStack> oreNames;
     public static List<ItemStack> ingotNames;
+
+    public static List<Wood> woods;
+
+    public static List<ItemStack> planks;
+    public static List<ItemStack> logs;
 
     public static void registerOres() {
 
@@ -49,7 +67,7 @@ public class BWOreDictionary {
         registerOre("foodFlour", BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
-        registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
+        registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("coal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
 
@@ -94,6 +112,22 @@ public class BWOreDictionary {
 
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
 
+        woods = Lists.newArrayList(
+                new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
+                new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
+                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
+        );
+        List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter( stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
+        for(ItemStack log: logs) {
+            ItemStack plank = RecipeUtils.getRecipeOutput(log);
+            if(isOre(plank,"plankWood")) {
+                Wood wood = new Wood(log,plank);
+                woods.add(wood);
+            }
+        }
     }
 
     public static void registerOre(String ore, ItemStack... items) {
@@ -164,6 +198,47 @@ public class BWOreDictionary {
     }
 
     public static boolean hasSuffix(ItemStack stack, String suffix) {
-        return listContains(stack,getOreNames(suffix));
+        return listContains(stack, getOreNames(suffix));
+    }
+
+
+    public static class Wood {
+        public ItemStack log, plank, bark;
+
+        public Wood(ItemStack log, ItemStack plank) {
+            this.log = log;
+            this.plank = plank;
+
+            //TODO add custom bark render for all bark
+            this.bark = ItemBark.getStack("oak",1);
+        }
+
+        public Wood(ItemStack log, ItemStack plank, ItemStack bark) {
+            this.log = log;
+            this.plank = plank;
+            this.bark = bark;
+        }
+
+        public ItemStack getLog(int count) {
+            ItemStack copy = log.copy();
+            copy.setCount(count);
+            return copy;
+        }
+
+        public ItemStack getPlank(int count) {
+            ItemStack copy = plank.copy();
+            copy.setCount(count);
+            return copy;
+        }
+
+        public ItemStack getBark(int count) {
+            ItemStack copy = bark.copy();
+            copy.setCount(count);
+            return copy;
+        }
+        public ItemStack getSawdust(int count) {
+            ItemStack copy = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST,count);
+            return copy;
+        }
     }
 }

@@ -1,32 +1,23 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.block.IDebarkable;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.BlockBDispenser;
-import betterwithmods.common.blocks.BlockBWMPane;
-import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.*;
-import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.RecipeUtils;
-import com.google.common.collect.Lists;
 import li.cil.manual.api.API;
 import li.cil.manual.common.api.ManualAPIImpl;
 import net.minecraft.block.*;
@@ -39,14 +30,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -55,17 +39,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BWRegistry {
     public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
@@ -102,7 +78,6 @@ public class BWRegistry {
     }
 
     public static void postInit() {
-        registerWood();
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
     }
@@ -146,13 +121,13 @@ public class BWRegistry {
             InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STRING, 1 + world.rand.nextInt(3)));
             world.playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
             entity.setDead();
-            return InvUtils.asList(new ItemStack(BWMBlocks.WOLF));
+            return InvUtils.asNonnullList(new ItemStack(BWMBlocks.WOLF));
         });
 
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntitySheep.class, (world, pos, entity, stack) -> {
             EntitySheep sheep = (EntitySheep) entity;
             if (sheep.isShearable(new ItemStack(Items.SHEARS), world, pos)) {
-                return InvUtils.asList(sheep.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
+                return InvUtils.asNonnullList(sheep.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
             }
             return NonNullList.create();
         });
@@ -160,7 +135,7 @@ public class BWRegistry {
             InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.FEATHER, 1 + world.rand.nextInt(2)));
             world.playSound(null, pos, SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
             entity.setDead();
-            return InvUtils.asList(new ItemStack(Items.EGG));
+            return InvUtils.asNonnullList(new ItemStack(Items.EGG));
         });
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityCow.class, (world, pos, entity, stack) -> {
             if (stack.isItemEqual(new ItemStack(Items.BUCKET))) {
@@ -191,110 +166,110 @@ public class BWRegistry {
     }
 
 
-    public static void registerWood() {
-        boolean hardcoreLumber = ModuleLoader.isFeatureEnabled(HCLumber.class);
-        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            ItemStack log;
-            ItemStack plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 4 : 6, type.getMetadata());
-            if (type.getMetadata() < 4) {
-                log = new ItemStack(Blocks.LOG, 1, type.getMetadata());
-
-            } else {
-                log = new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
-            }
-            Block block = ((ItemBlock) log.getItem()).getBlock();
-            ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
-            ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-            if (hardcoreLumber) {
-                RecipeUtils.removeRecipe(plank, log);
-                if (Loader.isModLoaded("thermalexpansion")) {
-                    registerTESawmill(plank, log);
-                }
-                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
-            }
-            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
-            SawManager.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
-                    new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
-            plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 3 : 5, type.getMetadata());
-            if (type.getMetadata() < 4) {
-                log = new ItemStack(BWMBlocks.DEBARKED_OLD, 1, type.getMetadata());
-            } else {
-                log = new ItemStack(BWMBlocks.DEBARKED_NEW, 1, type.getMetadata() - 4);
-            }
-            block = ((ItemBlock) log.getItem()).getBlock();
-            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, sawdust);
-        }
-        List<ItemStack> logs = OreDictionary.getOres("logWood");
-        for (ItemStack log : logs) {
-            if (log.getItem() != null && log.getItem() instanceof ItemBlock) {
-                Block block = ((ItemBlock) log.getItem()).getBlock();
-
-                // only if not vanilla
-                if (!block.getRegistryName().getResourceDomain().equals("minecraft")) {
-                    if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                        for (int i = 0; i < 4; i++) {
-                            ItemStack planks = RecipeUtils.getRecipeOutput(new ItemStack(log.getItem(), 1, i));
-                            if (!planks.isEmpty()) {
-
-                                ItemStack[] output = new ItemStack[3];
-                                output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
-                                output[1] = new ItemStack(BWMItems.BARK, 1, 0);
-                                output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-
-                                if (block instanceof IDebarkable)
-                                    output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
-
-                                if (hardcoreLumber) {
-                                    RecipeUtils.removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
-                                    if (Loader.isModLoaded("thermalexpansion")) {
-                                        registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
-                                    }
-                                    RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
-                                }
-                                SawManager.INSTANCE.addRecipe(block, i, output);
-                                SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
-                            }
-                        }
-                    } else {
-                        ItemStack planks = RecipeUtils.getRecipeOutput(log);
-                        if (planks.isEmpty()) {
-                            ItemStack[] output = new ItemStack[3];
-                            output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
-                            output[1] = new ItemStack(BWMItems.BARK, 1, 0);
-                            output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
-
-                            if (block instanceof IDebarkable)
-                                output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
-
-                            if (hardcoreLumber) {
-                                RecipeUtils.removeRecipe(output[0], log);
-                                if (Loader.isModLoaded("thermalexpansion")) {
-                                    registerTESawmill(output[0], log);
-                                }
-                                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
-                            }
-                            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), output);
-                            SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static void registerTESawmill(ItemStack output, ItemStack input) {
-        if (output == null || input == null) return;
-        NBTTagCompound toSend = new NBTTagCompound();
-        toSend.setInteger("energy", 800);
-        toSend.setTag("inputs", new NBTTagCompound());
-        toSend.setTag("primaryOutput", new NBTTagCompound());
-        toSend.setTag("secondaryOutput", new NBTTagCompound());
-        input.writeToNBT(toSend.getCompoundTag("inputs"));
-        output.writeToNBT(toSend.getCompoundTag("primaryOutput"));
-        ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST).writeToNBT(toSend.getCompoundTag("secondaryOutput"));
-        toSend.setInteger("secondaryChance", 100);
-        FMLInterModComms.sendMessage("thermalexpansion", "addsawmillrecipe", toSend);
-    }
+//    public static void registerWood() {
+//        boolean hardcoreLumber = ModuleLoader.isFeatureEnabled(HCLumber.class);
+//        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+//            ItemStack log;
+//            ItemStack plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 4 : 6, type.getMetadata());
+//            if (type.getMetadata() < 4) {
+//                log = new ItemStack(Blocks.LOG, 1, type.getMetadata());
+//
+//            } else {
+//                log = new ItemStack(Blocks.LOG2, 1, type.getMetadata() - 4);
+//            }
+//            Block block = ((ItemBlock) log.getItem()).getBlock();
+//            ItemStack bark = new ItemStack(BWMItems.BARK, 1, type.getMetadata());
+//            ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
+//            if (hardcoreLumber) {
+//                RecipeUtils.removeRecipe(plank, log);
+//                if (Loader.isModLoaded("thermalexpansion")) {
+//                    registerTESawmill(plank, log);
+//                }
+//                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
+//            }
+//            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
+//            SawManager.INSTANCE.addRecipe(Blocks.PLANKS, type.getMetadata(),
+//                    new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
+//            plank = new ItemStack(Blocks.PLANKS, hardcoreLumber ? 3 : 5, type.getMetadata());
+//            if (type.getMetadata() < 4) {
+//                log = new ItemStack(BWMBlocks.DEBARKED_OLD, 1, type.getMetadata());
+//            } else {
+//                log = new ItemStack(BWMBlocks.DEBARKED_NEW, 1, type.getMetadata() - 4);
+//            }
+//            block = ((ItemBlock) log.getItem()).getBlock();
+//            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), plank, sawdust);
+//        }
+//        List<ItemStack> logs = OreDictionary.getOres("logWood");
+//        for (ItemStack log : logs) {
+//            if (log.getItem() != null && log.getItem() instanceof ItemBlock) {
+//                Block block = ((ItemBlock) log.getItem()).getBlock();
+//
+//                // only if not vanilla
+//                if (!block.getRegistryName().getResourceDomain().equals("minecraft")) {
+//                    if (log.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+//                        for (int i = 0; i < 4; i++) {
+//                            ItemStack planks = RecipeUtils.getRecipeOutput(new ItemStack(log.getItem(), 1, i));
+//                            if (!planks.isEmpty()) {
+//
+//                                ItemStack[] output = new ItemStack[3];
+//                                output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
+//                                output[1] = new ItemStack(BWMItems.BARK, 1, 0);
+//                                output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
+//
+//                                if (block instanceof IDebarkable)
+//                                    output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
+//
+//                                if (hardcoreLumber) {
+//                                    RecipeUtils.removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
+//                                    if (Loader.isModLoaded("thermalexpansion")) {
+//                                        registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
+//                                    }
+//                                    RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
+//                                }
+//                                SawManager.INSTANCE.addRecipe(block, i, output);
+//                                SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+//                            }
+//                        }
+//                    } else {
+//                        ItemStack planks = RecipeUtils.getRecipeOutput(log);
+//                        if (planks.isEmpty()) {
+//                            ItemStack[] output = new ItemStack[3];
+//                            output[0] = new ItemStack(planks.getItem(), hardcoreLumber ? 4 : 6, planks.getMetadata());
+//                            output[1] = new ItemStack(BWMItems.BARK, 1, 0);
+//                            output[2] = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2);
+//
+//                            if (block instanceof IDebarkable)
+//                                output[1] = ((IDebarkable) block).getBark(block.getStateFromMeta(log.getMetadata()));
+//
+//                            if (hardcoreLumber) {
+//                                RecipeUtils.removeRecipe(output[0], log);
+//                                if (Loader.isModLoaded("thermalexpansion")) {
+//                                    registerTESawmill(output[0], log);
+//                                }
+//                                RecipeUtils.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
+//                            }
+//                            SawManager.INSTANCE.addRecipe(block, log.getMetadata(), output);
+//                            SawManager.INSTANCE.addRecipe(planks, new ItemStack(BWMBlocks.WOOD_SIDING, 2, 0));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    private static void registerTESawmill(ItemStack output, ItemStack input) {
+//        if (output == null || input == null) return;
+//        NBTTagCompound toSend = new NBTTagCompound();
+//        toSend.setInteger("energy", 800);
+//        toSend.setTag("inputs", new NBTTagCompound());
+//        toSend.setTag("primaryOutput", new NBTTagCompound());
+//        toSend.setTag("secondaryOutput", new NBTTagCompound());
+//        input.writeToNBT(toSend.getCompoundTag("inputs"));
+//        output.writeToNBT(toSend.getCompoundTag("primaryOutput"));
+//        ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST).writeToNBT(toSend.getCompoundTag("secondaryOutput"));
+//        toSend.setInteger("secondaryChance", 100);
+//        FMLInterModComms.sendMessage("thermalexpansion", "addsawmillrecipe", toSend);
+//    }
 
 
     private static void registerPotions() {

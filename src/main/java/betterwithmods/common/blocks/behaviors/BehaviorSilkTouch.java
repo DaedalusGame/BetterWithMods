@@ -31,7 +31,7 @@ public class BehaviorSilkTouch implements IBehaviorCollect {
 
     @Override
     public NonNullList<ItemStack> collect(IBlockSource source) {
-        NonNullList<ItemStack> list = InvUtils.asList(getBlockSilkTouchDrop(source.getBlockState()));
+        NonNullList<ItemStack> list = InvUtils.asNonnullList(getBlockSilkTouchDrop(source.getBlockState()));
         breakBlock(source.getWorld(),source.getBlockState(),source.getBlockPos());
         return list;
     }

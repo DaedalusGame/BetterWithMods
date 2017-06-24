@@ -2,6 +2,7 @@ package betterwithmods.common.registry.blockmeta.recipe;
 
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,9 +20,19 @@ public class BlockMetaRecipe {
     private final int meta;
     private final NonNullList<ItemStack> outputs;
 
-    public BlockMetaRecipe(Block block, int meta, List<ItemStack> outputs) {
-        this(block,meta, InvUtils.asList(outputs));
+    public BlockMetaRecipe(ItemStack stack, List<ItemStack> outputs) {
+        Block block = null;
+        if (stack.getItem() instanceof ItemBlock)
+            block = ((ItemBlock) stack.getItem()).getBlock();
+        this.block = block;
+        this.meta = stack.getMetadata();
+        this.outputs = InvUtils.asNonnullList(outputs);
     }
+
+    public BlockMetaRecipe(Block block, int meta, List<ItemStack> outputs) {
+        this(block, meta, InvUtils.asNonnullList(outputs));
+    }
+
     public BlockMetaRecipe(Block block, int meta, NonNullList<ItemStack> outputs) {
         this.block = block;
         this.meta = meta;

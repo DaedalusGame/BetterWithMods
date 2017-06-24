@@ -45,43 +45,38 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
         boolean hasAxe = false;
         boolean hasLog = false;
 
-        for (int x = 0; x < inventory.getSizeInventory(); x++)
-        {
+        for (int x = 0; x < inventory.getSizeInventory(); x++) {
             boolean inRecipe = false;
             ItemStack slot = inventory.getStackInSlot(x);
 
             if (!slot.isEmpty()) {
                 if (isAxe(slot)) {
-                    if(!hasAxe) {
+                    if (!hasAxe) {
                         hasAxe = true;
                         inRecipe = true;
-                    }
-                    else
+                    } else
                         return false;
-                }
-                else {
+                } else {
                     if (log instanceof ItemStack) {
-                        if (OreDictionary.itemMatches(slot, (ItemStack)log, true)) {
+                        if (OreDictionary.itemMatches(slot, (ItemStack) log, true)) {
                             if (!hasLog) {
                                 hasLog = true;
                                 inRecipe = true;
                             } else
                                 return false;
                         }
-                    }
-                    else if (log instanceof String) {
-                        if (BWOreDictionary.listContains(slot, OreDictionary.getOres((String)log))) {
+                    } else if (log instanceof String) {
+                        if (BWOreDictionary.listContains(slot, OreDictionary.getOres((String) log))) {
                             if (!hasLog) {
                                 hasLog = true;
                                 inRecipe = true;
                             } else
                                 return false;
                         }
-                    }
-                    else
+                    } else
                         return false;
                 }
-                if(!inRecipe)
+                if (!inRecipe)
                     return false;
             }
         }
@@ -91,7 +86,7 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
     private boolean isAxe(ItemStack stack) {
         if (stack != null) {
             if (stack.getItem().getToolClasses(stack).contains("axe")) {
-                if(stack.getItem().getRegistryName().getResourceDomain().equals("tconstruct")) {
+                if (stack.getItem().getRegistryName().getResourceDomain().equals("tconstruct")) {
                     if (stack.getItemDamage() >= stack.getMaxDamage())
                         return false;
                 }
@@ -106,18 +101,15 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         NonNullList<ItemStack> stacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
-        for (int i = 0; i < stacks.size(); i++)
-        {
+        for (int i = 0; i < stacks.size(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if(!stack.isEmpty() && isAxe(stack)) {
+            if (!stack.isEmpty() && isAxe(stack)) {
                 ItemStack copy = stack.copy();
-                if(copy.getItem().getHarvestLevel(copy, "axe", null, null) > 1) {
+                if (copy.getItem().getHarvestLevel(copy, "axe", null, null) > 1) {
                     stacks.set(i, copy.copy());
-                }
-                else if (!copy.attemptDamageItem(1, new Random())) {
+                } else if (!copy.attemptDamageItem(1, new Random())) {
                     stacks.set(i, copy.copy());
-                }
-                else if (copy.getItem().getRegistryName().getResourceDomain().equals("tconstruct")) {
+                } else if (copy.getItem().getRegistryName().getResourceDomain().equals("tconstruct")) {
                     stacks.set(i, copy.copy());
                 }
             }
@@ -128,19 +120,18 @@ public class ChoppingRecipe extends ShapelessOreRecipe {
 
     @SubscribeEvent
     public void dropExtra(PlayerEvent.ItemCraftedEvent event) {
-        if(event.player == null)
+        if (event.player == null)
             return;
 
-        if(isMatch(event.craftMatrix))
-        {
-            if(!event.player.getEntityWorld().isRemote) {
+        if (isMatch(event.craftMatrix)) {
+            if (!event.player.getEntityWorld().isRemote) {
                 if (!sawdust.isEmpty())
                     event.player.entityDropItem(sawdust.copy(), 0);
                 if (!bark.isEmpty())
                     event.player.entityDropItem(bark.copy(), 0);
-            }
-            else
+            } else {
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);
+            }
         }
     }
 }

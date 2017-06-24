@@ -30,14 +30,14 @@ import java.util.stream.Collectors;
 
 public class InvUtils {
 
-    public static <T> NonNullList<T> asList(T... array) {
+    public static <T> NonNullList<T> asNonnullList(T... array) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (array != null)
             nonNullList.addAll(Arrays.stream(array).filter(e -> e != null).collect(Collectors.toList()));
         return nonNullList;
     }
 
-    public static <T> NonNullList<T> asList(List<T> list) {
+    public static <T> NonNullList<T> asNonnullList(List<T> list) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (list != null)
             nonNullList.addAll(list.stream().filter(e -> e != null).collect(Collectors.toList()));

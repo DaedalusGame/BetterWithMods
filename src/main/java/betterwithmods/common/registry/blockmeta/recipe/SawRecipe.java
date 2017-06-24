@@ -12,4 +12,8 @@ public class SawRecipe extends BlockMetaRecipe {
     public SawRecipe(Block block, int meta, List<ItemStack> outputs) {
         super(block, meta, outputs);
     }
+
+    public SawRecipe(ItemStack stack, List<ItemStack> outputs) {
+        super(stack, outputs);
+    }
 }

@@ -14,7 +14,7 @@ public class BehaviorBreakBlock implements IBehaviorCollect {
     public NonNullList<ItemStack> collect(IBlockSource source) {
 
 
-        NonNullList<ItemStack> list = InvUtils.asList(source.getBlockState().getBlock().getDrops(source.getWorld(), source.getBlockPos(), source.getBlockState(), 0));;
+        NonNullList<ItemStack> list = InvUtils.asNonnullList(source.getBlockState().getBlock().getDrops(source.getWorld(), source.getBlockPos(), source.getBlockState(), 0));;
         breakBlock(source.getWorld(),source.getBlockState(),source.getBlockPos());
         return list;
     }

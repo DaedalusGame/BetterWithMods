@@ -8,6 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -48,6 +50,12 @@ public final class RecipeUtils {
             return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
         }
         return Blocks.AIR.getDefaultState();
+    }
+
+    public static ItemStack getStackFromState(IBlockState state) {
+        Block block = state.getBlock();
+        int meta = block.damageDropped(state);
+        return new ItemStack(block, 1, meta);
     }
 
     public static int removeShaped(ItemStack output, ItemStack[][] ingredients) {
@@ -152,15 +160,15 @@ public final class RecipeUtils {
     /**
      * Remove all recipes.
      *
-     * @param stack ItemStack to remove recipes of.
+     * @param output ItemStack to remove recipes of.
      */
-    public static void removeRecipes(ItemStack stack) {
+    public static void removeRecipes(ItemStack output) {
         List<IRecipe> recipeList = CraftingManager.getInstance().getRecipeList();
         final ListIterator<IRecipe> li = recipeList.listIterator();
         boolean found = false;
         while (li.hasNext()) {
-            ItemStack output = li.next().getRecipeOutput();
-            if (OreDictionary.itemMatches(stack, output, false)) {
+            ItemStack o = li.next().getRecipeOutput();
+            if (OreDictionary.itemMatches(output, o, false)) {
                 li.remove();
                 found = true;
             }

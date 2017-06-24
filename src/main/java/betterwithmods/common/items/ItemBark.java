@@ -5,6 +5,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMItems;
 import com.google.common.collect.Lists;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -12,10 +13,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ItemBark extends Item implements IMultiLocations {
-    public static List<String> barks = Lists.newArrayList("oak","spruce", "birch", "jungle", "acacia", "dark_oak","bloody");
+
+    public static List<String> barks = Lists.newArrayList("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "bloody");
 
     public static ItemStack getStack(String wood, int amount) {
         return new ItemStack(BWMItems.BARK, amount, barks.indexOf(wood));
@@ -27,7 +30,6 @@ public class ItemBark extends Item implements IMultiLocations {
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }
-
 
 
     private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8};

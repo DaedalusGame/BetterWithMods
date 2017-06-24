@@ -1,11 +1,16 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.module.Feature;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.HCLumber;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -15,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,7 +32,7 @@ public class SawRecipes extends Feature {
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
-        addSawRecipe(block, meta, new ItemStack[]{output});
+        SawManager.INSTANCE.addRecipe(block, meta, new ItemStack[]{output});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack... outputs) {
@@ -34,9 +40,11 @@ public class SawRecipes extends Feature {
     }
 
     public static void addSelfSawRecipe(Block block, int meta) {
-        SawManager.INSTANCE.addRecipe(new SawSelfDropRecipe(block, meta));
+        addSawRecipe(new SawSelfDropRecipe(block, meta));
     }
-
+    public static void addSawRecipe(SawRecipe recipe) {
+        SawManager.INSTANCE.addRecipe(recipe);
+    }
     @Override
     public void init(FMLInitializationEvent event) {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
@@ -56,9 +64,14 @@ public class SawRecipes extends Feature {
             @Override
             public NonNullList<ItemStack> getOutputs() {
                 Random random = new Random();
-                return InvUtils.asList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
+                return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
+
+        int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
+        for(BWOreDictionary.Wood wood: BWOreDictionary.woods) {
+            addSawRecipe(new SawRecipe(wood.getLog(1), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2))));
+        }
 
     }
 
@@ -67,4 +80,7 @@ public class SawRecipes extends Feature {
             super(block, meta, Lists.newArrayList(new ItemStack(block, 1, meta)));
         }
     }
+
+
+
 }

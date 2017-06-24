@@ -40,9 +40,7 @@ public final class PlayerHelper {
     }
 
     public static float getSpeedModifier(EntityPlayer player) {
-        if (!isSurvival(player))
-            return 1;
-        return getWorstPenalty(player).getModifier();
+        return Math.min(getFatPenalty(player).getModifier(), getHungerPenalty(player).getModifier());
     }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {

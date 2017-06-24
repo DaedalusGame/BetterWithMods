@@ -10,11 +10,16 @@ public class CauldronManager extends CraftingManagerBulk<CauldronRecipe> {
         return instance;
     }
 
-    public void addRecipe(ItemStack output, Object[] inputs) {
-        addRecipe(output, ItemStack.EMPTY, inputs);
+    public CauldronRecipe addRecipe(ItemStack output, Object[] inputs) {
+        return addRecipe(output, ItemStack.EMPTY, inputs);
     }
 
-    public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        addRecipe(new CauldronRecipe(output, secondary, inputs));
+    public CauldronRecipe addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        return addRecipe(new CauldronRecipe(output, secondary, inputs));
+    }
+
+    @Override
+    public CauldronRecipe addRecipe(CauldronRecipe recipe) {
+        return super.addRecipe(recipe);
     }
 }

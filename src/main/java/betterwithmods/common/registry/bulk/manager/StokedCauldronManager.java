@@ -10,11 +10,11 @@ public class StokedCauldronManager extends CraftingManagerBulk<StokedCauldronRec
         return instance;
     }
 
-    public void addRecipe(ItemStack output, Object[] inputs) {
-        addRecipe(output, ItemStack.EMPTY, inputs);
+    public StokedCauldronRecipe addRecipe(ItemStack output, Object[] inputs) {
+        return addRecipe(output, ItemStack.EMPTY, inputs);
     }
 
-    public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        addRecipe(new StokedCauldronRecipe(output, secondary, inputs));
+    public StokedCauldronRecipe addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        return addRecipe(new StokedCauldronRecipe(output, secondary, inputs));
     }
 }

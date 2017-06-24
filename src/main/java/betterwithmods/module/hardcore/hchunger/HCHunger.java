@@ -6,7 +6,6 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.KilnRecipes;
-import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.RecipeUtils;
@@ -30,7 +29,6 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -38,7 +36,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -185,6 +182,7 @@ public class HCHunger extends CompatFeature {
             if (fat < 0) {
                 event.foodValues = new FoodValues(foodLevel, 0);
             } else {
+                //TODO doesn't add fat currently.
                 event.foodValues = new FoodValues(foodLevel, fat / 60f);
             }
         }

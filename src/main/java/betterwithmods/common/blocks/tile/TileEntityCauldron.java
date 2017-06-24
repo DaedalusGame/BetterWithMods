@@ -15,57 +15,17 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     @Override
     public boolean validateUnstoked() {
-        if (InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood())
-            return true;
-        else if (CauldronManager.getInstance().getCraftingResult(inventory) != null)
-            return true;
-        return false;
+        return CauldronManager.getInstance().getCraftingResult(inventory) != null;
     }
 
     @Override
     public boolean validateStoked() {
-        return containsExplosives() || StokedCauldronManager.getInstance().getCraftingResult(inventory) != null;
+        return StokedCauldronManager.getInstance().getCraftingResult(inventory) != null;
     }
 
     @Override
     protected boolean attemptToCookNormal() {
-        int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5);
-        if (dung > -1 && this.hasNonFoulFood()) {
-            return spoilFood();
-        } else
-            return super.attemptToCookNormal();
-    }
-
-    private boolean hasNonFoulFood() {
-        for (int i = 0; i < 27; i++) {
-            if (!this.inventory.getStackInSlot(i).isEmpty()) {
-                Item item = this.inventory.getStackInSlot(i).getItem();
-                if (item != null) {
-                    if (item instanceof ItemFood) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean spoilFood() {
-        boolean foodSpoiled = false;
-        for (int i = 0; i < 27; i++) {
-            if (!this.inventory.getStackInSlot(i).isEmpty()) {
-                Item item = this.inventory.getStackInSlot(i).getItem();
-                if (item != null) {
-                    if (item != BWMItems.FERTILIZER && item instanceof ItemFood) {
-                        int sizeOfStack = this.inventory.getStackInSlot(i).getCount();
-                        ItemStack spoiled = new ItemStack(BWMItems.FERTILIZER, sizeOfStack);
-                        this.inventory.setStackInSlot(i, spoiled);
-                        foodSpoiled = true;
-                    }
-                }
-            }
-        }
-        return foodSpoiled;
+        return super.attemptToCookNormal();
     }
 
 
@@ -74,4 +34,4 @@ public class TileEntityCauldron extends TileEntityCookingPot {
         return "inv.cauldron.name";
     }
 
-    }
+}

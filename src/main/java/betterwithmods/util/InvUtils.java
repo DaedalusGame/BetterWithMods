@@ -416,19 +416,17 @@ public class InvUtils {
     }
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item) {
-        return getFirstOccupiedStackOfItem(inv, item, OreDictionary.WILDCARD_VALUE);
+        return getFirstOccupiedStackOfItem(inv, item);
     }
 
-    public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
+    public static int getFirstOccupiedStackOfItem(IItemHandler inv, ItemStack stack) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             if (!inv.getStackInSlot(i).isEmpty()) {
-                int tempMeta = inv.getStackInSlot(i).getItemDamage();
-                if (inv.getStackInSlot(i).getItem() == item && (meta == OreDictionary.WILDCARD_VALUE || tempMeta == meta)) {
+                if (matches(inv.getStackInSlot(i),stack)) {
                     return i;
                 }
             }
         }
-
         return -1;
     }
 

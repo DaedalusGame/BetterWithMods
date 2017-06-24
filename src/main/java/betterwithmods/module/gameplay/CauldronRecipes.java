@@ -8,17 +8,21 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.bulk.manager.CauldronManager;
 import betterwithmods.common.registry.bulk.manager.StokedCauldronManager;
+import betterwithmods.common.registry.bulk.recipes.CauldronFoodRecipe;
+import betterwithmods.common.registry.bulk.recipes.CauldronRecipe;
 import betterwithmods.module.Feature;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Map;
@@ -31,12 +35,16 @@ public class CauldronRecipes extends Feature {
         canDisable = false;
     }
 
-    public static void addCauldronRecipe(ItemStack output, Object[] inputs) {
-        CauldronManager.getInstance().addRecipe(output, inputs);
+    public static CauldronRecipe addCauldronRecipe(CauldronRecipe recipe) {
+        return CauldronManager.getInstance().addRecipe(recipe);
     }
 
-    public static void addCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        CauldronManager.getInstance().addRecipe(output, secondary, inputs);
+    public static CauldronRecipe addCauldronRecipe(ItemStack output, Object[] inputs) {
+        return CauldronManager.getInstance().addRecipe(output, inputs);
+    }
+
+    public static CauldronRecipe addCauldronRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
+        return CauldronManager.getInstance().addRecipe(output, secondary, inputs);
     }
 
     public static void addStokedCauldronRecipe(ItemStack output, Object[] inputs) {
@@ -115,10 +123,11 @@ public class CauldronRecipes extends Feature {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
                     if (!output.isEmpty()) {
-                        CauldronRecipes.addCauldronRecipe(output.copy(), new Object[]{input.copy()});
+                        CauldronRecipes.addCauldronRecipe(new CauldronFoodRecipe(output.copy(), new Object[]{input.copy()}));
                     }
                 }
             }
         }
     }
+
 }

@@ -7,6 +7,9 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -14,8 +17,8 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO Probably this should implement some recipe interface, at the very least.
-public class BulkRecipe {
+public class BulkRecipe implements Comparable<BulkRecipe> {
+
     @Nonnull
     protected ItemStack output = ItemStack.EMPTY;
     @Nonnull
@@ -24,6 +27,8 @@ public class BulkRecipe {
     protected ArrayList<Object> inputs = new ArrayList<>();//Either ItemStack or OreStack
     @Nonnull
     protected ArrayList<List<ItemStack>> jeiInputs = new ArrayList<>();
+
+    protected int priority = 0;
 
     protected BulkRecipe(ItemStack output, Object... inputs) {
         this(output, ItemStack.EMPTY, inputs);
@@ -62,6 +67,14 @@ public class BulkRecipe {
             }
         }
         condenseInputs(inputList);
+    }
+
+    public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
+        NonNullList<ItemStack> list = NonNullList.withSize(2, ItemStack.EMPTY);
+        list.set(0, getOutput());
+        list.set(1, getSecondary());
+        this.consumeInvIngredients(inv);
+        return list;
     }
 
     private void condenseInputs(ArrayList<Object> list) {
@@ -176,4 +189,24 @@ public class BulkRecipe {
     public String toString() {
         return String.format("%s: %s -> %s,%s", getClass().getSimpleName(), this.inputs, this.output, this.secondary);
     }
+
+    /**
+     * Recipes with higher priority will be crafted first.
+     * @return sorting priority for Comparable
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(BulkRecipe other) {
+        return this.getPriority() == other.getPriority() ? 0 : this.getPriority() > other.getPriority() ? -1 : 1;
+    }
+
+
+
 }

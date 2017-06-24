@@ -154,7 +154,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         if (ingredients != null) {
             if (grindType == 1)
                 this.getWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            NonNullList<ItemStack> output = mill.craftItem(inventory);
+            NonNullList<ItemStack> output = mill.craftItem(world,this,inventory);
             if (!output.isEmpty()) {
                 for (ItemStack anOutput : output) {
                     ItemStack stack = anOutput.copy();

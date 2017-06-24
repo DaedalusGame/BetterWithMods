@@ -10,7 +10,7 @@ public class TileEntityCrucible extends TileEntityCookingPot {
 
     @Override
     public boolean validateStoked() {
-        return !containsExplosives() && StokedCrucibleManager.getInstance().getCraftingResult(inventory) != null;
+        return StokedCrucibleManager.getInstance().getCraftingResult(inventory) != null;
     }
 
     @Override

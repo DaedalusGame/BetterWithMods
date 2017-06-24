@@ -5,7 +5,9 @@ import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -20,9 +22,10 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         this.recipes = new ArrayList<>();
     }
 
-    public void addRecipe(T recipe) {
+    public T addRecipe(T recipe) {
         if (!recipe.isEmpty())
             recipes.add(recipe);
+        return recipe;
     }
 
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output) {
@@ -120,40 +123,19 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     public T getMostValidRecipe(ItemStackHandler inv) {
-        HashMap<Integer, T> recipes = getValidRecipes(inv);
-        for (Map.Entry<Integer, T> entry : recipes.entrySet()) {
-            if (entry.getValue().matches(inv))
-                return entry.getValue();
-        }
-        return null;
+        TreeSet<T> recipes = getValidRecipes(inv);
+        if (recipes.isEmpty())
+            return null;
+        return recipes.first();
     }
 
-    private HashMap<Integer, T> getValidRecipes(ItemStackHandler inv) {
-        HashMap<Integer, T> recipe = new HashMap<>();
-
-
-        int order = 0;
-        for (int i = 0; i < inv.getSlots(); i++) {
-            T single = null;
-            if (!inv.getStackInSlot(i).isEmpty()) {
-                ItemStack stack = inv.getStackInSlot(i).copy();
-                for (T r : this.recipes) {
-                    if (containsIngredient(r.getRecipeInput(), stack)) {
-                        if (r.getRecipeInput().size() > 1) {
-                            recipe.put(order, r);
-                            order++;
-                        } else
-                            single = r;
-                    }
-                }
-            }
-            //We're throwing this in the back of the possible valid RECIPES just in case there's another recipe with the same item alongside another.
-            if (single != null) {
-                recipe.put(order, single);
-                order++;
-            }
+    private TreeSet<T> getValidRecipes(ItemStackHandler inv) {
+        TreeSet<T> recipes = new TreeSet<>();
+        for (T recipe : this.recipes) {
+            if (recipe.matches(inv))
+                recipes.add(recipe);
         }
-        return recipe;
+        return recipes;
     }
 
     private boolean containsIngredient(List<Object> list, ItemStack stack) {
@@ -178,14 +160,10 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return Lists.newArrayList();
     }
 
-    public NonNullList<ItemStack> craftItem(ItemStackHandler inv) {
+    public NonNullList<ItemStack> craftItem(World world, TileEntity tile, ItemStackHandler inv) {
         T recipe = getMostValidRecipe(inv);
         if (recipe != null) {
-            NonNullList<ItemStack> list = NonNullList.withSize(2, ItemStack.EMPTY);
-            list.set(0, recipe.getOutput());
-            list.set(1, recipe.getSecondary());
-            recipe.consumeInvIngredients(inv);
-            return list;
+            return recipe.onCraft(world, tile, inv);
         }
         return NonNullList.create();
     }

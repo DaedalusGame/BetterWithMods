@@ -2,7 +2,6 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -14,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -179,7 +177,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     private void entityCollision() {
-        if(captureDroppedItems()) {
+        if (captureDroppedItems()) {
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
             this.markDirty();
         }
@@ -308,47 +306,20 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
             this.cookCounter += fireIntensity;
 
             if (this.cookCounter >= 4350) {
-                if (containsExplosives())
-                    explode();
-                else
-                    attemptToCookStoked();
+                attemptToCookStoked();
                 this.cookCounter = 0;
             }
         } else
             this.cookCounter = 0;
     }
 
-    protected boolean containsExplosives() {
-        return containsItem(BWMItems.MATERIAL, 16) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(BWMItems.MATERIAL, 29);
-    }
 
     private boolean containsItem(Item item) {
         return containsItem(item, OreDictionary.WILDCARD_VALUE);
     }
 
     private boolean containsItem(Item item, int meta) {
-        return InvUtils.getFirstOccupiedStackOfItem(inventory, item, meta) > -1;
-    }
-
-    private void explode() {
-        int hellfire = InvUtils.countItemsInInventory(inventory, BWMItems.MATERIAL, 16);
-        float expSize = hellfire * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, BWMItems.MATERIAL, 29) * 10.0F / 64.0F;
-        if (InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0) {
-            if (expSize < 4.0F)
-                expSize = 4.0F;
-            expSize += InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT));
-        }
-
-        if (expSize < 2.0F)
-            expSize = 2.0F;
-        else if (expSize > 10.0F)
-            expSize = 10.0F;
-
-        InvUtils.clearInventory(inventory);
-        getWorld().setBlockToAir(pos);
-        getWorld().createExplosion(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, expSize, true);
+        return InvUtils.getFirstOccupiedStackOfItem(inventory, item) > -1;
     }
 
     protected boolean attemptToCookNormal() {
@@ -362,8 +333,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     private boolean attemptToCookWithManager(CraftingManagerBulk man) {
         if (man != null) {
             if (man.getCraftingResult(inventory) != null) {
-                NonNullList<ItemStack> output = man.craftItem(inventory);
-
+                NonNullList<ItemStack> output = man.craftItem(world, this, inventory);
                 if (!output.isEmpty()) {
                     for (ItemStack out : output) {
                         if (!out.isEmpty()) {

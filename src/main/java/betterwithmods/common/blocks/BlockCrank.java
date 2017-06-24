@@ -196,7 +196,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 if (stage <= 5)
                     world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
                 else
-                    world.scheduleBlockUpdate(pos, this, TileEntityMill.GRIND_TIME, 5);
+                    world.scheduleBlockUpdate(pos, this,17, 5);
 
                 world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
             } else {

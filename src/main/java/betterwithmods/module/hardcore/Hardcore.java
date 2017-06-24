@@ -56,6 +56,12 @@ public class Hardcore extends CompatModule {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+
+    }
+
+    @Override
+    public void initClient(FMLInitializationEvent event) {
+        super.initClient(event);
         GuiStatus.isGloomLoaded = ModuleLoader.isFeatureEnabled(HCGloom.class);
         GuiStatus.isHungerLoaded = ModuleLoader.isFeatureEnabled(HCHunger.class);
         GuiStatus.isInjuryLoaded = ModuleLoader.isFeatureEnabled(HCInjury.class);

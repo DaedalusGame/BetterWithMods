@@ -261,12 +261,6 @@ public class HCHunger extends CompatFeature {
 
     }
     //TODO fix Hunger starting as vanilla 20.
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.player.world.getTotalWorldTime()%20==0) {
-            NetworkHandler.INSTANCE.sendToAll(new MessageFat(event.player.getName()));
-        }
-    }
 
     public String getFeatureDescription() {
         return "Completely revamps the hunger system of Minecraft. \n" +

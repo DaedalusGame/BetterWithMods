@@ -16,4 +16,9 @@ public class CrucibleManager extends CraftingManagerBulk<CrucibleRecipe> {
     public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
         addRecipe(new CrucibleRecipe(output,secondary,inputs));
     }
+
+    @Override
+    public CrucibleRecipe addRecipe(CrucibleRecipe recipe) {
+        return super.addRecipe(recipe);
+    }
 }

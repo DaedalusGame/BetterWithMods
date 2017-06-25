@@ -17,4 +17,9 @@ public class StokedCrucibleManager extends CraftingManagerBulk<StokedCrucibleRec
     public void addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
         addRecipe(new StokedCrucibleRecipe(output, secondary, inputs));
     }
+
+    @Override
+    public StokedCrucibleRecipe addRecipe(StokedCrucibleRecipe recipe) {
+        return super.addRecipe(recipe);
+    }
 }

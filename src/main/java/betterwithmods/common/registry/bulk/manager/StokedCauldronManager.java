@@ -17,4 +17,9 @@ public class StokedCauldronManager extends CraftingManagerBulk<StokedCauldronRec
     public StokedCauldronRecipe addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
         return addRecipe(new StokedCauldronRecipe(output, secondary, inputs));
     }
+
+    @Override
+    public StokedCauldronRecipe addRecipe(StokedCauldronRecipe recipe) {
+        return super.addRecipe(recipe);
+    }
 }

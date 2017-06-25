@@ -42,12 +42,15 @@ public class SawRecipes extends Feature {
     public static void addSelfSawRecipe(Block block, int meta) {
         addSawRecipe(new SawSelfDropRecipe(block, meta));
     }
+
     public static void addSawRecipe(SawRecipe recipe) {
         SawManager.INSTANCE.addRecipe(recipe);
     }
+
     @Override
     public void init(FMLInitializationEvent event) {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+            addSawRecipe(Blocks.PLANKS, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
             addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
             addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
             addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
@@ -69,7 +72,7 @@ public class SawRecipes extends Feature {
         });
 
         int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
-        for(BWOreDictionary.Wood wood: BWOreDictionary.woods) {
+        for (BWOreDictionary.Wood wood : BWOreDictionary.woods) {
             addSawRecipe(new SawRecipe(wood.getLog(1), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2))));
         }
 
@@ -80,7 +83,6 @@ public class SawRecipes extends Feature {
             super(block, meta, Lists.newArrayList(new ItemStack(block, 1, meta)));
         }
     }
-
 
 
 }

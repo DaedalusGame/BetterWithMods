@@ -17,4 +17,9 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
     public void addRecipe(int grindType, ItemStack output, ItemStack secondary, Object[] inputs) {
         addRecipe(new MillRecipe(grindType, output, secondary, inputs));
     }
+
+    @Override
+    public MillRecipe addRecipe(MillRecipe recipe) {
+        return super.addRecipe(recipe);
+    }
 }

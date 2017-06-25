@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "betterwithmods:growth/growth_7",
+    "textures": {
+      "top": "blocks/mycelium_top",
+      "bottom": "blocks/mycelium_top",
+      "side": "blocks/mycelium_top"
+    }
+  },
+  "variants": {
+    "age": {
+      "0": {
+        "model": "betterwithmods:growth/growth_0"
+      },
+      "1": {
+        "model": "betterwithmods:growth/growth_1"
+      },
+      "2": {
+        "model": "betterwithmods:growth/growth_2"
+      },
+      "3": {
+        "model": "betterwithmods:growth/growth_3"
+      },
+      "4": {
+        "model": "betterwithmods:growth/growth_4"
+      },
+      "5": {
+        "model": "betterwithmods:growth/growth_5"
+      },
+      "6": {
+        "model": "betterwithmods:growth/growth_6"
+      },
+      "7": {
+      }
+    }
+  }
+}

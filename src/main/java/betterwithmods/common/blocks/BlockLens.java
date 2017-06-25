@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockLens extends BWMBlock {
+public class BlockLens extends BlockRotate {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     public static final int RANGE = 256;
 
@@ -261,5 +261,10 @@ public class BlockLens extends BWMBlock {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING, LIT);
+    }
+
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.withProperty(LIT,false).cycleProperty(DirUtils.FACING));
     }
 }

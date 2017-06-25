@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockDetector extends BWMBlock {
+public class BlockDetector extends BlockRotate {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockDetector() {
@@ -255,5 +255,10 @@ public class BlockDetector extends BWMBlock {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING, ACTIVE);
+    }
+
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.withProperty(ACTIVE,false).cycleProperty(DirUtils.FACING));
     }
 }

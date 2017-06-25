@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBellows extends BWMBlock implements IMechanicalBlock {
+public class BlockBellows extends BlockRotate implements IMechanicalBlock {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyBool TRIGGER = PropertyBool.create("trigger");
 
@@ -50,19 +50,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        boolean emptyHands = playerIn.getHeldItem(EnumHand.MAIN_HAND) .isEmpty()  && playerIn.getHeldItem(EnumHand.OFF_HAND) .isEmpty()  && playerIn.isSneaking();
-
-        if (worldIn.isRemote && emptyHands)
-            return true;
-        else if (!worldIn.isRemote && emptyHands) {
-            worldIn.playSound(null, pos, this.getSoundType(state, worldIn, pos, playerIn).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-            worldIn.setBlockState(pos, state.cycleProperty(DirUtils.HORIZONTAL).withProperty(ACTIVE, false));
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
-            worldIn.scheduleBlockUpdate(pos, this, 10, 5);
-            return true;
-        }
-        return false;
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.cycleProperty(DirUtils.HORIZONTAL).withProperty(ACTIVE, false));
     }
 
     @Override
@@ -80,9 +69,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase living, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, hand);
-        if (side.ordinal() < 2)
-            side = DirUtils.convertEntityOrientationToFlatFacing(living, side);
-        return setFacingInBlock(state, side);
+        return setFacingInBlock(state, living.getHorizontalFacing());
     }
 
     @Override

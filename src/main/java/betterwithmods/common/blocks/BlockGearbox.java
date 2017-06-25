@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechanical {
+public class BlockGearbox extends BlockRotate implements IMechanicalBlock, IMechanical {
     public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
 
     public BlockGearbox() {
@@ -43,7 +43,6 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         tooltip.add(I18n.format("tooltip.gearbox.name"));
-        tooltip.add(I18n.format("tooltip.rotate_with_hand.name"));
         super.addInformation(stack, player, tooltip, advanced);
     }
 
@@ -65,22 +64,10 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        //TODO: Maybe make this try to work with items that don't have a use action?
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
-
-        if (world.isRemote && emptyHands)
-            return true;
-        else if (!world.isRemote && emptyHands) {
-            EnumFacing facing = DirUtils.cycleFacing(state.getValue(DirUtils.FACING), false);
-            world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(ISACTIVE, false).withProperty(DirUtils.FACING, facing));
-            world.notifyNeighborsOfStateChange(pos, this, false);
-            world.scheduleBlockUpdate(pos, this, 10, 5);
-            return true;
-        }
-        return false;
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.cycleProperty(DirUtils.FACING).withProperty(ISACTIVE,false));
     }
+
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {

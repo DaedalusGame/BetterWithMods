@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +34,8 @@ import java.util.Random;
 
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
-public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle, IMultiVariants {
+public class BlockAxle extends BlockRotate implements IMechanical, IAxle, IMultiVariants {
+    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class);
     public static final PropertyInteger SIGNAL = PropertyInteger.create("signal", 0, 4);
     public static final int TICK_RATE = 1;
 
@@ -57,20 +59,8 @@ public class BlockAxle extends BlockRotatedPillar implements IMechanical, IAxle,
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
-
-        if (world.isRemote && emptyHands)
-            return true;
-        else if (!world.isRemote && emptyHands) {
-            EnumFacing.Axis dir = DirUtils.getNextAxis(state.getValue(AXIS));
-            world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(SIGNAL, 0).withProperty(AXIS, dir));
-            world.notifyNeighborsOfStateChange(pos, this, false);
-            world.scheduleBlockUpdate(pos, this, 10, 5);
-            return true;
-        }
-        return false;
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.withProperty(SIGNAL, 0).cycleProperty(AXIS));
     }
 
     @Override

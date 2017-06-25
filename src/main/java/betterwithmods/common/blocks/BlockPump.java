@@ -28,7 +28,7 @@ import java.util.Random;
  * @author mrebhan
  */
 
-public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVariants {
+public class BlockPump extends BlockRotate implements IMechanicalBlock, IMultiVariants {
 
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
@@ -133,7 +133,7 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase entity, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
-        return setFacingInBlock(state, DirUtils.convertEntityOrientationToFlatFacing(entity, side));
+        return setFacingInBlock(state, entity.getHorizontalFacing());
     }
 
     @Override
@@ -188,4 +188,8 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
         world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos,state.withProperty(ACTIVE,false).cycleProperty(DirUtils.HORIZONTAL));
+    }
 }

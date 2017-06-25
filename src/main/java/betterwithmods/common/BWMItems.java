@@ -78,6 +78,9 @@ public final class BWMItems {
     public static final Item KIBBLE = new ItemFood(5, 0, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("kibble");
     public static final Item APPLE_PIE = new ItemFood(15, 6, false).setRegistryName("apple_pie").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Item MANUAL = new ItemBookManual().setRegistryName("manual").setCreativeTab(BWCreativeTabs.BWTAB);
+    public static final Item MYSTERY_MEAT = new ItemFood(2,0.3f,true).setRegistryName("mystery_meat");
+    public static final Item COOKED_MYSTERY_MEAT = new ItemFood(6, 0.8F, true).setRegistryName("cooked_mystery_meat");
+
     //TODO Cooked wolfchop, Poached egg, Wolf Dinner, Cooked Carrot, Mystery Meat
     private BWMItems() {
     }
@@ -128,10 +131,13 @@ public final class BWMItems {
         registerItem(SAND_PILE);
         registerItem(RED_SAND_PILE);
         registerItem(WOLF_CHOP);
+        registerItem(COOKED_WOLF_CHOP);
         registerItem(KIBBLE);
         registerItem(APPLE_PIE);
         registerItem(MANUAL);
-        registerItem(COOKED_WOLF_CHOP);
+        registerItem(MYSTERY_MEAT);
+        registerItem(COOKED_MYSTERY_MEAT);
+
     }
 
     /**
@@ -196,10 +202,12 @@ public final class BWMItems {
         setInventoryModel(SAND_PILE);
         setInventoryModel(RED_SAND_PILE);
         setInventoryModel(WOLF_CHOP);
+        setInventoryModel(COOKED_WOLF_CHOP);
         setInventoryModel(KIBBLE);
         setInventoryModel(APPLE_PIE);
         setInventoryModel(MANUAL);
-        setInventoryModel(COOKED_WOLF_CHOP);
+        setInventoryModel(MYSTERY_MEAT);
+        setInventoryModel(COOKED_MYSTERY_MEAT);
     }
 
     @SideOnly(Side.CLIENT)

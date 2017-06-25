@@ -2,6 +2,8 @@ package betterwithmods.common.entity;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockNetherGrowth;
+import betterwithmods.common.blocks.BlockUrn;
+import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.WorldUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
@@ -9,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,7 +41,13 @@ public class EntityUrn extends EntitySnowball {
 
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
-
+        if (id == 3)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 0.1D, 0.5D, 0.1D, Block.getStateId(BWMBlocks.URN.getDefaultState().withProperty(BlockUrn.TYPE, BlockUrn.EnumUrnType.FULL)));
+            }
+        }
     }
 
     /**

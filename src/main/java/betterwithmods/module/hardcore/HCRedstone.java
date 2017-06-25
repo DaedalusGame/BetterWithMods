@@ -69,7 +69,7 @@ public class HCRedstone extends Feature {
         RecipeUtils.addOreRecipe(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), "GG", "RR", 'G', "ingotGold", 'R', "dustRedstone");
         RecipeUtils.addOreRecipe(new ItemStack(Blocks.HOPPER), "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', LATCH);
         RecipeUtils.addOreRecipe(new ItemStack(Items.COMPARATOR), " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()));
-        RecipeUtils.addOreRecipe(new ItemStack(Blocks.OBSERVER), "CCC", "LLU", "CCC", 'C', "cobblestone", 'L', LATCH, 'U', BlockUrn.getStack(BlockUrn.EnumUrnType.FULL));
+        RecipeUtils.addOreRecipe(new ItemStack(Blocks.OBSERVER), "CCC", "LLU", "CCC", 'C', "cobblestone", 'L', LATCH, 'U', BlockUrn.getStack(BlockUrn.EnumUrnType.FULL, 1));
         if (!stoneDeviceRecipesAnvil) {
             RecipeUtils.addOreRecipe(new ItemStack(Blocks.STONE_BUTTON), "C", "R", 'C', new ItemStack(Blocks.STONE), 'R', LATCH);
             RecipeUtils.addOreRecipe(new ItemStack(Blocks.STONE_PRESSURE_PLATE), "S", "R", 'S', new ItemStack(Blocks.STONE), 'R', LATCH);

@@ -35,7 +35,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     private static final AxisAlignedBB UNDER_HOPPER_AABB = URN_AABB.offset(0, OFFSET, 0);
 
 
-    public static ItemStack getStack(EnumUrnType type) {
+    public static ItemStack getStack(EnumUrnType type, int count) {
         return new ItemStack(BWMBlocks.URN, 1, type.getMeta());
     }
     public BlockUrn() {
@@ -43,6 +43,12 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
         this.setHardness(2.0F);
         this.setDefaultState(
                 this.blockState.getBaseState().withProperty(TYPE, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        int meta = state.getValue(TYPE).getMeta();
+        return meta > 7 ? meta : 0;
     }
 
     @Override

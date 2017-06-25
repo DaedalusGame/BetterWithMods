@@ -375,6 +375,8 @@ item.bwm:pork_dinner.name=Pork Dinner
 item.bwm:raw_kebab.name=Uncooked Kebab
 item.bwm:wolf_chop.name=Wolf Chop
 item.bwm:cooked_wolf_chop.name=Cooked Wolf Chop
+item.bwm:mystery_meat.name=Mystery Meat
+item.bwm:cooked_mystery_meat.name=Cooked Mystery Meat
 item.bwm:kibble.name=Kibble
 item.bwm:apple_pie.name=Apple Pie
 
@@ -475,6 +477,7 @@ subtitles.bwm.wood.bellow=Bellow blowing
 subtitles.bwm.wood.chime=Wood chimes
 subtitles.bwm.metal.chime=Metal chimes
 subtitles.bwm.oof=Oof
+death.attack.growth=%s was devoured by the Growth
 death.attack.gloom=%s was eaten by a Grue
 death.attack.saw=%s forgot the lessons of wood shop safety
 death.attack.chopping_block=%s lost their head

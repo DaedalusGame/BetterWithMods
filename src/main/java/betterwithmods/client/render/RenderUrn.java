@@ -22,15 +22,17 @@ public class RenderUrn extends Render<EntityUrn> {
     }
 
     public void doRender(EntityUrn entity, double x, double y, double z, float entityYaw, float partialTicks) {
+
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.enableRescaleNormal();
         GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate((float) (this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+
         GlStateManager.scale(4,4,4);
         this.bindTexture(getEntityTexture(entity));
-        render.renderItem(BlockUrn.getStack(BlockUrn.EnumUrnType.FULL), ItemCameraTransforms.TransformType.GROUND);
+        render.renderItem(BlockUrn.getStack(BlockUrn.EnumUrnType.FULL, 1), ItemCameraTransforms.TransformType.GROUND);
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);

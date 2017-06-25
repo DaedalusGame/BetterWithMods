@@ -1,5 +1,6 @@
 package betterwithmods.util;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
@@ -98,6 +99,7 @@ public final class WorldUtils {
 
     public static boolean spawnGhast(World world, BlockPos pos) {
         EntityGhast ghast = new EntityGhast(world);
+
         for (int i = 0; i < 200; i++) {
             double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 10.0D;
             double yPos = pos.getY() + world.rand.nextInt(21) - 10;

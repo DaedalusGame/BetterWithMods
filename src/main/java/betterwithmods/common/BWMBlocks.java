@@ -92,7 +92,7 @@ public final class BWMBlocks {
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
-
+    public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
 
 
     private BWMBlocks() {
@@ -164,7 +164,7 @@ public final class BWMBlocks {
         registerBlock(ADVANCED_BELLOWS);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
-
+        registerBlock(NETHER_GROWTH,new ItemBlockSpore(NETHER_GROWTH));
     }
 
     public static void registerTileEntities() {
@@ -296,6 +296,7 @@ public final class BWMBlocks {
         setInventoryModel(ADVANCED_BELLOWS);
         setInventoryModel(IRON_WALL);
         setInventoryModel(STAKE);
+        setInventoryModel(NETHER_GROWTH);
     }
 
     @SideOnly(Side.CLIENT)

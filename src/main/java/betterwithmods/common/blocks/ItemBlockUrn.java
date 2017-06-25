@@ -36,7 +36,7 @@ public class ItemBlockUrn extends ItemBlockMeta {
             EntityUrn entity = new EntityUrn(worldIn, playerIn);
 
             entity.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
-            entity.posY -= 0.7;
+//            entity.posY -= 0.7;
 
             worldIn.spawnEntity(entity);
         }

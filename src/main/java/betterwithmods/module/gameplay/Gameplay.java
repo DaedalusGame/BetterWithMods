@@ -25,6 +25,7 @@ public class Gameplay extends Module {
         registerFeature(new SawRecipes());
         registerFeature(new TurntableRecipes());
         registerFeature(new HopperRecipes());
+        registerFeature(new NetherGrowth());
     }
 
     @Override

@@ -7,6 +7,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -47,7 +48,8 @@ public class BlockPump extends BWMBlock implements IMechanicalBlock, IMultiVaria
         BlockPos source = DirUtils.movePos(pos, direction);
         IBlockState sourceState = world.getBlockState(source);
         Block block = sourceState.getBlock();
-        return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
+        Material mat = block.getMaterial(state);
+        return block instanceof BlockLiquid && mat == Material.WATER;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemFertilizer;
 import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
@@ -30,7 +31,7 @@ public class HCBonemeal extends Feature {
     private static boolean removeBonemealRecipe;
 
 
-    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
+    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER),new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     public static void registerFertilzier(ItemStack stack) {
         FERTILIZERS.add(stack);
     }

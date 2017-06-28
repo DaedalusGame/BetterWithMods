@@ -40,7 +40,7 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
 
         vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
         BlockPos blockpos = new BlockPos(0, entity.getEntityBoundingBox().maxY, 0);

@@ -42,7 +42,7 @@ public class RenderMiningCharge extends Render<EntityMiningCharge> {
         this.bindEntityTexture(entity);
         GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(state, entity.getBrightness(partialTicks));
+        blockrendererdispatcher.renderBlockBrightness(state, entity.getBrightness());
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.pushMatrix();
         GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);

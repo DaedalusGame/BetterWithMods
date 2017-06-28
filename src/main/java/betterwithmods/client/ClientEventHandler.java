@@ -2,14 +2,13 @@ package betterwithmods.client;
 
 import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.client.gui.GuiStatus;
-import betterwithmods.common.registry.HopperFilters;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,7 +74,7 @@ public class ClientEventHandler {
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
                 Tessellator tessellator = Tessellator.getInstance();
-                VertexBuffer buffer = tessellator.getBuffer();
+                BufferBuilder buffer = tessellator.getBuffer();
                 buffer.setTranslation(-dx,-dy,-dz);
                 renderBlock(placeState, renderPos, world);
                 buffer.setTranslation(0,0,0);
@@ -88,7 +87,7 @@ public class ClientEventHandler {
 
     public void renderBlock(IBlockState state, BlockPos pos, World world) {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 
         this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         buffer.begin(GL11.GL_QUADS,DefaultVertexFormats.BLOCK);

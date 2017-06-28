@@ -1,8 +1,8 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.Feature;
-import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -52,7 +52,7 @@ public class KilnCharcoal extends Feature {
                 Block block = ((ItemBlock) item).getBlock();
                 int meta = stack.getItemDamage();
                 if (disableFurnaceCharcoal)
-                    RecipeUtils.removeFurnaceRecipe(stack);
+                    BWMRecipes.removeFurnaceRecipe(stack);
                 addKilnRecipe(block, meta, CHARCOAL);
             }
         }

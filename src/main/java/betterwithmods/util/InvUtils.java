@@ -542,6 +542,7 @@ public class InvUtils {
         return stack;
     }
 
+
     public static boolean matches(ItemStack one, ItemStack two) {
         if (one.isItemEqual(two))
             return true;

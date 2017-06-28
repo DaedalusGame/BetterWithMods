@@ -164,7 +164,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         if ((isPowered ? 1 : 0) != power)
             this.power = (byte) (isPowered() ? 1 : 0);
 
-        if (!this.world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockMechMachines && world.getBlockState(pos).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER) {
+        if (!this.world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockMechMachines && world.getBlockState(pos).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER) {
             insert();
             if (isPowered()) {
                 extract();

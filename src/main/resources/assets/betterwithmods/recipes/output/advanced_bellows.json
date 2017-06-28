@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "betterwithmods:advanced_bellows"
+  },
+  "pattern": [
+    " C ",
+    "SBS",
+    " G "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "betterwithmods:bellows"
+    },
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "S": {
+      "item": "betterwithmods:material",
+      "data": 51
+    },
+    "G": {
+      "item": "betterwithmods:material",
+      "data": 50
+    }
+  }
+}

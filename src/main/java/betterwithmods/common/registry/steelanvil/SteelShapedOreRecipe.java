@@ -8,10 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -112,23 +114,6 @@ public class SteelShapedOreRecipe implements IRecipe {
         output = recipe.getRecipeOutput();
         width = recipe.recipeWidth;
         height = recipe.recipeHeight;
-
-        input = new Object[recipe.recipeItems.length];
-
-        for (int i = 0; i < input.length; i++) {
-            ItemStack ingred = recipe.recipeItems[i];
-
-            if (ingred.isEmpty()) continue;
-
-            input[i] = recipe.recipeItems[i];
-
-            for (Map.Entry<ItemStack, String> replace : replacements.entrySet()) {
-                if (OreDictionary.itemMatches(replace.getKey(), ingred, true)) {
-                    input[i] = OreDictionary.getOres(replace.getValue());
-                    break;
-                }
-            }
-        }
     }
 
     public SteelShapedOreRecipe(ItemStack result, Object[] ingredients, int wid, int hei) {
@@ -146,12 +131,9 @@ public class SteelShapedOreRecipe implements IRecipe {
         return output.copy();
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     @Override
-    public int getRecipeSize() {
-        return input.length;
+    public boolean canFit(int width, int height) {
+        return false;
     }
 
     @Override
@@ -173,7 +155,7 @@ public class SteelShapedOreRecipe implements IRecipe {
      * Used to check if a recipe matches current crafting inventory
      */
     @Override
-    public boolean matches(@Nonnull InventoryCrafting inv,@Nonnull World world) {
+    public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
         for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++) {
             for (int y = 0; y <= MAX_CRAFT_GRID_HEIGHT - height; ++y) {
                 if (checkMatch(inv, x, y, false)) {
@@ -249,5 +231,21 @@ public class SteelShapedOreRecipe implements IRecipe {
     @Override
     public String toString() {
         return String.format("%s -> %s", Lists.newArrayList(input), output);
+    }
+
+    @Override
+    public IRecipe setRegistryName(ResourceLocation name) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public ResourceLocation getRegistryName() {
+        return null;
+    }
+
+    @Override
+    public Class<IRecipe> getRegistryType() {
+        return null;
     }
 }

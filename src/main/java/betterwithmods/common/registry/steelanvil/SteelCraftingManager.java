@@ -131,9 +131,9 @@ public class SteelCraftingManager {
     }
 
     public ShapelessOreRecipe addShapelessOreRecipe(ItemStack result, Object... ingredients) {
-        ShapelessOreRecipe recipe = new ShapelessOreRecipe(result, ingredients);
-        recipes.add(recipe);
-        return recipe;
+//        ShapelessOreRecipe recipe = new ShapelessOreRecipe(result, ingredients);
+//        recipes.add(recipe);
+        return null;
     }
 
     public ItemStack findMatchingRecipe(InventoryCrafting matrix, World world) {

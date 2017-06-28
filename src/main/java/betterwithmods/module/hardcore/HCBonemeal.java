@@ -3,7 +3,6 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemFertilizer;
 import betterwithmods.module.Feature;
-import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
@@ -28,10 +27,9 @@ import java.util.Set;
  * Created by tyler on 5/14/17.
  */
 public class HCBonemeal extends Feature {
+    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER),new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     private static boolean removeBonemealRecipe;
 
-
-    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER),new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     public static void registerFertilzier(ItemStack stack) {
         FERTILIZERS.add(stack);
     }
@@ -47,8 +45,9 @@ public class HCBonemeal extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        if(removeBonemealRecipe)
-            RecipeUtils.removeRecipes( new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage()));
+        //TODO
+//        if(removeBonemealRecipe)
+//            BWMRecipes.removeRecipes( new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage()));
 
     }
 

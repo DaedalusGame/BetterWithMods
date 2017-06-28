@@ -1,9 +1,9 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.CrucibleRecipes;
-import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Sets;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -55,21 +55,22 @@ public class HCOres extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if (fixVanillaRecipes) {
-            RecipeUtils.removeRecipes(Items.COMPASS, 0);
-            RecipeUtils.removeRecipes(Items.CLOCK, 0);
-            RecipeUtils.removeRecipes(Items.BUCKET, 0);
-            RecipeUtils.removeRecipes(Items.FLINT_AND_STEEL, 0);
+            //TODO
+//            BWMRecipes.removeRecipes(Items.COMPASS, 0);
+//            BWMRecipes.removeRecipes(Items.CLOCK, 0);
+//            BWMRecipes.removeRecipes(Items.BUCKET, 0);
+//            BWMRecipes.removeRecipes(Items.FLINT_AND_STEEL, 0);
 
-            RecipeUtils.addOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone");
-            RecipeUtils.addOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz");
-            RecipeUtils.addOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron");
-            RecipeUtils.addShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron");
+            BWMRecipes.addOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone");
+            BWMRecipes.addOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz");
+            BWMRecipes.addOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron");
+            BWMRecipes.addShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron");
         }
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 3), new Object[]{new ItemStack(Items.BUCKET)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da, 4), new Object[]{new ItemStack(Items.COMPASS)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 3), new Object[]{new ItemStack(Items.BUCKET)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{new ItemStack(Items.COMPASS)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_NUGGET, 4), new Object[]{new ItemStack(Items.CLOCK)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.field_191525_da), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
+        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
     }
 
     @Override
@@ -89,7 +90,7 @@ public class HCOres extends Feature {
             oreSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
                 ItemStack n = nugget.copy();
                 n.setCount(oreProductionCount);
-                RecipeUtils.removeFurnaceRecipe(pair.getKey());
+                BWMRecipes.removeFurnaceRecipe(pair.getKey());
                 FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
             }));
         }
@@ -99,7 +100,7 @@ public class HCOres extends Feature {
             dustSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
                 ItemStack n = nugget.copy();
                 n.setCount(dustProductionCount);
-                RecipeUtils.removeFurnaceRecipe(pair.getKey());
+                BWMRecipes.removeFurnaceRecipe(pair.getKey());
                 FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
             }));
         }

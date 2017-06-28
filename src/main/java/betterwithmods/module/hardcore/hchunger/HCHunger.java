@@ -8,7 +8,6 @@ import betterwithmods.module.gameplay.CauldronRecipes;
 import betterwithmods.module.gameplay.KilnRecipes;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
-import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.player.FatPenalty;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
@@ -113,12 +112,14 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 12, 15, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
 
-        RecipeUtils.removeRecipes(Items.MUSHROOM_STEW, 0);
-        RecipeUtils.removeRecipes(Items.CAKE, 0);
-        RecipeUtils.removeRecipes(Items.COOKIE, 0);
-        RecipeUtils.removeRecipes(Items.PUMPKIN_PIE, 0);
-        RecipeUtils.removeRecipes(Items.RABBIT_STEW, 0);
-        RecipeUtils.removeRecipes(Items.BEETROOT_SOUP, 0);
+
+        //TODO
+//        BWMRecipes.removeRecipes(Items.MUSHROOM_STEW, 0);
+//        BWMRecipes.removeRecipes(Items.CAKE, 0);
+//        BWMRecipes.removeRecipes(Items.COOKIE, 0);
+//        BWMRecipes.removeRecipes(Items.PUMPKIN_PIE, 0);
+//        BWMRecipes.removeRecipes(Items.RABBIT_STEW, 0);
+//        BWMRecipes.removeRecipes(Items.BEETROOT_SOUP, 0);
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);

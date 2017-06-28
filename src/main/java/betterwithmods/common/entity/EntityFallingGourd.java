@@ -78,7 +78,7 @@ public class EntityFallingGourd extends EntityFallingBlock {
                         if (this.getEntityWorld().mayPlace(block, blockpos1, true, EnumFacing.UP, null) && !BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(blockpos1.down())) && (10 + rand.nextInt(7)) > this.fallTime && this.getEntityWorld().setBlockState(blockpos1, fallblock, 3)) {
                             this.setDead();
                             if (block instanceof BlockFalling) {
-                                ((BlockFalling) block).onEndFalling(this.getEntityWorld(), blockpos1);
+                                ((BlockFalling) block).onEndFalling(this.getEntityWorld(), blockpos1, fallblock, iblockstate);
                             }
                         } else {
                             this.shatter();

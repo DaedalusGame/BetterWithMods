@@ -32,7 +32,7 @@ public class RenderUrn extends Render<EntityUrn> {
 
         GlStateManager.scale(4,4,4);
         this.bindTexture(getEntityTexture(entity));
-        render.renderItem(BlockUrn.getStack(BlockUrn.EnumUrnType.FULL, 1), ItemCameraTransforms.TransformType.GROUND);
+        render.renderItem(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1), ItemCameraTransforms.TransformType.GROUND);
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);

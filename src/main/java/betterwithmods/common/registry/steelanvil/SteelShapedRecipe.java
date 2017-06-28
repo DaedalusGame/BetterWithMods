@@ -4,7 +4,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class SteelShapedRecipe implements IRecipe {
     private static final int WIDTH = 4, HEIGHT = 4;
@@ -111,6 +114,11 @@ public class SteelShapedRecipe implements IRecipe {
         return this.getRecipeOutput().copy();
     }
 
+    @Override
+    public boolean canFit(int width, int height) {
+        return false;
+    }
+
     /**
      * Returns the size of the recipe area
      */
@@ -120,5 +128,21 @@ public class SteelShapedRecipe implements IRecipe {
 
     public ItemStack[] getInput() {
         return recipeItems;
+    }
+
+    @Override
+    public IRecipe setRegistryName(ResourceLocation name) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public ResourceLocation getRegistryName() {
+        return null;
+    }
+
+    @Override
+    public Class<IRecipe> getRegistryType() {
+        return null;
     }
 }

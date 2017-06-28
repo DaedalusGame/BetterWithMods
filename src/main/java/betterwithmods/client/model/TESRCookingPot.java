@@ -5,11 +5,8 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCookingPot;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 
 /**
  * Purpose:
@@ -21,13 +18,13 @@ public class TESRCookingPot extends TileEntitySpecialRenderer<TileEntityCookingP
     private int occupiedStacks;
 
     @Override
-    public void renderTileEntityFast(@Nonnull TileEntityCookingPot tile, double x, double y, double z, float partialTick, int breakStage, @Nonnull VertexBuffer renderer) {
-        if (tile != null) {
-            if (occupiedStacks != tile.filledSlots())
-                occupiedStacks = tile.filledSlots();
+    public void render(TileEntityCookingPot te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (te != null) {
+            if (occupiedStacks != te.filledSlots())
+                occupiedStacks = te.filledSlots();
             if (occupiedStacks != 0) {
-                float fillOffset = 0.75F * occupationMod(tile);
-                RenderUtils.renderFill(getResource(tile), tile.getPos(), x, y, z, 0.123D, 0.125D, 0.123D, 0.877D, 0.248D + fillOffset, 0.877D);
+                float fillOffset = 0.75F * occupationMod(te);
+                RenderUtils.renderFill(getResource(te), te.getPos(), x, y, z, 0.123D, 0.125D, 0.123D, 0.877D, 0.248D + fillOffset, 0.877D);
             }
         }
     }

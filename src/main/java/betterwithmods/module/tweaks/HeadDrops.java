@@ -52,7 +52,7 @@ public class HeadDrops extends Feature {
     private boolean isChoppingBlock(World world, BlockPos pos) {
         if (world.getBlockState(pos).getBlock() == BWMBlocks.AESTHETIC) {
             IBlockState state = world.getBlockState(pos);
-            return state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCK || state.getValue(BlockAesthetic.blockType) == BlockAesthetic.EnumType.CHOPBLOCKBLOOD;
+            return state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.CHOPBLOCK || state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.CHOPBLOCKBLOOD;
         }
         return false;
     }

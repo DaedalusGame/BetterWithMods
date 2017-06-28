@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:stick"
+  },
+  "ingredients": [
+    {
+      "item": "betterwithmods:wood_moulding",
+      "data": 32767
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

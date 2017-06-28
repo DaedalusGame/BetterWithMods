@@ -14,8 +14,7 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityWaterwheel te, double x, double y, double z,
-                                   float partialTicks, int destroyStage) {
+    public void render(TileEntityWaterwheel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));

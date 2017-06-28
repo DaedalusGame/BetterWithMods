@@ -22,13 +22,16 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+
 
 public final class BWMBlocks {
     public static final Material POTTERY = new Material(MapColor.STONE);
@@ -39,9 +42,9 @@ public final class BWMBlocks {
     public static final Block AXLE = new BlockAxle().setRegistryName("axle");
     public static final Block GEARBOX = new BlockGearbox().setRegistryName("gearbox");
     public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");
-    public static final Block PANE = new BlockBWMPane().setRegistryName("pane");
-    public static final Block GRATE = new BlockBWMNewPane().setRegistryName("grate");
-    public static final Block SLATS = new BlockBWMNewPane().setRegistryName("slats");
+    public static final Block WICKER = new BlockWicker().setRegistryName("wicker");
+    public static final Block GRATE = new BlockMultiPane().setRegistryName("grate");
+    public static final Block SLATS = new BlockMultiPane().setRegistryName("slats");
     public static final Block PLANTER = new BlockPlanter().setRegistryName("planter");
     public static final Block VASE = new BlockVase().setRegistryName("vase");
     public static final Block URN = new BlockUrn().setRegistryName("urn");
@@ -94,8 +97,10 @@ public final class BWMBlocks {
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
 
+    private static final List<Block> BLOCKS = new ArrayList<>();
 
-    private BWMBlocks() {
+    public static List<Block> getBlocks() {
+        return Collections.unmodifiableList(BLOCKS);
     }
 
     public static void registerBlocks() {
@@ -105,9 +110,9 @@ public final class BWMBlocks {
         registerBlock(AXLE);
         registerBlock(GEARBOX);
         registerBlock(HAND_CRANK);
-        registerBlock(PANE, new ItemBlockPane(PANE));
-        registerBlock(GRATE, new ItemBlockPane(GRATE));
-        registerBlock(SLATS, new ItemBlockPane(SLATS));
+        registerBlock(WICKER);
+        registerBlock(GRATE, new ItemBlockMeta(GRATE));
+        registerBlock(SLATS, new ItemBlockMeta(SLATS));
         registerBlock(PLANTER, new ItemBlockPlanter(PLANTER));
         registerBlock(VASE, new ItemBlockMeta(VASE));
         registerBlock(URN, new ItemBlockUrn(URN));
@@ -164,51 +169,45 @@ public final class BWMBlocks {
         registerBlock(ADVANCED_BELLOWS);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
-        registerBlock(NETHER_GROWTH,new ItemBlockSpore(NETHER_GROWTH));
+        registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityMill.class, "bwm_millstone", "millstone", "bwm.millstone");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityPulley.class, "bwm_pulley", "pulley", "bwm.pulley");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityFilteredHopper.class, "bwm_hopper", "hopper", "bwm.hopper");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCauldron.class, "bwm_cauldron", "cauldron", "bwm.cauldron");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCrucible.class, "bwm_crucible", "crucible", "bwm.crucible");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityDragonVessel.class, "bwm_vessel", "vessel", "bwm.vessel");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityTurntable.class, "bwm_turntable", "turntable", "bwm.turntable");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntitySteelAnvil.class, "bwm_steel_anvil", "steel_anvil", "bwm.steelAnvil");
-
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityVase.class, "bwm_vase", "vase", "bwm.vase");
-
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillVertical.class, "bwm_vertical_windmill", "vertical_windmill", "bwm.vertWindmill");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillHorizontal.class, "bwm_horizontal_windmill", "horizontal_windmill", "bwm.horizWindmill");
-
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWaterwheel.class, "bwm_waterwheel", "waterwheel", "bwm.waterwheel");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityBlockDispenser.class, "bwm_block_dispenser", "block_dispenser", "bwm.block_dispenser");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCreativeGen.class, "bwm_creative_generator", "creative_generator", "creativeGenerator");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "bwm_multi_type", "multi_type", "bwm.multiType");
-
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "bwm_gearbox", "gearbox", "bwm.gearbox");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityAdvBellows.class, "bwm_bellows", "bellows", "bwm.bellows");
-        GameRegistry.registerTileEntityWithAlternatives(TileStake.class, "bwm_stake", "stake", "bwm.stake");
-
-        GameRegistry.registerTileEntityWithAlternatives(TileCamo.class, "bwm_camo", "camo", "bwm.camo");
-
+        GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
+        GameRegistry.registerTileEntity(TileEntityPulley.class, "bwm.pulley");
+        GameRegistry.registerTileEntity(TileEntityFilteredHopper.class, "bwm.hopper");
+        GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
+        GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
+        GameRegistry.registerTileEntity(TileEntityDragonVessel.class, "bwm.vessel");
+        GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
+        GameRegistry.registerTileEntity(TileEntitySteelAnvil.class, "bwm.steelAnvil");
+        GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
+        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
+        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
+        GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
+        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
+        GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
+        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
+        GameRegistry.registerTileEntity(TileEntityGearbox.class, "bwm.gearbox");
+        GameRegistry.registerTileEntity(TileEntityAdvBellows.class, "bwm.bellows");
+        GameRegistry.registerTileEntity(TileStake.class, "bwm.stake");
+        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
     }
 
-    /**
-     * Substitute vanilla blocks with our custom instances.
-     * Should be done at the earliest point in preInit. The earlier, the better.
-     *
-     * @throws ExistingSubstitutionException
-     */
-    public static void substituteBlocks() throws ExistingSubstitutionException {
-        GameRegistry.addSubstitutionAlias(
-                "minecraft:grass", GameRegistry.Type.BLOCK,
-                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
-        GameRegistry.addSubstitutionAlias(
-                "minecraft:mycelium", GameRegistry.Type.BLOCK,
-                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
-    }
+//    /**
+//     * Substitute vanilla blocks with our custom instances.
+//     * Should be done at the earliest point in preInit. The earlier, the better.
+//     *
+//     * @throws ExistingSubstitutionException
+//     */
+//    public static void substituteBlocks() throws ExistingSubstitutionException {
+//        GameRegistry.addSubstitutionAlias(
+//                "minecraft:grass", GameRegistry.Type.BLOCK,
+//                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
+//        GameRegistry.addSubstitutionAlias(
+//                "minecraft:mycelium", GameRegistry.Type.BLOCK,
+//                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
+//    }
 
     /**
      * Register a block with its specified linked item. Block's registry name
@@ -224,9 +223,10 @@ public final class BWMBlocks {
             //betterwithmods:name => bwm:name
             block.setUnlocalizedName("bwm" + block.getRegistryName().toString().substring(BWMod.MODID.length()));
         }
-        Block registeredBlock = GameRegistry.register(block);
+        Block registeredBlock = block;
+        BLOCKS.add(registeredBlock);
         if (item != null)
-            GameRegistry.register(item.setRegistryName(block.getRegistryName()));
+            BWMItems.registerItem(item.setRegistryName(block.getRegistryName()));
         return registeredBlock;
     }
 
@@ -240,69 +240,11 @@ public final class BWMBlocks {
         return registerBlock(block, new ItemBlock(block));
     }
 
-    ///CLIENT BEGIN
-    @SideOnly(Side.CLIENT)
-    public static void linkBlockModels() {
-        setInventoryModel(ANCHOR);
-        setInventoryModel(ROPE);
-        setInventoryModel(SINGLE_MACHINES);
-        setInventoryModel(AXLE);
-        setInventoryModel(GEARBOX);
-        setInventoryModel(HAND_CRANK);
-        setInventoryModel(PANE);
-        setInventoryModel(GRATE);
-        setInventoryModel(SLATS);
-        setInventoryModel(PLANTER);
-        setInventoryModel(URN);
-        setInventoryModel(VASE);
-        setInventoryModel(UNFIRED_POTTERY);
-        setInventoryModel(HIBACHI);
-        setInventoryModel(BELLOWS);
-        setInventoryModel(HEMP);
-        setInventoryModel(DETECTOR);
-        setInventoryModel(LENS);
-        setInventoryModel(SAW);
-        setInventoryModel(AESTHETIC);
-        setInventoryModel(BOOSTER);
-        setInventoryModel(WOOD_SIDING);
-        setInventoryModel(WOOD_MOULDING);
-        setInventoryModel(WOOD_CORNER);
-        setInventoryModel(DEBARKED_NEW);
-        setInventoryModel(DEBARKED_OLD);
-        setInventoryModel(WOOD_BENCH);
-        setInventoryModel(WOOD_TABLE);
-        setInventoryModel(WOLF);
-        setInventoryModel(BLOCK_DISPENSER);
-        setInventoryModel(BAMBOO_CHIME);
-        setInventoryModel(METAL_CHIME);
-        setInventoryModel(BUDDY_BLOCK);
-        setInventoryModel(CREATIVE_GENERATOR);
-        setInventoryModel(LIGHT);
-        setInventoryModel(PLATFORM);
-        setInventoryModel(MINING_CHARGE);
-        setInventoryModel(FERTILE_FARMLAND);
-        setInventoryModel(PUMP);
-        setInventoryModel(ADVANCED_GEARBOX);
-        setInventoryModel(VINE_TRAP);
-        setInventoryModel(RAW_PASTRY);
-        setInventoryModel(STEEL_ANVIL);
-        setInventoryModel(STONE_SIDING);
-        setInventoryModel(STONE_MOULDING);
-        setInventoryModel(STONE_CORNER);
-        setInventoryModel(STUMP);
-        setInventoryModel(DIRT_SLAB);
-        setInventoryModel(BROKEN_GEARBOX);
-        setInventoryModel(COOKING_POTS);
-        setInventoryModel(ADVANCED_BELLOWS);
-        setInventoryModel(IRON_WALL);
-        setInventoryModel(STAKE);
-        setInventoryModel(NETHER_GROWTH);
-    }
-
     @SideOnly(Side.CLIENT)
     public static void setInventoryModel(Block block) {
         BWMItems.setInventoryModel(Item.getItemFromBlock(block));
     }
+
     @SideOnly(Side.CLIENT)
     public static void registerFluidModels(Fluid fluid) {
         if (fluid == null) {

@@ -24,10 +24,10 @@ public class TurntableRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addTurntableRecipe(Blocks.CLAY, 0, BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.PLANTER.getMeta(), ItemStack.EMPTY);
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
-        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumPotteryType.URN.getMeta(), null, 0, new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(Blocks.CLAY, 0, BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.PLANTER.getMeta(), ItemStack.EMPTY);
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
+        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), null, 0, new ItemStack(Items.CLAY_BALL));
     }
 }

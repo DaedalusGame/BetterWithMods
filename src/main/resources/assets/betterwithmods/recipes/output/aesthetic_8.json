@@ -1,0 +1,45 @@
+{
+  "result": {
+    "item": "betterwithmods:aesthetic",
+    "data": 8
+  },
+  "ingredients": [
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "enderpearl",
+      "type": "forge:ore_dict"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

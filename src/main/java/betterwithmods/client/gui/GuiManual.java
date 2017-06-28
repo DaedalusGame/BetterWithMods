@@ -12,9 +12,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -280,7 +280,7 @@ public final class GuiManual extends GuiScreen {
         }
 
         @Override
-        public void drawButton(final Minecraft mc, final int mouseX, final int mouseY) {
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
             if (visible) {
                 mc.getTextureManager().bindTexture(image);
                 GlStateManager.color(1, 1, 1, 1);
@@ -298,7 +298,7 @@ public final class GuiManual extends GuiScreen {
                 final double v1 = v0 + 0.5;
 
                 final Tessellator t = Tessellator.getInstance();
-                final VertexBuffer b = t.getBuffer();
+                final BufferBuilder b = t.getBuffer();
                 b.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
                 b.pos(x0, y1, zLevel).tex(u0, v1).endVertex();
                 b.pos(x1, y1, zLevel).tex(u1, v1).endVertex();

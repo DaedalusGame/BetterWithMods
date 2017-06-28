@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "betterwithmods:gearbox"
+  },
+  "pattern": [
+    "SGS",
+    "GLG",
+    "SGS"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "S": {
+      "ore": "sidingWood",
+      "type": "forge:ore_dict"
+    },
+    "G": {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    },
+    "L": {
+      "item": "betterwithmods:material",
+      "data": 35
+    }
+  }
+}

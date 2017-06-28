@@ -12,7 +12,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
@@ -28,21 +27,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants {
-    public static final PropertyEnum<EnumUrnType> TYPE = PropertyEnum.create("urntype", EnumUrnType.class);
+    public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("urntype", EnumType.class);
     public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
     private static final double OFFSET = 0.375D;
     private static final AxisAlignedBB URN_AABB = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 0.625D, 0.6875D);
     private static final AxisAlignedBB UNDER_HOPPER_AABB = URN_AABB.offset(0, OFFSET, 0);
 
 
-    public static ItemStack getStack(EnumUrnType type, int count) {
-        return new ItemStack(BWMBlocks.URN, 1, type.getMeta());
-    }
     public BlockUrn() {
         super(Material.ROCK);
         this.setHardness(2.0F);
         this.setDefaultState(
-                this.blockState.getBaseState().withProperty(TYPE, EnumUrnType.EMPTY).withProperty(UNDERHOPPER, false));
+                this.blockState.getBaseState().withProperty(TYPE, EnumType.EMPTY).withProperty(UNDERHOPPER, false));
+    }
+
+    public static ItemStack getStack(EnumType type, int count) {
+        return new ItemStack(BWMBlocks.URN, count, type.getMeta());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
                 InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMBlocks.URN, 1, 8));
                 return world.setBlockToAir(pos);
             } else
-                return world.setBlockState(pos, getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta)));
+                return world.setBlockState(pos, getDefaultState().withProperty(TYPE, EnumType.byMeta(meta)));
         } else if (meta == 9)
             return true;
         return false;
@@ -138,7 +138,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
         BlockPos up = pos.up();
         Block block = world.getBlockState(up).getBlock();
         if (block != null && block == BWMBlocks.SINGLE_MACHINES) {
-            if (world.getBlockState(up).getValue(BlockMechMachines.MACHINETYPE) == BlockMechMachines.EnumType.HOPPER) {
+            if (world.getBlockState(up).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER) {
                 return state.withProperty(UNDERHOPPER, true);
             }
         }
@@ -146,12 +146,12 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 8));
-        list.add(new ItemStack(item, 1, 9));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumType type : EnumType.VALUES)
+            if (type.used)
+                items.add(getStack(type, 1));
     }
+
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -160,7 +160,7 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPE, EnumUrnType.byMeta(meta));
+        return getDefaultState().withProperty(TYPE, EnumType.byMeta(meta));
     }
 
     @Override
@@ -168,30 +168,23 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
         return state.getValue(TYPE).getMeta();
     }
 
-    public enum EnumUrnType implements IStringSerializable {
-        EMPTY("empty", 0), ONE("12", 1), TWO("25", 2), THREE("37", 3), FOUR("50", 4), FIVE("62", 5), SIX("75",
-                6), SEVEN("87", 7), FULL("full", 8), VOID("void", 9);
+    public enum EnumType implements IStringSerializable {
+        EMPTY("empty", 0, true), ONE("12", 1, false), TWO("25", 2, false), THREE("37", 3, false), FOUR("50", 4, false), FIVE("62", 5, false), SIX("75",
+                6, false), SEVEN("87", 7, false), FULL("full", 8, true), VOID("void", 9, true);
 
-        private static final EnumUrnType[] META_LOOKUP = new EnumUrnType[values().length];
-
-        static {
-            for (EnumUrnType types : values()) {
-                META_LOOKUP[types.getMeta()] = types;
-            }
-        }
-
+        private static final EnumType[] VALUES = values();
         private String name;
         private int meta;
+        private boolean used;
 
-        EnumUrnType(String name, int meta) {
+        EnumType(String name, int meta, boolean used) {
             this.name = name;
             this.meta = meta;
+            this.used = used;
         }
 
-        public static EnumUrnType byMeta(int meta) {
-            if (meta < 0 || meta > 9)
-                meta = 0;
-            return META_LOOKUP[meta];
+        public static EnumType byMeta(int meta) {
+            return VALUES[meta % 10];
         }
 
         @Override

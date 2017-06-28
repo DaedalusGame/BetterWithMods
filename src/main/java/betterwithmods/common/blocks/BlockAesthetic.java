@@ -12,7 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -21,8 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -30,13 +27,13 @@ import static betterwithmods.common.blocks.BlockAesthetic.EnumType.HELLFIRE;
 import static betterwithmods.common.blocks.BlockAesthetic.EnumType.STEEL;
 
 public class BlockAesthetic extends BWMBlock implements IMultiVariants {
-    public static final PropertyEnum<BlockAesthetic.EnumType> blockType = PropertyEnum.create("blocktype", BlockAesthetic.EnumType.class);
+    public static final PropertyEnum<BlockAesthetic.EnumType> TYPE = PropertyEnum.create("blocktype", BlockAesthetic.EnumType.class);
 
     //Chopping Block, Chopping Block(dirty), Steel block, Hellfire block, Rope block, Flint block, Barrel (tile entity?) (6 - 11 subtypes)
     public BlockAesthetic() {
         super(Material.ROCK);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(blockType, BlockAesthetic.EnumType.CHOPBLOCK));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockAesthetic.EnumType.CHOPBLOCK));
     }
 
     public static ItemStack getStack(EnumType type) {
@@ -45,43 +42,43 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
-        return state.getValue(blockType).getHardness();
+        return state.getValue(TYPE).getHardness();
     }
 
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        return state.getValue(blockType).getSoundType();
+        return state.getValue(TYPE).getSoundType();
     }
 
     @Override
     public Material getMaterial(IBlockState state) {
-        return state.getValue(blockType).getMaterial();
+        return state.getValue(TYPE).getMaterial();
     }
 
     @Override
-    public MapColor getMapColor(IBlockState state) {
-        return state.getValue(blockType).getMapColor();
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return state.getValue(TYPE).getMapColor();
     }
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-        return state.getValue(blockType) == STEEL ? 4 : 1;
+        return state.getValue(TYPE) == STEEL ? 4 : 1;
     }
 
     @Override
     public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
-        return state.getValue(blockType) != EnumType.STEEL || entity instanceof EntityPlayer;
+        return state.getValue(TYPE) != EnumType.STEEL || entity instanceof EntityPlayer;
     }
 
     @Override
     public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
-        if (world.getBlockState(pos).getValue(blockType) != EnumType.STEEL)
+        if (world.getBlockState(pos).getValue(TYPE) != EnumType.STEEL)
             super.onBlockExploded(world, pos, explosion);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return world.getBlockState(pos).getValue(blockType).getResistance();
+        return world.getBlockState(pos).getValue(TYPE).getResistance();
     }
 
     @Override
@@ -97,36 +94,35 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (int i = 0; i < EnumType.META_LOOKUP.length; i++) {
-            list.add(new ItemStack(item, 1, i));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumType type : EnumType.VALUES) {
+            items.add(getStack(type));
         }
     }
 
     @Override
     public int damageDropped(IBlockState state) {
-        return (state.getValue(blockType)).getMeta();
+        return (state.getValue(TYPE)).getMeta();
     }
 
     @Override
     public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {
-        return (world.getBlockState(pos).getValue(blockType)) == HELLFIRE;
+        return (world.getBlockState(pos).getValue(TYPE)) == HELLFIRE;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(blockType, BlockAesthetic.EnumType.byMeta(meta));
+        return this.getDefaultState().withProperty(TYPE, BlockAesthetic.EnumType.byMeta(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(blockType).getMeta();
+        return state.getValue(TYPE).getMeta();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, blockType);
+        return new BlockStateContainer(this, TYPE);
     }
 
     public enum EnumType implements IStringSerializable {
@@ -142,7 +138,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         PADDING(9, "padding", MapColor.CLOTH, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
         SOAP(10, "soap", MapColor.PINK, Material.GROUND, SoundType.GROUND, 1F, 5F);
 
-        private static final BlockAesthetic.EnumType[] META_LOOKUP = values();
+        private static final BlockAesthetic.EnumType[] VALUES = values();
 
         private final int meta;
         private final String name;
@@ -174,7 +170,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
 
         public static BlockAesthetic.EnumType byMeta(int meta) {
-            return META_LOOKUP[meta];
+            return VALUES[meta];
         }
 
         @Override

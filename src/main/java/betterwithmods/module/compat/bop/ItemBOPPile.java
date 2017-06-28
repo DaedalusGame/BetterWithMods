@@ -6,21 +6,19 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBOPPile extends Item implements IMultiLocations {
-    public static ItemStack getMaterial(EnumMaterial material) {
-        return getMaterial(material, 1);
-    }
-
     public ItemBOPPile() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHasSubtypes(true);
+    }
+
+    public static ItemStack getMaterial(EnumMaterial material) {
+        return getMaterial(material, 1);
     }
 
     public static ItemStack getMaterial(EnumMaterial material, int count) {
@@ -37,10 +35,9 @@ public class ItemBOPPile extends Item implements IMultiLocations {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         for (EnumMaterial material : EnumMaterial.values()) {
-            list.add(getMaterial(material));
+            items.add(getMaterial(material));
         }
     }
 

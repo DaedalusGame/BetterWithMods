@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.blocks.BlockPlanter.EnumPlanterType;
+import betterwithmods.common.blocks.BlockPlanter.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +15,7 @@ public class ItemBlockPlanter extends ItemBlockMeta {
         if (stack.getItemDamage() == 2 && block instanceof BlockPlanter) {
             BlockPlanter planter = (BlockPlanter) block;
             return planter.colorMultiplier(
-                    planter.getDefaultState().withProperty(BlockPlanter.TYPE, EnumPlanterType.byMeta(stack.getItemDamage())),
+                    planter.getDefaultState().withProperty(BlockPlanter.TYPE, EnumType.byMeta(stack.getItemDamage())),
                     null, null, colorIndex);
         }
         return -1;

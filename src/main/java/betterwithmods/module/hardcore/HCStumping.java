@@ -1,10 +1,10 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockStump;
 import betterwithmods.common.world.gen.feature.*;
 import betterwithmods.module.Feature;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -189,7 +189,7 @@ public class HCStumping extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        RecipeUtils.addShapelessOreRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
+        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
     }
 
     @Override

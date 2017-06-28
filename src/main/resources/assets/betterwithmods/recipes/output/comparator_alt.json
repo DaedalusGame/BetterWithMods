@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "minecraft:comparator"
+  },
+  "pattern": [
+    " R ",
+    "RQR",
+    "SSS"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "Q": {
+      "ore": "gemQuartz",
+      "type": "forge:ore_dict"
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "betterwithmods:stone_siding",
+      "data": 0
+    }
+  }
+}

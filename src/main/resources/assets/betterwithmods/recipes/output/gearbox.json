@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "betterwithmods:gearbox"
+  },
+  "pattern": [
+    "PGP",
+    "GLG",
+    "PGP"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "ore": "plankWood",
+      "type": "forge:ore_dict"
+    },
+    "G": {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    },
+    "L": {
+      "item": "betterwithmods:material",
+      "data": 35
+    }
+  }
+}

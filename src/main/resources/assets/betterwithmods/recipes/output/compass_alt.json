@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "minecraft:compass"
+  },
+  "pattern": [
+    " N ",
+    "NRN",
+    " N "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "ore": "dustRedstone",
+      "type": "forge:ore_dict"
+    },
+    "N": {
+      "ore": "nuggetIron",
+      "type": "forge:ore_dict"
+    }
+  }
+}

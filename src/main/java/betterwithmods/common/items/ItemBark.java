@@ -5,24 +5,17 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMItems;
 import com.google.common.collect.Lists;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ItemBark extends Item implements IMultiLocations {
 
+    private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8};
     public static List<String> barks = Lists.newArrayList("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "bloody");
-
-    public static ItemStack getStack(String wood, int amount) {
-        return new ItemStack(BWMItems.BARK, amount, barks.indexOf(wood));
-    }
 
     public ItemBark() {
         super();
@@ -31,8 +24,9 @@ public class ItemBark extends Item implements IMultiLocations {
         this.setMaxDamage(0);
     }
 
-
-    private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8};
+    public static ItemStack getStack(String wood, int amount) {
+        return new ItemStack(BWMItems.BARK, amount, barks.indexOf(wood));
+    }
 
     public static int getTanningStackSize(int meta) {
         if (meta > sizes.length || meta < 0)
@@ -50,12 +44,12 @@ public class ItemBark extends Item implements IMultiLocations {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         for (int i = 0; i < barks.size(); i++) {
-            list.add(new ItemStack(item, 1, i));
+            items.add(new ItemStack(this, 1, i));
         }
     }
+
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {

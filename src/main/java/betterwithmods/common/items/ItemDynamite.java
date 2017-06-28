@@ -3,6 +3,7 @@ package betterwithmods.common.items;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.entity.EntityDynamite;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -14,9 +15,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemDynamite extends Item {
@@ -60,11 +60,10 @@ public class ItemDynamite extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean bool) {
-        list.add(I18n.format("lore.bwm:dynamite"));
-        super.addInformation(stack, player, list, bool);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(I18n.format("lore.bwm:dynamite"));
     }
+
 
     @Override
     public int getEntityLifespan(ItemStack stack, World world) {

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "minecraft:iron_door",
+    "count": 3
+  },
+  "pattern": [
+    "RII",
+    " II",
+    "RII"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "betterwithmods:material",
+      "data": 35
+    },
+    "I": {
+      "ore": "ingotIron",
+      "type": "forge:ore_dict"
+    }
+  }
+}

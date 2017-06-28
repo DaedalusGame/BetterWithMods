@@ -3,9 +3,7 @@ package betterwithmods.common.entity;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockNetherGrowth;
 import betterwithmods.common.blocks.BlockUrn;
-import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.WorldUtils;
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,9 +16,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by primetoxinz on 6/13/17.
@@ -45,7 +40,7 @@ public class EntityUrn extends EntitySnowball {
         {
             for (int i = 0; i < 8; ++i)
             {
-                this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 0.1D, 0.5D, 0.1D, Block.getStateId(BWMBlocks.URN.getDefaultState().withProperty(BlockUrn.TYPE, BlockUrn.EnumUrnType.FULL)));
+                this.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 0.1D, 0.5D, 0.1D, Block.getStateId(BWMBlocks.URN.getDefaultState().withProperty(BlockUrn.TYPE, BlockUrn.EnumType.FULL)));
             }
         }
     }

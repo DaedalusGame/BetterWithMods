@@ -1,7 +1,6 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.module.Feature;
-import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -47,7 +46,8 @@ public class HCSaw extends Feature {
                 Items.SPRUCE_DOOR,
                 Items.DARK_OAK_DOOR,
                 Items.JUNGLE_DOOR);
-        blocks.forEach(RecipeUtils::removeRecipes);
-        items.forEach(RecipeUtils::removeRecipes);
+        //TODO
+//        blocks.forEach(BWMRecipes::removeRecipes);
+//        items.forEach(BWMRecipes::removeRecipes);
     }
 }

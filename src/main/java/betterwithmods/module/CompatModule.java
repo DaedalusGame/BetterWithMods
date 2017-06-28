@@ -1,9 +1,9 @@
 package betterwithmods.module;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.module.hardcore.HCDiamond;
-import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -53,8 +53,9 @@ public class CompatModule extends Module {
         registerQuickCompat("chisel", INITIALIZED, () -> {
             if (ModuleLoader.isFeatureEnabled(HCDiamond.class)) {
                 ItemStack chisel_diamond = getItem("chisel:chisel_diamond");
-                RecipeUtils.removeRecipes(chisel_diamond);
-                RecipeUtils.addOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
+                //TODO
+//                BWMRecipes.removeRecipes(chisel_diamond);
+                BWMRecipes.addOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
                 CrucibleRecipes.addCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond", 1, OreDictionary.WILDCARD_VALUE)});
             }
             CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});

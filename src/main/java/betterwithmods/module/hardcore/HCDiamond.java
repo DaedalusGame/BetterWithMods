@@ -1,11 +1,11 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.module.gameplay.MetalReclaming;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,24 +22,25 @@ public class HCDiamond extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        RecipeUtils.removeRecipes(Items.DIAMOND_AXE, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_HOE, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_PICKAXE, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_SHOVEL, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_SWORD, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_HELMET, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_CHESTPLATE, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_LEGGINGS, 0);
-        RecipeUtils.removeRecipes(Items.DIAMOND_BOOTS, 0);
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_AXE), "DD", "DS", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_HOE), "DD", " S", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_PICKAXE), "DDD", " S ", " S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_SHOVEL), "D", "S", "S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_SWORD), "D", "D", "S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_HELMET), "DDD", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_CHESTPLATE), "D D", "DDD", "DDD", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_LEGGINGS), "DDD", "D D", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
-        RecipeUtils.addOreRecipe(new ItemStack(Items.DIAMOND_BOOTS), "D D", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        //TODO
+//        BWMRecipes.removeRecipes(Items.DIAMOND_AXE, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_HOE, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_PICKAXE, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_SHOVEL, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_SWORD, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_HELMET, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_CHESTPLATE, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_LEGGINGS, 0);
+//        BWMRecipes.removeRecipes(Items.DIAMOND_BOOTS, 0);
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_AXE), "DD", "DS", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_HOE), "DD", " S", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_PICKAXE), "DDD", " S ", " S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_SHOVEL), "D", "S", "S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_SWORD), "D", "D", "S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood");
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_HELMET), "DDD", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_CHESTPLATE), "D D", "DDD", "DDD", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_LEGGINGS), "DDD", "D D", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        BWMRecipes.addOreRecipe(new ItemStack(Items.DIAMOND_BOOTS), "D D", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
 
         if (ModuleLoader.isFeatureEnabled(MetalReclaming.class) && MetalReclaming.reclaimCount > 0) {
             CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 3),new Object[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});

@@ -10,9 +10,9 @@ public class TESRTurntable extends TileEntitySpecialRenderer<TileEntityTurntable
     private int position = 0;
 
     @Override
-    public void renderTileEntityAt(TileEntityTurntable tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        if (position != tile.getTimerPos()) {
-            position = tile.getTimerPos();
+    public void render(TileEntityTurntable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (position != te.getTimerPos()) {
+            position = te.getTimerPos();
             knob = new ModelTurntableKnob(position);
         } else if (knob == null)
             knob = new ModelTurntableKnob(position);
@@ -22,4 +22,5 @@ public class TESRTurntable extends TileEntitySpecialRenderer<TileEntityTurntable
         knob.render(0.0625F);
         GlStateManager.popMatrix();
     }
+
 }

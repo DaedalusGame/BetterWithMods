@@ -6,9 +6,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,13 +19,13 @@ public class SteelShapelessRecipe implements IRecipe {
 
     private static final int WIDTH = 4, HEIGHT = 4;
     /**
-     * Is the ItemStack that you get when craft the recipe.
-     */
-    private final ItemStack recipeOutput;
-    /**
      * Is a List of ItemStack that composes the recipe.
      */
     public final ArrayList<Object> recipeItems = new ArrayList<>();
+    /**
+     * Is the ItemStack that you get when craft the recipe.
+     */
+    private final ItemStack recipeOutput;
 
     public SteelShapelessRecipe(ItemStack result, List ingredients) {
         this.recipeOutput = result;
@@ -125,6 +127,11 @@ public class SteelShapelessRecipe implements IRecipe {
         return this.recipeOutput.copy();
     }
 
+    @Override
+    public boolean canFit(int width, int height) {
+        return false;
+    }
+
     /**
      * Returns the size of the recipe area
      */
@@ -135,5 +142,21 @@ public class SteelShapelessRecipe implements IRecipe {
     @Override
     public String toString() {
         return String.format("%s -> %s",recipeItems, recipeOutput);
+    }
+
+    @Override
+    public IRecipe setRegistryName(ResourceLocation name) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public ResourceLocation getRegistryName() {
+        return null;
+    }
+
+    @Override
+    public Class<IRecipe> getRegistryType() {
+        return null;
     }
 }

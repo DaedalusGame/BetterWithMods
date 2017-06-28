@@ -11,8 +11,7 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
     private final ModelWindmillSail sail = new ModelWindmillSail();
 
     @Override
-    public void renderTileEntityAt(TileEntityWindmillHorizontal te, double x, double y, double z,
-                                   float partialTicks, int destroyStage) {
+    public void render(TileEntityWindmillHorizontal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
@@ -38,5 +37,6 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
         this.sail.render(0.0625F, te);
         GlStateManager.popMatrix();
     }
+
 
 }

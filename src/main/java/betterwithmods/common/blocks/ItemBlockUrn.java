@@ -24,7 +24,7 @@ public class ItemBlockUrn extends ItemBlockMeta {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        if (itemstack.getMetadata() != BlockUrn.EnumUrnType.FULL.getMeta())
+        if (itemstack.getMetadata() != BlockUrn.EnumType.FULL.getMeta())
             return new ActionResult(EnumActionResult.FAIL, itemstack);
         if (!playerIn.capabilities.isCreativeMode) {
             itemstack.shrink(1);

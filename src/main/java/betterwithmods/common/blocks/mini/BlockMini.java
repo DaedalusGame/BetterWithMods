@@ -3,8 +3,8 @@ package betterwithmods.common.blocks.mini;
 import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
@@ -15,13 +15,11 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -32,14 +30,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdvancedRotationPlacement, IDamageDropped {
+public abstract class BlockMini extends BlockRotate implements IMultiVariants, IAdvancedRotationPlacement, IDamageDropped {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
     public static final PropertyOrientation SIDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 5);
@@ -51,6 +47,11 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     }
 
     public abstract PropertyOrientation getOrientationProperty();
+
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.cycleProperty(getOrientationProperty()));
+    }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
@@ -185,10 +186,9 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (int i = 0; i < getUsedTypes(); i++) {
-            list.add(new ItemStack(this, 1, i));
+            items.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -244,12 +244,6 @@ public abstract class BlockMini extends BWMBlock implements IMultiVariants, IAdv
         return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
     }
 
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        tooltip.add(I18n.format("tooltip.rotate_with_hand.name"));
-        super.addInformation(stack, player, tooltip, advanced);
-    }
 
     public TileEntityMultiType getTile(IBlockAccess world, BlockPos pos) {
         return (TileEntityMultiType) world.getTileEntity(pos);

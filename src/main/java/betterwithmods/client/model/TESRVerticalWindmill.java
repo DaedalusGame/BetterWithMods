@@ -11,9 +11,7 @@ public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWi
     private final ModelVerticalFrame modelFrame = new ModelVerticalFrame();
 
     @Override
-    public void renderTileEntityAt(TileEntityWindmillVertical te, double x, double y, double z,
-                                   float partialTicks, int destroyStage) {
-
+    public void render(TileEntityWindmillVertical te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
         rotation = -rotation;
 
@@ -30,4 +28,5 @@ public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWi
         this.modelSails.render(0.0625F, te);
         GlStateManager.popMatrix();
     }
+
 }

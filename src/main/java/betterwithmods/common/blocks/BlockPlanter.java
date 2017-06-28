@@ -1,10 +1,12 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
-import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.hardcore.HCBonemeal;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -15,7 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
@@ -34,14 +35,18 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class BlockPlanter extends BWMBlock implements IMultiVariants {
-    public static final PropertyEnum<EnumPlanterType> TYPE = PropertyEnum.create("plantertype", EnumPlanterType.class);
+    public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("plantertype", EnumType.class);
 
     public BlockPlanter() {
         super(Material.ROCK);
         this.setTickRandomly(true);
         this.setHardness(1.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumPlanterType.EMPTY));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumType.EMPTY));
         this.setHarvestLevel("pickaxe", 0);
+    }
+
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.PLANTER, 1, type.getMeta());
     }
 
     @Override
@@ -50,7 +55,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     }
 
     public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
-        return (state.getValue(TYPE) == EnumPlanterType.GRASS && tintIndex > -1) ? world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : -1;
+        return (state.getValue(TYPE) == EnumType.GRASS && tintIndex > -1) ? world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : -1;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             if (!item.isEmpty()) {
                 if (meta == 0 && (isValidBlockStack(item) || item.getItem() == Items.WATER_BUCKET))
                     return true;
-                else if (meta == 1 && (HCBonemeal.FERTILIZERS.stream().anyMatch( item::isItemEqual)))
+                else if (meta == 1 && (HCBonemeal.FERTILIZERS.stream().anyMatch(item::isItemEqual)))
                     return true;
                 else if (meta == 2 && item.getItem() instanceof ItemHoe)
                     return true;
@@ -94,7 +99,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 boolean valid = false;
 
                 if (stack.getItem() == Items.WATER_BUCKET) {
-                    world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.WATER));
+                    world.setBlockState(pos, planter.withProperty(TYPE, EnumType.WATER));
                     world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                     ItemStack replacement = stack.getItem().getContainerItem(stack);
                     if (stack.getCount() == 1 && !player.capabilities.isCreativeMode) {
@@ -115,10 +120,10 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                     if (this.isValidBlockStack(stack)) {
                         if (!player.capabilities.isCreativeMode)
                             stack.shrink(1);
-                        for (EnumPlanterType type : EnumPlanterType.values()) {
+                        for (EnumType type : EnumType.values()) {
                             if (valid)
                                 break;
-                            if (type.getFill() != null && type.getFill() == block && stack.getItemDamage() == type.getBlockMeta()) {
+                            if (BWMRecipes.getStackFromState(type.getState()).isItemEqual(stack)) {
                                 world.setBlockState(pos, state.withProperty(TYPE, type));
                                 valid = true;
                             }
@@ -132,7 +137,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         } else if (meta == 1) {
             if (!heldItem.isEmpty()) {
                 if (heldItem.getItem() == Items.DYE && heldItem.getItemDamage() == 15) {
-                    world.setBlockState(pos, planter.withProperty(TYPE, EnumPlanterType.FERTILE));
+                    world.setBlockState(pos, planter.withProperty(TYPE, EnumType.FERTILE));
                     if (!player.capabilities.isCreativeMode)
                         heldItem.shrink(1);
                     world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -141,17 +146,17 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             }
         }
         if (meta != 6 && !heldItem.isEmpty() && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1) {
-            EnumPlanterType type = state.getValue(TYPE);
+            EnumType type = state.getValue(TYPE);
             if (!player.capabilities.isCreativeMode) {
-                if (!player.inventory.addItemStackToInventory(new ItemStack(type.getFill(), 1, type.getBlockMeta())))
-                    player.dropItem(new ItemStack(type.getFill(), 1, type.getBlockMeta()), false);
+                if (!player.inventory.addItemStackToInventory(BWMRecipes.getStackFromState(type.getState())))
+                    player.dropItem(BWMRecipes.getStackFromState(type.getState()), false);
             }
-            world.playSound(null, pos, type.getFill().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.EMPTY));
+            world.playSound(null, pos, type.getState().getBlock().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+            world.setBlockState(pos, state.withProperty(TYPE, EnumType.EMPTY));
             return true;
         } else if (meta == 2 && heldItem.getItem() instanceof ItemHoe) {
             world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.DIRT));
+            world.setBlockState(pos, state.withProperty(TYPE, EnumType.DIRT));
             return true;
         } else if (meta == 6 && heldItem.getItem() == Items.BUCKET) {
             if (!player.capabilities.isCreativeMode) {
@@ -167,7 +172,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 }
             }
             world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            world.setBlockState(pos, state.withProperty(TYPE, EnumPlanterType.EMPTY));
+            world.setBlockState(pos, state.withProperty(TYPE, EnumType.EMPTY));
             return true;
         }
         return false;
@@ -186,7 +191,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                         int zP = rand.nextInt(3) - 1;
                         BlockPos checkPos = pos.add(xP, yP, zP);
                         if (world.getBlockState(checkPos).getBlock() == Blocks.GRASS)
-                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumPlanterType.GRASS));
+                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumType.GRASS));
                     }
                 } else if (meta == 2 && rand.nextInt(30) == 0) {
                     world.getBiome(pos).plantFlower(world, rand, up);
@@ -209,7 +214,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                     if (meta == 4) {
                         world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
                         if (rand.nextInt(100) == 0)
-                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumPlanterType.DIRT));
+                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumType.DIRT));
                     }
                 }
             }
@@ -234,7 +239,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
     @Override
     public boolean isFertile(World world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(TYPE) == EnumPlanterType.FERTILE;
+        return world.getBlockState(pos).getValue(TYPE) == EnumType.FERTILE;
     }
 
     @Override
@@ -245,11 +250,10 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (int i = 0; i < 9; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumType type : EnumType.VALUES)
+            items.add(getStack(type));
+
     }
 
     @Override
@@ -259,7 +263,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(TYPE, EnumPlanterType.byMeta(meta));
+        return this.getDefaultState().withProperty(TYPE, EnumType.byMeta(meta));
     }
 
     @Override
@@ -267,59 +271,39 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         return state.getValue(TYPE).getMeta();
     }
 
-    public enum EnumPlanterType implements IStringSerializable {
-        EMPTY("empty", null, 0, new EnumPlantType[0]),
-        DIRT("dirt", Blocks.DIRT, 1, new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),
-        GRASS("grass", Blocks.GRASS, 2, new EnumPlantType[]{EnumPlantType.Plains}),
-        SOULSAND("soul_sand", Blocks.SOUL_SAND, 3, new EnumPlantType[]{EnumPlantType.Nether}),
-        FERTILE("fertile", Blocks.DIRT, 4, new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),
-        SAND("sand", Blocks.SAND, 5, new EnumPlantType[]{EnumPlantType.Desert, EnumPlantType.Beach}),
-        WATER("water_still", Blocks.WATER, 6, new EnumPlantType[]{EnumPlantType.Water}),
-        GRAVEL("gravel", Blocks.GRAVEL, 7, new EnumPlantType[]{EnumPlantType.Cave}),
-        REDSAND("red_sand", Blocks.SAND, 1, 8, new EnumPlantType[]{EnumPlantType.Desert, EnumPlantType.Beach});
-        private static final EnumPlanterType[] META_LOOKUP = new EnumPlanterType[values().length];
-
-        static {
-            for (EnumPlanterType types : values()) {
-                META_LOOKUP[types.getMeta()] = types;
-            }
-        }
+    public enum EnumType implements IStringSerializable {
+        EMPTY("empty", Blocks.AIR.getDefaultState(), 0, new EnumPlantType[0]),
+        DIRT("dirt", Blocks.DIRT.getDefaultState(), 1, new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),
+        GRASS("grass", Blocks.GRASS.getDefaultState(), 2, new EnumPlantType[]{EnumPlantType.Plains}),
+        SOULSAND("soul_sand", Blocks.SOUL_SAND.getDefaultState(), 3, new EnumPlantType[]{EnumPlantType.Nether}),
+        FERTILE("fertile", Blocks.DIRT.getDefaultState(), 4, new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),
+        SAND("sand", Blocks.SAND.getDefaultState(), 5, new EnumPlantType[]{EnumPlantType.Desert, EnumPlantType.Beach}),
+        WATER("water_still", Blocks.WATER.getDefaultState(), 6, new EnumPlantType[]{EnumPlantType.Water}),
+        GRAVEL("gravel", Blocks.GRAVEL.getDefaultState(), 7, new EnumPlantType[]{EnumPlantType.Cave}),
+        REDSAND("red_sand", Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), 8, new EnumPlantType[]{EnumPlantType.Desert, EnumPlantType.Beach});
+        private static final EnumType[] VALUES = values();
 
         private String name;
-        private Block fill;
+        private IBlockState state;
         private int meta;
-        private int blockMeta;
         private EnumPlantType[] type;
 
-        EnumPlanterType(String name, Block fill, int meta, EnumPlantType[] type) {
-            this(name, fill, 0, meta, type);
-        }
-
-        EnumPlanterType(String name, Block fill, int blockMeta, int meta, EnumPlantType[] type) {
+        EnumType(String name, IBlockState state, int meta, EnumPlantType[] type) {
             this.name = name;
-            this.fill = fill;
-            this.blockMeta = blockMeta;
+            this.state = state;
             this.meta = meta;
             this.type = type;
         }
 
-        public static EnumPlanterType byMeta(int meta) {
+        public static EnumType byMeta(int meta) {
             if (meta > 8)
                 return EMPTY;
-            return META_LOOKUP[meta];
+            return VALUES[meta];
         }
 
         @Override
         public String getName() {
             return name;
-        }
-
-        public Block getFill() {
-            return fill;
-        }
-
-        public int getBlockMeta() {
-            return blockMeta;
         }
 
         public int getMeta() {
@@ -328,6 +312,10 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
         public boolean isType(EnumPlantType type) {
             return this.type.length != 0 && Arrays.asList(this.type).contains(type);
+        }
+
+        public IBlockState getState() {
+            return state;
         }
     }
 }

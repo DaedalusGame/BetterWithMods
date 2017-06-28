@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "betterwithmods:raw_kebab",
+    "count": 3
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "minecraft:mutton"
+    },
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

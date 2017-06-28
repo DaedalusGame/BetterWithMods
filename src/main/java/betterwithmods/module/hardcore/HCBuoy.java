@@ -97,10 +97,10 @@ public class HCBuoy extends Feature {
         buoyancy.put(BWMBlocks.WOOD_SIDING, 1.0F);
         buoyancy.put(BWMBlocks.WOOD_MOULDING, 1.0F);
         buoyancy.put(BWMBlocks.WOOD_CORNER, 1.0F);
-        buoyancy.put(BWMBlocks.SINGLE_MACHINES, BlockMechMachines.EnumType.HOPPER.getMeta(), 1.0F);
+        buoyancy.put(BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER), 1.0F);
         buoyancy.put(BWMBlocks.SAW, 1.0F);
         buoyancy.put(BWMBlocks.PLATFORM, 1.0F);
-        buoyancy.put(BWMBlocks.SINGLE_MACHINES, BlockMechMachines.EnumType.PULLEY.getMeta(), 1.0F);
+        buoyancy.put(BlockMechMachines.getStack(BlockMechMachines.EnumType.PULLEY), 1.0F);
         buoyancy.put(BWMBlocks.WOLF, 1.0F);
         buoyancy.put(BWMBlocks.HEMP, 1.0F);
         buoyancy.put(BWMBlocks.ROPE, 1.0F);

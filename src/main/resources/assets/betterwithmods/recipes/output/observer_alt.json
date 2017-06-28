@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "minecraft:observer"
+  },
+  "pattern": [
+    "CCC",
+    "LLU",
+    "CCC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "C": {
+      "ore": "cobblestone",
+      "type": "forge:ore_dict"
+    },
+    "U": {
+      "item": "betterwithmods:urn",
+      "data": 8
+    },
+    "L": {
+      "item": "betterwithmods:material",
+      "data": 35
+    }
+  }
+}

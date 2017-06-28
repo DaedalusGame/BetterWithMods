@@ -3,11 +3,11 @@ package betterwithmods.common.world.gen.village;
 import betterwithmods.common.world.BWMapGenVillage;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.util.Random;
@@ -16,11 +16,14 @@ import java.util.Random;
  * Created by tyler on 5/21/17.
  */
 public abstract class AbandonedVillagePiece extends StructureVillagePieces.Village implements VillagerRegistry.IVillageCreationHandler {
-    protected BWMapGenVillage.VillageStatus status =BWMapGenVillage.VillageStatus.NORMAL;
+    @GameRegistry.ObjectHolder("minecraft:nitwit")
+    public final static VillagerRegistry.VillagerProfession nitwit = null;
+    protected BWMapGenVillage.VillageStatus status = BWMapGenVillage.VillageStatus.NORMAL;
     private int villagersSpawned;
 
     public AbandonedVillagePiece() {
     }
+
 
     public AbandonedVillagePiece(StructureVillagePieces.Start start, int type) {
         super(start, type);
@@ -28,7 +31,6 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
             this.status = ((BWStart) start).status;
         }
     }
-
 
     @Override
     protected void spawnVillagers(World worldIn, StructureBoundingBox structurebb, int x, int y, int z, int count) {
@@ -58,7 +60,6 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
         //NO-OP
     }
 
-
     @Override
     public abstract StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size);
 
@@ -72,11 +73,11 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
                 String name = profession.getRegistryName().toString();
                 System.out.println(name);
                 if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
-                    return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
+                    return nitwit;
                 else
                     return profession;
             default:
-                return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
+                return nitwit;
 
         }
     }

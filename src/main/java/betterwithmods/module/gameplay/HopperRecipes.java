@@ -3,7 +3,6 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.common.blocks.BlockBWMPane;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.items.ItemMaterial;
@@ -11,7 +10,6 @@ import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
-import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -25,14 +23,38 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.List;
-
 /**
  * Created by primetoxinz on 6/23/17.
  */
 public class HopperRecipes extends Feature {
     public HopperRecipes() {
         canDisable = false;
+    }
+
+    private static boolean isItem(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof ItemBlock) {
+            Block block = ((ItemBlock) item).getBlock();
+            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || BWOreDictionary.isOre(stack, "treeSapling");
+        }
+        return true;
+    }
+
+    private static boolean isDust(ItemStack stack) {
+        return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) ||
+                BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) ||
+                BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) ||
+                BWOreDictionary.listContains(stack, BWOreDictionary.dustNames) ||
+                BWOreDictionary.listContains(stack, OreDictionary.getOres("pile"));
+    }
+
+    private static boolean isFlat(ItemStack stack) {
+        Item item = stack.getItem();
+        int meta = stack.getMetadata();
+        if (item == BWMItems.MATERIAL) {
+            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
+        }
+        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
     }
 
     @Override
@@ -44,7 +66,7 @@ public class HopperRecipes extends Feature {
         HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> !isItem(stack));
 
         HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, HopperRecipes::isFlat);
-        HopperFilters.addFilter(5, new ItemStack(BWMBlocks.PANE,1, BlockBWMPane.EnumPaneType.WICKER.getMeta()), HopperRecipes::isDust);
+        HopperFilters.addFilter(5, new ItemStack(BWMBlocks.WICKER, 1), HopperRecipes::isDust);
 
         HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> stack.getMaxStackSize() == 1);
         HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> stack.getMaxStackSize() > 1);
@@ -100,33 +122,6 @@ public class HopperRecipes extends Feature {
                     item.setDead();
             }
         });
-    }
-
-
-    private static boolean isItem(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof ItemBlock) {
-            Block block = ((ItemBlock) item).getBlock();
-            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || BWOreDictionary.isOre(stack, "treeSapling");
-        }
-        return true;
-    }
-
-    private static boolean isDust(ItemStack stack) {
-        return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) ||
-                BWOreDictionary.listContains(stack, BWOreDictionary.dustNames) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("pile"));
-    }
-
-    private static boolean isFlat(ItemStack stack) {
-        Item item = stack.getItem();
-        int meta = stack.getMetadata();
-        if (item == BWMItems.MATERIAL) {
-            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
-        }
-        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
     }
 }
 

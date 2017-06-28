@@ -19,11 +19,13 @@ import net.minecraft.item.ItemSoup;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public final class BWMItems {
@@ -81,8 +83,10 @@ public final class BWMItems {
     public static final Item MYSTERY_MEAT = new ItemFood(2,0.3f,true).setRegistryName("mystery_meat");
     public static final Item COOKED_MYSTERY_MEAT = new ItemFood(6, 0.8F, true).setRegistryName("cooked_mystery_meat");
 
-    //TODO Cooked wolfchop, Poached egg, Wolf Dinner, Cooked Carrot, Mystery Meat
-    private BWMItems() {
+    private static final List<Item> ITEMS = new ArrayList<>();
+
+    public static List<Item> getItems() {
+        return Collections.unmodifiableList(ITEMS);
     }
 
     public static void registerItems() {
@@ -151,63 +155,8 @@ public final class BWMItems {
             //betterwithmods:name => bwm:name
             item.setUnlocalizedName("bwm" + item.getRegistryName().toString().substring(BWMod.MODID.length()));
         }
-        return GameRegistry.register(item);
-    }
-
-    ///CLIENT BEGIN
-    @SideOnly(Side.CLIENT)
-    public static void linkItemModels() {
-        setInventoryModel(MATERIAL);
-        setInventoryModel(WINDMILL);
-        setInventoryModel(BARK);
-        setInventoryModel(DONUT);
-        setInventoryModel(DYNAMITE);
-        setInventoryModel(FERTILIZER);
-        setInventoryModel(STEEL_AXE);
-        setInventoryModel(STEEL_HOE);
-        setInventoryModel(STEEL_PICKAXE);
-        setInventoryModel(STEEL_SHOVEL);
-        setInventoryModel(STEEL_SWORD);
-        setInventoryModel(STEEL_BATTLEAXE);
-        setInventoryModel(STEEL_MATTOCK);
-        setInventoryModel(STEEL_HELMET);
-        setInventoryModel(STEEL_CHEST);
-        setInventoryModel(STEEL_PANTS);
-        setInventoryModel(STEEL_BOOTS);
-        setInventoryModel(CREEPER_OYSTER);
-        setInventoryModel(ENDER_SPECTACLES);
-        setInventoryModel(BREEDING_HARNESS);
-        setInventoryModel(RAW_EGG);
-        setInventoryModel(COOKED_EGG);
-        setInventoryModel(RAW_SCRAMBLED_EGG);
-        setInventoryModel(COOKED_SCRAMBLED_EGG);
-        setInventoryModel(RAW_OMELET);
-        setInventoryModel(COOKED_OMELET);
-        setInventoryModel(HAM_AND_EGGS);
-        setInventoryModel(TASTY_SANDWICH);
-        setInventoryModel(COMPOSITE_BOW);
-        setInventoryModel(BROADHEAD_ARROW);
-        setInventoryModel(BEEF_DINNER);
-        setInventoryModel(BEEF_POTATOES);
-        setInventoryModel(CHICKEN_SOUP);
-        setInventoryModel(CHOCOLATE);
-        setInventoryModel(CHOWDER);
-        setInventoryModel(COOKED_KEBAB);
-        setInventoryModel(HEARTY_STEW);
-        setInventoryModel(RAW_KEBAB);
-        setInventoryModel(PORK_DINNER);
-        setInventoryModel(STUMP_REMOVER);
-        setInventoryModel(DIRT_PILE);
-        setInventoryModel(GRAVEL_PILE);
-        setInventoryModel(SAND_PILE);
-        setInventoryModel(RED_SAND_PILE);
-        setInventoryModel(WOLF_CHOP);
-        setInventoryModel(COOKED_WOLF_CHOP);
-        setInventoryModel(KIBBLE);
-        setInventoryModel(APPLE_PIE);
-        setInventoryModel(MANUAL);
-        setInventoryModel(MYSTERY_MEAT);
-        setInventoryModel(COOKED_MYSTERY_MEAT);
+        ITEMS.add(item);
+        return item;
     }
 
     @SideOnly(Side.CLIENT)

@@ -7,11 +7,9 @@ import betterwithmods.event.*;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.network.*;
 import betterwithmods.proxy.IProxy;
-import net.minecraft.world.MinecraftException;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
@@ -34,19 +32,12 @@ public class BWMod {
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
 
-    private static void registerEventHandlers() {
-        MinecraftForge.EVENT_BUS.register(new FakePlayerHandler());
-        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
-        MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
-        MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
-        MinecraftForge.EVENT_BUS.register(new FeedWolfchopEvent());
-    }
-
-    @EventHandler
+    @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
         ForgeModContainer.fullBoundingBoxLadders = true;
     }
-    @EventHandler
+
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
         ModuleLoader.preInit(evt);
@@ -57,7 +48,7 @@ public class BWMod {
         proxy.preInit(evt);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void init(FMLInitializationEvent evt) {
         BWRegistry.init();
         ModuleLoader.init(evt);
@@ -66,36 +57,28 @@ public class BWMod {
     }
 
 
-
-    @EventHandler
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-        registerEventHandlers();
+        MinecraftForge.EVENT_BUS.register(new FakePlayerHandler());
+        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
+        MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
+        MinecraftForge.EVENT_BUS.register(new FeedWolfchopEvent());
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ModuleSync());
         proxy.postInit(evt);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void processIMCMessages(IMCEvent evt) {
         BWIMCHandler.processIMC(evt.getMessages());
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
         ModuleLoader.serverStarting(evt);
     }
 
-    @Mod.EventHandler
-    public void remap(FMLMissingMappingsEvent evt) throws MinecraftException {
-        for (FMLMissingMappingsEvent.MissingMapping mapping : evt.get()) {
-            switch (mapping.type) {
-                case ITEM:
-                    break;
-                case BLOCK:
-                    break;
-            }
-        }
-    }
 }

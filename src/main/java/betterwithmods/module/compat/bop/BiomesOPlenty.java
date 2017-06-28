@@ -2,17 +2,17 @@ package betterwithmods.module.compat.bop;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.CompatFeature;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.HCPiles;
 import betterwithmods.module.hardcore.HCSeeds;
 import betterwithmods.module.tweaks.HighEfficiencyRecipes;
 import betterwithmods.module.tweaks.MobSpawning.NetherSpawnWhitelist;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -98,7 +98,7 @@ public class BiomesOPlenty extends CompatFeature {
             HCPiles.registerPile(dirt, i, new ItemStack(PILES, 3, i));
             HCPiles.registerPile(getBlock(new ResourceLocation(modid, "grass_path")), i, new ItemStack(PILES, 3, i));
 
-            RecipeUtils.addOreRecipe(new ItemStack(dirt, 1, i), "PP", "PP", 'P', new ItemStack(PILES, 1, i));
+            BWMRecipes.addOreRecipe(new ItemStack(dirt, 1, i), "PP", "PP", 'P', new ItemStack(PILES, 1, i));
         }
 
         Block plank = getBlock("biomesoplenty:planks_0");
@@ -112,10 +112,10 @@ public class BiomesOPlenty extends CompatFeature {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = new ItemStack(MOULDING, 1, i);
                 ItemStack siding = new ItemStack(SIDING, 1, i);
-                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding);
-                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding);
-                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding);
-                RecipeUtils.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true);
+                BWMRecipes.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding);
+                BWMRecipes.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding);
+                BWMRecipes.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding);
+                BWMRecipes.addOreRecipe(new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true);
             }
         }
 

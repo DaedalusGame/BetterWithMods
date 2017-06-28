@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "betterwithmods:platform"
+  },
+  "pattern": [
+    "MWM",
+    " M ",
+    "MWM"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "item": "betterwithmods:wicker",
+      "data": 2
+    },
+    "M": {
+      "ore": "plankWood",
+      "type": "forge:ore_dict"
+    }
+  }
+}

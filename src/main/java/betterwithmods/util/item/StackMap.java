@@ -18,7 +18,7 @@ import java.util.Set;
  * @author Tyler Marshall
  * @version 2/25/17
  */
-public class StackMap<T> implements Map<Stack, T>{
+public class StackMap<T> implements Map<Stack, T> {
 
     private final HashMap<Stack, T> map = new HashMap<>();
     private T defaultValue;
@@ -27,6 +27,10 @@ public class StackMap<T> implements Map<Stack, T>{
         this.defaultValue = defaultValue;
     }
 
+
+    public T put(ItemStack stack, T t) {
+        return this.put(new Stack(stack), t);
+    }
 
     public T put(Item item, int meta, T t) {
         return this.put(new Stack(item, meta), t);
@@ -91,7 +95,7 @@ public class StackMap<T> implements Map<Stack, T>{
     }
 
     public T put(String oreDictName, T t) {
-        OreDictionary.getOres(oreDictName).stream().forEach( s -> put(new Stack(s),t));
+        OreDictionary.getOres(oreDictName).stream().forEach(s -> put(new Stack(s), t));
         return t;
     }
 

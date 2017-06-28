@@ -3,27 +3,38 @@ package betterwithmods.common;
 import betterwithmods.BWMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+@Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWSounds {
-    public static SoundEvent WOODCREAK;
-    public static SoundEvent STONEGRIND;
-    public static SoundEvent BELLOW;
-    public static SoundEvent WOODCHIME;
-    public static SoundEvent METALCHIME;
-    public static SoundEvent OOF;
+    @GameRegistry.ObjectHolder("betterwithmods:block.wood.creak")
+    public final static SoundEvent WOODCREAK = null;
+    @GameRegistry.ObjectHolder("betterwithmods:block.stone.grind")
+    public final static SoundEvent STONEGRIND = null;
+    @GameRegistry.ObjectHolder("betterwithmods:block.wood.bellow")
+    public final static SoundEvent BELLOW = null;
+    @GameRegistry.ObjectHolder("betterwithmods:block.wood.chime")
+    public final static SoundEvent WOODCHIME = null;
+    @GameRegistry.ObjectHolder("betterwithmods:block.metal.chime")
+    public final static SoundEvent METALCHIME = null;
+    @GameRegistry.ObjectHolder("betterwithmods:entity.player.oof")
+    public final static SoundEvent OOF = null;
 
-    public static void registerSounds() {
-        WOODCREAK = registerSound("block.wood.creak");
-        STONEGRIND = registerSound("block.stone.grind");
-        BELLOW = registerSound("block.wood.bellow");
-        WOODCHIME = registerSound("block.wood.chime");
-        METALCHIME = registerSound("block.metal.chime");
-        OOF = registerSound("entity.player.oof");
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+        event.getRegistry().register(registerSound("block.wood.creak"));
+        event.getRegistry().register(registerSound("block.stone.grind"));
+        event.getRegistry().register(registerSound("block.wood.bellow"));
+        event.getRegistry().register(registerSound("block.wood.chime"));
+        event.getRegistry().register(registerSound("block.metal.chime"));
+        event.getRegistry().register(registerSound("entity.player.oof"));
+
     }
 
     public static SoundEvent registerSound(String soundName) {
         ResourceLocation soundID = new ResourceLocation(BWMod.MODID, soundName);
-        return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
+        SoundEvent sound = new SoundEvent(soundID).setRegistryName(soundID);
+        return sound;
     }
 }

@@ -2,12 +2,12 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -338,7 +338,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                     InvUtils.ejectStackWithOffset(getWorld(), pos.up(), scrap.copy());
                 }
             }
-            getWorld().setBlockState(pos, RecipeUtils.getStateFromStack(craft.getResult()));
+            getWorld().setBlockState(pos, BWMRecipes.getStateFromStack(craft.getResult()));
             this.potteryRotation = 0;
 
         }

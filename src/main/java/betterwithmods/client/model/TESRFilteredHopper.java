@@ -6,23 +6,20 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilteredHopper> {
     private ModelWithResource model;
-    private ItemStack stack;
     private int occupiedStacks;
 
-
     @Override
-    public void renderTileEntityAt(TileEntityFilteredHopper tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        if (tile != null) {
-            if (tile.getSubtype() > 0) {
-                model = tile.getModel();
-                if (model == null && tile.filterType > 0) {
-                    if (!tile.getFilterStack().isEmpty()) {
-                        model = new ModelTransparent(RenderUtils.getResourceLocation(tile.getFilterStack()));
+    public void render(TileEntityFilteredHopper te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (te != null) {
+            if (te.getSubtype() > 0) {
+                model = te.getModel();
+                if (model == null && te.filterType > 0) {
+                    if (!te.getFilterStack().isEmpty()) {
+                        model = new ModelTransparent(RenderUtils.getResourceLocation(te.getFilterStack()));
                     }
                 }
                 if (model != null) {
@@ -37,14 +34,15 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
                 model = null;
             }
             if (model == null || (model != null && !model.isSolid())) {
-                if (occupiedStacks != tile.filledSlots())
-                    occupiedStacks = tile.filledSlots();
-                double fillOffset = 0.65D * occupationMod(tile);
+                if (occupiedStacks != te.filledSlots())
+                    occupiedStacks = te.filledSlots();
+                double fillOffset = 0.65D * occupationMod(te);
                 if (fillOffset > 0D)
-                    RenderUtils.renderFill(new ResourceLocation("minecraft", "blocks/gravel"), tile.getPos(), x, y, z, 0.125D, 0.25D, 0.125D, 0.875D, 0.25D + fillOffset, 0.875D);
+                    RenderUtils.renderFill(new ResourceLocation("minecraft", "blocks/gravel"), te.getPos(), x, y, z, 0.125D, 0.25D, 0.125D, 0.875D, 0.25D + fillOffset, 0.875D);
             }
         }
     }
+
 
     private float occupationMod(TileEntityFilteredHopper tile) {
         float visibleSlots = (float) tile.getMaxVisibleSlots();

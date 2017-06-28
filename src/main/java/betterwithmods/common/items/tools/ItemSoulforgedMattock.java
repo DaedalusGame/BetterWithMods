@@ -35,7 +35,7 @@ public class ItemSoulforgedMattock extends ItemTool {
 
     public boolean canHarvestBlock(IBlockState blockIn) {
         Block block = blockIn.getBlock();
-        return getToolMaterial().getHarvestLevel() >= block.getHarvestLevel(blockIn);
+        return toolMaterial.getHarvestLevel() >= block.getHarvestLevel(blockIn);
     }
 
     public float getStrVsBlock(ItemStack stack, IBlockState state) {

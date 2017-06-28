@@ -2,7 +2,6 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockUrn;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,7 +23,7 @@ public class NetherGrowth extends Feature {
                 new ItemStack(Blocks.MYCELIUM),
                 new ItemStack(Items.NETHER_WART),
                 new ItemStack(Items.ROTTEN_FLESH),
-                BlockUrn.getStack(BlockUrn.EnumUrnType.FULL,8),
+                BlockUrn.getStack(BlockUrn.EnumType.FULL, 8),
         });
     }
 

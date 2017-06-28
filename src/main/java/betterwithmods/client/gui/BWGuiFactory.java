@@ -33,20 +33,12 @@ public class BWGuiFactory implements IModGuiFactory {
         return new BWGuiConfig(parentScreen);
     }
 
-    @Override
-    public Class<? extends GuiScreen> mainConfigGuiClass() {
-        return BWGuiConfig.class;
-    }
 
     @Override
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
         return null;
     }
 
-    @Override
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-        return null;
-    }
 
     public static class BWGuiConfig extends GuiConfig {
 

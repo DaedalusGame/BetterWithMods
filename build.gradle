@@ -4,12 +4,12 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.2.35-1.11.2"
+version = "1.3.0-1.12"
 group = "betterwithmods"
 archivesBaseName = "Better With Mods"
 
@@ -19,9 +19,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2315"
+    version = "1.12-14.21.0.2377"
     runDir = "run"
-    mappings = "snapshot_20170612"
+    mappings = "snapshot_20170627"
     replace "%VERSION%":"${project.version}"
     useDepAts = true
 }
@@ -32,15 +32,15 @@ repositories {
     maven { url "http://www.ryanliptak.com/maven/" }
 }
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11.2:+"
+    deobfCompile "mezz.jei:jei_1.12:+"
 //    deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.+"
 //    deobfCompile "slimeknights:TConstruct:1.11.2-2.+"
 //    deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
 //    deobfCompile "com.blamejared:MTLib:2.+"
 //    deobfCompile "blusunrize:ImmersiveEngineering:0.11-63-147"
 //    deobfCompile "MCMultiPart2:MCMultiPart:2.0.1"
-    deobfCompile "applecore:AppleCore:1.11.2-2.2.0:api"
-    runtime "applecore:AppleCore:1.11.2-2.2.0:deobf"
+    deobfCompile "applecore:AppleCore:1.12+:api"
+//    runtime "applecore:AppleCore:1.11.2-2.2.0:deobf"
 }
 
 jar {

@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "betterwithmods:bellows"
+  },
+  "pattern": [
+    "WWW",
+    "LLL",
+    "BGB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "betterwithmods:material",
+      "data": 9
+    },
+    "W": {
+      "ore": "sidingWood",
+      "type": "forge:ore_dict"
+    },
+    "G": {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    },
+    "L": {
+      "item": "betterwithmods:material",
+      "data": 33
+    }
+  }
+}

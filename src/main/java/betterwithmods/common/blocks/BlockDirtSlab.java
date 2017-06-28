@@ -2,8 +2,6 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCPiles;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -16,7 +14,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -100,7 +97,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     }
 
     @Override
-    public MapColor getMapColor(IBlockState state) {
+    public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
         return (state.getValue(VARIANT)).getColor();
     }
 
@@ -123,9 +120,8 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
         return state;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         list.add(new ItemStack(this, 1, DirtSlabType.DIRT.getMetadata()));
         list.add(new ItemStack(this, 1, DirtSlabType.GRASS.getMetadata()));
         list.add(new ItemStack(this, 1, DirtSlabType.MYCELIUM.getMetadata()));

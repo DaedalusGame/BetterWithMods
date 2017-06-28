@@ -28,8 +28,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
@@ -44,6 +42,10 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
         this.setHardness(2.0F);
         this.setHarvestLevel("pickaxe", -1);
         this.setDefaultState(this.blockState.getBaseState().withProperty(Color, EnumDyeColor.WHITE));
+    }
+
+    public static ItemStack getStack(EnumDyeColor type) {
+        return new ItemStack(BWMBlocks.VASE, 1, type.getMetadata());
     }
 
     @Override
@@ -140,11 +142,10 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (int i = 0; i < EnumDyeColor.values().length; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumDyeColor color : EnumDyeColor.values())
+            items.add(getStack(color));
+        super.getSubBlocks(itemIn, items);
     }
 
     @Override

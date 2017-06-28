@@ -5,28 +5,18 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
-import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import li.cil.manual.client.manual.provider.OreDictImageProvider;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Created by tyler on 5/10/17.
@@ -112,6 +102,7 @@ public class BWOreDictionary {
 
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
 
+        registerOre("blockVase", new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE));
         woods = Lists.newArrayList(
                 new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
@@ -121,13 +112,14 @@ public class BWOreDictionary {
                 new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
         );
         List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter( stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
-        for(ItemStack log: logs) {
-            ItemStack plank = RecipeUtils.getRecipeOutput(log);
-            if(isOre(plank,"plankWood")) {
-                Wood wood = new Wood(log,plank);
-                woods.add(wood);
-            }
-        }
+        //TODO work dict logs
+//        for(ItemStack log: logs) {
+//            ItemStack plank = BWMRecipes.getRecipeOutput(log);
+//            if(isOre(plank,"plankWood")) {
+//                Wood wood = new Wood(log,plank);
+//                woods.add(wood);
+//            }
+//        }
     }
 
     public static void registerOre(String ore, ItemStack... items) {

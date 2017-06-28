@@ -3,9 +3,6 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.world.BWComponentScatteredFeaturePieces;
 import betterwithmods.common.world.BWMapGenScatteredFeature;
 import betterwithmods.module.Feature;
-import betterwithmods.util.RecipeUtils;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -18,6 +15,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class HCStructures extends Feature {
     private boolean disableRecipes;
+
+    public static boolean isInRadius(World world, int x, int z) {
+        BlockPos center = world.getSpawnPoint();
+        return Math.sqrt(Math.pow(x - center.getX(), 2) + Math.pow(z - center.getZ(), 2)) < HCSpawn.HARDCORE_SPAWN_RADIUS;
+    }
 
     @Override
     public String getFeatureDescription() {
@@ -38,8 +40,9 @@ public class HCStructures extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if(disableRecipes) {
-            RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
-            RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
+            //TODO
+//            BWMRecipes.removeRecipes(Blocks.ENCHANTING_TABLE);
+//            BWMRecipes.removeRecipes(Items.BREWING_STAND, 0);
         }
         MapGenStructureIO.registerStructure(BWMapGenScatteredFeature.Start.class, "BWTemple");
         MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.DesertPyramid.class, "BWTeDP");
@@ -48,10 +51,6 @@ public class HCStructures extends Feature {
         MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.Igloo.class, "BWIglu");
     }
 
-    public static boolean isInRadius(World world, int x, int z) {
-        BlockPos center = world.getSpawnPoint();
-        return Math.sqrt(Math.pow(x - center.getX(), 2) + Math.pow(z - center.getZ(), 2)) < HCSpawn.HARDCORE_SPAWN_RADIUS;
-    }
     @SubscribeEvent
     public void overrideScatteredFeature(InitMapGenEvent event) {
         if (event.getType().equals(InitMapGenEvent.EventType.SCATTERED_FEATURE))

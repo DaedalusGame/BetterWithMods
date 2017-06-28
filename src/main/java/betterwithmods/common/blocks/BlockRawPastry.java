@@ -10,7 +10,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -19,8 +18,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 
@@ -43,10 +40,9 @@ public class BlockRawPastry extends Block implements IMultiLocations {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (BlockRawPastry.EnumType blockrawpastry$enumtype : EnumType.META_LOOKUP) {
-            list.add(new ItemStack(itemIn, 1, blockrawpastry$enumtype.getMetadata()));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumType type : EnumType.VALUES) {
+            items.add(getStack(type));
         }
     }
 
@@ -118,7 +114,7 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         BREAD(3, "raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D)),
         APPLE(4, "raw_apple_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D));
 
-        private static final BlockRawPastry.EnumType[] META_LOOKUP = values();
+        private static final BlockRawPastry.EnumType[] VALUES = values();
 
         private final int meta;
         private final String name;
@@ -131,11 +127,11 @@ public class BlockRawPastry extends Block implements IMultiLocations {
         }
 
         public static BlockRawPastry.EnumType byMetadata(int meta) {
-            if (meta < 0 || meta >= META_LOOKUP.length) {
+            if (meta < 0 || meta >= VALUES.length) {
                 meta = 0;
             }
 
-            return META_LOOKUP[meta];
+            return VALUES[meta];
         }
 
         public int getMetadata() {

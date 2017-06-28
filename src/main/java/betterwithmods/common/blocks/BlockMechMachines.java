@@ -20,11 +20,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -41,27 +38,26 @@ import java.util.Random;
 
 public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMultiVariants {
 
-    public static ItemStack getStack(EnumType type) {
-        return new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, type.getMeta() << 1);
-    }
-
-    public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
-    public static final PropertyEnum<BlockMechMachines.EnumType> MACHINETYPE = PropertyEnum.create("machinetype", BlockMechMachines.EnumType.class);
-
+    public static final PropertyBool ACTIVE = PropertyBool.create("ison");
+    public static final PropertyEnum<BlockMechMachines.EnumType> TYPE = PropertyEnum.create("machinetype", BlockMechMachines.EnumType.class);
     public BlockMechMachines() {
         super(Material.ROCK);
         this.setTickRandomly(true);
         this.setHardness(3.5F);
         this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(MACHINETYPE, BlockMechMachines.EnumType.MILL)
-                .withProperty(ISACTIVE, false)
+                .withProperty(TYPE, BlockMechMachines.EnumType.MILL)
+                .withProperty(ACTIVE, false)
         );
         this.useNeighborBrightness = true;
     }
 
+    public static ItemStack getStack(EnumType type) {
+        return new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, type.getMeta());
+    }
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getValue(MACHINETYPE)) {
+        switch (state.getValue(TYPE)) {
             case HOPPER:
                 return new AxisAlignedBB(0,4/16d,0,1,1,1);
             default:
@@ -72,20 +68,21 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     public String[] getVariants() {
         return new String[]{
-                "ison=true,machinetype=mill",
                 "ison=false,machinetype=mill",
-                "ison=true,machinetype=pulley",
                 "ison=false,machinetype=pulley",
-                "ison=true,machinetype=hopper",
                 "ison=false,machinetype=hopper",
+                "ison=false,machinetype=turntable",
+                "ison=true,machinetype=mill",
+                "ison=true,machinetype=pulley",
+                "ison=true,machinetype=hopper",
                 "ison=true,machinetype=turntable",
-                "ison=false,machinetype=turntable",};
+        };
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public Material getMaterial(IBlockState state) {
-        switch (state.getValue(MACHINETYPE)) {
+        switch (state.getValue(TYPE)) {
             case HOPPER:
             case PULLEY:
                 setHarvestLevel("axe", 0, state);
@@ -98,7 +95,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        switch (state.getValue(MACHINETYPE)) {
+        switch (state.getValue(TYPE)) {
             case HOPPER:
             case PULLEY:
                 return SoundType.WOOD;
@@ -109,7 +106,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         return type == EnumType.MILL || type == EnumType.PULLEY || type == EnumType.TURNTABLE;
     }
 
@@ -122,7 +119,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         world.scheduleBlockUpdate(pos, this, tickRateForMeta(type), 5);
     }
 
@@ -133,8 +130,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public int damageDropped(IBlockState state) {
-        BlockMechMachines.EnumType type = state.getValue(MACHINETYPE);
-        return type.getMeta() << 1;
+        BlockMechMachines.EnumType type = state.getValue(TYPE);
+        return type.getMeta();
     }
 
     @Override
@@ -146,23 +143,23 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     public boolean isOpaqueCube(IBlockState state) {
 
-        return state.getValue(MACHINETYPE).getSolidity();
+        return state.getValue(TYPE).getSolidity();
     }
 
     @Override
     public boolean isFullCube(IBlockState state) {
-        return state.getValue(MACHINETYPE).getSolidity();
+        return state.getValue(TYPE).getSolidity();
     }
 
     @Override
     public boolean isFullBlock(IBlockState state) {
-        return state.getValue(MACHINETYPE).getSolidity();
+        return state.getValue(TYPE).getSolidity();
     }
 
 
     @Override
     public boolean causesSuffocation(IBlockState state) {
-        return state.getValue(MACHINETYPE).getSolidity();
+        return state.getValue(TYPE).getSolidity();
     }
 
     @Override
@@ -211,7 +208,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         if (!isCurrentStateValid(world, pos)) {
             world.scheduleBlockUpdate(pos, this, tickRateForMeta(type), 5);
         }
@@ -230,7 +227,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(MACHINETYPE)) {
+        switch (state.getValue(TYPE)) {
             case MILL:
                 return new TileEntityMill();
             case PULLEY:
@@ -244,10 +241,9 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.META_LOOKUP)
-            list.add(new ItemStack(item, 1, type.getMeta() << 1));
+            items.add(getStack(type));
     }
 
     @Override
@@ -262,7 +258,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public boolean isInputtingMechPower(World world, BlockPos pos) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         if (type != EnumType.TURNTABLE)
             return MechanicalUtil.isBlockPoweredByAxle(world, pos, this) || MechanicalUtil.isPoweredByCrank(world, pos);
         else
@@ -277,7 +273,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos,
                                        EnumFacing dir) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         switch (type) {
             case MILL:
                 return dir == EnumFacing.UP || dir == EnumFacing.DOWN;
@@ -293,7 +289,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public void overpower(World world, BlockPos pos) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
         if (!world.isRemote) {
             switch (type) {
                 case MILL:
@@ -345,8 +341,8 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(MACHINETYPE);
-        boolean isOn = world.getBlockState(pos).getValue(ISACTIVE);
+        BlockMechMachines.EnumType type = world.getBlockState(pos).getValue(TYPE);
+        boolean isOn = world.getBlockState(pos).getValue(ACTIVE);
         if (type == BlockMechMachines.EnumType.MILL && isOn)
             updateMill(world, pos, rand);
     }
@@ -401,14 +397,14 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-        if (isOn != world.getBlockState(pos).getValue(ISACTIVE)) {
-            world.setBlockState(pos, world.getBlockState(pos).withProperty(ISACTIVE, isOn));
+        if (isOn != world.getBlockState(pos).getValue(ACTIVE)) {
+            world.setBlockState(pos, world.getBlockState(pos).withProperty(ACTIVE, isOn));
         }
     }
 
     @Override
     public boolean isMechanicalOnFromState(IBlockState state) {
-        return state.getValue(ISACTIVE);
+        return state.getValue(ACTIVE);
     }
 
     public boolean isRedstonePowered(World world, BlockPos pos) {
@@ -417,17 +413,17 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, IMu
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ISACTIVE, MACHINETYPE);
+        return new BlockStateContainer(this, ACTIVE, TYPE);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(MACHINETYPE, EnumType.byMeta(meta >> 1)).withProperty(ISACTIVE, (meta & 1) == 1);
+        return getDefaultState().withProperty(TYPE, EnumType.byMeta(meta)).withProperty(ACTIVE, meta > 3);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(MACHINETYPE).getMeta() << 1 | (state.getValue(ISACTIVE) ? 1 : 0);
+        return state.getValue(TYPE).getMeta() + (state.getValue(ACTIVE) ? 4 : 0);
     }
 
 

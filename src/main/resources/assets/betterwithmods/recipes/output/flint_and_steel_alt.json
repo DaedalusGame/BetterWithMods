@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:flint"
+    },
+    {
+      "ore": "nuggetIron",
+      "type": "forge:ore_dict"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

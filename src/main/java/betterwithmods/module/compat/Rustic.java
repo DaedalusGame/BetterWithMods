@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
@@ -10,7 +11,6 @@ import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.HCSaw;
 import betterwithmods.module.tweaks.HighEfficiencyRecipes;
-import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -92,9 +92,10 @@ public class Rustic extends CompatFeature {
         super.init(event);
 
         ItemStack rope = new ItemStack(getBlock(new ResourceLocation("rustic", "rope")));
-        RecipeUtils.removeRecipes(rope);
-        RecipeUtils.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
-        RecipeUtils.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
+        //TODO
+//        BWMRecipes.removeRecipes(rope);
+        BWMRecipes.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
+        BWMRecipes.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
         Block plank = getBlock("rustic:planks");
         Block log = getBlock("rustic:log");
         for (int i = 0; i < 2; i++) {
@@ -103,16 +104,17 @@ public class Rustic extends CompatFeature {
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            RecipeUtils.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
-            RecipeUtils.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
-            RecipeUtils.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
+            BWMRecipes.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
+            BWMRecipes.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
+            BWMRecipes.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
         }
         boolean isHCSawEnabled = ModuleLoader.isFeatureEnabled(HCSaw.class);
         Block wooden_stake = getBlock("rustic:crop_stake");
         if (isHCSawEnabled) {
-            RecipeUtils.removeRecipes(wooden_stake);
-        }
-        RecipeUtils.addOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood");
+            //TODO
+//            BWMRecipes.removeRecipes(wooden_stake);
+        }//TODO
+        BWMRecipes.addOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood");
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
@@ -120,20 +122,22 @@ public class Rustic extends CompatFeature {
                 ItemStack chair = new ItemStack(getBlock("rustic:chair_" + woods[i]), 4);
                 ItemStack table = new ItemStack(getBlock("rustic:table_" + woods[i]), 2);
                 if (isHCSawEnabled) {
-                    RecipeUtils.removeRecipes(chair);
-                    RecipeUtils.removeRecipes(table);
+                    //TODO
+//                    BWMRecipes.removeRecipes(chair);
+//                    BWMRecipes.removeRecipes(table);
                 }
-                RecipeUtils.addOreRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
-                RecipeUtils.addOreRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
+                BWMRecipes.addOreRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
+                BWMRecipes.addOreRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
                 if (i >= 6) {
                     ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
                     ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
                     if (isHCSawEnabled) {
-                        RecipeUtils.removeRecipes(fencegate);
-                        RecipeUtils.removeRecipes(fence);
+                        //TODO
+//                        BWMRecipes.removeRecipes(fencegate);
+//                        BWMRecipes.removeRecipes(fence);
                     }
-                    RecipeUtils.addOreRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
-                    RecipeUtils.addOreRecipe(fence, "MMM", 'M', moulding);
+                    BWMRecipes.addOreRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
+                    BWMRecipes.addOreRecipe(fence, "MMM", 'M', moulding);
                 }
             }
         }

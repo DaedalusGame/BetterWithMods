@@ -57,7 +57,7 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = playerIn.getHeldItemMainhand();
-        if (!held.isItemEqual(BlockUrn.getStack(BlockUrn.EnumUrnType.FULL, 1)))
+        if (!held.isItemEqual(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1)))
             return false;
         if (!world.isRemote) {
 

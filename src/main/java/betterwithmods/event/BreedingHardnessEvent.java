@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import static net.minecraft.network.datasync.DataSerializers.OPTIONAL_ITEM_STACK;
+import static net.minecraft.network.datasync.DataSerializers.ITEM_STACK;
 
 /**
  * Purpose:
@@ -38,9 +38,9 @@ public class BreedingHardnessEvent {
 
     private static final String TAG_HARNESS = "betterwithmods:harness";
 
-    private static final DataParameter<ItemStack> COW_DATA = EntityDataManager.createKey(EntityCow.class, OPTIONAL_ITEM_STACK),
-            PIG_DATA = EntityDataManager.createKey(EntityPig.class, OPTIONAL_ITEM_STACK),
-            SHEEP_DATA = EntityDataManager.createKey(EntitySheep.class, OPTIONAL_ITEM_STACK);
+    private static final DataParameter<ItemStack> COW_DATA = EntityDataManager.createKey(EntityCow.class, ITEM_STACK),
+            PIG_DATA = EntityDataManager.createKey(EntityPig.class, ITEM_STACK),
+            SHEEP_DATA = EntityDataManager.createKey(EntitySheep.class, ITEM_STACK);
 
     private static DataParameter<ItemStack> getHarnessData(Entity e) {
         if (e instanceof EntityCow)

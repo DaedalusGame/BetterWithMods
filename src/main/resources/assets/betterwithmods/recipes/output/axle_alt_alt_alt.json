@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "betterwithmods:axle"
+  },
+  "pattern": [
+    "M",
+    "R",
+    "M"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "betterwithmods:rope"
+    },
+    "M": {
+      "ore": "mouldingWood",
+      "type": "forge:ore_dict"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "minecraft:dispenser"
+  },
+  "pattern": [
+    "CCC",
+    "CBC",
+    "CRC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:bow"
+    },
+    "R": {
+      "item": "betterwithmods:material",
+      "data": 35
+    },
+    "C": {
+      "ore": "cobblestone",
+      "type": "forge:ore_dict"
+    }
+  }
+}

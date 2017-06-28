@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "betterwithmods:metal_chime",
+    "data": 0
+  },
+  "pattern": [
+    " S ",
+    "SPS",
+    "IMI"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "item": "minecraft:wooden_pressure_plate"
+    },
+    "S": {
+      "ore": "string",
+      "type": "forge:ore_dict"
+    },
+    "I": {
+      "ore": "ingotIron",
+      "type": "forge:ore_dict"
+    },
+    "M": {
+      "item": "betterwithmods:wood_moulding",
+      "data": 0
+    }
+  }
+}

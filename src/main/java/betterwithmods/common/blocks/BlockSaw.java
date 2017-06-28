@@ -146,11 +146,11 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
                 BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() - i, pos.getZ()).offset(dir);
                 Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
-                if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.blockType).getMeta() < 2) {
+                if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.TYPE).getMeta() < 2) {
                     source = BWDamageSource.choppingBlock;
                     damage *= 3;
-                    if (blockState.getValue(BlockAesthetic.blockType).getMeta() == 0 && unobstructed)
-                        world.setBlockState(pos2, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
+                    if (blockState.getValue(BlockAesthetic.TYPE).getMeta() == 0 && unobstructed)
+                        world.setBlockState(pos2, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.TYPE, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
                     break;
                 } else if (!world.isAirBlock(pos2) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock))
                     break;

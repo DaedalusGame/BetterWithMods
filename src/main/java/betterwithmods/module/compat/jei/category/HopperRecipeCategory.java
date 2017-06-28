@@ -90,7 +90,7 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
             guiItemStacks.set(5, new ItemStack(BWMBlocks.URN, 1, 0));
         }
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.HOPPER.getMeta() << 1));
+        guiItemStacks.set(4, BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER));
 
     }
 }

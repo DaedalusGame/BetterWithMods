@@ -82,6 +82,7 @@ public class BWRegistry {
         BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
     }
 
+
     public static void init() {
         GameRegistry.registerFuelHandler(new BWFuelHandler());
         BWRegistry.registerHeatSources();

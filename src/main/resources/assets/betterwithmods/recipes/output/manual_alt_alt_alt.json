@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "betterwithmods:manual"
+  },
+  "ingredients": [
+    {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "minecraft:string"
+  },
+  "ingredients": [
+    {
+      "ore": "fiberHemp",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "fiberHemp",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "fiberHemp",
+      "type": "forge:ore_dict"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

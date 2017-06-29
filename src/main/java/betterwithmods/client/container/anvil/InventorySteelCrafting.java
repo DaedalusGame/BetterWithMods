@@ -11,8 +11,8 @@ import net.minecraftforge.items.IItemHandler;
 public class InventorySteelCrafting extends InventoryCrafting implements ISidedInventory {
 
     public TileEntitySteelAnvil craft;
-    private IItemHandler handler;
     public Container container;
+    private IItemHandler handler;
 
     public InventorySteelCrafting(Container container, TileEntitySteelAnvil te) {
         super(container, 4, 4);
@@ -20,6 +20,7 @@ public class InventorySteelCrafting extends InventoryCrafting implements ISidedI
         handler = te.inventory;
         this.container = container;
     }
+
 
     @Override
     public ItemStack getStackInSlot(int slot) {

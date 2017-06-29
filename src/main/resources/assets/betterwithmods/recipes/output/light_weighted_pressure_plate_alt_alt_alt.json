@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "minecraft:light_weighted_pressure_plate"
+  },
+  "pattern": [
+    "GG",
+    "RR"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "ore": "dustRedstone",
+      "type": "forge:ore_dict"
+    },
+    "G": {
+      "ore": "ingotGold",
+      "type": "forge:ore_dict"
+    }
+  }
+}

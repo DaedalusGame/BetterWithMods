@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "minecraft:nether_brick_stairs"
+  },
+  "pattern": [
+    "M ",
+    "MM"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": {
+      "item": "betterwithmods:stone_moulding",
+      "data": 3
+    }
+  }
+}

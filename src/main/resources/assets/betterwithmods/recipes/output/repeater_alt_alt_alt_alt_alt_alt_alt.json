@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "minecraft:repeater"
+  },
+  "pattern": [
+    "RCR",
+    "SSS"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "S": {
+      "item": "betterwithmods:stone_siding",
+      "data": 0
+    }
+  }
+}

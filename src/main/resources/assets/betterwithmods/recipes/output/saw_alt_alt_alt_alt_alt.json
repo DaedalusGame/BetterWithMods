@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "betterwithmods:saw"
+  },
+  "pattern": [
+    "III",
+    "GBG",
+    "WGW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "betterwithmods:material",
+      "data": 9
+    },
+    "G": {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    },
+    "W": {
+      "ore": "sidingWood",
+      "type": "forge:ore_dict"
+    },
+    "I": {
+      "ore": "ingotIron",
+      "type": "forge:ore_dict"
+    }
+  }
+}

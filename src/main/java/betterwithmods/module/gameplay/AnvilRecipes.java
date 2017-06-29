@@ -4,15 +4,11 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
-import betterwithmods.common.registry.steelanvil.SteelShapedOreRecipe;
-import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
-import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
+import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 /**
  * Created by tyler on 5/16/17.
@@ -21,21 +17,14 @@ public class AnvilRecipes extends Feature {
     public AnvilRecipes() {
         canDisable = false;
     }
-        
-    public static SteelShapedRecipe addSteelShapedRecipe(ItemStack output, Object... input) {
-        return SteelCraftingManager.getInstance().addRecipe(output, input);
+
+    public static ShapedAnvilRecipe addSteelShapedRecipe(ItemStack output, Object... input) {
+
+        return null;
     }
 
-    public static SteelShapedOreRecipe addSteelShapedOreRecipe(ItemStack output, Object... input) {
-        return SteelCraftingManager.getInstance().addSteelShapedOreRecipe(output, input);
-    }
-
-    public static SteelShapelessRecipe addSteelShapelessRecipe(ItemStack output, Object... input) {
-        return SteelCraftingManager.getInstance().addShapelessRecipe(output, input);
-    }
-
-    public static ShapelessOreRecipe addShapelessOreRecipe(ItemStack output, Object... input) {
-        return SteelCraftingManager.getInstance().addShapelessOreRecipe(output, input);
+    public static ShapedAnvilRecipe addSteelShapedOreRecipe(ItemStack output, Object... input) {
+        return null;
     }
 
     @Override
@@ -60,8 +49,8 @@ public class AnvilRecipes extends Feature {
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
         addSteelShapedOreRecipe(new ItemStack(BWMBlocks.AESTHETIC, 6, 0), "X  X", "XXXX", 'X', "stone");
         addSteelShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
-        addSteelShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR)," NN ","NIIN","NIIN"," NN ",'N',"nuggetSoulforgedSteel",'I',"ingotSoulforgedSteel");
-        addSteelShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING),"NNN","NNN","NNN","NNN",'N',"nuggetSoulforgedSteel");
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR), " NN ", "NIIN", "NIIN", " NN ", 'N', "nuggetSoulforgedSteel", 'I', "ingotSoulforgedSteel");
+        addSteelShapedOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING), "NNN", "NNN", "NNN", "NNN", 'N', "nuggetSoulforgedSteel");
         for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 8, type.getMetadata()), "XXXX", 'X', type.getBlock());
             addSteelShapedRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()));

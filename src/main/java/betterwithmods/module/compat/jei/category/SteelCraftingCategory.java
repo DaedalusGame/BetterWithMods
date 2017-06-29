@@ -1,7 +1,6 @@
 package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.ICraftingGridHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -74,8 +73,8 @@ public class SteelCraftingCategory extends BlankRecipeCategory<IRecipeWrapper> {
 
         recipeLayout.setRecipeTransferButton(145, 185);
 
-        if(recipeWrapper instanceof SteelShapelessRecipe)
-            recipeLayout.setShapeless();
+//        if(recipeWrapper instanceof SteelShapelessRecipe)
+//            recipeLayout.setShapeless();
 
         List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
         List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);

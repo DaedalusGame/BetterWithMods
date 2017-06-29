@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "betterwithmods:booster"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "betterwithmods:rope"
+    },
+    {
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

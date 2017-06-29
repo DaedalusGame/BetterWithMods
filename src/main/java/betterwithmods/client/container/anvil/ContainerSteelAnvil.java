@@ -2,7 +2,7 @@ package betterwithmods.client.container.anvil;
 
 import betterwithmods.client.container.inventory.SlotCraftingItemHandler;
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
-import betterwithmods.common.registry.steelanvil.SteelCraftingManager;
+import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -53,7 +53,7 @@ public class ContainerSteelAnvil extends Container {
      * Callback for when the crafting matrix is changed.
      */
     public void onCraftMatrixChanged(IInventory matrix) {
-        this.craftResult.setInventorySlotContents(0, SteelCraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, te.getWorld()));
+        this.craftResult.setInventorySlotContents(0, AnvilCraftingManager.findMatchingResult(this.craftMatrix, te.getWorld()));
     }
 
     /**

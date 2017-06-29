@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
@@ -77,6 +78,7 @@ public class Rustic extends CompatFeature {
         registerBlock(CORNER, new ItemBlockMini(CORNER));
         ItemBark.barks.add("olive");
         ItemBark.barks.add("ironwood");
+
     }
 
     @Override
@@ -91,19 +93,22 @@ public class Rustic extends CompatFeature {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
+        Block log = getBlock("rustic:log");
+        Block planks = getBlock("rustic:planks");
+
+        BWOreDictionary.registerWood(new ItemStack(log), new ItemStack(planks, 1, 0), ItemBark.getStack("olive", 1));
+        BWOreDictionary.registerWood(new ItemStack(log, 1, 1), new ItemStack(planks, 1, 1), ItemBark.getStack("ironwood", 1));
         ItemStack rope = new ItemStack(getBlock(new ResourceLocation("rustic", "rope")));
         RecipeUtils.removeRecipes(rope);
         RecipeUtils.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
         RecipeUtils.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
-        Block plank = getBlock("rustic:planks");
-        Block log = getBlock("rustic:log");
         for (int i = 0; i < 2; i++) {
-            SawRecipes.addSawRecipe(log, i, new ItemStack[]{new ItemStack(plank, 4, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), ItemBark.getStack(woods[i + 6], 1)});
-            SawRecipes.addSawRecipe(plank, i, new ItemStack(SIDING, 2, i));
+            SawRecipes.addSawRecipe(log, i, new ItemStack[]{new ItemStack(planks, 4, i), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 2), ItemBark.getStack(woods[i + 6], 1)});
+            SawRecipes.addSawRecipe(planks, i, new ItemStack(SIDING, 2, i));
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            RecipeUtils.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
+            RecipeUtils.addOreRecipe(new ItemStack(planks, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
             RecipeUtils.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
             RecipeUtils.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
         }

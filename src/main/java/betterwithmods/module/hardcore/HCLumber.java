@@ -5,20 +5,14 @@ import betterwithmods.common.registry.ChoppingRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.List;
 
 /**
  * Created by tyler on 4/20/17.
@@ -82,6 +76,7 @@ public class HCLumber extends Feature {
             ItemStack stack = RecipeUtils.getStackFromState(evt.getState());
 
             BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getLog(1).isItemEqual(stack)).findFirst().orElse(null);
+            System.out.println(wood);
             if (wood != null) {
                 evt.getDrops().clear();
                 evt.getDrops().addAll(Lists.newArrayList(wood.getPlank(1), wood.getSawdust(2), wood.getBark(1)));

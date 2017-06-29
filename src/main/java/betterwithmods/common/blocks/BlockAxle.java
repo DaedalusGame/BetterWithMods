@@ -10,14 +10,13 @@ import betterwithmods.common.BWSounds;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -268,6 +267,11 @@ public class BlockAxle extends BlockRotate implements IMechanical, IAxle, IMulti
     private EnumFacing.Axis orientationFromMeta(int meta) {
         int powerLevel = 3 * powerLevelFromMeta(meta);
         return DirUtils.getAxisFromLegacy(meta - powerLevel);
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        return getDefaultState().withProperty(AXIS, DirUtils.convertEntityOrientationToFacing(placer, facing).getAxis());
     }
 
     @Override

@@ -24,6 +24,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
@@ -256,10 +257,28 @@ public class HCHunger extends CompatFeature {
     //Shake Hunger bar whenever any exhaustion is given?
     @SubscribeEvent
     public void onExhaust(ExhaustionEvent.ExhaustionAddition event) {
-        if(event.player.world.getTotalWorldTime()%20==0 && event.deltaExhaustion > 0.05) {
+        if (event.player.world.getTotalWorldTime() % 20 == 0 && event.deltaExhaustion > 0.05) {
             NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
         }
 
+    }
+
+    @SubscribeEvent
+    public void saveSoup(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem() != null) {
+            if (event.getItem().getItem() instanceof ItemSoup) {
+                if (event.getItem().getCount() > 0) {
+                    ItemStack result = event.getResultStack();
+                    event.setResultStack(event.getItem());
+                    if (event.getEntityLiving() instanceof EntityPlayer) {
+                        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+                        if (!player.inventory.addItemStackToInventory(result)) {
+                            player.dropItem(result, false);
+                        }
+                    }
+                }
+            }
+        }
     }
     //TODO fix Hunger starting as vanilla 20.
 

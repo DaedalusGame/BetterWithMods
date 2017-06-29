@@ -10,6 +10,7 @@ import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
@@ -24,6 +25,7 @@ import betterwithmods.common.registry.steelanvil.SteelShapedRecipe;
 import betterwithmods.common.registry.steelanvil.SteelShapelessRecipe;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
+import betterwithmods.util.RecipeUtils;
 import com.google.common.collect.Lists;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
@@ -35,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CRUCIBLE;
@@ -78,14 +81,15 @@ public class JEI extends BlankModPlugin {
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(SteelCraftingManager.getInstance().getRecipeList(), SteelCraftingCategory.UID);
 
-        reg.addRecipeCategoryCraftingItem(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(BlockMechMachines.getStack(TURNTABLE), TurntableRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(BlockCookingPot.getStack(CAULDRON), CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(BlockCookingPot.getStack(CRUCIBLE), CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SAW), SawRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(new ItemStack(Blocks.BRICK_BLOCK), KilnRecipeCategory.UID);
-        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.STEEL_ANVIL), SteelCraftingCategory.UID);
+        reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
+        reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
+        reg.addRecipeCatalyst(BlockMechMachines.getStack(TURNTABLE), TurntableRecipeCategory.UID);
+        reg.addRecipeCatalyst(BlockCookingPot.getStack(CAULDRON), CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
+        reg.addRecipeCatalyst(BlockCookingPot.getStack(CRUCIBLE), CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.SAW), SawRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(Blocks.BRICK_BLOCK), KilnRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.STEEL_ANVIL), SteelCraftingCategory.UID);
+        reg.addRecipeCatalyst(KilnStructureManager.KILN_BLOCKS.stream().map(RecipeUtils::getStackFromState).collect(Collectors.toList()), KilnRecipeCategory.UID);
 
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14,  CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14,  CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);

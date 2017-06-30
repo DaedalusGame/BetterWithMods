@@ -11,8 +11,8 @@ import net.minecraftforge.items.IItemHandler;
 public class InventorySteelCrafting extends InventoryCrafting implements ISidedInventory {
 
     public TileEntitySteelAnvil craft;
-    private IItemHandler handler;
     public Container container;
+    private IItemHandler handler;
 
     public InventorySteelCrafting(Container container, TileEntitySteelAnvil te) {
         super(container, 4, 4);
@@ -44,14 +44,12 @@ public class InventorySteelCrafting extends InventoryCrafting implements ISidedI
             ItemStack itemstack;
             if (stack.getCount() <= decrement) {
                 itemstack = stack.copy();
-                stack = ItemStack.EMPTY;
                 craft.setInventorySlotContents(slot, ItemStack.EMPTY);
                 this.container.onCraftMatrixChanged(this);
                 return itemstack;
             } else {
                 itemstack = stack.splitStack(decrement);
                 if (stack.getCount() == 0) {
-                    stack = ItemStack.EMPTY;
                     craft.setInventorySlotContents(slot, ItemStack.EMPTY);
                 }
                 this.container.onCraftMatrixChanged(this);

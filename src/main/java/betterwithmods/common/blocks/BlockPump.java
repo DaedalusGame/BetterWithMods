@@ -14,7 +14,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -133,14 +132,13 @@ public class BlockPump extends BlockRotate implements IMechanicalBlock, IMultiVa
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase entity, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
-        return setFacingInBlock(state, entity.getHorizontalFacing());
+        return setFacingInBlock(state, entity.isSneaking() ? entity.getHorizontalFacing().getOpposite() : entity.getHorizontalFacing());
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity,
                                 ItemStack stack) {
-        EnumFacing facing = DirUtils.convertEntityOrientationToFlatFacing(entity, EnumFacing.NORTH);
-        setFacingInBlock(state, facing);
+
     }
 
     @Override

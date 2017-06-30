@@ -75,6 +75,8 @@ public class BWOreDictionary {
         registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
 
+
+        registerOre("hideScoured", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER));
         registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
 
         registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));

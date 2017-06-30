@@ -271,7 +271,7 @@ public class BlockAxle extends BlockRotate implements IMechanical, IAxle, IMulti
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getDefaultState().withProperty(AXIS, DirUtils.convertEntityOrientationToFacing(placer, facing).getAxis());
+        return getDefaultState().withProperty(AXIS, facing.getAxis());
     }
 
     @Override

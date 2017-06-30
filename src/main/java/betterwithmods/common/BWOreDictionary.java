@@ -25,6 +25,7 @@ import java.util.stream.IntStream;
  */
 public class BWOreDictionary {
 
+    public static List<ItemStack> seedNames;
     public static List<ItemStack> cropNames;
     public static List<ItemStack> dustNames;
     public static List<ItemStack> oreNames;
@@ -142,6 +143,7 @@ public class BWOreDictionary {
         oreNames = getOreNames("ore");
         ingotNames = getOreNames("ingot");
         cropNames = getOreNames("crop");
+        seedNames = getOreNames("seed");
     }
 
     public static String getSuffix(ItemStack stack, String startingPrefix) {

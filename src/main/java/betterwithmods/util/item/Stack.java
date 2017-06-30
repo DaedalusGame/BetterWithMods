@@ -1,5 +1,6 @@
 package betterwithmods.util.item;
 
+import betterwithmods.common.registry.OreStack;
 import com.google.common.base.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -37,12 +38,20 @@ public class Stack {
         this.type = Type.ITEM;
     }
 
+    public Stack(Item item) {
+        this(item, 0);
+    }
+
     public Stack(Block block, int meta) {
         this.data = block;
         this.meta = meta;
         this.type = Type.BLOCK;
     }
 
+    public Stack(String ore) {
+        this.data = new OreStack(ore, 1);
+        this.type = Type.ORE;
+    }
 
     public Object getData() {
         return this.data;
@@ -58,26 +67,28 @@ public class Stack {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Stack))
+        if (!(o instanceof Stack))
             return false;
         Stack stack = (Stack) o;
+        if (stack.type != ((Stack) o).getType())
+            return false;
         boolean wild = meta == OreDictionary.WILDCARD_VALUE || stack.meta == OreDictionary.WILDCARD_VALUE;
         return wild ? stack.data == this.data : (stack.data == this.data && this.meta == stack.meta);
     }
 
     @Override
     public int hashCode() {
-        boolean wild = meta == OreDictionary.WILDCARD_VALUE;
         return Objects.hashCode(data);
-    }
-
-    private enum Type {
-        BLOCK,
-        ITEM
     }
 
     @Override
     public String toString() {
-        return String.format("%s->%s:%s:%s", getType(), getType() == Type.BLOCK ? ((Block)getData()).getUnlocalizedName() : ((Item)getData()).getUnlocalizedName(new ItemStack((Item) data,0,meta)), getMeta(), hashCode());
+        return String.format("%s->%s:%s:%s", getType(), getType() == Type.BLOCK ? ((Block) getData()).getUnlocalizedName() : ((Item) getData()).getUnlocalizedName(new ItemStack((Item) data, 0, meta)), getMeta(), hashCode());
+    }
+
+    private enum Type {
+        BLOCK,
+        ITEM,
+        ORE
     }
 }

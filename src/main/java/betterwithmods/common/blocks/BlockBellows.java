@@ -4,9 +4,11 @@ import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWSounds;
+import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
+import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,7 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -136,8 +137,7 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
                 if (gettingPower) {
                     world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
                     blow(world, pos);
-                }
-                else {
+                } else {
                     world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
                 }
                 liftCollidingEntities(world, pos);
@@ -225,7 +225,36 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
     public void blow(World world, BlockPos pos) {
         if (isMechanicalOn(world, pos)) {
             stokeFlames(world, pos);
+            blowItems(world, pos);
         }
+    }
+
+    public void blowItems(World world, BlockPos pos) {
+        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
+        BlockPos pos2 = pos.offset(facing, 4);
+        AxisAlignedBB box = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos2.getX() + 1, pos2.getY() + 1, pos2.getZ() + 1);
+
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, box);
+        for (EntityItem item : items) {
+            blowItem(pos, facing, item);
+        }
+    }
+
+    public void blowItem(BlockPos pos, EnumFacing facing, EntityItem item) {
+        double x = 0, z = 0;
+
+        if (WorldUtils.getDistance(pos, item.getPosition()) > BellowsManager.getWeight(item.getItem()))
+            return;
+        switch (facing.getAxis()) {
+            case X:
+                x += facing.getAxisDirection().getOffset();
+                break;
+            case Z:
+                z += facing.getAxisDirection().getOffset();
+                break;
+        }
+        float scale = 1 / 16f;
+        item.addVelocity(x * scale, 0, z * scale);
     }
 
     public void playStateChangeSound(World world, BlockPos pos) {

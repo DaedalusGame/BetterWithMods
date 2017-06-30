@@ -19,7 +19,7 @@ public final class API {
 
     // --------------------------------------------------------------------- //
 
-    // Set in RTFM pre-init, prefer using static entry point classes instead.
+    // Set in RTFM pre-postInit, prefer using static entry point classes instead.
     public static li.cil.manual.api.detail.ManualAPI manualAPI;
 
     private API() {

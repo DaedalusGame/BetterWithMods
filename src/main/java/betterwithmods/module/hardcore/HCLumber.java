@@ -76,7 +76,6 @@ public class HCLumber extends Feature {
             ItemStack stack = RecipeUtils.getStackFromState(evt.getState());
 
             BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getLog(1).isItemEqual(stack)).findFirst().orElse(null);
-            System.out.println(wood);
             if (wood != null) {
                 evt.getDrops().clear();
                 evt.getDrops().addAll(Lists.newArrayList(wood.getPlank(1), wood.getSawdust(2), wood.getBark(1)));

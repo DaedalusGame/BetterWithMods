@@ -20,7 +20,7 @@ import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import li.cil.manual.api.API;
 import li.cil.manual.common.api.ManualAPIImpl;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
@@ -61,6 +61,7 @@ public class BWRegistry {
 
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
         KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
+
     }
 
     public static void init() {
@@ -80,6 +81,7 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
+        BellowsManager.postInit();
     }
 
     /**

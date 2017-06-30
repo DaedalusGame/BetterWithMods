@@ -9,16 +9,13 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.ModuleLoader;
 import li.cil.manual.api.ManualAPI;
-import li.cil.manual.api.prefab.manual.ItemStackTabIconRenderer;
 import li.cil.manual.api.prefab.manual.ResourceContentProvider;
 import li.cil.manual.api.prefab.manual.TextureTabIconRenderer;
 import li.cil.manual.client.manual.provider.*;
@@ -75,10 +72,6 @@ public class ClientProxy implements IProxy {
         ManualAPI.addProvider("block", new BlockImageProvider());
         ManualAPI.addProvider("oredict", new OreDictImageProvider());
         ManualAPI.addTab(new TextureTabIconRenderer(new ResourceLocation(BWMod.MODID, "textures/gui/manual_home.png")), "bwm.manual.home", "%LANGUAGE%/index.md");
-        ManualAPI.addTab(new ItemStackTabIconRenderer(new ItemStack(BWMBlocks.HAND_CRANK)), "bwm.manual.mechanical", "%LANGUAGE%/mechanical/index.md");
-        ManualAPI.addTab(new ItemStackTabIconRenderer(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE)), "bwm.manual.blocks", "%LANGUAGE%/blocks/index.md");
-        ManualAPI.addTab(new ItemStackTabIconRenderer(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), "bwm.manual.items", "%LANGUAGE%/items/index.md");
-
     }
 
     @Override

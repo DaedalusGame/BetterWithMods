@@ -30,8 +30,7 @@ With [Tanned Leather](../items/tanned_leather.md), Leather Belts can now be made
 
 * The [Filtered Hopper](../blocks/hopper.md) is a multi-purpose machine that can pick up items on top of it and be filtered with certain items to allow specified groups of items through (Find more in [Hopper Filters](../blocks/hopper.md)). It is required to create [Hellfire Dust](../items/hellfire.md) and later [Soul Urns](../blocks/soul_urn.md)
 
-* The [Bellows](../blocks/bellows.md) is an air bladder that when given mechanical power will contract and blow a gust at the 3x3 in front of it, and will expand when the mechanical power is removed.
-This gust of air can be used to stoke the fire's of a [Hibachi](../blocks/hibachi.md) to allowing the [Cauldron](../blocks/cauldron.md) to process Stoked Recipes as well as create a [Kiln](../blocks/kiln.md).
+* The [Bellows](../blocks/bellows.md) is an air bladder that when given mechanical power will contract and blow a gust at the 3x3 in front of it, and will expand when the mechanical power is removed.This gust of air can be used to stoke the fire's of a [Hibachi](../blocks/hibachi.md) to allowing the [Cauldron](../blocks/cauldron.md) to process Stoked Recipes as well as create a [Kiln](../blocks/kiln.md).
 
 
  

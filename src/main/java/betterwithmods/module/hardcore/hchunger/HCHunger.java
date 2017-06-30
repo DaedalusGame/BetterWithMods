@@ -53,6 +53,7 @@ import squeek.applecore.api.hunger.HungerEvent;
 public class HCHunger extends CompatFeature {
     public HCHunger() {
         super("applecore");
+        this.configName = "HCHunger";
     }
 
     @Override

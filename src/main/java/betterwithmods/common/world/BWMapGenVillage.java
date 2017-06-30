@@ -91,8 +91,8 @@ public class BWMapGenVillage extends MapGenVillage {
     @Override
     protected StructureStart getStructureStart(int x, int z) {
         VillageStatus status = VillageStatus.getStatus(x, z);
-//        if (GlobalConfig.debug)
-        System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x, z, x * 16, z * 16);
+        if (GlobalConfig.debug)
+            System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x, z, x * 16, z * 16);
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
     }
 
@@ -125,10 +125,6 @@ public class BWMapGenVillage extends MapGenVillage {
     public static class AbandonedStart extends StructureStart {
         private boolean hasMoreThanTwoComponents;
         private VillageStatus status;
-
-//        private static final Set<Class> REMOVE_STRUCTURE_ABANDONED = Sets.newHashSet(House4Garden.class, Church.class, House1.class, WoodHut.class, Hall.class, Field1.class, Field2.class, House2.class, House3.class, Torch.class);
-//        private static final Set<Class> REMOVE_STRUCTURE_SEMI = Sets.newHashSet(House4Garden.class, Church.class, House1.class, WoodHut.class, Hall.class, BWField1.class, BWField2.class, House2.class, House3.class, Torch.class);
-//        private static final Set<Class> REMOVE_STRUCTURE_NORMAL = Sets.newHashSet(BWChurch.class, BWField1.class, BWField2.class, BWHouse1.class, BWHouse2.class, BWHouse3.class, BWHouse4.class, BWHouse5.class, BWWoodHut.class);
 
         public AbandonedStart() {
         }

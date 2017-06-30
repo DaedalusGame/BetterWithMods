@@ -1,6 +1,7 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.hardcore.HCBonemeal;
 import com.google.common.collect.ImmutableList;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
@@ -19,10 +21,6 @@ import java.util.function.Consumer;
 public class BWIMCHandler {
 
     private static final HashMap<String, Consumer<Object>> IMC_HANDLER = new HashMap<>();
-
-    public static void registerIMC(String key, Consumer<Object> function) {
-        IMC_HANDLER.put(key, function);
-    }
 
     static {
         registerIMC("registerKilnBlock", object -> {
@@ -38,6 +36,15 @@ public class BWIMCHandler {
             ItemStack stack = (ItemStack) object;
             HCBonemeal.registerFertilzier(stack);
         });
+
+        registerIMC("addBellowing", object -> {
+            Pair<ItemStack, Float> pair = (Pair<ItemStack, Float>) object;
+            BellowsManager.put(pair.getLeft(), pair.getRight());
+        });
+    }
+
+    public static void registerIMC(String key, Consumer<Object> function) {
+        IMC_HANDLER.put(key, function);
     }
 
     public static void processIMC(ImmutableList<IMCMessage> message) {

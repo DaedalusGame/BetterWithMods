@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class AxeLeaves extends Feature {
     @Override
     public String getFeatureDescription() {
-        return "Axes are fast a breaking leaves";
+        return "Axes are fast at breaking leaves";
     }
 
     @Override

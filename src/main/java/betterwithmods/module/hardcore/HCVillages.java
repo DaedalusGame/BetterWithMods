@@ -25,6 +25,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HCVillages extends Feature {
     public static AtomicInteger semiabandonedRadius = new AtomicInteger(), normalRadius = new AtomicInteger();
+
+    public static boolean disableAllComplexBlocks;
+    public static boolean disableVillagerSpawning;
     @Override
     public String getFeatureDescription() {
         return "Makes it so villages with in the reaches of the spawn zone are abandoned and gradually gain more resources the further out. What this means to be gained by the player.";
@@ -34,6 +37,8 @@ public class HCVillages extends Feature {
     public void setupConfig() {
         semiabandonedRadius.set( loadPropInt("Semi-Abandoned Village Radius", "Block radius from 0,0 at which villages are now semi-abandoned, all villages inside this radius are abandoned", 2000));
         normalRadius.set( loadPropInt("Normal Village Radius", "Block radius from 0,0 at which villages are now normal, all villages in between this and semi-abandoned are semi-abandoned", 3000));
+        disableAllComplexBlocks = loadPropBool("Disable All Complex Blocks", "Removes any and all useful blocks from villages, including ladders, stairs, tables and more", false);
+        disableVillagerSpawning = loadPropBool("Replace Villager Spawning with Nitwits", "Replaces all villager spawns with Nitwits, which have no trades", true);
     }
 
     @Override
@@ -53,7 +58,6 @@ public class HCVillages extends Feature {
         VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse3());
         VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse4());
         VillagerRegistry.instance().registerVillageCreationHandler(new BWHouse5());
-
 
         MapGenStructureIO.registerStructure(BWMapGenVillage.AbandonedStart.class, new ResourceLocation(BWMod.MODID, "BWAbandonedStart").toString());
         MapGenStructureIO.registerStructureComponent(BWField1.class, new ResourceLocation(BWMod.MODID, "EmptyField").toString());

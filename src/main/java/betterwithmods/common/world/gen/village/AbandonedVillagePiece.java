@@ -1,6 +1,7 @@
 package betterwithmods.common.world.gen.village;
 
 import betterwithmods.common.world.BWMapGenVillage;
+import betterwithmods.module.hardcore.HCVillages;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +30,6 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
         }
     }
 
-
     @Override
     protected void spawnVillagers(World worldIn, StructureBoundingBox structurebb, int x, int y, int z, int count) {
 
@@ -53,32 +53,28 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
         }
     }
 
-    @Override
     protected void placeTorch(World p_189926_1_, EnumFacing p_189926_2_, int p_189926_3_, int p_189926_4_, int p_189926_5_, StructureBoundingBox p_189926_6_) {
         //NO-OP
     }
-
 
     @Override
     public abstract StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size);
 
     @Override
     protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof) {
-        switch (status) {
-            case NORMAL:
-                return super.chooseForgeProfession(count, prof);
-            case SEMIABANDONED:
-                VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
-                String name = profession.getRegistryName().toString();
-                System.out.println(name);
-                if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
-                    return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
-                else
-                    return profession;
-            default:
+        if (status == BWMapGenVillage.VillageStatus.NORMAL || !HCVillages.disableVillagerSpawning)
+            return super.chooseForgeProfession(count, prof);
+        else if (status == BWMapGenVillage.VillageStatus.SEMIABANDONED) {
+            VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
+            String name = profession.getRegistryName().toString();
+            if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
                 return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
-
+            else
+                return profession;
+        } else {
+            return VillagerRegistry.instance().getRegistry().getValue(new ResourceLocation("minecraft:nitwit"));
         }
+
     }
 
 

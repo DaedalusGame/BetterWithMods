@@ -1,6 +1,7 @@
 package betterwithmods.common.world.gen.village;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.module.hardcore.HCVillages;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -77,6 +78,13 @@ public class BWWoodHut extends AbandonedVillagePiece {
         IBlockState stair = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState supports = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
         IBlockState table = this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
+
+        if (HCVillages.disableAllComplexBlocks) {
+            stair = primary;
+            table = Blocks.AIR.getDefaultState();
+
+        }
+
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 3, 5, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 3, 0, 4, primary, primary, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 0, 1, 2, 0, 3, Blocks.DIRT.getDefaultState(), Blocks.DIRT.getDefaultState(), false);

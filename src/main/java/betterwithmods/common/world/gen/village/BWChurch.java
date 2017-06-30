@@ -1,5 +1,6 @@
 package betterwithmods.common.world.gen.village;
 
+import betterwithmods.module.hardcore.HCVillages;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
@@ -27,10 +28,12 @@ public class BWChurch extends AbandonedVillagePiece {
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45564_4_;
     }
+
     @Override
     public Class<?> getComponentClass() {
         return BWChurch.class;
     }
+
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
      * Mineshafts at the end, it adds Fences...
@@ -50,6 +53,13 @@ public class BWChurch extends AbandonedVillagePiece {
         IBlockState stair1 = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState stair2 = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST));
         IBlockState stair3 = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST));
+        IBlockState ladder = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.WEST);
+        if (HCVillages.disableAllComplexBlocks) {
+            stair1 = stair2 = stair3 = main;
+            ladder = Blocks.AIR.getDefaultState();
+        }
+
+
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 3, 3, 7, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 5, 1, 3, 9, 3, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 0, 0, 3, 0, 8, main, main, false);
@@ -92,10 +102,10 @@ public class BWChurch extends AbandonedVillagePiece {
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 0, 3, 6, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 4, 3, 6, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 3, 8, structureBoundingBoxIn);
-        IBlockState ladder = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.WEST);
+
 
         for (int i = 1; i <= 9; ++i) {
-            if(worldIn.rand.nextInt(2) == 0)
+            if (worldIn.rand.nextInt(2) == 0)
                 this.setBlockState(worldIn, ladder, 3, i, 3, structureBoundingBoxIn);
             else
                 this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 3, i, 3, structureBoundingBoxIn);

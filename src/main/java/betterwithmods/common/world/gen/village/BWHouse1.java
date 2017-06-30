@@ -1,6 +1,7 @@
 package betterwithmods.common.world.gen.village;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.module.hardcore.HCVillages;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -32,14 +33,11 @@ public class BWHouse1 extends AbandonedVillagePiece {
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
      * Mineshafts at the end, it adds Fences...
      */
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
-    {
-        if (this.averageGroundLvl < 0)
-        {
+    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+        if (this.averageGroundLvl < 0) {
             this.averageGroundLvl = this.getAverageGroundLevel(worldIn, structureBoundingBoxIn);
 
-            if (this.averageGroundLvl < 0)
-            {
+            if (this.averageGroundLvl < 0) {
                 return true;
             }
 
@@ -53,16 +51,23 @@ public class BWHouse1 extends AbandonedVillagePiece {
         IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST));
         IBlockState iblockstate4 = this.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState());
         IBlockState iblockstate5 = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
+
+        if (HCVillages.disableVillagerSpawning) {
+            iblockstate1 = iblockstate4;
+            iblockstate2 = iblockstate4;
+            iblockstate3 = iblockstate4;
+            table = Blocks.AIR.getDefaultState();
+            iblockstate5 = iblockstate;
+        }
+
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 7, 5, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 8, 0, 5, iblockstate, iblockstate, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 5, 0, 8, 5, 5, iblockstate, iblockstate, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 6, 1, 8, 6, 4, iblockstate, iblockstate, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 7, 2, 8, 7, 3, iblockstate, iblockstate, false);
 
-        for (int i = -1; i <= 2; ++i)
-        {
-            for (int j = 0; j <= 8; ++j)
-            {
+        for (int i = -1; i <= 2; ++i) {
+            for (int j = 0; j <= 8; ++j) {
                 this.setBlockState(worldIn, iblockstate1, j, 6 + i, i, structureBoundingBoxIn);
                 this.setBlockState(worldIn, iblockstate2, j, 6 + i, 5 - i, structureBoundingBoxIn);
             }
@@ -117,20 +122,16 @@ public class BWHouse1 extends AbandonedVillagePiece {
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 2, 0, structureBoundingBoxIn);
 //        this.createVillageDoor(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
 
-        if (this.getBlockStateFromPos(worldIn, 1, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR)
-        {
+        if (this.getBlockStateFromPos(worldIn, 1, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR) {
             this.setBlockState(worldIn, iblockstate5, 1, 0, -1, structureBoundingBoxIn);
 
-            if (this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getBlock() == Blocks.GRASS_PATH)
-            {
+            if (this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getBlock() == Blocks.GRASS_PATH) {
                 this.setBlockState(worldIn, Blocks.GRASS.getDefaultState(), 1, -1, -1, structureBoundingBoxIn);
             }
         }
 
-        for (int l = 0; l < 6; ++l)
-        {
-            for (int k = 0; k < 9; ++k)
-            {
+        for (int l = 0; l < 6; ++l) {
+            for (int k = 0; k < 9; ++k) {
                 this.clearCurrentPositionBlocksUpwards(worldIn, k, 9, l, structureBoundingBoxIn);
                 this.replaceAirAndLiquidDownwards(worldIn, iblockstate, k, -1, l, structureBoundingBoxIn);
             }

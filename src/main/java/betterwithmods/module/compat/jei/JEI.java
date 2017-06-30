@@ -37,7 +37,6 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CRUCIBLE;
@@ -89,7 +88,7 @@ public class JEI extends BlankModPlugin {
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.SAW), SawRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(Blocks.BRICK_BLOCK), KilnRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.STEEL_ANVIL), SteelCraftingCategory.UID);
-        reg.addRecipeCatalyst(KilnStructureManager.KILN_BLOCKS.stream().map(RecipeUtils::getStackFromState).collect(Collectors.toList()), KilnRecipeCategory.UID);
+        KilnStructureManager.KILN_BLOCKS.stream().map(RecipeUtils::getStackFromState).forEach(stack -> reg.addRecipeCatalyst(stack, KilnRecipeCategory.UID));
 
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14,  CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14,  CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);

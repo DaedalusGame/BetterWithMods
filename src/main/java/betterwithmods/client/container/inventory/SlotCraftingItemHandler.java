@@ -36,7 +36,6 @@ public class SlotCraftingItemHandler extends Slot {
                 matrix.extractItem(i, 1, false);
             }
         }
-        //craftingInv.craft.setResult(ExtremeCraftingManager.getInstance().findMatchingRecipe(craftingInv, craftingInv.craft.getWorld()));
         craftingInv.container.onCraftMatrixChanged(craftingInv);
         return stack;
     }

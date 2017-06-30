@@ -170,7 +170,8 @@ public class HCBuckets extends Feature {
                                 fill.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).fill(new FluidStack(FluidRegistry.WATER, 1000), true);
                                 evt.setFilledBucket(fill);
                             }
-                            evt.setResult(Event.Result.DENY);
+                            evt.setResult(Event.Result.ALLOW);
+                            return;
                         }
                     }
                 } else if (fluid != null && fluid.getFluid() != null && fluid.getFluid() == FluidRegistry.WATER) {

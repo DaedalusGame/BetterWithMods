@@ -63,7 +63,7 @@ public class BWHouse2 extends AbandonedVillagePiece {
             iblockstate4 = cobblestone;
             iblockstate6 = Blocks.AIR.getDefaultState();
             iblockstate7 = cobblestone;
-            table = planks;
+            table = Blocks.AIR.getDefaultState();
         }
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 1, 0, 9, 4, 6, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 9, 0, 6, cobblestone, cobblestone, false);

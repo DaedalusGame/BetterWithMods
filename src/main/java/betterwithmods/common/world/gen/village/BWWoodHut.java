@@ -82,7 +82,6 @@ public class BWWoodHut extends AbandonedVillagePiece {
         if (HCVillages.disableAllComplexBlocks) {
             stair = primary;
             table = Blocks.AIR.getDefaultState();
-
         }
 
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 3, 5, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);

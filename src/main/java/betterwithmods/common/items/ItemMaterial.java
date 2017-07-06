@@ -37,6 +37,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab))
         for (EnumMaterial material : EnumMaterial.values()) {
             items.add(getMaterial(material));
         }

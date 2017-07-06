@@ -9,7 +9,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 
 public class BlockMultiPane extends BlockPane implements IMultiVariants {
     public static final PropertyEnum<EnumPaneType> TYPES = PropertyEnum.create("type", EnumPaneType.class);
@@ -39,6 +42,13 @@ public class BlockMultiPane extends BlockPane implements IMultiVariants {
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(TYPES).getMeta();
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnumPaneType type : EnumPaneType.values()) {
+            items.add(new ItemStack(this, 1, type.getMeta()));
+        }
     }
 
     @Override

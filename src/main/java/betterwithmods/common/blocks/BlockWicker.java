@@ -19,7 +19,7 @@ public class BlockWicker extends BlockPane implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"east=false,north=true,south=true,type=wicker,west=false"};
+        return new String[]{"east=false,north=true,south=true,west=false"};
     }
 
     @Override

@@ -2,10 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.BlockCookingPot;
-import betterwithmods.common.blocks.BlockMechMachines;
-import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.CuttingRecipe;
 import betterwithmods.common.registry.DyeWithTagRecipe;
@@ -86,6 +83,8 @@ public class CraftingRecipes extends Feature {
 
 
         //Type Blocks
+        RecipeUtils.addOreRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.WICKER), "XX", "XX", 'X', new ItemStack(BWMBlocks.PANE, 1, BlockBWMPane.EnumPaneType.WICKER.getMeta()));
+        RecipeUtils.addOreRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.DUNG), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
         RecipeUtils.addOreRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.PADDING), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
         RecipeUtils.addOreRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.SOAP), "XXX", "XXX", "XXX", 'X', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP));
         RecipeUtils.addOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), "SSS", "MEM", "FFF", 'S', Items.SUGAR, 'M', Items.MILK_BUCKET, 'E', BWMItems.RAW_EGG, 'F', "foodFlour");
@@ -129,8 +128,10 @@ public class CraftingRecipes extends Feature {
         RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), "gemDiamond", "ingotIron", BWMItems.CREEPER_OYSTER);
         RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET, 9), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
         RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
+        RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.DUNG.getMeta()));
         RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.PADDING.getMeta()));
         RecipeUtils.addShapelessOreRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP, 9), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.SOAP.getMeta()));
+        RecipeUtils.addShapelessOreRecipe(new ItemStack(BWMBlocks.PANE, 4, BlockBWMPane.EnumPaneType.WICKER.getMeta()), new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.WICKER.getMeta()));
         RecipeUtils.addShapelessOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), Blocks.PUMPKIN, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour");
         RecipeUtils.addShapelessOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), Items.APPLE, Items.SUGAR, BWMItems.RAW_EGG, "foodFlour");
         RecipeUtils.addShapelessOreRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FLOUR));

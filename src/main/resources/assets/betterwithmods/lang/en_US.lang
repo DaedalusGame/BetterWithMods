@@ -42,6 +42,8 @@ tile.bwm:aesthetic.7.name=White Cobble
 tile.bwm:aesthetic.8.name=Ender Block
 tile.bwm:aesthetic.9.name=Block of Padding
 tile.bwm:aesthetic.10.name=Block of Soap
+tile.bwm:aesthetic.11.name=Block of Dung
+tile.bwm:aesthetic.12.name=Block of Wicker
 tile.bwm:advanced_bellows.name=Spring-Action Bellows
 
 tile.bwm:windmill.windmill.name=Windmill

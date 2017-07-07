@@ -78,6 +78,16 @@
           "down": "betterwithmods:blocks/soap",
           "side": "betterwithmods:blocks/soap"
         }
+      },
+	  "wicker": {
+        "textures": {
+          "side": "betterwithmods:blocks/wicker"
+        }
+      },
+	  "dung": {
+        "textures": {
+          "side": "betterwithmods:blocks/dung"
+        }
       }
     }
   }

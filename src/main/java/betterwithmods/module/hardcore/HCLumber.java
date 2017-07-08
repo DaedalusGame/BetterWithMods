@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,17 +47,20 @@ public class HCLumber extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-
+        if (!Loader.isModLoaded("primal")) {
+            for (IRecipe recipe : BWOreDictionary.logRecipes) {
+                ItemStack plank = recipe.getRecipeOutput();
+                BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getPlank(1).isItemEqual(plank)).findFirst().orElse(null);
+                if (wood != null) {
+                    registerHardcoreRecipe("HCLumber", new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
+                }
+            }
+        }
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        if (!Loader.isModLoaded("primal")) {
-            for (BWOreDictionary.Wood wood : BWOreDictionary.woods) {
-//                BWMRecipes.removeRecipes(wood.plank);
-                BWMRecipes.addRecipe(new ChoppingRecipe(wood));
-            }
-        }
+
     }
 
     @Override

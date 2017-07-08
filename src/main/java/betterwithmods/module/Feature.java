@@ -11,6 +11,8 @@
 package betterwithmods.module;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.BWMRecipes;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -128,6 +130,11 @@ public class Feature {
 
     public static void registerTile(Class<? extends TileEntity> clazz, String key) {
         GameRegistry.registerTileEntity(clazz, BWMod.MODID + key);
+    }
+
+    public IRecipe registerHardcoreRecipe(String ID, IRecipe recipe) {
+        BWMRecipes.addHardcoreRecipe(ID, recipe);
+        return recipe;
     }
 
     public final boolean isClient() {

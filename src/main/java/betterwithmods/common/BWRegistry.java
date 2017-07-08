@@ -12,6 +12,7 @@ import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
@@ -29,6 +30,8 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -42,7 +45,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
@@ -92,6 +99,7 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
+        registerRecipes();
     }
 
     /**
@@ -188,5 +196,45 @@ public class BWRegistry {
         return potion;
     }
 
+    public static void registerRecipes() {
+        ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCDiamond")) {
+            replaceIRecipe("HCDiamond", reg);//retrieveRecipes("HCDiamond", reg);
+        }
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCLumber")) {
+            replaceIRecipe("HCLumber", reg);
+        }
+    }
 
+    private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
+        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
+        if (recipes != null) {
+            for (IRecipe recipe : recipes) {
+                ResourceLocation location = recipe.getRegistryName();
+                if (reg.containsKey(location))
+                    registerReplacements(reg.getValue(location), recipe);
+                else
+                    reg.register(recipe);
+            }
+        }
+    }
+
+    private static void replaceIRecipe (String category, ForgeRegistry<IRecipe> reg) {
+        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
+        if (recipes != null) {
+            for (IRecipe recipe : recipes) {
+                ResourceLocation location = recipe.getRegistryName();
+                if (reg.containsKey(location)) {
+                    reg.register(recipe);
+                }
+            }
+        }
+    }
+
+    private static void registerReplacements(IRecipe original, IRecipe from) {
+        NonNullList<Ingredient> ing = original.getIngredients();
+        for (int i = 0; i < ing.size(); i++) {
+            ing.set(i, from.getIngredients().get(i));
+        }
+    }
 }

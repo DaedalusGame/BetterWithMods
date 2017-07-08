@@ -11,9 +11,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,6 +38,7 @@ public class BWOreDictionary {
 
     public static List<ItemStack> planks;
     public static List<ItemStack> logs;
+    public static List<IRecipe> logRecipes = new ArrayList<>();
 
     public static void registerOres() {
 
@@ -120,15 +127,50 @@ public class BWOreDictionary {
                 new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
         );
+        woods.forEach(w -> getPlankOutput(w.getLog(1)));
         List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
-        //TODO work dict logs
-//        for(ItemStack log: logs) {
-//            ItemStack plank = BWMRecipes.getRecipeOutput(log);
-//            if(isOre(plank,"plankWood")) {
-//                Wood wood = new Wood(log,plank);
-//                woods.add(wood);
-//            }
-//        }
+        for (ItemStack log : logs) {
+            ItemStack plank = getPlankOutput(log);
+            if (!plank.isEmpty()) {
+                Wood wood = new Wood(log, plank);
+                woods.add(wood);
+            }
+        }
+    }
+
+    private static ItemStack getPlankOutput(ItemStack log) {
+        Iterator<IRecipe> it = CraftingManager.REGISTRY.iterator();
+        ItemStack stack = ItemStack.EMPTY;
+        while (it.hasNext() && stack.isEmpty()) {
+            IRecipe recipe = it.next();
+            if (recipe.getGroup().equals("planks")) {
+                if (isPlank(recipe.getRecipeOutput())) {
+                    NonNullList<Ingredient> ing = recipe.getIngredients();
+                    for (Ingredient in : ing) {
+                        for (ItemStack check : in.getMatchingStacks()) {
+                            if (check.isItemEqual(log)) {
+                                stack = recipe.getRecipeOutput().copy();
+                                logRecipes.add(recipe);
+                                break;
+                            }
+                        }
+                        if (!stack.isEmpty())
+                            break;
+                    }
+                }
+            }
+        }
+        return stack;
+    }
+
+    private static boolean isPlank(ItemStack output) {
+        for (ItemStack plank : OreDictionary.getOres("plankWood")) {
+            if (plank.getMetadata() == OreDictionary.WILDCARD_VALUE)
+                return output.getItem() == plank.getItem();
+            else if (plank.isItemEqual(output))
+                return true;
+        }
+        return false;
     }
 
     public static void registerOre(String ore, ItemStack... items) {

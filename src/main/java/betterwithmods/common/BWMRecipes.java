@@ -26,6 +26,21 @@ public final class BWMRecipes {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Set<String> USED_OD_NAMES = new TreeSet<>();
     private static File RECIPE_DIR = null;
+    private static final Map<String, List<IRecipe>> HARDCORE_RECIPES = new HashMap<>();
+
+    public static List<IRecipe> getHardcoreRecipes(String ID) {
+        if (HARDCORE_RECIPES.containsKey(ID))
+            return Collections.unmodifiableList(HARDCORE_RECIPES.get(ID));
+        return null;
+    }
+
+    public static IRecipe addHardcoreRecipe(String ID, IRecipe recipe) {
+        if (!HARDCORE_RECIPES.containsKey(ID)) {
+            HARDCORE_RECIPES.put(ID, new ArrayList<>());
+        }
+        HARDCORE_RECIPES.get(ID).add(recipe);
+        return recipe;
+    }
 
     public static List<IRecipe> getRecipes() {
         return Collections.unmodifiableList(RECIPES);

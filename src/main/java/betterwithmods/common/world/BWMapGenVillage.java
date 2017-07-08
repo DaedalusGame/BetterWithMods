@@ -1,10 +1,13 @@
 package betterwithmods.common.world;
 
-import betterwithmods.common.world.gen.village.*;
+import betterwithmods.common.world.gen.village.AbandonedVillagePiece;
+import betterwithmods.common.world.gen.village.Well;
+import betterwithmods.common.world.gen.village.field.BWFieldBase;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.module.hardcore.HCVillages;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -12,40 +15,73 @@ import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static net.minecraft.world.gen.structure.StructureVillagePieces.*;
+import static net.minecraft.world.gen.structure.StructureVillagePieces.Road;
+import static net.minecraft.world.gen.structure.StructureVillagePieces.Torch;
 
 /**
  * Created by tyler on 5/21/17.
  */
 public class BWMapGenVillage extends MapGenVillage {
-    public enum VillageStatus {
-        NORMAL(HCVillages.normalRadius.get()/16),
-        SEMIABANDONED(HCVillages.semiabandonedRadius.get()/16),
-        ABANDONED(0);
-        public static final VillageStatus[] VALUES = values();
-        private int radius;
-        VillageStatus(int radius) {
-            this.radius = radius;
-        }
+    public static List<StructureVillagePieces.PieceWeight> getPiecesAbandoned(Random random, int size) {
+        List<StructureVillagePieces.PieceWeight> list = Lists.<StructureVillagePieces.PieceWeight>newArrayList();
+        net.minecraftforge.fml.common.registry.VillagerRegistry.addExtraVillageComponents(list, random, size);
+        Iterator<StructureVillagePieces.PieceWeight> iterator = list.iterator();
 
-        public boolean inRadius(int x, int z) {
-            if(GlobalConfig.debug)
-                System.out.printf("Checking %s @a <%s,%s> r:%s\n", this.name(),x,z,radius);
-            return Math.abs(x) >=  radius || Math.abs(z) >= radius;
-        }
-
-        public static VillageStatus getStatus(int x, int z) {
-            for(VillageStatus status: VALUES) {
-                if(status.inRadius(x,z))
-                    return status;
+        while (iterator.hasNext()) {
+            if ((iterator.next()).villagePiecesLimit == 0) {
+                iterator.remove();
             }
-            return NORMAL;
         }
+        return list.stream().filter(piece -> AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) || Well.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
+    }
+
+    public static List<StructureVillagePieces.PieceWeight> getPiecesSemi(Random random, int size) {
+        List<StructureVillagePieces.PieceWeight> list = Lists.<StructureVillagePieces.PieceWeight>newArrayList();
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House4Garden.class, 4, MathHelper.getInt(random, 2 + size, 4 + size * 2)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Church.class, 20, MathHelper.getInt(random, 0 + size, 1 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House1.class, 20, MathHelper.getInt(random, 0 + size, 2 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.WoodHut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Hall.class, 15, MathHelper.getInt(random, 0 + size, 2 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House2.class, 15, MathHelper.getInt(random, 0, 1 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House3.class, 8, MathHelper.getInt(random, 0 + size, 3 + size * 2)));
+
+        net.minecraftforge.fml.common.registry.VillagerRegistry.addExtraVillageComponents(list, random, size);
+
+        Iterator<StructureVillagePieces.PieceWeight> iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            if ((iterator.next()).villagePiecesLimit == 0) {
+                iterator.remove();
+            }
+        }
+        return list.stream().filter(piece -> BWFieldBase.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
+    }
+
+    public static List<StructureVillagePieces.PieceWeight> getPiecesNormal(Random random, int size) {
+        List<StructureVillagePieces.PieceWeight> list = Lists.<StructureVillagePieces.PieceWeight>newArrayList();
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House4Garden.class, 4, MathHelper.getInt(random, 2 + size, 4 + size * 2)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Church.class, 20, MathHelper.getInt(random, 0 + size, 1 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House1.class, 20, MathHelper.getInt(random, 0 + size, 2 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.WoodHut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Hall.class, 15, MathHelper.getInt(random, 0 + size, 2 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field1.class, 3, MathHelper.getInt(random, 1 + size, 4 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field2.class, 3, MathHelper.getInt(random, 2 + size, 4 + size * 2)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House2.class, 15, MathHelper.getInt(random, 0, 1 + size)));
+        list.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House3.class, 8, MathHelper.getInt(random, 0 + size, 3 + size * 2)));
+        net.minecraftforge.fml.common.registry.VillagerRegistry.addExtraVillageComponents(list, random, size);
+        Iterator<StructureVillagePieces.PieceWeight> iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            if ((iterator.next()).villagePiecesLimit == 0) {
+                iterator.remove();
+            }
+        }
+        return list.stream().filter(piece -> !AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) && !Well.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
     }
 
     public int getSize() {
@@ -55,34 +91,60 @@ public class BWMapGenVillage extends MapGenVillage {
     @Override
     protected StructureStart getStructureStart(int x, int z) {
         VillageStatus status = VillageStatus.getStatus(x, z);
-        if(GlobalConfig.debug)
-            System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x,z,x * 16, z * 16);
+        if (GlobalConfig.debug || true)
+            System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x, z, x * 16, z * 16);
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
+    }
+
+    public enum VillageStatus {
+        NORMAL(HCVillages.normalRadius.get() / 16),
+        SEMIABANDONED(HCVillages.semiabandonedRadius.get() / 16),
+        ABANDONED(0);
+        public static final VillageStatus[] VALUES = values();
+        private int radius;
+
+        VillageStatus(int radius) {
+            this.radius = radius;
+        }
+
+        public static VillageStatus getStatus(int x, int z) {
+            for (VillageStatus status : VALUES) {
+                if (status.inRadius(x, z))
+                    return status;
+            }
+            return NORMAL;
+        }
+
+        public boolean inRadius(int x, int z) {
+            if (GlobalConfig.debug)
+                System.out.printf("Checking %s @a <%s,%s> r:%s\n", this.name(), x, z, radius);
+            return Math.abs(x) >= radius || Math.abs(z) >= radius;
+        }
     }
 
     public static class AbandonedStart extends StructureStart {
         private boolean hasMoreThanTwoComponents;
         private VillageStatus status;
 
-        private static final Set<Class> REMOVE_STRUCTURE_ABANDONED = Sets.newHashSet(House4Garden.class, Church.class, House1.class, WoodHut.class, Hall.class, Field1.class, Field2.class, House2.class, House3.class, Torch.class);
-        private static final Set<Class> REMOVE_STRUCTURE_SEMI = Sets.newHashSet(House4Garden.class, Church.class, House1.class, WoodHut.class, Hall.class, BWField1.class, BWField2.class, House2.class, House3.class, Torch.class);
-        private static final Set<Class> REMOVE_STRUCTURE_NORMAL = Sets.newHashSet(BWChurch.class, BWField1.class, BWField2.class, BWHouse1.class, BWHouse2.class, BWHouse3.class, BWHouse4.class, BWHouse5.class, BWWoodHut.class);
         public AbandonedStart() {
         }
 
         public AbandonedStart(World worldIn, Random rand, int x, int z, int size, VillageStatus status) {
             super(x, z);
             this.status = status;
-            List<StructureVillagePieces.PieceWeight> pieceWeights = getStructureVillageWeightedPieceList(rand, size).stream().filter(p -> {
-                if (this.status == VillageStatus.ABANDONED)
-                    return !REMOVE_STRUCTURE_ABANDONED.contains(p.villagePieceClass);
-                else if (this.status == VillageStatus.SEMIABANDONED)
-                    return !REMOVE_STRUCTURE_SEMI.contains(p.villagePieceClass);
-                else if (this.status == VillageStatus.NORMAL)
-                    return !REMOVE_STRUCTURE_NORMAL.contains(p.villagePieceClass);
-                return true;
-            }).collect(Collectors.toList());
-            BWStart start = new BWStart(status,worldIn.getBiomeProvider(), 0, rand, (x << 4) + 2, (z << 4) + 2, pieceWeights, size);
+            List<StructureVillagePieces.PieceWeight> pieceWeights;
+            switch (status) {
+                case NORMAL:
+                    pieceWeights = getPiecesNormal(rand, size);
+                    break;
+                case SEMIABANDONED:
+                    pieceWeights = getPiecesSemi(rand, size);
+                    break;
+                default:
+                    pieceWeights = getPiecesAbandoned(rand, size);
+                    break;
+            }
+            Well start = new Well(status, worldIn.getBiomeProvider(), 0, rand, (x << 4) + 2, (z << 4) + 2, pieceWeights, size);
             this.components.add(start);
             start.buildComponent(start, this.components, rand);
             List<StructureComponent> roads = start.pendingRoads;
@@ -90,21 +152,13 @@ public class BWMapGenVillage extends MapGenVillage {
             while (!roads.isEmpty()) {
                 int j = rand.nextInt(roads.size());
                 StructureComponent road = roads.remove(j);
-                if (road instanceof Village) {
-                    Village h = (Village) road;
-                    if(status != VillageStatus.NORMAL)
-                        h.isZombieInfested = true;
-                }
                 road.buildComponent(start, this.components, rand);
             }
             while (!houses.isEmpty()) {
                 int i = rand.nextInt(houses.size());
                 StructureComponent house = houses.remove(i);
-                if (house instanceof Village) {
-                    Village h = (Village) house;
-                    if(status != VillageStatus.NORMAL)
-                        h.isZombieInfested = true;
-                }
+                if (house instanceof Torch)
+                    continue;
                 house.buildComponent(start, this.components, rand);
             }
 
@@ -141,5 +195,6 @@ public class BWMapGenVillage extends MapGenVillage {
         }
     }
 
-
 }
+
+

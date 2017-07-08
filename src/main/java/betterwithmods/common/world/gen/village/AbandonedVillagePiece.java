@@ -27,8 +27,8 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
 
     public AbandonedVillagePiece(StructureVillagePieces.Start start, int type) {
         super(start, type);
-        if (start instanceof BWStart) {
-            this.status = ((BWStart) start).status;
+        if (start instanceof Well) {
+            this.status = ((Well) start).status;
         }
     }
 

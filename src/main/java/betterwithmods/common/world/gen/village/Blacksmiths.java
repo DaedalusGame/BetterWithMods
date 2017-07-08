@@ -18,11 +18,11 @@ import java.util.Random;
 /**
  * Created by tyler on 5/25/17.
  */
-public class BWHouse2 extends AbandonedVillagePiece {
-    public BWHouse2() {
+public class Blacksmiths extends AbandonedVillagePiece {
+    public Blacksmiths() {
     }
 
-    public BWHouse2(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45563_4_, EnumFacing facing) {
+    public Blacksmiths(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45563_4_, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45563_4_;
@@ -129,18 +129,18 @@ public class BWHouse2 extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(BWHouse2.class, 15, MathHelper.getInt(random, 0, 1 + size));
+        return new StructureVillagePieces.PieceWeight(Blacksmiths.class, 15, MathHelper.getInt(random, 0, 1 + size));
     }
 
     @Override
     public Class<?> getComponentClass() {
-        return BWHouse2.class;
+        return Blacksmiths.class;
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 10, 6, 7, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWHouse2(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new Blacksmiths(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 
 }

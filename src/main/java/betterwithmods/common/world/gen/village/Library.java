@@ -18,11 +18,11 @@ import java.util.Random;
 /**
  * Created by tyler on 5/25/17.
  */
-public class BWHouse1 extends AbandonedVillagePiece {
-    public BWHouse1() {
+public class Library extends AbandonedVillagePiece {
+    public Library() {
     }
 
-    public BWHouse1(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45571_4_, EnumFacing facing) {
+    public Library(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45571_4_, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45571_4_;
@@ -146,17 +146,17 @@ public class BWHouse1 extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(BWHouse1.class, 20, MathHelper.getInt(random, 0 + size, 2 + size));
+        return new StructureVillagePieces.PieceWeight(Library.class, 20, MathHelper.getInt(random, 0 + size, 2 + size));
     }
 
     @Override
     public Class<?> getComponentClass() {
-        return BWHouse1.class;
+        return Library.class;
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 9, 9, 6, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWHouse1(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new Library(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

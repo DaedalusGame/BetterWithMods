@@ -18,18 +18,18 @@ import java.util.Random;
 /**
  * Created by tyler on 5/21/17.
  */
-public class BWChurch extends AbandonedVillagePiece {
-    public BWChurch() {
+public class Church extends AbandonedVillagePiece {
+    public Church() {
     }
 
-    public BWChurch(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45564_4_, EnumFacing facing) {
+    public Church(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox p_i45564_4_, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = p_i45564_4_;
     }
     @Override
     public Class<?> getComponentClass() {
-        return BWChurch.class;
+        return Church.class;
     }
     /**
      * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
@@ -126,12 +126,12 @@ public class BWChurch extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(BWChurch.class, 20, MathHelper.getInt(random, 0 + size, 1 + size));
+        return new StructureVillagePieces.PieceWeight(Church.class, 20, MathHelper.getInt(random, 0 + size, 1 + size));
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 5, 12, 9, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWChurch(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new Church(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

@@ -29,7 +29,7 @@ public class CuttingRecipe extends ToolDamageRecipe {
             int meta = JsonUtils.getInt(o,"data");
             Ingredient cut = Ingredient.fromStacks(new ItemStack(item,meta));
             ItemStack itemstack = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
-            return new CuttingRecipe(group.isEmpty() ? null : new ResourceLocation(group), cut, itemstack);
+            return new CuttingRecipe(cut, itemstack);
         }
     }
 }

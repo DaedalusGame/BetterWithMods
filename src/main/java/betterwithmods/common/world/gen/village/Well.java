@@ -11,11 +11,13 @@ import java.util.Random;
 /**
  * Created by tyler on 5/25/17.
  */
-public class BWStart extends StructureVillagePieces.Start {
+public class Well extends StructureVillagePieces.Start {
     protected BWMapGenVillage.VillageStatus status;
-    public BWStart() { }
 
-    public BWStart(BWMapGenVillage.VillageStatus status, BiomeProvider chunkManagerIn, int p_i2104_2_, Random rand, int p_i2104_4_, int p_i2104_5_, List<StructureVillagePieces.PieceWeight> p_i2104_6_, int p_i2104_7_) {
+    public Well() {
+    }
+
+    public Well(BWMapGenVillage.VillageStatus status, BiomeProvider chunkManagerIn, int p_i2104_2_, Random rand, int p_i2104_4_, int p_i2104_5_, List<StructureVillagePieces.PieceWeight> p_i2104_6_, int p_i2104_7_) {
         super(chunkManagerIn, p_i2104_2_, rand, p_i2104_4_, p_i2104_5_, p_i2104_6_, p_i2104_7_);
         this.status = status;
     }

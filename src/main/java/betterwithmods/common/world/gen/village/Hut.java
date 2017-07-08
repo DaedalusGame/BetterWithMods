@@ -20,14 +20,14 @@ import java.util.Random;
 /**
  * Created by tyler on 5/21/17.
  */
-public class BWWoodHut extends AbandonedVillagePiece {
+public class Hut extends AbandonedVillagePiece {
     private boolean isTallHouse;
     private int tablePosition;
 
-    public BWWoodHut() {
+    public Hut() {
     }
 
-    public BWWoodHut(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structurebb, EnumFacing facing) {
+    public Hut(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structurebb, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = structurebb;
@@ -37,7 +37,7 @@ public class BWWoodHut extends AbandonedVillagePiece {
 
     @Override
     public Class<?> getComponentClass() {
-        return BWWoodHut.class;
+        return Hut.class;
     }
     /**
      * (abstract) Helper method to write subclass data to NBT
@@ -134,13 +134,13 @@ public class BWWoodHut extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(BWWoodHut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3));
+        return new StructureVillagePieces.PieceWeight(Hut.class, 3, MathHelper.getInt(random, 2 + size, 5 + size * 3));
     }
 
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 4, 6, 5, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWWoodHut(startPiece, p5, random, structureboundingbox, facing) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new Hut(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 
 

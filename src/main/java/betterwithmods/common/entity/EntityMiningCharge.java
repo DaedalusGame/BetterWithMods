@@ -37,6 +37,10 @@ public class EntityMiningCharge extends Entity {
      */
     private int fuse;
     private EnumFacing facing;
+    private HashMap<Block, IBlockState> dropMap = new HashMap<Block, IBlockState>() {{
+        put(Blocks.COBBLESTONE, Blocks.GRAVEL.getDefaultState());
+        put(Blocks.GRAVEL, Blocks.SAND.getDefaultState());
+    }};
 
     public EntityMiningCharge(World worldIn) {
         super(worldIn);
@@ -139,20 +143,16 @@ public class EntityMiningCharge extends Entity {
         entities.forEach(entity -> entity.attackEntityFrom(DamageSource.causeExplosionDamage(igniter), 45f));
     }
 
-    private HashMap<Block, Block> dropMap = new HashMap<Block, Block>() {{
-        put(Blocks.COBBLESTONE, Blocks.GRAVEL);
-        put(Blocks.GRAVEL, Blocks.SAND);
-    }};
-
     private void explodeBlock(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         float resistance = state.getBlock().getExplosionResistance(world, pos, null, null);
         if (resistance < 100) {
             Explosion explosion = new Explosion(world, igniter, posX, posY, posZ, 0, false, false);
             if (state.getBlock().canDropFromExplosion(explosion)) {
-                if (dropMap.containsKey(state.getBlock()))
-                    dropMap.get(state.getBlock()).dropBlockAsItem(world, pos, state, 0);
-                else
+                if (dropMap.containsKey(state.getBlock())) {
+                    IBlockState drop = dropMap.get(state.getBlock());
+                    drop.getBlock().dropBlockAsItem(world, pos, drop, 0);
+                } else
                     state.getBlock().dropBlockAsItem(world, pos, state, 0);
             }
             state.getBlock().onBlockExploded(world, pos, explosion);

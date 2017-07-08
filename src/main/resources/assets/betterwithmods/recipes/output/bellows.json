@@ -10,8 +10,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "B": {
-      "item": "betterwithmods:material",
-      "data": 9
+      "ore": "hideBelt",
+      "type": "forge:ore_dict"
     },
     "W": {
       "ore": "sidingWood",
@@ -22,8 +22,8 @@
       "type": "forge:ore_dict"
     },
     "L": {
-      "item": "betterwithmods:material",
-      "data": 33
+      "ore": "hideTanned",
+      "type": "forge:ore_dict"
     }
   }
 }

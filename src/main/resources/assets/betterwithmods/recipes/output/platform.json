@@ -10,8 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "W": {
-      "item": "betterwithmods:wicker",
-      "data": 2
+      "item": "betterwithmods:wicker"
     },
     "M": {
       "ore": "plankWood",

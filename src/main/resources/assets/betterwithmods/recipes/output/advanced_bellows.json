@@ -16,12 +16,12 @@
       "item": "minecraft:clock"
     },
     "S": {
-      "item": "betterwithmods:material",
-      "data": 51
+      "type": "forge:ore_dict",
+      "ore": "springSoulforgedSteel"
     },
     "G": {
-      "item": "betterwithmods:material",
-      "data": 50
+      "type": "forge:ore_dict",
+      "ore": "gearSoulforgedSteel"
     }
   }
 }

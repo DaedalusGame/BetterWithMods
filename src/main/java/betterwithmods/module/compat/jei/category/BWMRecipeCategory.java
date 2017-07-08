@@ -2,12 +2,13 @@ package betterwithmods.module.compat.jei.category;
 
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nonnull;
 
-public abstract class BWMRecipeCategory<T extends IRecipeWrapper> extends BlankRecipeCategory<T> {
+public abstract class BWMRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T> {
     @Nonnull
     private final IDrawable background;
 

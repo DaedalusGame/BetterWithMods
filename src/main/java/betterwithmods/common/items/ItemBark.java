@@ -46,9 +46,10 @@ public class ItemBark extends Item implements IMultiLocations {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab))
-        for (int i = 0; i < barks.size(); i++) {
-            items.add(new ItemStack(this, 1, i));
-        }
+            for (int i = 0; i < barks.size(); i++) {
+                if (!barks.get(i).equalsIgnoreCase("bloody"))
+                    items.add(new ItemStack(this, 1, i));
+            }
     }
 
 

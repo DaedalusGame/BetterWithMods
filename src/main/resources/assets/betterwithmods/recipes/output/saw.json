@@ -10,16 +10,15 @@
   "type": "forge:ore_shaped",
   "key": {
     "B": {
-      "item": "betterwithmods:material",
-      "data": 9
+      "ore": "hideBelt",
+      "type": "forge:ore_dict"
     },
     "G": {
       "ore": "gearWood",
       "type": "forge:ore_dict"
     },
     "W": {
-      "ore": "plankWood",
-      "type": "forge:ore_dict"
+      "item": "#HE_PLANKS"
     },
     "I": {
       "ore": "ingotIron",

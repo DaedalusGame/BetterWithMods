@@ -9,6 +9,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by tyler on 9/5/16.
  */
-public class SawRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
+public class SawRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
     public static final int width = 82;
     public static final int height = 50;
     public static final String UID = "bwm.saw";

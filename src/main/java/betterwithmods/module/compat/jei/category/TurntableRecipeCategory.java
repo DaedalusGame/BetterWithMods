@@ -9,6 +9,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.util.ResourceLocation;
 
@@ -20,7 +21,7 @@ import javax.annotation.Nonnull;
  * @author Tyler Marshall
  * @version 11/11/16
  */
-public class TurntableRecipeCategory extends BlankRecipeCategory<TurntableRecipeWrapper> {
+public class TurntableRecipeCategory implements IRecipeCategory<TurntableRecipeWrapper> {
     public static final int width = 53;
     public static final int height = 50;
     public static final String UID = "bwm.turntable";

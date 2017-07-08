@@ -13,8 +13,7 @@
       "item": "betterwithmods:rope"
     },
     "X": {
-      "ore": "plankWood",
-      "type": "forge:ore_dict"
+      "item": "#HE_PLANKS"
     }
   }
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.*;
 
 public final class BWMRecipes {
-
+    private static final boolean GENERATE_RECIPES = false;
     private static final List<IRecipe> RECIPES = new ArrayList<>();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Set<String> USED_OD_NAMES = new TreeSet<>();
@@ -73,7 +73,7 @@ public final class BWMRecipes {
 
     private static void setupDir() {
         if (RECIPE_DIR == null) {
-            RECIPE_DIR = new File("/home/tyler/Programming/BetterWithMods-1.11.2/src/main/resources/assets/betterwithmods/recipes/output");
+            RECIPE_DIR = new File("/home/tyler/Programming/BetterWithMods-1.12/src/main/resources/assets/betterwithmods/recipes/output");
         }
 
         if (!RECIPE_DIR.exists()) {
@@ -82,6 +82,8 @@ public final class BWMRecipes {
     }
 
     private static void addShapedRecipe(ItemStack result, Object... components) {
+        if (!GENERATE_RECIPES)
+            return;
         setupDir();
 
         // GameRegistry.addShaped
@@ -123,13 +125,17 @@ public final class BWMRecipes {
         // repeatedly adds _alt if a file already exists
         // janky I know but it works
         String suffix = result.getItem().getHasSubtypes() ? "_" + result.getItemDamage() : "";
-        File f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+
+        String name = result.getItem().getRegistryName().getResourcePath() + suffix;
+        if (name.contains("material") || name.contains("aesthetic"))
+            name = result.getUnlocalizedName().replace("item.bwm:", "").replace("tile.bwm:", "");
+
+        File f = new File(RECIPE_DIR, name + ".json");
 
         while (f.exists()) {
-            suffix += "_alt";
-            f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+            name += "_alt";
+            f = new File(RECIPE_DIR, name + ".json");
         }
-
         try (FileWriter w = new FileWriter(f)) {
             GSON.toJson(json, w);
         } catch (IOException e) {
@@ -138,6 +144,8 @@ public final class BWMRecipes {
     }
 
     private static void addShapelessRecipe(ItemStack result, Object... components) {
+        if (!GENERATE_RECIPES)
+            return;
         setupDir();
 
         // addShapelessRecipe(result, components);
@@ -159,11 +167,17 @@ public final class BWMRecipes {
         // repeatedly adds _alt if a file already exists
         // janky I know but it works
         String suffix = result.getItem().getHasSubtypes() ? "_" + result.getItemDamage() : "";
-        File f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+
+        String name = result.getItem().getRegistryName().getResourcePath() + suffix;
+        if (name.contains("material"))
+            name = result.getUnlocalizedName().replace("item.bwm:", "");
+
+
+        File f = new File(RECIPE_DIR, name + ".json");
 
         while (f.exists()) {
-            suffix += "_alt";
-            f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+            name += "_alt";
+            f = new File(RECIPE_DIR, name + ".json");
         }
 
 

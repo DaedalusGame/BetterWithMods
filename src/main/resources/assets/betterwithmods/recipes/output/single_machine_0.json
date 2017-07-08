@@ -11,8 +11,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "W": {
-      "ore": "gearWood",
-      "type": "forge:ore_dict"
+      "type": "forge:ore_dict",
+      "ore": "gearWood"
     },
     "X": {
       "ore": "stone",

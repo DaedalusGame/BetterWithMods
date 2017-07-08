@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "betterwithmods:material",
+    "data": 45
+  },
+  "pattern": [
+    "NNN",
+    "NNN",
+    "NNN"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "betterwithmods:material",
+      "data": 46
+    }
+  }
+}

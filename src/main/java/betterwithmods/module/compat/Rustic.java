@@ -94,8 +94,8 @@ public class Rustic extends CompatFeature {
         ItemStack rope = new ItemStack(getBlock(new ResourceLocation("rustic", "rope")));
         //TODO
 //        BWMRecipes.removeRecipes(rope);
-        BWMRecipes.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
-        BWMRecipes.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
+//        BWMRecipes.addOreRecipe(rope, "F", "F", "F", 'F', "fiberHemp");
+//        BWMRecipes.addOreRecipe(new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron");
         Block plank = getBlock("rustic:planks");
         Block log = getBlock("rustic:log");
         for (int i = 0; i < 2; i++) {
@@ -104,9 +104,9 @@ public class Rustic extends CompatFeature {
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            BWMRecipes.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
-            BWMRecipes.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
-            BWMRecipes.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
+//            BWMRecipes.addOreRecipe(new ItemStack(plank, 1, i), "MM", 'M', new ItemStack(SIDING, 1, i));
+//            BWMRecipes.addOreRecipe(new ItemStack(SIDING, 1, i), "MM", 'M', new ItemStack(MOULDING, 1, i));
+//            BWMRecipes.addOreRecipe(new ItemStack(MOULDING, 1, i), "MM", 'M', new ItemStack(CORNER, 1, i));
         }
         boolean isHCSawEnabled = ModuleLoader.isFeatureEnabled(HCSaw.class);
         Block wooden_stake = getBlock("rustic:crop_stake");
@@ -114,7 +114,7 @@ public class Rustic extends CompatFeature {
             //TODO
 //            BWMRecipes.removeRecipes(wooden_stake);
         }//TODO
-        BWMRecipes.addOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood");
+//        BWMRecipes.addOreRecipe(new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood");
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
@@ -126,8 +126,8 @@ public class Rustic extends CompatFeature {
 //                    BWMRecipes.removeRecipes(chair);
 //                    BWMRecipes.removeRecipes(table);
                 }
-                BWMRecipes.addOreRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
-                BWMRecipes.addOreRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
+//                BWMRecipes.addOreRecipe(chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding);
+//                BWMRecipes.addOreRecipe(table, "SSS", "M M", 'S', siding, 'M', moulding);
                 if (i >= 6) {
                     ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
                     ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
@@ -136,8 +136,8 @@ public class Rustic extends CompatFeature {
 //                        BWMRecipes.removeRecipes(fencegate);
 //                        BWMRecipes.removeRecipes(fence);
                     }
-                    BWMRecipes.addOreRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
-                    BWMRecipes.addOreRecipe(fence, "MMM", 'M', moulding);
+//                    BWMRecipes.addOreRecipe(fencegate, "MSM", 'S', siding, 'M', moulding);
+//                    BWMRecipes.addOreRecipe(fence, "MMM", 'M', moulding);
                 }
             }
         }

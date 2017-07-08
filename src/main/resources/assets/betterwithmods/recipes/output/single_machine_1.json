@@ -11,8 +11,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "P": {
-      "ore": "plankWood",
-      "type": "forge:ore_dict"
+      "item": "#HE_PLANKS"
     },
     "G": {
       "ore": "gearWood",
@@ -23,8 +22,9 @@
       "type": "forge:ore_dict"
     },
     "L": {
-      "item": "betterwithmods:material",
-      "data": 35
+      "ore": "latchRedstone",
+      "type": "forge:ore_dict"
+    }
     }
   }
 }

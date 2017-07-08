@@ -38,14 +38,14 @@ public class ItemMaterial extends Item implements IMultiLocations {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab))
-        for (EnumMaterial material : EnumMaterial.values()) {
-            items.add(getMaterial(material));
-        }
+            for (EnumMaterial material : EnumMaterial.values()) {
+                items.add(getMaterial(material));
+            }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + EnumMaterial.values()[stack.getMetadata()].getName();
+        return super.getUnlocalizedName() + "." + EnumMaterial.VALUES[stack.getMetadata()].getName();
     }
 
 
@@ -80,7 +80,6 @@ public class ItemMaterial extends Item implements IMultiLocations {
         ELEMENT,
         FUSE,
         BLASTING_OIL,
-        NUGGET_IRON,
         NUGGET_STEEL,
         LEATHER_CUT,
         TANNED_LEATHER_CUT,
@@ -89,7 +88,6 @@ public class ItemMaterial extends Item implements IMultiLocations {
         NETHER_SLUDGE,
         HAFT,
         CHARCOAL_DUST,
-        SHARPENING_STONE,
         SOUL_FLUX,
         ENDER_SLAG,
         ENDER_OCULAR,
@@ -103,6 +101,9 @@ public class ItemMaterial extends Item implements IMultiLocations {
         STEEL_GEAR,
         STEEL_SPRING,
         SOAP;
+
+
+        public final static EnumMaterial[] VALUES = values();
 
         int getMetadata() {
             return this.ordinal();

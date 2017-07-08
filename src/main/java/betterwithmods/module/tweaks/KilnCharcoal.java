@@ -37,13 +37,11 @@ public class KilnCharcoal extends Feature {
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        GameRegistry.addSmelting(BWMBlocks.DEBARKED_OLD, CHARCOAL, 0.1F);
-        GameRegistry.addSmelting(BWMBlocks.DEBARKED_NEW, CHARCOAL, 0.1F);
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
-        List<ItemStack> logs = Lists.newArrayList(new ItemStack(BWMBlocks.DEBARKED_OLD), new ItemStack(BWMBlocks.DEBARKED_NEW));
+        List<ItemStack> logs = Lists.newArrayList();
         logs.addAll(OreDictionary.getOres("logWood"));
 
         for (ItemStack stack : logs) {
@@ -55,10 +53,6 @@ public class KilnCharcoal extends Feature {
                     BWMRecipes.removeFurnaceRecipe(stack);
                 addKilnRecipe(block, meta, CHARCOAL);
             }
-        }
-        if (!disableFurnaceCharcoal) {
-            GameRegistry.addSmelting(BWMBlocks.DEBARKED_OLD, CHARCOAL, 0.1F);
-            GameRegistry.addSmelting(BWMBlocks.DEBARKED_NEW, CHARCOAL, 0.1F);
         }
     }
 

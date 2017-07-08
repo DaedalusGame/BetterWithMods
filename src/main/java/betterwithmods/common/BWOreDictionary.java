@@ -36,12 +36,20 @@ public class BWOreDictionary {
     public static void registerOres() {
 
         registerOre("book", BWMItems.MANUAL);
+        registerOre("padding", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
+        registerOre("soap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP));
+        registerOre("archimedesScrew", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCREW));
+        registerOre("filament", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT));
+        registerOre("latchRedstone", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
+        registerOre("arrowSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BROADHEAD));
+        registerOre("springSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING));
         registerOre("gearSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR));
         registerOre("gearWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
         registerOre("cropHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));
         registerOre("dyeBrown", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
         registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
         registerOre("slimeball", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
+        registerOre("glue", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
         registerOre("ingotSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
         registerOre("dustNetherrack", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK));
         registerOre("dustHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
@@ -52,7 +60,6 @@ public class BWOreDictionary {
         registerOre("dustWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST));
         registerOre("dustSulfur", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE));
         registerOre("dustSaltpeter", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER));
-        registerOre("nuggetIron", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NUGGET_IRON));
         registerOre("nuggetSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NUGGET_STEEL));
         registerOre("foodFlour", BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
@@ -73,6 +80,7 @@ public class BWOreDictionary {
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
 
         registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+        registerOre("hideBelt", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_BELT));
 
         registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("sidingWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
@@ -111,7 +119,7 @@ public class BWOreDictionary {
                 new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
         );
-        List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter( stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
+        List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
         //TODO work dict logs
 //        for(ItemStack log: logs) {
 //            ItemStack plank = BWMRecipes.getRecipeOutput(log);
@@ -202,7 +210,7 @@ public class BWOreDictionary {
             this.plank = plank;
 
             //TODO add custom bark render for all bark
-            this.bark = ItemBark.getStack("oak",1);
+            this.bark = ItemBark.getStack("oak", 1);
         }
 
         public Wood(ItemStack log, ItemStack plank, ItemStack bark) {
@@ -228,8 +236,9 @@ public class BWOreDictionary {
             copy.setCount(count);
             return copy;
         }
+
         public ItemStack getSawdust(int count) {
-            ItemStack copy = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST,count);
+            ItemStack copy = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
             return copy;
         }
     }

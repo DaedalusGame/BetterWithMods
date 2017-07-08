@@ -9,14 +9,17 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
 
-public class KilnRecipeCategory extends BlankRecipeCategory<BlockMetaWrapper> {
+public class KilnRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
 
     public static final int width = 145;
     public static final int height = 80;

@@ -10,6 +10,8 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -25,7 +27,7 @@ import javax.annotation.Nonnull;
  * @author Tyler Marshall
  * @version 11/20/16
  */
-public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrapper> {
+public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper> {
     public static final int width = 145;
     public static final int height = 80;
     public static final String UID = "bwm.hopper";

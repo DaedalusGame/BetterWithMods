@@ -29,15 +29,11 @@ import static net.minecraftforge.fml.common.LoaderState.ModState.INITIALIZED;
  */
 public class CompatModule extends Module {
     private HashMap<String, String> compatRegistry = Maps.newHashMap();
-    private HashMap<Pair<LoaderState.ModState, String>, Runnable> quickCompat = Maps.newHashMap();
 
     public void registerCompatFeature(String modid, String clazz) {
         compatRegistry.put(modid, clazz);
     }
 
-    public void registerQuickCompat(String modid, LoaderState.ModState state, Runnable runnable) {
-        quickCompat.put(Pair.of(state, modid), runnable);
-    }
 
     public void addCompatFeatures() {
         registerCompatFeature("biomesoplenty", "betterwithmods.module.compat.bop.BiomesOPlenty");
@@ -50,18 +46,6 @@ public class CompatModule extends Module {
         registerCompatFeature("rustic", "betterwithmods.module.compat.Rustic");
         registerCompatFeature("tconstruct", "betterwithmods.module.compat.tcon.TConstruct");
 
-        registerQuickCompat("chisel", INITIALIZED, () -> {
-            if (ModuleLoader.isFeatureEnabled(HCDiamond.class)) {
-                ItemStack chisel_diamond = getItem("chisel:chisel_diamond");
-                //TODO
-//                BWMRecipes.removeRecipes(chisel_diamond);
-                BWMRecipes.addOreRecipe(chisel_diamond, " D", "S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true);
-                CrucibleRecipes.addCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{getItem("chisel:chisel_diamond", 1, OreDictionary.WILDCARD_VALUE)});
-            }
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{getItem("chisel:chisel_iron", 1, OreDictionary.WILDCARD_VALUE)});
-            CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT), new Object[]{getItem("chisel:chisel_hitech", 1, OreDictionary.WILDCARD_VALUE)});
-        });
     }
 
     @Override
@@ -73,31 +57,17 @@ public class CompatModule extends Module {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
-        for (Map.Entry<Pair<LoaderState.ModState, String>, Runnable> entry : quickCompat.entrySet()) {
-            if (event.getModState().equals(entry.getKey().getKey()) && isLoaded(entry.getKey().getValue())) {
-                entry.getValue().run();
-            }
-        }
+
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        for (Map.Entry<Pair<LoaderState.ModState, String>, Runnable> entry : quickCompat.entrySet()) {
-            if (event.getModState().equals(entry.getKey().getKey()) && isLoaded(entry.getKey().getValue())) {
-                entry.getValue().run();
-            }
-        }
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        for (Map.Entry<Pair<LoaderState.ModState, String>, Runnable> entry : quickCompat.entrySet()) {
-            if (event.getModState().equals(entry.getKey().getKey()) && isLoaded(entry.getKey().getValue())) {
-                entry.getValue().run();
-            }
-        }
     }
 
     public void load() {

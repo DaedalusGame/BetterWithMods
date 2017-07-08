@@ -6,7 +6,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import mezz.jei.util.Translator;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by blueyu2 on 11/25/16.
  */
-public class SteelAnvilRecipeCategory extends BlankRecipeCategory<IRecipeWrapper> {
+public class SteelAnvilRecipeCategory implements IRecipeCategory<IRecipeWrapper> {
 
     public static final int WIDTH = 134;
     public static final int HEIGHT = 72;

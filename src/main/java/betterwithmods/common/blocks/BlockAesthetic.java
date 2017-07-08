@@ -115,6 +115,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         return this.getDefaultState().withProperty(TYPE, BlockAesthetic.EnumType.byMeta(meta));
     }
 
+
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(TYPE).getMeta();

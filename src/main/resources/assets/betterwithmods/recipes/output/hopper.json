@@ -10,8 +10,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "R": {
-      "item": "betterwithmods:material",
-      "data": 35
+      "ore": "gearWood",
+      "type": "forge:ore_dict"
     },
     "C": {
       "ore": "chestWood",

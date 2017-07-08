@@ -65,8 +65,6 @@ public final class BWMBlocks {
     public static final Block WOOD_SIDING = new BlockSiding(BlockMini.MINI).setRegistryName("wood_siding");
     public static final Block WOOD_MOULDING = new BlockMoulding(BlockMini.MINI).setRegistryName("wood_moulding");
     public static final Block WOOD_CORNER = new BlockCorner(BlockMini.MINI).setRegistryName("wood_corner");
-    public static final Block DEBARKED_NEW = new BlockDebarkedNew().setRegistryName("debarked_new");
-    public static final Block DEBARKED_OLD = new BlockDebarkedOld().setRegistryName("debarked_old");
     public static final Block WOOD_BENCH = new BlockWoodBench().setRegistryName("wood_bench");
     public static final Block WOOD_TABLE = new BlockWoodTable().setRegistryName("wood_table");
     public static final Block WOLF = new BlockWolf().setRegistryName("companion_cube");
@@ -133,8 +131,6 @@ public final class BWMBlocks {
         registerBlock(WOOD_SIDING, new ItemBlockMini(WOOD_SIDING));
         registerBlock(WOOD_MOULDING, new ItemBlockMini(WOOD_MOULDING));
         registerBlock(WOOD_CORNER, new ItemBlockMini(WOOD_CORNER));
-        registerBlock(DEBARKED_NEW, new ItemBlockMeta(DEBARKED_NEW));
-        registerBlock(DEBARKED_OLD, new ItemBlockMeta(DEBARKED_OLD));
         registerBlock(WOOD_BENCH, new ItemBlockMeta(WOOD_BENCH));
         registerBlock(WOOD_TABLE, new ItemBlockMeta(WOOD_TABLE));
         registerBlock(WOLF);

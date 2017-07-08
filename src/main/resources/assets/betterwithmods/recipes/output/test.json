@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "betterwithmods:material",
+    "data": 8
+  },
+  "type": "betterwithmods:cutting_recipe",
+  "cut": {
+    "item": "betterwithmods:material",
+    "data": 32
+  }
+}

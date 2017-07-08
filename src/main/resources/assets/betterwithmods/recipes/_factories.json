@@ -1,5 +1,5 @@
 {
   "recipes": {
-    "shaped_anvil": "betterwithmods.common.registry.anvil.ShapedAnvilRecipe$Factory"
+    "cutting_recipe": "betterwithmods.common.registry.CuttingRecipe$Factory"
   }
 }

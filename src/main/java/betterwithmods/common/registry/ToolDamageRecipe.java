@@ -1,10 +1,13 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.util.InvUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -16,11 +19,13 @@ import java.util.function.Predicate;
  * Created by primetoxinz on 6/27/17.
  */
 public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
-
+    private ResourceLocation group;
     private Predicate<ItemStack> isTool;
-    private ItemStack input = ItemStack.EMPTY, result = ItemStack.EMPTY;
+    private ItemStack result;
+    private Ingredient input;
 
-    public ToolDamageRecipe(ItemStack result, ItemStack input, Predicate<ItemStack> isTool) {
+    public ToolDamageRecipe(ResourceLocation group, ItemStack result, Ingredient input, Predicate<ItemStack> isTool) {
+        this.group = group;
         this.isTool = isTool;
         this.result = result;
         this.input = input;
@@ -39,7 +44,7 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
                         inRecipe = true;
                     } else
                         return false;
-                } else if (OreDictionary.itemMatches(slot, input, true)) {
+                } else if (OreDictionary.containsMatch(true, InvUtils.asNonnullList(input.getMatchingStacks()), slot)) {
                     if (!hasInput) {
                         hasInput = true;
                         inRecipe = true;
@@ -86,5 +91,11 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
             }
         }
         return stacks;
+    }
+
+    public String getGroup() {
+        if (group != null)
+            return group.toString();
+        return "";
     }
 }

@@ -10,11 +10,11 @@
   "type": "forge:ore_shaped",
   "key": {
     "B": {
-      "item": "betterwithmods:material",
-      "data": 45
+      "ore": "arrowSoulforgedSteel",
+      "type": "forge:ore_dict"
     },
     "S": {
-      "ore": "stickWood",
+      "ore": "mouldingWood",
       "type": "forge:ore_dict"
     },
     "F": {

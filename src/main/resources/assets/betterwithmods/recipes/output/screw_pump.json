@@ -14,8 +14,8 @@
       "type": "forge:ore_dict"
     },
     "s": {
-      "item": "betterwithmods:material",
-      "data": 24
+      "ore": "archimedesScrew",
+      "type": "forge:ore_dict"
     },
     "G": {
       "item": "betterwithmods:grate",
@@ -26,8 +26,8 @@
       "type": "forge:ore_dict"
     },
     "x": {
-      "item": "betterwithmods:material",
-      "data": 12
+      "ore": "glue",
+      "type": "forge:ore_dict"
     }
   }
 }

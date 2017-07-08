@@ -1,0 +1,40 @@
+[
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
+    "name": "HE_PLANKS",
+    "ingredient": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "plankWood"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "sidingWood"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
+    "name": "CAULDRON_MATERIAL",
+    "ingredient": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "ingotIron"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "ingotCopper"
+      }
+    ]
+  }
+]

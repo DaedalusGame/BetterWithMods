@@ -61,10 +61,10 @@ public class HCOres extends Feature {
 //            BWMRecipes.removeRecipes(Items.BUCKET, 0);
 //            BWMRecipes.removeRecipes(Items.FLINT_AND_STEEL, 0);
 
-            BWMRecipes.addOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone");
-            BWMRecipes.addOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz");
-            BWMRecipes.addOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron");
-            BWMRecipes.addShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron");
+//            BWMRecipes.addOreRecipe(new ItemStack(Items.COMPASS), " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone");
+//            BWMRecipes.addOreRecipe(new ItemStack(Items.CLOCK), " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz");
+//            BWMRecipes.addOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron");
+//            BWMRecipes.addShapelessOreRecipe(new ItemStack(Items.FLINT_AND_STEEL), Items.FLINT, "nuggetIron");
         }
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 3), new Object[]{new ItemStack(Items.BUCKET)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{new ItemStack(Items.COMPASS)});

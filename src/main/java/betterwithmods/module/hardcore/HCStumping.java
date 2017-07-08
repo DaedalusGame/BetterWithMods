@@ -189,7 +189,7 @@ public class HCStumping extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
+//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
     }
 
     @Override

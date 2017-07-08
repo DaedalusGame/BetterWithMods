@@ -17,8 +17,7 @@
       "item": "minecraft:water_bucket"
     },
     "X": {
-      "ore": "ingotCopper",
-      "type": "forge:ore_dict"
+      "item": "#CAULDRON_MATERIAL"
     }
   }
 }

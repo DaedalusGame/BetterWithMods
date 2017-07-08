@@ -1,8 +1,11 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWOreDictionary;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -14,7 +17,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     private BWOreDictionary.Wood wood;
 
     public ChoppingRecipe(BWOreDictionary.Wood wood) {
-        super(wood.getPlank(2), wood.getLog(1), ChoppingRecipe::isAxe);
+        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(2), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
     }

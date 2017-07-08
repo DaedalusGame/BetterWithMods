@@ -45,7 +45,7 @@ public class Harvestcraft extends CompatFeature {
         CauldronRecipes.addCauldronRecipe(new ItemStack(boiledEgg), new Object[]{new ItemStack(Items.EGG)});
         CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BREAD), new Object[]{new ItemStack(dough)});
         OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
-        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
+//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
     }
 
 }

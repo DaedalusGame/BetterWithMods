@@ -10,8 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "P": {
-      "ore": "plankWood",
-      "type": "forge:ore_dict"
+      "item": "#HE_PLANKS"
     },
     "G": {
       "ore": "gearWood",

@@ -8,6 +8,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.client.resources.I18n;
@@ -16,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class SteelCraftingCategory extends BlankRecipeCategory<IRecipeWrapper> {
+public class SteelCraftingCategory implements IRecipeCategory<IRecipeWrapper> {
 
     public static final String UID = "bwm.steel_anvil";
     public static final String TITLE = "inv.steel_anvil.name";

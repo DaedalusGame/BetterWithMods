@@ -32,13 +32,13 @@ public class HCTorches extends Feature {
 //            BWMRecipes.removeShaped(new ItemStack(Blocks.TORCH), new ItemStack[][]{new ItemStack[]{new ItemStack(Items.COAL,1,0)},new ItemStack[]{new ItemStack(Items.STICK)}});
 //            BWMRecipes.removeShaped(new ItemStack(Blocks.TORCH), new ItemStack[][]{new ItemStack[]{new ItemStack(Items.COAL,1,1)},new ItemStack[]{new ItemStack(Items.STICK)}});
 //        }
-        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 0), 'S', "stickWood");
-        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 1), 'S', "stickWood");
-        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
+//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 0), 'S', "stickWood");
+//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 1), 'S', "stickWood");
+//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
+//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
     }
 }

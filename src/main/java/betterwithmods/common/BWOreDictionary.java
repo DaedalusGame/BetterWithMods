@@ -36,6 +36,7 @@ public class BWOreDictionary {
     public static void registerOres() {
 
         registerOre("book", BWMItems.MANUAL);
+        registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
         registerOre("padding", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
         registerOre("soap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP));
         registerOre("archimedesScrew", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCREW));

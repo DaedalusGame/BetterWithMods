@@ -6,7 +6,11 @@ import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
  * Created by tyler on 5/10/17.
@@ -32,13 +36,16 @@ public class HCTorches extends Feature {
 //            BWMRecipes.removeShaped(new ItemStack(Blocks.TORCH), new ItemStack[][]{new ItemStack[]{new ItemStack(Items.COAL,1,0)},new ItemStack[]{new ItemStack(Items.STICK)}});
 //            BWMRecipes.removeShaped(new ItemStack(Blocks.TORCH), new ItemStack[][]{new ItemStack[]{new ItemStack(Items.COAL,1,1)},new ItemStack[]{new ItemStack(Items.STICK)}});
 //        }
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 0), 'S', "stickWood");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', new ItemStack(Items.COAL, 1, 1), 'S', "stickWood");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TORCH, "C", "S", 'C', Ingredient.fromStacks(new ItemStack(Items.COAL, 1, 0), new ItemStack(Items.COAL, 1, 1)), 'S', "stickWood").setRegistryName(new ResourceLocation("minecraft", "torch")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TORCH, "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood");
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
+    }
+
+    private IRecipe addHardcoreRecipe(IRecipe recipe) {
+        return registerHardcoreRecipe("HCTorches", recipe);
     }
 }

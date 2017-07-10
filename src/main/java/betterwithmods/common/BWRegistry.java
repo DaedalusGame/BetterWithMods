@@ -204,6 +204,13 @@ public class BWRegistry {
         if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCLumber")) {
             replaceIRecipe("HCLumber", reg);
         }
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCOres")) {
+            replaceIRecipe("HCOres", reg);
+        }
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCRedstone")) {
+            replaceIRecipe("HCRedstone", reg);
+        }
+        replaceIRecipe("HCTorches", reg);
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
@@ -222,12 +229,7 @@ public class BWRegistry {
     private static void replaceIRecipe (String category, ForgeRegistry<IRecipe> reg) {
         List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
         if (recipes != null) {
-            for (IRecipe recipe : recipes) {
-                ResourceLocation location = recipe.getRegistryName();
-                if (reg.containsKey(location)) {
-                    reg.register(recipe);
-                }
-            }
+            recipes.forEach(reg::register);
         }
     }
 

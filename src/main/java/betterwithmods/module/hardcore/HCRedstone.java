@@ -10,7 +10,10 @@ import betterwithmods.module.gameplay.CrucibleRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
  * Created by tyler on 4/20/17.
@@ -33,51 +36,36 @@ public class HCRedstone extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         ItemStack LATCH = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH);
-//TODO
-//        BWMRecipes.removeRecipes(Blocks.STONE_BUTTON);
-//        BWMRecipes.removeRecipes(Blocks.STONE_PRESSURE_PLATE);
-//        BWMRecipes.removeRecipes(Blocks.DISPENSER);
-//        BWMRecipes.removeRecipes(Blocks.DROPPER);
-//        BWMRecipes.removeRecipes(Items.IRON_DOOR, 0);
-//        BWMRecipes.removeRecipes(Blocks.IRON_TRAPDOOR);
-//        BWMRecipes.removeRecipes(Blocks.LEVER);
-//        BWMRecipes.removeRecipes(Blocks.PISTON);
-//        BWMRecipes.removeRecipes(Blocks.TRIPWIRE_HOOK);
-//        BWMRecipes.removeRecipes(Blocks.WOODEN_BUTTON);
-//        BWMRecipes.removeRecipes(Blocks.WOODEN_PRESSURE_PLATE);
-//        BWMRecipes.removeRecipes(Items.REPEATER, 0);
-//        BWMRecipes.removeRecipes(Blocks.OBSERVER);
-//        BWMRecipes.removeRecipes(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-//        BWMRecipes.removeRecipes(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
-//        BWMRecipes.removeRecipes(Blocks.HOPPER);
-
-
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.STONE_BUTTON), "C", "R", 'C', new ItemStack(BWMBlocks.STONE_CORNER, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.STONE_PRESSURE_PLATE), "S", "R", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.DISPENSER), "CCC", "CBC", "CRC", 'C', "cobblestone", 'B', Items.BOW, 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.DROPPER), "CCC", "C C", "CRC", 'C', "cobblestone", 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Items.IRON_DOOR, 3), "RII", " II", "RII", 'I', "ingotIron", 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.IRON_TRAPDOOR, 2), "RII", "RII", 'I', "ingotIron", 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.LEVER), "S", "C", "R", 'S', "stickWood", 'C', "cobblestone", 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.PISTON), "WIW", "CSC", "CRC", 'W', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'I', "ingotIron", 'C', "cobblestone", 'S', new ItemStack(BWMBlocks.URN, 1, BlockUrn.EnumType.FULL.getMeta()), 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.TRIPWIRE_HOOK), "I", "M", "R", 'I', "nuggetIron", 'M', new ItemStack(BWMBlocks.WOOD_MOULDING, 1, 32767), 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.WOODEN_BUTTON), "C", "R", 'C', new ItemStack(BWMBlocks.WOOD_CORNER, 1, 32767), 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), "S", "R", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, 32767), 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Items.REPEATER), "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', "stone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Items.REPEATER), "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()));
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), "II", "RR", 'I', "ingotIron", 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), "GG", "RR", 'G', "ingotGold", 'R', "dustRedstone");
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.HOPPER), "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', LATCH);
-//        BWMRecipes.addOreRecipe(new ItemStack(Items.COMPARATOR), " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()));
-//        BWMRecipes.addOreRecipe(new ItemStack(Blocks.OBSERVER), "CCC", "LLU", "CCC", 'C', "cobblestone", 'L', LATCH, 'U', BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "C", "R", 'C', new ItemStack(BWMBlocks.STONE_CORNER, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "stone_button")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "S", "R", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata()), 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "stone_pressure_plate")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.DISPENSER, "CCC", "CBC", "CRC", 'C', "cobblestone", 'B', Items.BOW, 'R', LATCH).setRegistryName(new ResourceLocation("minecraft", "dispenser")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.DROPPER, "CCC", "C C", "CRC", 'C', "cobblestone", 'R', LATCH).setRegistryName(new ResourceLocation("minecraft", "dropper")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.IRON_DOOR, 3), "RII", " II", "RII", 'I', "ingotIron", 'R', LATCH).setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "iron_door")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Blocks.IRON_TRAPDOOR, 2), "RII", "RII", 'I', "ingotIron", 'R', LATCH).setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "iron_trapdoor")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.LEVER, "S", "C", "R", 'S', "stickWood", 'C', "cobblestone", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "lever")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.PISTON, "WIW", "CSC", "CRC", 'W', "sidingWood", 'I', "ingotIron", 'C', "cobblestone", 'S', new ItemStack(BWMBlocks.URN, 1, BlockUrn.EnumType.FULL.getMeta()), 'R', LATCH).setRegistryName(new ResourceLocation("minecraft", "piston")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TRIPWIRE_HOOK, "I", "M", "R", 'I', "nuggetIron", 'M', "mouldingWood", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "tripwire_hook")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.WOODEN_BUTTON, "C", "R", 'C', "cornerWood", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "wooden_button")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.WOODEN_PRESSURE_PLATE, "S", "R", 'S', "sidingWood", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "wooden_pressure_plate")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Items.REPEATER, "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', "stone").setRegistryName("minecraft", "repeater"));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Items.REPEATER, "RCR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'C', Items.CLOCK, 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())).setRegistryName("betterwithmods", "repeater"));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, "II", "RR", 'I', "ingotIron", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "heavy_weighted_pressure_plate")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, "II", "RR", 'I', "ingotGold", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "light_weighted_pressure_plate")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.HOPPER, "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', LATCH).setRegistryName(new ResourceLocation("minecraft", "hopper")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())).setRegistryName(new ResourceLocation("minecraft", "comparator")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.OBSERVER, "CCC", "LLU", "CCC", 'C', "cobblestone", 'L', LATCH, 'U', BlockUrn.getStack(BlockUrn.EnumType.FULL, 1)).setRegistryName(new ResourceLocation("minecraft", "observer")));
         if (!stoneDeviceRecipesAnvil) {
             //TODO config
-//            BWMRecipes.addOreRecipe(new ItemStack(Blocks.STONE_BUTTON), "C", "R", 'C', new ItemStack(Blocks.STONE), 'R', LATCH);
-//            BWMRecipes.addOreRecipe(new ItemStack(Blocks.STONE_PRESSURE_PLATE), "S", "R", 'S', new ItemStack(Blocks.STONE), 'R', LATCH);
+            addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "S", "R", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_button")));
+            addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "SS", "RR", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_pressure_plate")));
         }
 
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
 
+    }
+
+    private IRecipe addHardcoreRecipe(IRecipe recipe) {
+        return registerHardcoreRecipe("HCRedstone", recipe);
     }
 
     @Override

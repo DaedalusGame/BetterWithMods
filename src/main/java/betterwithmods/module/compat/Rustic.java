@@ -141,9 +141,9 @@ public class Rustic extends CompatFeature {
                 }
             }
         }
-        AnvilRecipes.addSteelShapedRecipe(new ItemStack(SIDING, 8, 2), "SSSS", 'S', getBlock("rustic:slate"));
-        AnvilRecipes.addSteelShapedRecipe(new ItemStack(MOULDING, 8, 2), "SSSS", 'S', new ItemStack(SIDING, 1, 2));
-        AnvilRecipes.addSteelShapedRecipe(new ItemStack(CORNER, 8, 2), "SSSS", 'S', new ItemStack(MOULDING, 1, 2));
+        AnvilRecipes.addSteelShapedRecipe(new ResourceLocation("rustic_siding"), new ItemStack(SIDING, 8, 2), "SSSS", 'S', getBlock("rustic:slate"));
+        AnvilRecipes.addSteelShapedRecipe(new ResourceLocation("rustic_moulding"), new ItemStack(MOULDING, 8, 2), "SSSS", 'S', new ItemStack(SIDING, 1, 2));
+        AnvilRecipes.addSteelShapedRecipe(new ResourceLocation("rustic_corner"), new ItemStack(CORNER, 8, 2), "SSSS", 'S', new ItemStack(MOULDING, 1, 2));
 
         registerOre("sidingWood", new ItemStack(SIDING, 1, 0), new ItemStack(SIDING, 1, 1));
         registerOre("mouldingWood", new ItemStack(MOULDING, 1, 0), new ItemStack(MOULDING, 1, 1));

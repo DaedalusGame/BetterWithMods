@@ -13,17 +13,13 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 public class AnvilCraftingManager {
 
-    public static IForgeRegistry<IRecipe> REGISTRY = new RegistryBuilder<IRecipe>()
-            .setType(IRecipe.class)
-            .setName(new ResourceLocation(BWMod.MODID, "anvil"))
-            .create();
     public static IForgeRegistry<IRecipe> VANILLA_CRAFTING = GameRegistry.findRegistry(IRecipe.class);
 
     /**
      * Retrieves an ItemStack that has multiple recipes for it.
      */
     public static ItemStack findMatchingResult(InventoryCrafting inventory, World world) {
-        for (IRecipe irecipe : REGISTRY) {
+        for (IRecipe irecipe : VANILLA_CRAFTING) {
             if (irecipe.matches(inventory, world)) {
                 return irecipe.getCraftingResult(inventory);
             }
@@ -33,7 +29,7 @@ public class AnvilCraftingManager {
 
 
     public static NonNullList<ItemStack> getRemainingItems(InventoryCrafting inventory, World craftMatrix) {
-        for (IRecipe irecipe : REGISTRY) {
+        for (IRecipe irecipe : VANILLA_CRAFTING) {
             if (irecipe.matches(inventory, craftMatrix)) {
                 return irecipe.getRemainingItems(inventory);
             }

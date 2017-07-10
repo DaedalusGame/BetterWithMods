@@ -132,7 +132,7 @@ public class Feature {
         GameRegistry.registerTileEntity(clazz, BWMod.MODID + key);
     }
 
-    public IRecipe registerHardcoreRecipe(String ID, IRecipe recipe) {
+    public static IRecipe registerHardcoreRecipe(String ID, IRecipe recipe) {
         BWMRecipes.addHardcoreRecipe(ID, recipe);
         return recipe;
     }

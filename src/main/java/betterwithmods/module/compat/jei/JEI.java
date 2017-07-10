@@ -10,6 +10,8 @@ import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.anvil.AnvilCraftingManager;
+import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
@@ -19,10 +21,7 @@ import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.common.registry.bulk.manager.*;
 import betterwithmods.common.registry.bulk.recipes.*;
 import betterwithmods.module.compat.jei.category.*;
-import betterwithmods.module.compat.jei.wrapper.BlockMetaWrapper;
-import betterwithmods.module.compat.jei.wrapper.BulkRecipeWrapper;
-import betterwithmods.module.compat.jei.wrapper.HopperRecipeWrapper;
-import betterwithmods.module.compat.jei.wrapper.TurntableRecipeWrapper;
+import betterwithmods.module.compat.jei.wrapper.*;
 import com.google.common.collect.Lists;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
@@ -30,10 +29,12 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CRUCIBLE;
@@ -64,6 +65,7 @@ public class JEI extends BlankModPlugin {
 //        reg.handleRecipes(SteelShapedOreRecipe.class, recipe -> new SteelShapedOreRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
 //        reg.handleRecipes(SteelShapedRecipe.class, recipe -> new SteelShapedRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
 //        reg.handleRecipes(SteelShapelessRecipe.class, recipe -> new SteelShapelessRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
+        reg.handleRecipes(ShapedAnvilRecipe.class, recipe -> new ShapedAnvilRecipeWrapper(helper, recipe), SteelCraftingCategory.UID);
 
         reg.addRecipes(CauldronManager.getInstance().getRecipes(), CauldronRecipeCategory.UID);
         reg.addRecipes(StokedCauldronManager.getInstance().getRecipes(), StokedCauldronRecipeCategory.UID);
@@ -76,6 +78,8 @@ public class JEI extends BlankModPlugin {
 
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
 //        reg.addRecipes(AnvilCraftingManager.getInstance().getRecipeList(), SteelCraftingCategory.UID);
+        List<IRecipe> anvil = AnvilCraftingManager.VANILLA_CRAFTING.getValues().stream().filter(iRecipe -> iRecipe instanceof ShapedAnvilRecipe).collect(Collectors.toList());
+        reg.addRecipes(anvil, SteelCraftingCategory.UID);
 
         reg.addRecipeCategoryCraftingItem(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
         reg.addRecipeCategoryCraftingItem(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);

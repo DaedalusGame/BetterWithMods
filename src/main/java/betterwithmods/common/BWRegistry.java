@@ -11,6 +11,7 @@ import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.ColorUtils;
@@ -211,6 +212,7 @@ public class BWRegistry {
             replaceIRecipe("HCRedstone", reg);
         }
         replaceIRecipe("HCTorches", reg);
+        registerAnvilRecipes();
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
@@ -231,6 +233,11 @@ public class BWRegistry {
         if (recipes != null) {
             recipes.forEach(reg::register);
         }
+    }
+
+    private static void registerAnvilRecipes() {
+        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes("Anvil");
+        recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::register);
     }
 
     private static void registerReplacements(IRecipe original, IRecipe from) {

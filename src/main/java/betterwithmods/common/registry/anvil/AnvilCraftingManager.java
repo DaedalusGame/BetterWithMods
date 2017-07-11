@@ -11,9 +11,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnvilCraftingManager {
 
-    public static IForgeRegistry<IRecipe> VANILLA_CRAFTING = GameRegistry.findRegistry(IRecipe.class);
+    //public static IForgeRegistry<IRecipe> VANILLA_CRAFTING = GameRegistry.findRegistry(IRecipe.class);
+    public static List<IRecipe> VANILLA_CRAFTING = new ArrayList<>();
 
     /**
      * Retrieves an ItemStack that has multiple recipes for it.

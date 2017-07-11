@@ -11,7 +11,9 @@ import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.ToolDamageRecipe;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
+import betterwithmods.common.registry.anvil.VanillaShapedAnvilRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.ColorUtils;
@@ -33,6 +35,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -48,9 +52,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
@@ -212,7 +219,7 @@ public class BWRegistry {
             replaceIRecipe("HCRedstone", reg);
         }
         replaceIRecipe("HCTorches", reg);
-        registerAnvilRecipes();
+        registerAnvilRecipes(reg);
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
@@ -235,9 +242,15 @@ public class BWRegistry {
         }
     }
 
-    private static void registerAnvilRecipes() {
+    private static void registerAnvilRecipes(ForgeRegistry<IRecipe> reg) {
         List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes("Anvil");
-        recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::register);
+        recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
+        List<IRecipe> shaped = reg.getValues().stream().filter(i -> i instanceof ShapedRecipes || i instanceof ShapedOreRecipe).collect(Collectors.toList());
+        for (IRecipe recipe : shaped) {
+            AnvilCraftingManager.VANILLA_CRAFTING.add(new VanillaShapedAnvilRecipe(recipe).setRegistryName(recipe.getRegistryName()));
+        }
+        List<IRecipe> shapeless = reg.getValues().stream().filter(i -> i instanceof ShapelessRecipes || i instanceof ShapelessOreRecipe || i instanceof ToolDamageRecipe).collect(Collectors.toList());
+        shapeless.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
     }
 
     private static void registerReplacements(IRecipe original, IRecipe from) {

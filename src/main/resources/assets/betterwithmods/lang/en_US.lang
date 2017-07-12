@@ -215,6 +215,7 @@ tile.bwm:dirt_slab.2.name=Mycelium Slab
 tile.bwm:broken_gearbox.name=Broken Gearbox
 
 tile.bwm:iron_wall.name=Iron Wall
+tile.bwm:nether_growth.name=Nether Growth Spore
 
 tile.bwm:ie_siding.0.name=Horizontal Treated Wood Siding
 tile.bwm:ie_moulding.0.name=Horizontal Treated Wood Moulding

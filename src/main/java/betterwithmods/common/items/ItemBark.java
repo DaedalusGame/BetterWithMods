@@ -24,6 +24,11 @@ public class ItemBark extends Item implements IMultiLocations {
         this.setMaxDamage(0);
     }
 
+    @Override
+    public int getItemBurnTime(ItemStack itemStack) {
+        return 25;
+    }
+
     public static ItemStack getStack(String wood, int amount) {
         return new ItemStack(BWMItems.BARK, amount, barks.indexOf(wood));
     }

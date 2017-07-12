@@ -18,6 +18,20 @@ public class ItemMaterial extends Item implements IMultiLocations {
         this.setHasSubtypes(true);
     }
 
+
+    @Override
+    public int getItemBurnTime(ItemStack stack) {
+        switch(EnumMaterial.VALUES[stack.getMetadata()]) {
+            case GEAR:
+                return 18;
+            case NETHERCOAL:
+                return 3200;
+            case SAWDUST:
+                return 400;
+        }
+        return -1;
+    }
+
     public static ItemStack getMaterial(EnumMaterial material) {
         return getMaterial(material, 1);
     }

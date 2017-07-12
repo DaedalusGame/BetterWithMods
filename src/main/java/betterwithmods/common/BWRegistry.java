@@ -3,9 +3,19 @@ package betterwithmods.common;
 import betterwithmods.BWMod;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.client.BWStateMapper;
+import betterwithmods.client.BWStateMapperFire;
+import betterwithmods.client.model.*;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
+import betterwithmods.common.blocks.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
+import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
+import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
@@ -45,8 +55,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -98,8 +111,8 @@ public class BWRegistry {
     }
 
 
+
     public static void init() {
-        GameRegistry.registerFuelHandler(new BWFuelHandler());
         BWRegistry.registerHeatSources();
         BWOreDictionary.registerOres();
     }

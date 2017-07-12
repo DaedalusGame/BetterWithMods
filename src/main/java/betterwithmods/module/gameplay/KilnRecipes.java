@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
@@ -40,5 +41,8 @@ public class KilnRecipes extends Feature {
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD));
+        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE));
+        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE));
+        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
     }
 }

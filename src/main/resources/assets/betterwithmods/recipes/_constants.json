@@ -25,6 +25,25 @@
         "modid": "betterwithmods"
       }
     ],
+    "name": "HE_PLANKS_MOULDING",
+    "ingredient": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "plankWood"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "mouldingWood"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
     "name": "CAULDRON_MATERIAL",
     "ingredient": [
       {

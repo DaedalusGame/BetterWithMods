@@ -8,11 +8,11 @@
     "NNN",
     "NNN"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "forge:ore_shaped",
   "key": {
     "N": {
-      "item": "betterwithmods:material",
-      "data": 46
+      "ore": "nuggetDiamond",
+      "type": "forge:ore_dict"
     }
   }
 }

@@ -58,6 +58,10 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         return hasTool && hasInput;
     }
 
+    public ItemStack getExampleStack() {
+        return ItemStack.EMPTY;
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         return isMatch(inv, worldIn);
@@ -97,5 +101,13 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         if (group != null)
             return group.toString();
         return "";
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        ingredients.add(input);
+        ingredients.add(new IngredientTool(isTool, getExampleStack()));
+        return ingredients;
     }
 }

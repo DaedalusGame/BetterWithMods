@@ -14,8 +14,8 @@
       "type": "forge:ore_dict"
     },
     "D": {
-      "item": "betterwithmods:material",
-      "data": 47
+      "ore": "ingotDiamond",
+      "type": "forge:ore_dict"
     }
   }
 }

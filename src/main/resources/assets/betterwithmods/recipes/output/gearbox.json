@@ -17,8 +17,8 @@
       "type": "forge:ore_dict"
     },
     "L": {
-      "item": "betterwithmods:material",
-      "data": 35
+      "ore": "latchRedstone",
+      "type": "forge:ore_dict"
     }
   }
 }

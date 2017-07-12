@@ -75,6 +75,7 @@ public class BWOreDictionary {
         registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("coal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
+        registerOre("chainmail", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL));
 
         registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         registerOre("blockConcentratedHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));

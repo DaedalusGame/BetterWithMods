@@ -219,6 +219,7 @@ public class BWRegistry {
             replaceIRecipe("HCRedstone", reg);
         }
         replaceIRecipe("HCTorches", reg);
+        //replaceIRecipe("Cutting", reg);
         registerAnvilRecipes(reg);
     }
 

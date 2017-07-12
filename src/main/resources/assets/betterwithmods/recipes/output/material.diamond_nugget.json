@@ -6,9 +6,9 @@
   },
   "ingredients": [
     {
-      "item": "betterwithmods:material",
-      "data": 45
+      "ore": "ingotDiamond",
+      "type": "forge:ore_dict"
     }
   ],
-  "type": "minecraft:crafting_shapeless"
+  "type": "forge:ore_shapeless"
 }

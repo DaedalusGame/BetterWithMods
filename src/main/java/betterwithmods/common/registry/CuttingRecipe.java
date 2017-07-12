@@ -1,6 +1,7 @@
 package betterwithmods.common.registry;
 
 import com.google.gson.JsonObject;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
@@ -20,14 +21,19 @@ public class CuttingRecipe extends ToolDamageRecipe {
         super(new ResourceLocation("cutting"), result, input, stack -> stack.getItem() instanceof ItemShears);
     }
 
+    @Override
+    public ItemStack getExampleStack() {
+        return new ItemStack(Items.SHEARS);
+    }
+
     public static class Factory implements IRecipeFactory {
         @Override
         public IRecipe parse(JsonContext context, JsonObject json) {
             String group = JsonUtils.getString(json, "group", "");
             JsonObject o = JsonUtils.getJsonObject(json, "cut");
             Item item = JsonUtils.getItem(o,"item");
-            int meta = JsonUtils.getInt(o,"data");
-            Ingredient cut = Ingredient.fromStacks(new ItemStack(item,meta));
+            int meta = JsonUtils.hasField(o, "data") ? JsonUtils.getInt(o,"data") : 0;
+            Ingredient cut = Ingredient.fromStacks(new ItemStack(item, 1, meta));
             ItemStack itemstack = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
             return new CuttingRecipe(cut, itemstack);
         }

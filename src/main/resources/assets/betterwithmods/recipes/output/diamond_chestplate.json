@@ -7,11 +7,11 @@
     "DDD",
     "DDD"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "forge:ore_shaped",
   "key": {
     "D": {
-      "item": "betterwithmods:material",
-      "data": 47
+      "ore": "ingotDiamond",
+      "type": "forge:ore_dict"
     }
   }
 }

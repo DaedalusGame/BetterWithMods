@@ -13,8 +13,8 @@
       "item": "minecraft:bow"
     },
     "R": {
-      "item": "betterwithmods:material",
-      "data": 35
+      "ore": "latchRedstone",
+      "type": "forge:ore_dict"
     },
     "C": {
       "ore": "cobblestone",

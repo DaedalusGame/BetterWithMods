@@ -14,6 +14,9 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -134,10 +137,10 @@ public class CraftingRecipes extends Feature {
 //        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.MANUAL), "gearWood", Items.BOOK);
 
 
-//        BWMRecipes.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP, 4), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT)));
-//        BWMRecipes.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT, 2), new ItemStack(Items.LEATHER)));
-//        BWMRecipes.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
-//        BWMRecipes.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)));
+        //makeCuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP, 4), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT), new ResourceLocation("betterwithmods", "leather_strap"));
+        //makeCuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT, 2), new ItemStack(Items.LEATHER), new ResourceLocation("betterwithmods", "leather_cut"));
+        //makeCuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER), new ResourceLocation("betterwithmods", "tanned_leather_cut"));
+        //makeCuttingRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ResourceLocation("betterwithmods", "scoured_leather_cut"));
 //        String[] dyes = new String[]{"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black",};
 //        for (int i = 0; i < dyes.length; i++) {
 //            BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), "blockVase", "dye" + dyes[i]);
@@ -153,10 +156,21 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addSmelting(BWMItems.RAW_KEBAB, new ItemStack(BWMItems.COOKED_KEBAB), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE), 0.1F);
+        GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
 
 
         BWMRecipes.removeFurnaceRecipe(new ItemStack(Items.NETHERBRICK));
     }
+/*
+    private void makeCuttingRecipe(ItemStack output, ItemStack input, ResourceLocation registry) {
+        addCuttingRecipe(new CuttingRecipe(Ingredient.fromStacks(input), output).setRegistryName(registry));
+    }
+
+    private IRecipe addCuttingRecipe(IRecipe recipe) {
+        return registerHardcoreRecipe("Cutting", recipe);
+    }*/
 
     @Override
     public String getFeatureDescription() {

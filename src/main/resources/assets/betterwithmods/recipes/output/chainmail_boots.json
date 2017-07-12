@@ -6,11 +6,11 @@
     "C C",
     "C C"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "forge:ore_shaped",
   "key": {
     "C": {
-      "item": "betterwithmods:material",
-      "data": 49
+      "ore": "chainmail",
+      "type": "forge:ore_dict"
     }
   }
 }

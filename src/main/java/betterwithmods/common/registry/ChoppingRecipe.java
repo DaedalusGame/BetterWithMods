@@ -2,6 +2,7 @@ package betterwithmods.common.registry;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWOreDictionary;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -20,6 +21,11 @@ public class ChoppingRecipe extends ToolDamageRecipe {
         super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(2), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Override
+    public ItemStack getExampleStack() {
+        return new ItemStack(Items.IRON_AXE);
     }
 
     private static boolean isAxe(ItemStack stack) {

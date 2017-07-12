@@ -11,8 +11,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "R": {
-      "item": "betterwithmods:material",
-      "data": 35
+      "ore": "latchRedstone",
+      "type": "forge:ore_dict"
     },
     "I": {
       "ore": "ingotIron",

@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
@@ -22,6 +23,7 @@ public class BWSounds {
     @GameRegistry.ObjectHolder("betterwithmods:entity.player.oof")
     public final static SoundEvent OOF = null;
 
+    @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().register(registerSound("block.wood.creak"));
         event.getRegistry().register(registerSound("block.stone.grind"));

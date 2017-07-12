@@ -94,6 +94,10 @@ public class BWRegistry {
     public static void registerModels(ModelRegistryEvent event) {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
         BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
+		ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
+        ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
     }
 
 

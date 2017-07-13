@@ -111,8 +111,8 @@ public class BreedingHardnessEvent {
             } else if (held.getItem() instanceof ItemBreedingHarness) {
                 if (!getHarness(animal).isEmpty())
                     return;
-                InvUtils.consumeItemsInInventory(playerInv, held, 1, false);
                 ItemStack copyStack = held.copy();
+                InvUtils.consumeItemsInInventory(playerInv, held, 1, false);
                 copyStack.setCount(1);
                 NBTTagCompound cmp = new NBTTagCompound();
                 copyStack.writeToNBT(cmp);

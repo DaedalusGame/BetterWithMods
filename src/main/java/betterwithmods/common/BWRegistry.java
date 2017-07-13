@@ -3,8 +3,6 @@ package betterwithmods.common;
 import betterwithmods.BWMod;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.client.BWStateMapper;
-import betterwithmods.client.model.ModelKiln;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
@@ -46,9 +44,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -93,7 +88,7 @@ public class BWRegistry {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         BWMItems.getItems().forEach(event.getRegistry()::register);
     }
-
+/*
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
@@ -102,7 +97,7 @@ public class BWRegistry {
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
         ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
-    }
+    }*/
 
 
 
@@ -226,7 +221,15 @@ public class BWRegistry {
             replaceIRecipe("HCRedstone", reg);
         }
         replaceIRecipe("HCTorches", reg);
-        //replaceIRecipe("Cutting", reg);
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.bop.BiomesOPlenty")) {
+            replaceIRecipe("BOP", reg);
+        }
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.Quark")) {
+            replaceIRecipe("quark", reg);
+        }
+        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.Rustic")) {
+            replaceIRecipe("rustic", reg);
+        }
         registerAnvilRecipes(reg);
     }
 

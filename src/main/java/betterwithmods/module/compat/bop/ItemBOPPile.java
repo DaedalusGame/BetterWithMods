@@ -36,8 +36,10 @@ public class ItemBOPPile extends Item implements IMultiLocations {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (EnumMaterial material : EnumMaterial.values()) {
-            items.add(getMaterial(material));
+        if (this.isInCreativeTab(tab)) {
+            for (EnumMaterial material : EnumMaterial.values()) {
+                items.add(getMaterial(material));
+            }
         }
     }
 

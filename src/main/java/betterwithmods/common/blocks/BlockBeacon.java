@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -22,21 +23,28 @@ public class BlockBeacon extends net.minecraft.block.BlockBeacon {
         setRegistryName("minecraft:beacon");
         setCreativeTab(BWCreativeTabs.BWTAB);
         setUnlocalizedName("beacon");
+        setLightLevel(1.0f);
+    }
+
+    public TileEntityBeacon getTile(IBlockAccess world, BlockPos pos) {
+        return ((TileEntityBeacon) world.getTileEntity(pos));
     }
 
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.isCreative()) {
-            ((TileEntityBeacon) worldIn.getTileEntity(pos)).processInteraction(playerIn.getHeldItemMainhand());
-            return true;
-        }
-        return false;
+        return getTile(worldIn, pos).processInteraction(worldIn, playerIn, playerIn.getHeldItemMainhand());
     }
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         return;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        getTile(worldIn, pos).onRemoved();
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

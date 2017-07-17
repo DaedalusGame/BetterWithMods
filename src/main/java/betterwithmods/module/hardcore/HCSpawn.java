@@ -25,7 +25,7 @@ public class HCSpawn extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Makes it so death is actual issues as you will spawn randomly within a 2000 block radius of your original spawn. Compasses still point to Original Spawn";
+        return "Makes it so death is actual issues as you will spawn randomly within a 2000 block radius of your original spawn. Compasses still point to Original BindingPoint";
     }
 
     @Override

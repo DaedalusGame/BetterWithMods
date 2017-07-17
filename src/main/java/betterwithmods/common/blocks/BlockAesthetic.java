@@ -36,6 +36,10 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockAesthetic.EnumType.CHOPBLOCK));
     }
 
+    public static IBlockState getVariant(EnumType type) {
+        return BWMBlocks.AESTHETIC.getDefaultState().withProperty(TYPE,type);
+    }
+
     public static ItemStack getStack(EnumType type) {
         return new ItemStack(BWMBlocks.AESTHETIC, 1, type.getMeta());
     }

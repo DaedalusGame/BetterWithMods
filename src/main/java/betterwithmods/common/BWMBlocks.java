@@ -94,6 +94,7 @@ public final class BWMBlocks {
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
+    public static Block BEACON;
 
     private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -166,6 +167,7 @@ public final class BWMBlocks {
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
+        registerBlock(new BlockBeacon());
     }
 
     public static void registerTileEntities() {
@@ -188,6 +190,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityAdvBellows.class, "bwm.bellows");
         GameRegistry.registerTileEntity(TileStake.class, "bwm.stake");
         GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
+        GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
     }
 
 //    /**

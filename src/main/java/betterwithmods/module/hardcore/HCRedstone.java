@@ -1,7 +1,6 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
@@ -55,7 +54,6 @@ public class HCRedstone extends Feature {
         addHardcoreRecipe(new ShapedOreRecipe(null, Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())).setRegistryName(new ResourceLocation("minecraft", "comparator")));
         addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.OBSERVER, "CCC", "LLU", "CCC", 'C', "cobblestone", 'L', LATCH, 'U', BlockUrn.getStack(BlockUrn.EnumType.FULL, 1)).setRegistryName(new ResourceLocation("minecraft", "observer")));
         if (!stoneDeviceRecipesAnvil) {
-            //TODO config
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "S", "R", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_button")));
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "SS", "RR", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_pressure_plate")));
         }

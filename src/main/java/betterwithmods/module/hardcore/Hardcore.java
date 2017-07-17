@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.module.CompatModule;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.hcbeacons.HCBeacons;
 import betterwithmods.module.hardcore.hchunger.HCHunger;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
@@ -23,6 +24,7 @@ public class Hardcore extends CompatModule {
     public void addFeatures() {
         this.addCompatFeatures();
         registerFeature(new HCArmor());
+        registerFeature(new HCBeacons());
         registerFeature(new HCBeds());
         registerFeature(new HCBonemeal());
         registerFeature(new HCBuckets());

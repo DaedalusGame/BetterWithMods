@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,8 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PotionEventHandler {
@@ -93,6 +96,30 @@ public class PotionEventHandler {
         GlStateManager.disableBlend();
         GlStateManager.depthMask(true);
         GlStateManager.depthFunc(515);
+    }
+
+    @SubscribeEvent
+    public void onHarvestBlock(BlockEvent.HarvestDropsEvent event) {
+
+        if (event.getHarvester() != null && event.getHarvester().isPotionActive(BWRegistry.POTION_FORTUNE)) {
+            PotionEffect effect = event.getHarvester().getActivePotionEffect(BWRegistry.POTION_FORTUNE);
+            int level = effect.getAmplifier()+1;
+            if (event.getFortuneLevel() < level) {
+                event.getDrops().clear();
+                event.getDrops().addAll(event.getState().getBlock().getDrops(event.getWorld(), event.getPos(), event.getState(), level));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingDeath(LootingLevelEvent event) {
+        if (event.getEntityLiving() != null && event.getEntityLiving().isPotionActive(BWRegistry.POTION_LOOTING)) {
+            PotionEffect effect = event.getEntityLiving().getActivePotionEffect(BWRegistry.POTION_LOOTING);
+            int level = effect.getAmplifier()+1;
+            if (event.getLootingLevel() < level) {
+                event.setLootingLevel(level);
+            }
+        }
     }
 
     @SubscribeEvent

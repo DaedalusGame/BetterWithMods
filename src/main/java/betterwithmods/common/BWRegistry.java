@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
@@ -59,16 +60,17 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
-    public static final Potion POTION_TRUESIGHT = new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight");
+    @GameRegistry.ObjectHolder("betterwithmods:true_sight")
+    public static final Potion POTION_TRUESIGHT = null;
+    @GameRegistry.ObjectHolder("betterwithmods:fortune")
+    public static final Potion POTION_FORTUNE = null;
+    @GameRegistry.ObjectHolder("betterwithmods:looting")
+    public static final Potion POTION_LOOTING = null;
+
     private static int availableEntityId = 0;
-
-    public BWRegistry() {
-
-    }
 
     public static void preInit() {
         API.manualAPI = ManualAPIImpl.INSTANCE;
-
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
@@ -88,18 +90,6 @@ public class BWRegistry {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         BWMItems.getItems().forEach(event.getRegistry()::register);
     }
-/*
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        BWMItems.getItems().forEach(BWMItems::setInventoryModel);
-        BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
-		ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
-        ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
-    }*/
-
-
 
     public static void init() {
         BWRegistry.registerHeatSources();
@@ -195,13 +185,15 @@ public class BWRegistry {
         BWMHeatRegistry.setBlockHeatRegistry(BWMBlocks.STOKED_FLAME, 8);
     }
 
-//    @SubscribeEvent
-//    private static void registerPotions(RegistryEvent.Register<Potion> event) {
-//        event.getRegistry().register(registerPotion(POTION_TRUESIGHT));
-//    }
+    @SubscribeEvent
+    public static void registerPotions(RegistryEvent.Register<Potion> event) {
+        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight")));
+        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 5, 2).setRegistryName("fortune")));
+        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 6, 2).setRegistryName("looting")));
+    }
 
     private static Potion registerPotion(Potion potion) {
-        String potionName = potion.getRegistryName().toString().substring(BWMod.MODID.length() + ":".length());
+        String potionName = potion.getRegistryName().getResourcePath();
         potion.setPotionName("bwm.effect." + potionName);
         return potion;
     }
@@ -246,7 +238,7 @@ public class BWRegistry {
         }
     }
 
-    private static void replaceIRecipe (String category, ForgeRegistry<IRecipe> reg) {
+    private static void replaceIRecipe(String category, ForgeRegistry<IRecipe> reg) {
         List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
         if (recipes != null) {
             recipes.forEach(reg::register);
@@ -271,3 +263,4 @@ public class BWRegistry {
         }
     }
 }
+

@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore.hcbeacons;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -17,14 +18,15 @@ public interface IBeaconEffect {
 
     void effect(World world, BlockPos pos, int level);
 
-    static void forEachPlayersAround(World world, BlockPos pos, int level, Consumer<? super EntityPlayer> player) {
-        int r = radii[Math.min(level-1,3)];
+    static void forEachPlayersAround(World world, BlockPos pos, int level, Consumer<? super EntityLivingBase> player) {
+        forEachEntityAround(EntityPlayer.class, world, pos, level, player);
+    }
+
+    static void forEachEntityAround(Class<? extends EntityLivingBase> clazz, World world, BlockPos pos, int level, Consumer<? super EntityLivingBase> consumer) {
+        int r = radii[Math.min(level - 1, 3)];
         AxisAlignedBB box = new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(r);
-        List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, box);
-        players.forEach(player);
+        List<? extends EntityLivingBase> entities = world.getEntitiesWithinAABB(clazz, box);
+        entities.forEach(consumer);
     }
 
-    static void forEachPlayersSpecial(World world, BlockPos pos, int level, Consumer<? super EntityPlayer> player) {
-
-    }
 }

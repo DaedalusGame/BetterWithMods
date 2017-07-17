@@ -4,8 +4,8 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.HCArmor;
 import betterwithmods.module.hardcore.HCGloom;
-import betterwithmods.module.hardcore.hchunger.HCHunger;
 import betterwithmods.module.hardcore.HCInjury;
+import betterwithmods.module.hardcore.hchunger.HCHunger;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +45,7 @@ public final class PlayerHelper {
     }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCGloom.class))
+        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
             return GloomPenalty.NO_PENALTY;
         int gloom = HCGloom.getGloomTime(player);
         GloomPenalty penalty = GloomPenalty.NO_PENALTY;
@@ -65,7 +66,7 @@ public final class PlayerHelper {
     }
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
+        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
             return HungerPenalty.NO_PENALTY;
         int level = player.getFoodStats().getFoodLevel();
         if (level > 24) return HungerPenalty.NO_PENALTY;
@@ -77,7 +78,7 @@ public final class PlayerHelper {
     }
 
     public static FatPenalty getFatPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCHunger.class))
+        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
             return FatPenalty.NO_PENALTY;
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 36) return FatPenalty.NO_PENALTY;
@@ -88,7 +89,7 @@ public final class PlayerHelper {
     }
 
     public static HealthPenalty getHealthPenalty(EntityPlayer player) {
-        if(!ModuleLoader.isFeatureEnabled(HCInjury.class))
+        if (!ModuleLoader.isFeatureEnabled(HCInjury.class))
             return HealthPenalty.NO_PENALTY;
         int level = (int) player.getHealth();
         if (level > 10) return HealthPenalty.NO_PENALTY;
@@ -236,5 +237,13 @@ public final class PlayerHelper {
         name.setString("SkullOwner", player.getDisplayNameString());
         head.setTagCompound(name);
         return head;
+    }
+
+    public static boolean hasFullSet(EntityPlayer player, Class<? extends ItemArmor> armor) {
+        for (ItemStack stack : player.getArmorInventoryList()) {
+            if (!armor.isAssignableFrom(stack.getItem().getClass()))
+                return false;
+        }
+        return true;
     }
 }

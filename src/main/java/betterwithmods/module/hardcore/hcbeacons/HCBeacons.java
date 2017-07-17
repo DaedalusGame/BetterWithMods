@@ -2,10 +2,13 @@ package betterwithmods.module.hardcore.hcbeacons;
 
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.module.Feature;
+import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -33,11 +36,21 @@ public class HCBeacons extends Feature {
         BEACON_EFFECTS.put(Blocks.GLOWSTONE.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 125, 1))));
         BEACON_EFFECTS.put(Blocks.GOLD_BLOCK.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 120, level))));
         BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.DUNG), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> {
-                    player.addPotionEffect(new PotionEffect(MobEffects.POISON, 120, level));
-                    player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 120, level));
+                    if (!PlayerHelper.hasFullSet((EntityPlayer) player, ItemSoulforgeArmor.class)) {
+                        player.addPotionEffect(new PotionEffect(MobEffects.POISON, 120, level));
+                        player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 120, level));
+                    }
+                }
+        ));
+        BEACON_EFFECTS.put(Blocks.COAL_BLOCK.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> {
+                    if (!PlayerHelper.hasFullSet((EntityPlayer) player, ItemSoulforgeArmor.class)) {
+                        player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 120, level));
+                    }
                 }
         ));
         BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.HELLFIRE), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 120, level))));
+        BEACON_EFFECTS.put(Blocks.PRISMARINE.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 120, level))));
+        BEACON_EFFECTS.put(Blocks.SPONGE.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.setAir(player.getAir() - 1)));
         BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.STEEL), new SpawnBeaconEffect());
     }
 

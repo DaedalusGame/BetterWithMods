@@ -1,19 +1,7 @@
 package betterwithmods.module.tweaks;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.blocks.BlockMechMachines;
-import betterwithmods.common.blocks.mini.BlockMini;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCSaw;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by tyler on 5/16/17.

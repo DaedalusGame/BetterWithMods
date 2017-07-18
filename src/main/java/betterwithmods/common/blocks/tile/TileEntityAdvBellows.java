@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.common.blocks.BlockAdvBellows;
+import betterwithmods.common.blocks.mechanical.BlockAdvBellows;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;

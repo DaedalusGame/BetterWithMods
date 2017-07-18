@@ -2,8 +2,8 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockCookingPot;
 import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.module.Feature;
 import net.minecraft.block.Block;

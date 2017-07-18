@@ -2,6 +2,7 @@ package betterwithmods.common;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.blocks.*;
+import betterwithmods.common.blocks.mechanical.*;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.blocks.tile.gen.TileEntityCreativeGen;

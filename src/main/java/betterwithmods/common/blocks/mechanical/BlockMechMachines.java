@@ -1,9 +1,10 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.common.blocks.tile.TileEntityMill;
 import betterwithmods.common.blocks.tile.TileEntityPulley;

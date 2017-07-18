@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.BlockPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockLiquid;

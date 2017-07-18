@@ -1,7 +1,8 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.tile.gen.TileEntityCreativeGen;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

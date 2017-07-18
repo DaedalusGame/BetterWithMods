@@ -1,10 +1,9 @@
 package betterwithmods.common.blocks.tile;
 
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
-import betterwithmods.module.gameplay.MillRecipes;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

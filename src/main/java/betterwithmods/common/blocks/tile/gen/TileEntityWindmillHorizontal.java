@@ -2,8 +2,8 @@ package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockAxle;
-import betterwithmods.common.blocks.BlockWindmill;
+import betterwithmods.common.blocks.mechanical.BlockAxle;
+import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

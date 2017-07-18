@@ -2,8 +2,8 @@ package li.cil.manual.client.manual.provider;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockCookingPot;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.mini.BlockMini;
 import com.google.common.collect.Sets;
 import li.cil.manual.api.manual.PathProvider;

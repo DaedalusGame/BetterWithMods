@@ -1,10 +1,11 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;

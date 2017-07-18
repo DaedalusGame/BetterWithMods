@@ -4,7 +4,7 @@ import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockMillGenerator;
+import betterwithmods.common.blocks.mechanical.BlockMillGenerator;
 import betterwithmods.common.blocks.tile.TileBasic;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

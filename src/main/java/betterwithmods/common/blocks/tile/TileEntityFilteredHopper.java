@@ -5,7 +5,7 @@ import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;

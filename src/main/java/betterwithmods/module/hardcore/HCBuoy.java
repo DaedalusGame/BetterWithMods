@@ -2,7 +2,7 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;

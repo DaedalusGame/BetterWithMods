@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.blocks.tile.TileEntityGearbox;
 import net.minecraft.block.state.IBlockState;

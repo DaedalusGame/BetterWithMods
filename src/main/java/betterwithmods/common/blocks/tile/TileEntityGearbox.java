@@ -4,7 +4,7 @@ import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.blocks.BlockAdvGearbox;
+import betterwithmods.common.blocks.mechanical.BlockAdvGearbox;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

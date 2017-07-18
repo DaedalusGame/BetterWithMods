@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.tile.gen.IColor;

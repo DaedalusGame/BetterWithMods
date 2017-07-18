@@ -1,8 +1,9 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.tile.TileEntityCauldron;
 import betterwithmods.common.blocks.tile.TileEntityCrucible;
 import betterwithmods.common.blocks.tile.TileEntityDragonVessel;

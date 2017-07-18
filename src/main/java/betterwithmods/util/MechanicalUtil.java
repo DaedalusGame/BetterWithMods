@@ -5,7 +5,7 @@ import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockAxle;
+import betterwithmods.common.blocks.mechanical.BlockAxle;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

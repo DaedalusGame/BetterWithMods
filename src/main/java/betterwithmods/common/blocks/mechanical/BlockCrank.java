@@ -1,9 +1,9 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.tile.TileEntityMill;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.hchunger.HCHunger;

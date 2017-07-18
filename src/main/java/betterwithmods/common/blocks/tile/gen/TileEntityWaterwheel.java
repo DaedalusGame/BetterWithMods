@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockWaterwheel;
+import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;

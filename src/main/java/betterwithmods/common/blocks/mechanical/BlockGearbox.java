@@ -1,10 +1,11 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
+import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;

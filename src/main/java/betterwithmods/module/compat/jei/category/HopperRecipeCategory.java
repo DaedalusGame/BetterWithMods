@@ -2,16 +2,14 @@ package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.module.compat.jei.wrapper.HopperRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;

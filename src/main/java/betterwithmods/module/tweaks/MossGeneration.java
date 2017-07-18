@@ -22,6 +22,8 @@ public class MossGeneration extends Feature {
 
     @SubscribeEvent
     public void generateMossNearSpawner(TickEvent.WorldTickEvent evt) {
+        if (evt.world.isRemote)
+            return;
         Random rand = evt.world.rand;
         List<BlockPos> positions = evt.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
         try {
@@ -36,8 +38,10 @@ public class MossGeneration extends Feature {
                     evt.world.setBlockState(check, changeState);
                 }
             });
-        } catch(ConcurrentModificationException ignored) { }
+        } catch (ConcurrentModificationException ignored) {
+        }
     }
+
     @Override
     public boolean hasSubscriptions() {
         return true;

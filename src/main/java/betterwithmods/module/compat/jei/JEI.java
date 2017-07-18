@@ -6,8 +6,8 @@ import betterwithmods.client.container.bulk.GuiCrucible;
 import betterwithmods.client.container.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockCookingPot;
-import betterwithmods.common.blocks.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.common.registry.ToolDamageRecipe;
@@ -41,9 +41,9 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CAULDRON;
-import static betterwithmods.common.blocks.BlockCookingPot.EnumType.CRUCIBLE;
-import static betterwithmods.common.blocks.BlockMechMachines.EnumType.*;
+import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
+import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
+import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
 
 @mezz.jei.api.JEIPlugin
 public class JEI extends BlankModPlugin {

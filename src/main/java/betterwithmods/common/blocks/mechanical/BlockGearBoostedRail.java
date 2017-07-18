@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks;
+package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;

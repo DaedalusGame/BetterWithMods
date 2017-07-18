@@ -2,7 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.MechanicalCapability;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.blocks.BlockCookingPot;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.common.registry.heat.BWMHeatSource;

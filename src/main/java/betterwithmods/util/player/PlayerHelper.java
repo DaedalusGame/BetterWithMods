@@ -41,7 +41,7 @@ public final class PlayerHelper {
     }
 
     public static float getSpeedModifier(EntityPlayer player) {
-        return Math.min(getFatPenalty(player).getModifier(), getHungerPenalty(player).getModifier());
+        return Math.min(getHealthPenalty(player).getModifier(), Math.min(getFatPenalty(player).getModifier(), getHungerPenalty(player).getModifier()));
     }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {

@@ -22,7 +22,6 @@ public class HCInjury extends Feature {
 
     @SubscribeEvent
     public void attack(LivingAttackEvent event) {
-
         if (event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
             if (PlayerHelper.isSurvival(player)) {

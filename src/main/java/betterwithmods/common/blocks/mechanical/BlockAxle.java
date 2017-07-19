@@ -1,10 +1,10 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,6 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
 
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
-public class BlockAxle extends BlockRotate implements IMultiVariants, IOverpower {
+public class BlockAxle extends BlockRotate implements IOverpower {
     public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
@@ -71,19 +72,15 @@ public class BlockAxle extends BlockRotate implements IMultiVariants, IOverpower
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileAxle tile = getTile((World) worldIn,pos);
         if(tile != null) {
-            return state.withProperty(ACTIVE, tile.getSignal() > 0);
+            return state.withProperty(ACTIVE, tile.getSignal() > 0 );
         }
-        return super.getActualState(state, worldIn, pos);
+        return state;
     }
 
-    @Override
-    public String[] getVariants() {
-        return new String[]{"axis=y,active=false"};
-    }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileAxle tile = getTile((World) world,pos);
+        TileAxle tile = getTile(world,pos);
         if(tile != null) {
             System.out.printf("s: %s, p: %s\n", tile.getSignal(), tile.getPower());
         }
@@ -164,8 +161,13 @@ public class BlockAxle extends BlockRotate implements IMultiVariants, IOverpower
         return DirUtils.getAxisDirection(state.getValue(AXIS));
     }
 
+    public EnumFacing.Axis getAxis(IBlockState state) {
+        return state.getValue(AXIS);
+    }
+
     @Override
     public void overpower(World world, BlockPos pos) {
         world.setBlockToAir(pos);
+        InvUtils.ejectStackWithOffset(world,pos, new ItemStack(this,1,damageDropped(world.getBlockState(pos))));
     }
 }

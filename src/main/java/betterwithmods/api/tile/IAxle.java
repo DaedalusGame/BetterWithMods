@@ -10,4 +10,10 @@ public interface IAxle {
     int getMaximumInput();
 
     EnumFacing[] getDirections();
+
+    EnumFacing.Axis getAxis();
+
+    default boolean isFacing(IAxle axle) {
+        return axle.getAxis() == this.getAxis();
+    }
 }

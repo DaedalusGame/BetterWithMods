@@ -44,5 +44,10 @@ public class CapabilityAxle {
         public EnumFacing[] getDirections() {
             return new EnumFacing[0];
         }
+
+        @Override
+        public EnumFacing.Axis getAxis() {
+            return null;
+        }
     }
 }

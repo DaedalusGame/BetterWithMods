@@ -22,15 +22,11 @@
       }
     ],
     "axis": {
-      "y": {
-        "model": "betterwithmods:axle"
-      },
+      "y": {},
       "z": {
-        "model": "betterwithmods:axle",
         "x": 90
       },
       "x": {
-        "model": "betterwithmods:axle",
         "x": 90,
         "y": 90
       }

@@ -41,31 +41,32 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
         int sources = 0;
         for (EnumFacing facing : getDirections()) {
             BlockPos offset = pos.offset(facing);
-            IAxle axle = MechanicalUtil.getAxle(world, offset, facing);
-            if (axle != null) {
-                byte next = axle.getSignal();
-                if (next > newSignal) {
-                    newSignal = next;
-                }
-            }
-        }
-        for (EnumFacing facing : getDirections()) {
-            BlockPos offset = pos.offset(facing);
+
+
             IMechanicalPower mech = MechanicalUtil.getMechanicalPower(world, offset, facing);
-            IAxle axle = MechanicalUtil.getAxle(world, offset, facing);
             if (mech != null) {
+                if (mech instanceof IAxle) {
+                    IAxle axle = (IAxle) mech;
+                    if (axle != null && axle.isFacing(this)) {
+                        byte next = axle.getSignal();
+                        if (next > newSignal) {
+                            newSignal = next;
+                        }
+                    }
+                }
+
                 int power = mech.getMechanicalOutput(facing.getOpposite());
                 if (power > this.power) {
                     sources++;
                     setPower(power);
                 }
 
-                if (axle == null && newSignal == 0 && power <= getMaximumInput()) {
+                if (newSignal == 0 && power <= getMaximumInput()) {
                     newSignal = (byte) (getMaximumSignal() + 1);
                 }
+
             }
         }
-
 
         if (sources >= 2) {
             getBlock().overpower(world, pos);
@@ -150,6 +151,11 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
     public EnumFacing[] getDirections() {
         return getBlock().getAxisDirections(world.getBlockState(pos));
+    }
+
+    @Override
+    public EnumFacing.Axis getAxis() {
+        return getBlock().getAxis(world.getBlockState(pos));
     }
 
     public BlockAxle getBlock() {

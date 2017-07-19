@@ -98,7 +98,7 @@ public class HCOres extends Feature {
         }
         Set<String> dustExcludes = Sets.union(dustExclude, Sets.newHashSet("diamond"));
         if (dustNuggetSmelting) {
-            List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter(p -> !dustExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
+            List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter( p -> p == null || p.getLeft() == null || p.getRight() == null).filter(p -> !dustExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
             dustSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
                 ItemStack n = nugget.copy();
                 n.setCount(dustProductionCount);

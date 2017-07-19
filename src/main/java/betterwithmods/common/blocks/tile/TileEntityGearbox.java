@@ -2,7 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockAdvGearbox;
 import betterwithmods.util.MechanicalUtil;
@@ -43,27 +43,27 @@ public class TileEntityGearbox extends TileEntity implements ITickable, IMechani
 
     private void findOutputs() {
         outputs = 0;
-        for (EnumFacing facing : EnumFacing.VALUES) {
-            if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(getWorld(), pos, facing)) {
-                if (powerLevel != getMechanicalInput(facing))
-                    powerLevel = getMechanicalInput(facing);
-            } else if (MechanicalUtil.isAxle(getWorld().getBlockState(pos.offset(facing)).getBlock())) {
-                outputs++;
-            }
-        }
+//        for (EnumFacing facing : EnumFacing.VALUES) {
+//            if (((BlockAdvGearbox) getBlockType()).canInputPowerToSide(getWorld(), pos, facing)) {
+//                if (powerLevel != getMechanicalInput(facing))
+//                    powerLevel = getMechanicalInput(facing);
+//            } else if (MechanicalUtil.isAxle(getWorld().getBlockState(pos.offset(facing)).getBlock())) {
+//                outputs++;
+//            }
+//        }
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
-        return capability == MechanicalCapability.MECHANICAL_POWER
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER
                 || super.hasCapability(capability, facing);
     }
 
     @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
-        if (capability == MechanicalCapability.MECHANICAL_POWER)
-            return MechanicalCapability.MECHANICAL_POWER.cast(this);
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
     }
 

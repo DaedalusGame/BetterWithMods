@@ -136,7 +136,7 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
         }
         if (speed != this.runningState) {
             this.setRunningState(speed);
-            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWaterwheel.ISACTIVE, speed > 0));
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }

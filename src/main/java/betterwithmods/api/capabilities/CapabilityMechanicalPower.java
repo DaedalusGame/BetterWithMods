@@ -6,12 +6,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
-public class MechanicalCapability {
+public class CapabilityMechanicalPower {
     @SuppressWarnings("CanBeFinal")
     @CapabilityInject(IMechanicalPower.class)
     public static Capability<IMechanicalPower> MECHANICAL_POWER = null;
 
-    public static class CapabilityMechanicalPower implements Capability.IStorage<IMechanicalPower> {
+    public static class Impl implements Capability.IStorage<IMechanicalPower> {
         @Override
         public NBTBase writeNBT(Capability<IMechanicalPower> capability, IMechanicalPower mechanical, EnumFacing side) {
             return null;
@@ -23,7 +23,7 @@ public class MechanicalCapability {
         }
     }
 
-    public static class DefaultMechanicalPower implements IMechanicalPower {
+    public static class Default implements IMechanicalPower {
         @Override
         public int getMechanicalOutput(EnumFacing facing) {
             return 0;

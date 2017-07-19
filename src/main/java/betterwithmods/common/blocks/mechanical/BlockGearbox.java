@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
@@ -279,7 +278,7 @@ public class BlockGearbox extends BlockRotate implements IMechanicalBlock, IMech
     private boolean isAxle(IBlockAccess world, BlockPos origin, EnumFacing facing) {
         BlockPos pos = origin.offset(facing);
         Block block = world.getBlockState(pos).getBlock();
-        return block instanceof IAxle && ((IAxle) block).isAxleOrientedToFacing(world, pos, facing.getOpposite());
+        return false;
     }
 
     @Override

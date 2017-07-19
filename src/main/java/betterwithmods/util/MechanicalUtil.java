@@ -1,11 +1,12 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityAxle;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IAxle;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockAxle;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -13,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class MechanicalUtil {
+
     public static boolean isBlockPoweredOnSide(World world, BlockPos pos, EnumFacing dir) {
         boolean isPowered = isBlockPoweredByAxleOnSide(world, pos, dir);
         if (!isPowered) {
@@ -22,6 +24,31 @@ public class MechanicalUtil {
         }
         return isPowered;
     }
+
+    public static IMechanicalPower getMechanicalPower(World world, BlockPos pos, EnumFacing facing) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile.hasCapability(CapabilityMechanicalPower.MECHANICAL_POWER, facing)) {
+            return tile.getCapability(CapabilityMechanicalPower.MECHANICAL_POWER, facing);
+        }
+        return null;
+    }
+
+    public static IAxle getAxle(World world, BlockPos pos, EnumFacing facing) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile.hasCapability(CapabilityAxle.AXLE, facing)) {
+            return tile.getCapability(CapabilityAxle.AXLE, facing);
+        }
+        return null;
+    }
+
+    public static int getPowerOutput(World world, BlockPos pos, EnumFacing facing) {
+        IMechanicalPower power = getMechanicalPower(world, pos, facing);
+        if (power != null) {
+            return power.getMechanicalOutput(facing);
+        }
+        return 0;
+    }
+
 
     public static int searchForAdvMechanical(World world, BlockPos pos, EnumFacing dir) {
         int power = isBlockPoweredOnSide(world, pos, dir) ? 1 : 0;
@@ -33,8 +60,8 @@ public class MechanicalUtil {
                     if (((IMechanical) block).isMechanicalJunction()) {
                         if (world.getTileEntity(off) != null) {
                             TileEntity tile = world.getTileEntity(off);
-                            if (tile.hasCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite())) {
-                                power = tile.getCapability(MechanicalCapability.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(dir.getOpposite());
+                            if (tile.hasCapability(CapabilityMechanicalPower.MECHANICAL_POWER, dir.getOpposite())) {
+                                power = tile.getCapability(CapabilityMechanicalPower.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(dir.getOpposite());
                             }
                         }
                         break;
@@ -49,20 +76,9 @@ public class MechanicalUtil {
         BlockPos pos2 = pos.offset(dir);
         Block block = world.getBlockState(pos2).getBlock();
 
-        if (isAxle(block)) {
-            IAxle axle = (IAxle) block;
-            if (axle.isAxleOrientedToFacing(world, pos2, dir)) {
-                if (axle.getPowerLevel(world, pos2) > 0) {
-                    return true;
-                }
-            }
-        }
         return false;
     }
 
-    public static boolean isAxle(Block block) {
-        return block instanceof IAxle;
-    }
 
     public static boolean isPoweredByCrank(World world, BlockPos pos) {
         for (int i = 1; i < 6; i++) {
@@ -99,12 +115,7 @@ public class MechanicalUtil {
     public static void destoryHorizontalAxles(World world, BlockPos pos) {
         for (int i = 2; i < 6; i++) {
             Block block = world.getBlockState(pos).getBlock();
-            if (isAxle(block)) {
-                BlockAxle axle = (BlockAxle) block;
 
-                if (axle.isAxleOrientedToFacing(world, pos, EnumFacing.getFront(i)))
-                    axle.breakAxle(world, pos);
-            }
         }
     }
 }

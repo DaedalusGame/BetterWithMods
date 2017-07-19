@@ -1,10 +1,7 @@
 package betterwithmods.common.blocks.tile.gen;
 
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -15,6 +12,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+//TODO almost need to completely rewrite these in terms of capabilities.
 public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0};
 
@@ -81,9 +79,9 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
             else
                 speed = 1;
         }
-        if (speed != this.runningState || (speed == 0 && this.getWorld().getBlockState(pos).getValue(BlockWindmill.ISACTIVE))) {
+        if (speed != this.runningState) {
             this.setRunningState(speed);
-            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }
@@ -102,19 +100,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
 
     @Override
     public void overpower() {
-        if (this.getBlockType() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
-            for (EnumFacing dir : EnumFacing.VALUES) {
-                if (dir.getAxis() == axis) {
-                    BlockPos offset = pos.offset(dir);
-                    Block axle = this.getWorld().getBlockState(offset).getBlock();
-                    if (axle instanceof BlockAxle)
-                        ((BlockAxle) axle).overpower(this.getWorld(), offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(getWorld(), offset, dir.getOpposite()))
-                        ((IMechanicalBlock) axle).overpower(this.getWorld(), offset);
-                }
-            }
-        }
+        //TODO IOverpower
     }
 
     @Override

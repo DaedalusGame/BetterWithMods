@@ -1,4 +1,4 @@
-package betterwithmods.api.tile;
+package betterwithmods.api.tile.dispenser;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;

@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.api.block.IMechanical;
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockMillGenerator;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+//TODO almost need to completely rewrite these in terms of capabilities.
 public abstract class TileEntityMillGenerator extends TileBasic implements ITickable, IMechanicalPower {
     //Every generator will take up a single block with no extended bounding box
     public int radius;
@@ -116,17 +116,7 @@ public abstract class TileEntityMillGenerator extends TileBasic implements ITick
     }
 
     public void setRunningState(int i) {
-        boolean oldRun = this.getWorld().getBlockState(this.pos).getValue(BlockMillGenerator.ISACTIVE);
-        boolean newRun = oldRun;
-        this.runningState = (byte) i;
-        if (runningState > 0)
-            newRun = true;
-        else if (runningState == 0)
-            newRun = false;
-        if (newRun != oldRun) {
-            this.getWorld().setBlockState(this.pos, this.getWorld().getBlockState(pos).withProperty(BlockMillGenerator.ISACTIVE, newRun));
-            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
-        }
+
     }
 
     public boolean verifyIntegrity() {
@@ -147,13 +137,13 @@ public abstract class TileEntityMillGenerator extends TileBasic implements ITick
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == MechanicalCapability.MECHANICAL_POWER || super.hasCapability(capability, facing);
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER || super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == MechanicalCapability.MECHANICAL_POWER) {
-            return MechanicalCapability.MECHANICAL_POWER.cast(this);
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER) {
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         }
         return super.getCapability(capability, facing);
     }

@@ -1,7 +1,9 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityAxle;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
@@ -76,7 +78,8 @@ public class BWRegistry {
         BWMBlocks.registerTileEntities();
         BWRegistry.registerEntities();
         BWRegistry.registerBlockDispenserBehavior();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default.class);
+        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default.class);
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
         KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }

@@ -1,13 +1,10 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IAxle;
-import betterwithmods.api.block.IMechanical;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,8 +18,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BlockMillGenerator extends BWMBlock implements IMechanical, IAxle {
-    public static final PropertyBool ISACTIVE = PropertyBool.create("ison");
+public abstract class BlockMillGenerator extends BWMBlock {
     public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
     static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
     static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
@@ -32,54 +28,24 @@ public abstract class BlockMillGenerator extends BWMBlock implements IMechanical
         super(material);
         this.setSoundType(SoundType.WOOD);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Z).withProperty(ISACTIVE, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Z));
     }
 
-    @Override
-    public int getPowerLevel(IBlockAccess world, BlockPos pos) {
-        return getPowerLevelFromState(world.getBlockState(pos));
-    }
-
-    public int getPowerLevelFromState(IBlockState state) {
-        return state.getValue(ISACTIVE) ? 4 : 0;
-    }
-
-    @Override
-    public int getMechPowerLevelToFacing(World world, BlockPos pos,
-                                         EnumFacing dir) {
-        if (world.getBlockState(pos).getValue(ISACTIVE)) {
-            EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
-            if (dir.getAxis() == axis) return 4;
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean isAxleOrientedToFacing(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
-        return dir.getAxis() == axis;
-    }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, AXIS, ISACTIVE);
+        return new BlockStateContainer(this, AXIS);
     }
 
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = DirUtils.getLegacyAxis(state.getValue(AXIS));
-        if (state.getValue(ISACTIVE))
-            meta += 8;
-        return meta;
+        return state.getValue(AXIS).ordinal();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        boolean active = meta > 7;
-        if (active)
-            meta -= 8;
-        return this.getAxisState(DirUtils.getAxisFromLegacy(meta)).withProperty(ISACTIVE, active);
+        return getDefaultState().withProperty(AXIS,DirUtils.getAxis(meta));
     }
 
     @Override
@@ -110,13 +76,14 @@ public abstract class BlockMillGenerator extends BWMBlock implements IMechanical
         return 20;
     }
 
-    public abstract ItemStack getGenStack(IBlockState state);
+    @Override
+    public abstract ItemStack getItem(World worldIn, BlockPos pos, IBlockState state);
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(BWMBlocks.AXLE));
-        drops.add(getGenStack(state));
+        drops.add(getItem((World) world,pos,state));
         return drops;
     }
 
@@ -137,29 +104,4 @@ public abstract class BlockMillGenerator extends BWMBlock implements IMechanical
         }
     }
 
-    public EnumFacing getAxleDirection(World world, BlockPos pos) {
-        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
-        switch (axis) {
-            case Y:
-                return EnumFacing.UP;
-            case Z:
-                return EnumFacing.SOUTH;
-            case X:
-            default:
-                return EnumFacing.EAST;
-        }
-    }
-
-    @Override
-    public int getAxisAlignment(IBlockAccess world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == this)
-            return DirUtils.getLegacyAxis(state.getValue(AXIS));
-        return DirUtils.getLegacyAxis(EnumFacing.Axis.Y);
-    }
-
-    @Override
-    public boolean isMechanicalJunction() {
-        return true;
-    }
 }

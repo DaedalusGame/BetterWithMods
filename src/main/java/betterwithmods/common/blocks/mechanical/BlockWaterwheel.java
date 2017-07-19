@@ -26,10 +26,6 @@ public class BlockWaterwheel extends BlockMillGenerator {
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityWaterwheel) {
-            boolean active = ((TileEntityWaterwheel) world.getTileEntity(pos)).isValid();
-            world.setBlockState(pos, state.withProperty(ISACTIVE, active));
-        }
     }
 
     @Override
@@ -52,8 +48,4 @@ public class BlockWaterwheel extends BlockMillGenerator {
         return new TileEntityWaterwheel();
     }
 
-    @Override
-    public ItemStack getGenStack(IBlockState state) {
-        return new ItemStack(BWMItems.WINDMILL, 1, 1);
-    }
 }

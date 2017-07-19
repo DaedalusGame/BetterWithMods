@@ -1,13 +1,10 @@
 package betterwithmods.common.blocks.tile.gen;
 
-import betterwithmods.api.block.IAxle;
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +17,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+//TODO almost need to completely rewrite these in terms of capabilities.
 public class TileEntityWindmillVertical extends TileEntityMillGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -96,8 +93,6 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
             for (int z = -4; z < 5; z++) {
                 BlockPos offPos = pos.add(x, offset, z);
                 if (x == 0 && z == 0) {
-                    if (getWorld().getBlockState(offPos).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offPos).getBlock()).getAxisAlignment(getWorld(), offPos) == 0)
-                        continue;
                 }
                 if (getWorld().provider.getDimensionType() == DimensionType.NETHER)
                     notBlocked = this.getWorld().isAirBlock(offPos);
@@ -126,7 +121,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
                 BlockPos offset = pos.add(0, offY, 0);
                 if (offY == 0)
                     continue;
-                integrity = getWorld().getBlockState(offset).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offset).getBlock()).getAxisAlignment(getWorld(), offset) == 0;
+//                integrity = getWorld().getBlockState(offset).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offset).getBlock()).getAxisAlignment(getWorld(), offset) == 0;
                 if (!integrity) {
                     invalidateWindmill();
                     break;
@@ -150,19 +145,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
 
     @Override
     public void overpower() {
-        if (this.getBlockType() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
-            for (EnumFacing dir : EnumFacing.VALUES) {
-                if (dir.getAxis() == axis) {
-                    BlockPos offset = pos.offset(dir);
-                    Block axle = this.getWorld().getBlockState(offset).getBlock();
-                    if (axle instanceof BlockAxle)
-                        ((BlockAxle) axle).overpower(this.getWorld(), offset);
-                    else if (axle instanceof IMechanicalBlock && ((IMechanicalBlock) axle).canInputPowerToSide(getWorld(), offset, dir.getOpposite()))
-                        ((IMechanicalBlock) axle).overpower(this.getWorld(), offset);
-                }
-            }
-        }
+       //TODO IOverpower
     }
 
 
@@ -192,7 +175,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         }
         if (speed != this.runningState && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
             this.setRunningState(speed);
-            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWindmill.ISACTIVE, speed > 0));
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
     }

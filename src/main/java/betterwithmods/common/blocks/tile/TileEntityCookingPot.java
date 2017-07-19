@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
@@ -61,13 +61,13 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == MechanicalCapability.MECHANICAL_POWER || super.hasCapability(capability, facing);
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER || super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == MechanicalCapability.MECHANICAL_POWER) {
-            return MechanicalCapability.MECHANICAL_POWER.cast(this);
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER) {
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         }
         return super.getCapability(capability, facing);
     }
@@ -405,7 +405,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        return MechanicalUtil.isBlockPoweredByAxleOnSide(world, pos, facing) || MechanicalUtil.isPoweredByCrankOnSide(world, pos, facing) ? 1 : 0;
+        return MechanicalUtil.getPowerOutput(world,pos.offset(facing),facing.getOpposite());
     }
 
     @Override

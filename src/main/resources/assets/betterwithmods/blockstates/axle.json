@@ -35,16 +35,17 @@
         "y": 90
       }
     },
-    "signal": {
-      "0": {
+    "active": {
+      "false": {
         "textures": {
           "side": "betterwithmods:blocks/axle_side"
         }
       },
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {}
+      "true": {
+        "textures": {
+          "side": "betterwithmods:blocks/axle_side_on"
+        }
+      }
     }
   }
 }

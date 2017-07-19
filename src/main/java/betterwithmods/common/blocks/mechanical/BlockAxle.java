@@ -77,7 +77,6 @@ public class BlockAxle extends BlockRotate implements IOverpower {
         return state;
     }
 
-
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileAxle tile = getTile(world,pos);
@@ -133,7 +132,7 @@ public class BlockAxle extends BlockRotate implements IOverpower {
 
     public void onChange(World world, BlockPos pos) {
         TileAxle tile = getTile(world, pos);
-        if (tile != null) {
+        if (!world.isRemote && tile != null) {
             tile.onChanged();
         }
     }

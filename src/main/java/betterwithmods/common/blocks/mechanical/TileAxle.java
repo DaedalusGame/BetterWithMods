@@ -51,7 +51,11 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
                         byte next = axle.getSignal();
                         if (next > newSignal) {
                             newSignal = next;
+                        } else {
+                            continue;
                         }
+                    } else {
+                        continue;
                     }
                 }
 
@@ -76,7 +80,8 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
             if (newSignal == 1) {
                 getBlock().overpower(world, pos);
             }
-            setSignal((byte) (newSignal - 1));
+            if (power > 0)
+                setSignal((byte) (newSignal - 1));
         } else {
             setSignal((byte) 0);
         }
@@ -175,8 +180,6 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public void markDirty() {
         super.markDirty();
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
     }
 
     @Override

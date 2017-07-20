@@ -180,7 +180,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     public void markDirty() {
         super.markDirty();
         getBlock().setActive(world, pos, power > 0);
-        world.scheduleBlockUpdate(pos,getBlock(),1,5);
+        world.scheduleBlockUpdate(pos,getBlock(),5,5);
     }
 
     @Override

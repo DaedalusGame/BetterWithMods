@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
@@ -57,33 +58,31 @@ public class BlockAxle extends BlockRotate implements IOverpower {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(ACTIVE, (meta & 1) == 1).withProperty(AXIS, DirUtils.getAxis(meta >> 1 & 2));
+        return getDefaultState().withProperty(AXIS, DirUtils.getAxis(meta >> 2)).withProperty(ACTIVE, (meta & 1) == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
+        int axis = state.getValue(AXIS).ordinal() << 2;
         int active = state.getValue(ACTIVE) ? 1 : 0;
-        int axis = state.getValue(AXIS).ordinal();
-        return active | (axis << 1);
+        return active | axis;
     }
 
-
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        TileAxle tile = getTile((World) worldIn, pos);
-        if (tile != null) {
-            return state.withProperty(ACTIVE, tile.getSignal() > 0);
-        }
-        return state;
+    public void setActive(World world, BlockPos pos, boolean active) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == this)
+            world.setBlockState(pos, state.withProperty(ACTIVE, active));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileAxle tile = getTile(world, pos);
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        TileAxle tile = getTile(worldIn, pos);
         if (tile != null) {
-            System.out.printf("s: %s, p: %s\n", tile.getSignal(), tile.getPower());
+            tile.setSignal((byte) 0);
+            tile.setPower(0);
         }
-        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+        onChange(worldIn, pos);
+        super.updateTick(worldIn, pos, state, rand);
     }
 
     @Override
@@ -122,12 +121,21 @@ public class BlockAxle extends BlockRotate implements IOverpower {
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        onChange(world, pos);
+        world.scheduleBlockUpdate(pos, this, 1, 5);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileAxle tile = getTile(world, pos);
+        if (!world.isRemote && tile != null) {
+            System.out.println(tile.getSignal() + "," + tile.getPower());
+        }
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        onChange(world, pos);
+        onChange(world,pos);
     }
 
     public void onChange(World world, BlockPos pos) {

@@ -3,7 +3,6 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.BlockRotate;
-import betterwithmods.common.blocks.IRenderUpdate;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
-public class BlockAxle extends BlockRotate implements IOverpower, IRenderUpdate {
+public class BlockAxle extends BlockRotate implements IOverpower {
     public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
@@ -73,7 +72,6 @@ public class BlockAxle extends BlockRotate implements IOverpower, IRenderUpdate 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileAxle tile = getTile((World) worldIn, pos);
         if (tile != null) {
-            System.out.println(worldIn + "," + tile.getSignal());
             return state.withProperty(ACTIVE, tile.getSignal() > 0);
         }
         return state;
@@ -172,9 +170,4 @@ public class BlockAxle extends BlockRotate implements IOverpower, IRenderUpdate 
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(this, 1, damageDropped(world.getBlockState(pos))));
     }
 
-    @Override
-    public void update(World world, BlockPos pos) {
-        world.markBlockRangeForRenderUpdate(pos.add(-1,-1,-1),pos.add(1,1,1));
-        world.notifyBlockUpdate(pos,world.getBlockState(pos),world.getBlockState(pos),2);
-    }
 }

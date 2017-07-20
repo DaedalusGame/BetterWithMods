@@ -21,6 +21,7 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
     public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
+
     public boolean isWater(BlockPos pos) {
         return world.getBlockState(pos).getBlock() == Blocks.WATER;
     }

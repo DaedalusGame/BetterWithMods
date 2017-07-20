@@ -9,11 +9,11 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,9 +33,8 @@ import java.util.Random;
 
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
-public class BlockAxle extends BlockRotate implements IOverpower {
+public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
     private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
@@ -73,11 +72,6 @@ public class BlockAxle extends BlockRotate implements IOverpower {
         return active | axis;
     }
 
-    public void setActive(World world, BlockPos pos, boolean active) {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == this)
-            world.setBlockState(pos, state.withProperty(ACTIVE, active));
-    }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
@@ -120,6 +114,12 @@ public class BlockAxle extends BlockRotate implements IOverpower {
             default:
                 return Z_AABB;
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) withTile(world, pos).ifPresent(t -> System.out.println(t));
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class BlockAxle extends BlockRotate implements IOverpower {
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-        if (state.getValue(ACTIVE)) {
+        if (isActive(state)) {
             emitAxleParticles(world, pos, rand);
             if (rand.nextInt(200) == 0)
                 world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.15F, rand.nextFloat() * 0.1F + 0.5F, false);

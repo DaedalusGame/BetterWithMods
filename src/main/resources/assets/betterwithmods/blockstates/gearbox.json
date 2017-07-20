@@ -20,6 +20,10 @@
         }
       }
     ],
+    "active": {
+      "false": {},
+      "true": {}
+    },
     "facing": {
       "down": {
         "model": "betterwithmods:gearbox",
@@ -57,10 +61,6 @@
           "east": "#input"
         }
       }
-    },
-    "ison": {
-      "false": {},
-      "true": {}
     },
     "up": {
       "false": {},

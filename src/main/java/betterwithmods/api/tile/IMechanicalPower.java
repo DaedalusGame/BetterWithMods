@@ -10,4 +10,5 @@ public interface IMechanicalPower {
     int getMaximumInput(EnumFacing facing);
 
     int getMinimumInput(EnumFacing facing);
+
 }

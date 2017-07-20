@@ -79,7 +79,6 @@ public final class BWMBlocks {
     public static final Block MINING_CHARGE = new BlockMiningCharge().setRegistryName("mining_charge");
     public static final Block FERTILE_FARMLAND = new BlockFertileFarmland().setRegistryName("fertile_farmland");
     public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
-    public static final Block ADVANCED_GEARBOX = new BlockAdvGearbox().setRegistryName("advanced_gearbox");
     public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
     public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater().setRegistryName("temporary_water");
     public static final Block RAW_PASTRY = new BlockRawPastry().setRegistryName("raw_pastry");
@@ -89,7 +88,6 @@ public final class BWMBlocks {
     public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
-    public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
     public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
@@ -146,7 +144,6 @@ public final class BWMBlocks {
         registerBlock(MINING_CHARGE);
         registerBlock(FERTILE_FARMLAND);
         registerBlock(PUMP);
-        registerBlock(ADVANCED_GEARBOX);
         registerBlock(VINE_TRAP);
         registerBlock(RAW_PASTRY, new ItemBlockMeta(RAW_PASTRY));
         registerBlock(STEEL_ANVIL);
@@ -155,7 +152,6 @@ public final class BWMBlocks {
         registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
         registerBlock(STUMP, new ItemBlockMeta(STUMP));
         registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
-        registerBlock(BROKEN_GEARBOX);
         registerBlock(COOKING_POTS, new ItemBlockMeta(COOKING_POTS) {
             @Override
             public int getItemStackLimit(ItemStack stack) {
@@ -187,7 +183,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
         GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
         GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
-        GameRegistry.registerTileEntity(TileEntityGearbox.class, "bwm.gearbox");
+        GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileEntityAdvBellows.class, "bwm.bellows");
         GameRegistry.registerTileEntity(TileStake.class, "bwm.stake");
         GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");

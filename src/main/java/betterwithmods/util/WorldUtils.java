@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;

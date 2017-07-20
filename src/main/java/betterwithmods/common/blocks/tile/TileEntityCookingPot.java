@@ -405,7 +405,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        return MechanicalUtil.getPowerOutput(world,pos.offset(facing),facing.getOpposite());
+        return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
     }
 
     @Override

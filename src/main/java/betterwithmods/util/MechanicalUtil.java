@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class MechanicalUtil {
@@ -33,7 +34,11 @@ public class MechanicalUtil {
         return null;
     }
 
-    public static IAxle getAxle(World world, BlockPos pos, EnumFacing facing) {
+    public static boolean isAxle(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        return getAxle(world, pos, facing) != null;
+    }
+
+    public static IAxle getAxle(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         TileEntity tile = world.getTileEntity(pos);
         if (tile != null && tile.hasCapability(CapabilityAxle.AXLE, facing)) {
             return tile.getCapability(CapabilityAxle.AXLE, facing);
@@ -44,6 +49,7 @@ public class MechanicalUtil {
     public static int getPowerOutput(World world, BlockPos pos, EnumFacing facing) {
         IMechanicalPower power = getMechanicalPower(world, pos, facing);
         if (power != null) {
+            System.out.println(power);
             return power.getMechanicalOutput(facing);
         }
         return 0;

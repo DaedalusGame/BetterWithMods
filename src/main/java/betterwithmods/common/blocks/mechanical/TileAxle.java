@@ -6,11 +6,9 @@ import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -41,21 +39,15 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
         int sources = 0;
         for (EnumFacing facing : getDirections()) {
             BlockPos offset = pos.offset(facing);
-
-
             IMechanicalPower mech = MechanicalUtil.getMechanicalPower(world, offset, facing);
             if (mech != null) {
                 if (mech instanceof IAxle) {
                     IAxle axle = (IAxle) mech;
-                    if (axle != null && axle.isFacing(this)) {
+                    if (axle != null && isFacing(axle)) {
                         byte next = axle.getSignal();
                         if (next > newSignal) {
                             newSignal = next;
-                        } else {
-                            continue;
                         }
-                    } else {
-                        continue;
                     }
                 }
 
@@ -71,13 +63,14 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
             }
         }
-
         if (sources >= 2) {
+            System.out.println("SOURCES");
             getBlock().overpower(world, pos);
             return;
         }
         if (newSignal > signal) {
             if (newSignal == 1) {
+                System.out.println("SIGNAL");
                 getBlock().overpower(world, pos);
             }
             if (power > 0)
@@ -120,8 +113,9 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        //TODO
-        return power;
+        if (facing.getAxis() == getAxis())
+            return power;
+        return 0;
     }
 
     //Not sure if this method is even useful ever.
@@ -180,16 +174,16 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     public void markDirty() {
         super.markDirty();
         getBlock().setActive(world, pos, power > 0);
-        world.scheduleBlockUpdate(pos,getBlock(),5,5);
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        return super.shouldRefresh(world, pos, oldState, newState);
+        world.scheduleBlockUpdate(pos, getBlock(), 5, 5);
     }
 
     public int getPower() {
         return power;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s", signal, power, pos);
     }
 }
 

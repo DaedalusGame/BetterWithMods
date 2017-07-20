@@ -57,8 +57,8 @@ public class DefinitionPathProvider implements PathProvider {
             return null;
         if (block == BWMBlocks.PLANTER)
             return "%LANGUAGE%/blocks/planter.md";
-        if (block == BWMBlocks.BROKEN_GEARBOX)
-            return "%LANGUAGE%/blocks/gearbox.md";
+//        if (block == BWMBlocks.BROKEN_GEARBOX)
+//            return "%LANGUAGE%/blocks/gearbox.md";
         if (block instanceof BlockCookingPot) {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
         }

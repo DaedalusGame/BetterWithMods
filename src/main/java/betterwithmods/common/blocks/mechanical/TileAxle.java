@@ -5,6 +5,8 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.network.MessageRenderUpdate;
+import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -180,6 +182,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public void markDirty() {
         super.markDirty();
+        NetworkHandler.sendToAllAround(new MessageRenderUpdate(pos),world,pos);
     }
 
     @Override

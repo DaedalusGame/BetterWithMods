@@ -12,6 +12,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class TileBasic extends TileEntity {
 
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag) {
+        super.handleUpdateTag(tag);
+        markDirty();
+    }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {

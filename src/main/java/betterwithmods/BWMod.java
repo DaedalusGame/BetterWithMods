@@ -45,6 +45,7 @@ public class BWMod {
         NetworkHandler.register(MessageSyncModule.class, Side.CLIENT);
         NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
         NetworkHandler.register(MessageFat.class, Side.CLIENT);
+        NetworkHandler.register(MessageRenderUpdate.class, Side.CLIENT);
         proxy.preInit(evt);
     }
 

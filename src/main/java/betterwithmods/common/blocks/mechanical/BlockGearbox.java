@@ -1,6 +1,9 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.api.block.IOverpower;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
+import betterwithmods.common.blocks.BlockBrokenGearbox;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.common.blocks.tile.TileGearbox;
 import betterwithmods.util.DirUtils;
@@ -13,6 +16,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -30,10 +34,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockGearbox extends BlockRotate implements IBlockActive {
+public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower {
+    private final int maxPower;
 
-    public BlockGearbox() {
+    public BlockGearbox(int maxPower) {
         super(Material.WOOD);
+        this.maxPower = maxPower;
         this.setHardness(2.0F);
         this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.UP).withProperty(ACTIVE, false));
     }
@@ -76,7 +82,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive {
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         onChange(world, pos);
-        world.scheduleUpdate(pos,this,5);
+        world.scheduleUpdate(pos, this, 5);
     }
 
     @Override
@@ -88,7 +94,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive {
         if (!world.isRemote) {
             withTile(world, pos).ifPresent(TileGearbox::onChanged);
         }
-        world.notifyNeighborsOfStateExcept(pos,this,getFacing(world,pos));
+//        world.notifyNeighborsOfStateExcept(pos,this,getFacing(world,pos));
     }
 
 
@@ -198,7 +204,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive {
         return isActive(state) ? 15 : 0;
     }
 
-
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
@@ -206,7 +211,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileGearbox();
+        return new TileGearbox(maxPower);
     }
 
     public Optional<TileGearbox> withTile(World world, BlockPos pos) {
@@ -222,8 +227,26 @@ public class BlockGearbox extends BlockRotate implements IBlockActive {
 
     @Override
     public void onChangeActive(World world, BlockPos pos, boolean newValue) {
-        if(newValue) {
+        if (newValue) {
             world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
         }
     }
+
+    @Override
+    public void overpower(World world, BlockPos pos) {
+        for (int i = 0; i < 10; i++) {
+            world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
+        }
+        for (int i = 0; i < 5; i++) {
+            float flX = pos.getX() + world.rand.nextFloat();
+            float flY = pos.getY() + world.rand.nextFloat() * 0.5F + 1.0F;
+            float flZ = pos.getZ() + world.rand.nextFloat();
+
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
+        }
+        EnumFacing facing = world.getBlockState(pos).getValue(DirUtils.FACING);
+        BlockBrokenGearbox.EnumType type = this == BWMBlocks.WOODEN_GEARBOX ? BlockBrokenGearbox.EnumType.WOOD : BlockBrokenGearbox.EnumType.STEEL;
+        world.setBlockState(pos, BWMBlocks.BROKEN_GEARBOX.getDefaultState().withProperty(DirUtils.FACING,facing).withProperty(BlockBrokenGearbox.TYPE, type));
+    }
+
 }

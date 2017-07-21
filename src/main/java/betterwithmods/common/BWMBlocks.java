@@ -29,7 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +41,9 @@ public final class BWMBlocks {
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
     public static final Block WOODEN_AXLE = new BlockAxle(Material.WOOD, 1, 1, 3).setRegistryName("wooden_axle");
     public static final Block STEEL_AXLE = new BlockAxle(Material.WOOD, 1, 2, 5).setRegistryName("steel_axle");
-    public static final Block GEARBOX = new BlockGearbox().setRegistryName("gearbox");
+    public static final Block WOODEN_GEARBOX = new BlockGearbox(1).setRegistryName("wooden_gearbox");
+    public static final Block STEEL_GEARBOX = new BlockGearbox(2).setRegistryName("steel_gearbox");
+    public static final Block BROKEN_GEARBOX = new BlockBrokenGearbox().setRegistryName("broken_gearbox");
     public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");
     public static final Block WICKER = new BlockWicker().setRegistryName("wicker");
     public static final Block GRATE = new BlockMultiPane().setRegistryName("grate");
@@ -99,7 +100,7 @@ public final class BWMBlocks {
     private static final List<Block> BLOCKS = new ArrayList<>();
 
     public static List<Block> getBlocks() {
-        return Collections.unmodifiableList(BLOCKS);
+        return BLOCKS;
     }
 
     public static void registerBlocks() {
@@ -108,7 +109,9 @@ public final class BWMBlocks {
         registerBlock(SINGLE_MACHINES, new ItemBlockMeta(SINGLE_MACHINES));
         registerBlock(WOODEN_AXLE);
         registerBlock(STEEL_AXLE);
-        registerBlock(GEARBOX);
+        registerBlock(WOODEN_GEARBOX);
+        registerBlock(STEEL_GEARBOX);
+        registerBlock(BROKEN_GEARBOX, new ItemBlockMeta(BROKEN_GEARBOX));
         registerBlock(HAND_CRANK);
         registerBlock(WICKER);
         registerBlock(GRATE, new ItemBlockMeta(GRATE));

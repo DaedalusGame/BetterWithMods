@@ -58,7 +58,11 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             return;
 
         this.power = calculateInput();
-        getBlock().setActive(world,pos,isActive());
+
+        if(this.power > getMaximumInput(EnumFacing.UP)) {
+            getBlock().overpower(world,pos);
+        }
+        getBlock().setActive(world, pos, isActive());
 
         if (this.validateContents)
             validateContents();
@@ -207,7 +211,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     @Override
     public int getMaximumInput(EnumFacing facing) {
-        return 4;
+        return 1;
     }
 
     @Override
@@ -217,8 +221,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
-        return capability == CapabilityMechanicalPower.MECHANICAL_POWER
-                || super.hasCapability(capability, facing);
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
     }
 
     @Nonnull

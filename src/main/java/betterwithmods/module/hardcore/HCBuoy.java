@@ -104,7 +104,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(BWMBlocks.WOLF, 1.0F);
         buoyancy.put(BWMBlocks.HEMP, 1.0F);
         buoyancy.put(BWMBlocks.ROPE, 1.0F);
-        buoyancy.put(BWMBlocks.GEARBOX, 1.0F);
+        buoyancy.put(BWMBlocks.WOODEN_GEARBOX, 1.0F);
         buoyancy.put(BWMBlocks.BELLOWS, 1.0F);
         buoyancy.put(BWMBlocks.VASE, 1.0F);
         buoyancy.put(Items.APPLE, 1.0F);

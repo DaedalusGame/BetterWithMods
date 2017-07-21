@@ -25,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -160,7 +161,7 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
         if (world.isRemote) {
             return true;
         } else {
-            if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            if (world.getTileEntity(pos) != null && world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) {
                 player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             } else {
                 if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityTurntable && hand == EnumHand.MAIN_HAND) {
@@ -177,9 +178,9 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-                return InvUtils.calculateComparatorLevel(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                return InvUtils.calculateComparatorLevel(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP));
             }
         }
         return 0;
@@ -283,11 +284,15 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
         return state.getValue(TYPE).getMeta() + (state.getValue(ACTIVE) ? 4 : 0);
     }
 
+    public static final ResourceLocation MILLSTONE = LootTableList.register(new ResourceLocation(BWMod.MODID, "block/mill"));
+
     @Override
     public void overpower(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         switch(state.getValue(TYPE)) {
             case MILL:
+                InvUtils.ejectBrokenItems(world,pos,MILLSTONE);
+                world.setBlockToAir(pos);
                 break;
             case PULLEY:
                 break;

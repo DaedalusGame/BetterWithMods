@@ -2,10 +2,11 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "blank": "blocks/planks_oak",
-      "input": "betterwithmods:blocks/gearbox_input",
-      "output": "betterwithmods:blocks/gearbox_output"
-    }
+      "side": "blocks/planks_oak",
+      "input": "betterwithmods:blocks/wooden_gearbox_input",
+      "output": "betterwithmods:blocks/wooden_gearbox_output"
+    },
+    "model": "betterwithmods:gearbox"
   },
   "variants": {
     "normal": [
@@ -14,7 +15,6 @@
     "inventory": [
       {
         "transform": "forge:default-block",
-        "model": "betterwithmods:gearbox",
         "textures": {
           "up": "#input"
         }
@@ -26,37 +26,31 @@
     },
     "facing": {
       "down": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "down": "#input"
         }
       },
       "up": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "up": "#input"
         }
       },
       "north": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "north": "#input"
         }
       },
       "south": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "south": "#input"
         }
       },
       "west": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "west": "#input"
         }
       },
       "east": {
-        "model": "betterwithmods:gearbox",
         "textures": {
           "east": "#input"
         }

@@ -78,7 +78,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
         setPower(findPower);
 
-        if (sources >= 2 || getPower() > getMaximumInput()) {
+        if (sources >= 2) {
             getBlock().overpower(world, pos);
             return;
         }

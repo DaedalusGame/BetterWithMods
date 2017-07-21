@@ -20,6 +20,7 @@ public interface IMechanicalPower {
                 findPower = power;
             }
         }
+
         return findPower;
     }
 }

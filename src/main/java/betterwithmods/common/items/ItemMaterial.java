@@ -4,9 +4,14 @@ import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMItems;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,15 @@ public class ItemMaterial extends Item implements IMultiLocations {
         this.setHasSubtypes(true);
     }
 
+    @Override
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+        if(EnumMaterial.VALUES[stack.getMetadata()] == EnumMaterial.DIAMOND_INGOT && playerIn != null) {
+            BlockPos pos = playerIn.getPosition().up();
+            worldIn.playSound(null, playerIn.getPosition(),SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,1.0f,1.0f);
+            worldIn.createExplosion(null,pos.getX(),pos.getY(),pos.getZ(),0.1f,false);
+        }
+        super.onCreated(stack, worldIn, playerIn);
+    }
 
     @Override
     public int getItemBurnTime(ItemStack stack) {

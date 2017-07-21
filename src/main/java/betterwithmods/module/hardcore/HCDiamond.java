@@ -1,6 +1,5 @@
 package betterwithmods.module.hardcore;
 
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;

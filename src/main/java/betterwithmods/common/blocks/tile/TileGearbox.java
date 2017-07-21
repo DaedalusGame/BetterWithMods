@@ -28,8 +28,8 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
                 world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
             }
             this.power = power;
-            markDirty();
         }
+        markDirty();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public int getMechanicalOutput(EnumFacing facing) {
         if (facing != getFacing())
             return power;
-        return 0;
+        return -1;
     }
 
     @Override
@@ -109,10 +109,12 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         this.power = power;
     }
 
+    public void reset() {
+        this.setPower(0);
+    }
     @Override
     public void markDirty() {
         super.markDirty();
         getBlock().setActive(world, pos, power > 0);
-        world.scheduleBlockUpdate(pos, getBlock(), 5, 5);
     }
 }

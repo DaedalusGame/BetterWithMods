@@ -73,15 +73,6 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
 
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        withTile(worldIn, pos).ifPresent(t -> {
-            t.setSignal((byte) 0);
-            t.setPower(0);
-        });
-        onChange(worldIn, pos);
-        super.updateTick(worldIn, pos, state, rand);
-    }
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
@@ -133,12 +124,18 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
         onChange(world, pos);
     }
 
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        withTile(worldIn, pos).ifPresent(TileAxle::reset);
+        onChange(worldIn, pos);
+    }
+
     public void onChange(World world, BlockPos pos) {
         if (!world.isRemote) {
             withTile(world, pos).ifPresent(TileAxle::onChanged);
         }
     }
-
 
     @Override
     public boolean hasTileEntity(IBlockState state) {

@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 
 public class DirUtils {
 
-    public static final EnumFacing[] X_AXIS = new EnumFacing[]{EnumFacing.EAST, EnumFacing.WEST};
-    public static final EnumFacing[] Y_AXIS = new EnumFacing[]{EnumFacing.UP, EnumFacing.DOWN};
-    public static final EnumFacing[] Z_AXIS = new EnumFacing[]{EnumFacing.NORTH, EnumFacing.SOUTH};
+    public static final EnumFacing[] X_AXIS = new EnumFacing[]{EnumFacing.WEST, EnumFacing.EAST};
+    public static final EnumFacing[] Y_AXIS = new EnumFacing[]{EnumFacing.DOWN, EnumFacing.UP};
+    public static final EnumFacing[] Z_AXIS = new EnumFacing[]{EnumFacing.SOUTH, EnumFacing.NORTH};
     public static final EnumFacing[][] AXIS_DIRECTIONS = new EnumFacing[][]{X_AXIS, Y_AXIS, Z_AXIS};
 
     public static final PropertyDirection FACING = BlockDirectional.FACING;

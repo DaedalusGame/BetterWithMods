@@ -43,10 +43,12 @@ public class BlockAdvBellows extends BlockBellows implements ITileEntityProvider
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        setMechanicalOn(world,pos,true);
+
         boolean gettingPower = isInputtingMechPower(world, pos);
         boolean isMechOn = isMechanicalOn(world, pos);
         if(isMechOn != gettingPower) {
-            setMechanicalOn(world,pos,gettingPower);
+            setMechanicalOn(world,pos,true);
             if(!gettingPower)
                 setTriggerMechanicalStateChange(world,pos,false);
         }

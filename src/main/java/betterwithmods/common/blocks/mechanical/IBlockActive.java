@@ -19,6 +19,7 @@ public interface IBlockActive {
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof IBlockActive) {
             world.setBlockState(pos, state.withProperty(ACTIVE, active));
+            world.scheduleUpdate(pos, state.getBlock(),0);
         }
     }
 

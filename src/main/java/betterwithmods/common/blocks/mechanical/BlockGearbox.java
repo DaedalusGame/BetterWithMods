@@ -72,19 +72,19 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        withTile(world, pos).ifPresent(TileGearbox::onChanged);
-    }
-
-
-    public void onChange(World world, BlockPos pos) {
-        if (!world.isRemote) {
-            withTile(world, pos).ifPresent(TileGearbox::onChanged);
-        }
+        withTile(world, pos).ifPresent(TileGearbox::reset);
+        onChange(world, pos);
     }
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         onChange(world, pos);
+    }
+
+    public void onChange(World world, BlockPos pos) {
+        if (!world.isRemote) {
+            withTile(world, pos).ifPresent(TileGearbox::onChanged);
+        }
     }
 
 

@@ -20,6 +20,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     private final byte maxSignal;
     private final int maxPower;
 
+    private byte prevSignal;
     private byte signal;
     private int power;
 
@@ -35,50 +36,58 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     }
 
     public void onChanged() {
-        byte newSignal = 0;
+
+        byte findSignal = 0;
         int sources = 0;
         for (EnumFacing facing : getDirections()) {
             BlockPos offset = pos.offset(facing);
             IMechanicalPower mech = MechanicalUtil.getMechanicalPower(world, offset, facing);
             if (mech != null) {
-                if (mech instanceof IAxle) {
+                boolean isAxle = mech instanceof IAxle;
+                if (isAxle) {
                     IAxle axle = (IAxle) mech;
-                    if (axle != null && isFacing(axle)) {
+                    if (isFacing(axle)) {
                         byte next = axle.getSignal();
-                        if (next > newSignal) {
-                            newSignal = next;
+                        if (next > findSignal) {
+                            findSignal = next;
                         }
                     }
                 }
-
                 int power = mech.getMechanicalOutput(facing.getOpposite());
-                if (power > this.power) {
-                    sources++;
-                    setPower(power);
-                }
-
-                if (newSignal == 0 && power <= getMaximumInput()) {
-                    newSignal = (byte) (getMaximumSignal() + 1);
+                if (power >= 0) {
+                    if (power > this.power) {
+                        sources++;
+                        setPower(power);
+                    }
+                    if (!isAxle && power <= getMaximumInput()) {
+                        findSignal = (byte) (getMaximumSignal() + 1);
+                    }
                 }
 
             }
         }
-        if (sources >= 2) {
+
+
+        if (sources >= 2 || this.power > this.maxPower) {
             System.out.println("SOURCES");
             getBlock().overpower(world, pos);
             return;
         }
-        if (newSignal > signal) {
-            if (newSignal == 1) {
+        byte newSignal = 0;
+        if (findSignal > signal) {
+            if (findSignal == 1) {
                 System.out.println("SIGNAL");
                 getBlock().overpower(world, pos);
             }
             if (power > 0)
-                setSignal((byte) (newSignal - 1));
+                newSignal = (byte) (findSignal - 1);
+
         } else {
-            setSignal((byte) 0);
+            newSignal = 0;
             setPower(0);
         }
+        if (newSignal != this.signal)
+            setSignal(newSignal);
         markDirty();
     }
 
@@ -118,7 +127,6 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
         return 0;
     }
 
-    //Not sure if this method is even useful ever.
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         return maxPower;
@@ -162,7 +170,13 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
         return (BlockAxle) this.getBlockType();
     }
 
+    public void reset() {
+        this.setSignal((byte) 0);
+        this.setPower(0);
+    }
+
     public void setSignal(byte signal) {
+        this.prevSignal = this.signal;
         this.signal = signal;
     }
 
@@ -174,7 +188,6 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     public void markDirty() {
         super.markDirty();
         getBlock().setActive(world, pos, power > 0);
-        world.scheduleBlockUpdate(pos, getBlock(), 5, 5);
     }
 
     public int getPower() {

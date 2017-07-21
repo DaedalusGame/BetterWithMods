@@ -16,6 +16,7 @@ public class Pollution extends Feature {
     @Override
     public void preInit(FMLPreInitializationEvent evt) {
         CapabilityManager.INSTANCE.register(IPollutant.class, new PollutionCapability.Impl(), PollutionCapability.Default.class);
+        CapabilityManager.INSTANCE.register(IWorldPollution.class, new WorldPollutionCapability.Impl(), WorldPollutionCapability.Default.class);
         MinecraftForge.EVENT_BUS.register(handler = new PollutionHandler());
     }
 

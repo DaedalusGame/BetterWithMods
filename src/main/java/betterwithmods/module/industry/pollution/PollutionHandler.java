@@ -4,10 +4,7 @@ import betterwithmods.api.capabilities.PollutionCapability;
 import betterwithmods.api.tile.IPollutant;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.util.player.PlayerHelper;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -16,94 +13,74 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class PollutionHandler {
-    private HashMap<ChunkPos, Float> pollution = new HashMap<>();
     public HashMap<String, Float> biomeMods = new HashMap<>();
 
     @SubscribeEvent
     public void onChunkLoad(ChunkDataEvent.Load evt) {
-        if (!evt.getWorld().isRemote) {
-            ChunkPos pos = evt.getChunk().getPos();
-            float pollute = 0.0F;
-            if (evt.getData().hasKey("bwm_pollution")) {
-                NBTTagCompound tag = evt.getData().getCompoundTag("bwm_pollution");
-                if (tag.hasKey("pollution"))
-                    pollute = tag.getFloat("pollution");
+        if (!evt.getWorld().isRemote && evt.getWorld().hasCapability(WorldPollutionCapability.POLLUTION, null)) {
+            IWorldPollution pollution = evt.getWorld().getCapability(WorldPollutionCapability.POLLUTION, null);
+            if (pollution != null) {
+                ChunkPos pos = evt.getChunk().getPos();
+                if (evt.getData().hasKey("bwm_pollution")) {
+                    NBTTagCompound tag = evt.getData().getCompoundTag("bwm_pollution");
+                    pollution.readNBT(pos, tag);
+                }
             }
-            pollution.put(pos, pollute);
         }
     }
 
     @SubscribeEvent
     public void onChunkUnload(ChunkDataEvent.Save evt) {
-        if (!evt.getWorld().isRemote) {
-            ChunkPos pos = evt.getChunk().getPos();
-            if (pollution.containsKey(pos)) {
-                NBTTagCompound tag = evt.getData();
-                NBTTagCompound t = new NBTTagCompound();
-                t.setFloat("pollution", pollution.get(pos));
-                tag.setTag("bwm_pollution", t);
-                if (!evt.getChunk().isLoaded())
-                    pollution.remove(pos);
+        if (!evt.getWorld().isRemote && evt.getWorld().hasCapability(WorldPollutionCapability.POLLUTION, null)) {
+            IWorldPollution pollution = evt.getWorld().getCapability(WorldPollutionCapability.POLLUTION, null);
+            if (pollution != null) {
+                ChunkPos pos = evt.getChunk().getPos();
+                if (pollution.getPollution(pos) > -1) {
+                    NBTTagCompound tag = evt.getData();
+                    tag.setTag("bwm_pollution", pollution.writeNBT(pos, new NBTTagCompound()));
+                    if (!evt.getChunk().isLoaded())
+                        pollution.removePollution(pos);
+                }
             }
         }
     }
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent evt) {
-        //TODO: Why does this trigger twice a tick?
-        if (!evt.world.isRemote && evt.phase == TickEvent.Phase.START && evt.side == Side.SERVER) {
-            long time = evt.world.getWorldTime();
-            //TODO: Crashy because it likes to tick twice.
-            /*
-            if (time % 8000 == 0) {
-                if (!pollution.isEmpty()) {
-                    List<ChunkPos> toUpdate = new ArrayList<>();
-                    for (ChunkPos pos : pollution.keySet()) {
-                        Chunk chunk = evt.world.getChunkFromChunkCoords(pos.x, pos.z);
-                        if (chunk.isLoaded()) {
-                            Random rand = chunk.getRandomWithSeed(9850327L);
-                            if (rand.nextInt(30) == 0) {
-                                toUpdate.add(pos);
-                            }
-                        }
-                    }
-                    if (!toUpdate.isEmpty()) {
-                        calculatePollutionSpread(evt.world, toUpdate);
-                    }
+        World world = evt.world;
+        if (world.hasCapability(WorldPollutionCapability.POLLUTION, null) && !evt.world.isRemote && evt.phase == TickEvent.Phase.START) {
+            IWorldPollution pollution = world.getCapability(WorldPollutionCapability.POLLUTION, null);
+            if (pollution != null) {
+                long time = world.getWorldTime();
+                //TODO: Crashy because it likes to tick twice.
+                //if (time % 8000 == 0) {
+                //pollution.calculatePollutionSpread();
+                //}
+                //TODO: Kill leaves if acid rain is happening.
+                if (time % 1000 == 0) {
+                    pollution.calculatePollutionReduction();
                 }
-            }*/
-            //TODO: Kill leaves if acid rain is happening.
-            if (time % 1000 == 0) {
-                //TODO: Modifiers kill the HashMap for some reason. Probably due to ticking twice?
-                calculatePollutionReduction(evt.world);
-            }
-            //TODO: Yet this is fine???
-            List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, null)).collect(Collectors.toList());
-            if (!tiles.isEmpty()) {
-                for (TileEntity tile : tiles) {
-                    IPollutant pollutant = tile.getCapability(PollutionCapability.POLLUTION, null);
-                    if (pollutant.isPolluting() && pollution.containsKey(new ChunkPos(tile.getPos()))) {
-                        ChunkPos p = new ChunkPos(tile.getPos());
-                        float pollute = pollution.get(p);
-                        pollution.put(p, pollute + pollutant.getPollutionRate());
+                List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, null)).collect(Collectors.toList());
+                if (!tiles.isEmpty()) {
+                    for (TileEntity tile : tiles) {
+                        IPollutant pollutant = tile.getCapability(PollutionCapability.POLLUTION, null);
+                        if (pollutant.isPolluting() && pollution.getPollution(new ChunkPos(tile.getPos())) > -1) {
+                            ChunkPos p = new ChunkPos(tile.getPos());
+                            float pollute = pollution.getPollution(p);
+                            pollution.setPollution(p, pollute + pollutant.getPollutionRate());
+                        }
                     }
                 }
             }
@@ -114,15 +91,48 @@ public class PollutionHandler {
     public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
         if (evt.player instanceof EntityPlayerMP && evt.phase == TickEvent.Phase.END) {
             EntityPlayerMP player = (EntityPlayerMP) evt.player;
-            if (!player.capabilities.isCreativeMode && isRaining(player.getEntityWorld(), player.getPosition()) && player.getEntityWorld().canSeeSky(player.getPosition())) {
-                ChunkPos pos = new ChunkPos(player.getPosition());
-                float pollution = this.pollution.get(pos);
-                if (pollution > 6000F && player.getEntityWorld().getWorldTime() % 20 == 0) {
-                    if (!PlayerHelper.hasFullSet(player, ItemSoulforgeArmor.class)) {
-                        //TODO: Add acid damage here.
+            if (player.getEntityWorld().hasCapability(WorldPollutionCapability.POLLUTION, null)) {
+                IWorldPollution pollution = player.getEntityWorld().getCapability(WorldPollutionCapability.POLLUTION, null);
+                if (pollution != null && !player.capabilities.isCreativeMode && isRaining(player.getEntityWorld(), player.getPosition()) && player.getEntityWorld().canSeeSky(player.getPosition())) {
+                    ChunkPos pos = new ChunkPos(player.getPosition());
+                    float pollute = pollution.getPollution(pos);
+                    if (pollute > 6000F && player.getEntityWorld().getWorldTime() % 20 == 0) {
+                        if (!PlayerHelper.hasFullSet(player, ItemSoulforgeArmor.class)) {
+                            //TODO: Add acid damage here.
+                        }
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void attachWorldCapability(AttachCapabilitiesEvent<World> evt) {
+        final World world = evt.getObject();
+        if (!world.isRemote) {
+            evt.addCapability(new ResourceLocation("betterwithmods", "world_pollution"), new ICapabilitySerializable<NBTTagCompound>() {
+                IWorldPollution instance = new WorldPollutionCapability.Default(world);
+
+                @Override
+                public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+                    return capability == WorldPollutionCapability.POLLUTION;
+                }
+
+                @Override
+                public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+                    return capability == WorldPollutionCapability.POLLUTION ? WorldPollutionCapability.POLLUTION.cast(instance) : null;
+                }
+
+                @Override
+                public NBTTagCompound serializeNBT() {
+                    return null;
+                }
+
+                @Override
+                public void deserializeNBT(NBTTagCompound tag) {
+
+                }
+            });
         }
     }
 
@@ -160,21 +170,23 @@ public class PollutionHandler {
     private boolean isRaining(World world, BlockPos pos) {
         return world.isRaining() && world.getBiome(pos).canRain();
     }
-
+/*
     private void calculatePollutionReduction(World world) {
         float pollutionMod = 1.0F;
         System.out.println("Calculating pollution reduction...");
         if (!this.pollution.isEmpty()) {
             for (ChunkPos pos : this.pollution.keySet()) {
-                Chunk chunk = world.getChunkFromChunkCoords(pos.x, pos.z);
-                Biome biome = Biome.getBiome(chunk.getBiomeArray()[127], Biomes.PLAINS);
-                for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome)) {
-                    pollutionMod *= getPollutionReduction(type);
+                Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);
+                if (chunk != null) {
+                    Biome biome = Biome.getBiome(chunk.getBiomeArray()[127], Biomes.PLAINS);
+                    for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome)) {
+                        pollutionMod *= getPollutionReduction(type);
+                    }
+                    if (world.isRaining() && biome.canRain())
+                        pollutionMod *= 0.8F;
+                    float stat = getPollutionStat(pos) * pollutionMod;
+                    pollution.put(pos, stat);
                 }
-                if (world.isRaining() && biome.canRain())
-                    pollutionMod *= 0.8F;
-                float stat = getPollutionStat(pos) * pollutionMod;
-                pollution.put(pos, stat);
             }
         }
     }
@@ -186,16 +198,19 @@ public class PollutionHandler {
     private void calculatePollutionSpread(World world, List<ChunkPos> pos) {
         List<ChunkPos> finalPos = new ArrayList<>();
         for (ChunkPos p : pos) {
-            if (!world.getChunkFromChunkCoords(p.x, p.z).isLoaded()) {
+            Chunk chunk = world.getChunkProvider().getLoadedChunk(p.x, p.z);
+            if (chunk == null || !chunk.isLoaded()) {
                 continue;
             }
             boolean valid = true;
             for (int x = -1; x < 2; x++) {
                 for (int z = -1; z < 2; z++) {
                     if (x * x != z * z) {
-                        ChunkPos toCheck = world.getChunkFromChunkCoords(p.x + x, p.z + z).getPos();
-                        if (finalPos.contains(toCheck))
-                            valid = false;
+                        Chunk toCheck = world.getChunkProvider().getLoadedChunk(p.x + x, p.z + z);
+                        if (toCheck != null && toCheck.isLoaded()) {
+                            if (finalPos.contains(toCheck.getPos()))
+                                valid = false;
+                        }
                     }
                 }
             }
@@ -211,8 +226,11 @@ public class PollutionHandler {
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
                 if (x * x != z * z) {
-                    if (world.getChunkFromChunkCoords(pos.x + x, pos.z + z).isLoaded() && this.pollution.containsKey(world.getChunkFromChunkCoords(pos.x + x, pos.z + z).getPos())) {
-                        validChunks.add(world.getChunkFromChunkCoords(pos.x + x, pos.z + z).getPos());
+                    Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x + x, pos.z + z);
+                    if (chunk != null) {
+                        if (chunk.isLoaded() && this.pollution.containsKey(chunk.getPos())) {
+                            validChunks.add(chunk.getPos());
+                        }
                     }
                 }
             }
@@ -259,11 +277,13 @@ public class PollutionHandler {
             }
         }
         return leaves;
-    }
+    }*/
 
-    public float getPollutionStat(ChunkPos pos) {
-        if (pollution.containsKey(pos))
-            return pollution.get(pos);
+    public float getPollutionStat(World world, ChunkPos pos) {
+        if (world.hasCapability(WorldPollutionCapability.POLLUTION, null)) {
+            IWorldPollution pollution = world.getCapability(WorldPollutionCapability.POLLUTION, null);
+            return pollution.getPollution(pos);
+        }
         return -1;
     }
 }

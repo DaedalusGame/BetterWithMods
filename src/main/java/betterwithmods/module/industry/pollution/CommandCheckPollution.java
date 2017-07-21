@@ -31,15 +31,16 @@ public class CommandCheckPollution extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         World world = server.getEntityWorld();
         ChunkPos pos = new ChunkPos(sender.getPosition());
-        if (world.getChunkFromChunkCoords(pos.x, pos.z).isLoaded()) {
+        Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);
+        if (chunk != null && chunk.isLoaded()) {
             List<String> information = new ArrayList<>();
-            providePollutionInformation(information, pos);
+            providePollutionInformation(information, world, pos);
             for (int x = -1; x < 2; x++) {
                 for (int z = -1; z < 2; z++) {
                     if (x * x != z * z) {
-                        Chunk chunk = world.getChunkFromChunkCoords(pos.x + x, pos.z + z);
-                        if (chunk.isLoaded()) {
-                            providePollutionInformation(information, chunk.getPos());
+                        Chunk ch = world.getChunkProvider().getLoadedChunk(pos.x + x, pos.z + z);
+                        if (ch != null && ch.isLoaded()) {
+                            providePollutionInformation(information, world, ch.getPos());
                         }
                     }
                 }
@@ -50,8 +51,8 @@ public class CommandCheckPollution extends CommandBase {
         }
     }
 
-    private void providePollutionInformation(List<String> addTo, ChunkPos from) {
-        float pollution = Pollution.handler.getPollutionStat(from);
+    private void providePollutionInformation(List<String> addTo, World world, ChunkPos from) {
+        float pollution = Pollution.handler.getPollutionStat(world, from);
         if (pollution > -1) {
             String info = "Chunk [" + from.x + ", " + from.z + "] pollution: " + String.format("%.2f", pollution);
             addTo.add(info);

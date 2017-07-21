@@ -2,6 +2,7 @@ package betterwithmods.module.industry.pollution;
 
 import betterwithmods.api.capabilities.PollutionCapability;
 import betterwithmods.api.tile.IPollutant;
+import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +38,8 @@ public class PollutionHandler {
                     NBTTagCompound tag = evt.getData().getCompoundTag("bwm_pollution");
                     pollution.readNBT(pos, tag);
                 }
+                else
+                    pollution.setPollution(pos, 0.0F);
             }
         }
     }
@@ -64,10 +67,9 @@ public class PollutionHandler {
             IWorldPollution pollution = world.getCapability(WorldPollutionCapability.POLLUTION, null);
             if (pollution != null) {
                 long time = world.getWorldTime();
-                //TODO: Crashy because it likes to tick twice.
-                //if (time % 8000 == 0) {
-                //pollution.calculatePollutionSpread();
-                //}
+                if (time % 8000 == 0) {
+                    pollution.calculatePollutionSpread();
+                }
                 //TODO: Kill leaves if acid rain is happening.
                 if (time % 1000 == 0) {
                     pollution.calculatePollutionReduction();
@@ -98,7 +100,7 @@ public class PollutionHandler {
                     float pollute = pollution.getPollution(pos);
                     if (pollute > 6000F && player.getEntityWorld().getWorldTime() % 20 == 0) {
                         if (!PlayerHelper.hasFullSet(player, ItemSoulforgeArmor.class)) {
-                            //TODO: Add acid damage here.
+                            player.attackEntityFrom(BWDamageSource.acidRain, 1F);
                         }
                     }
                 }
@@ -125,7 +127,7 @@ public class PollutionHandler {
 
                 @Override
                 public NBTTagCompound serializeNBT() {
-                    return null;
+                    return new NBTTagCompound();
                 }
 
                 @Override
@@ -156,7 +158,7 @@ public class PollutionHandler {
 
                 @Override
                 public NBTTagCompound serializeNBT() {
-                    return null;
+                    return new NBTTagCompound();
                 }
 
                 @Override
@@ -170,114 +172,6 @@ public class PollutionHandler {
     private boolean isRaining(World world, BlockPos pos) {
         return world.isRaining() && world.getBiome(pos).canRain();
     }
-/*
-    private void calculatePollutionReduction(World world) {
-        float pollutionMod = 1.0F;
-        System.out.println("Calculating pollution reduction...");
-        if (!this.pollution.isEmpty()) {
-            for (ChunkPos pos : this.pollution.keySet()) {
-                Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);
-                if (chunk != null) {
-                    Biome biome = Biome.getBiome(chunk.getBiomeArray()[127], Biomes.PLAINS);
-                    for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome)) {
-                        pollutionMod *= getPollutionReduction(type);
-                    }
-                    if (world.isRaining() && biome.canRain())
-                        pollutionMod *= 0.8F;
-                    float stat = getPollutionStat(pos) * pollutionMod;
-                    pollution.put(pos, stat);
-                }
-            }
-        }
-    }
-
-    private float getPollutionReduction(BiomeDictionary.Type type) {
-        return biomeMods.containsKey(type.getName()) ? biomeMods.get(type.getName()) : 1.0F;
-    }
-
-    private void calculatePollutionSpread(World world, List<ChunkPos> pos) {
-        List<ChunkPos> finalPos = new ArrayList<>();
-        for (ChunkPos p : pos) {
-            Chunk chunk = world.getChunkProvider().getLoadedChunk(p.x, p.z);
-            if (chunk == null || !chunk.isLoaded()) {
-                continue;
-            }
-            boolean valid = true;
-            for (int x = -1; x < 2; x++) {
-                for (int z = -1; z < 2; z++) {
-                    if (x * x != z * z) {
-                        Chunk toCheck = world.getChunkProvider().getLoadedChunk(p.x + x, p.z + z);
-                        if (toCheck != null && toCheck.isLoaded()) {
-                            if (finalPos.contains(toCheck.getPos()))
-                                valid = false;
-                        }
-                    }
-                }
-            }
-            if (valid)
-                finalPos.add(p);
-        }
-        finalPos.forEach(p -> calculatePollutionSpread(world, p));
-    }
-
-    private void calculatePollutionSpread(World world, ChunkPos pos) {
-        float pollution = getPollutionStat(pos);
-        List<ChunkPos> validChunks = new ArrayList<>();
-        for (int x = -1; x < 2; x++) {
-            for (int z = -1; z < 2; z++) {
-                if (x * x != z * z) {
-                    Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x + x, pos.z + z);
-                    if (chunk != null) {
-                        if (chunk.isLoaded() && this.pollution.containsKey(chunk.getPos())) {
-                            validChunks.add(chunk.getPos());
-                        }
-                    }
-                }
-            }
-        }
-        if (!validChunks.isEmpty()) {
-            for (ChunkPos p : validChunks) {
-                float pollutionCheck = getPollutionStat(p);
-                if (pollution == pollutionCheck) {
-                } else if (pollution > pollutionCheck) {
-                    calculateNewPollution(getPollutionStat(pos), getPollutionStat(p));
-                } else {
-                    calculateNewPollution(getPollutionStat(p), getPollutionStat(pos));
-                }
-            }
-        }
-    }
-//TODO: Numbers may need to be adjusted.
-    private void calculateNewPollution(float from, float to) {
-        if (to / from > 0.2F) {
-            float change = from * 0.2F;
-            from -= change;
-            to += change;
-        }
-        else {
-            float difference = to / from;
-            if (difference == 0) difference = from / 4;
-            else difference /= 3;
-            from -= difference;
-            to += difference;
-        }
-    }
-
-    private int findLeafCount(World world, ChunkPos pos) {
-        int leaves = 0;
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                BlockPos ground = world.getHeight(new BlockPos(pos.getXStart() + x, 64, pos.getZStart() + z));
-                for (int y = 1; y < 10; y++) {
-                    BlockPos toCheck = ground.up(y);
-                    IBlockState state = world.getBlockState(toCheck);
-                    if (state.getBlock() instanceof BlockLeaves && state.getValue(BlockLeaves.DECAYABLE))
-                        leaves++;
-                }
-            }
-        }
-        return leaves;
-    }*/
 
     public float getPollutionStat(World world, ChunkPos pos) {
         if (world.hasCapability(WorldPollutionCapability.POLLUTION, null)) {

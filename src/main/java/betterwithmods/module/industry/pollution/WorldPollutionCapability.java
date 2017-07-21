@@ -46,7 +46,6 @@ public class WorldPollutionCapability {
         @Override
         public void calculatePollutionReduction() {
             float pollutionMod = 1.0F;
-            System.out.println("Calculating pollution reduction for dimension: " + world.provider.getDimension());
             if (!pollution.isEmpty()) {
                 for (ChunkPos pos : pollution.keySet()) {
                     Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);

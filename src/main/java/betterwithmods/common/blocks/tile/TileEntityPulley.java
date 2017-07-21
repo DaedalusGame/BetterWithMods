@@ -43,9 +43,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     public boolean isMechanicallyPowered() {
-        return getWorld().getBlockState(pos).getBlock() != null
-                && getWorld().getBlockState(pos).getBlock() instanceof BlockMechMachines
-                && ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).isMechanicalOn(getWorld(), pos);
+        return false;
     }
 
     @Override

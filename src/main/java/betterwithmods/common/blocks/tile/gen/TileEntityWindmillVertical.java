@@ -136,11 +136,11 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
         for (int i = -3; i < 4; i++) {
             BlockPos pos = this.pos.add(0, i, 0);
             if (getWorld().getBlockState(pos).getBlock() instanceof BlockAxle)
-                this.getWorld().setBlockState(pos, BWMBlocks.AXLE.getDefaultState());
+                this.getWorld().setBlockState(pos, BWMBlocks.WOODEN_AXLE.getDefaultState());
         }
         if (!this.getWorld().isRemote)
             InvUtils.ejectStackWithOffset(getWorld(), pos, new ItemStack(BWMItems.WINDMILL, 1, 2));
-        this.getWorld().setBlockState(this.pos, BWMBlocks.AXLE.getDefaultState());
+        this.getWorld().setBlockState(this.pos, BWMBlocks.WOODEN_AXLE.getDefaultState());
     }
 
     @Override

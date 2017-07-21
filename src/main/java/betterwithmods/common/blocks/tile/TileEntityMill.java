@@ -1,11 +1,13 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.Block;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -16,16 +18,18 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable {
+public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower {
 
     public static final int GRIND_TIME = 200;
 
+    public int power;
     public int grindCounter;
-
     private int grindType = 0;
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
@@ -35,9 +39,17 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         this.validateContents = true;
     }
 
+    public boolean isActive() {
+        return power > 0;
+    }
+
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
+    }
+
+    public BlockMechMachines getBlock() {
+        return (BlockMechMachines) this.getBlockType();
     }
 
     @Override
@@ -45,21 +57,17 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         if (this.getWorld().isRemote)
             return;
 
-        Block block = this.getWorld().getBlockState(this.pos).getBlock();
-
-        if (block == null || !(block instanceof BlockMechMachines))
-            return;
-
-        BlockMechMachines mill = (BlockMechMachines) block;
+        this.power = calculateInput();
+        getBlock().setActive(world,pos,isActive());
 
         if (this.validateContents)
             validateContents();
 
-        if (mill.isMechanicalOn(getWorld(), pos))
+        if (isActive())
             if (getWorld().rand.nextInt(20) == 0)
                 getWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getWorld().rand.nextFloat() * 0.1F, 0.5F + getWorld().rand.nextFloat() * 0.1F);
 
-        if (this.containsIngredientsToGrind && mill.isMechanicalOn(getWorld(), pos)) {
+        if (this.containsIngredientsToGrind && isActive()) {
             if (!this.getWorld().isRemote) {
                 if (grindType == 2) {
                     if (this.getWorld().rand.nextInt(25) < 2) {
@@ -84,18 +92,20 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         super.readFromNBT(tag);
         if (tag.hasKey("GrindCounter"))
             this.grindCounter = tag.getInteger("GrindCounter");
-    }
-
-    @Override
-    public int getInventorySize() {
-        return 3;
+        this.power = tag.getInteger("power");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("GrindCounter", this.grindCounter);
+        tag.setInteger("power", power);
         return tag;
+    }
+
+    @Override
+    public int getInventorySize() {
+        return 3;
     }
 
     public int getGrindType() {
@@ -139,7 +149,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
     }
 
     public double getGrindProgress() {
-        return this.grindCounter / (double)GRIND_TIME;
+        return this.grindCounter / (double) GRIND_TIME;
     }
 
     public boolean isGrinding() {
@@ -153,7 +163,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         if (ingredients != null) {
             if (grindType == 1)
                 this.getWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            NonNullList<ItemStack> output = mill.craftItem(world,this,inventory);
+            NonNullList<ItemStack> output = mill.craftItem(world, this, inventory);
             if (!output.isEmpty()) {
                 for (ItemStack anOutput : output) {
                     ItemStack stack = anOutput.copy();
@@ -181,6 +191,42 @@ public class TileEntityMill extends TileBasicInventory implements ITickable {
         if (oldGrindType != newGrindType) {
             this.grindType = newGrindType;
         }
+    }
+
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return -1;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        if (facing.getAxis().isVertical())
+            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 4;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 4;
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER
+                || super.hasCapability(capability, facing);
+    }
+
+    @Nonnull
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
+        return super.getCapability(capability, facing);
     }
 
 }

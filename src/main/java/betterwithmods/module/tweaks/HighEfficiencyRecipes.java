@@ -12,7 +12,7 @@ public class HighEfficiencyRecipes extends Feature {
 //        BWMRecipes.addOreRecipe(BlockMechMachines.getStack(BlockMechMachines.EnumType.PULLEY), "PIP", "GLG", "PIP", 'P', "sidingWood", 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
 //
 //        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.PLATFORM), "MWM", " M ", "MWM", 'M', "sidingWood", 'W', new ItemStack(BWMBlocks.WICKER, 1, 2));
-//        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.AXLE), "M", "R", "M", 'M', "mouldingWood", 'R', BWMBlocks.ROPE);
+//        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.WOODEN_AXLE), "M", "R", "M", 'M', "mouldingWood", 'R', BWMBlocks.ROPE);
 //        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.GEARBOX), "SGS", "GLG", "SGS", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH), 'S', "sidingWood", 'G', "gearWood");
 //        BWMRecipes.addOreRecipe(new ItemStack(Blocks.STONE_BRICK_STAIRS), "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.STONEBRICK.getMetadata()));
 //        BWMRecipes.addOreRecipe(new ItemStack(Blocks.NETHER_BRICK_STAIRS), "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.NETHERBRICK.getMetadata()));

@@ -92,7 +92,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(Blocks.WOODEN_SLAB, 1.0F);
         buoyancy.put(Items.DYE, 1.0F);
         buoyancy.put(Blocks.WOODEN_BUTTON, 1.0F);
-        buoyancy.put(BWMBlocks.AXLE, 1.0F);
+        buoyancy.put(BWMBlocks.WOODEN_AXLE, 1.0F);
         buoyancy.put(BWMBlocks.PUMP, 0.0F);
         buoyancy.put(BWMBlocks.WOOD_SIDING, 1.0F);
         buoyancy.put(BWMBlocks.WOOD_MOULDING, 1.0F);

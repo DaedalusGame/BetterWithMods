@@ -41,6 +41,11 @@ public class CapabilityAxle {
         }
 
         @Override
+        public int getMinimumInput() {
+            return 0;
+        }
+
+        @Override
         public EnumFacing[] getDirections() {
             return new EnumFacing[0];
         }

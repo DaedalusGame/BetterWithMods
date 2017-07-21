@@ -40,7 +40,8 @@ public final class BWMBlocks {
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
-    public static final Block AXLE = new BlockAxle().setRegistryName("axle");
+    public static final Block WOODEN_AXLE = new BlockAxle(Material.WOOD, 1, 1, 3).setRegistryName("wooden_axle");
+    public static final Block STEEL_AXLE = new BlockAxle(Material.WOOD, 1, 2, 5).setRegistryName("steel_axle");
     public static final Block GEARBOX = new BlockGearbox().setRegistryName("gearbox");
     public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");
     public static final Block WICKER = new BlockWicker().setRegistryName("wicker");
@@ -105,7 +106,8 @@ public final class BWMBlocks {
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(SINGLE_MACHINES, new ItemBlockMeta(SINGLE_MACHINES));
-        registerBlock(AXLE);
+        registerBlock(WOODEN_AXLE);
+        registerBlock(STEEL_AXLE);
         registerBlock(GEARBOX);
         registerBlock(HAND_CRANK);
         registerBlock(WICKER);

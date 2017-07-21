@@ -2,9 +2,10 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.ISoulSensitive;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
@@ -24,12 +25,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
 
-public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
+public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype, IMechanicalPower {
 
     private final int STACK_SIZE = 8;
     public int filterType;
@@ -256,8 +259,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             } else if (soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getWorld().rand.nextFloat() * 0.1F + 0.8F);
-                if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)
-                    ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).breakHopper(getWorld(), pos);
+                //TODO
+//                if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)
+//                    ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).breakHopper(getWorld(), pos);
             }
         } else {
             this.soulsRetained = 0;
@@ -306,6 +310,26 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return inventory.getStackInSlot(18);
     }
 
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 4;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 4;
+    }
+
     private class HopperHandler extends SimpleStackHandler {
         TileEntityFilteredHopper hopper;
 
@@ -326,4 +350,19 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             return slot == 18 ? 1 : super.getSlotLimit(slot);
         }
     }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER
+                || super.hasCapability(capability, facing);
+    }
+
+    @Nonnull
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
+        return super.getCapability(capability, facing);
+    }
+
 }

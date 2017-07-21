@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     private final byte maxSignal;
     private final int maxPower;
+    private final int minPower;
 
     private byte signal;
     private int power;
@@ -26,11 +27,13 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
     public TileAxle() {
         this.maxSignal = 3;
-        this.maxPower = 4;
+        this.maxPower = 1;
+        this.minPower = 0;
     }
 
-    public TileAxle(int maxPower, byte maxSignal) {
+    public TileAxle(int maxPower, int minPower, byte maxSignal) {
         this.maxPower = maxPower;
+        this.minPower = minPower;
         this.maxSignal = maxSignal;
     }
 
@@ -65,8 +68,8 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
                             findPower = power;
                         }
                     }
-                    if (axle == null && power <= getMaximumInput()) {
-                        findSignal = (byte) (getMaximumSignal() + 1);
+                    if (axle == null){
+                        findSignal = getMaximumSignal();
                     }
                 }
 
@@ -75,7 +78,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
         setPower(findPower);
 
-        if (sources >= 2 || this.power > this.maxPower) {
+        if (sources >= 2 || getPower() > getMaximumInput()) {
             getBlock().overpower(world, pos);
             return;
         }
@@ -163,6 +166,11 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public int getMaximumInput() {
         return maxPower;
+    }
+
+    @Override
+    public int getMinimumInput() {
+        return minPower;
     }
 
     public EnumFacing[] getDirections() {

@@ -9,6 +9,8 @@ public interface IAxle {
 
     int getMaximumInput();
 
+    int getMinimumInput();
+
     EnumFacing[] getDirections();
 
     EnumFacing.Axis getAxis();

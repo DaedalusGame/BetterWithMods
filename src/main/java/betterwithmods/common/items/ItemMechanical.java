@@ -55,7 +55,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
         ItemStack stack = player.getHeldItem(hand);
         Block block = world.getBlockState(pos).getBlock();
 
-        if (block == BWMBlocks.AXLE) {
+        if (block == BWMBlocks.WOODEN_AXLE) {
             EnumFacing.Axis axis = world.getBlockState(pos).getValue(BlockAxle.AXIS);
 
             if (axis == EnumFacing.Axis.Y && stack.getItemDamage() == 2) {
@@ -263,7 +263,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
         for (int i = -3; i <= 3; i++) {
             BlockPos target = pos.add(0, i, 0);
             Block targetBlock = world.getBlockState(target).getBlock();
-            if (targetBlock != BWMBlocks.AXLE) return false;
+            if (targetBlock != BWMBlocks.WOODEN_AXLE) return false;
             EnumFacing.Axis axis = world.getBlockState(target).getValue(BlockAxle.AXIS);
             if (axis != EnumFacing.Axis.Y) return false;
         }

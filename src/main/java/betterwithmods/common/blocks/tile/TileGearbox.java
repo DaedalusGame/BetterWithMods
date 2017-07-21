@@ -1,28 +1,34 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.api.block.IOverpower;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockGearbox;
 import betterwithmods.util.MechanicalUtil;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 
-public class TileGearbox extends TileEntity implements IMechanicalPower {
+public class TileGearbox extends TileEntity implements IMechanicalPower, IOverpower {
     private int power;
 
     public void onChanged() {
         int power = this.getMechanicalInput(getFacing());
-        if (world.isBlockIndirectlyGettingPowered(pos) > 0) {
+        if (getBlock().isRedstonePowered(world, pos)) {
             setPower(0);
             return;
         }
         if (power != this.power) {
-           setPower(power);
+            setPower(power);
         }
         markDirty();
     }
@@ -107,5 +113,20 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     @Override
     public String toString() {
         return String.format("%s", power);
+    }
+
+    @Override
+    public void overpower(World world, BlockPos pos) {
+        for (int i = 0; i < 10; i++) {
+            world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
+        }
+        for (int i = 0; i < 5; i++) {
+            float flX = pos.getX() + world.rand.nextFloat();
+            float flY = pos.getY() + world.rand.nextFloat() * 0.5F + 1.0F;
+            float flZ = pos.getZ() + world.rand.nextFloat();
+
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
+        }
+        world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
     }
 }

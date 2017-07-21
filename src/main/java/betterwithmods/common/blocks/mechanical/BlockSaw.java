@@ -111,7 +111,7 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        if (block == BWMBlocks.AXLE || block == BWMBlocks.HAND_CRANK)
+        if (block == BWMBlocks.WOODEN_AXLE || block == BWMBlocks.HAND_CRANK)
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         else
             world.scheduleBlockUpdate(pos, this, tickRate(world) + world.rand.nextInt(6), 5);

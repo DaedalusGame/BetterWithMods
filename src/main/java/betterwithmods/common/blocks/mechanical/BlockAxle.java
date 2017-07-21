@@ -7,7 +7,6 @@ import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -39,15 +38,16 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
     private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
     private static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
-
-    public BlockAxle() {
-        super(Material.WOOD);
-        this.setHardness(2.0F);
+    private final int minPower, maxPower, maxSignal;
+    public BlockAxle(Material material, int minPower, int maxPower, int maxSignal) {
+        super(material);
+        this.minPower = minPower;
+        this.maxPower = maxPower;
+        this.maxSignal = maxSignal;
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Y).withProperty(ACTIVE, false));
-        this.setSoundType(SoundType.WOOD);
-        this.setHarvestLevel("axe", 0);
         setCreativeTab(BWCreativeTabs.BWTAB);
     }
+
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -71,7 +71,6 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
         int active = state.getValue(ACTIVE) ? 1 : 0;
         return active | axis;
     }
-
 
 
     @Override
@@ -144,7 +143,7 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileAxle(4, (byte) 3);
+        return new TileAxle(maxPower,minPower, (byte) (maxSignal+1));
     }
 
     public Optional<TileAxle> withTile(World world, BlockPos pos) {

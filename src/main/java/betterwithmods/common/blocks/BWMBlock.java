@@ -66,4 +66,8 @@ public abstract class BWMBlock extends Block implements ITurnable {
         }
         super.breakBlock(worldIn,pos,state);
     }
+
+    public boolean isRedstonePowered(World world, BlockPos pos) {
+        return world.isBlockIndirectlyGettingPowered(pos) > 0;
+    }
 }

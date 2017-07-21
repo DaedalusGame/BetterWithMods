@@ -66,7 +66,8 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public void update() {
         if (!this.getWorld().isRemote) {
-            if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockMechMachines && ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).isMechanicalOn(getWorld(), pos)) {
+            //TODO
+            if (false) {
                 if (!asynchronous && getWorld().getTotalWorldTime() % (long) ticksToRotate[timerPos] == 0) {
                     this.getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.05F, 1.0F);
                     rotateTurntable();

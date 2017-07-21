@@ -1,5 +1,6 @@
 package betterwithmods.api.tile;
 
+import betterwithmods.util.DirUtils;
 import net.minecraft.util.EnumFacing;
 
 public interface IMechanicalPower {
@@ -11,4 +12,14 @@ public interface IMechanicalPower {
 
     int getMinimumInput(EnumFacing facing);
 
+    default int calculateInput() {
+        int findPower = 0;
+        for (EnumFacing facing : DirUtils.Y_AXIS) {
+            int power = getMechanicalInput(facing);
+            if (power > findPower) {
+                findPower = power;
+            }
+        }
+        return findPower;
+    }
 }

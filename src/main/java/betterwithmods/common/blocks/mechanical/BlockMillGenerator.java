@@ -82,7 +82,7 @@ public abstract class BlockMillGenerator extends BWMBlock {
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
-        drops.add(new ItemStack(BWMBlocks.AXLE));
+        drops.add(new ItemStack(BWMBlocks.WOODEN_AXLE));
         drops.add(getItem((World) world,pos,state));
         return drops;
     }

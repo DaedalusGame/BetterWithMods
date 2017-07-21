@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.common.blocks.tile.TileGearbox;
@@ -14,8 +13,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower {
+public class BlockGearbox extends BlockRotate implements IBlockActive {
 
     public BlockGearbox() {
         super(Material.WOOD);
@@ -211,22 +208,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileGearbox();
     }
-
-    @Override
-    public void overpower(World world, BlockPos pos) {
-        for (int i = 0; i < 10; i++) {
-            world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
-        }
-        for (int i = 0; i < 5; i++) {
-            float flX = pos.getX() + world.rand.nextFloat();
-            float flY = pos.getY() + world.rand.nextFloat() * 0.5F + 1.0F;
-            float flZ = pos.getZ() + world.rand.nextFloat();
-
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
-        }
-        world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
-    }
-
 
     public Optional<TileGearbox> withTile(World world, BlockPos pos) {
         return Optional.of(getTile(world, pos));

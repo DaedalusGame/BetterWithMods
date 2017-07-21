@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -63,17 +64,22 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         world.setBlockState(pos, state.cycleProperty(DirUtils.FACING).withProperty(ACTIVE, false));
     }
 
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) withTile(world, pos).ifPresent(t -> System.out.println(t));
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+    }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        world.scheduleBlockUpdate(pos, this, 1, 5);
+        world.scheduleBlockUpdate(pos, this, 5, 5);
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        withTile(world, pos).ifPresent(TileGearbox::reset);
         onChange(world, pos);
+        world.scheduleUpdate(pos,this,5);
     }
 
     @Override
@@ -85,6 +91,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         if (!world.isRemote) {
             withTile(world, pos).ifPresent(TileGearbox::onChanged);
         }
+        world.notifyNeighborsOfStateExcept(pos,this,getFacing(world,pos));
     }
 
 
@@ -232,4 +239,10 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         return null;
     }
 
+    @Override
+    public void onChangeActive(World world, BlockPos pos, boolean newValue) {
+        if(newValue) {
+            world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
+        }
+    }
 }

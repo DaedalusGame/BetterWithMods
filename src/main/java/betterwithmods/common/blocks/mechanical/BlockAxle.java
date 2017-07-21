@@ -127,7 +127,6 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        withTile(worldIn, pos).ifPresent(TileAxle::reset);
         onChange(worldIn, pos);
     }
 

@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.IMechanical;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
@@ -49,33 +48,9 @@ public class MechanicalUtil {
     public static int getPowerOutput(World world, BlockPos pos, EnumFacing facing) {
         IMechanicalPower power = getMechanicalPower(world, pos, facing);
         if (power != null) {
-            System.out.println(power);
             return power.getMechanicalOutput(facing);
         }
         return 0;
-    }
-
-
-    public static int searchForAdvMechanical(World world, BlockPos pos, EnumFacing dir) {
-        int power = isBlockPoweredOnSide(world, pos, dir) ? 1 : 0;
-        if (power > 0) {
-            for (int i = 2; i < 5; i++) {
-                BlockPos off = pos.offset(dir, i);
-                Block block = world.getBlockState(off).getBlock();
-                if (block instanceof IMechanical) {
-                    if (((IMechanical) block).isMechanicalJunction()) {
-                        if (world.getTileEntity(off) != null) {
-                            TileEntity tile = world.getTileEntity(off);
-                            if (tile.hasCapability(CapabilityMechanicalPower.MECHANICAL_POWER, dir.getOpposite())) {
-                                power = tile.getCapability(CapabilityMechanicalPower.MECHANICAL_POWER, dir.getOpposite()).getMechanicalOutput(dir.getOpposite());
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        return power;
     }
 
     public static boolean isBlockPoweredByAxleOnSide(World world, BlockPos pos, EnumFacing dir) {

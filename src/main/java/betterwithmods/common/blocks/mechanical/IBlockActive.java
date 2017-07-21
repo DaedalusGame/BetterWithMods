@@ -18,9 +18,14 @@ public interface IBlockActive {
     default void setActive(World world, BlockPos pos, boolean active) {
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof IBlockActive) {
+            if(state.getValue(ACTIVE) != active)
+                onChangeActive(world,pos,active);
             world.setBlockState(pos, state.withProperty(ACTIVE, active));
-            world.scheduleUpdate(pos, state.getBlock(),0);
+            world.scheduleUpdate(pos, state.getBlock(),5);
         }
     }
 
+    default void onChangeActive(World world, BlockPos pos, boolean newValue) {
+
+    }
 }

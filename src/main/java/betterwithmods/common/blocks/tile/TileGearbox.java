@@ -2,16 +2,12 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockGearbox;
 import betterwithmods.util.MechanicalUtil;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
@@ -20,14 +16,13 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     private int power;
 
     public void onChanged() {
-        int power = getMechanicalInput(getFacing());
-
-        //TODO Redstone
+        int power = this.getMechanicalInput(getFacing());
+        if (world.isBlockIndirectlyGettingPowered(pos) > 0) {
+            setPower(0);
+            return;
+        }
         if (power != this.power) {
-            if (this.power == 0) {
-                world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
-            }
-            this.power = power;
+           setPower(power);
         }
         markDirty();
     }
@@ -62,9 +57,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public int getMechanicalInput(EnumFacing facing) {
         BlockPos pos = getPos().offset(facing);
         if (MechanicalUtil.isAxle(world, pos, facing.getOpposite())) {
-            int power = MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
-
-            return power;
+            return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
         }
         return 0;
     }
@@ -88,10 +81,6 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         return t;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
-        return oldState.getBlock() != newState.getBlock();
-    }
 
     public BlockGearbox getBlock() {
         return (BlockGearbox) getBlockType();
@@ -109,12 +98,14 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         this.power = power;
     }
 
-    public void reset() {
-        this.setPower(0);
-    }
     @Override
     public void markDirty() {
         super.markDirty();
         getBlock().setActive(world, pos, power > 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s", power);
     }
 }

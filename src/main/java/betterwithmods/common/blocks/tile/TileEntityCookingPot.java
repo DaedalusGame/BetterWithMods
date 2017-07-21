@@ -73,7 +73,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     private boolean isInputtingPower(EnumFacing facing) {
-        return getMechanicalInput(facing) > 0;
+        return this.getMechanicalInput(facing) > 0;
     }
 
     private EnumFacing getPoweredSide() {

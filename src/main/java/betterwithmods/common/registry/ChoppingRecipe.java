@@ -48,7 +48,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
         if (isMatch(event.craftMatrix, event.player.world)) {
             if (!event.player.getEntityWorld().isRemote) {
                 event.player.entityDropItem(wood.getSawdust(1), 0);
-                event.player.entityDropItem(wood.getSawdust(1), 0);
+                event.player.entityDropItem(wood.getBark(1), 0);
             } else {
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);
             }

@@ -38,6 +38,7 @@ repositories {
     maven { url "http://blamejared.com/maven" }
     maven { url "http://maven.amadornes.com/" }
     maven { url "http://www.ryanliptak.com/maven/" }
+    mavenCentral()
 }
 
 dependencies {
@@ -61,10 +62,6 @@ artifacts {
     archives deobfJar
 }
 
-repositories {
-    mavenCentral()
-}
-
 configurations {
     deployerJars
 }
@@ -76,7 +73,39 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file:///var/www/html/maven")
+            repository(url: "file://" + System.getenv("local_maven"))
+            pom {
+                groupId = project.group
+                version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'BetterWithMods'
+                    url 'https://github.com/BeetoGuy/BetterWithMods'
+                    scm {
+                        url 'https://github.com/BeetoGuy/BetterWithMods.git'
+                        connection 'scm:git:git@github.com:BeetoGuy/BetterWithMods.git'
+                        developerConnection 'scm:git:git@github.com:BeetoGuy/BetterWithMods.git'
+                    }
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/BeetoGuy/BetterWithMods/issues'
+                    }
+                    developers {
+                        developer {
+                            id 'primetoxinz'
+                            name 'primetoxinz'
+                            roles { role 'developer' }
+                        }
+                        developer {
+                            id 'beetoguy'
+                            name 'beetoguy'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
         }
     }
 }

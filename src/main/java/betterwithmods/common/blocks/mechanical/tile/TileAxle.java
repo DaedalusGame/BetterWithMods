@@ -1,9 +1,10 @@
-package betterwithmods.common.blocks.mechanical;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,9 +18,9 @@ import javax.annotation.Nullable;
  * Created by primetoxinz on 7/18/17.
  */
 public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
-    private final byte maxSignal;
-    private final int maxPower;
-    private final int minPower;
+    private byte maxSignal;
+    private int maxPower;
+    private int minPower;
 
     private byte signal;
     private int power;
@@ -102,13 +103,20 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setByte("signal", signal);
         compound.setInteger("power", power);
+        compound.setByte("maxSignal",maxSignal);
+        compound.setInteger("maxPower",maxPower);
+        compound.setInteger("minPower",minPower);
         return super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         this.signal = compound.getByte("signal");
+        this.maxSignal = compound.getByte("maxSignal");
+
         this.power = compound.getInteger("power");
+        this.maxPower = compound.getInteger("maxPower");
+        this.minPower = compound.getInteger("minPower");
         super.readFromNBT(compound);
     }
 

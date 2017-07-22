@@ -342,7 +342,7 @@ item.bwm:material.ender_slag.name=Ender Slag
 item.bwm:material.soul_flux.name=Soul Flux
 item.bwm:material.ender_ocular.name=Ocular of Ender
 item.bwm:material.padding.name=Padding
-item.bwm:material.armor_plate.name=Soulforged Steel Armor Plate
+item.bwm:material.armor_plate.name=Plate Armor
 item.bwm:material.broadhead.name=Broadhead
 item.bwm:material.cocoa_powder.name=Cocoa Powder
 item.bwm:material.diamond_ingot.name=Diamond Ingot
@@ -401,18 +401,18 @@ item.bwm:bark.olive.name=Olive Bark
 item.bwm:bark.ironwood.name=Ironwood Bark
 
 
-item.bwm:steel_axe.name=Soulforged Steel Axe
-item.bwm:steel_hoe.name=Soulforged Steel Hoe
-item.bwm:steel_pickaxe.name=Soulforged Steel Pickaxe
-item.bwm:steel_shovel.name=Soulforged Steel Shovel
-item.bwm:steel_sword.name=Soulforged Steel Sword
-item.bwm:steel_mattock.name=Soulforged Steel Mattock
-item.bwm:steel_battleaxe.name=Soulforged Steel Battleaxe
+item.bwm:steel_axe.name=Refined Axe
+item.bwm:steel_hoe.name=Refined Hoe
+item.bwm:steel_pickaxe.name=Refined Pickaxe
+item.bwm:steel_shovel.name=Refined Shovel
+item.bwm:steel_sword.name=Refined Sword
+item.bwm:steel_mattock.name=Refined Mattock
+item.bwm:steel_battleaxe.name=Refined Battleaxe
 
-item.bwm:steel_helmet.name=Soulforged Steel Helmet
-item.bwm:steel_chest.name=Soulforged Steel Chestplate
-item.bwm:steel_pants.name=Soulforged Steel Leggings
-item.bwm:steel_boots.name=Soulforged Steel Boots
+item.bwm:steel_helmet.name=Plate Armor Helmet
+item.bwm:steel_chest.name=Plate Armor Chest
+item.bwm:steel_pants.name=Plate Armor Leggings
+item.bwm:steel_boots.name=Plate Armor Boots
 
 item.bwm:composite_bow.name=Composite Bow
 item.bwm:broadhead_arrow.name=Broadhead Arrow
@@ -491,6 +491,11 @@ bwm.message.immersive.0=Only works to bridge mechanical power
 bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos
 bwm.message.exhaustion=You are too exhausted to turn it.
 
+bwm.message.waterwheel.0=Not enough room to place the waterwheel. Need a 5x5 area to work.
+bwm.message.windmill.0=Not enough room to place the windmill. Need a 13x13 area to work.
+bwm.message.vertical_windmill.0=Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work.
+bwm.message.vertical_windmill.1=Too few vertical axles in column to place here. (Need 7).
+
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
@@ -512,6 +517,9 @@ tooltip.chime.name=Emits a Redstone Signal when Raining, or when an Entity passe
 tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, check your Gearboxes!
+
+
+
 
 bwm.manual.home=Home
 bwm.manual.blocks=Block

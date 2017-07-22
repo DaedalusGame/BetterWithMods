@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 //TODO almost need to completely rewrite these in terms of capabilities.
-public class TileEntityWindmillVertical extends TileEntityMillGenerator implements IColor {
+public class TileEntityWindmillVertical extends TileAxleGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0, 0, 0, 0, 0};
 
     public int getBladeColor(int blade) {
@@ -74,7 +74,7 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     public boolean isValid() {
         //check master's validity
         boolean valid = true;
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
             for (int i = -3; i < 4; i++) {
                 if (i == 0)
                     continue;
@@ -132,22 +132,16 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
     }
 
     private void invalidateWindmill() {
-        this.getWorld().setBlockState(this.pos, BWMBlocks.WINDMILL_BLOCK.getDefaultState());
+        this.getWorld().setBlockState(this.pos, BWMBlocks.WINDMILL.getDefaultState());
         for (int i = -3; i < 4; i++) {
             BlockPos pos = this.pos.add(0, i, 0);
             if (getWorld().getBlockState(pos).getBlock() instanceof BlockAxle)
                 this.getWorld().setBlockState(pos, BWMBlocks.WOODEN_AXLE.getDefaultState());
         }
         if (!this.getWorld().isRemote)
-            InvUtils.ejectStackWithOffset(getWorld(), pos, new ItemStack(BWMItems.WINDMILL, 1, 2));
+            InvUtils.ejectStackWithOffset(getWorld(), pos, new ItemStack(BWMItems.AXLE_GENERATOR, 1, 2));
         this.getWorld().setBlockState(this.pos, BWMBlocks.WOODEN_AXLE.getDefaultState());
     }
-
-    @Override
-    public void overpower() {
-       //TODO IOverpower
-    }
-
 
 
     @Override
@@ -166,18 +160,18 @@ public class TileEntityWindmillVertical extends TileEntityMillGenerator implemen
 
     @Override
     public void updateSpeed() {
-        byte speed = 0;
-        if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
-            if ((this.getWorld().isRaining() || this.getWorld().isThundering()) && this.getWorld().provider.getDimensionType() != DimensionType.NETHER)
-                speed = 2;
-            else
-                speed = 1;
-        }
-        if (speed != this.runningState && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            this.setRunningState(speed);
-            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
-            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
-        }
+//        byte speed = 0;
+//        if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
+//            if ((this.getWorld().isRaining() || this.getWorld().isThundering()) && this.getWorld().provider.getDimensionType() != DimensionType.NETHER)
+//                speed = 2;
+//            else
+//                speed = 1;
+//        }
+//        if (speed != this.runningState && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
+//            this.setRunningState(speed);
+//            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
+//            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
+//        }
     }
 
     public boolean isNotOtherDimension() {

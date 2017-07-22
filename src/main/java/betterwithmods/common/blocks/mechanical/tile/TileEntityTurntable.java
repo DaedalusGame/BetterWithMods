@@ -1,9 +1,11 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.tile.IMechSubtype;
+import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.util.DirUtils;

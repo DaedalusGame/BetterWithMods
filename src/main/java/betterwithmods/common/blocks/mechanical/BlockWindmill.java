@@ -5,6 +5,7 @@ import betterwithmods.common.blocks.tile.gen.IColor;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.util.ColorUtils;
+import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,14 +16,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockWindmill extends BlockMillGenerator {
+public class BlockWindmill extends BlockAxleGenerator {
     public BlockWindmill() {
         super(Material.WOOD);
     }
 
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-        return new ItemStack(BWMItems.WINDMILL, 1, state.getValue(AXIS) == EnumFacing.Axis.Y ? 2 : 0);
+        return new ItemStack(BWMItems.AXLE_GENERATOR, 1, state.getValue(DirUtils.AXIS) == EnumFacing.Axis.Y ? 2 : 0);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class BlockWindmill extends BlockMillGenerator {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        if (state.getValue(AXIS) == EnumFacing.Axis.Y)
+        if (state.getValue(DirUtils.AXIS) == EnumFacing.Axis.Y)
             return new TileEntityWindmillVertical();
         else
             return new TileEntityWindmillHorizontal();

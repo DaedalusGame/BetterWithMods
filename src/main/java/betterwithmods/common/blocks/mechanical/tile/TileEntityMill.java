@@ -1,9 +1,10 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.tile.TileBasicInventory;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;

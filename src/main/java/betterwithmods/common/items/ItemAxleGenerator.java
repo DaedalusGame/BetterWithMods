@@ -3,12 +3,15 @@ package betterwithmods.common.items;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.BlockAxle;
-import betterwithmods.common.blocks.mechanical.BlockMillGenerator;
+import betterwithmods.common.blocks.mechanical.BlockAxleGenerator;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
+import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,15 +25,16 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemMechanical extends Item implements IMultiLocations {
+public class ItemAxleGenerator extends Item implements IMultiLocations {
     private final String[] names = {"windmill", "waterwheel", "windmill_vertical"};
 
-    public ItemMechanical() {
+    public ItemAxleGenerator() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.maxStackSize = 1;
@@ -53,16 +57,16 @@ public class ItemMechanical extends Item implements IMultiLocations {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        Block block = world.getBlockState(pos).getBlock();
-
-        if (block == BWMBlocks.WOODEN_AXLE) {
-            EnumFacing.Axis axis = world.getBlockState(pos).getValue(BlockAxle.AXIS);
-
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (block instanceof BlockAxle) {
+            EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
+            EnumTier tier = block == BWMBlocks.WOODEN_AXLE ? EnumTier.WOOD : EnumTier.STEEL;
             if (axis == EnumFacing.Axis.Y && stack.getItemDamage() == 2) {
-                if (isVerticalWindmillValid(player, world, pos, hitY))
+                if (isVerticalWindmillValid(player, world, pos, hitY, tier))
                     stack.shrink(1);
             } else if (axis != EnumFacing.Axis.Y && stack.getItemDamage() != 2) {
-                if (isHorizontalDeviceValid(player, world, pos, stack.getItemDamage(), axis))
+                if (isHorizontalDeviceValid(player, world, pos, stack.getItemDamage(), axis, tier))
                     stack.shrink(1);
             }
             return EnumActionResult.SUCCESS;
@@ -70,25 +74,25 @@ public class ItemMechanical extends Item implements IMultiLocations {
         return EnumActionResult.PASS;
     }
 
-    private boolean isHorizontalDeviceValid(EntityPlayer player, World world, BlockPos pos, int meta, EnumFacing.Axis axis) {
+    private boolean isHorizontalDeviceValid(EntityPlayer player, World world, BlockPos pos, int meta, EnumFacing.Axis axis, EnumTier tier) {
         boolean valid = false;
         if (meta == 1 && validateWaterwheel(world, pos, axis)) {
             if (axis != EnumFacing.Axis.Y) {
-                world.setBlockState(pos, ((BlockWaterwheel) BWMBlocks.WATERWHEEL).getAxisState(axis));
+                world.setBlockState(pos, ((BlockWaterwheel) BWMBlocks.WATERWHEEL).getAxisState(axis).withProperty(EnumTier.TIER, tier));
                 valid = true;
             }
         } else if (meta == 1) {
             if (world.isRemote)
-                player.sendMessage(new TextComponentString("Not enough room to place the waterwheel. Need a 5x5 area to work."));
+                player.sendMessage(new TextComponentTranslation("bwm.message.waterwheel.0"));
         }
         if (meta == 0 && validateWindmill(world, pos, axis)) {
             if (axis != EnumFacing.Axis.Y) {
-                world.setBlockState(pos, ((BlockWindmill) BWMBlocks.WINDMILL_BLOCK).getAxisState(axis));
+                world.setBlockState(pos, ((BlockWindmill) BWMBlocks.WINDMILL).getAxisState(axis).withProperty(EnumTier.TIER, tier));
                 valid = true;
             }
         } else if (meta == 0) {
             if (world.isRemote)
-                player.sendMessage(new TextComponentString("Not enough room to place the windmill. Need a 13x13 area to work."));
+                player.sendMessage(new TextComponentTranslation("bwm.message.windmill.0"));
         }
         return valid;
     }
@@ -139,14 +143,14 @@ public class ItemMechanical extends Item implements IMultiLocations {
             int xP = axis == EnumFacing.Axis.X ? i : 0;
             int zP = axis == EnumFacing.Axis.Z ? i : 0;
             BlockPos check = pos.add(xP, 0, zP);
-            if (world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
+            if (world.getBlockState(check).getBlock() instanceof BlockAxleGenerator) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isVerticalWindmillValid(EntityPlayer player, World world, BlockPos pos, float flY) {
+    private boolean isVerticalWindmillValid(EntityPlayer player, World world, BlockPos pos, float flY, EnumTier tier) {
         boolean valid = false;
         int yPos = 0;
         if (flY > 0.5F)
@@ -156,13 +160,13 @@ public class ItemMechanical extends Item implements IMultiLocations {
         BlockPos target = new BlockPos(pos.getX(), pos.getY() + yPos, pos.getZ());
         if (checkForSupportingAxles(world, target)) {
             if (validateArea(player, world, target)) {
-                world.setBlockState(target, BWMBlocks.WINDMILL_BLOCK.getDefaultState().withProperty(BlockMillGenerator.AXIS, EnumFacing.Axis.Y));//BlockPowerSource.setProxies(world, x, yPos, z);
+                world.setBlockState(target, BWMBlocks.WINDMILL.getDefaultState().withProperty(DirUtils.AXIS, EnumFacing.Axis.Y).withProperty(EnumTier.TIER, tier));
                 valid = true;
             } else if (world.isRemote)
-                player.sendMessage(new TextComponentString("Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work."));
+                player.sendMessage(new TextComponentTranslation("bwm.message.vertical_windmill.0"));
         } else {
             if (world.isRemote) {
-                player.sendMessage(new TextComponentString("Too few vertical axles in column to place here. (Need seven)"));
+                player.sendMessage(new TextComponentString("bwm.message.vertical_windmill.1"));
             }
         }
         return valid;
@@ -187,7 +191,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     }
                     if (!clear) {
                         if (world.isRemote)
-                            player.sendMessage(new TextComponentString("Blockage at x:" + (x + xP) + " y:" + (y + yP) + " z:" + (z + zP)));
+                            player.sendMessage(new TextComponentTranslation("Blockage at x:", (x + xP), " y:", (y + yP), " z:", (z + zP)));
                         break;
                     }
                 }
@@ -196,7 +200,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
             if (!clear)
                 break;
-        }/*
+        }
         for (int i = -8; i < 8; i++) {
             for (int j = -8; j < 7; j++) {
                 for (int k = -8; k < 8; k++) {
@@ -205,7 +209,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                     BlockPos target = pos.add(i, j, k);
                     if (i > -5 && i < 5 && k > -5 && k < 5) {
                         continue;
-                    } else if (world.getBlockState(target).getBlock() instanceof BlockMillGenerator)
+                    } else if (world.getBlockState(target).getBlock() instanceof BlockAxleGenerator)
                         clear = false;
                     if (!clear)
                         break;
@@ -215,7 +219,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             }
             if (!clear)
                 break;
-        }*/
+        }
         for (int i = 5; i < 8 && clear; i++) {
             int yMin = -i;
             BlockPos minPos = pos.add(0, yMin, 0);
@@ -253,7 +257,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 zP *= -1;
             }
             BlockPos check = pos.add(xP, 0, zP);
-            if (world.getBlockState(check).getBlock() instanceof BlockMillGenerator)
+            if (world.getBlockState(check).getBlock() instanceof BlockAxleGenerator)
                 return false;
         }
         return true;
@@ -264,7 +268,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
             BlockPos target = pos.add(0, i, 0);
             Block targetBlock = world.getBlockState(target).getBlock();
             if (targetBlock != BWMBlocks.WOODEN_AXLE) return false;
-            EnumFacing.Axis axis = world.getBlockState(target).getValue(BlockAxle.AXIS);
+            EnumFacing.Axis axis = world.getBlockState(target).getValue(DirUtils.AXIS);
             if (axis != EnumFacing.Axis.Y) return false;
         }
         return true;
@@ -273,9 +277,9 @@ public class ItemMechanical extends Item implements IMultiLocations {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab))
-        for (int i = 0; i < 3; i++) {
-            items.add(new ItemStack(this, 1, i));
-        }
+            for (int i = 0; i < 3; i++) {
+                items.add(new ItemStack(this, 1, i));
+            }
     }
 
     @Override

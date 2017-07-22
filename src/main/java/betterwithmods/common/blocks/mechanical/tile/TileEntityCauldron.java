@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.registry.bulk.manager.CauldronManager;
 import betterwithmods.common.registry.bulk.manager.StokedCauldronManager;

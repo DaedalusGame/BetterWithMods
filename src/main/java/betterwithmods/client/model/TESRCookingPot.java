@@ -2,9 +2,9 @@ package betterwithmods.client.model;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.blocks.tile.TileEntityCauldron;
-import betterwithmods.common.blocks.tile.TileEntityCookingPot;
-import betterwithmods.common.blocks.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCrucible;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 

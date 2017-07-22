@@ -18,9 +18,8 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
-        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
-
         EnumFacing dir = te.getOrientation();
+        float rotation = (te.getCurrentRotation() + (te.getMaximumInput(dir) == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
         if (dir == EnumFacing.EAST) {
             waterwheel.setRotateAngle(waterwheel.axle, 0, 0, (float) Math.toRadians(rotation));

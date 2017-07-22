@@ -4,13 +4,16 @@ import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.EnumTier;
+import betterwithmods.common.blocks.mechanical.tile.TileAxle;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +24,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,17 +34,22 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
 
+import static betterwithmods.util.DirUtils.AXIS;
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
 public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
-    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
     private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
     private static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
-    private final int minPower, maxPower, maxSignal;
-    public BlockAxle(Material material, int minPower, int maxPower, int maxSignal) {
-        super(material);
+    private EnumTier type;
+    private final int minPower;
+    private final int maxPower;
+    private final int maxSignal;
+
+    public BlockAxle(EnumTier type, int minPower, int maxPower, int maxSignal) {
+        super(Material.WOOD);
+        this.type = type;
         this.minPower = minPower;
         this.maxPower = maxPower;
         this.maxSignal = maxSignal;
@@ -48,6 +57,9 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
         setCreativeTab(BWCreativeTabs.BWTAB);
     }
 
+    public EnumTier getType() {
+        return type;
+    }
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -143,7 +155,7 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileAxle(maxPower,minPower, (byte) (maxSignal+1));
+        return new TileAxle(maxPower, minPower, (byte) (maxSignal + 1));
     }
 
     public Optional<TileAxle> withTile(World world, BlockPos pos) {
@@ -190,6 +202,35 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
             float flZ = pos.getZ() + rand.nextFloat();
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
         }
+    }
+
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        if (type == EnumTier.STEEL)
+            return 4000f;
+        return 0;
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
+        if (type == EnumTier.STEEL)
+            return 100f;
+        return 3.5f;
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        if (type == EnumTier.STEEL)
+            return SoundType.METAL;
+        return SoundType.WOOD;
+    }
+
+    @Override
+    public Material getMaterial(IBlockState state) {
+        if (type == EnumTier.STEEL)
+            return Material.IRON;
+        return Material.WOOD;
     }
 
 }

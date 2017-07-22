@@ -1,10 +1,12 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.tile.SimpleStackHandler;
+import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.InvUtils;

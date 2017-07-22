@@ -1,25 +1,19 @@
 package betterwithmods.common.registry;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
-import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static betterwithmods.common.items.ItemMaterial.EnumMaterial;
 
 /**
  * Purpose:

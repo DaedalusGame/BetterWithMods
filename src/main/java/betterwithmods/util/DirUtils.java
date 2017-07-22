@@ -4,6 +4,7 @@ import betterwithmods.api.block.ITurnable;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
@@ -17,6 +18,7 @@ public class DirUtils {
     public static final EnumFacing[] Z_AXIS = new EnumFacing[]{EnumFacing.SOUTH, EnumFacing.NORTH};
     public static final EnumFacing[][] AXIS_DIRECTIONS = new EnumFacing[][]{X_AXIS, Y_AXIS, Z_AXIS};
 
+    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyDirection TILTING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);

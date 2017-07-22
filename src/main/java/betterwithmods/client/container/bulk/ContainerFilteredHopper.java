@@ -2,7 +2,7 @@ package betterwithmods.client.container.bulk;
 
 import betterwithmods.common.blocks.BlockMultiPane;
 import betterwithmods.common.blocks.BlockWicker;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockTrapDoor;

@@ -183,7 +183,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER).getMetadata(), 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG).getMetadata(), 1.0F);
-        buoyancy.put(BWMItems.WINDMILL, 1.0F);
+        buoyancy.put(BWMItems.AXLE_GENERATOR, 1.0F);
         buoyancy.put("fabricHemp", 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);

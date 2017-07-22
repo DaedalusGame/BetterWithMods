@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.ISoulSensitive;
@@ -7,6 +7,9 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.tile.IMechSubtype;
+import betterwithmods.common.blocks.tile.SimpleStackHandler;
+import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;

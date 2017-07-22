@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.blocks.mechanical.BlockAdvBellows;
 import net.minecraft.block.state.IBlockState;

@@ -2,24 +2,25 @@ package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
+import betterwithmods.util.DirUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 //TODO almost need to completely rewrite these in terms of capabilities.
-public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implements IColor {
+public class TileEntityWindmillHorizontal extends TileAxleGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0};
 
     public TileEntityWindmillHorizontal() {
         super();
         this.radius = 7;
     }
+
+
 
     @Override
     public int getMinimumInput(EnumFacing facing) {
@@ -58,6 +59,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
             if (tag.hasKey("Color_" + i))
                 bladeMeta[i] = tag.getInteger("Color_" + i);
         }
+
     }
 
     @Override
@@ -72,42 +74,15 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
 
     @Override
     public void updateSpeed() {
-        byte speed = 0;
-        if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
-            if (this.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD && (this.getWorld().isRaining() || this.getWorld().isThundering()))
-                speed = 2;
-            else
-                speed = 1;
-        }
-        if (speed != this.runningState) {
-            this.setRunningState(speed);
-            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
-            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
-        }
-    }
 
-    public boolean isNotOtherDimension() {
-        return this.getWorld().provider.getDimensionType() != DimensionType.NETHER && this.getWorld().provider.getDimensionType() != DimensionType.THE_END;
-    }
 
-    public boolean isGalacticraftDimension() {
-        boolean isDimension = false;
-        if (Loader.isModLoaded("GalacticraftCore")) {
-            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.getWorld());
-        }
-        return isDimension;
-    }
-
-    @Override
-    public void overpower() {
-        //TODO IOverpower
     }
 
     @Override
     public boolean isValid() {
         boolean valid = true;
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL_BLOCK) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {
                     int xP = (axis == EnumFacing.Axis.Z ? i : 0);
@@ -127,6 +102,12 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
         return valid && this.getWorld().canBlockSeeSky(pos);
     }
 
+    @Override
+    public boolean verifyIntegrity() {
+
+        return false;
+    }
+
     //Extend the bounding box if the TESR is bigger than the occupying block.
     @Override
     @SideOnly(Side.CLIENT)
@@ -135,7 +116,7 @@ public class TileEntityWindmillHorizontal extends TileEntityMillGenerator implem
         int y = pos.getY();
         int z = pos.getZ();
         if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(BlockWindmill.AXIS);
+            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;
             int zP = axis == EnumFacing.Axis.X ? radius : 0;

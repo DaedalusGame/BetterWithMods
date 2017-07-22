@@ -11,7 +11,7 @@ public class BWCreativeTabs {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getTabIconItem() {
-            return new ItemStack(BWMItems.WINDMILL);
+            return new ItemStack(BWMItems.AXLE_GENERATOR);
         }
     };
 }

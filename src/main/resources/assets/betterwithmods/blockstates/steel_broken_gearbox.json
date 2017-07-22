@@ -2,9 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "blocks/planks_oak",
-      "input": "betterwithmods:blocks/wooden_gearbox_input_broken",
-      "output": "betterwithmods:blocks/wooden_gearbox_output_broken"
+      "side": "betterwithmods:blocks/steel_gearbox_side",
+      "input": "betterwithmods:blocks/steel_gearbox_input_broken",
+      "output": "betterwithmods:blocks/steel_gearbox_output_broken"
     },
     "model": "betterwithmods:gearbox"
   },
@@ -20,15 +20,9 @@
         }
       }
     ],
-    "type": {
-      "wood": {},
-      "steel": {
-        "textures": {
-          "side": "betterwithmods:blocks/steel_gearbox_side",
-          "input": "betterwithmods:blocks/steel_gearbox_input_broken",
-          "output": "betterwithmods:blocks/steel_gearbox_output_broken"
-        }
-      }
+    "repair": {
+      "0": {},
+      "1": {}
     },
     "facing": {
       "down": {
@@ -57,7 +51,6 @@
         }
       },
       "east": {
-      
         "textures": {
           "east": "#input"
         }

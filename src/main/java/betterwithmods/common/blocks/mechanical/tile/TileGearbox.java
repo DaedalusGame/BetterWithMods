@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
@@ -14,14 +14,13 @@ import javax.annotation.Nonnull;
 
 public class TileGearbox extends TileEntity implements IMechanicalPower {
     private int power;
-    private final int maxPower;
+    private int maxPower;
+
+    public TileGearbox() {
+    }
 
     public TileGearbox(int maxPower) {
         this.maxPower = maxPower;
-    }
-
-    public TileGearbox() {
-        maxPower = 1;
     }
 
     public void onChanged() {
@@ -84,6 +83,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         power = tag.getInteger("power");
+        maxPower = tag.getInteger("maxPower");
     }
 
     @Nonnull
@@ -91,6 +91,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
         tag.setInteger("power", power);
+        tag.setInteger("maxPower",maxPower);
         return t;
     }
 

@@ -1,7 +1,7 @@
 {
   "result": {
-    "item": "betterwithmods:windmill",
-    "data": 2
+    "item": "betterwithmods:axle_generator",
+    "data": 1
   },
   "pattern": [
     "XXX",
@@ -12,7 +12,7 @@
   "key": {
     "X": {
       "item": "betterwithmods:material",
-      "data": 11
+      "data": 10
     }
   }
 }

@@ -3,20 +3,21 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockBrokenGearbox;
 import betterwithmods.common.blocks.BlockRotate;
-import betterwithmods.common.blocks.tile.TileGearbox;
+import betterwithmods.common.blocks.EnumTier;
+import betterwithmods.common.blocks.mechanical.tile.TileGearbox;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -24,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,14 +38,15 @@ import java.util.Random;
 
 public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower {
     private final int maxPower;
+    private EnumTier type;
 
-    public BlockGearbox(int maxPower) {
+    public BlockGearbox(int maxPower, EnumTier type) {
         super(Material.WOOD);
         this.maxPower = maxPower;
         this.setHardness(2.0F);
         this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.UP).withProperty(ACTIVE, false));
+        this.type = type;
     }
-
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
@@ -234,19 +237,41 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public void overpower(World world, BlockPos pos) {
-        for (int i = 0; i < 10; i++) {
-            world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
-        }
-        for (int i = 0; i < 5; i++) {
-            float flX = pos.getX() + world.rand.nextFloat();
-            float flY = pos.getY() + world.rand.nextFloat() * 0.5F + 1.0F;
-            float flZ = pos.getZ() + world.rand.nextFloat();
-
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, flX, flY, flZ, 0.0D, 0.0D, 0.0D);
-        }
+        overpowerSound(world,pos);
         EnumFacing facing = world.getBlockState(pos).getValue(DirUtils.FACING);
-        BlockBrokenGearbox.EnumType type = this == BWMBlocks.WOODEN_GEARBOX ? BlockBrokenGearbox.EnumType.WOOD : BlockBrokenGearbox.EnumType.STEEL;
-        world.setBlockState(pos, BWMBlocks.BROKEN_GEARBOX.getDefaultState().withProperty(DirUtils.FACING,facing).withProperty(BlockBrokenGearbox.TYPE, type));
+        Block block = this == BWMBlocks.WOODEN_GEARBOX ? BWMBlocks.WOODEN_BROKEN_GEARBOX : BWMBlocks.STEEL_BROKEN_GEARBOX;
+        world.setBlockState(pos, block.getDefaultState().withProperty(DirUtils.FACING, facing));
     }
+
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        if (type == EnumTier.STEEL)
+            return 4000f;
+        return 0;
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
+        if (type == EnumTier.STEEL)
+            return 100f;
+        return 3.5f;
+    }
+
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        if (type == EnumTier.STEEL)
+            return SoundType.METAL;
+        return SoundType.WOOD;
+    }
+
+    @Override
+    public Material getMaterial(IBlockState state) {
+        if (type == EnumTier.STEEL)
+            return Material.IRON;
+        return Material.WOOD;
+    }
+
+
 
 }

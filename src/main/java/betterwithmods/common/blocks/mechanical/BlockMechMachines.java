@@ -5,10 +5,10 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
-import betterwithmods.common.blocks.tile.TileEntityMill;
-import betterwithmods.common.blocks.tile.TileEntityPulley;
-import betterwithmods.common.blocks.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -289,6 +289,7 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     @Override
     public void overpower(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
+        overpowerSound(world,pos);
         switch(state.getValue(TYPE)) {
             case MILL:
                 InvUtils.ejectBrokenItems(world,pos,MILLSTONE);

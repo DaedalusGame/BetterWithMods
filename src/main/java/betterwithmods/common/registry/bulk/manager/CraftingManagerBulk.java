@@ -12,7 +12,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public abstract class CraftingManagerBulk<T extends BulkRecipe> {
@@ -79,7 +82,6 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     private boolean hasMatch(Object input, List<Object> inputs) {
-        System.out.println(input);
         if (input instanceof String) {
             for (Object in : inputs) {
                 if (in instanceof OreStack) {

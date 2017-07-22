@@ -10,7 +10,11 @@ import betterwithmods.client.render.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.tile.*;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCrucible;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.tile.TileEntityBeacon;
 import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
@@ -95,7 +99,7 @@ public class ClientProxy implements IProxy {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
         BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
         ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
     }

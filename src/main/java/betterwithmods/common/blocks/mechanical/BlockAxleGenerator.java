@@ -2,10 +2,10 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
+import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -18,34 +18,37 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BlockMillGenerator extends BWMBlock {
-    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
-    static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
-    static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
-    static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
+import static betterwithmods.util.DirUtils.AXIS;
 
-    public BlockMillGenerator(Material material) {
+public abstract class BlockAxleGenerator extends BWMBlock implements IBlockActive {
+
+    private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
+    private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
+    private static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
+
+    public BlockAxleGenerator(Material material) {
         super(material);
         this.setSoundType(SoundType.WOOD);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Z));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Z).withProperty(EnumTier.TIER, EnumTier.WOOD).withProperty(ACTIVE, false));
     }
-
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, AXIS);
+        return new BlockStateContainer(this, AXIS, EnumTier.TIER, ACTIVE);
     }
-
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(AXIS).ordinal();
+        int axis = state.getValue(AXIS).ordinal();
+        int tier = state.getValue(EnumTier.TIER).ordinal();
+        int active = state.getValue(ACTIVE) ? 1 : 0;
+        return axis | tier << 2 | active << 3;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(AXIS,DirUtils.getAxis(meta));
+        return getDefaultState().withProperty(AXIS, DirUtils.getAxis(meta & 3)).withProperty(EnumTier.TIER, EnumTier.VALUES[meta >> 2 & 1]).withProperty(ACTIVE,(meta >> 3)==1);
     }
 
     @Override
@@ -83,7 +86,7 @@ public abstract class BlockMillGenerator extends BWMBlock {
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(BWMBlocks.WOODEN_AXLE));
-        drops.add(getItem((World) world,pos,state));
+        drops.add(getItem((World) world, pos, state));
         return drops;
     }
 

@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.tile.TileEntityAdvBellows;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityAdvBellows;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;

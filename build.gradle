@@ -12,7 +12,7 @@ buildscript {
 apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.3.6-1.12"
+version = "1.12-1.3.7"
 group = "betterwithmods"
 archivesBaseName = "BetterWithMods"
 

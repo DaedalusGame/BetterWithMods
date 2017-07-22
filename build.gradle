@@ -33,10 +33,8 @@ repositories {
 }
 dependencies {
     deobfCompile "mezz.jei:jei_1.12:+"
-//    deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.+"
-//    deobfCompile "slimeknights:TConstruct:1.11.2-2.+"
-//    deobfCompile "blusunrize:ImmersiveEngineering:0.11-63-147"
     deobfCompile "applecore:AppleCore:1.12+:api"
+    runtime "applecore:AppleCore:1.12+:deobf"
 }
 
 jar {

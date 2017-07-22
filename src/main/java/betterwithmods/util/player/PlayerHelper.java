@@ -6,6 +6,7 @@ import betterwithmods.module.hardcore.HCArmor;
 import betterwithmods.module.hardcore.HCGloom;
 import betterwithmods.module.hardcore.HCInjury;
 import betterwithmods.module.hardcore.hchunger.HCHunger;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -245,5 +246,12 @@ public final class PlayerHelper {
                 return false;
         }
         return true;
+    }
+
+    public static UUID getUUID(EntityPlayer player) {
+        GameProfile profile = player.getGameProfile();
+        if (profile != null)
+            return profile.getId();
+        return player.getUniqueID();
     }
 }

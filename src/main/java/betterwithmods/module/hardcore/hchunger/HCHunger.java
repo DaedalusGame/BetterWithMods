@@ -24,10 +24,14 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,6 +39,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -156,7 +161,6 @@ public class HCHunger extends CompatFeature {
             AppleCoreAPI.mutator.setSaturation(event.player, 0);
             AppleCoreAPI.mutator.setHunger(event.player, AppleCoreAPI.accessor.getMaxHunger(event.player));
         }
-
     }
 
     //Changes food to correct value.
@@ -217,7 +221,7 @@ public class HCHunger extends CompatFeature {
                 event.getEntityLiving().motionY = 0;
                 event.getEntityLiving().motionZ = 0;
             }
-            player.addExhaustion(0.09f);
+            player.addExhaustion(0.5f);
         }
     }
 
@@ -225,7 +229,6 @@ public class HCHunger extends CompatFeature {
     public void setMaxFood(HungerEvent.GetMaxHunger event) {
         event.maxHunger = 60;
     }
-
 
     //Chaneg speed based on Hunger
     @SubscribeEvent
@@ -254,18 +257,52 @@ public class HCHunger extends CompatFeature {
         event.setResult(Event.Result.DENY);
     }
 
+    private static final int EXHAUSTION_WITH_TIME_PERIOD = 600;
+    private static final float EXHAUSTION_WITH_TIME_AMOUNT = 0.5F;
+    private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
+
+    @SubscribeEvent
+    public void entityConstruct(EntityEvent.EntityConstructing e) {
+        if (e.getEntity() instanceof EntityPlayer) {
+            e.getEntity().getDataManager().register(EXHAUSTION_TICK, 0);
+        }
+    }
+
+    public int getExhaustionTick(EntityPlayer player) {
+        return player.getDataManager().get(EXHAUSTION_TICK);
+    }
+
+    public void setExhaustionTick(EntityPlayer player, int tick) {
+        player.getDataManager().set(EXHAUSTION_TICK, tick);
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if(!event.player.world.isRemote) {
+            EntityPlayer player = event.player;
+            int tick = getExhaustionTick(player);
+            if (tick > EXHAUSTION_WITH_TIME_PERIOD) {
+                player.getFoodStats().addExhaustion(EXHAUSTION_WITH_TIME_AMOUNT);
+                setExhaustionTick(player,0);
+            } else {
+                setExhaustionTick(player, getExhaustionTick(player) + 1);
+            }
+        }
+    }
+
+
     //Shake Hunger bar whenever any exhaustion is given?
     @SubscribeEvent
     public void onExhaust(ExhaustionEvent.ExhaustionAddition event) {
-        if(event.player.world.getTotalWorldTime()%20==0 && event.deltaExhaustion > 0.05) {
+        if (event.player.world.getTotalWorldTime() % 20 == 0 && event.deltaExhaustion > 0.05) {
             NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
         }
-
     }
     //TODO fix Hunger starting as vanilla 20.
 
     public String getFeatureDescription() {
-        return "Completely revamps the hunger system of Minecraft. \n" +
+        return "This Feature REQUIRES AppleCore!!!." +
+                "Completely revamps the hunger system of Minecraft. \n" +
                 "The Saturation value is replaced with Fat. \n" +
                 "Fat will accumulate if too much food is consumed then need to fill the bar.\n" +
                 "Fat will only be burned once the entire hunger bar is emptied \n" +

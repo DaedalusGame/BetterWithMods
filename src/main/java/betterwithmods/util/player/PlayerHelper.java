@@ -92,12 +92,15 @@ public final class PlayerHelper {
     public static HealthPenalty getHealthPenalty(EntityPlayer player) {
         if (!ModuleLoader.isFeatureEnabled(HCInjury.class))
             return HealthPenalty.NO_PENALTY;
-        int level = (int) player.getHealth();
-        if (level > 10) return HealthPenalty.NO_PENALTY;
-        else if (level > 8) return HealthPenalty.HURT;
-        else if (level > 6) return HealthPenalty.INJURED;
-        else if (level > 4) return HealthPenalty.WOUNDED;
-        else if (level > 2) return HealthPenalty.CRIPPLED;
+        double max = player.getMaxHealth();
+        double level = player.getHealth();
+        double frac = level/max;
+
+        if (frac > 0.5d) return HealthPenalty.NO_PENALTY;
+        else if (frac > 0.4d) return HealthPenalty.HURT;
+        else if (frac > 0.3d) return HealthPenalty.INJURED;
+        else if (frac > 0.2d) return HealthPenalty.WOUNDED;
+        else if (frac > 0.1d) return HealthPenalty.CRIPPLED;
         else return HealthPenalty.DYING;
     }
 

@@ -36,6 +36,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -59,6 +60,17 @@ import squeek.applecore.api.hunger.StarvationEvent;
 public class HCHunger extends CompatFeature {
     public HCHunger() {
         super("applecore");
+    }
+
+
+    public static float blockBreakExhaustion;
+    public static float passiveExhaustion;
+    public static int passiveExhaustionTick;
+    @Override
+    public void setupConfig() {
+        blockBreakExhaustion = (float) loadPropDouble("Block Breaking Exhaustion", "Set Exhaustion from breaking a block", 0.1);
+        passiveExhaustion = (float) loadPropDouble("Passive Exhaustion", "Passive Exhaustion value", 4f);
+        passiveExhaustionTick = loadPropInt("Passive Exhaustion Tick", "Passive exhaustion tick time", 900);
     }
 
     @Override
@@ -267,8 +279,6 @@ public class HCHunger extends CompatFeature {
         }
     }
 
-    private static final int EXHAUSTION_WITH_TIME_PERIOD = 600;
-    private static final float EXHAUSTION_WITH_TIME_AMOUNT = 0.5F;
     private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
 
     @SubscribeEvent
@@ -288,13 +298,13 @@ public class HCHunger extends CompatFeature {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (!event.player.world.isRemote) {
+        if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
             if(!PlayerHelper.getHungerPenalty(player).canSprint())
                 player.setSprinting(false);
             int tick = getExhaustionTick(player);
-            if (tick > EXHAUSTION_WITH_TIME_PERIOD) {
-                player.getFoodStats().addExhaustion(EXHAUSTION_WITH_TIME_AMOUNT);
+            if (tick > passiveExhaustionTick) {
+                player.getFoodStats().addExhaustion(passiveExhaustion);
                 setExhaustionTick(player, 0);
             } else {
                 setExhaustionTick(player, getExhaustionTick(player) + 1);
@@ -327,6 +337,11 @@ public class HCHunger extends CompatFeature {
     public void onStarve(StarvationEvent.Starve event) {
         event.setCanceled(true);
         event.player.attackEntityFrom(DamageSource.STARVE, 1);
+    }
+    
+    @SubscribeEvent
+    public void onHarvest(BlockEvent.BreakEvent event) {
+        event.getPlayer().addExhaustion(blockBreakExhaustion-0.005f);
     }
 
     //TODO fix Hunger starting as vanilla 20.

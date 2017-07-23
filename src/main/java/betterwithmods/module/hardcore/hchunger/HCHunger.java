@@ -300,6 +300,8 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
+            if(!PlayerHelper.isSurvival(player))
+                return;
             if (!PlayerHelper.getHungerPenalty(player).canSprint())
                 player.setSprinting(false);
             int tick = getExhaustionTick(player);

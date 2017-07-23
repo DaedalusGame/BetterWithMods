@@ -33,8 +33,8 @@ public class MillRecipes extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         if(grindingOnly) {
-            BWMRecipes.removeRecipe(new ItemStack(Blocks.REEDS));
-            BWMRecipes.removeRecipe(new ItemStack(Items.BLAZE_ROD));
+            BWMRecipes.removeRecipe(new ItemStack(Items.SUGAR));
+            BWMRecipes.removeRecipe(new ItemStack(Items.BLAZE_POWDER));
         }
     }
 

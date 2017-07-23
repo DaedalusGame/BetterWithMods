@@ -130,7 +130,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public boolean matches(ItemStack output, ItemStack secondary) {
-        return this.matches(output) && (secondary.isEmpty() && this.secondary.isEmpty()) || this.secondary.isItemEqual(secondary);
+        return this.matches(output) && secondary.isEmpty() || this.secondary.isItemEqual(secondary);
     }
 
     public boolean matches(ItemStackHandler inv) {

@@ -40,6 +40,7 @@ public class Feature {
 
     public boolean forceLoad;
     protected boolean canDisable = true;
+
     public final void setupConstantConfig() {
         String[] incompat = getIncompatibleMods();
         if (incompat != null && incompat.length > 0) {
@@ -169,5 +170,8 @@ public class Feature {
         return ConfigHelper.loadPropIntList(propName, configCategory, comment, default_);
     }
 
+    public IRecipe addHardcoreRecipe(IRecipe recipe) {
+        return registerHardcoreRecipe(getClass().getSimpleName(), recipe);
+    }
 
 }

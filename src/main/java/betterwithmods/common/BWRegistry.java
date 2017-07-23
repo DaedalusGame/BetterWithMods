@@ -15,7 +15,12 @@ import betterwithmods.common.registry.ToolDamageRecipe;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.VanillaShapedAnvilRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.compat.Quark;
+import betterwithmods.module.compat.Rustic;
+import betterwithmods.module.compat.bop.BiomesOPlenty;
+import betterwithmods.module.hardcore.*;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
@@ -54,7 +59,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,6 +96,19 @@ public class BWRegistry {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         BWMItems.getItems().forEach(event.getRegistry()::register);
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        IForgeRegistryModifiable<IRecipe> reg = ((IForgeRegistryModifiable)event.getRegistry());
+        for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
+            IRecipe recipe = iter.next();
+            for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                }
+            }
+        }
     }
 
     public static void init() {
@@ -200,28 +220,15 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCDiamond")) {
-            replaceIRecipe("HCDiamond", reg);//retrieveRecipes("HCDiamond", reg);
-        }
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCLumber")) {
-            replaceIRecipe("HCLumber", reg);
-        }
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCOres")) {
-            replaceIRecipe("HCOres", reg);
-        }
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.hardcore.HCRedstone")) {
-            replaceIRecipe("HCRedstone", reg);
-        }
-        replaceIRecipe("HCTorches", reg);
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.bop.BiomesOPlenty")) {
-            replaceIRecipe("BOP", reg);
-        }
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.Quark")) {
-            replaceIRecipe("quark", reg);
-        }
-        if (ModuleLoader.isFeatureEnabled("betterwithmods.module.compat.Rustic")) {
-            replaceIRecipe("rustic", reg);
-        }
+        replaceIRecipe(HCTools.class, reg);
+        replaceIRecipe(HCDiamond.class, reg);
+        replaceIRecipe(HCLumber.class, reg);
+        replaceIRecipe(HCOres.class, reg);
+        replaceIRecipe(HCRedstone.class, reg);
+        replaceIRecipe(HCTorches.class, reg);
+        replaceIRecipe(BiomesOPlenty.class, reg);
+        replaceIRecipe(Quark.class, reg);
+        replaceIRecipe(Rustic.class, reg);
         registerAnvilRecipes(reg);
     }
 
@@ -238,10 +245,12 @@ public class BWRegistry {
         }
     }
 
-    private static void replaceIRecipe(String category, ForgeRegistry<IRecipe> reg) {
-        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
-        if (recipes != null) {
-            recipes.forEach(reg::register);
+    private static void replaceIRecipe(Class<? extends Feature> clazz, ForgeRegistry<IRecipe> reg) {
+        if (ModuleLoader.isFeatureEnabled(clazz)) {
+            List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
+            if (recipes != null) {
+                recipes.forEach(reg::register);
+            }
         }
     }
 

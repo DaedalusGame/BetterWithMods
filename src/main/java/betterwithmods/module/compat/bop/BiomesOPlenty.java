@@ -2,7 +2,6 @@ package betterwithmods.module.compat.bop;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemMaterial;
@@ -16,7 +15,6 @@ import betterwithmods.module.tweaks.MobSpawning.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -101,27 +99,27 @@ public class BiomesOPlenty extends CompatFeature {
             HCPiles.registerPile(dirt, i, new ItemStack(PILES, 3, i));
             HCPiles.registerPile(getBlock(new ResourceLocation(modid, "grass_path")), i, new ItemStack(PILES, 3, i));
 
-            addModdedRecipe(new ShapedOreRecipe(null, new ItemStack(dirt, 1, i), "PP", "PP", 'P', new ItemStack(PILES, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_pile." + i)));
+            addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(dirt, 1, i), "PP", "PP", 'P', new ItemStack(PILES, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_pile." + i)));
         }
 
         Block plank = getBlock("biomesoplenty:planks_0");
         for (int i = 0; i < 16; i++) {
             SawRecipes.addSawRecipe(plank, i, new ItemStack(SIDING, 2, i));
-            addModdedRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "plank_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "plank_recover")));
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
-            addModdedRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "siding_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "siding_recover")));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
-            addModdedRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "moulding_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "moulding_recover")));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
         }
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = new ItemStack(MOULDING, 1, i);
                 ItemStack siding = new ItemStack(SIDING, 1, i);
-                addModdedRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_fence_gate")));
-                addModdedRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_fence")));
-                addModdedRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_door")));
-                addModdedRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_stairs")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence_gate")), "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_fence_gate")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_fence"), 3), "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_fence")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_door")), "SS", "SS", "SS", 'S', siding).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_door")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock("biomesoplenty:" + woods[i] + "_stairs")), "M ", "MM", 'M', moulding).setMirrored(true).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "_stairs")));
             }
         }
 
@@ -130,7 +128,4 @@ public class BiomesOPlenty extends CompatFeature {
         BWOreDictionary.registerOre("cornerWood", new ItemStack(CORNER, 1, OreDictionary.WILDCARD_VALUE));
     }
 
-    private static IRecipe addModdedRecipe(IRecipe recipe) {
-        return BWMRecipes.addHardcoreRecipe("BOP", recipe);
-    }
 }

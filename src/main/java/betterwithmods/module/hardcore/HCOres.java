@@ -9,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -69,10 +68,6 @@ public class HCOres extends Feature {
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_NUGGET, 4), new Object[]{new ItemStack(Items.CLOCK)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
-    }
-
-    private IRecipe addHardcoreRecipe(IRecipe recipe) {
-        return registerHardcoreRecipe("HCOres", recipe);
     }
 
     @Override

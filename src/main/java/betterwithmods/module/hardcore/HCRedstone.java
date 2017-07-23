@@ -9,7 +9,6 @@ import betterwithmods.module.gameplay.CrucibleRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -60,10 +59,6 @@ public class HCRedstone extends Feature {
 
         CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
 
-    }
-
-    private IRecipe addHardcoreRecipe(IRecipe recipe) {
-        return registerHardcoreRecipe("HCRedstone", recipe);
     }
 
     @Override

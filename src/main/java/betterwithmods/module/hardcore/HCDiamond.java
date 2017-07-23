@@ -7,7 +7,6 @@ import betterwithmods.module.gameplay.CrucibleRecipes;
 import betterwithmods.module.gameplay.MetalReclaming;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -47,9 +46,6 @@ public class HCDiamond extends Feature {
         }
     }
 
-    public IRecipe addHardcoreRecipe(IRecipe recipe) {
-        return registerHardcoreRecipe("HCDiamond", recipe);
-    }
 
     @Override
     public boolean requiresMinecraftRestartToEnable() {

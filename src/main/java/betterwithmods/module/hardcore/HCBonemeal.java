@@ -1,6 +1,7 @@
 package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.items.ItemFertilizer;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.PlayerHelper;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Set;
@@ -27,12 +28,13 @@ import java.util.Set;
  * Created by tyler on 5/14/17.
  */
 public class HCBonemeal extends Feature {
-    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER),new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
+    public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER), new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     private static boolean removeBonemealRecipe;
 
     public static void registerFertilzier(ItemStack stack) {
         FERTILIZERS.add(stack);
     }
+
     @Override
     public void setupConfig() {
         removeBonemealRecipe = loadPropBool("Remove Bonemeal Crafting Recipe", "Removes Bonemeal from Crafting Table", true);
@@ -44,11 +46,9 @@ public class HCBonemeal extends Feature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
-        //TODO
-//        if(removeBonemealRecipe)
-//            BWMRecipes.removeRecipes( new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage()));
-
+    public void preInit(FMLPreInitializationEvent event) {
+        if (removeBonemealRecipe)
+            BWMRecipes.removeRecipe(new ItemStack(Items.DYE, 3, EnumDyeColor.WHITE.getDyeDamage()));
     }
 
     @SubscribeEvent
@@ -57,7 +57,7 @@ public class HCBonemeal extends Feature {
             return;
         if (!(e.getBlock().getBlock() instanceof BlockGrass) && e.getBlock().getBlock() instanceof IGrowable) {
             IBlockState below = e.getWorld().getBlockState(e.getPos().down());
-            below.getBlock().onBlockClicked(e.getWorld(),e.getPos().down(),e.getEntityPlayer());
+            below.getBlock().onBlockClicked(e.getWorld(), e.getPos().down(), e.getEntityPlayer());
             e.setCanceled(true);
         }
     }
@@ -66,7 +66,7 @@ public class HCBonemeal extends Feature {
     public void onItemUse(PlayerInteractEvent.RightClickBlock e) {
         ItemStack stack = e.getItemStack();
 
-        if(FERTILIZERS.stream().noneMatch(stack::isItemEqual))
+        if (FERTILIZERS.stream().noneMatch(stack::isItemEqual))
             return;
 
         World world = e.getWorld();

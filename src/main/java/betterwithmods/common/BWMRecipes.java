@@ -1,6 +1,7 @@
 package betterwithmods.common;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.block.Block;
@@ -27,6 +28,7 @@ public final class BWMRecipes {
     private static final Set<String> USED_OD_NAMES = new TreeSet<>();
     private static File RECIPE_DIR = null;
     private static final Map<String, List<IRecipe>> HARDCORE_RECIPES = new HashMap<>();
+    public static final List<ItemStack> REMOVE_RECIPE_BY_OUTPUT = Lists.newArrayList();
 
     public static List<IRecipe> getHardcoreRecipes(String ID) {
         if (HARDCORE_RECIPES.containsKey(ID))
@@ -65,6 +67,10 @@ public final class BWMRecipes {
         return null;
     }
 
+
+    public static void removeRecipe(ItemStack output) {
+        REMOVE_RECIPE_BY_OUTPUT.add(output);
+    }
     // Replace calls to GameRegistry.addShapeless/ShapedRecipe with these methods, which will dump it to a json in your dir of choice
 // Also works with OD, replace GameRegistry.addRecipe(new ShapedOreRecipe/ShapelessOreRecipe with the same calls
 

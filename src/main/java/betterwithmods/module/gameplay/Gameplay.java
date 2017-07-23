@@ -11,7 +11,6 @@ public class Gameplay extends Module {
     public static boolean kidFriendly;
     @Override
     public void addFeatures() {
-        registerFeature(new Debarking());
         registerFeature(new MechanicalBreakage());
         registerFeature(new MetalReclaming());
         registerFeature(new NuggetCompression());

@@ -48,10 +48,9 @@ public class Module {
 	}
 
 	public String convertName(String origName) {
-		if(true)
 			return origName;
-		String withSpaces = origName.replaceAll("(?<=.)([A-Z])", " $1").toLowerCase();
-		return Character.toUpperCase(withSpaces.charAt(0)) + withSpaces.substring(1);
+//		String withSpaces = origName.replaceAll("(?<=.)([A-Z])", " $1").toLowerCase();
+//		return Character.toUpperCase(withSpaces.charAt(0)) + withSpaces.substring(1);
 	}
 
 	public void registerFeature(Feature feature, String name) {

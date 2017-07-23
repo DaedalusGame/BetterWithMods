@@ -1,12 +1,14 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.Set;
 
@@ -20,7 +22,7 @@ public class HCSaw extends Feature {
     }
 
     @Override
-    public void postInit(FMLPostInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event) {
         Set<Block> blocks = Sets.newHashSet(
                 Blocks.OAK_FENCE,
                 Blocks.ACACIA_FENCE,
@@ -46,8 +48,8 @@ public class HCSaw extends Feature {
                 Items.SPRUCE_DOOR,
                 Items.DARK_OAK_DOOR,
                 Items.JUNGLE_DOOR);
-        //TODO
-//        blocks.forEach(BWMRecipes::removeRecipes);
-//        items.forEach(BWMRecipes::removeRecipes);
+        blocks.stream().map(ItemStack::new).forEach(BWMRecipes::removeRecipe);
+        items.stream().map(ItemStack::new).forEach(BWMRecipes::removeRecipe);
     }
+
 }

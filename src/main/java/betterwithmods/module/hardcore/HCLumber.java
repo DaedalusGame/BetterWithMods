@@ -52,7 +52,7 @@ public class HCLumber extends Feature {
                 ItemStack plank = recipe.getRecipeOutput();
                 BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getPlank(1).isItemEqual(plank)).findFirst().orElse(null);
                 if (wood != null) {
-                    registerHardcoreRecipe("HCLumber", new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
+                    addHardcoreRecipe(new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
                 }
             }
         }

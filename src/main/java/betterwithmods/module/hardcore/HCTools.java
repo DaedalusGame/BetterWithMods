@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Set;
 
@@ -63,12 +65,11 @@ public class HCTools extends Feature {
     }
 
     public static void removeLowTierToolRecipes() {
-        //TODO
-//        BWMRecipes.removeRecipes(Items.WOODEN_AXE, OreDictionary.WILDCARD_VALUE);
-//        BWMRecipes.removeRecipes(Items.WOODEN_HOE, OreDictionary.WILDCARD_VALUE);
-//        BWMRecipes.removeRecipes(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE);
-//        BWMRecipes.removeRecipes(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE);
-//        BWMRecipes.removeRecipes(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE);
+        BWMRecipes.removeRecipe(new ItemStack(Items.WOODEN_AXE, OreDictionary.WILDCARD_VALUE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.WOODEN_HOE, OreDictionary.WILDCARD_VALUE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.WOODEN_SWORD, OreDictionary.WILDCARD_VALUE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE));
     }
 
     @Override

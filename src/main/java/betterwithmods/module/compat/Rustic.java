@@ -1,7 +1,6 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
@@ -15,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -97,8 +95,8 @@ public class Rustic extends CompatFeature {
         ItemStack rope = new ItemStack(getBlock(new ResourceLocation("rustic", "rope")));
         //TODO
 //        BWMRecipes.removeRecipes(rope);
-        addHERecipe(new ShapedOreRecipe(null, rope, "F", "F", "F", 'F', "fiberHemp").setRegistryName(new ResourceLocation("betterwithmods", "rustic_rope")));
-        addHERecipe(new ShapedOreRecipe(null, new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron").setRegistryName(new ResourceLocation("betterwithmods", "rustic_candle")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, rope, "F", "F", "F", 'F', "fiberHemp").setRegistryName(new ResourceLocation("betterwithmods", "rustic_rope")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(getBlock(new ResourceLocation("rustic", "candle")), 6), "S", "T", "I", 'S', "string", 'T', "tallow", 'I', "ingotIron").setRegistryName(new ResourceLocation("betterwithmods", "rustic_candle")));
         Block plank = getBlock("rustic:planks");
         Block log = getBlock("rustic:log");
         for (int i = 0; i < 2; i++) {
@@ -107,9 +105,9 @@ public class Rustic extends CompatFeature {
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            addHERecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_plank_recover")));
-            addHERecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_siding_recover")));
-            addHERecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_moulding_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_plank_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_siding_recover")));
+            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i + 6] + "_moulding_recover")));
         }
         boolean isHCSawEnabled = ModuleLoader.isFeatureEnabled(HCSaw.class);
         Block wooden_stake = getBlock("rustic:crop_stake");
@@ -117,7 +115,7 @@ public class Rustic extends CompatFeature {
             //TODO
 //            BWMRecipes.removeRecipes(wooden_stake);
         }//TODO
-        addHERecipe(new ShapedOreRecipe(null, new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood").setRegistryName(new ResourceLocation("betterwithmods", "rustic_stake")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood").setRegistryName(new ResourceLocation("betterwithmods", "rustic_stake")));
         if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
             for (int i = 0; i < woods.length; i++) {
                 ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
@@ -129,8 +127,8 @@ public class Rustic extends CompatFeature {
 //                    BWMRecipes.removeRecipes(chair);
 //                    BWMRecipes.removeRecipes(table);
                 }
-                addHERecipe(new ShapedOreRecipe(null, chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_chair")));
-                addHERecipe(new ShapedOreRecipe(null, table, "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_table")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_chair")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, table, "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_table")));
                 if (i >= 6) {
                     ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
                     ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
@@ -139,8 +137,8 @@ public class Rustic extends CompatFeature {
 //                        BWMRecipes.removeRecipes(fencegate);
 //                        BWMRecipes.removeRecipes(fence);
                     }
-                    addHERecipe(new ShapedOreRecipe(null, fencegate, "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence_gate")));
-                    addHERecipe(new ShapedOreRecipe(null, fence, "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence")));
+                    addHardcoreRecipe(new ShapedOreRecipe(null, fencegate, "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence_gate")));
+                    addHardcoreRecipe(new ShapedOreRecipe(null, fence, "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence")));
                 }
             }
         }
@@ -151,10 +149,6 @@ public class Rustic extends CompatFeature {
         registerOre("sidingWood", new ItemStack(SIDING, 1, 0), new ItemStack(SIDING, 1, 1));
         registerOre("mouldingWood", new ItemStack(MOULDING, 1, 0), new ItemStack(MOULDING, 1, 1));
         registerOre("cornerWood", new ItemStack(CORNER, 1, 0), new ItemStack(CORNER, 1, 1));
-    }
-
-    private IRecipe addHERecipe(IRecipe recipe) {
-        return BWMRecipes.addHardcoreRecipe("rustic", recipe);
     }
 }
 

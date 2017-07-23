@@ -1,13 +1,18 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.world.BWComponentScatteredFeaturePieces;
 import betterwithmods.common.world.BWMapGenScatteredFeature;
 import betterwithmods.module.Feature;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -29,7 +34,7 @@ public class HCStructures extends Feature {
 
     @Override
     public void setupConfig() {
-        disableRecipes = loadPropBool("Disable Recipes","Disable Recipes for blocks that generate only in structures, including Enchanting Tables and Brewing Stands", true);
+        disableRecipes = loadPropBool("Disable Recipes", "Disable Recipes for blocks that generate only in structures, including Enchanting Tables and Brewing Stands", true);
     }
 
     @Override
@@ -38,12 +43,15 @@ public class HCStructures extends Feature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
-        if(disableRecipes) {
-            //TODO
-//            BWMRecipes.removeRecipes(Blocks.ENCHANTING_TABLE);
-//            BWMRecipes.removeRecipes(Items.BREWING_STAND, 0);
+    public void preInit(FMLPreInitializationEvent event) {
+        if (disableRecipes) {
+            BWMRecipes.removeRecipe(new ItemStack(Blocks.ENCHANTING_TABLE));
+            BWMRecipes.removeRecipe(new ItemStack(Items.BREWING_STAND));
         }
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
         MapGenStructureIO.registerStructure(BWMapGenScatteredFeature.Start.class, "BWTemple");
         MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.DesertPyramid.class, "BWTeDP");
         MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.JunglePyramid.class, "BWTeJP");

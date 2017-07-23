@@ -27,6 +27,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import javax.annotation.Nonnull;
@@ -37,12 +39,12 @@ import javax.annotation.Nullable;
  */
 public class HCFishing extends Feature {
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
-    private static final Ingredient BAIT = Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.SPIDER_EYE), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Items.FISH, 2), new ItemStack(Items.FISH, 3));
+    private static final Ingredient BAIT = Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.SPIDER_EYE), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Items.FISH, 1,2), new ItemStack(Items.FISH, 1,3));
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
-        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.FISHING_ROD), "  I"," IS","I N", 'S', "string", 'I', "stickWood",'N', "nuggetIron").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "fishing_rod")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.FISHING_ROD), "  I", " IS", "I N", 'S', "string", 'I', "stickWood", 'N', "nuggetIron").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "fishing_rod")));
     }
 
     @Override
@@ -80,17 +82,24 @@ public class HCFishing extends Feature {
                 event.setCanceled(true);
                 if (!event.getWorld().isRemote && event.getHand() == EnumHand.MAIN_HAND)
                     event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
-            } else {
-                System.out.println("has bait!");
             }
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
-        if (isFishingRod(event.getItemStack())) {
+        ItemStack stack = event.getItemStack();
+        if (isFishingRod(stack)) {
             FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            String tooltip = cap.hasBait() ? "Baited" : "Unbaited";
+            boolean bait = cap.hasBait();
+            String tooltip = bait ? "Baited" : "Unbaited";
+            if(!bait) {
+                NBTTagCompound tag = stack.getTagCompound();
+                if(tag != null && tag.hasKey("bait")) {
+                    tooltip = tag.getBoolean("bait") ? "Baited" : "Unbaited";
+                }
+            }
             event.getToolTip().add(tooltip);
         }
     }
@@ -108,11 +117,17 @@ public class HCFishing extends Feature {
         return isFishingRod(stack) && stack.getCapability(FISHING_ROD_CAP, EnumFacing.UP).hasBait() == baited;
     }
 
-
     public static ItemStack getBaitedRod(boolean baited) {
         ItemStack rod = new ItemStack(Items.FISHING_ROD);
-        if(rod.hasCapability(FISHING_ROD_CAP,EnumFacing.UP))
-            rod.getCapability(FISHING_ROD_CAP, EnumFacing.UP).setBait(baited);
+        if (rod.hasCapability(FISHING_ROD_CAP, EnumFacing.UP)) {
+            FishingBait cap = rod.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
+            cap.setBait(baited);
+        }
+        if(rod.getTagCompound() == null) {
+            rod.setTagCompound(new NBTTagCompound());
+        }
+        NBTTagCompound tag = rod.getTagCompound();
+        tag.setBoolean("bait",baited);
         return new ItemStack(rod.serializeNBT());
     }
 

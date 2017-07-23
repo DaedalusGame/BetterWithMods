@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.bulk.manager.MillManager;
@@ -10,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * Created by tyler on 5/16/17.
@@ -20,13 +22,26 @@ public class MillRecipes extends Feature {
     }
 
 
+    private boolean grindingOnly;
 
     @Override
     public void setupConfig() {
+        grindingOnly = loadPropBool("Grinding Only", "Remove normal recipes for certain grindable items", true);
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+        if(grindingOnly) {
+            BWMRecipes.removeRecipe(new ItemStack(Blocks.REEDS));
+            BWMRecipes.removeRecipe(new ItemStack(Items.BLAZE_ROD));
+        }
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
+
+
         addMillRecipe(1, new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3), new Object[]{new ItemStack(BWMBlocks.WOLF)});
         addMillRecipe(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new ItemStack[]{new ItemStack(Blocks.NETHERRACK)});
         addMillRecipe(2, new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack[]{new ItemStack(Items.BLAZE_ROD)});

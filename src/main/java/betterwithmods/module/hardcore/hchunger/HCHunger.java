@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore.hchunger;
 
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.CauldronRecipes;
@@ -66,6 +67,7 @@ public class HCHunger extends CompatFeature {
     public static float blockBreakExhaustion;
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
+
     @Override
     public void setupConfig() {
         blockBreakExhaustion = (float) loadPropDouble("Block Breaking Exhaustion", "Set Exhaustion from breaking a block", 0.1);
@@ -132,14 +134,12 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 12, 15, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
 
-
-        //TODO
-//        BWMRecipes.removeRecipes(Items.MUSHROOM_STEW, 0);
-//        BWMRecipes.removeRecipes(Items.CAKE, 0);
-//        BWMRecipes.removeRecipes(Items.COOKIE, 0);
-//        BWMRecipes.removeRecipes(Items.PUMPKIN_PIE, 0);
-//        BWMRecipes.removeRecipes(Items.RABBIT_STEW, 0);
-//        BWMRecipes.removeRecipes(Items.BEETROOT_SOUP, 0);
+        BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW, 0));
+        BWMRecipes.removeRecipe(new ItemStack(Items.CAKE, 0));
+        BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE, 0));
+        BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE, 0));
+        BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW, 0));
+        BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP, 0));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);
@@ -300,7 +300,7 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
-            if(!PlayerHelper.getHungerPenalty(player).canSprint())
+            if (!PlayerHelper.getHungerPenalty(player).canSprint())
                 player.setSprinting(false);
             int tick = getExhaustionTick(player);
             if (tick > passiveExhaustionTick) {
@@ -325,9 +325,10 @@ public class HCHunger extends CompatFeature {
             NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
         }
     }
+
     @SubscribeEvent
     public void onStarve(StarvationEvent.AllowStarvation event) {
-        if(event.player.getFoodStats().getFoodLevel() <= 0)
+        if (event.player.getFoodStats().getFoodLevel() <= 0)
             event.setResult(Event.Result.ALLOW);
     }
 
@@ -337,10 +338,10 @@ public class HCHunger extends CompatFeature {
         event.setCanceled(true);
         event.player.attackEntityFrom(DamageSource.STARVE, 1);
     }
-    
+
     @SubscribeEvent
     public void onHarvest(BlockEvent.BreakEvent event) {
-        event.getPlayer().addExhaustion(blockBreakExhaustion-0.005f);
+        event.getPlayer().addExhaustion(blockBreakExhaustion - 0.005f);
     }
 
     //TODO fix Hunger starting as vanilla 20.

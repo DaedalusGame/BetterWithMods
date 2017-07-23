@@ -10,20 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 
-public class ItemHempSeed extends ItemBlock
-{
+public class ItemHempSeed extends ItemBlock {
     public ItemHempSeed(Block block) {
         super(block);
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
-    {
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         if (target instanceof EntityChicken) {
             EntityChicken chicken = (EntityChicken) target;
             if (chicken.getGrowingAge() == 0 && !chicken.isInLove()) {
                 chicken.setInLove(playerIn);
-                InvUtils.usePlayerItem(playerIn, EnumFacing.UP,stack,1);
+                InvUtils.usePlayerItem(playerIn, EnumFacing.UP, stack, 1);
                 return true;
             }
         }

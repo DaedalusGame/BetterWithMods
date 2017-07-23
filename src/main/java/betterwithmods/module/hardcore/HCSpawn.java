@@ -18,10 +18,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class HCSpawn extends Feature {
 
-    public static final int HARDCORE_SPAWN_RADIUS = 2000;
+    public static int HARDCORE_SPAWN_RADIUS = 2000;
     public static final int HARDCORE_SPAWN_COOLDOWN_RADIUS = 100;
     public static final int HARDCORE_SPAWN_COOLDOWN = 24000;//20 min
     public static final int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
+
+    @Override
+    public void setupConfig() {
+        super.setupConfig();
+    }
 
     @Override
     public String getFeatureDescription() {

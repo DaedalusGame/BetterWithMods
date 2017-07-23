@@ -24,7 +24,6 @@ public class Tweaks extends Module {
         registerFeature(new RenewableEndstone());
         registerFeature(new RSBlockGlow());
         registerFeature(new Sinkholes());
-        registerFeature(new PigBreeding());
         registerFeature(new MysteryMeat());
 
     }

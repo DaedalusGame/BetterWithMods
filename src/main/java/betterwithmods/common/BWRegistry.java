@@ -101,6 +101,7 @@ public class BWRegistry {
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         IForgeRegistryModifiable<IRecipe> reg = ((IForgeRegistryModifiable)event.getRegistry());
+
         for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
             IRecipe recipe = iter.next();
             for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
@@ -136,6 +137,7 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntityFallingGourd.class, "entity_falling_gourd", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingBlockCustom.class, "falling_block_custom", 64, 20, true);
         BWRegistry.registerEntity(EntitySpiderWeb.class, "bwm_spider_web", 64, 20, true);
+        BWRegistry.registerEntity(EntityHCFishHook.class, "bwm_fishing_hook", 64, 20, true);
     }
 
     public static void registerBlockDispenserBehavior() {
@@ -220,6 +222,7 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
+        replaceIRecipe(HCFishing.class, reg);
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);
         replaceIRecipe(HCLumber.class, reg);

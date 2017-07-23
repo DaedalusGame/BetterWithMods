@@ -41,7 +41,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
             case NETHERCOAL:
                 return 3200;
             case SAWDUST:
-                return 400;
+                return 25;
         }
         return -1;
     }

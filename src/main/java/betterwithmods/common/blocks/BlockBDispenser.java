@@ -97,7 +97,8 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
             if (!world.getBlockState(pos).getValue(TRIGGERED)) {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
                 Block block = world.getBlockState(check).getBlock();
-                if (world.getBlockState(check).getBlockHardness(world, check) < 0)
+
+                if (world.getTileEntity(check) != null || world.getBlockState(check).getBlockHardness(world, check) < 0)
                     return;
                 IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
                 if (behavior != null) {

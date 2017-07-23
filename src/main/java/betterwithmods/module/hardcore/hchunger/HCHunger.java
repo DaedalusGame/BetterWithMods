@@ -316,7 +316,6 @@ public class HCHunger extends CompatFeature {
     public void onExhaustion(ExhaustionEvent.Exhausted event) {
         event.deltaHunger = -1;
         event.deltaSaturation = -1;
-        System.out.println(event.deltaHunger);
     }
 
     //Shake Hunger bar whenever any exhaustion is given?

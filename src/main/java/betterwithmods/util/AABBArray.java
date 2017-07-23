@@ -222,31 +222,26 @@ public class AABBArray extends AxisAlignedBB {
 
     @Override
     public AxisAlignedBB expand(double x, double y, double z) {
-        System.err.println("AABBArray.addCoord() is stub");
         return super.expand(x, y, z);
     }
 
     @Override
     public AxisAlignedBB shrink(double value) {
-        System.err.println("AABBArray.contract() is stub");
         return super.shrink(value);
     }
 
     @Override
     public AxisAlignedBB offset(BlockPos pos) {
-        System.err.println("AABBArray.offset() is stub");
         return super.offset(pos);
     }
 
     @Override
     public AxisAlignedBB setMaxY(double y2) {
-        System.err.println("AABBArray.setMaxY() is stub");
         return super.setMaxY(y2);
     }
 
     @Override
     public AxisAlignedBB union(AxisAlignedBB other) {
-        System.err.println("AABBArray.union() is stub");
         return super.union(other);
     }
 

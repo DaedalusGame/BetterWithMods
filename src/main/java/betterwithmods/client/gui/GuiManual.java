@@ -31,20 +31,20 @@ import java.util.Optional;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @SideOnly(Side.CLIENT)
 public final class GuiManual extends GuiScreen {
-    private static final int documentMaxWidth = 330;//220;
-    private static final int documentMaxHeight = 288;//192;
-    private static final int scrollPosX = 373;//250;
+    private static final int documentMaxWidth = 220;
+    private static final int documentMaxHeight = 192;
+    private static final int scrollPosX = 250;
     private static final int scrollPosY = 48;
     private static final int scrollWidth = 26;
-    private static final int scrollHeight = 270;//180
+    private static final int scrollHeight = 180;
     private static final int tabPosX = -52;
     private static final int tabPosY = 40;
     private static final int tabWidth = 64;
     private static final int tabHeight = 32;
     private static final int tabOverlap = 8;
     private static final int maxTabsPerSide = 7;
-    private static final int windowWidth = 384;
-    private static final int windowHeight = 384;
+    private static final int windowWidth = 256;
+    private static final int windowHeight = 256;
 
     private int guiLeft = 0;
     private int guiTop = 0;

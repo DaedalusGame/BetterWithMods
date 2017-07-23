@@ -92,7 +92,6 @@ public class ShapedAnvilRecipe extends ShapedOreRecipe {
 
         @Override
         public IRecipe parse(JsonContext context, JsonObject json) {
-            System.out.println("PARSING ANVIL RECIPE");
             return ShapedAnvilRecipe.factory(context, json);
         }
     }

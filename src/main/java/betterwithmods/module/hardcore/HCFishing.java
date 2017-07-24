@@ -2,7 +2,6 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.registry.ToolDamageRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
 import net.minecraft.init.Items;
@@ -10,6 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,9 +35,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 /**
  * Created by primetoxinz on 7/23/17.
@@ -140,30 +142,21 @@ public class HCFishing extends Feature {
         return new ItemStack(rod.serializeNBT());
     }
 
-    public static ItemStack getBaitedRod(boolean baited) {
-        ItemStack rod = new ItemStack(Items.FISHING_ROD);
-        if (rod.hasCapability(FISHING_ROD_CAP, EnumFacing.UP)) {
-            FishingBait cap = rod.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            cap.setBait(baited);
-        }
-        if (rod.getTagCompound() == null) {
-            rod.setTagCompound(new NBTTagCompound());
-        }
-        NBTTagCompound tag = rod.getTagCompound();
-        tag.setBoolean("bait", baited);
-        return new ItemStack(rod.serializeNBT());
-    }
-
-    public class BaitingRecipe extends ToolDamageRecipe {
+    public class BaitingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+        protected ResourceLocation group;
+        protected Predicate<ItemStack> isTool;
+        protected Ingredient input;
 
         public BaitingRecipe() {
-            super(new ResourceLocation("baiting_recipe"), getBaitedRod(true), BAIT, stack -> isBaited(stack, false));
+            this.group = new ResourceLocation("baiting_recipe");
+            this.input = BAIT;
+            this.isTool = stack -> isBaited(stack, false);
             setRegistryName(this.getGroup());
         }
 
         @Override
         public boolean matches(InventoryCrafting inv, World worldIn) {
-            return isMatch(inv, worldIn);
+            return isMatch(inv);
         }
 
         public ItemStack findRod(InventoryCrafting inv) {
@@ -176,7 +169,7 @@ public class HCFishing extends Feature {
             return ItemStack.EMPTY;
         }
 
-        public boolean isMatch(IInventory inv, World world) {
+        public boolean isMatch(IInventory inv) {
             boolean hasTool = false, hasInput = false;
             for (int x = 0; x < inv.getSizeInventory(); x++) {
                 boolean inRecipe = false;
@@ -204,11 +197,7 @@ public class HCFishing extends Feature {
         }
 
         public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-            NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-            for (int i = 0; i < ret.size(); i++) {
-                ret.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
-            }
-            return ret;
+            return ForgeHooks.defaultRecipeGetRemainingItems(inv);
         }
 
         @Override
@@ -219,10 +208,24 @@ public class HCFishing extends Feature {
             return ItemStack.EMPTY;
         }
 
+        @Override
+        public boolean canFit(int width, int height) {
+            return width * height >= 2;
+        }
 
         @Override
-        public ItemStack getExampleStack() {
-            return getBaitedRod(false);
+        public ItemStack getRecipeOutput() {
+            return ItemStack.EMPTY;
+        }
+
+        @Override
+        public String getGroup() {
+            return group.toString();
+        }
+
+        @Override
+        public boolean isHidden() {
+            return true;
         }
     }
 

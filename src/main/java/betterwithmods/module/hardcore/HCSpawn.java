@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -18,14 +19,25 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class HCSpawn extends Feature {
 
-    public static int HARDCORE_SPAWN_RADIUS = 2000;
-    public static final int HARDCORE_SPAWN_COOLDOWN_RADIUS = 100;
-    public static final int HARDCORE_SPAWN_COOLDOWN = 24000;//20 min
-    public static final int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
+    public static int HARDCORE_SPAWN_RADIUS;
+    public static int HARDCORE_SPAWN_COOLDOWN_RADIUS;
+    public static int HARDCORE_SPAWN_COOLDOWN;//20 min
+    public static int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+    }
 
     @Override
     public void setupConfig() {
+
+        HARDCORE_SPAWN_RADIUS = loadPropInt("Hardcore Spawn Radius", "Radius from original spawn which you will be randomly spawned", 2000);
+        HARDCORE_SPAWN_COOLDOWN_RADIUS = loadPropInt("Hardcore Spawn Cooldown Radius", "Radius from your previous spawn you will spawn if you die during a cooldown period", 100);
+        HARDCORE_SPAWN_COOLDOWN = loadPropInt("Hardcore Spawn Cooldown Ticks", "Amount of time after a HCSpawn which you will continue to spawn in the same area", 12000);
+
         super.setupConfig();
+
     }
 
     @Override
@@ -48,16 +60,16 @@ public class HCSpawn extends Feature {
         if (PlayerHelper.isSurvival(player)) {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
             boolean isNew = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN;
-            int spawnFuzz = isNew ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;
-            if(isNew) {
-                BlockPos newPos = getRespawnPoint(player, player.world.getSpawnPoint(), spawnFuzz);
+            if (isNew) {
+                BlockPos newPos = getRespawnPoint(player, player.world.getSpawnPoint(), HARDCORE_SPAWN_RADIUS);
                 player.setSpawnPoint(newPos, true);
             } else {
-                BlockPos newPos = getRespawnPoint(player, player.getBedLocation(0), spawnFuzz);
+                BlockPos newPos = getRespawnPoint(player, player.getBedLocation(), HARDCORE_SPAWN_COOLDOWN_RADIUS);
                 player.setSpawnPoint(newPos, true);
             }
         }
     }
+
 
 //
 //    public void clearConditions(EntityPlayer player) {
@@ -73,6 +85,7 @@ public class HCSpawn extends Feature {
 //            worldinfo.setThundering(false);
 //        }
 //    }
+
     /**
      * Find a random position to respawn. Tries 20 times maximum to find a
      * suitable place. Else, the previous SP will remain unchanged.
@@ -87,7 +100,7 @@ public class HCSpawn extends Feature {
         if (!world.provider.isNether()) {
             boolean found = false;
             for (int tryCounter = 0; tryCounter < HARDCORE_SPAWN_MAX_ATTEMPTS; tryCounter++) {
-                ret = world.getSpawnPoint();
+                ret = spawnPoint;
                 double fuzzVar = world.rand.nextDouble() * spawnFuzz;
                 double angle = world.rand.nextDouble();
                 double customX = (double) (-MathHelper
@@ -117,4 +130,5 @@ public class HCSpawn extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
 }

@@ -48,6 +48,8 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         this.type = type;
     }
 
+
+
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add(I18n.format("tooltip.gearbox.name"));

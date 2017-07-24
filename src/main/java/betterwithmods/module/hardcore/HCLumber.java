@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class HCLumber extends Feature {
     public static int plankAmount, barkAmount, sawDustAmount;
 
+    public static int axePlankAmount, axeBarkAmount, axeSawDustAmount;
     public static boolean hasAxe(BlockEvent.HarvestDropsEvent event) {
         if (!event.getWorld().isRemote && !event.isSilkTouching()) {
             EntityPlayer player = event.getHarvester();
@@ -38,6 +39,9 @@ public class HCLumber extends Feature {
         barkAmount = loadPropInt("Bark Amount", "Amount of Bark dropped when Punching Wood", 1);
         sawDustAmount = loadPropInt("Sawdust Amount", "Amount of Sawdust dropped when Punching Wood", 2);
 
+        axePlankAmount = loadPropInt("Axe Plank Amount", "Amount of Planks dropped when crafted with an axe", 3);
+        axeBarkAmount = loadPropInt("Axe Bark Amount", "Amount of Bark dropped when crafted with an axe", 1);
+        axeSawDustAmount = loadPropInt("Axe Sawdust Amount", "Amount of Sawdust dropped when crafted with an axe", 2);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     private BWOreDictionary.Wood wood;
 
     public ChoppingRecipe(BWOreDictionary.Wood wood) {
-        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(HCLumber.plankAmount), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
+        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(HCLumber.axePlankAmount), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -48,8 +48,8 @@ public class ChoppingRecipe extends ToolDamageRecipe {
             return;
         if (isMatch(event.craftMatrix, event.player.world)) {
             if (!event.player.getEntityWorld().isRemote) {
-                event.player.entityDropItem(wood.getSawdust(HCLumber.sawDustAmount), 0);
-                event.player.entityDropItem(wood.getBark(HCLumber.barkAmount), 0);
+                event.player.entityDropItem(wood.getSawdust(HCLumber.axeSawDustAmount), 0);
+                event.player.entityDropItem(wood.getBark(HCLumber.axeBarkAmount), 0);
             } else {
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);
             }

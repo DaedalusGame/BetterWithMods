@@ -209,7 +209,7 @@ public class HCFishing extends Feature {
         public ItemStack getCraftingResult(InventoryCrafting inv) {
             ItemStack rod = findRod(inv);
             if (!rod.isEmpty())
-                return setBaited(rod, true);
+                return setBaited(rod.copy(), true);
             return ItemStack.EMPTY;
         }
 

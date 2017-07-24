@@ -57,6 +57,6 @@ public class HCBeacons extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "";
+        return "Overhauls the function of Beacons. Beacons have extended range, no longer have a GUI, and require the same material throughout the pyramid. The pyramid material determines the beacon effect, and additional tiers increase the range and strength of the effects. Some beacon types may also cause side effects to occur while a beacon is active.";
     }
 }

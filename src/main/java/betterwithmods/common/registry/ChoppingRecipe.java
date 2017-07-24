@@ -2,6 +2,7 @@ package betterwithmods.common.registry;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.module.hardcore.HCLumber;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     private BWOreDictionary.Wood wood;
 
     public ChoppingRecipe(BWOreDictionary.Wood wood) {
-        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(2), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
+        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(HCLumber.plankAmount), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -47,8 +48,8 @@ public class ChoppingRecipe extends ToolDamageRecipe {
             return;
         if (isMatch(event.craftMatrix, event.player.world)) {
             if (!event.player.getEntityWorld().isRemote) {
-                event.player.entityDropItem(wood.getSawdust(1), 0);
-                event.player.entityDropItem(wood.getBark(1), 0);
+                event.player.entityDropItem(wood.getSawdust(HCLumber.sawDustAmount), 0);
+                event.player.entityDropItem(wood.getBark(HCLumber.barkAmount), 0);
             } else {
                 event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);
             }

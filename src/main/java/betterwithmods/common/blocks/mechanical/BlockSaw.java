@@ -1,10 +1,11 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.mechanical.tile.TileSaw;
 import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
@@ -17,7 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -25,6 +25,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -35,11 +36,12 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
-public class BlockSaw extends BWMBlock implements IMechanicalBlock {
-    public static final PropertyBool ISACTIVE = PropertyBool.create("isactive");
+public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final float HEIGHT = 0.71875F;
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
@@ -53,6 +55,17 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.UP));
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileSaw();
     }
 
     @Override
@@ -111,34 +124,33 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        if (block == BWMBlocks.WOODEN_AXLE || block == BWMBlocks.HAND_CRANK)
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-        else
-            world.scheduleBlockUpdate(pos, this, tickRate(world) + world.rand.nextInt(6), 5);
+        world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        boolean powered = isInputtingMechPower(world, pos);
-        boolean isOn = isBlockOn(world, pos);
-
-        if (isOn != powered) {
-            emitSawParticles(world, pos, rand);
-            setMechanicalOn(world, pos, powered);
-            if (powered) {
-                world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
-                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 1.5F + rand.nextFloat() * 0.1F);
-            } else
-                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 0.75F + rand.nextFloat() * 0.1F);
-        } else if (powered) {
+        withTile(world, pos).ifPresent(TileSaw::onChanged);
+        if (isActive(state)) {
             sawBlockInFront(world, pos, rand);
             world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
         }
     }
 
     @Override
+    public void onChangeActive(World world, BlockPos pos, boolean newValue) {
+        Random rand = world.rand;
+        emitSawParticles(world, pos, rand);
+        if (newValue) {
+            world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+            world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 1.5F + rand.nextFloat() * 0.1F);
+        } else {
+            world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 0.75F + rand.nextFloat() * 0.1F);
+        }
+    }
+
+    @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if (isMechanicalOn(world, pos) && entity instanceof EntityLivingBase) {
+        if (isActive(state) && entity instanceof EntityLivingBase) {
             EnumFacing dir = getFacing(world, pos);
 
             DamageSource source = BWDamageSource.saw;
@@ -211,66 +223,12 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
         }
     }
 
-    public boolean isBlockOn(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(ISACTIVE);
-    }
-
-    @Override
-    public boolean canOutputMechanicalPower() {
-        return false;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputtingMechPower(World world, BlockPos pos) {
-        return MechanicalUtil.isBlockPoweredByAxle(world, pos, this);
-    }
-
-    @Override
-    public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos,
-                                       EnumFacing dir) {
-        return dir != getFacing(world, pos);
-    }
-
     @Override
     public void overpower(World world, BlockPos pos) {
-        breakSaw(world, pos);
-    }
-
-    public void breakSaw(World world, BlockPos pos) {
         if (MechanicalBreakage.saw)
             InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/saw"));
-        /*
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.IRON_INGOT, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 4, 30));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 8));
-        */
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
-    }
-
-    @Override
-    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos) {
-        return isBlockOn(world, pos);
-    }
-
-    @Override
-    public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-        boolean active = world.getBlockState(pos).getValue(ISACTIVE);
-        if (isOn != active)
-            world.setBlockState(pos, world.getBlockState(pos).withProperty(ISACTIVE, isOn));
     }
 
     public void emitSawParticles(World world, BlockPos pos, Random rand) {
@@ -327,14 +285,16 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
         if (world.isRemote || !(world instanceof WorldServer))
             return;
+        if(world.getBlockState(pos).getBlock() != this)
+            return;
         BlockPos pos2 = pos.offset(getFacing(world, pos));
-        if(world.isAirBlock(pos2))
+        if (world.isAirBlock(pos2))
             return;
         IBlockState state = world.getBlockState(pos2);
         Block block = state.getBlock();
         int harvestMeta = block.damageDropped(state);
-        if(block instanceof IDamageDropped)
-            harvestMeta = ((IDamageDropped) block).damageDropped(state,world,pos2);
+        if (block instanceof IDamageDropped)
+            harvestMeta = ((IDamageDropped) block).damageDropped(state, world, pos2);
 
         if (SawManager.INSTANCE.contains(block, harvestMeta)) {
             List<ItemStack> products = SawManager.INSTANCE.getProducts(block, harvestMeta);
@@ -346,14 +306,9 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
     }
 
     @Override
-    public boolean isMechanicalOnFromState(IBlockState state) {
-        return state.getValue(ISACTIVE);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-        if (isMechanicalOn(world, pos)) {
+        if (isActive(state)) {
             emitSawParticles(world, pos, rand);
 
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
@@ -415,22 +370,31 @@ public class BlockSaw extends BWMBlock implements IMechanicalBlock {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        boolean isActive = meta > 7;
-        if (isActive)
-            meta -= 8;
-        EnumFacing facing = EnumFacing.getFront(meta);
-        return this.getDefaultState().withProperty(ISACTIVE, isActive).withProperty(DirUtils.FACING, facing);
+        int active = meta & 1;
+        int facing = meta >> 1;
+        return this.getDefaultState().withProperty(ACTIVE, active == 1).withProperty(DirUtils.FACING, EnumFacing.getFront(facing));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = state.getValue(ISACTIVE) ? 8 : 0;
-        meta += state.getValue(DirUtils.FACING).ordinal();
-        return meta;
+        int active = state.getValue(ACTIVE) ? 1 : 0;
+        int facing = state.getValue(DirUtils.FACING).getIndex() << 1;
+        return active | facing;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ISACTIVE, DirUtils.FACING);
+        return new BlockStateContainer(this, ACTIVE, DirUtils.FACING);
+    }
+
+    public Optional<TileSaw> withTile(World world, BlockPos pos) {
+        return Optional.ofNullable(getTile(world, pos));
+    }
+
+    public TileSaw getTile(World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileSaw)
+            return (TileSaw) tile;
+        return null;
     }
 }

@@ -12,7 +12,9 @@ public interface IBlockActive {
     PropertyBool ACTIVE = PropertyBool.create("active");
 
     default boolean isActive(IBlockState state) {
-        return state.getValue(ACTIVE);
+        if(state.getBlock() instanceof IBlockActive)
+            return state.getValue(ACTIVE);
+        return false;
     }
 
     default void setActive(World world, BlockPos pos, boolean active) {

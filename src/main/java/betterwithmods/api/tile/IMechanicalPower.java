@@ -29,11 +29,15 @@ public interface IMechanicalPower {
                 findPower = power;
             }
         }
-        if (getWorld().rand.nextInt(10) == 0 && findPower > getMaximumInput(EnumFacing.UP)) {
+        if (overpowerChance() && findPower > getMaximumInput(EnumFacing.UP)) {
             overpower();
             return 0;
         }
         return findPower;
+    }
+
+    default boolean overpowerChance() {
+        return getWorld().rand.nextInt(10) == 0;
     }
 
     default void overpower() {

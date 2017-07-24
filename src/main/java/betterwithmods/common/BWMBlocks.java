@@ -185,11 +185,11 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
         GameRegistry.registerTileEntity(TileEntitySteelAnvil.class, "bwm.steelAnvil");
         GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
-        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vertWindmill");
-        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horizWindmill");
+        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vert_windmill");
+        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horiz_windmill");
         GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
         GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
-        GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "creativeGenerator");
+        GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "bwm.creative_generator");
         GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileEntityAdvBellows.class, "bwm.bellows");
@@ -197,6 +197,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
         GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");
+        GameRegistry.registerTileEntity(TileSaw.class, "bwm.saw");
     }
 
 //    /**

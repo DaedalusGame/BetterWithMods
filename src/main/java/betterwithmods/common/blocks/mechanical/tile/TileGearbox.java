@@ -30,7 +30,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
             setPower(0);
             return;
         }
-        if (power > getMaximumInput(getFacing())) {
+        if (world.rand.nextInt(10) == 0 && power > getMaximumInput(getFacing())) {
             getBlock().overpower(world, pos);
         }
         if (power != this.power) {

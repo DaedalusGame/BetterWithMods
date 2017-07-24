@@ -2,13 +2,16 @@ package betterwithmods.common.blocks.tile.gen;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockAxleGenerator;
+import betterwithmods.common.blocks.mechanical.IBlockActive;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,7 +26,12 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     protected float runningSpeed = 0.4F;
     public float currentRotation = 0.0F;
     public float previousRotation = 0.0F;
+    public float waterMod = 1;
     protected boolean isValid;
+
+    public abstract void calculatePower();
+
+    public abstract void verifyIntegrity();
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -57,32 +65,39 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
 
     @Override
     public void update() {
-//        if (this.runningState != 0) {
-//            this.previousRotation = (this.runningState > 1 ? this.runningSpeed * 5 : this.runningSpeed);
-//            this.currentRotation += (this.runningState > 1 ? 5 : this.runningState) * this.runningSpeed;
-//            if (this.getWorld().rand.nextInt(100) == 0)
-//                this.getWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, getWorld().rand.nextFloat() * 0.25F + 0.25F);
-//        }
-
-        if(isValid()) {
-            this.previousRotation = this.power * runningSpeed;
-            currentRotation += this.power * runningSpeed;
-            currentRotation %= 360;
-        }
         if (this.getWorld().getTotalWorldTime() % 20L == 0L && getWorld().getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
             verifyIntegrity();
             calculatePower();
         }
 
+        if (isValid()) {
+            if (power != 0) {
+                this.previousRotation = this.power * runningSpeed * waterMod;
+                this.currentRotation += (this.power * this.power) * runningSpeed * waterMod;
+                this.currentRotation %= 360;
+                if (this.getWorld().rand.nextInt(100) == 0)
+                    this.getWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.25F + 0.25F);
+            }
+        }
     }
 
-    public abstract void calculatePower();
+    public boolean isOverworld() {
+        return world.provider.isSurfaceWorld();
+    }
+
+    public boolean isNether() {
+        return world.provider.isNether();
+    }
+
+    public void setPower(byte power) {
+        this.power = power;
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(IBlockActive.ACTIVE, power > 0));
+    }
 
     public boolean isValid() {
         return isValid;
     }
 
-    public abstract void verifyIntegrity();
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {

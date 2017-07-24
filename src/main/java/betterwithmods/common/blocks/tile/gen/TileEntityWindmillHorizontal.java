@@ -71,11 +71,21 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
 
     @Override
     public void calculatePower() {
-        this.power = 1;
-        if (world.isRaining()) {
-            this.power = 2;
-        } else if (world.isThundering()) {
-            this.power = 3;
+        byte power;
+        if (isValid() && isOverworld() || isNether()) {
+
+            if (world.isRaining()) {
+                power = 2;
+            } else if (world.isThundering()) {
+                power = 3;
+            } else {
+                power = 1;
+            }
+        } else {
+            power = 0;
+        }
+        if (power != this.power) {
+            setPower(power);
         }
     }
 

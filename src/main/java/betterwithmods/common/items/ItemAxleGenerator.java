@@ -1,6 +1,7 @@
 package betterwithmods.common.items;
 
 import betterwithmods.api.IMultiLocations;
+import betterwithmods.api.tile.IAxle;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.EnumTier;
@@ -9,6 +10,7 @@ import betterwithmods.common.blocks.mechanical.BlockAxleGenerator;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -266,10 +268,9 @@ public class ItemAxleGenerator extends Item implements IMultiLocations {
     private boolean checkForSupportingAxles(World world, BlockPos pos) {
         for (int i = -3; i <= 3; i++) {
             BlockPos target = pos.add(0, i, 0);
-            Block targetBlock = world.getBlockState(target).getBlock();
-            if (targetBlock != BWMBlocks.WOODEN_AXLE) return false;
-            EnumFacing.Axis axis = world.getBlockState(target).getValue(DirUtils.AXIS);
-            if (axis != EnumFacing.Axis.Y) return false;
+            IAxle axle = MechanicalUtil.getAxle(world,target,EnumFacing.UP);
+            if (axle == null) return false;
+            if (axle.getAxis() != EnumFacing.Axis.Y) return false;
         }
         return true;
     }

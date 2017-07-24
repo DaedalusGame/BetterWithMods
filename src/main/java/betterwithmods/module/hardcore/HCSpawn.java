@@ -49,10 +49,12 @@ public class HCSpawn extends Feature {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
             boolean isNew = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN;
             int spawnFuzz = isNew ? HARDCORE_SPAWN_RADIUS : HARDCORE_SPAWN_COOLDOWN_RADIUS;
-            BlockPos newPos = getRespawnPoint(player, spawnFuzz);
-            player.setSpawnPoint(newPos, true);
             if(isNew) {
-//                clearConditions(player);
+                BlockPos newPos = getRespawnPoint(player, player.world.getSpawnPoint(), spawnFuzz);
+                player.setSpawnPoint(newPos, true);
+            } else {
+                BlockPos newPos = getRespawnPoint(player, player.getBedLocation(0), spawnFuzz);
+                player.setSpawnPoint(newPos, true);
             }
         }
     }
@@ -79,9 +81,9 @@ public class HCSpawn extends Feature {
      *                  between spawn points.
      * @return The new BlockPos
      */
-    private BlockPos getRespawnPoint(EntityPlayer player, int spawnFuzz) {
+    private BlockPos getRespawnPoint(EntityPlayer player, BlockPos spawnPoint, int spawnFuzz) {
         World world = player.getEntityWorld();
-        BlockPos ret = world.getSpawnPoint();
+        BlockPos ret = spawnPoint;
         if (!world.provider.isNether()) {
             boolean found = false;
             for (int tryCounter = 0; tryCounter < HARDCORE_SPAWN_MAX_ATTEMPTS; tryCounter++) {

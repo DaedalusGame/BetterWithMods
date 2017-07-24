@@ -3,13 +3,13 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.block.ITurnable;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -122,7 +122,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     public void rotateTurntable() {
-        boolean reverse = ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).isRedstonePowered(getWorld(), pos);
+        boolean reverse = MechanicalUtil.isRedstonePowered(world,pos);
 
         this.potteryRotated = false;
 

@@ -5,7 +5,6 @@ import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -52,7 +51,7 @@ public class ContainerSteelAnvil extends Container {
      * Callback for when the crafting matrix is changed.
      */
     public void onCraftMatrixChanged(IInventory matrix) {
-        inventoryPlayer.player.playSound(SoundEvents.BLOCK_ANVIL_USE,0.5f,1.0f);
+
         this.craftResult.setInventorySlotContents(0, AnvilCraftingManager.findMatchingResult(this.craftMatrix, te.getWorld()));
     }
 

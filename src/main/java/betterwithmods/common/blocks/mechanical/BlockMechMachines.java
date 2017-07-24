@@ -297,6 +297,8 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
                 world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
                 break;
             case PULLEY:
+                InvUtils.ejectBrokenItems(world,pos.offset(EnumFacing.random(world.rand)),MILLSTONE);
+                world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
                 break;
             case HOPPER:
                 break;

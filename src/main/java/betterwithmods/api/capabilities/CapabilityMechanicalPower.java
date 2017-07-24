@@ -1,8 +1,11 @@
 package betterwithmods.api.capabilities;
 
 import betterwithmods.api.tile.IMechanicalPower;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
@@ -42,6 +45,21 @@ public class CapabilityMechanicalPower {
         @Override
         public int getMinimumInput(EnumFacing facing) {
             return 0;
+        }
+
+        @Override
+        public Block getBlockType() {
+            return null;
+        }
+
+        @Override
+        public World getWorld() {
+            return null;
+        }
+
+        @Override
+        public BlockPos getPos() {
+            return null;
         }
 
     }

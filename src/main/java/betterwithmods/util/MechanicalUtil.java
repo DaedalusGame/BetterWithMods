@@ -14,15 +14,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class MechanicalUtil {
-
-    public static boolean isBlockPoweredOnSide(World world, BlockPos pos, EnumFacing dir) {
-        boolean isPowered = isBlockPoweredByAxleOnSide(world, pos, dir);
-        if (!isPowered) {
-            Block block = world.getBlockState(pos.offset(dir)).getBlock();
-            if (block instanceof IMechanicalBlock)
-                isPowered = ((IMechanicalBlock) block).isOutputtingMechPower(world, pos.offset(dir));
-        }
-        return isPowered;
+    
+    public static boolean isRedstonePowered(World world, BlockPos pos) {
+        return world.isBlockIndirectlyGettingPowered(pos) > 0;
     }
 
     public static IMechanicalPower getMechanicalPower(World world, BlockPos pos, EnumFacing facing) {

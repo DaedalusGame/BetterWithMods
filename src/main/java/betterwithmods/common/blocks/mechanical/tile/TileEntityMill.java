@@ -60,9 +60,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
         this.power = calculateInput();
 
-        if(this.power > getMaximumInput(EnumFacing.UP)) {
-            getBlock().overpower(world,pos);
-        }
         getBlock().setActive(world, pos, isActive());
 
         if (this.validateContents)
@@ -217,7 +214,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     @Override
     public int getMinimumInput(EnumFacing facing) {
-        return 4;
+        return 0;
     }
 
     @Override

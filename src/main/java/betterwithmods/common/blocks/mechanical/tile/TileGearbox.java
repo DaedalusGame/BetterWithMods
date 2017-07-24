@@ -26,7 +26,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public void onChanged() {
 
         int power = this.getMechanicalInput(getFacing());
-        if (getBlock().isRedstonePowered(world, pos)) {
+        if (MechanicalUtil.isRedstonePowered(world,pos)) {
             setPower(0);
             return;
         }

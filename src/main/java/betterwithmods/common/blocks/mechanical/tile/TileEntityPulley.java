@@ -1,6 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockRope;
@@ -8,9 +10,10 @@ import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.entity.EntityExtendingRope;
+import betterwithmods.common.registry.PulleyStructureManager;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.Block;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.properties.IProperty;
@@ -28,24 +31,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
+import net.minecraftforge.common.capabilities.Capability;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
-public class TileEntityPulley extends TileEntityVisibleInventory {
+public class TileEntityPulley extends TileEntityVisibleInventory implements IMechanicalPower {
 
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
+    private int power;
 
-    public static final boolean isValidPlatform(Block block) {
-        return block == BWMBlocks.PLATFORM || block == BWMBlocks.IRON_WALL;
-    }
-
-    private boolean isRedstonePowered() {
-        return getWorld().getBlockState(pos).getBlock() != null && getWorld().isBlockPowered(pos);
-    }
 
     public boolean isMechanicallyPowered() {
-        return false;
+        return power > 0;
     }
 
     @Override
@@ -54,11 +53,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     public boolean isRaising() {
-        return !isRedstonePowered() && isMechanicallyPowered();
+        return !MechanicalUtil.isRedstonePowered(world, pos) && isMechanicallyPowered();
     }
 
     public boolean isLowering() {
-        return !isRedstonePowered() && !isMechanicallyPowered();
+        return !MechanicalUtil.isRedstonePowered(world, pos) && !isMechanicallyPowered();
     }
 
     @Override
@@ -96,6 +95,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     }
 
     private void tryNextOperation() {
+        this.power = calculateInput();
+
         if (!activeOperation() && this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachines) {
             if (canGoDown(false)) {
                 goDown();
@@ -174,9 +175,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
 
         HashSet<BlockPos> platformBlocks = new HashSet<>();
         platformBlocks.add(anchor);
-        Block b = getWorld().getBlockState(anchor.down()).getBlock();
-        boolean success = isValidPlatform(getWorld().getBlockState(anchor.down()).getBlock())
-                ? addToList(platformBlocks, anchor.down(), up) : up || isValidBlock(b, anchor.down());
+        boolean success;
+        BlockPos below = anchor.down();
+        if (isPlatform(below)) {
+            success = addToList(platformBlocks, below, up);
+        } else {
+            success = up || isIgnoreable(below);
+        }
         if (!success) {
             return false;
         }
@@ -197,11 +202,9 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         if (!getWorld().isRemote) {
             for (BlockPos blockPos : platformBlocks) {
                 IBlockState blockState = getWorld().getBlockState(blockPos.up());
-                b = blockState.getBlock();
-                blockState = (b == Blocks.REDSTONE_WIRE || b instanceof BlockRailBase ? blockState : null);
                 Vec3i offset = blockPos.subtract(anchor.up());
                 rope.addBlock(offset, getWorld().getBlockState(blockPos));
-                if (blockState != null) {
+                if (isMoveableBlock(blockPos.up())) {
                     rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), blockState);
                     getWorld().setBlockToAir(blockPos.up());
                 }
@@ -212,8 +215,18 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         return true;
     }
 
-    public boolean isValidBlock(Block b, BlockPos pos) {
-        return b == Blocks.AIR || b.isReplaceable(getWorld(), pos) || isValidPlatform(b);
+    public boolean isIgnoreable(BlockPos pos) {
+        return world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().isReplaceable();
+    }
+
+    public boolean isMoveableBlock(BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == Blocks.REDSTONE_WIRE || state.getBlock() instanceof BlockRailBase;
+    }
+
+    public boolean isPlatform(BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return PulleyStructureManager.isPulleyBlock(state);
     }
 
     @SuppressWarnings("unchecked")
@@ -258,20 +271,16 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     private boolean addToList(HashSet<BlockPos> set, BlockPos p, boolean up) {
         if (set.size() > GlobalConfig.maxPlatformBlocks)
             return false;
-
-        BlockPos blockCheck = up ? p.up() : p.down();
-
-        if (!isValidPlatform(getWorld().getBlockState(p).getBlock())) {
+        if (!PulleyStructureManager.isPulleyBlock(getWorld().getBlockState(p))) {
             return true;
         }
 
-        Block b = getWorld().getBlockState(blockCheck).getBlock();
+        BlockPos blockCheck = up ? p.up() : p.down();
 
-        if (b != Blocks.REDSTONE_WIRE && !(b instanceof BlockRailBase)) {
-            if (!(getWorld().isAirBlock(blockCheck) || b.isReplaceable(getWorld(), blockCheck) || isValidPlatform(b))
-                    && !set.contains(blockCheck)) {
-                return false;
-            }
+        if (!isMoveableBlock(blockCheck) || !isIgnoreable(blockCheck) || PulleyStructureManager.isPulleyBlock(getWorld().getBlockState(blockCheck)))
+            return false;
+        if (!set.contains(blockCheck)) {
+            return false;
         }
 
         set.add(p);
@@ -337,6 +346,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         if (rope != null)
             rope.writeToNBTAtomically(ropetag);
         tag.setTag("Rope", ropetag);
+
+        tag.setInteger("power", power);
         return super.writeToNBT(tag);
     }
 
@@ -344,6 +355,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.ropeTag = (NBTTagCompound) tag.getTag("Rope");
+        this.power = tag.getInteger("power");
     }
 
     @Override
@@ -358,21 +370,41 @@ public class TileEntityPulley extends TileEntityVisibleInventory {
         }
     }
 
-//    private class PulleyInventory extends SimpleStackHandler {
-//
-//        public PulleyInventory(int size, TileEntity tile) {
-//            super(size, tile);
-//        }
-//
-//        @Override
-//        @Nonnull
-//        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-////            if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock && stack.getItem() == Item.getItemFromBlock(BWMBlocks.ROPE)) {
-////
-////            }
-////            return ItemStack.EMPTY;
-//            return super.insertItem(slot, stack, simulate);
-//        }
-//    }
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return -1;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        if (facing.getAxis().isHorizontal())
+            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
+    }
+
+    @Nonnull
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
+        return super.getCapability(capability, facing);
+    }
 
 }

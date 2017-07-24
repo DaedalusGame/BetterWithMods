@@ -197,7 +197,12 @@ public class HCFishing extends Feature {
         }
 
         public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-            return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+            NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+            for (int i = 0; i < ret.size(); i++)
+            {
+                ret.set(i,ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
+            }
+            return ret;
         }
 
         @Override

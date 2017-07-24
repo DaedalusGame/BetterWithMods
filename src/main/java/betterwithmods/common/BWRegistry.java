@@ -59,6 +59,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import java.util.Iterator;
@@ -222,7 +223,6 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
-        replaceIRecipe(HCFishing.class, reg);
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);
         replaceIRecipe(HCLumber.class, reg);
@@ -232,6 +232,7 @@ public class BWRegistry {
         replaceIRecipe(BiomesOPlenty.class, reg);
         replaceIRecipe(Quark.class, reg);
         replaceIRecipe(Rustic.class, reg);
+        replaceIRecipe(HCFishing.class, reg);
         registerAnvilRecipes(reg);
     }
 
@@ -248,7 +249,7 @@ public class BWRegistry {
         }
     }
 
-    private static void replaceIRecipe(Class<? extends Feature> clazz, ForgeRegistry<IRecipe> reg) {
+    private static void replaceIRecipe(Class<? extends Feature> clazz, IForgeRegistry<IRecipe> reg) {
         if (ModuleLoader.isFeatureEnabled(clazz)) {
             List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
             if (recipes != null) {
@@ -257,7 +258,7 @@ public class BWRegistry {
         }
     }
 
-    private static void registerAnvilRecipes(ForgeRegistry<IRecipe> reg) {
+    private static void registerAnvilRecipes(IForgeRegistry<IRecipe> reg) {
         List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes("Anvil");
         recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
         List<IRecipe> shaped = reg.getValues().stream().filter(i -> i instanceof ShapedRecipes || i instanceof ShapedOreRecipe).collect(Collectors.toList());

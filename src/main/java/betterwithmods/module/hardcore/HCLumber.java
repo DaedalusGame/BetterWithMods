@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by tyler on 4/20/17.
  */
 public class HCLumber extends Feature {
-    private int plankAmount, barkAmount, sawDustAmount;
+    public static int plankAmount, barkAmount, sawDustAmount;
 
     public static boolean hasAxe(BlockEvent.HarvestDropsEvent event) {
         if (!event.getWorld().isRemote && !event.isSilkTouching()) {
@@ -50,7 +50,7 @@ public class HCLumber extends Feature {
         if (!Loader.isModLoaded("primal")) {
             for (IRecipe recipe : BWOreDictionary.logRecipes) {
                 ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getPlank(1).isItemEqual(plank)).findFirst().orElse(null);
+                BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getPlank(plankAmount).isItemEqual(plank)).findFirst().orElse(null);
                 if (wood != null) {
                     registerHardcoreRecipe("HCLumber", new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
                 }
@@ -82,7 +82,7 @@ public class HCLumber extends Feature {
             BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> w.getLog(1).isItemEqual(stack)).findFirst().orElse(null);
             if (wood != null) {
                 evt.getDrops().clear();
-                evt.getDrops().addAll(Lists.newArrayList(wood.getPlank(1), wood.getSawdust(2), wood.getBark(1)));
+                evt.getDrops().addAll(Lists.newArrayList(wood.getPlank(plankAmount), wood.getSawdust(sawDustAmount), wood.getBark(barkAmount)));
             }
         }
     }

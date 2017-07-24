@@ -51,6 +51,11 @@ public class HCLumber extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
         if (!Loader.isModLoaded("primal")) {
             for (IRecipe recipe : BWOreDictionary.logRecipes) {
                 ItemStack plank = recipe.getRecipeOutput();
@@ -60,11 +65,6 @@ public class HCLumber extends Feature {
                 }
             }
         }
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-
     }
 
     @Override

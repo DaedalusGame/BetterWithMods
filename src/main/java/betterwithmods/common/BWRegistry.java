@@ -121,6 +121,9 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
+    }
+
+    public static void postPostInit() {
         registerRecipes();
     }
 

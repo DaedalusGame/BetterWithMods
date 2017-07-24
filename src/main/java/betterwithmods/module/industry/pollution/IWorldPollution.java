@@ -8,6 +8,8 @@ public interface IWorldPollution {
 
     void calculatePollutionSpread();
 
+    void calculateLeafCount();
+
     void setPollution(ChunkPos pos, float newPollution);
 
     float getPollution(ChunkPos pos);
@@ -17,4 +19,8 @@ public interface IWorldPollution {
     void readNBT(ChunkPos pos, NBTTagCompound tag);
 
     NBTTagCompound writeNBT(ChunkPos pos, NBTTagCompound tag);
+
+    byte getLeafCount(ChunkPos pos);
+
+    void setLeafCount(ChunkPos pos, byte leafCount);
 }

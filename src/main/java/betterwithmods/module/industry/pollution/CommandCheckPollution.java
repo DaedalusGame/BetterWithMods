@@ -54,7 +54,7 @@ public class CommandCheckPollution extends CommandBase {
     private void providePollutionInformation(List<String> addTo, World world, ChunkPos from) {
         float pollution = Pollution.handler.getPollutionStat(world, from);
         if (pollution > -1) {
-            String info = "Chunk [" + from.x + ", " + from.z + "] pollution: " + String.format("%.2f", pollution);
+            String info = "Chunk [" + from.x + ", " + from.z + "] pollution: " + String.format("%.2f", pollution) + " Leaf count: " + Pollution.handler.getLeafStat(world, from);
             addTo.add(info);
         }
     }

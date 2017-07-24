@@ -1,9 +1,11 @@
 package betterwithmods.module.industry.pollution;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -35,6 +37,7 @@ public class WorldPollutionCapability {
 
     public static class Default implements IWorldPollution {
         private HashMap<ChunkPos, Float> pollution = new HashMap<>();
+        private HashMap<ChunkPos, Byte> leaves = new HashMap<>();
         private World world;
 
         public Default() {}
@@ -45,11 +48,11 @@ public class WorldPollutionCapability {
 
         @Override
         public void calculatePollutionReduction() {
-            float pollutionMod = 1.0F;
             if (!pollution.isEmpty()) {
                 for (ChunkPos pos : pollution.keySet()) {
                     Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);
                     if (chunk != null) {
+                        float pollutionMod = 1.0F;
                         Biome biome = Biome.getBiome(chunk.getBiomeArray()[127], Biomes.PLAINS);
                         for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome)) {
                             pollutionMod *= getPollutionReduction(type);
@@ -57,7 +60,32 @@ public class WorldPollutionCapability {
                         if (world.isRaining() && biome.canRain())
                             pollutionMod *= 0.8F;
                         float stat = pollution.get(pos) * pollutionMod;
+                        if (getLeafCount(pos) > 0) {
+                            float reduction = getLeafCount(pos) * 0.001F;
+                            stat -= stat * reduction;
+                        }
                         pollution.put(pos, stat);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void calculateLeafCount() {
+            if (!leaves.isEmpty()) {
+                for (ChunkPos pos : leaves.keySet()) {
+                    Chunk chunk = world.getChunkProvider().getLoadedChunk(pos.x, pos.z);
+                    if (chunk != null) {
+                        byte leafCount = 0;
+                        for (int x = 0; x < 16; x++) {
+                            for (int z = 0; z < 16; z++) {
+                                BlockPos p = pos.getBlock(x, 255, z);
+                                p = world.getHeight(p).down();
+                                if (world.getBlockState(p).getBlock() instanceof BlockLeaves && world.getBlockState(p).getValue(BlockLeaves.DECAYABLE))
+                                    leafCount++;
+                            }
+                        }
+                        setLeafCount(pos, leafCount);
                     }
                 }
             }
@@ -76,10 +104,13 @@ public class WorldPollutionCapability {
         public void removePollution(ChunkPos pos) {
             if (pollution.containsKey(pos))
                 pollution.remove(pos);
+            if (leaves.containsKey(pos))
+                leaves.remove(pos);
         }
 
         @Override
         public void setPollution(ChunkPos pos, float value) {
+            if (value < 0) value = 0F;
             pollution.put(pos, value);
         }
 
@@ -100,6 +131,17 @@ public class WorldPollutionCapability {
                     calculatePollutionSpread(toUpdate);
                 }
             }
+        }
+
+        @Override
+        public void setLeafCount(ChunkPos pos, byte leafCount) {
+            if (leafCount < 0) leafCount = 0;
+            leaves.put(pos, leafCount);
+        }
+
+        @Override
+        public byte getLeafCount(ChunkPos pos) {
+            return leaves.containsKey(pos) ? leaves.get(pos) : -1;
         }
 
         private void calculatePollutionSpread(List<ChunkPos> pos) {
@@ -177,16 +219,23 @@ public class WorldPollutionCapability {
         @Override
         public void readNBT(ChunkPos pos, NBTTagCompound tag) {
             float pollution = 0F;
+            byte leafCount = 0;
             if (tag.hasKey("pollution"))
                 pollution = tag.getFloat("pollution");
+            if (tag.hasKey("leaves"))
+                leafCount = tag.getByte("leaves");
             setPollution(pos, pollution);
+            setLeafCount(pos, leafCount);
         }
 
         @Override
         public NBTTagCompound writeNBT(ChunkPos pos, NBTTagCompound tag) {
             float pollution = getPollution(pos);
+            byte leafCount = getLeafCount(pos);
             if (pollution < 0) pollution = 0;
+            if (leafCount < 0) leafCount = 0;
             tag.setFloat("pollution", pollution);
+            tag.setByte("leaves", leafCount);
             return tag;
         }
     }

@@ -38,8 +38,10 @@ public class PollutionHandler {
                     NBTTagCompound tag = evt.getData().getCompoundTag("bwm_pollution");
                     pollution.readNBT(pos, tag);
                 }
-                else
+                else {
                     pollution.setPollution(pos, 0.0F);
+                    pollution.setLeafCount(pos, (byte)0);
+                }
             }
         }
     }
@@ -67,11 +69,14 @@ public class PollutionHandler {
             IWorldPollution pollution = world.getCapability(WorldPollutionCapability.POLLUTION, null);
             if (pollution != null) {
                 long time = world.getWorldTime();
+                if (time % 24000 == 6000) {
+                    pollution.calculateLeafCount();
+                }
                 if (time % 8000 == 0) {
                     pollution.calculatePollutionSpread();
                 }
                 //TODO: Kill leaves if acid rain is happening.
-                if (time % 1000 == 0) {
+                else if (time % 1000 == 0) {
                     pollution.calculatePollutionReduction();
                 }
                 List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, null)).collect(Collectors.toList());
@@ -177,6 +182,13 @@ public class PollutionHandler {
         if (world.hasCapability(WorldPollutionCapability.POLLUTION, null)) {
             IWorldPollution pollution = world.getCapability(WorldPollutionCapability.POLLUTION, null);
             return pollution.getPollution(pos);
+        }
+        return -1;
+    }
+
+    public byte getLeafStat(World world, ChunkPos pos) {
+        if (world.hasCapability(WorldPollutionCapability.POLLUTION, null)) {
+            return world.getCapability(WorldPollutionCapability.POLLUTION, null).getLeafCount(pos);
         }
         return -1;
     }

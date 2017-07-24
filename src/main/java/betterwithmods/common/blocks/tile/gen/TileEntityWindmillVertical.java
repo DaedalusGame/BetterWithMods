@@ -14,9 +14,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 //TODO almost need to completely rewrite these in terms of capabilities.
 public class TileEntityWindmillVertical extends TileAxleGenerator implements IColor {
     public int[] bladeMeta = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -70,22 +70,6 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
         return t;
     }
 
-    @Override
-    public boolean isValid() {
-        //check master's validity
-        boolean valid = true;
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
-            for (int i = -3; i < 4; i++) {
-                if (i == 0)
-                    continue;
-                valid = isSlaveValid(i);
-                if (!valid)
-                    break;
-            }
-        }
-        return valid;
-    }
-
     public boolean isSlaveValid(int offset) {
         boolean notBlocked = true;
         int airCounter = 0;
@@ -113,22 +97,19 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
     }
 
     @Override
-    public boolean verifyIntegrity() {
-        //check master's integrity
-        boolean integrity = true;
-        {
-            for (int offY = -3; offY < 4; offY++) {
-                BlockPos offset = pos.add(0, offY, 0);
-                if (offY == 0)
+    public void verifyIntegrity() {
+        //check master's validity
+        boolean valid = true;
+        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+            for (int i = -3; i < 4; i++) {
+                if (i == 0)
                     continue;
-//                integrity = getWorld().getBlockState(offset).getBlock() instanceof IAxle && ((IAxle) getWorld().getBlockState(offset).getBlock()).getAxisAlignment(getWorld(), offset) == 0;
-                if (!integrity) {
-                    invalidateWindmill();
+                valid = isSlaveValid(i);
+                if (!valid)
                     break;
-                }
             }
         }
-        return integrity;
+        isValid = valid;
     }
 
     private void invalidateWindmill() {
@@ -159,7 +140,7 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
     }
 
     @Override
-    public void updateSpeed() {
+    public void calculatePower() {
 //        byte speed = 0;
 //        if (this.isValid() && !isGalacticraftDimension() && isNotOtherDimension()) {
 //            if ((this.getWorld().isRaining() || this.getWorld().isThundering()) && this.getWorld().provider.getDimensionType() != DimensionType.NETHER)
@@ -172,18 +153,6 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
 //            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos));
 //            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
 //        }
-    }
-
-    public boolean isNotOtherDimension() {
-        return this.getWorld().provider.getDimensionType() != DimensionType.THE_END;
-    }
-
-    public boolean isGalacticraftDimension() {
-        boolean isDimension = false;
-        if (Loader.isModLoaded("GalacticraftCore")) {
-            isDimension = false;//GalacticraftCompat.isGalacticraftDimension(this.getWorld());
-        }
-        return isDimension;
     }
 
     @Override

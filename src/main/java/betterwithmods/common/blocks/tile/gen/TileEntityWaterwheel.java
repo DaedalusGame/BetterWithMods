@@ -26,7 +26,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     }
 
     @Override
-    public boolean isValid() {
+    public void verifyIntegrity() {
         boolean isAir = true;
         boolean hasWater = true;
         if (getWorld().getBlockState(pos) != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
@@ -58,12 +58,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
                     break;
             }
         }
-        return isAir && hasWater;
-    }
-
-    @Override
-    public boolean verifyIntegrity() {
-        return isValid();
+        isValid = isAir && hasWater;
     }
 
     public boolean sidesHaveWater() {
@@ -95,7 +90,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     }
 
     @Override
-    public void updateSpeed() {
+    public void calculatePower() {
         power = 1;
 //        if (isValid()) {
 //            //speed = 1;

@@ -30,8 +30,8 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
             setPower(0);
             return;
         }
-        if(power > getMaximumInput(getFacing())) {
-            getBlock().overpower(world,pos);
+        if (power > getMaximumInput(getFacing())) {
+            getBlock().overpower(world, pos);
         }
         if (power != this.power) {
             setPower(power);
@@ -68,9 +68,8 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         BlockPos pos = getPos().offset(facing);
-        if (MechanicalUtil.isAxle(world, pos, facing.getOpposite())) {
+        if (!(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
             return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
-        }
         return 0;
     }
 
@@ -91,7 +90,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
         tag.setInteger("power", power);
-        tag.setInteger("maxPower",maxPower);
+        tag.setInteger("maxPower", maxPower);
         return t;
     }
 

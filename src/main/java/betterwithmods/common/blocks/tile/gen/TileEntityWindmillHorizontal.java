@@ -20,8 +20,6 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
         this.radius = 7;
     }
 
-
-
     @Override
     public int getMinimumInput(EnumFacing facing) {
         return 0;
@@ -59,7 +57,6 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
             if (tag.hasKey("Color_" + i))
                 bladeMeta[i] = tag.getInteger("Color_" + i);
         }
-
     }
 
     @Override
@@ -73,13 +70,17 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
     }
 
     @Override
-    public void updateSpeed() {
-
-
+    public void calculatePower() {
+        this.power = 1;
+        if (world.isRaining()) {
+            this.power = 2;
+        } else if (world.isThundering()) {
+            this.power = 3;
+        }
     }
 
     @Override
-    public boolean isValid() {
+    public void verifyIntegrity() {
         boolean valid = true;
         if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
             EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
@@ -99,13 +100,7 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
                     break;
             }
         }
-        return valid && this.getWorld().canBlockSeeSky(pos);
-    }
-
-    @Override
-    public boolean verifyIntegrity() {
-
-        return false;
+        isValid = valid && this.getWorld().canBlockSeeSky(pos);
     }
 
     //Extend the bounding box if the TESR is bigger than the occupying block.
@@ -121,7 +116,8 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
             int yP = radius;
             int zP = axis == EnumFacing.Axis.X ? radius : 0;
             return new AxisAlignedBB(x - xP - 1, y - yP - 1, z - zP - 1, x + xP + 1, y + yP + 1, z + zP + 1);
-        } else
+        } else {
             return super.getRenderBoundingBox();
+        }
     }
 }

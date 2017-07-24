@@ -23,6 +23,7 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     protected float runningSpeed = 0.4F;
     public float currentRotation = 0.0F;
     public float previousRotation = 0.0F;
+    protected boolean isValid;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -63,20 +64,25 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
 //                this.getWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, getWorld().rand.nextFloat() * 0.25F + 0.25F);
 //        }
 
+        if(isValid()) {
+            this.previousRotation = this.power * runningSpeed;
+            currentRotation += this.power * runningSpeed;
+            currentRotation %= 360;
+        }
         if (this.getWorld().getTotalWorldTime() % 20L == 0L && getWorld().getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
             verifyIntegrity();
-            updateSpeed();
+            calculatePower();
         }
-        this.power = 1;
-        currentRotation += this.power * runningSpeed;
-        currentRotation %= 360;
+
     }
 
-    public abstract void updateSpeed();
+    public abstract void calculatePower();
 
-    public abstract boolean isValid();
+    public boolean isValid() {
+        return isValid;
+    }
 
-    public abstract boolean verifyIntegrity();
+    public abstract void verifyIntegrity();
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {

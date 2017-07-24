@@ -43,7 +43,7 @@ public final class BWMBlocks {
     public static final Block WOODEN_AXLE = new BlockAxle(EnumTier.WOOD, 1, 1, 3).setRegistryName("wooden_axle");
     public static final Block STEEL_AXLE = new BlockAxle(EnumTier.STEEL, 1, 2, 5).setRegistryName("steel_axle");
     public static final Block WOODEN_GEARBOX = new BlockGearbox(1, EnumTier.WOOD).setRegistryName("wooden_gearbox");
-    public static final Block STEEL_GEARBOX = new BlockGearbox(2, EnumTier.STEEL).setRegistryName("steel_gearbox");
+    public static final Block STEEL_GEARBOX = new BlockGearbox(3, EnumTier.STEEL).setRegistryName("steel_gearbox");
     public static final Block WOODEN_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.WOOD).setRegistryName("wooden_broken_gearbox");
     public static final Block STEEL_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.STEEL).setRegistryName("steel_broken_gearbox");
     public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");

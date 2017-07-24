@@ -17,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.util.Random;
 
@@ -68,11 +69,14 @@ public class SawRecipes extends Feature {
             }
         });
 
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
         int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
         for (BWOreDictionary.Wood wood : BWOreDictionary.woods) {
             addSawRecipe(new SawRecipe(wood.getLog(1), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2))));
         }
-
     }
 
     public static class SawSelfDropRecipe extends SawRecipe {

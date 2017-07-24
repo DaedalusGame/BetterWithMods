@@ -120,14 +120,7 @@ public class BWOreDictionary {
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
 
         registerOre("blockVase", new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE));
-        woods = Lists.newArrayList(
-                new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
-                new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
-                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
-        );
+
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -173,7 +166,16 @@ public class BWOreDictionary {
         oreNames = getOreNames("ore");
         ingotNames = getOreNames("ingot");
         cropNames = getOreNames("crop");
-        List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
+        woods = Lists.newArrayList(
+                new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
+                new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
+                new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
+                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
+        );
+        woods.forEach(w -> getPlankOutput(w.getLog(1)));
+        logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
         for (ItemStack log : logs) {
             if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
                 for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?

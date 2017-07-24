@@ -100,9 +100,9 @@ public final class WorldUtils {
         EntityGhast ghast = new EntityGhast(world);
 
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 10.0D;
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
             double yPos = pos.getY() + world.rand.nextInt(21) - 10;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 10.0D;
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
 

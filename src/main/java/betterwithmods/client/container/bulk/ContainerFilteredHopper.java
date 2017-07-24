@@ -1,18 +1,12 @@
 package betterwithmods.client.container.bulk;
 
-import betterwithmods.common.blocks.BlockMultiPane;
-import betterwithmods.common.blocks.BlockWicker;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockTrapDoor;
+import betterwithmods.common.registry.HopperFilters;
+import betterwithmods.util.InvUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -71,12 +65,7 @@ public class ContainerFilteredHopper extends Container {
     }
 
     public boolean isItemFilter(ItemStack stack) {
-        if (stack.getItem() instanceof ItemBlock) {
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-            if (block instanceof BlockLadder || block instanceof BlockTrapDoor || stack.getItem() == Item.getItemFromBlock(Blocks.SOUL_SAND) || stack.getItem() == Item.getItemFromBlock(Blocks.IRON_BARS) || block instanceof BlockWicker || block instanceof BlockMultiPane)
-                return true;
-        }
-        return false;
+        return HopperFilters.filterTypes.keySet().stream().anyMatch( s -> InvUtils.matches(s, stack));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.block.ITurnable;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.tile.IMechSubtype;
@@ -23,8 +25,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.Capability;
 
-public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITickable {
+import javax.annotation.Nonnull;
+
+public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITickable, IMechanicalPower {
     private static final int[] ticksToRotate = {10, 20, 40, 80};
     public byte timerPos = 0;
     private int potteryRotation = 0;
@@ -32,6 +37,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     private double[] offsets = {0.25D, 0.375D, 0.5D, 0.625D};
     private boolean asynchronous = false;
     private int rotationTime = 0;
+    private int power;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -47,6 +53,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
             this.asynchronous = tag.getBoolean("Asynchronous");
         if (tag.hasKey("RotationTime"))
             this.rotationTime = tag.getInteger("RotationTime");
+        this.power = tag.getInteger("power");
     }
 
     @Override
@@ -57,6 +64,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         tag.setBoolean("Asynchronous", this.asynchronous);
         if (this.asynchronous || this.rotationTime != 0)
             tag.setInteger("RotationTime", this.rotationTime);
+        tag.setInteger("power", power);
         return tag;
     }
 
@@ -68,8 +76,8 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public void update() {
         if (!this.getWorld().isRemote) {
-            //TODO
-            if (false) {
+            this.power = calculateInput();
+            if (power > 0) {
                 if (!asynchronous && getWorld().getTotalWorldTime() % (long) ticksToRotate[timerPos] == 0) {
                     this.getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.05F, 1.0F);
                     rotateTurntable();
@@ -357,5 +365,43 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public void setSubtype(int type) {
         this.timerPos = (byte) Math.min(type, 3);
+    }
+
+
+    @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return -1;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        if (facing == EnumFacing.DOWN)
+            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
+    }
+
+    @Nonnull
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
+        return super.getCapability(capability, facing);
     }
 }

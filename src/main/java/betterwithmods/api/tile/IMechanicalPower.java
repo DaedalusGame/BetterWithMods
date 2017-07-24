@@ -29,10 +29,15 @@ public interface IMechanicalPower {
                 findPower = power;
             }
         }
-        if(findPower > getMaximumInput(EnumFacing.UP)) {
-            if( getBlockType() instanceof IOverpower)
-            ((IOverpower)getBlockType()).overpower(getWorld(),getPos());
+        if (getWorld().rand.nextInt(10) == 0 && findPower > getMaximumInput(EnumFacing.UP)) {
+            overpower();
+            return 0;
         }
         return findPower;
+    }
+
+    default void overpower() {
+        if (getBlockType() instanceof IOverpower)
+            ((IOverpower) getBlockType()).overpower(getWorld(), getPos());
     }
 }

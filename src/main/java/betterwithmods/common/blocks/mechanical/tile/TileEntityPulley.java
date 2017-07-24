@@ -271,17 +271,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     private boolean addToList(HashSet<BlockPos> set, BlockPos p, boolean up) {
         if (set.size() > GlobalConfig.maxPlatformBlocks)
             return false;
-        if (!PulleyStructureManager.isPulleyBlock(getWorld().getBlockState(p))) {
+        if (!isPlatform(p)) {
             return true;
         }
 
         BlockPos blockCheck = up ? p.up() : p.down();
-
-        if (!isMoveableBlock(blockCheck) || !isIgnoreable(blockCheck) || PulleyStructureManager.isPulleyBlock(getWorld().getBlockState(blockCheck)))
+        if ( !(isIgnoreable(blockCheck) || isMoveableBlock(blockCheck) || isPlatform(blockCheck)) && !set.contains(blockCheck))
             return false;
-        if (!set.contains(blockCheck)) {
-            return false;
-        }
 
         set.add(p);
 

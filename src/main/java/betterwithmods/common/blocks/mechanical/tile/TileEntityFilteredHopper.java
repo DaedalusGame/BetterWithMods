@@ -1,18 +1,17 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.MechanicalUtil;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -39,13 +38,12 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private final int STACK_SIZE = 8;
     public int filterType;
-    public byte power;
     public int soulsRetained;
     private int ejectCounter, ejectXPCounter;
     private int experienceCount, maxExperienceCount = 1000;
+    public byte power;
 
     public TileEntityFilteredHopper() {
-
         this.ejectCounter = 0;
         this.experienceCount = 0;
         this.ejectXPCounter = 10;
@@ -66,8 +64,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             this.filterType = tag.getShort("FilterType");
         if (tag.hasKey("Souls"))
             this.soulsRetained = tag.getInteger("Souls");
-        if (tag.hasKey("IsPowered"))
-            this.power = tag.getBoolean("IsPowered") ? (byte) 1 : 0;
+        this.power = tag.getByte("power");
         validateInventory();
     }
 
@@ -78,22 +75,22 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         t.setInteger("XPCount", this.experienceCount);
         t.setShort("FilterType", (short) this.filterType);
         t.setInteger("Souls", this.soulsRetained);
-        t.setBoolean("IsPowered", power > 1);
+        t.setByte("power", power);
         return t;
     }
 
+    public boolean isPowered() {
+        return power > 0;
+    }
+
     private List<EntityItem> getCollidingItems(World world, BlockPos pos) {
-        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY() +1, pos.getZ(), pos.getX() + 1D, pos.getY() + 1.0001D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1D, pos.getY() + 1.0001D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
     }
 
     private List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
         return world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D));
     }
 
-    public boolean isPowered() {
-        IBlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof IMechanicalBlock && ((IMechanicalBlock) state.getBlock()).isMechanicalOn(world, pos);
-    }
 
     public boolean isXPFull() {
         return experienceCount >= maxExperienceCount;
@@ -166,11 +163,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public void update() {
-        boolean isPowered = isPowered();
-        if ((isPowered ? 1 : 0) != power)
-            this.power = (byte) (isPowered() ? 1 : 0);
-
-        if (!this.world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockMechMachines && world.getBlockState(pos).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER) {
+        byte power = (byte) calculateInput();
+        if(this.power != power) {
+            this.power = power;
+        }
+        if (!this.world.isRemote) {
             insert();
             if (isPowered()) {
                 extract();
@@ -262,9 +259,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             } else if (soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getWorld().rand.nextFloat() * 0.1F + 0.8F);
-                //TODO
-//                if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES)
-//                    ((BlockMechMachines) getWorld().getBlockState(pos).getBlock()).breakHopper(getWorld(), pos);
+                overpower();
             }
         } else {
             this.soulsRetained = 0;
@@ -313,26 +308,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return inventory.getStackInSlot(18);
     }
 
-    @Override
-    public int getMechanicalOutput(EnumFacing facing) {
-        return 0;
-    }
-
-    @Override
-    public int getMechanicalInput(EnumFacing facing) {
-        return 0;
-    }
-
-    @Override
-    public int getMaximumInput(EnumFacing facing) {
-        return 4;
-    }
-
-    @Override
-    public int getMinimumInput(EnumFacing facing) {
-        return 4;
-    }
-
     private class HopperHandler extends SimpleStackHandler {
         TileEntityFilteredHopper hopper;
 
@@ -355,9 +330,32 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
+    public int getMechanicalOutput(EnumFacing facing) {
+        return -1;
+    }
+
+    @Override
+    public int getMechanicalInput(EnumFacing facing) {
+        if (facing.getAxis().isHorizontal())
+            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        return 0;
+    }
+
+    @Override
+    public int getMaximumInput(EnumFacing facing) {
+        return 1;
+    }
+
+    @Override
+    public int getMinimumInput(EnumFacing facing) {
+        return 0;
+    }
+
+    @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
-        return capability == CapabilityMechanicalPower.MECHANICAL_POWER
-                || super.hasCapability(capability, facing);
+        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+            return true;
+        return super.hasCapability(capability, facing);
     }
 
     @Nonnull
@@ -367,5 +365,4 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
     }
-
 }

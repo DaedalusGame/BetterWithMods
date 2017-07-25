@@ -1,7 +1,7 @@
 package betterwithmods.common.entity;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.AABBArray;
 import io.netty.buffer.ByteBuf;

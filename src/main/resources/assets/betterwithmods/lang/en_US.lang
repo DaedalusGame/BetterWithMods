@@ -1,7 +1,13 @@
 tile.bwm:stokedFire.name=Stoked Fire
 tile.bwm:hand_crank.name=Hand Crank
-tile.bwm:axle.name=Axle
-tile.bwm:gearbox.name=Gearbox
+tile.bwm:wooden_axle.name=Wooden Axle
+tile.bwm:steel_axle.name=Steel Axle
+tile.bwm:wooden_gearbox.name=Wooden Gearbox
+tile.bwm:steel_gearbox.name=Steel Gearbox
+tile.bwm:wooden_broken_gearbox.name=Broken Wooden Gearbox
+tile.bwm:steel_broken_gearbox.name=Broken Steel Gearbox
+
+
 tile.bwm:single_machine.0.name=Mill Stone
 tile.bwm:single_machine.1.name=Pulley
 tile.bwm:single_machine.2.name=Filtered Hopper
@@ -28,7 +34,8 @@ tile.bwm:cooking_pot.1.name=Cauldron
 tile.bwm:cooking_pot.2.name=Mysterious Vessel
 
 tile.bwm:kiln.name=Kiln
-tile.bwm:bellows.name=Bellows
+tile.bwm:bellows.0.name=Bellows
+tile.bwm:bellows.1.name=Spring Action Bellows
 tile.bwm:saw.name=Saw
 tile.bwm:steel_anvil.name=Soulforged Steel Anvil
 tile.bwm:aesthetic.0.name=Chopping Block
@@ -341,7 +348,7 @@ item.bwm:material.ender_slag.name=Ender Slag
 item.bwm:material.soul_flux.name=Soul Flux
 item.bwm:material.ender_ocular.name=Ocular of Ender
 item.bwm:material.padding.name=Padding
-item.bwm:material.armor_plate.name=Soulforged Steel Armor Plate
+item.bwm:material.armor_plate.name=Plate Armor
 item.bwm:material.broadhead.name=Broadhead
 item.bwm:material.cocoa_powder.name=Cocoa Powder
 item.bwm:material.diamond_ingot.name=Diamond Ingot
@@ -385,9 +392,9 @@ item.bwm:apple_pie.name=Apple Pie
 
 item.bwm:manual.name=Book of Single
 
-item.bwm:windmill.windmill.name=Windmill
-item.bwm:windmill.waterwheel.name=Water Wheel
-item.bwm:windmill.windmill_vertical.name=Vertical Windmill
+item.bwm:axle_generator.windmill.name=Windmill
+item.bwm:axle_generator.waterwheel.name=Water Wheel
+item.bwm:axle_generator.windmill_vertical.name=Vertical Windmill
 
 item.bwm:bark.oak.name=Oak Bark
 item.bwm:bark.spruce.name=Spruce Bark
@@ -400,18 +407,18 @@ item.bwm:bark.olive.name=Olive Bark
 item.bwm:bark.ironwood.name=Ironwood Bark
 
 
-item.bwm:steel_axe.name=Soulforged Steel Axe
-item.bwm:steel_hoe.name=Soulforged Steel Hoe
-item.bwm:steel_pickaxe.name=Soulforged Steel Pickaxe
-item.bwm:steel_shovel.name=Soulforged Steel Shovel
-item.bwm:steel_sword.name=Soulforged Steel Sword
-item.bwm:steel_mattock.name=Soulforged Steel Mattock
-item.bwm:steel_battleaxe.name=Soulforged Steel Battleaxe
+item.bwm:steel_axe.name=Refined Axe
+item.bwm:steel_hoe.name=Refined Hoe
+item.bwm:steel_pickaxe.name=Refined Pickaxe
+item.bwm:steel_shovel.name=Refined Shovel
+item.bwm:steel_sword.name=Refined Sword
+item.bwm:steel_mattock.name=Refined Mattock
+item.bwm:steel_battleaxe.name=Refined Battleaxe
 
-item.bwm:steel_helmet.name=Soulforged Steel Helmet
-item.bwm:steel_chest.name=Soulforged Steel Chestplate
-item.bwm:steel_pants.name=Soulforged Steel Leggings
-item.bwm:steel_boots.name=Soulforged Steel Boots
+item.bwm:steel_helmet.name=Plate Armor Helmet
+item.bwm:steel_chest.name=Plate Armor Chest
+item.bwm:steel_pants.name=Plate Armor Leggings
+item.bwm:steel_boots.name=Plate Armor Boots
 
 item.bwm:composite_bow.name=Composite Bow
 item.bwm:broadhead_arrow.name=Broadhead Arrow
@@ -491,6 +498,11 @@ bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos
 bwm.message.exhaustion=You are too exhausted to turn it.
 
 bwm.message.needs_bait=The fish probably won't nibble, needs some bait.
+
+bwm.message.waterwheel.0=Not enough room to place the waterwheel. Need a 5x5 area to work.
+bwm.message.windmill.0=Not enough room to place the windmill. Need a 13x13 area to work.
+bwm.message.vertical_windmill.0=Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work.
+bwm.message.vertical_windmill.1=Too few vertical axles in column to place here. (Need 7).
 
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features

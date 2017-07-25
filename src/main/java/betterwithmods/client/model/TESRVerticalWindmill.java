@@ -3,6 +3,7 @@ package betterwithmods.client.model;
 import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWindmillVertical> {
@@ -12,7 +13,7 @@ public class TESRVerticalWindmill extends TileEntitySpecialRenderer<TileEntityWi
 
     @Override
     public void render(TileEntityWindmillVertical te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
+        float rotation = (te.getCurrentRotation() + (te.getMechanicalOutput(EnumFacing.UP) == 0 ? 0 : partialTicks * te.getPrevRotation()));
         rotation = -rotation;
 
         GlStateManager.pushMatrix();

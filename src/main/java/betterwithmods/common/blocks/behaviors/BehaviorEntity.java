@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.behaviors;
 
-import betterwithmods.api.tile.IBehaviorEntity;
+import betterwithmods.api.tile.dispenser.IBehaviorEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

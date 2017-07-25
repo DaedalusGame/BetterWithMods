@@ -112,7 +112,7 @@ public class BlockBUD extends BWMBlock {
                 world.playSound(null, pos, SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS, 1, .5f);
             }
 
-            BlockPos facing = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
+            BlockPos facing = pos.offset(getFacing(world.getBlockState(pos)));
             if (!world.isAirBlock(facing)) {
                 world.getBlockState(facing).getBlock().onNeighborChange(world, facing, pos);
             }
@@ -135,11 +135,11 @@ public class BlockBUD extends BWMBlock {
     }
 
     public int getPower(IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return side.getOpposite() == getFacingFromBlockState(world.getBlockState(pos)) && isRedstoneOn(world, pos) ? 15 : 0;
+        return side.getOpposite() == getFacing(world.getBlockState(pos)) && isRedstoneOn(world, pos) ? 15 : 0;
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
@@ -165,6 +165,6 @@ public class BlockBUD extends BWMBlock {
 
     @Override
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), reverse)));
+        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), DirUtils.rotateFacingAroundY(getFacing(world.getBlockState(pos)), reverse)));
     }
 }

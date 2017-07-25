@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "betterwithmods:bellows"
+    "item": "betterwithmods:bellows",
+    "data": 0
   },
   "pattern": [
     "WWW",

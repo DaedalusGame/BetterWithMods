@@ -43,7 +43,7 @@ public class BlockGearBoostedRail extends BlockRailPowered {
         } else if (dir == EnumRailDirection.ASCENDING_NORTH || dir == EnumRailDirection.ASCENDING_SOUTH || dir == EnumRailDirection.NORTH_SOUTH) {
             correctFace = face == EnumFacing.DOWN || face == EnumFacing.EAST || face == EnumFacing.WEST;
         }
-        return correctFace && ((BlockGearbox) below.getBlock()).isGearboxOn(world, pos.down());
+        return correctFace && ((BlockGearbox) below.getBlock()).isActive(below);
     }
 
     @Override
@@ -139,14 +139,15 @@ public class BlockGearBoostedRail extends BlockRailPowered {
     public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         if (!(state.getBlock() == this)) return;
-        Block blockUnder = world.getBlockState(pos.down()).getBlock();
+        IBlockState under = world.getBlockState(pos.down());
+        Block blockUnder = under.getBlock();
         if (blockUnder instanceof BlockGearbox) {
             BlockGearbox gearbox = (BlockGearbox) blockUnder;
             EnumFacing face = world.getBlockState(pos.down()).getValue(DirUtils.FACING);
             if (face == EnumFacing.UP) return;
             if (world.isBlockPowered(pos.down()))
                 return;//=> No deceleration or acceleration if the block under the rail is powered.
-            if (gearbox.isGearboxOn(world, pos.down()))
+            if (gearbox.isActive(under))
                 accelerateMinecart(world, cart, pos);
             else
                 decelerateMinecart(world, cart, pos);

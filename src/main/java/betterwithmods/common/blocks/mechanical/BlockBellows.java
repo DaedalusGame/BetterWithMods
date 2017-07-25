@@ -1,47 +1,61 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.EnumTier;
+import betterwithmods.common.blocks.mechanical.tile.TileBellows;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
-public class BlockBellows extends BlockRotate implements IMechanicalBlock {
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    public static final PropertyBool TRIGGER = PropertyBool.create("trigger");
+public class BlockBellows extends BlockRotate implements IBlockActive, IOverpower, IMultiVariants {
 
     public BlockBellows() {
         super(Material.WOOD);
         this.setTickRandomly(true);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH)
-                .withProperty(ACTIVE, false).withProperty(TRIGGER, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, false).withProperty(EnumTier.TIER,EnumTier.WOOD));
         this.setSoundType(SoundType.WOOD);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileBellows();
     }
 
     @Override
@@ -69,7 +83,7 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase living, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, hand);
-        return setFacingInBlock(state, living.getHorizontalFacing());
+        return setFacingInBlock(state, living.getHorizontalFacing()).withProperty(ACTIVE,false).withProperty(EnumTier.TIER, EnumTier.VALUES[meta]);
     }
 
     @Override
@@ -77,8 +91,16 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
         return state.withProperty(DirUtils.HORIZONTAL, facing);
     }
 
+    public EnumTier getTier(World world,BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if(state.getPropertyKeys().contains(EnumTier.TIER)) {
+            return state.getValue(EnumTier.TIER);
+        }
+        return null;
+    }
+
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.HORIZONTAL);
     }
 
@@ -100,66 +122,25 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        if (!isCurrentStateValid(world, pos)) {
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            setTriggerMechanicalStateChange(world, pos, true);
+    public void onChangeActive(World world, BlockPos pos, boolean active) {
+        world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
+        if (active) {
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
+            blow(world, pos);
         } else {
-            boolean continuous = isTriggerMechanicalStateChange(world, pos);
-
-            if (continuous) {
-                if (isCurrentStateValid(world, pos)) {
-                    setTriggerMechanicalStateChange(world, pos, false);
-                }
-            }
+            world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
         }
+        liftCollidingEntities(world, pos);
     }
 
-    public boolean isCurrentStateValid(World world, BlockPos pos) {
-        boolean gettingPower = isInputtingMechPower(world, pos);
-        boolean mechanicalOn = isMechanicalOn(world, pos);
-
-        return gettingPower == mechanicalOn;
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
+        withTile(world, pos).ifPresent(TileBellows::onChange);
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        boolean gettingPower = isInputtingMechPower(world, pos);
-        boolean isMechOn = isMechanicalOn(world, pos);
-        boolean continuous = isTriggerMechanicalStateChange(world, pos);
-
-        if (isMechOn != gettingPower) {
-            if (continuous) {
-                setTriggerMechanicalStateChange(world, pos, false);
-                setMechanicalOn(world, pos, gettingPower);
-                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
-                if (gettingPower) {
-                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
-                    blow(world, pos);
-                }
-                else {
-                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
-                }
-                liftCollidingEntities(world, pos);
-            } else {
-                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-                setTriggerMechanicalStateChange(world, pos, true);
-            }
-        } else if (continuous) {
-            setTriggerMechanicalStateChange(world, pos, false);
-        }
-    }
-
-    public boolean isTriggerMechanicalState(IBlockState state) {
-        return state.getValue(TRIGGER);
-    }
-
-    public boolean isTriggerMechanicalStateChange(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(TRIGGER);
-    }
-
-    public void setTriggerMechanicalStateChange(World world, BlockPos pos, boolean continuous) {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(TRIGGER, continuous));
+        withTile(world, pos).ifPresent(TileBellows::onChange);
     }
 
     @Override
@@ -171,71 +152,24 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
         if (DirUtils.rotateAroundY(this, world, pos, reverse)) {
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            MechanicalUtil.destoryHorizontalAxles(world, pos);
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
+            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         }
     }
 
-    @Override
-    public boolean canOutputMechanicalPower() {
-        return false;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputtingMechPower(World world, BlockPos pos) {
-        return MechanicalUtil.isBlockPoweredByAxle(world, pos, this);
-    }
-
-    @Override
-    public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
-        return dir != facing && dir != EnumFacing.UP;
-    }
 
     @Override
     public void overpower(World world, BlockPos pos) {
         breakBellows(world, pos);
     }
 
-    @Override
-    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos) {
-        return isMechanicalOnFromState(world.getBlockState(pos));
-    }
-
-    @Override
-    public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(ACTIVE, isOn));
-    }
-
-    @Override
-    public boolean isMechanicalOnFromState(IBlockState state) {
-        return state.getValue(ACTIVE);
-    }
-
     public void blow(World world, BlockPos pos) {
-        if (isMechanicalOn(world, pos)) {
-            stokeFlames(world, pos);
-        }
-    }
-
-    public void playStateChangeSound(World world, BlockPos pos) {
-        liftCollidingEntities(world, pos);
+        stokeFlames(world, pos);
     }
 
     private void stokeFlames(World world, BlockPos pos) {
-        EnumFacing dir = getFacingFromBlockState(world.getBlockState(pos));
-        EnumFacing dirLeft = DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), false);
-        EnumFacing dirRight = DirUtils.rotateFacingAroundY(getFacingFromBlockState(world.getBlockState(pos)), true);
+        EnumFacing dir = getFacing(world.getBlockState(pos));
+        EnumFacing dirLeft = DirUtils.rotateFacingAroundY(getFacing(world.getBlockState(pos)), false);
+        EnumFacing dirRight = DirUtils.rotateFacingAroundY(getFacing(world.getBlockState(pos)), true);
 
         for (int i = 0; i < 3; i++) {
             BlockPos dirPos = pos.offset(dir, 1 + i);
@@ -304,27 +238,41 @@ public class BlockBellows extends BlockRotate implements IMechanicalBlock {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = isMechanicalOnFromState(state) ? 8 : 0;
-        meta += isTriggerMechanicalState(state) ? 4 : 0;
-        return meta + state.getValue(DirUtils.HORIZONTAL).getHorizontalIndex();
+        int facing = state.getValue(DirUtils.HORIZONTAL).getHorizontalIndex();
+        int tier = state.getValue(EnumTier.TIER).ordinal();
+        int active = isActive(state) ? 1 : 0;
+        return active | tier << 1 | facing << 2;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        boolean isActive = false;
-        if (meta > 7) {
-            isActive = true;
-            meta -= 8;
-        }
-        boolean isTrigger = meta > 3;
-        if (isTrigger)
-            meta -= 4;
-        return this.getDefaultState().withProperty(ACTIVE, isActive).withProperty(TRIGGER, isTrigger)
-                .withProperty(DirUtils.HORIZONTAL, EnumFacing.getHorizontal(meta));
+        return this.getDefaultState().withProperty(ACTIVE, (meta & 1) == 1).withProperty(EnumTier.TIER, EnumTier.VALUES[(meta >> 1 & 1)]).withProperty(DirUtils.HORIZONTAL, EnumFacing.getHorizontal(meta >> 2));
     }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, DirUtils.HORIZONTAL, ACTIVE, TRIGGER);
+        return new BlockStateContainer(this, DirUtils.HORIZONTAL, ACTIVE, EnumTier.TIER);
+    }
+
+    public Optional<TileBellows> withTile(World world, BlockPos pos) {
+        return Optional.ofNullable(getTile(world, pos));
+    }
+
+    public TileBellows getTile(World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileBellows)
+            return (TileBellows) tile;
+        return null;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
+    }
+
+    @Override
+    public String[] getVariants() {
+        return new String[]{"active=true,facing=north,tier=wood", "active=true,facing=north,tier=steel"};
     }
 }

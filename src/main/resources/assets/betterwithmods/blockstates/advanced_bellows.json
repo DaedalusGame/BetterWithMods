@@ -1,12 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "textures": {
-      "front": "betterwithmods:blocks/advanced_bellows_front_inactive",
-      "top": "betterwithmods:blocks/advanced_bellows_top",
-      "side": "betterwithmods:blocks/advanced_bellows_side_inactive",
-      "particle": "betterwithmods:blocks/advanced_bellows_top"
-    },
+
     "model": "betterwithmods:bellows_compressed"
   },
   "variants": {
@@ -37,8 +32,7 @@
     "trigger": {
       "true": {
         "textures": {
-          "front": "betterwithmods:blocks/advanced_bellows_front_active",
-          "side": "betterwithmods:blocks/advanced_bellows_side_active"
+
         }
       },
       "false": {

@@ -1,28 +1,18 @@
 package betterwithmods.module;
 
-import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.module.gameplay.CrucibleRecipes;
-import betterwithmods.module.hardcore.HCDiamond;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static net.minecraftforge.fml.common.LoaderState.ModState.INITIALIZED;
 
 /**
  * Created by tyler on 5/24/17.

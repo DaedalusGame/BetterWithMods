@@ -23,7 +23,7 @@ public interface IBlockActive {
             if(state.getValue(ACTIVE) != active)
                 onChangeActive(world,pos,active);
             world.setBlockState(pos, state.withProperty(ACTIVE, active));
-            world.scheduleUpdate(pos, state.getBlock(),5);
+            world.scheduleUpdate(pos, state.getBlock(),1);
         }
     }
 

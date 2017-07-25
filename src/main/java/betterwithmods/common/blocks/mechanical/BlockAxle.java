@@ -181,7 +181,9 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
     public EnumFacing[] getAxisDirections(IBlockState state) {
-        return DirUtils.getAxisDirection(state.getValue(AXIS));
+        if(state.getBlock() instanceof BlockAxle)
+            return DirUtils.getAxisDirection(state.getValue(AXIS));
+        return new EnumFacing[0];
     }
 
     public EnumFacing.Axis getAxis(IBlockState state) {

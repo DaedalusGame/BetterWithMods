@@ -34,7 +34,8 @@ tile.bwm:cooking_pot.1.name=Cauldron
 tile.bwm:cooking_pot.2.name=Mysterious Vessel
 
 tile.bwm:kiln.name=Kiln
-tile.bwm:bellows.name=Bellows
+tile.bwm:bellows.0.name=Bellows
+tile.bwm:bellows.1.name=Spring Action Bellows
 tile.bwm:saw.name=Saw
 tile.bwm:steel_anvil.name=Soulforged Steel Anvil
 tile.bwm:aesthetic.0.name=Chopping Block

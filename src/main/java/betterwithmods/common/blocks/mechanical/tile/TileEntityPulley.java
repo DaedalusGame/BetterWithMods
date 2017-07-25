@@ -124,7 +124,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
                 BlockPos newPos = BlockRope.getLowestRopeBlock(getWorld(), pos).down();
                 IBlockState state = getWorld().getBlockState(newPos);
                 boolean flag = !isMoving && state.getBlock() == BWMBlocks.ANCHOR
-                        && ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
+                        && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
                 if (newPos.getY() > 0 && (getWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getWorld(), newPos) || flag)
                         && newPos.up().getY() > 0) {
                     return true;
@@ -138,7 +138,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         BlockPos lowest = BlockRope.getLowestRopeBlock(getWorld(), pos);
         IBlockState state = getWorld().getBlockState(lowest.down());
         boolean flag = state.getBlock() == BWMBlocks.ANCHOR
-                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
+                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
         rope = new EntityExtendingRope(getWorld(), pos, lowest, lowest.up().getY());
         if (!flag || movePlatform(lowest.down(), true)) {
             getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
@@ -155,7 +155,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         BlockPos newPos = BlockRope.getLowestRopeBlock(getWorld(), pos).down();
         IBlockState state = getWorld().getBlockState(newPos);
         boolean flag = state.getBlock() == BWMBlocks.ANCHOR
-                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(state) == EnumFacing.UP;
+                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
         rope = new EntityExtendingRope(getWorld(), pos, newPos.up(), newPos.getY());
         if (!flag || movePlatform(newPos, false)) {
             getWorld().spawnEntity(rope);

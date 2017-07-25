@@ -247,7 +247,7 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return null;
     }
 

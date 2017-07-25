@@ -141,11 +141,11 @@ public class BlockLens extends BlockRotate {
     }
 
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return getFacingFromBlockState(world.getBlockState(pos));
+        return getFacing(world.getBlockState(pos));
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
@@ -187,7 +187,7 @@ public class BlockLens extends BlockRotate {
         Block block = world.getBlockState(offset).getBlock();
 
         if (block == BWMBlocks.DETECTOR) {
-            EnumFacing detFacing = ((BlockDetector) block).getFacingFromBlockState(world.getBlockState(offset));
+            EnumFacing detFacing = ((BlockDetector) block).getFacing(world.getBlockState(offset));
 
             if (detFacing == DirUtils.getOpposite(facing))
                 return true;

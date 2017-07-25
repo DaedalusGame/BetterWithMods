@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "betterwithmods:advanced_bellows"
+    "item": "betterwithmods:bellows",
+    "data": 1
   },
   "pattern": [
     " C ",

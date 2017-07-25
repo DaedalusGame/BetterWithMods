@@ -122,7 +122,7 @@ public class DirUtils {
     }
 
     public static IBlockState rotateStateAroundY(ITurnable block, IBlockState state, boolean reverse) {
-        EnumFacing facing = block.getFacingFromBlockState(state);
+        EnumFacing facing = block.getFacing(state);
         EnumFacing newFacing = rotateFacingAroundY(facing, reverse);
         state = block.setFacingInBlock(state, newFacing);
         return state;

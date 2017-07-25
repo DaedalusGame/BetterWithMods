@@ -79,7 +79,7 @@ public class BlockRope extends BWMBlock {
         boolean supported = false;
 
         if (blockAbove == BWMBlocks.ANCHOR) {
-            EnumFacing facing = ((BlockAnchor) BWMBlocks.ANCHOR).getFacingFromBlockState(world.getBlockState(pos.up()));
+            EnumFacing facing = ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(world.getBlockState(pos.up()));
             supported = facing != EnumFacing.UP;
         }
         if (blockAbove == this) {
@@ -115,7 +115,7 @@ public class BlockRope extends BWMBlock {
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return null;
     }
 

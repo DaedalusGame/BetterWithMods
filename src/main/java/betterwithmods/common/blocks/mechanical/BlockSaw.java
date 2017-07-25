@@ -104,7 +104,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         state = state.getActualState(world, pos);
-        EnumFacing facing = getFacingFromBlockState(state);
+        EnumFacing facing = getFacing(state);
         switch (facing) {
             case DOWN:
                 return D_AABB;
@@ -188,15 +188,15 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
 
     @Override
     public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return side != getFacingFromBlockState(state);
+        return side != getFacing(state);
     }
 
     public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-        return getFacingFromBlockState(world.getBlockState(pos));
+        return getFacing(world.getBlockState(pos));
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 

@@ -149,7 +149,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return null;
     }
 

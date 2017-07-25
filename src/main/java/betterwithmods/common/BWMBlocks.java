@@ -93,7 +93,6 @@ public final class BWMBlocks {
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
     public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
-    public static final Block ADVANCED_BELLOWS = new BlockAdvBellows().setRegistryName("advanced_bellows");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
@@ -125,7 +124,7 @@ public final class BWMBlocks {
         registerBlock(UNFIRED_POTTERY, new ItemBlockMeta(UNFIRED_POTTERY));
         registerBlock(STOKED_FLAME, null);
         registerBlock(HIBACHI);
-        registerBlock(BELLOWS);
+        registerBlock(BELLOWS, new ItemBlockMeta(BELLOWS));
         registerBlock(KILN, null);
         registerBlock(HEMP, new ItemHempSeed(HEMP));
         registerBlock(DETECTOR);
@@ -168,7 +167,6 @@ public final class BWMBlocks {
         });
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
-        registerBlock(ADVANCED_BELLOWS);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
@@ -192,7 +190,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "bwm.creative_generator");
         GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
-        GameRegistry.registerTileEntity(TileEntityAdvBellows.class, "bwm.bellows");
+        GameRegistry.registerTileEntity(TileBellows.class, "bwm.bellows");
         GameRegistry.registerTileEntity(TileStake.class, "bwm.stake");
         GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
         GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");

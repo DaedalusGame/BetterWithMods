@@ -30,7 +30,7 @@ public abstract class BWMBlock extends Block implements ITurnable {
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return null;
     }
 

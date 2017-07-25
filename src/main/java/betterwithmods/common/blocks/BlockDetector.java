@@ -79,7 +79,7 @@ public class BlockDetector extends BlockRotate {
         boolean blockDetection = detectBlock(world, pos);
         boolean detected = checkDetection(state, world, pos);
 
-        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
+        EnumFacing facing = getFacing(world.getBlockState(pos));
         BlockPos offset = pos.offset(facing);
 
         if (world.isAirBlock(offset)) {
@@ -122,7 +122,7 @@ public class BlockDetector extends BlockRotate {
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
@@ -173,7 +173,7 @@ public class BlockDetector extends BlockRotate {
     }
 
     public boolean detectBlock(World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
+        BlockPos offset = pos.offset(getFacing(world.getBlockState(pos)));
         Block target = world.getBlockState(offset).getBlock();
 
         if (world.isAirBlock(offset) && (world.getBiomeForCoordsBody(offset).canRain() && world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering()))) {
@@ -181,7 +181,7 @@ public class BlockDetector extends BlockRotate {
         }
         if (target == BWMBlocks.LENS) {
             BlockLens lens = (BlockLens) target;
-            if (lens.getFacingFromBlockState(world.getBlockState(offset)) == DirUtils.getOpposite(getFacingFromBlockState(world.getBlockState(pos))) && lens.isLit(world, offset))
+            if (lens.getFacing(world.getBlockState(offset)) == DirUtils.getOpposite(getFacing(world.getBlockState(pos))) && lens.isLit(world, offset))
                 return true;
         } else if (world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM || world.getBlockState(offset).getBlock() instanceof BlockMini)
             return true;
@@ -199,7 +199,7 @@ public class BlockDetector extends BlockRotate {
     }
 
     public boolean checkDetection(IBlockState state, World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacingFromBlockState(world.getBlockState(pos)));
+        BlockPos offset = pos.offset(getFacing(world.getBlockState(pos)));
 
         if (world.isAirBlock(offset)) {
             int x = offset.getX();
@@ -214,7 +214,7 @@ public class BlockDetector extends BlockRotate {
             BlockPos below = offset.offset(EnumFacing.DOWN);
             if (world.getBlockState(below).getBlock() instanceof BlockCrops && !(world.getBlockState(below).getBlock() instanceof BlockHemp) && world.getBlockState(below).getBlock().getMetaFromState(world.getBlockState(below)) >= ((BlockCrops) world.getBlockState(below).getBlock()).getMaxAge()) {
                 return true;
-            } else if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacingFromBlockState(world.getBlockState(offset)) == getFacingFromBlockState(world.getBlockState(pos))) {
+            } else if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacing(world.getBlockState(offset)) == getFacing(world.getBlockState(pos))) {
                 return true;
             }
         } else {

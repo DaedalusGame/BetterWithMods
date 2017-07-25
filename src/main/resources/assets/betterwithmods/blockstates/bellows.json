@@ -3,11 +3,13 @@
   "defaults": {
     "textures": {
       "front": "betterwithmods:blocks/bellows_front",
+      "front_active": "betterwithmods:blocks/bellows_front",
       "top": "betterwithmods:blocks/bellows_top",
       "side": "betterwithmods:blocks/bellows_side",
+      "side_active": "betterwithmods:blocks/bellows_side",
       "particle": "betterwithmods:blocks/bellows_top"
     },
-    "model": "betterwithmods:bellows_compressed"
+    "model": "betterwithmods:bellows"
   },
   "variants": {
     "normal": [
@@ -19,10 +21,10 @@
       }
     ],
     "active": {
-      "true": {},
-      "false": {
-        "model": "betterwithmods:bellows"
-      }
+      "true": {
+        "model": "betterwithmods:bellows_compressed"
+      },
+      "false": {}
     },
     "facing": {
       "north": {},
@@ -36,9 +38,18 @@
         "y": 90
       }
     },
-    "trigger": {
-      "true": {},
-      "false": {}
+    "tier": {
+      "wood": {},
+      "steel": {
+        "textures": {
+          "front": "betterwithmods:blocks/advanced_bellows_front_inactive",
+          "top": "betterwithmods:blocks/advanced_bellows_top",
+          "side": "betterwithmods:blocks/advanced_bellows_side_inactive",
+          "particle": "betterwithmods:blocks/advanced_bellows_top",
+          "front_active": "betterwithmods:blocks/advanced_bellows_front_active",
+          "side_active": "betterwithmods:blocks/advanced_bellows_side_active"
+        }
+      }
     }
   }
 }

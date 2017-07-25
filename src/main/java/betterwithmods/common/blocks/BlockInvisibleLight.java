@@ -121,7 +121,7 @@ public class BlockInvisibleLight extends BWMBlock {
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
@@ -132,7 +132,7 @@ public class BlockInvisibleLight extends BWMBlock {
 
     private boolean hasClearViewToLens(World world, BlockPos pos) {
         boolean clear = true;
-        EnumFacing face = getFacingFromBlockState(world.getBlockState(pos));
+        EnumFacing face = getFacing(world.getBlockState(pos));
         for (int i = 1; i < 32; i++)//64 default, try to get some lag solved
         {
             BlockPos bPos = pos.offset(face, i);

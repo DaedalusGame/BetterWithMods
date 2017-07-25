@@ -2,7 +2,8 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.blocks.mechanical.BlockSaw;
+import betterwithmods.common.blocks.EnumTier;
+import betterwithmods.common.blocks.mechanical.BlockBellows;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,22 +13,37 @@ import net.minecraftforge.common.capabilities.Capability;
 import javax.annotation.Nonnull;
 
 /**
- * Created by primetoxinz on 7/24/17.
+ * Purpose:
+ *
+ * @author primetoxinz
+ * @version 3/16/17
  */
-public class TileSaw extends TileBasic implements IMechanicalPower {
+public class TileBellows extends TileBasic implements IMechanicalPower {
+
+    private int tick;
+    private boolean continuous = false;
     private int power;
 
-    public void onChanged() {
+    public void onChange() {
+        if (getBlock().getTier(world,pos) == EnumTier.STEEL)
+            continuous = true;
         int power = calculateInput();
-        if (this.power != power) {
-            this.power = power;
-            getBlock().setActive(world,pos,power > 0);
+        if (continuous) {
+            if (power != this.power)
+                this.power = power;
+            if (this.power > 0) {
+                if (tick >= 37) {
+                    getBlock().setActive(world, pos, !getBlock().isActive(world.getBlockState(pos)));
+                    tick = 0;
+                }
+                tick++;
+            }
+        } else {
+            if (power != this.power) {
+                this.power = power;
+                getBlock().setActive(world, pos, this.power > 0);
+            }
         }
-    }
-
-    @Override
-    public boolean overpowerChance() {
-        return true;
     }
 
     @Override
@@ -49,13 +65,15 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        if (facing != getBlock().getFacing(world,pos))
+        if (facing != EnumFacing.UP && facing != getBlock().getFacing(world.getBlockState(pos)))
             return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
 
     @Override
     public int getMaximumInput(EnumFacing facing) {
+        if (getBlock().getTier(world,pos) == EnumTier.STEEL)
+            return 3;
         return 1;
     }
 
@@ -79,7 +97,8 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
         return super.getCapability(capability, facing);
     }
 
-    public BlockSaw getBlock() {
-        return (BlockSaw) getBlockType();
+    public BlockBellows getBlock() {
+        return (BlockBellows) getBlockType();
     }
+
 }

@@ -163,7 +163,7 @@ public class BWOreDictionary {
     }
 
     public static void postInitOreDictGathering() {
-        dustNames = getOreIngredients("nugget");
+        nuggetNames = getOreIngredients("nugget");
         dustNames = getOreIngredients("dust");
         oreNames = getOreIngredients("ore");
         ingotNames = getOreIngredients("ingot");

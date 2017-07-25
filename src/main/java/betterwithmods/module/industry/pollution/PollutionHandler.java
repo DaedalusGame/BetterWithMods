@@ -5,6 +5,7 @@ import betterwithmods.api.tile.IPollutant;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.util.player.PlayerHelper;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,10 +14,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -28,6 +31,34 @@ import java.util.stream.Collectors;
 public class PollutionHandler {
     public HashMap<String, Float> biomeMods = new HashMap<>();
 
+
+    @SubscribeEvent
+    public void onMobSpawn(LivingSpawnEvent.SpecialSpawn event) {
+        if (!(event.getEntityLiving() instanceof EntityLiving))
+            return;
+        EntityLiving living = (EntityLiving) event.getEntityLiving();
+        BlockPos pos = new BlockPos(event.getX(), 0, event.getZ());
+        float pollution = getPollutionStat(event.getWorld(), new ChunkPos(pos));
+        if (pollution > 0) {
+            event.setCanceled(true);
+            living.onInitialSpawn(getDifficultyForLocation(event.getWorld(), pos, pollution), null);
+        } else {
+            living.onInitialSpawn(event.getWorld().getDifficultyForLocation(pos), null);
+        }
+    }
+
+    public static DifficultyInstance getDifficultyForLocation(World world, BlockPos pos, float pollution) {
+        long i = 0L;
+        float f = 0.0F;
+
+        if (world.isBlockLoaded(pos)) {
+            f = world.getCurrentMoonPhaseFactor();
+            i = (long) (world.getChunkFromBlockCoords(pos).getInhabitedTime() * pollution);
+        }
+
+        return new DifficultyInstance(world.getDifficulty(), world.getWorldTime(), i, f);
+    }
+
     @SubscribeEvent
     public void onChunkLoad(ChunkDataEvent.Load evt) {
         if (!evt.getWorld().isRemote && evt.getWorld().hasCapability(WorldPollutionCapability.POLLUTION, null)) {
@@ -37,10 +68,9 @@ public class PollutionHandler {
                 if (evt.getData().hasKey("bwm_pollution")) {
                     NBTTagCompound tag = evt.getData().getCompoundTag("bwm_pollution");
                     pollution.readNBT(pos, tag);
-                }
-                else {
+                } else {
                     pollution.setPollution(pos, 0.0F);
-                    pollution.setLeafCount(pos, (byte)0);
+                    pollution.setLeafCount(pos, (byte) 0);
                 }
             }
         }
@@ -147,7 +177,7 @@ public class PollutionHandler {
     public void attachPollutantCapability(AttachCapabilitiesEvent<TileEntity> evt) {
         TileEntity tile = evt.getObject();
         if (tile instanceof TileEntityFurnace) {
-            final TileEntityFurnace furnace = (TileEntityFurnace)tile;
+            final TileEntityFurnace furnace = (TileEntityFurnace) tile;
             evt.addCapability(new ResourceLocation("betterwithmods", "furnace_pollution"), new ICapabilitySerializable<NBTTagCompound>() {
                 IPollutant instance = new CapabilityFurnacePollution(furnace);
 

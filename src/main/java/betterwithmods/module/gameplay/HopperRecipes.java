@@ -44,7 +44,7 @@ public class HopperRecipes extends Feature {
         return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) ||
                 BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) ||
                 BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) ||
-                BWOreDictionary.listContains(stack, BWOreDictionary.dustNames) ||
+                BWOreDictionary.listContains(stack, BWOreDictionary.getItems(BWOreDictionary.dustNames)) ||
                 BWOreDictionary.listContains(stack, OreDictionary.getOres("pile"));
     }
 
@@ -59,7 +59,6 @@ public class HopperRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-
 
 
         HopperFilters.addFilter(1, Blocks.LADDER, 0, HopperRecipes::isItem);
@@ -102,7 +101,7 @@ public class HopperRecipes extends Feature {
 
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                onCraft(world,pos,inputStack);
+                onCraft(world, pos, inputStack);
             }
 
             @Override

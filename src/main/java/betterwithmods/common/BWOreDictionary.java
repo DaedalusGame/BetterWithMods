@@ -16,13 +16,13 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Created by tyler on 5/10/17.
@@ -30,9 +30,10 @@ import java.util.stream.IntStream;
 public class BWOreDictionary {
 
     public static List<ItemStack> cropNames;
-    public static List<ItemStack> dustNames;
-    public static List<ItemStack> oreNames;
-    public static List<ItemStack> ingotNames;
+    public static List<Ore> nuggetNames;
+    public static List<Ore> dustNames;
+    public static List<Ore> oreNames;
+    public static List<Ore> ingotNames;
 
     public static List<Wood> woods;
 
@@ -162,9 +163,10 @@ public class BWOreDictionary {
     }
 
     public static void postInitOreDictGathering() {
-        dustNames = getOreNames("dust");
-        oreNames = getOreNames("ore");
-        ingotNames = getOreNames("ingot");
+        dustNames = getOreIngredients("nugget");
+        dustNames = getOreIngredients("dust");
+        oreNames = getOreIngredients("ore");
+        ingotNames = getOreIngredients("ingot");
         cropNames = getOreNames("crop");
         woods = Lists.newArrayList(
                 new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
@@ -195,12 +197,17 @@ public class BWOreDictionary {
         }
     }
 
-    public static String getSuffix(ItemStack stack, String startingPrefix) {
-        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).map(ore -> ore.substring(startingPrefix.length())).findFirst().orElse(null);
-    }
 
     public static List<ItemStack> getOreNames(String prefix) {
         return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).flatMap(n -> OreDictionary.getOres(n).stream()).collect(Collectors.toList());
+    }
+
+    public static List<ItemStack> getItems(List<Ore> ores) {
+        return ores.stream().flatMap(o -> Arrays.stream(o.getMatchingStacks())).collect(Collectors.toList());
+    }
+
+    public static List<Ore> getOreIngredients(String prefix) {
+        return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).map(n -> new Ore(prefix, n)).collect(Collectors.toList());
     }
 
     public static int listContains(Object obj, List<Object> list) {
@@ -288,6 +295,33 @@ public class BWOreDictionary {
         public ItemStack getSawdust(int count) {
             ItemStack copy = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
             return copy;
+        }
+
+
+    }
+
+
+    public static class Ore extends OreIngredient {
+        private String prefix;
+        private String ore;
+
+        public Ore(String prefix, String ore) {
+            super(ore);
+            this.prefix = prefix;
+            this.ore = ore;
+
+        }
+
+        public String getOre() {
+            return ore;
+        }
+
+        public String getPrefix() {
+            return prefix;
+        }
+
+        public String getSuffix() {
+            return ore.substring(getPrefix().length());
         }
     }
 }

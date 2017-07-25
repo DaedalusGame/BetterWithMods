@@ -8,17 +8,14 @@ import com.google.common.collect.Sets;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -81,25 +78,43 @@ public class HCOres extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        Set<String> oreExcludes = Sets.union(oreExclude, Sets.newHashSet("diamond"));
+        Set<String> oreExcludes = Sets.union(oreExclude, Sets.newHashSet("oreDiamond"));
         if (oreNuggetSmelting) {
-            List<Pair<ItemStack, String>> oreSuffixes = BWOreDictionary.oreNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "ore"))).filter(p -> !oreExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
-            oreSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
-                ItemStack n = nugget.copy();
-                n.setCount(oreProductionCount);
-                BWMRecipes.removeFurnaceRecipe(pair.getKey());
-                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
-            }));
+            for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
+                if (!oreExcludes.contains(ore.getOre())) {
+                    for (BWOreDictionary.Ore nugget : BWOreDictionary.nuggetNames) {
+                        if (nugget.getSuffix().equals(ore.getSuffix())) {
+                            for (ItemStack stack : nugget.getMatchingStacks()) {
+                                ItemStack n = stack.copy();
+                                n.setCount(dustProductionCount);
+                                //Remove all furnace recipes with dust
+                                Arrays.stream(ore.getMatchingStacks()).forEach(BWMRecipes::removeRecipe);
+                                //Add dust -> nugget smelting recipe
+                                Arrays.stream(ore.getMatchingStacks()).forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
+                            }
+                        }
+                    }
+                }
+            }
         }
-        Set<String> dustExcludes = Sets.union(dustExclude, Sets.newHashSet("diamond"));
+        Set<String> dustExcludes = Sets.union(dustExclude, Sets.newHashSet("dustDiamond"));
         if (dustNuggetSmelting) {
-            List<Pair<ItemStack, String>> dustSuffixes = BWOreDictionary.dustNames.stream().map(i -> Pair.of(i, BWOreDictionary.getSuffix(i, "dust"))).filter( p -> p == null || p.getLeft() == null || p.getRight() == null).filter(p -> !dustExcludes.contains(p.getValue().toLowerCase())).collect(Collectors.toList());
-            dustSuffixes.forEach(pair -> OreDictionary.getOres("nugget" + pair.getValue()).stream().findFirst().ifPresent(nugget -> {
-                ItemStack n = nugget.copy();
-                n.setCount(dustProductionCount);
-                BWMRecipes.removeFurnaceRecipe(pair.getKey());
-                FurnaceRecipes.instance().getSmeltingList().put(pair.getKey(), n);
-            }));
+            for (BWOreDictionary.Ore dust : BWOreDictionary.dustNames) {
+                if (!dustExcludes.contains(dust.getOre())) {
+                    for (BWOreDictionary.Ore nugget : BWOreDictionary.nuggetNames) {
+                        if (nugget.getSuffix().equals(dust.getSuffix())) {
+                            for (ItemStack stack : nugget.getMatchingStacks()) {
+                                ItemStack n = stack.copy();
+                                n.setCount(dustProductionCount);
+                                //Remove all furnace recipes with dust
+                                Arrays.stream(dust.getMatchingStacks()).forEach(BWMRecipes::removeRecipe);
+                                //Add dust -> nugget smelting recipe
+                                Arrays.stream(dust.getMatchingStacks()).forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

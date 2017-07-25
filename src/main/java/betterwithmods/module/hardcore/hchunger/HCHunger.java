@@ -89,6 +89,13 @@ public class HCHunger extends CompatFeature {
             RAW_FOOD.stream().map(i -> (ItemFood) i).forEach(i -> i.setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F));
         }
 
+        BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW));
+        BWMRecipes.removeRecipe(new ItemStack(Items.CAKE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW));
+        BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP));
+
         FoodHelper.registerFood(new ItemStack(Items.BEEF), 12);
         FoodHelper.registerFood(new ItemStack(Items.PORKCHOP), 12);
         FoodHelper.registerFood(new ItemStack(Items.RABBIT), 12);
@@ -146,12 +153,6 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 12, 15, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
 
-        BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.CAKE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP, 0));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);

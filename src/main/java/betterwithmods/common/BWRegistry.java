@@ -60,7 +60,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -97,20 +96,6 @@ public class BWRegistry {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         BWMItems.getItems().forEach(event.getRegistry()::register);
-    }
-
-    @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        IForgeRegistryModifiable<IRecipe> reg = ((IForgeRegistryModifiable)event.getRegistry());
-
-        for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
-            IRecipe recipe = iter.next();
-            for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
-                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
-                }
-            }
-        }
     }
 
     public static void init() {
@@ -226,6 +211,25 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
+
+        for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
+            for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+            
+            for(Iterator<IRecipe> iter = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+        }
+
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);
         replaceIRecipe(HCLumber.class, reg);
@@ -237,6 +241,8 @@ public class BWRegistry {
         replaceIRecipe(Rustic.class, reg);
         replaceIRecipe(HCFishing.class, reg);
         registerAnvilRecipes(reg);
+
+
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {

@@ -10,7 +10,6 @@ import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.tile.TileBellows;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -153,8 +152,7 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
         if (DirUtils.rotateAroundY(this, world, pos, reverse)) {
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            MechanicalUtil.destoryHorizontalAxles(world, pos);
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
+            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
         }
     }
 

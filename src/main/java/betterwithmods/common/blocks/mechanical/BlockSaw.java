@@ -13,7 +13,6 @@ import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
@@ -219,7 +218,6 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
         if (DirUtils.rotateAroundY(this, world, pos, reverse)) {
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            MechanicalUtil.destoryHorizontalAxles(world, pos);
         }
     }
 

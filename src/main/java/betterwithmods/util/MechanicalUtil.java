@@ -1,12 +1,9 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.BWMBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -47,50 +44,4 @@ public class MechanicalUtil {
         return 0;
     }
 
-    public static boolean isBlockPoweredByAxleOnSide(World world, BlockPos pos, EnumFacing dir) {
-        BlockPos pos2 = pos.offset(dir);
-        Block block = world.getBlockState(pos2).getBlock();
-
-        return false;
-    }
-
-
-    public static boolean isPoweredByCrank(World world, BlockPos pos) {
-        for (int i = 1; i < 6; i++) {
-            if (isPoweredByCrankOnSide(world, pos, EnumFacing.getFront(i)))
-                return true;
-        }
-        return false;
-    }
-
-    public static boolean isPoweredByCrankOnSide(World world, BlockPos pos, EnumFacing dir) {
-        BlockPos offset = pos.offset(dir);
-        Block block = world.getBlockState(offset).getBlock();
-
-        if (block == BWMBlocks.HAND_CRANK) {
-            IMechanicalBlock mech = (IMechanicalBlock) block;
-
-            if (mech.isOutputtingMechPower(world, offset))
-                return true;
-        }
-        return false;
-    }
-
-    public static boolean isBlockPoweredByAxle(World world, BlockPos pos, IMechanicalBlock block) {
-        for (int i = 0; i < 6; i++) {
-            if (block.canInputPowerToSide(world, pos, EnumFacing.getFront(i))) {
-                if (isBlockPoweredByAxleOnSide(world, pos, EnumFacing.getFront(i))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static void destoryHorizontalAxles(World world, BlockPos pos) {
-        for (int i = 2; i < 6; i++) {
-            Block block = world.getBlockState(pos).getBlock();
-
-        }
-    }
 }

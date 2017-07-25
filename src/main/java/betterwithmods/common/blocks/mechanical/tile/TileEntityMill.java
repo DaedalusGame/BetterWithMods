@@ -204,6 +204,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public int getMechanicalInput(EnumFacing facing) {
         if (facing.getAxis().isVertical())
             return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        if(world.getTileEntity(pos.offset(facing)) instanceof TileCrank) {
+            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+        }
         return 0;
     }
 

@@ -197,6 +197,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");
         GameRegistry.registerTileEntity(TileSaw.class, "bwm.saw");
         GameRegistry.registerTileEntity(TilePump.class, "bwm.pump");
+        GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
     }
 
 //    /**

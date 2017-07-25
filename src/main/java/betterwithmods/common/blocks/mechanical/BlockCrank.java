@@ -1,13 +1,15 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BWMBlock;
+import betterwithmods.common.blocks.mechanical.tile.TileCrank;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.hchunger.HCHunger;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -28,9 +31,10 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVariants {
+public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
     public static final float BASE_HEIGHT = 0.25F;
     private static final int TICK_RATE = 3;
@@ -97,8 +101,9 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 world.markBlockRangeForRenderUpdate(pos, pos);
                 world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            } else
-                breakCrank(world, pos);
+            } else {
+                overpower(world, pos);
+            }
         }
     }
 
@@ -114,8 +119,6 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
 
     @Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        //if(side != 1)
-        //return super.shouldSideBeRendered(world, x, y, z, side);
         return true;
     }
 
@@ -124,66 +127,12 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
         for (int i = 0; i < 6; i++) {
             BlockPos offset = pos.offset(EnumFacing.getFront(i));
             if (i != 0) {
-                Block block = world.getBlockState(offset).getBlock();
-                if (block != null && block instanceof IMechanicalBlock) {
-                    IMechanicalBlock mech = (IMechanicalBlock) block;
-                    if (mech.canInputMechanicalPower())
-                        potentialDevices++;
+                if (MechanicalUtil.getMechanicalPower(world, offset, EnumFacing.getFront(i).getOpposite()) != null) {
+                    potentialDevices++;
                 }
             }
         }
         return potentialDevices > 1;
-    }
-
-    public void breakCrank(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
-        //world.playAuxSFX(2235, x, y, z, 0);
-        world.setBlockToAir(pos);
-    }
-
-    @Override
-    public boolean canOutputMechanicalPower() {
-        return true;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputtingMechPower(World world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return world.getBlockState(pos).getValue(STAGE) > 1;
-    }
-
-    @Override
-    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        return false;
-    }
-
-    @Override
-    public void overpower(World world, BlockPos pos) {
-    }
-
-    @Override
-    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-    }
-
-    @Override
-    public boolean isMechanicalOnFromState(IBlockState state) {
-        return false;
     }
 
     @Override
@@ -196,7 +145,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 if (stage <= 5)
                     world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
                 else
-                    world.scheduleBlockUpdate(pos, this,17, 5);
+                    world.scheduleBlockUpdate(pos, this, 18, 5);
 
                 world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
             } else {
@@ -206,6 +155,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
                 world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.7F);
             }
         }
+        world.notifyNeighborsOfStateChange(pos,this,false);
     }
 
     @Override
@@ -230,5 +180,24 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, STAGE);
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileCrank();
+    }
+
+    @Override
+    public void overpower(World world, BlockPos pos) {
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
+        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+        world.setBlockToAir(pos);
     }
 }

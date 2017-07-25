@@ -11,7 +11,8 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "B": {
-      "item": "betterwithmods:bellows"
+      "item": "betterwithmods:bellows",
+      "data": 0
     },
     "C": {
       "item": "minecraft:clock"

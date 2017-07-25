@@ -13,6 +13,7 @@ package betterwithmods.module;
 import betterwithmods.BWMod;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.Hardcore;
+import betterwithmods.module.industry.Industry;
 import betterwithmods.module.tweaks.Tweaks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -45,6 +46,7 @@ public final class ModuleLoader {
         registerModule(Gameplay.class);
         registerModule(Tweaks.class);
         registerModule(CompatModule.class);
+        registerModule(Industry.class);
     }
 
     public static void preInit(FMLPreInitializationEvent event) {

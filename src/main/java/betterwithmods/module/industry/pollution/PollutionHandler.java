@@ -82,7 +82,7 @@ public class PollutionHandler {
                 List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, EnumFacing.UP)).collect(Collectors.toList());
                 if (!tiles.isEmpty()) {
                     for (TileEntity tile : tiles) {
-                        IPollutant pollutant = tile.getCapability(PollutionCapability.POLLUTION, null);
+                        IPollutant pollutant = tile.getCapability(PollutionCapability.POLLUTION, EnumFacing.UP);
                         if (pollutant.isPolluting() && pollution.getPollution(new ChunkPos(tile.getPos())) > -1) {
                             ChunkPos p = new ChunkPos(tile.getPos());
                             float pollute = pollution.getPollution(p);

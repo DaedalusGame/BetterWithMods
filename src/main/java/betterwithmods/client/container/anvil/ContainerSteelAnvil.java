@@ -20,32 +20,30 @@ public class ContainerSteelAnvil extends Container {
     private final int HOT_LAST = 53;
     public InventoryCrafting craftMatrix;
     public IInventory craftResult;
+    public InventoryPlayer inventoryPlayer;
     private TileEntitySteelAnvil te;
     private IItemHandler handler;
 
     public ContainerSteelAnvil(InventoryPlayer player, TileEntitySteelAnvil te) {
         this.te = te;
         handler = te.inventory;
+        inventoryPlayer = player;
         craftMatrix = new InventorySteelCrafting(this,te);
         craftResult = new InventorySteelCraftingResult(te);
         this.addSlotToContainer(new SlotCraftingItemHandler(player.player, craftMatrix, craftResult, 0, 124, 44));
-
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 this.addSlotToContainer(new Slot(craftMatrix, j + i * 4, 12 + j * 18, 17 + i * 18));
             }
         }
-
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
                 this.addSlotToContainer(new Slot(player, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
             }
         }
-
         for (int i = 0; i < 9; ++i) {
             this.addSlotToContainer(new Slot(player, i, 8 + i * 18, 160));
         }
-
         this.onCraftMatrixChanged(craftMatrix);
     }
 
@@ -53,6 +51,7 @@ public class ContainerSteelAnvil extends Container {
      * Callback for when the crafting matrix is changed.
      */
     public void onCraftMatrixChanged(IInventory matrix) {
+
         this.craftResult.setInventorySlotContents(0, AnvilCraftingManager.findMatchingResult(this.craftMatrix, te.getWorld()));
     }
 

@@ -20,9 +20,9 @@ import java.util.function.Predicate;
  */
 public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
     private ResourceLocation group;
-    private Predicate<ItemStack> isTool;
-    private ItemStack result;
-    private Ingredient input;
+    protected Predicate<ItemStack> isTool;
+    protected ItemStack result;
+    protected Ingredient input;
 
     public ToolDamageRecipe(ResourceLocation group, ItemStack result, Ingredient input, Predicate<ItemStack> isTool) {
         this.group = group;

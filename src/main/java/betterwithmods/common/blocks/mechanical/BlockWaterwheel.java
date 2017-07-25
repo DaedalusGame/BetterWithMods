@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockWaterwheel extends BlockMillGenerator {
+public class BlockWaterwheel extends BlockAxleGenerator {
 
     public BlockWaterwheel() {
         super(Material.WOOD);
@@ -20,21 +20,17 @@ public class BlockWaterwheel extends BlockMillGenerator {
 
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-        return new ItemStack(BWMItems.WINDMILL, 1, 1);
+        return new ItemStack(BWMItems.AXLE_GENERATOR, 1, 1);
     }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityWaterwheel) {
-            boolean active = ((TileEntityWaterwheel) world.getTileEntity(pos)).isValid();
-            world.setBlockState(pos, state.withProperty(ISACTIVE, active));
-        }
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return BWMItems.WINDMILL;
+        return BWMItems.AXLE_GENERATOR;
     }
 
     @Override
@@ -52,8 +48,4 @@ public class BlockWaterwheel extends BlockMillGenerator {
         return new TileEntityWaterwheel();
     }
 
-    @Override
-    public ItemStack getGenStack(IBlockState state) {
-        return new ItemStack(BWMItems.WINDMILL, 1, 1);
-    }
 }

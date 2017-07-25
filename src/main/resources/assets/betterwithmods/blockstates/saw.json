@@ -43,7 +43,7 @@
         "y": 90
       }
     },
-    "isactive": {
+    "active": {
       "false": {},
       "true": {
         "textures": {

@@ -1,7 +1,7 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +33,7 @@ public class GuiFilteredHopper extends GuiContainer {
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
-        if (this.tile.power > 0) {
+        if (tile.power > 0) {
             drawTexturedModalRect(xPos + 80, yPos + 18, 176, 0, 14, 14);
         }
 

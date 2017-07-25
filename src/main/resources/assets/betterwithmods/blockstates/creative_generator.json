@@ -3,7 +3,7 @@
   "defaults": {
     "model": "cube_all",
     "textures": {
-      "all": "betterwithmods:blocks/gearbox_input"
+      "all": "betterwithmods:blocks/wooden_gearbox_input"
     }
   },
   "variants": {

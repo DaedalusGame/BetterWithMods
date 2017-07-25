@@ -10,10 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.Random;
 
@@ -110,18 +108,6 @@ public class BlockFireStoked extends BlockFire {
 
             world.scheduleBlockUpdate(pos, this, tickRate(world) + world.rand.nextInt(10), 5);
         }
-    }
-
-    private boolean isValidKiln(World world, BlockPos pos) {
-        int numBrick = 0;
-        BlockPos center = pos.up();
-        for (EnumFacing face : EnumFacing.VALUES) {
-            if (face == EnumFacing.DOWN) continue;
-            Block block = world.getBlockState(center.offset(face)).getBlock();
-            if (block == Blocks.BRICK_BLOCK || (Loader.isModLoaded("terrafirmacraft") && block == Block.REGISTRY.getObject(new ResourceLocation("terrafirmacraft", "FireBrick"))))
-                numBrick++;
-        }
-        return numBrick > 2;
     }
 
     private void setFire(World worldIn, BlockPos pos, int chance, Random random, int age, EnumFacing face) {

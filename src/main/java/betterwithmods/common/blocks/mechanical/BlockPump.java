@@ -1,44 +1,43 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.mechanical.tile.TilePump;
 import betterwithmods.util.DirUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.Random;
 
 /**
  * @author mrebhan
  */
 
-public class BlockPump extends BlockRotate implements IMechanicalBlock, IMultiVariants {
-
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+public class BlockPump extends BlockRotate implements IBlockActive, IMultiVariants, IOverpower {
 
     public BlockPump() {
         super(Material.WOOD);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setTickRandomly(true);
         this.setHardness(3.5F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.NORTH)
-                .withProperty(ACTIVE, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.NORTH).withProperty(ACTIVE, false));
         setSoundType(SoundType.WOOD);
     }
 
@@ -55,53 +54,6 @@ public class BlockPump extends BlockRotate implements IMechanicalBlock, IMultiVa
     @Override
     public String[] getVariants() {
         return new String[]{"active=false,facing=north"};
-    }
-
-    @Override
-    public boolean canOutputMechanicalPower() {
-        return false;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputtingMechPower(World world, BlockPos pos) {
-        return MechanicalUtil.isBlockPoweredByAxle(world, pos, this) || MechanicalUtil.isPoweredByCrank(world, pos);
-    }
-
-    @Override
-    public boolean isOutputtingMechPower(World world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canInputPowerToSide(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        return dir == EnumFacing.DOWN;
-    }
-
-    @Override
-    public void overpower(World world, BlockPos pos) {
-
-    }
-
-    @Override
-    public boolean isMechanicalOn(IBlockAccess world, BlockPos pos) {
-        return isMechanicalOnFromState(world.getBlockState(pos));
-    }
-
-    @Override
-    public void setMechanicalOn(World world, BlockPos pos, boolean isOn) {
-        if (isOn != world.getBlockState(pos).getValue(ACTIVE)) {
-            world.setBlockState(pos, world.getBlockState(pos).withProperty(ACTIVE, isOn));
-        }
-    }
-
-    @Override
-    public boolean isMechanicalOnFromState(IBlockState state) {
-        return state.getValue(ACTIVE);
     }
 
     @Override
@@ -177,19 +129,50 @@ public class BlockPump extends BlockRotate implements IMechanicalBlock, IMultiVa
     }
 
     @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        withTile(worldIn,pos).ifPresent(TilePump::onChanged);
+    }
+
+    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (isMechanicalOnFromState(state)) {
+        withTile(world,pos).ifPresent(TilePump::onChanged);
+        if (isActive(state)) {
             if (world.isAirBlock(pos.up()) && hasWaterToPump(world, pos)) {
                 world.setBlockState(pos.up(), BWMBlocks.TEMP_LIQUID_SOURCE.getDefaultState());
             }
         }
-
-        setMechanicalOn(world, pos, isInputtingMechPower(world, pos));
         world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
-        world.setBlockState(pos,state.withProperty(ACTIVE,false).cycleProperty(DirUtils.HORIZONTAL));
+        world.setBlockState(pos, state.withProperty(ACTIVE, false).cycleProperty(DirUtils.HORIZONTAL));
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TilePump();
+    }
+
+    @Override
+    public void overpower(World world, BlockPos pos) {
+
+    }
+
+    public Optional<TilePump> withTile(World world, BlockPos pos) {
+        return Optional.ofNullable(getTile(world, pos));
+    }
+
+    public TilePump getTile(World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TilePump)
+            return (TilePump) tile;
+        return null;
     }
 }

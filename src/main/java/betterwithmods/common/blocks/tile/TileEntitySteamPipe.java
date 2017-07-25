@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.SteamCapability;
 import betterwithmods.api.tile.ISteamPower;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;

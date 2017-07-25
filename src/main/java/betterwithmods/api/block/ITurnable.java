@@ -7,7 +7,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public interface ITurnable {
-    EnumFacing getFacingFromBlockState(IBlockState state);
+    EnumFacing getFacing(IBlockState state);
 
     IBlockState setFacingInBlock(IBlockState state, EnumFacing facing);
 

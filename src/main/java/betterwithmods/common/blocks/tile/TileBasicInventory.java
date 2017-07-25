@@ -53,7 +53,7 @@ public abstract class TileBasicInventory extends TileBasic {
     }
     @Override
     public void onBreak() {
-        IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
         if(inv != null)
             InvUtils.ejectInventoryContents(world, pos,inv);
     }

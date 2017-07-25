@@ -14,11 +14,8 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
     public void render(TileEntityWindmillHorizontal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-
-        float rotation = (te.getCurrentRotation() + (te.getRunningState() == 0 ? 0 : partialTicks * te.getPrevRotation()));
-
         EnumFacing dir = te.getOrientation();
-
+        float rotation = (te.getCurrentRotation() + (te.getMechanicalOutput(dir) == 0 ? 0 : partialTicks * te.getPrevRotation()));
         if (dir == EnumFacing.EAST) {
             shafts.setRotateAngle(shafts.axle, 0, 0, -(float) Math.toRadians(rotation));
             sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));

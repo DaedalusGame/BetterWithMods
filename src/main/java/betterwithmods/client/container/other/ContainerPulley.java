@@ -1,7 +1,7 @@
 package betterwithmods.client.container.other;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;

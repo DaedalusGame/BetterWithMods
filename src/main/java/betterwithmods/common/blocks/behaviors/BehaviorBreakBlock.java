@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.behaviors;
 
-import betterwithmods.api.tile.IBehaviorCollect;
+import betterwithmods.api.tile.dispenser.IBehaviorCollect;
 import betterwithmods.util.InvUtils;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.item.ItemStack;

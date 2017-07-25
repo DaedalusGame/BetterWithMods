@@ -55,15 +55,11 @@ public final class BWMRecipes {
 
     public static ShapedOreRecipe addOreRecipe(ItemStack output, Object... inputs) {
         addShapedRecipe(output, inputs);
-//        ShapedOreRecipe recipe = new ShapedOreRecipe(output, inputs);
-//        GameRegistry.addRecipe(recipe);
         return null;
     }
 
     public static ShapelessOreRecipe addShapelessOreRecipe(ItemStack output, Object... inputs) {
         addShapelessRecipe(output, inputs);
-//        ShapelessOreRecipe recipe = new ShapelessOreRecipe(output, inputs);
-//        GameRegistry.addRecipe(recipe);
         return null;
     }
 

@@ -12,6 +12,7 @@ import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.player.FatPenalty;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
+import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -23,11 +24,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
@@ -55,6 +58,8 @@ import squeek.applecore.api.hunger.HealthRegenEvent;
 import squeek.applecore.api.hunger.HungerEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
 
+import java.util.Set;
+
 /**
  * Created by primetoxinz on 6/20/17.
  */
@@ -67,17 +72,31 @@ public class HCHunger extends CompatFeature {
     public static float blockBreakExhaustion;
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
+    public static boolean rawMeatDangerous;
 
     @Override
     public void setupConfig() {
         blockBreakExhaustion = (float) loadPropDouble("Block Breaking Exhaustion", "Set Exhaustion from breaking a block", 0.1);
         passiveExhaustion = (float) loadPropDouble("Passive Exhaustion", "Passive Exhaustion value", 4f);
         passiveExhaustionTick = loadPropInt("Passive Exhaustion Tick", "Passive exhaustion tick time", 900);
+        rawMeatDangerous = loadPropBool("Raw Meat is Unhealthy", "Gives food poisoning", true);
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
+        if (rawMeatDangerous) {
+            Set<Item> RAW_FOOD = Sets.newHashSet(BWMItems.RAW_SCRAMBLED_EGG, BWMItems.RAW_EGG, BWMItems.RAW_OMELET, BWMItems.RAW_KEBAB, Items.FISH, BWMItems.WOLF_CHOP, Items.BEEF, Items.PORKCHOP, Items.RABBIT, Items.CHICKEN, Items.MUTTON, BWMItems.MYSTERY_MEAT);
+            RAW_FOOD.stream().map(i -> (ItemFood) i).forEach(i -> i.setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F));
+        }
 
+        BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW));
+        BWMRecipes.removeRecipe(new ItemStack(Items.CAKE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE));
+        BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW));
+        BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP));
+
+        FoodHelper.registerFood(new ItemStack(Items.BEEF), 12);
         FoodHelper.registerFood(new ItemStack(Items.PORKCHOP), 12);
         FoodHelper.registerFood(new ItemStack(Items.RABBIT), 12);
         FoodHelper.registerFood(new ItemStack(Items.CHICKEN), 9);
@@ -134,12 +153,6 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 12, 15, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
 
-        BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.CAKE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW, 0));
-        BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP, 0));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 1), 0.1F);
@@ -300,7 +313,7 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
-            if(!PlayerHelper.isSurvival(player))
+            if (!PlayerHelper.isSurvival(player))
                 return;
             if (!PlayerHelper.getHungerPenalty(player).canSprint())
                 player.setSprinting(false);

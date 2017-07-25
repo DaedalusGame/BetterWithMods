@@ -1,7 +1,9 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.capabilities.MechanicalCapability;
+import betterwithmods.api.capabilities.CapabilityAxle;
+import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
@@ -59,7 +61,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryModifiable;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Iterator;
 import java.util.List;
@@ -83,7 +85,8 @@ public class BWRegistry {
         BWMBlocks.registerTileEntities();
         BWRegistry.registerEntities();
         BWRegistry.registerBlockDispenserBehavior();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default.class);
+        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default.class);
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
         KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }
@@ -98,20 +101,6 @@ public class BWRegistry {
         BWMItems.getItems().forEach(event.getRegistry()::register);
     }
 
-    @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        IForgeRegistryModifiable<IRecipe> reg = ((IForgeRegistryModifiable)event.getRegistry());
-
-        for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
-            IRecipe recipe = iter.next();
-            for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
-                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
-                }
-            }
-        }
-    }
-
     public static void init() {
         BWRegistry.registerHeatSources();
         BWOreDictionary.registerOres();
@@ -120,6 +109,9 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         ColorUtils.initColors();
+    }
+
+    public static void postPostInit() {
         registerRecipes();
     }
 
@@ -222,7 +214,25 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
-        replaceIRecipe(HCFishing.class, reg);
+
+        for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
+            for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+            
+            for(Iterator<IRecipe> iter = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+        }
+
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);
         replaceIRecipe(HCLumber.class, reg);
@@ -232,7 +242,10 @@ public class BWRegistry {
         replaceIRecipe(BiomesOPlenty.class, reg);
         replaceIRecipe(Quark.class, reg);
         replaceIRecipe(Rustic.class, reg);
+        replaceIRecipe(HCFishing.class, reg);
         registerAnvilRecipes(reg);
+
+
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
@@ -248,7 +261,7 @@ public class BWRegistry {
         }
     }
 
-    private static void replaceIRecipe(Class<? extends Feature> clazz, ForgeRegistry<IRecipe> reg) {
+    private static void replaceIRecipe(Class<? extends Feature> clazz, IForgeRegistry<IRecipe> reg) {
         if (ModuleLoader.isFeatureEnabled(clazz)) {
             List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
             if (recipes != null) {
@@ -257,7 +270,7 @@ public class BWRegistry {
         }
     }
 
-    private static void registerAnvilRecipes(ForgeRegistry<IRecipe> reg) {
+    private static void registerAnvilRecipes(IForgeRegistry<IRecipe> reg) {
         List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes("Anvil");
         recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
         List<IRecipe> shaped = reg.getValues().stream().filter(i -> i instanceof ShapedRecipes || i instanceof ShapedOreRecipe).collect(Collectors.toList());

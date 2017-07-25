@@ -69,6 +69,7 @@ public class BWMod {
         if (evt.getSide().isServer())
             MinecraftForge.EVENT_BUS.register(new ModuleSync());
         proxy.postInit(evt);
+        BWRegistry.postPostInit();
     }
 
     @Mod.EventHandler

@@ -4,7 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.BlockRope;
-import betterwithmods.common.blocks.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;

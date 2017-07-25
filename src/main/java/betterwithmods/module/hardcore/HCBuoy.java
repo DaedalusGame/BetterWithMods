@@ -92,7 +92,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(Blocks.WOODEN_SLAB, 1.0F);
         buoyancy.put(Items.DYE, 1.0F);
         buoyancy.put(Blocks.WOODEN_BUTTON, 1.0F);
-        buoyancy.put(BWMBlocks.AXLE, 1.0F);
+        buoyancy.put(BWMBlocks.WOODEN_AXLE, 1.0F);
         buoyancy.put(BWMBlocks.PUMP, 0.0F);
         buoyancy.put(BWMBlocks.WOOD_SIDING, 1.0F);
         buoyancy.put(BWMBlocks.WOOD_MOULDING, 1.0F);
@@ -104,7 +104,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(BWMBlocks.WOLF, 1.0F);
         buoyancy.put(BWMBlocks.HEMP, 1.0F);
         buoyancy.put(BWMBlocks.ROPE, 1.0F);
-        buoyancy.put(BWMBlocks.GEARBOX, 1.0F);
+        buoyancy.put(BWMBlocks.WOODEN_GEARBOX, 1.0F);
         buoyancy.put(BWMBlocks.BELLOWS, 1.0F);
         buoyancy.put(BWMBlocks.VASE, 1.0F);
         buoyancy.put(Items.APPLE, 1.0F);
@@ -183,7 +183,7 @@ public class HCBuoy extends Feature {
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER).getMetadata(), 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG).getMetadata(), 1.0F);
-        buoyancy.put(BWMItems.WINDMILL, 1.0F);
+        buoyancy.put(BWMItems.AXLE_GENERATOR, 1.0F);
         buoyancy.put("fabricHemp", 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);

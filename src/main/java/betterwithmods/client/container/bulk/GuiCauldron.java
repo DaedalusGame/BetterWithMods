@@ -1,6 +1,6 @@
 package betterwithmods.client.container.bulk;
 
-import betterwithmods.common.blocks.tile.TileEntityCauldron;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityCauldron;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiCauldron extends GuiCookingPot {

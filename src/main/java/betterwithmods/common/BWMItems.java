@@ -32,7 +32,7 @@ public final class BWMItems {
     public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 4, 1561, 12, 3,
             22);
     public static final Item MATERIAL = new ItemMaterial().setRegistryName("material");
-    public static final Item WINDMILL = new ItemMechanical().setRegistryName("windmill");
+    public static final Item AXLE_GENERATOR = new ItemAxleGenerator().setRegistryName("axle_generator");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
     public static final Item DONUT = new ItemFood(2,0.25f, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("donut");
     public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
@@ -91,7 +91,7 @@ public final class BWMItems {
 
     public static void registerItems() {
         registerItem(MATERIAL);
-        registerItem(WINDMILL);
+        registerItem(AXLE_GENERATOR);
         registerItem(BARK);
         registerItem(DONUT);
         registerItem(DYNAMITE);

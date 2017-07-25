@@ -117,7 +117,7 @@ public class BlockAnchor extends BWMBlock{
 
     @Override
     public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
+        EnumFacing facing = getFacing(world.getBlockState(pos));
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
     }
 
@@ -137,12 +137,12 @@ public class BlockAnchor extends BWMBlock{
 
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        EnumFacing facing = getFacingFromBlockState(world.getBlockState(pos));
+        EnumFacing facing = getFacing(world.getBlockState(pos));
         return side == facing.getOpposite();
     }
 
     @Override
-    public EnumFacing getFacingFromBlockState(IBlockState state) {
+    public EnumFacing getFacing(IBlockState state) {
         return state.getValue(FACING);
     }
 

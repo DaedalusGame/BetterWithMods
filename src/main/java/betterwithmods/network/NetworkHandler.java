@@ -13,7 +13,10 @@ package betterwithmods.network;
 
 
 import betterwithmods.BWMod;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -27,4 +30,7 @@ public class NetworkHandler {
         INSTANCE.registerMessage(clazz, clazz, i++, handlerSide);
     }
 
+    public static void sendToAllAround(IMessage message, World world, BlockPos pos) {
+        INSTANCE.sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128));
+    }
 }

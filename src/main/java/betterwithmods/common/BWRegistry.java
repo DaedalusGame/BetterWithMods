@@ -101,6 +101,28 @@ public class BWRegistry {
         BWMItems.getItems().forEach(event.getRegistry()::register);
     }
 
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) event.getRegistry();
+
+        for (ItemStack output : BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
+            for (Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+            for (Iterator<IRecipe> iter = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iter.hasNext(); ) {
+                IRecipe recipe = iter.next();
+                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
+                    reg.remove(reg.getKey(recipe));
+                    break;
+                }
+            }
+        }
+    }
+
     public static void init() {
         BWRegistry.registerHeatSources();
         BWOreDictionary.registerOres();
@@ -214,24 +236,6 @@ public class BWRegistry {
 
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
-
-        for(ItemStack output: BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
-            for(Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
-                IRecipe recipe = iter.next();
-                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
-                    break;
-                }
-            }
-            
-            for(Iterator<IRecipe> iter = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iter.hasNext(); ) {
-                IRecipe recipe = iter.next();
-                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
-                    break;
-                }
-            }
-        }
 
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);

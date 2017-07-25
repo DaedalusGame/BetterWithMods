@@ -79,7 +79,7 @@ public class PollutionHandler {
                 else if (time % 1000 == 0) {
                     pollution.calculatePollutionReduction();
                 }
-                List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, null)).collect(Collectors.toList());
+                List<TileEntity> tiles = evt.world.loadedTileEntityList.stream().filter(tileEntity -> tileEntity.hasCapability(PollutionCapability.POLLUTION, EnumFacing.UP)).collect(Collectors.toList());
                 if (!tiles.isEmpty()) {
                     for (TileEntity tile : tiles) {
                         IPollutant pollutant = tile.getCapability(PollutionCapability.POLLUTION, null);

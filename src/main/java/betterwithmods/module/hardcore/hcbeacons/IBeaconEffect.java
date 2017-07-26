@@ -29,4 +29,8 @@ public interface IBeaconEffect {
         entities.forEach(consumer);
     }
 
+    default boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player) {
+        return false;
+    }
+
 }

@@ -203,7 +203,7 @@ public class BWOreDictionary {
     }
 
     public static List<ItemStack> getItems(List<Ore> ores) {
-        return ores.stream().flatMap(o -> Arrays.stream(o.getMatchingStacks())).collect(Collectors.toList());
+        return ores.stream().flatMap(o -> o.getOres().stream()).collect(Collectors.toList());
     }
 
     public static List<Ore> getOreIngredients(String prefix) {
@@ -310,6 +310,10 @@ public class BWOreDictionary {
             this.prefix = prefix;
             this.ore = ore;
 
+        }
+
+        public List<ItemStack> getOres() {
+            return OreDictionary.getOres(ore);
         }
 
         public String getOre() {

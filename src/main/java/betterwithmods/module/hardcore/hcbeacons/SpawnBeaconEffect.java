@@ -57,7 +57,8 @@ public class SpawnBeaconEffect implements IBeaconEffect {
         return false;
     }
 
-    public boolean processInteraction(World world, BlockPos pos, int level, EntityPlayer player) {
+    @Override
+    public boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player) {
         BindingPoint point = new BindingPoint(player, level);
         if (!containsEntry(pos, point))
             addPoint(pos, point);

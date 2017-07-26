@@ -231,9 +231,9 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
             }
         }
 
-        if (!world.isRemote && this.effect instanceof SpawnBeaconEffect) {
+        if (!world.isRemote) {
             this.world.playBroadcastSound(1023, getPos(), 0);
-            return ((SpawnBeaconEffect) this.effect).processInteraction(world, getPos(), getLevels() - 1, player);
+            return this.effect.processInteractions(world, getPos(), getLevels() - 1, player);
         }
         return false;
     }

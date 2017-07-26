@@ -87,10 +87,8 @@ public class HCOres extends Feature {
                             for (ItemStack stack : nugget.getMatchingStacks()) {
                                 ItemStack n = stack.copy();
                                 n.setCount(dustProductionCount);
-                                //Remove all furnace recipes with dust
-                                Arrays.stream(ore.getMatchingStacks()).forEach(BWMRecipes::removeRecipe);
-                                //Add dust -> nugget smelting recipe
-                                Arrays.stream(ore.getMatchingStacks()).forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
+                                //Add ingot -> nugget smelting recipe
+                                ore.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                             }
                         }
                     }
@@ -107,9 +105,9 @@ public class HCOres extends Feature {
                                 ItemStack n = stack.copy();
                                 n.setCount(dustProductionCount);
                                 //Remove all furnace recipes with dust
-                                Arrays.stream(dust.getMatchingStacks()).forEach(BWMRecipes::removeRecipe);
+                                dust.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
                                 //Add dust -> nugget smelting recipe
-                                Arrays.stream(dust.getMatchingStacks()).forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
+                                dust.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                             }
                         }
                     }

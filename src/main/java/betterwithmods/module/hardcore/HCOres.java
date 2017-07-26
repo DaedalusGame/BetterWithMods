@@ -87,6 +87,8 @@ public class HCOres extends Feature {
                             for (ItemStack stack : nugget.getMatchingStacks()) {
                                 ItemStack n = stack.copy();
                                 n.setCount(dustProductionCount);
+                                //Remove all furnace recipes with dust
+                                ore.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
                                 //Add ingot -> nugget smelting recipe
                                 ore.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                             }

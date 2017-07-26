@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -82,17 +83,14 @@ public class HCOres extends Feature {
         if (oreNuggetSmelting) {
             for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
                 if (!oreExcludes.contains(ore.getOre())) {
-                    for (BWOreDictionary.Ore nugget : BWOreDictionary.nuggetNames) {
-                        if (nugget.getSuffix().equals(ore.getSuffix())) {
-                            for (ItemStack stack : nugget.getMatchingStacks()) {
-                                ItemStack n = stack.copy();
-                                n.setCount(dustProductionCount);
-                                //Remove all furnace recipes with dust
-                                ore.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
-                                //Add ingot -> nugget smelting recipe
-                                ore.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
-                            }
-                        }
+                    Optional<ItemStack> nugget = BWOreDictionary.nuggetNames.stream().filter(o -> o.getSuffix().equals(ore.getSuffix())).flatMap( o -> o.getOres().stream()).findFirst();
+                    if (nugget.isPresent()) {
+                        ItemStack n = nugget.get().copy();
+                        n.setCount(dustProductionCount);
+                        //Remove all furnace recipes with dust
+                        ore.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
+                        //Add dust -> nugget smelting recipe
+                        ore.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                     }
                 }
             }
@@ -101,17 +99,14 @@ public class HCOres extends Feature {
         if (dustNuggetSmelting) {
             for (BWOreDictionary.Ore dust : BWOreDictionary.dustNames) {
                 if (!dustExcludes.contains(dust.getOre())) {
-                    for (BWOreDictionary.Ore nugget : BWOreDictionary.nuggetNames) {
-                        if (nugget.getSuffix().equals(dust.getSuffix())) {
-                            for (ItemStack stack : nugget.getMatchingStacks()) {
-                                ItemStack n = stack.copy();
-                                n.setCount(dustProductionCount);
-                                //Remove all furnace recipes with dust
-                                dust.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
-                                //Add dust -> nugget smelting recipe
-                                dust.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
-                            }
-                        }
+                    Optional<ItemStack> nugget = BWOreDictionary.nuggetNames.stream().filter(o -> o.getSuffix().equals(dust.getSuffix())).flatMap( o -> o.getOres().stream()).findFirst();
+                    if (nugget.isPresent()) {
+                        ItemStack n = nugget.get().copy();
+                        n.setCount(dustProductionCount);
+                        //Remove all furnace recipes with dust
+                        dust.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
+                        //Add dust -> nugget smelting recipe
+                        dust.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                     }
                 }
             }

@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore.hcbeacons;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,8 +30,11 @@ public interface IBeaconEffect {
         entities.forEach(consumer);
     }
 
-    default boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player) {
+    default boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player, ItemStack stack) {
         return false;
     }
 
+    default int getTickSpeed() {
+        return 120;
+    }
 }

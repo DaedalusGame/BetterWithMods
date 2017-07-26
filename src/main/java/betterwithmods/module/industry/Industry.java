@@ -7,6 +7,7 @@ public class Industry extends Module {
     @Override
     public void addFeatures() {
         registerFeature(new Pollution());
+        registerFeature(new WeatherControl());
     }
 
     @Override

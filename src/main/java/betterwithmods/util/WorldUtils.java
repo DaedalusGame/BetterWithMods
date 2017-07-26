@@ -1,6 +1,9 @@
 package betterwithmods.util;
 
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -112,6 +115,15 @@ public final class WorldUtils {
             }
         }
         return false;
+    }
+
+    public static boolean isWater(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER;
+    }
+    public static boolean isWaterSource(World world,BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == Blocks.WATER && state.getValue(BlockLiquid.LEVEL) == 0;
     }
 
 }

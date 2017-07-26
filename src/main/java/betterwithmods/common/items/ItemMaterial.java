@@ -25,7 +25,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
 
     @Override
     public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-        if(EnumMaterial.VALUES[stack.getMetadata()] == EnumMaterial.INGOT_DIAMOND && playerIn != null) {
+        if(EnumMaterial.VALUES[stack.getMetadata()] == EnumMaterial.DIAMOND_INGOT && playerIn != null) {
             BlockPos pos = playerIn.getPosition().up();
             worldIn.playSound(null, playerIn.getPosition(),SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,1.0f,1.0f);
             worldIn.createExplosion(null,pos.getX(),pos.getY(),pos.getZ(),0.1f,false);
@@ -123,7 +123,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
         ARMOR_PLATE,
         BROADHEAD,
         COCOA_POWDER,
-        INGOT_DIAMOND,
+        DIAMOND_INGOT,
         DIAMOND_NUGGET,
         CHAIN_MAIL,
         STEEL_GEAR,

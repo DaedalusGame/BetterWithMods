@@ -31,7 +31,6 @@ public class ItemBlockUrn extends ItemBlockMeta {
         }
         worldIn.playSound(null, playerIn.posX, playerIn.posY - 0.5, playerIn.posZ, SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-
         if (!worldIn.isRemote) {
             EntityUrn entity = new EntityUrn(worldIn, playerIn);
 

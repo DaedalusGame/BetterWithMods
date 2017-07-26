@@ -174,4 +174,5 @@ public class Feature {
         return registerHardcoreRecipe(getClass().getSimpleName(), recipe);
     }
 
+
 }

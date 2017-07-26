@@ -4,6 +4,7 @@ import betterwithmods.common.blocks.tile.TileEntityBeacon;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +59,7 @@ public class SpawnBeaconEffect implements IBeaconEffect {
     }
 
     @Override
-    public boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player) {
+    public boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player, ItemStack stack) {
         BindingPoint point = new BindingPoint(player, level);
         if (!containsEntry(pos, point))
             addPoint(pos, point);

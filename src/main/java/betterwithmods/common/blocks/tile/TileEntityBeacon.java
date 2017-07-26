@@ -93,7 +93,7 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
             if (level != prevLevel) {
                 prevLevel = level;
             }
-            tick = 120;
+            tick = effect != null ? effect.getTickSpeed() : 120;
         }
         tick--;
     }
@@ -217,23 +217,24 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
             if (stack.getItem() instanceof ItemBlock) {
                 Block block = ((ItemBlock) stack.getItem()).getBlock();
                 IBlockState state = block.getStateFromMeta(stack.getMetadata());
-                if (!isValidBlock(state))
-                    return false;
-                int r;
-                for (r = 1; r <= stack.getCount(); r++) {
-                    for (int x = -r; x <= r; x++) {
-                        for (int z = -r; z <= r; z++) {
-                            this.world.setBlockState(getPos().add(x, -r, z), state);
+                if (isValidBlock(state)) {
+                    int r;
+                    for (r = 1; r <= stack.getCount(); r++) {
+                        for (int x = -r; x <= r; x++) {
+                            for (int z = -r; z <= r; z++) {
+                                this.world.setBlockState(getPos().add(x, -r, z), state);
+                            }
                         }
                     }
                 }
-                return true;
             }
         }
 
         if (!world.isRemote) {
-            this.world.playBroadcastSound(1023, getPos(), 0);
-            return this.effect.processInteractions(world, getPos(), getLevels() - 1, player);
+            boolean interacted = this.effect.processInteractions(world, getPos(), getLevels() - 1, player, stack);
+            if (interacted)
+                this.world.playBroadcastSound(1023, getPos(), 0);
+            return interacted;
         }
         return false;
     }

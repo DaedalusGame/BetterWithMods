@@ -30,10 +30,10 @@ public class BlockBeacon extends net.minecraft.block.BlockBeacon {
         return ((TileEntityBeacon) world.getTileEntity(pos));
     }
 
-
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return getTile(worldIn, pos).processInteraction(worldIn, playerIn, playerIn.getHeldItemMainhand());
+        getTile(worldIn, pos).processInteraction(worldIn, playerIn, playerIn.getHeldItemMainhand());
+        return true;
     }
 
     @Override

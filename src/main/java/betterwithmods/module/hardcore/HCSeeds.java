@@ -30,6 +30,8 @@ import java.util.function.Predicate;
  */
 public class HCSeeds extends Feature {
     private static final Random RANDOM = new Random();
+
+    public static Set<ItemStack> SEED_BLACKLIST = Sets.newHashSet(new ItemStack(Items.WHEAT_SEEDS));
     public static Set<IBlockState> BLOCKS_TO_STOP = Sets.newHashSet();
     private static Predicate<IBlockState> STOP_SEEDS = state -> {
         Block block = state.getBlock();
@@ -43,18 +45,17 @@ public class HCSeeds extends Feature {
 
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
-        if(STOP_SEEDS.test(event.getState()))
+        if (STOP_SEEDS.test(event.getState()))
             event.getDrops().clear();
     }
 
     public NonNullList<ItemStack> getDrops(int fortune) {
         if (RANDOM.nextInt(8) != 0) return NonNullList.create();
         ItemStack seed = net.minecraftforge.common.ForgeHooks.getGrassSeed(RANDOM, 0);
-        if (seed.isItemEqual(new ItemStack(Items.WHEAT_SEEDS)) || seed.isEmpty()) {
+        if (SEED_BLACKLIST.stream().anyMatch(s -> InvUtils.matches(s, seed)) || seed.isEmpty())
             return NonNullList.create();
-        } else {
+        else
             return NonNullList.withSize(1, seed);
-        }
     }
 
     @SubscribeEvent
@@ -85,10 +86,10 @@ public class HCSeeds extends Feature {
     public void mobDrop(LivingDropsEvent e) {
         Iterator<EntityItem> iter = e.getDrops().iterator();
         EntityItem item;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             item = iter.next();
             ItemStack stack = item.getItem();
-            if(BWOreDictionary.hasSuffix(stack,"crop"))
+            if (BWOreDictionary.hasSuffix(stack, "crop"))
                 iter.remove();
         }
 

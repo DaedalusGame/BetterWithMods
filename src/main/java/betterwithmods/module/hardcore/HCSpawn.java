@@ -64,7 +64,7 @@ public class HCSpawn extends Feature {
                 BlockPos newPos = getRespawnPoint(player, player.world.getSpawnPoint(), HARDCORE_SPAWN_RADIUS);
                 player.setSpawnPoint(newPos, true);
             } else {
-                BlockPos newPos = getRespawnPoint(player, player.getBedLocation(), HARDCORE_SPAWN_COOLDOWN_RADIUS);
+                BlockPos newPos = getRespawnPoint(player, player.getBedLocation() != null ? player.getBedLocation() : player.world.getSpawnPoint(), HARDCORE_SPAWN_COOLDOWN_RADIUS);
                 player.setSpawnPoint(newPos, true);
             }
         }
@@ -107,13 +107,11 @@ public class HCSpawn extends Feature {
                         .sin((float) (angle * 360.0D))) * fuzzVar;
                 double customZ = (double) MathHelper
                         .cos((float) (angle * 360.0D)) * fuzzVar;
-                ret = ret.add(MathHelper.floor(customX) + 0.5D, 1.5D,
-                        MathHelper.floor(customZ) + 0.5D);
+                ret = ret.add(MathHelper.floor(customX) + 0.5D, 1.5D, MathHelper.floor(customZ) + 0.5D);
                 ret = world.getTopSolidOrLiquidBlock(ret);
 
                 // Check if the position is correct
-                int cmp = ret.getY()
-                        - world.provider.getAverageGroundLevel();
+                int cmp = ret.getY() - world.provider.getAverageGroundLevel();
                 Material check = world.getBlockState(ret).getMaterial();
                 if (cmp >= 0 && (check == null || !check.isLiquid())) {
                     found = true;

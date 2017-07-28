@@ -156,7 +156,7 @@ public class HCSpawn extends Feature {
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(BWMod.MODID, "spawn_position"), new SpawnSaving());
+            event.addCapability(new ResourceLocation(BWMod.MODID, "spawn_position"), new SpawnSaving((EntityPlayer)event.getObject()));
         }
     }
 
@@ -188,6 +188,13 @@ public class HCSpawn extends Feature {
     private class SpawnSaving implements ICapabilitySerializable<NBTTagCompound> {
 
         private BlockPos pos;
+
+        public SpawnSaving() {
+        }
+
+        public SpawnSaving(EntityPlayer player) {
+            pos = player.world.getSpawnPoint();
+        }
 
         public BlockPos getPos() {
             return pos;

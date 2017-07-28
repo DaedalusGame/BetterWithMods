@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.Set;
 
@@ -38,6 +39,8 @@ public class HCTools extends Feature {
     private static int ironDurability;
     private static int diamondDurability;
     private static int goldDurability;
+
+    private static boolean changeAxeRecipe;
 
     /**
      * Edit the values of {@link Item.ToolMaterial}.
@@ -87,6 +90,8 @@ public class HCTools extends Feature {
         ironDurability = loadPropInt("Hardcore Hardness Iron Durability", "Number of usages for iron tools.", "", 500, 2, 251);
         diamondDurability = loadPropInt("Hardcore Hardness Diamond Durability", "Number of usages for diamond tools.", "", 1561, 2, 1562);
         goldDurability = loadPropInt("Hardcore Hardness Gold Durability", "Number of usages for golden tools.", "", 32, 2, 33);
+
+        changeAxeRecipe = loadPropBool("Change Axe Recipe", "Change the axe recipes to only require 2 materials", true);
     }
 
     @Override
@@ -106,6 +111,12 @@ public class HCTools extends Feature {
         if (earlyPickaxesRebalance) {
             Items.WOODEN_PICKAXE.setMaxDamage(1);
             Items.STONE_PICKAXE.setMaxDamage(5);
+        }
+        if (changeAxeRecipe) {
+            addHardcoreRecipe(new ShapedOreRecipe(null, Items.STONE_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "cobblestone").setRegistryName("minecraft:stone_axe"));
+            addHardcoreRecipe(new ShapedOreRecipe(null, Items.IRON_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "ingotIron").setRegistryName("minecraft:iron_axe"));
+            addHardcoreRecipe(new ShapedOreRecipe(null, Items.GOLDEN_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "ingotGold").setRegistryName("minecraft:golden_axe"));
+            addHardcoreRecipe(new ShapedOreRecipe(null, Items.DIAMOND_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "gemDiamond").setRegistryName("minecraft:diamond_axe"));
         }
     }
 

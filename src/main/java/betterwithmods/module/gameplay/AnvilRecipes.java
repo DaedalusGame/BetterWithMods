@@ -7,6 +7,8 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.Feature;
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.HCTools;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -47,7 +49,11 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe(new ResourceLocation("steel_pants"), new ItemStack(BWMItems.STEEL_PANTS), "SSSS", "PSSP", "P  P", "P  P", 'P', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE), 'S', "ingotSoulforgedSteel");
         addSteelShapedRecipe(new ResourceLocation("steel_boots"), new ItemStack(BWMItems.STEEL_BOOTS), " SS ", " SS ", "SPPS", 'P', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE), 'S', "ingotSoulforgedSteel");
         addSteelShapedRecipe(new ResourceLocation("polished_lapis"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POLISHED_LAPIS, 2), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
-        addSteelShapedRecipe(new ResourceLocation("steel_axe"), new ItemStack(BWMItems.STEEL_AXE), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
+        if (ModuleLoader.isFeatureEnabled(HCTools.class)) {
+            addSteelShapedRecipe(new ResourceLocation("steel_axe"), new ItemStack(BWMItems.STEEL_AXE), "X ", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
+        } else {
+            addSteelShapedRecipe(new ResourceLocation("steel_axe"), new ItemStack(BWMItems.STEEL_AXE), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
+        }
         addSteelShapedRecipe(new ResourceLocation("steel_hoe"), new ItemStack(BWMItems.STEEL_HOE), "XX", " H", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
         addSteelShapedRecipe(new ResourceLocation("steel_pickaxe"), new ItemStack(BWMItems.STEEL_PICKAXE), "XXX", " H ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
         addSteelShapedRecipe(new ResourceLocation("steel_shovel"), new ItemStack(BWMItems.STEEL_SHOVEL), "X", "H", "H", "H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
@@ -67,7 +73,7 @@ public class AnvilRecipes extends Feature {
             addSteelShapedRecipe(new ResourceLocation("stone_corner." + type.getMetadata()), new ItemStack(BWMBlocks.STONE_CORNER, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()));
         }
         addSteelShapedRecipe(new ResourceLocation("iron_wall"), new ItemStack(BWMBlocks.IRON_WALL, 8, 0), "XXXX", "XXXX", "XXXX", "XXXX", 'X', new ItemStack(Blocks.IRON_BARS));
-        addSteelShapedRecipe(new ResourceLocation("steel_gearbox"), new ItemStack(BWMBlocks.STEEL_GEARBOX),"SGSS","SGLG","GLGS","SSGS",'S',"ingotSoulforgedSteel",'G',"gearSoulforgedSteel",'L',"latchRedstone");
+        addSteelShapedRecipe(new ResourceLocation("steel_gearbox"), new ItemStack(BWMBlocks.STEEL_GEARBOX), "SGSS", "SGLG", "GLGS", "SSGS", 'S', "ingotSoulforgedSteel", 'G', "gearSoulforgedSteel", 'L', "latchRedstone");
     }
 
     private static IRecipe addAnvilRecipe(IRecipe recipe) {

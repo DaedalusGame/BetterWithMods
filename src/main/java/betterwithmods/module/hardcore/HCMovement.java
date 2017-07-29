@@ -29,19 +29,27 @@ public class HCMovement extends Feature {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         MATERIAL_MOVEMENT.put(Material.ROCK, 1.1f);
+        MATERIAL_MOVEMENT.put(Material.WOOD, 1.1f);
         MATERIAL_MOVEMENT.put(Material.IRON, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.CLOTH, 1.0f);
-        MATERIAL_MOVEMENT.put(Material.CARPET, 1.0f);
+        MATERIAL_MOVEMENT.put(Material.CLOTH, 1.1f);
+        MATERIAL_MOVEMENT.put(Material.CARPET, 1.1f);
+        MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.1f);
+
+        MATERIAL_MOVEMENT.put(Material.GRASS, 1.0f);
         MATERIAL_MOVEMENT.put(Material.GLASS, 1.0f);
-        MATERIAL_MOVEMENT.put(Material.GROUND, 0.80f);
-        MATERIAL_MOVEMENT.put(Material.CLAY, 0.75f);
+        MATERIAL_MOVEMENT.put(Material.GROUND, 1.0f);
+        MATERIAL_MOVEMENT.put(Material.CLAY, 1.0f);
+
+
         MATERIAL_MOVEMENT.put(Material.SAND, 0.75f);
         MATERIAL_MOVEMENT.put(Material.SNOW, 0.75f);
         MATERIAL_MOVEMENT.put(Material.LEAVES, 0.70f);
         MATERIAL_MOVEMENT.put(Material.PLANTS, 0.70f);
         MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
-        MATERIAL_MOVEMENT.put(Material.GRASS, 0.75f);
 
+
+        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(),  0.70f);
+        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.1f);
         BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.1f);
         BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.1f);
     }

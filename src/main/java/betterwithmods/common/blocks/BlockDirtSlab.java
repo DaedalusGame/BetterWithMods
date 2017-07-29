@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -61,8 +62,14 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = playerIn.getHeldItem(hand);
-        if (held.getItem().getToolClasses(held).contains("shovel")) {
-            return worldIn.setBlockState(pos, state.withProperty(VARIANT, DirtSlabType.PATH));
+        if (state.getValue(VARIANT) != DirtSlabType.PATH && held.getItem().getToolClasses(held).contains("shovel")) {
+            worldIn.playSound(playerIn, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            playerIn.swingArm(hand);
+            if (!worldIn.isRemote) {
+                worldIn.setBlockState(pos, state.withProperty(VARIANT, DirtSlabType.PATH), 11);
+                held.damageItem(1, playerIn);
+                return true;
+            }
         }
         return false;
     }
@@ -74,7 +81,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
 
     private boolean isOverSupport(World worldIn, BlockPos pos) {
         IBlockState state = worldIn.getBlockState(pos.down());
-        return state.isSideSolid(worldIn, pos.down(), EnumFacing.UP)
+        return state.getBlock() == Blocks.GRASS_PATH || state.isSideSolid(worldIn, pos.down(), EnumFacing.UP)
                 || state.getBlock().canPlaceTorchOnTop(state, worldIn, pos.down())
                 || state.isNormalCube()
                 || state.isFullCube()

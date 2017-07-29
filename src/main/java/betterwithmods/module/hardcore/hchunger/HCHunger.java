@@ -34,7 +34,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -263,7 +262,7 @@ public class HCHunger extends CompatFeature {
     public void givePenalties(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getSpeedModifier(player));
+            PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getSpeedModifier(player), PlayerHelper.PENALTY_SPEED_UUID);
         }
     }
 
@@ -285,12 +284,7 @@ public class HCHunger extends CompatFeature {
         event.setResult(Event.Result.DENY);
     }
 
-    @SubscribeEvent
-    public void onFOV(FOVUpdateEvent event) {
-        if (!PlayerHelper.getHungerPenalty(event.getEntity()).canJump()) {
 
-        }
-    }
 
     private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
 

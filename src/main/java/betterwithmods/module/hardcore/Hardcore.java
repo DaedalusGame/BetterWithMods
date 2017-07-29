@@ -55,6 +55,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCTools());
         registerFeature(new HCTorches());
         registerFeature(new HCVillages());
+        registerFeature(new HCMovement());
         this.load();
     }
 

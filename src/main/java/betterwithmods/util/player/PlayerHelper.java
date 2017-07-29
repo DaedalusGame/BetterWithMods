@@ -33,7 +33,7 @@ import java.util.UUID;
  * @author Koward
  */
 public final class PlayerHelper {
-    protected final static UUID penaltySpeedUUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
+    public final static UUID PENALTY_SPEED_UUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
 
     private PlayerHelper() {
     }
@@ -144,15 +144,16 @@ public final class PlayerHelper {
      * @param entity   The entity whose speed will be changed.
      * @param name     Unique name for easier debugging
      * @param modifier The speed will be multiplied by this number
+     * @param penaltySpeedUuid
      */
     public static void changeSpeed(EntityLivingBase entity,
-                                   String name, double modifier) {
+                                   String name, double modifier, UUID penaltySpeedUuid) {
         AttributeModifier speedModifier = (new AttributeModifier(
-                penaltySpeedUUID, name, modifier - 1, 2));
+                penaltySpeedUuid, name, modifier - 1, 2));
         IAttributeInstance iattributeinstance = entity
                 .getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
-        if (iattributeinstance.getModifier(penaltySpeedUUID) != null) {
+        if (iattributeinstance.getModifier(penaltySpeedUuid) != null) {
             iattributeinstance.removeModifier(speedModifier);
         }
         iattributeinstance.applyModifier(speedModifier);

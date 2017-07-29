@@ -46,7 +46,7 @@ public class HCInjury extends Feature {
                 return;
             if (player != null) {
                 if (!ModuleLoader.isFeatureEnabled(HCHunger.class)) {
-                    PlayerHelper.changeSpeed(player, "Health speed penalty", PlayerHelper.getSpeedModifier(player));
+                    PlayerHelper.changeSpeed(player, "Health speed penalty", PlayerHelper.getSpeedModifier(player), PlayerHelper.PENALTY_SPEED_UUID);
                 }
                 HealthPenalty healthPenalty = PlayerHelper.getHealthPenalty(player);
                 double mod = healthPenalty.getModifier();

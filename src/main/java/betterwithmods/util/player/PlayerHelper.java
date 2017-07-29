@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +95,7 @@ public final class PlayerHelper {
             return HealthPenalty.NO_PENALTY;
         double max = player.getMaxHealth();
         double level = player.getHealth();
-        double frac = level/max;
+        double frac = level / max;
 
         if (frac > 0.5d) return HealthPenalty.NO_PENALTY;
         else if (frac > 0.4d) return HealthPenalty.HURT;
@@ -250,6 +251,11 @@ public final class PlayerHelper {
         }
         return true;
     }
+
+    public static boolean hasPart(EntityLivingBase living, EntityEquipmentSlot type, Class<? extends ItemArmor> armor) {
+        return armor.isAssignableFrom(living.getItemStackFromSlot(type).getItem().getClass());
+    }
+
 
     public static UUID getUUID(EntityPlayer player) {
         GameProfile profile = player.getGameProfile();

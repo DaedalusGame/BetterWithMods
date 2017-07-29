@@ -4,6 +4,7 @@ import betterwithmods.api.IMultiLocations;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
+import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -18,6 +19,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -27,8 +29,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -90,9 +90,9 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
         AxisAlignedBB bb = this.getBoundingBox(state, world, pos).offset(pos).grow(3);
         List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, bb);
         for (Entity e : entities) {
-            e.attackEntityFrom(BWDamageSource.growth,2);
+            e.attackEntityFrom(BWDamageSource.growth, 2);
         }
-        world.playSound(null,pos,SoundEvents.ENTITY_SLIME_JUMP,SoundCategory.BLOCKS,0.4f,0.5f);
+        world.playSound(null, pos, SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.BLOCKS, 0.4f, 0.5f);
 
         super.breakBlock(world, pos, state);
     }
@@ -120,8 +120,8 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
                 spread(world, pos, rand);
             }
             if (age < 7) {
-                if(age == 6)
-                    world.playSound(null,pos,SoundEvents.BLOCK_CHORUS_FLOWER_DEATH,SoundCategory.BLOCKS,0.2f,0.5f);
+                if (age == 6)
+                    world.playSound(null, pos, SoundEvents.BLOCK_CHORUS_FLOWER_DEATH, SoundCategory.BLOCKS, 0.2f, 0.5f);
                 world.setBlockState(pos, state.withProperty(AGE, age + 1));
                 fixEntities(world, pos, state);
             }
@@ -199,11 +199,8 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
                 entityIn.setDead();
             }
         } else if (entityIn instanceof EntityLivingBase) {
-            if (entityIn.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
-                IItemHandler inv = entityIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-                if (inv.getStackInSlot(0).getItem() instanceof ItemSoulforgeArmor)
-                    return;
-            }
+            if (PlayerHelper.hasPart((EntityLivingBase) entityIn, EntityEquipmentSlot.FEET, ItemSoulforgeArmor.class))
+                return;
             entityIn.attackEntityFrom(BWDamageSource.growth, 5);
             entityIn.fallDistance = 0;
             entityIn.motionY = 1;

@@ -1,7 +1,9 @@
 package betterwithmods.module.hardcore.hcbeacons;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockSteel;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.PlayerHelper;
@@ -52,7 +54,7 @@ public class HCBeacons extends Feature {
         BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.HELLFIRE), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 120, level))));
         BEACON_EFFECTS.put(Blocks.PRISMARINE.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 120, level))));
         BEACON_EFFECTS.put(Blocks.SPONGE.getDefaultState(), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> player.setAir(player.getAir() - 1)));
-        BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.STEEL), new SpawnBeaconEffect());
+        BEACON_EFFECTS.put(BWMBlocks.STEEL_BLOCK.getDefaultState().withProperty(BlockSteel.HEIGHT,15), new SpawnBeaconEffect());
     }
 
     @Override

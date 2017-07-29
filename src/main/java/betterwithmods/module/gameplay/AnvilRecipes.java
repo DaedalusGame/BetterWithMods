@@ -74,6 +74,7 @@ public class AnvilRecipes extends Feature {
         }
         addSteelShapedRecipe(new ResourceLocation("iron_wall"), new ItemStack(BWMBlocks.IRON_WALL, 8, 0), "XXXX", "XXXX", "XXXX", "XXXX", 'X', new ItemStack(Blocks.IRON_BARS));
         addSteelShapedRecipe(new ResourceLocation("steel_gearbox"), new ItemStack(BWMBlocks.STEEL_GEARBOX), "SGSS", "SGLG", "GLGS", "SSGS", 'S', "ingotSoulforgedSteel", 'G', "gearSoulforgedSteel", 'L', "latchRedstone");
+        addSteelShapedRecipe(new ResourceLocation("steel_hacksaw"), new ItemStack(BWMItems.STEEL_HACKSAW), "NMM", "N M", "N M", "NMM", 'N', "nuggetSoulforgedSteel", 'M', "mouldingWood");
     }
 
     private static IRecipe addAnvilRecipe(IRecipe recipe) {

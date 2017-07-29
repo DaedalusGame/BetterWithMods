@@ -11,7 +11,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -24,7 +23,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 import static betterwithmods.common.blocks.BlockAesthetic.EnumType.HELLFIRE;
-import static betterwithmods.common.blocks.BlockAesthetic.EnumType.STEEL;
 
 public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<BlockAesthetic.EnumType> TYPE = PropertyEnum.create("blocktype", BlockAesthetic.EnumType.class);
@@ -37,7 +35,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     }
 
     public static IBlockState getVariant(EnumType type) {
-        return BWMBlocks.AESTHETIC.getDefaultState().withProperty(TYPE,type);
+        return BWMBlocks.AESTHETIC.getDefaultState().withProperty(TYPE, type);
     }
 
     public static ItemStack getStack(EnumType type) {
@@ -66,18 +64,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-        return state.getValue(TYPE) == STEEL ? 4 : 1;
-    }
-
-    @Override
-    public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
-        return state.getValue(TYPE) != EnumType.STEEL || entity instanceof EntityPlayer;
-    }
-
-    @Override
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
-        if (world.getBlockState(pos).getValue(TYPE) != EnumType.STEEL)
-            super.onBlockExploded(world, pos, explosion);
+        return 1;
     }
 
     @Override
@@ -94,13 +81,14 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=steel", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock", "blocktype=padding", "blocktype=soap", "blocktype=dung", "blocktype=wicker"};
+        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=unused", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock", "blocktype=padding", "blocktype=soap", "blocktype=dung", "blocktype=wicker"};
     }
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.VALUES) {
-            items.add(getStack(type));
+            if(!type.name.equalsIgnoreCase("unuse"))
+                items.add(getStack(type));
         }
     }
 
@@ -133,7 +121,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     public enum EnumType implements IStringSerializable {
         CHOPBLOCK(0, "chopping", MapColor.STONE),
         CHOPBLOCKBLOOD(1, "chopping_blood", MapColor.NETHERRACK),
-        STEEL(2, "steel", MapColor.IRON, Material.IRON, SoundType.METAL, 100F, 4000F),
+        UNUSED(2, "unused", MapColor.DIAMOND),
         HELLFIRE(3, "hellfire", MapColor.ADOBE),
         ROPE(4, "rope", MapColor.DIRT, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
         FLINT(5, "flint", MapColor.STONE),
@@ -142,8 +130,8 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         ENDERBLOCK(8, "enderblock", MapColor.CYAN),
         PADDING(9, "padding", MapColor.CLOTH, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
         SOAP(10, "soap", MapColor.PINK, Material.GROUND, SoundType.GROUND, 1F, 5F),
-        DUNG(11,"dung", MapColor.BROWN, Material.GROUND, SoundType.GROUND, 1F, 2F),
-        WICKER(12,"wicker", MapColor.BROWN, Material.WOOD, SoundType.WOOD, 1F, 5F);
+        DUNG(11, "dung", MapColor.BROWN, Material.GROUND, SoundType.GROUND, 1F, 2F),
+        WICKER(12, "wicker", MapColor.BROWN, Material.WOOD, SoundType.WOOD, 1F, 5F);
 
         private static final BlockAesthetic.EnumType[] VALUES = values();
 

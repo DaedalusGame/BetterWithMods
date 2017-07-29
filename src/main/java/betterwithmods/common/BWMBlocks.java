@@ -97,6 +97,7 @@ public final class BWMBlocks {
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
     public static final Block BEACON = new BlockBeacon();
+    public static final Block STEEL_BLOCK = new BlockSteel().setRegistryName("steel_block");
 
     private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -171,6 +172,7 @@ public final class BWMBlocks {
         registerBlock(STAKE);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
+        registerBlock(STEEL_BLOCK);
     }
 
     public static void registerTileEntities() {

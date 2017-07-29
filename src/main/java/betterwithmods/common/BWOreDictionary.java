@@ -50,6 +50,7 @@ public class BWOreDictionary {
         registerOre("archimedesScrew", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCREW));
         registerOre("filament", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT));
         registerOre("latchRedstone", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
+        registerOre("plateSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PLATE_STEEL));
         registerOre("arrowSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BROADHEAD));
         registerOre("springSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING));
         registerOre("gearSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR));

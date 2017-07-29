@@ -82,7 +82,8 @@ public final class BWMItems {
     public static final Item MANUAL = new ItemBookManual().setRegistryName("manual").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Item MYSTERY_MEAT = new ItemFood(2,0.3f,true).setRegistryName("mystery_meat");
     public static final Item COOKED_MYSTERY_MEAT = new ItemFood(6, 0.8F, true).setRegistryName("cooked_mystery_meat");
-
+    public static final Item STEEL_HACKSAW = new ItemHacksaw().setRegistryName("steel_hacksaw");
+    
     private static final List<Item> ITEMS = new ArrayList<>();
 
     public static List<Item> getItems() {
@@ -103,12 +104,13 @@ public final class BWMItems {
         registerItem(STEEL_SWORD);
         registerItem(STEEL_MATTOCK);
         registerItem(STEEL_BATTLEAXE);
-        registerItem(CREEPER_OYSTER);
-        registerItem(ENDER_SPECTACLES);
+        registerItem(STEEL_HACKSAW);
         registerItem(STEEL_HELMET);
         registerItem(STEEL_CHEST);
         registerItem(STEEL_PANTS);
         registerItem(STEEL_BOOTS);
+        registerItem(CREEPER_OYSTER);
+        registerItem(ENDER_SPECTACLES);
         registerItem(BREEDING_HARNESS);
         registerItem(RAW_EGG);
         registerItem(COOKED_EGG);

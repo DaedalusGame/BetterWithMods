@@ -97,7 +97,7 @@ public class ClientProxy implements IProxy {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
-        BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
+//        BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));

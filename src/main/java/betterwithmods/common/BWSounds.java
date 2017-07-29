@@ -22,6 +22,8 @@ public class BWSounds {
     public final static SoundEvent METALCHIME = null;
     @GameRegistry.ObjectHolder("betterwithmods:entity.player.oof")
     public final static SoundEvent OOF = null;
+    @GameRegistry.ObjectHolder("betterwithmods:block.metal.hacksaw")
+    public final static SoundEvent METAL_HACKSAW = null;
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
@@ -30,8 +32,8 @@ public class BWSounds {
         event.getRegistry().register(registerSound("block.wood.bellow"));
         event.getRegistry().register(registerSound("block.wood.chime"));
         event.getRegistry().register(registerSound("block.metal.chime"));
+        event.getRegistry().register(registerSound("block.metal.hacksaw"));
         event.getRegistry().register(registerSound("entity.player.oof"));
-
     }
 
     public static SoundEvent registerSound(String soundName) {

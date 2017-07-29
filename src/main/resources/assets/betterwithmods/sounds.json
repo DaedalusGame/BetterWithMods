@@ -39,6 +39,13 @@
     ],
     "subtitle": "subtitles.bwm.metal.chime"
   },
+  "block.metal.hacksaw": {
+    "category": "block",
+    "sounds": [
+      "betterwithmods:metal/hacksaw"
+    ],
+    "subtitle": "subtitles.bwm.metal.hacksaw"
+  },
   "entity.player.oof": {
     "category": "player",
     "sounds": [

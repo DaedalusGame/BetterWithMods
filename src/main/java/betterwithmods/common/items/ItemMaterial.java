@@ -128,7 +128,8 @@ public class ItemMaterial extends Item implements IMultiLocations {
         CHAIN_MAIL,
         STEEL_GEAR,
         STEEL_SPRING,
-        SOAP;
+        SOAP,
+        PLATE_STEEL;
 
 
         public final static EnumMaterial[] VALUES = values();

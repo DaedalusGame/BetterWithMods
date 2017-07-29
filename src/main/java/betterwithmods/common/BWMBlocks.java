@@ -6,10 +6,6 @@ import betterwithmods.common.blocks.mechanical.*;
 import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.blocks.tile.*;
-import betterwithmods.common.blocks.tile.gen.TileEntityCreativeGen;
-import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
 import betterwithmods.proxy.ClientProxy;
@@ -41,7 +37,7 @@ public final class BWMBlocks {
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
     public static final Block WOODEN_AXLE = new BlockAxle(EnumTier.WOOD, 1, 1, 3).setRegistryName("wooden_axle");
-    public static final Block STEEL_AXLE = new BlockAxle(EnumTier.STEEL, 1, 2, 5).setRegistryName("steel_axle");
+    public static final Block STEEL_AXLE = new BlockAxle(EnumTier.STEEL, 1, 3, 5).setRegistryName("steel_axle");
     public static final Block WOODEN_GEARBOX = new BlockGearbox(1, EnumTier.WOOD).setRegistryName("wooden_gearbox");
     public static final Block STEEL_GEARBOX = new BlockGearbox(3, EnumTier.STEEL).setRegistryName("steel_gearbox");
     public static final Block WOODEN_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.WOOD).setRegistryName("wooden_broken_gearbox");
@@ -98,6 +94,7 @@ public final class BWMBlocks {
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
     public static final Block BEACON = new BlockBeacon();
     public static final Block STEEL_BLOCK = new BlockSteel().setRegistryName("steel_block");
+    public static final Block STEEL_SAW = new BlockSteelSaw().setRegistryName("steel_saw");
 
     private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -172,7 +169,14 @@ public final class BWMBlocks {
         registerBlock(STAKE);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
-        registerBlock(STEEL_BLOCK);
+        registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
+            @Override
+            public String getUnlocalizedName(ItemStack stack) {
+                return getUnlocalizedName();
+            }
+        });
+
+        registerBlock(STEEL_SAW, new ItemSteelSaw(STEEL_SAW));
     }
 
     public static void registerTileEntities() {
@@ -200,6 +204,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileSaw.class, "bwm.saw");
         GameRegistry.registerTileEntity(TilePump.class, "bwm.pump");
         GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
+        GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
     }
 
 //    /**

@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 

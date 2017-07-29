@@ -56,6 +56,8 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.UP));
     }
 
+
+
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
@@ -294,8 +296,8 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         if (block instanceof IDamageDropped)
             harvestMeta = ((IDamageDropped) block).damageDropped(state, world, pos2);
 
-        if (SawManager.INSTANCE.contains(block, harvestMeta)) {
-            List<ItemStack> products = SawManager.INSTANCE.getProducts(block, harvestMeta);
+        if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
+            List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
             world.setBlockToAir(pos2);
             if (!products.isEmpty())
                 InvUtils.ejectStackWithOffset(world, pos2, products);

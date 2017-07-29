@@ -2,7 +2,6 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
@@ -67,14 +66,9 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe(new ResourceLocation("chain_mail"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
         addSteelShapedRecipe(new ResourceLocation("steel_gear"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR), " NN ", "NIIN", "NIIN", " NN ", 'N', "nuggetSoulforgedSteel", 'I', "ingotSoulforgedSteel");
         addSteelShapedRecipe(new ResourceLocation("steel_spring"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING), "NNN", "NNN", "NNN", "NNN", 'N', "nuggetSoulforgedSteel");
-        for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
-            addSteelShapedRecipe(new ResourceLocation("stone_wall." + type.getMetadata()), new ItemStack(BWMBlocks.STONE_SIDING, 8, type.getMetadata()), "XXXX", 'X', type.getBlock());
-            addSteelShapedRecipe(new ResourceLocation("stone_moulding." + type.getMetadata()), new ItemStack(BWMBlocks.STONE_MOULDING, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()));
-            addSteelShapedRecipe(new ResourceLocation("stone_corner." + type.getMetadata()), new ItemStack(BWMBlocks.STONE_CORNER, 8, type.getMetadata()), "XXXX", 'X', new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()));
-        }
         addSteelShapedRecipe(new ResourceLocation("iron_wall"), new ItemStack(BWMBlocks.IRON_WALL, 8, 0), "XXXX", "XXXX", "XXXX", "XXXX", 'X', new ItemStack(Blocks.IRON_BARS));
         addSteelShapedRecipe(new ResourceLocation("steel_gearbox"), new ItemStack(BWMBlocks.STEEL_GEARBOX), "SGSS", "SGLG", "GLGS", "SSGS", 'S', "ingotSoulforgedSteel", 'G', "gearSoulforgedSteel", 'L', "latchRedstone");
-        addSteelShapedRecipe(new ResourceLocation("steel_hacksaw"), new ItemStack(BWMItems.STEEL_HACKSAW), "NMM", "N M", "N M", "NMM", 'N', "nuggetSoulforgedSteel", 'M', "mouldingWood");
+        addSteelShapedRecipe(new ResourceLocation("steel_hacksaw"), new ItemStack(BWMItems.STEEL_HACKSAW), "NMM", "N M", "N M", "NMM", 'N', "nuggetSoulforgedSteel", 'M', "mouldingWood"    );
     }
 
     private static IRecipe addAnvilRecipe(IRecipe recipe) {

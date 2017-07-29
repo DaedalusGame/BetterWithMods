@@ -1,14 +1,18 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.util.InvUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -65,10 +69,12 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         return isMatch(inv, worldIn);
+
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
+
         return result.copy();
     }
 
@@ -84,6 +90,7 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+        playSound(inv);
         NonNullList<ItemStack> stacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
         for (int i = 0; i < stacks.size(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
@@ -101,6 +108,30 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         if (group != null)
             return group.toString();
         return "";
+    }
+
+    public void playSound(InventoryCrafting inv) {
+        Container container = ReflectionHelper.getPrivateValue(InventoryCrafting.class, inv, "eventHandler", "field_70465_c");
+        EntityPlayer player = null;
+        if (container instanceof ContainerWorkbench)
+            player = ReflectionHelper.getPrivateValue(ContainerWorkbench.class, (ContainerWorkbench) container, "player", "field_192390_i");
+        if (container instanceof ContainerPlayer)
+            player = ReflectionHelper.getPrivateValue(ContainerPlayer.class, (ContainerPlayer) container, "player", "field_82862_h");
+        if (container instanceof ContainerSteelAnvil)
+            player = ((ContainerSteelAnvil) container).player;
+
+
+        if (player != null) {
+            player.world.playSound(null, player.getPosition(), getSound(), SoundCategory.BLOCKS, getSoundValues()[0], getSoundValues()[1]);
+        }
+    }
+
+    public SoundEvent getSound() {
+        return null;
+    }
+
+    public float[] getSoundValues() {
+        return new float[2];
     }
 
     @Override

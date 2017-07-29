@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityWaterwheel;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

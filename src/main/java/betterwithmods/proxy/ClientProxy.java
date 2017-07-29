@@ -10,14 +10,8 @@ import betterwithmods.client.render.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityCauldron;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityCrucible;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.tile.TileEntityBeacon;
-import betterwithmods.common.blocks.tile.gen.TileEntityWaterwheel;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.ModuleLoader;
@@ -47,6 +41,7 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -109,6 +104,8 @@ public class ClientProxy implements IProxy {
         //ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         //ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
         //ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
+//        ModelLoaderRegistry;
+        OBJLoader.INSTANCE.addDomain(BWMod.MODID);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
@@ -117,6 +114,7 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TESRCookingPot());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new TESRCookingPot());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeacon.class, new TESRBeacon());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileSteelSaw.class, new TESRSteelSaw());
     }
 
     private void registerColors() {

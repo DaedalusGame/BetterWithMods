@@ -22,6 +22,7 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
 import betterwithmods.module.compat.Rustic;
 import betterwithmods.module.compat.bop.BiomesOPlenty;
+import betterwithmods.module.gameplay.CraftingRecipes;
 import betterwithmods.module.hardcore.*;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
@@ -237,19 +238,20 @@ public class BWRegistry {
     public static void registerRecipes() {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
 
+        replaceIRecipe(CraftingRecipes.class, reg);
         replaceIRecipe(HCTools.class, reg);
         replaceIRecipe(HCDiamond.class, reg);
         replaceIRecipe(HCLumber.class, reg);
         replaceIRecipe(HCOres.class, reg);
         replaceIRecipe(HCRedstone.class, reg);
         replaceIRecipe(HCTorches.class, reg);
+        replaceIRecipe(HCFishing.class, reg);
+
         replaceIRecipe(BiomesOPlenty.class, reg);
         replaceIRecipe(Quark.class, reg);
         replaceIRecipe(Rustic.class, reg);
-        replaceIRecipe(HCFishing.class, reg);
+
         registerAnvilRecipes(reg);
-
-
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {

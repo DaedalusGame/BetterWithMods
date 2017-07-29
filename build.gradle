@@ -34,8 +34,8 @@ minecraft {
 }
 
 repositories {
-    maven { url 'http://dvs1.progwml6.com/files/maven' }
     maven { url "http://blamejared.com/maven" }
+    maven { url 'http://dvs1.progwml6.com/files/maven' }
     maven { url "http://maven.amadornes.com/" }
     maven { url "http://www.ryanliptak.com/maven/" }
     mavenCentral()

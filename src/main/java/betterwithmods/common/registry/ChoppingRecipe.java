@@ -8,6 +8,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -22,6 +23,16 @@ public class ChoppingRecipe extends ToolDamageRecipe {
         super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(HCLumber.axePlankAmount), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Override
+    public SoundEvent getSound() {
+        return SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD;
+    }
+
+    @Override
+    public float[] getSoundValues() {
+        return new float[]{0.25F, 2.5F};
     }
 
     @Override
@@ -50,8 +61,6 @@ public class ChoppingRecipe extends ToolDamageRecipe {
             if (!event.player.getEntityWorld().isRemote) {
                 event.player.entityDropItem(wood.getSawdust(HCLumber.axeSawDustAmount), 0);
                 event.player.entityDropItem(wood.getBark(HCLumber.axeBarkAmount), 0);
-            } else {
-                event.player.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 0.25F, 2.5F);
             }
         }
     }

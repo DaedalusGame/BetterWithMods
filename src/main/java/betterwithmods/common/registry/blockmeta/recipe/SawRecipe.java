@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 /**
- * Created by tyler on 5/16/17.
+ * Created by primetoxinz on 5/16/17.
  */
 public class SawRecipe extends BlockMetaRecipe {
     public SawRecipe(Block block, int meta, List<ItemStack> outputs) {

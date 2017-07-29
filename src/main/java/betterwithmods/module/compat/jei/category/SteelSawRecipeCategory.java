@@ -20,17 +20,17 @@ import java.util.stream.Collectors;
 /**
  * Created by tyler on 9/5/16.
  */
-public class SawRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
+public class SteelSawRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
     public static final int width = 82;
     public static final int height = 50;
-    public static final String UID = "bwm.saw";
+    public static final String UID = "bwm.saw.steel";
 
     @Nonnull
     private final IDrawable background;
     @Nonnull
     private final String localizedName;
 
-    public SawRecipeCategory(IGuiHelper helper) {
+    public SteelSawRecipeCategory(IGuiHelper helper) {
         ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/saw.png");
         background = helper.createDrawable(location, 0, 0, width, height);
         localizedName = Translator.translateToLocal("inv.saw.name");

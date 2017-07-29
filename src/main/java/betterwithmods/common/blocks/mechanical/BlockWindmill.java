@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.tile.gen.IColor;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillHorizontal;
-import betterwithmods.common.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.common.blocks.mechanical.tile.IColor;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillVertical;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;

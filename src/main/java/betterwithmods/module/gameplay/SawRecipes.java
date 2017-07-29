@@ -29,12 +29,17 @@ public class SawRecipes extends Feature {
         canDisable = false;
     }
 
+
+    public static void addSteelSawRecipe(Block block, int meta, ItemStack output) {
+        SawManager.STEEL_SAW.addRecipe(block, meta, new ItemStack[]{output});
+    }
+
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
-        SawManager.INSTANCE.addRecipe(block, meta, new ItemStack[]{output});
+        SawManager.WOOD_SAW.addRecipe(block, meta, new ItemStack[]{output});
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack... outputs) {
-        SawManager.INSTANCE.addRecipe(block, meta, outputs);
+        SawManager.WOOD_SAW.addRecipe(block, meta, outputs);
     }
 
     public static void addSelfSawRecipe(Block block, int meta) {
@@ -42,7 +47,7 @@ public class SawRecipes extends Feature {
     }
 
     public static void addSawRecipe(SawRecipe recipe) {
-        SawManager.INSTANCE.addRecipe(recipe);
+        SawManager.WOOD_SAW.addRecipe(recipe);
     }
 
     @Override
@@ -61,14 +66,14 @@ public class SawRecipes extends Feature {
         addSelfSawRecipe(Blocks.YELLOW_FLOWER, 0);
         addSelfSawRecipe(Blocks.BROWN_MUSHROOM, 0);
         addSelfSawRecipe(Blocks.RED_MUSHROOM, 0);
-        SawManager.INSTANCE.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
+        SawManager.WOOD_SAW.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
             @Override
             public NonNullList<ItemStack> getOutputs() {
                 Random random = new Random();
                 return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
-
+        addSteelSawRecipe(Blocks.STONE, 0, new ItemStack(BWMBlocks.STONE_SIDING, 2, 0));
     }
 
     @Override

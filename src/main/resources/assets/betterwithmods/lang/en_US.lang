@@ -318,7 +318,7 @@ item.bwm:material.windmill_blade.name=Windmill Blade
 item.bwm:material.glue.name=Glue
 item.bwm:material.tallow.name=Tallow
 item.bwm:material.ingot_steel.name=Soulforged Steel Ingot
-item.bwm:material.iplate_steel.name=Soulforged Steel Plate
+item.bwm:material.plate_steel.name=Soulforged Steel Plate
 item.bwm:material.ground_netherrack.name=Ground Netherrack
 item.bwm:material.hellfire_dust.name=Hellfire Dust
 item.bwm:material.concentrated_hellfire.name=Concentrated Hellfire
@@ -417,6 +417,7 @@ item.bwm:steel_shovel.name=Refined Shovel
 item.bwm:steel_sword.name=Refined Sword
 item.bwm:steel_mattock.name=Refined Mattock
 item.bwm:steel_battleaxe.name=Refined Battleaxe
+item.bwm:steel_hacksaw.name=Refined Hacksaw
 
 item.bwm:steel_helmet.name=Plate Armor Helmet
 item.bwm:steel_chest.name=Plate Armor Chest

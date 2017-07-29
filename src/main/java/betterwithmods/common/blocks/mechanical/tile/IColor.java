@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile.gen;
+package betterwithmods.common.blocks.mechanical.tile;
 
 public interface IColor {
     boolean dyeBlade(int color);

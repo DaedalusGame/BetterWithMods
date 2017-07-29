@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile.gen;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;

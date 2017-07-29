@@ -21,16 +21,19 @@ public class ContainerSteelAnvil extends Container {
     public InventoryCrafting craftMatrix;
     public IInventory craftResult;
     public InventoryPlayer inventoryPlayer;
+
+    public EntityPlayer player;
     private TileEntitySteelAnvil te;
     private IItemHandler handler;
 
-    public ContainerSteelAnvil(InventoryPlayer player, TileEntitySteelAnvil te) {
+    public ContainerSteelAnvil(InventoryPlayer inventory, TileEntitySteelAnvil te) {
         this.te = te;
-        handler = te.inventory;
-        inventoryPlayer = player;
-        craftMatrix = new InventorySteelCrafting(this,te);
+        this.handler = te.inventory;
+        this.inventoryPlayer = inventory;
+        this.player = inventory.player;
+        craftMatrix = new InventorySteelCrafting(this, te);
         craftResult = new InventorySteelCraftingResult(te);
-        this.addSlotToContainer(new SlotCraftingItemHandler(player.player, craftMatrix, craftResult, 0, 124, 44));
+        this.addSlotToContainer(new SlotCraftingItemHandler(player, craftMatrix, craftResult, 0, 124, 44));
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 this.addSlotToContainer(new Slot(craftMatrix, j + i * 4, 12 + j * 18, 17 + i * 18));
@@ -38,11 +41,11 @@ public class ContainerSteelAnvil extends Container {
         }
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(player, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
+                this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
             }
         }
         for (int i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(player, i, 8 + i * 18, 160));
+            this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 160));
         }
         this.onCraftMatrixChanged(craftMatrix);
     }

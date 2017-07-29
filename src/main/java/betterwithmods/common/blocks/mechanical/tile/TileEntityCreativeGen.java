@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile.gen;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
@@ -35,6 +35,9 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
         IAxle axle = MechanicalUtil.getAxle(world,pos.offset(facing),facing.getOpposite());
         if(axle != null)
             return axle.getMaximumInput();
+        IMechanicalPower power = MechanicalUtil.getMechanicalPower(world,pos.offset(facing),facing.getOpposite());
+        if(power != null)
+            return power.getMaximumInput(facing.getOpposite());
         return 0;
     }
 

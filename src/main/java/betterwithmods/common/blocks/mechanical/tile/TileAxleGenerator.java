@@ -1,4 +1,4 @@
-package betterwithmods.common.blocks.tile.gen;
+package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;

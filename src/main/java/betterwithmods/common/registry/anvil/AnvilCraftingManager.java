@@ -28,6 +28,7 @@ public class AnvilCraftingManager {
 
 
     public static NonNullList<ItemStack> getRemainingItems(InventoryCrafting inventory, World craftMatrix) {
+
         for (IRecipe irecipe : VANILLA_CRAFTING) {
             if (irecipe.matches(inventory, craftMatrix)) {
                 return irecipe.getRemainingItems(inventory);

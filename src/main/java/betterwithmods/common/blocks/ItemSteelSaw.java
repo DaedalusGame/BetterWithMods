@@ -22,8 +22,9 @@ public class ItemSteelSaw extends ItemBlock {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         IBlockState state = worldIn.getBlockState(pos);
-        EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
+
         if (state.getBlock() == BWMBlocks.STEEL_AXLE) {
+            EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
             worldIn.setBlockState(pos, BWMBlocks.STEEL_SAW.getDefaultState().withProperty(DirUtils.AXIS,axis).withProperty(IBlockActive.ACTIVE,false));
             return EnumActionResult.SUCCESS;
         }

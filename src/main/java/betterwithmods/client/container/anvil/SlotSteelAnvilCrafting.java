@@ -22,6 +22,7 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
         this.craftMatrix = craftingInventory;
     }
 
+
     @Override
     public ItemStack onTake(EntityPlayer playerIn, ItemStack stack) {
         net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);

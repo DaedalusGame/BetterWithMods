@@ -69,6 +69,13 @@ public class BlockSteel extends BWMBlock implements IMultiVariants{
     }
 
     @Override
+    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        if(state.getValue(HEIGHT) == 0)
+            return 255;
+        return 0;
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, HEIGHT);
     }

@@ -1,6 +1,5 @@
 package betterwithmods.client.container.anvil;
 
-import betterwithmods.client.container.inventory.SlotCraftingItemHandler;
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +32,7 @@ public class ContainerSteelAnvil extends Container {
         this.player = inventory.player;
         craftMatrix = new InventorySteelCrafting(this, te);
         craftResult = new InventorySteelCraftingResult(te);
-        this.addSlotToContainer(new SlotCraftingItemHandler(player, craftMatrix, craftResult, 0, 124, 44));
+        this.addSlotToContainer(new SlotSteelAnvilCrafting(player, craftMatrix, craftResult, 0, 124, 44));
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 this.addSlotToContainer(new Slot(craftMatrix, j + i * 4, 12 + j * 18, 17 + i * 18));

@@ -2,13 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "blocks/planks_oak",
-      "up": "blocks/planks_oak",
-      "down": "blocks/planks_oak",
-      "particle": "blocks/planks_oak",
-      "texture": "blocks/wool_colored_white"
+      "texture": "blocks/wool_colored_white",
+      "particle": "blocks/wool_colored_white"
     },
-    "model": "betterwithmods:stake",
+    "model": "betterwithmods:string",
     "uvlock": false
   },
   "variants": {
@@ -20,27 +17,6 @@
         "transform": "forge:default-block"
       }
     ],
-    "facing": {
-      "down": {},
-      "up": {
-        "x": 180
-      },
-      "north": {
-        "x": 270
-      },
-      "south": {
-        "x": 270,
-        "y": 180
-      },
-      "west": {
-        "x": 270,
-        "y": 270
-      },
-      "east": {
-        "x": 270,
-        "y": 90
-      }
-    },
     "north": {
       "true": {
         "submodel": {

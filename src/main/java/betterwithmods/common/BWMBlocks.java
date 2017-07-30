@@ -91,10 +91,12 @@ public final class BWMBlocks {
     public static final Block COOKING_POTS = new BlockCookingPot().setRegistryName("cooking_pot");
     public static final Block IRON_WALL = new BlockIronWall().setRegistryName("iron_wall");
     public static final Block STAKE = new BlockStake().setRegistryName("stake");
+    public static final Block STAKE_STRING = new BlockStakeString().setRegistryName("stake_string");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
     public static final Block BEACON = new BlockBeacon();
     public static final Block STEEL_BLOCK = new BlockSteel().setRegistryName("steel_block");
     public static final Block STEEL_SAW = new BlockSteelSaw().setRegistryName("steel_saw");
+
 
     private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -167,6 +169,7 @@ public final class BWMBlocks {
         registerBlock(TEMP_LIQUID_SOURCE, null);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
+        registerBlock(STAKE_STRING,null);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
         registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
@@ -197,7 +200,6 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileBellows.class, "bwm.bellows");
-        GameRegistry.registerTileEntity(TileStake.class, "bwm.stake");
         GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
         GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");

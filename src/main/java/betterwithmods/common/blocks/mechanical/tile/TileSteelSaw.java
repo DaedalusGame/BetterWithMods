@@ -31,7 +31,6 @@ public class TileSteelSaw extends TileAxleMachine {
             IBlockState state = world.getBlockState(pos);
 
             AxisAlignedBB box = new AxisAlignedBB(pos.getX()+0.5f,pos.getY()+0.5f,pos.getZ()+0.5f,pos.getX()+0.5f,pos.getY()+0.5f,pos.getZ()+0.5f);
-            System.out.println(box);
             switch (state.getValue(DirUtils.AXIS)) {
 
                 case X:

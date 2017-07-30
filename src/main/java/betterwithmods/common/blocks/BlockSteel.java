@@ -136,6 +136,7 @@ public class BlockSteel extends BWMBlock implements IMultiVariants{
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        tooltip.add(String.format("Height:%s", 16-stack.getMetadata()));
+        if(stack.getMetadata() > 0)
+            tooltip.add(String.format("Height:%s", 16-stack.getMetadata()));
     }
 }

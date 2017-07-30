@@ -61,7 +61,7 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe(new ResourceLocation("steel_mattock"), new ItemStack(BWMItems.STEEL_MATTOCK), " XXX", "X H ", "  H ", "  H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT));
         addSteelShapedRecipe(new ResourceLocation("armor_plate"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE), "BSPB", 'B', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP), 'S', "ingotSoulforgedSteel", 'P', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
         addSteelShapedRecipe(new ResourceLocation("broadhead"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BROADHEAD, 6), " N ", " N ", "NNN", " N ", 'N', "nuggetSoulforgedSteel");
-        addSteelShapedRecipe(new ResourceLocation("steel_block"), new ItemStack(BWMBlocks.AESTHETIC, 1, 2), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
+        addSteelShapedRecipe(new ResourceLocation("steel_block"), new ItemStack(BWMBlocks.STEEL_BLOCK), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
         addSteelShapedRecipe(new ResourceLocation("chopping_block"), new ItemStack(BWMBlocks.AESTHETIC, 6, 0), "X  X", "XXXX", 'X', "stone");
         addSteelShapedRecipe(new ResourceLocation("chain_mail"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
         addSteelShapedRecipe(new ResourceLocation("steel_gear"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR), " NN ", "NIIN", "NIIN", " NN ", 'N', "nuggetSoulforgedSteel", 'I', "ingotSoulforgedSteel");

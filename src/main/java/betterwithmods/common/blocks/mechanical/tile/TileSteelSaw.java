@@ -30,7 +30,8 @@ public class TileSteelSaw extends TileAxleMachine {
         if (getPower() > 0 && !world.isRemote && world.getTotalWorldTime() % 10 == 0) {
             IBlockState state = world.getBlockState(pos);
 
-            AxisAlignedBB box = new AxisAlignedBB(pos, pos.add(1, 1, 1));
+            AxisAlignedBB box = new AxisAlignedBB(pos.getX()+0.5f,pos.getY()+0.5f,pos.getZ()+0.5f,pos.getX()+0.5f,pos.getY()+0.5f,pos.getZ()+0.5f);
+            System.out.println(box);
             switch (state.getValue(DirUtils.AXIS)) {
 
                 case X:
@@ -47,8 +48,8 @@ public class TileSteelSaw extends TileAxleMachine {
             entities.forEach(e -> e.attackEntityFrom(BWDamageSource.saw, 10));
 
             Iterable<BlockPos> positions = BlockPos.PooledMutableBlockPos.getAllInBox((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ);
-            for(BlockPos pos: positions) {
-                saw(world,pos,world.rand);
+            for (BlockPos pos : positions) {
+                saw(world, pos, world.rand);
             }
 
         }

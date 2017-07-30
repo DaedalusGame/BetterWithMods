@@ -87,7 +87,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.VALUES) {
-            if(!type.name.equalsIgnoreCase("unuse"))
+            if(!type.name.equalsIgnoreCase("unused"))
                 items.add(getStack(type));
         }
     }

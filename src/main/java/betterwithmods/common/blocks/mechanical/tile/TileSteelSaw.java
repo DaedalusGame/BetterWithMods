@@ -3,6 +3,7 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
+import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,13 +46,24 @@ public class TileSteelSaw extends TileAxleMachine {
                     break;
             }
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
-            entities.forEach(e -> e.attackEntityFrom(BWDamageSource.saw, 10));
+            if (!entities.isEmpty()) {
+                entities.forEach(this::hitEntity);
+                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
+            }
 
             Iterable<BlockPos> positions = BlockPos.PooledMutableBlockPos.getAllInBox((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ);
             for (BlockPos pos : positions) {
                 saw(world, pos, world.rand);
             }
 
+        }
+    }
+
+    private void hitEntity(EntityLivingBase entity) {
+        entity.recentlyHit = 60;
+        if (world instanceof WorldServer) {
+            DamageSource source = entity.getHealth() <= 10 ? DamageSource.causePlayerDamage(FakePlayerHandler.player) : BWDamageSource.saw;
+            entity.attackEntityFrom(source, 10);
         }
     }
 

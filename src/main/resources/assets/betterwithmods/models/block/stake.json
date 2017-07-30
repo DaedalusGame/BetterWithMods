@@ -13,11 +13,11 @@
       ],
       "faces": {
         "down": {
-          "texture": "#side",
+          "texture": "#down",
           "cullface": "down"
         },
         "up": {
-          "texture": "#side",
+          "texture": "#up",
           "cullface": "up"
         },
         "north": {

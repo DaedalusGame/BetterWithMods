@@ -4,22 +4,47 @@ import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockStakeString extends BWMBlock {
     public BlockStakeString() {
         super(Material.CLOTH);
+        setDefaultState(getDefaultState().withProperty(DirUtils.NORTH, false).withProperty(DirUtils.SOUTH, false).withProperty(DirUtils.WEST, false).withProperty(DirUtils.EAST, false).withProperty(DirUtils.UP, false).withProperty(DirUtils.DOWN, false));
+    }
+
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        state = getActualState(state, source, pos);
+        AxisAlignedBB box = new AxisAlignedBB(7 / 16d, 7 / 16d, 7 / 16d, 9 / 16d, 9 / 16d, 9 / 16d);
+        if (state.getValue(DirUtils.EAST))
+            box = box.union(new AxisAlignedBB(0, 7 / 16d, 7 / 16d, 0.5, 9 / 16d, 9 / 16d));
+        if (state.getValue(DirUtils.WEST))
+            box = box.union(new AxisAlignedBB(0.5, 7 / 16d, 7 / 16d, 1, 9 / 16d, 9 / 16d));
+        if (state.getValue(DirUtils.NORTH))
+            box = box.union(new AxisAlignedBB(7 / 16d, 7 / 16d, 0, 9 / 16d, 9 / 16d, 0.5));
+        if (state.getValue(DirUtils.SOUTH))
+            box = box.union(new AxisAlignedBB(7 / 16d, 7 / 16d, 0.5, 9 / 16d, 9 / 16d, 1));
+        return box;
     }
 
     public boolean isFullCube(IBlockState state) {
@@ -30,23 +55,6 @@ public class BlockStakeString extends BWMBlock {
         return false;
     }
 
-    @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        world.scheduleBlockUpdate(pos,blockIn,1,5);
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        for (int i = 0; i < DirUtils.DIR_PROP.length; i++) {
-            if (state.getValue(DirUtils.DIR_PROP[i])) {
-                if (!getDirection(world, pos, EnumFacing.getFront(i))) {
-                    InvUtils.ejectStackWithOffset(world, pos, getItem(world, pos, state));
-                    world.setBlockToAir(pos);
-                    break;
-                }
-            }
-        }
-    }
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -76,6 +84,7 @@ public class BlockStakeString extends BWMBlock {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         IBlockState newState = state;
+
         for (int i = 0; i < EnumFacing.VALUES.length; i++) {
             newState = newState.withProperty(DirUtils.DIR_PROP[i], getDirection(worldIn, pos, EnumFacing.getFront(i)));
         }
@@ -91,4 +100,34 @@ public class BlockStakeString extends BWMBlock {
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
+
+    public void drop(World world, BlockPos pos) {
+        if (world.getBlockState(pos).getBlock() instanceof BlockStakeString) {
+            InvUtils.ejectStackWithOffset(world, pos, getItem(world, pos, world.getBlockState(pos)));
+            world.setBlockToAir(pos);
+        }
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        state = state.getActualState(worldIn,pos);
+        for (int i = 0; i < DirUtils.DIR_PROP.length; i++) {
+            if (state.getValue(DirUtils.DIR_PROP[i])) {
+                drop(worldIn, pos.offset(EnumFacing.getFront(i)));
+            }
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
+
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing p_193383_4_) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
+    }
+
 }

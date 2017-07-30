@@ -3,8 +3,8 @@
     "ambientocclusion": false,
     "elements": [
         {
-            "from": [7,9,7],
-            "to": [9,16,9],
+            "from": [7.8,8.2,7.8],
+            "to": [8.2,16,8.2],
             "faces": {
                 "up": {
                     "texture": "#texture"

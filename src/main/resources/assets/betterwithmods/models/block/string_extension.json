@@ -3,26 +3,26 @@
     "ambientocclusion": false,
     "elements": [
         {
-            "from": [7.8,7.8,7.8],
-            "to": [8.2,8.2,16],
+            "from": [7,7,0],
+            "to": [9,9,7],
             "faces": {
                 "up": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 },
                 "down": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 },
                 "west": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 },
                 "east": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 },
                 "north": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 },
                 "south": {
-                    "texture": "#texture"
+                    "texture": "missingtexture"
                 }
             }
         }

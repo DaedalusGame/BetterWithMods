@@ -150,4 +150,15 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
                 return EnumFacing.UP;
         }
     }
+
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return super.getPos();
+    }
+
 }

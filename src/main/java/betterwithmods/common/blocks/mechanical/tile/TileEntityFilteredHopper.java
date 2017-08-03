@@ -365,4 +365,14 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
     }
+
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return super.getPos();
+    }
 }

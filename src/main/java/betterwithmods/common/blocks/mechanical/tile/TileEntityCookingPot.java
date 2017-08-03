@@ -418,4 +418,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
+
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
+
 }

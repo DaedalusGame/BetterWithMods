@@ -7,6 +7,8 @@ import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
@@ -81,5 +83,15 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
 
     public BlockSaw getBlock() {
         return (BlockSaw) getBlockType();
+    }
+
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return super.getPos();
     }
 }

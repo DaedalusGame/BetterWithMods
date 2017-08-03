@@ -6,6 +6,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
@@ -49,6 +50,11 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
     @Override
     public int getMaximumInput(EnumFacing facing) {
         return 0;
+    }
+
+    @Override
+    public World getWorld() {
+        return super.getWorld();
     }
 
 }

@@ -235,4 +235,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         return super.getCapability(capability, facing);
     }
 
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
 }

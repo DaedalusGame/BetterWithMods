@@ -403,4 +403,15 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         return super.getCapability(capability, facing);
     }
 
+    @Override
+    public World getWorld() {
+        return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return super.getPos();
+    }
+
+
 }

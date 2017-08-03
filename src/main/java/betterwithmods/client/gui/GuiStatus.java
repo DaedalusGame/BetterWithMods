@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by tyler on 5/13/17.
  */
-@Mod.EventBusSubscriber(modid = BWMod.MODID)
+@Mod.EventBusSubscriber(modid = BWMod.MODID,value = Side.CLIENT)
 @SideOnly(Side.CLIENT)
 public class GuiStatus {
 

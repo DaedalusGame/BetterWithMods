@@ -35,7 +35,7 @@ public class BWOreDictionary {
     public static List<Ore> oreNames;
     public static List<Ore> ingotNames;
 
-    public static List<Wood> woods;
+    public static List<Wood> woods = new ArrayList<>();
 
     public static List<ItemStack> planks;
     public static List<ItemStack> logs;
@@ -170,14 +170,14 @@ public class BWOreDictionary {
         oreNames = getOreIngredients("ore");
         ingotNames = getOreIngredients("ingot");
         cropNames = getOreNames("crop");
-        woods = Lists.newArrayList(
+        woods.addAll( Lists.newArrayList(
                 new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
-        );
+        ));
         woods.forEach(w -> getPlankOutput(w.getLog(1)));
         logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
         for (ItemStack log : logs) {

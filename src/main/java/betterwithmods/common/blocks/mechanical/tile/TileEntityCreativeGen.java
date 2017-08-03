@@ -6,6 +6,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
@@ -53,8 +54,13 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return getPos();
     }
 
 }

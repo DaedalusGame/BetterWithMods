@@ -104,12 +104,12 @@ public class TileBellows extends TileBasic implements IMechanicalPower {
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getBlockPos() {
         return super.getPos();
     }
 

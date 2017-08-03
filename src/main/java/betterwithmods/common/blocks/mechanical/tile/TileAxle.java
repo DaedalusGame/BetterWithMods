@@ -221,12 +221,12 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getBlockPos() {
         return super.getPos();
     }
     

@@ -19,7 +19,7 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
 
     @Override
     public void render(TileSteelSaw te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        IBlockState state = getWorld().getBlockState(te.getPos());
+        IBlockState state = getWorld().getBlockState(te.getBlockPos());
         boolean active = state.getValue(IBlockActive.ACTIVE);
         EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
         GlStateManager.pushAttrib();
@@ -70,8 +70,8 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        World world = te.getWorld();
-        GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
+        World world = te.getBlockWorld();
+        GlStateManager.translate(-te.getBlockPos().getX(), -te.getBlockPos().getY(), -te.getBlockPos().getZ());
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
@@ -79,7 +79,7 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
 
         BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         IBakedModel model = dispatcher.getModelForState(state);
-        dispatcher.getBlockModelRenderer().renderModel(world, model, state, te.getPos(), bufferBuilder, true);
+        dispatcher.getBlockModelRenderer().renderModel(world, model, state, te.getBlockPos(), bufferBuilder, true);
         tessellator.draw();
 
         RenderHelper.enableStandardItemLighting();

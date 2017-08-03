@@ -17,9 +17,9 @@ public interface IMechanicalPower {
 
     Block getBlockType();
 
-    World getWorld();
+    World getBlockWorld();
 
-    BlockPos getPos();
+    BlockPos getBlockPos();
 
     default int calculateInput() {
         int findPower = 0;
@@ -37,12 +37,12 @@ public interface IMechanicalPower {
     }
 
     default boolean overpowerChance() {
-        return getWorld().rand.nextInt(10) == 0;
+        return getBlockWorld().rand.nextInt(10) == 0;
     }
 
     default void overpower() {
         if (getBlockType() instanceof IOverpower)
-            ((IOverpower) getBlockType()).overpower(getWorld(), getPos());
+            ((IOverpower) getBlockType()).overpower(getBlockWorld(), getBlockPos());
     }
 
 }

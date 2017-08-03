@@ -40,8 +40,8 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
         if (bladeMeta[dyeIndex] != dyeColor) {
             bladeMeta[dyeIndex] = dyeColor;
             dyed = true;
-            IBlockState state = getWorld().getBlockState(this.pos);
-            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
+            IBlockState state = getBlockWorld().getBlockState(this.pos);
+            this.getBlockWorld().notifyBlockUpdate(this.pos, state, state, 3);
             this.markDirty();
         }
         dyeIndex++;
@@ -92,8 +92,8 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
     @Override
     public void verifyIntegrity() {
         boolean valid = true;
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        if (getBlockWorld().getBlockState(pos).getBlock() != null && getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {
                     int xP = (axis == EnumFacing.Axis.Z ? i : 0);
@@ -102,7 +102,7 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
                     if (xP == 0 && vert == 0 && zP == 0)
                         continue;
                     else
-                        valid = getWorld().isAirBlock(offset);
+                        valid = getBlockWorld().isAirBlock(offset);
                     if (!valid)
                         break;
                 }
@@ -110,7 +110,7 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
                     break;
             }
         }
-        isValid = valid && this.getWorld().canBlockSeeSky(pos);
+        isValid = valid && this.getBlockWorld().canBlockSeeSky(pos);
     }
 
     //Extend the bounding box if the TESR is bigger than the occupying block.
@@ -120,8 +120,8 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        if (getBlockWorld().getBlockState(pos).getBlock() != null && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
+            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;
             int zP = axis == EnumFacing.Axis.X ? radius : 0;

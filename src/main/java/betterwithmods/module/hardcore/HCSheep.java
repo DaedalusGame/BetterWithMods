@@ -284,7 +284,7 @@ public class HCSheep extends Feature {
     public void sheepShearEvent(PlayerInteractEvent.EntityInteractSpecific event)
     {
         //TODO: this is unbearable
-        World world = event.getWorld();
+        World world = event.getBlockWorld();
         BlockPos pos = event.getEntity().getPosition();
         ItemStack tool = event.getItemStack();
         EntityPlayer player = event.getEntityPlayer();

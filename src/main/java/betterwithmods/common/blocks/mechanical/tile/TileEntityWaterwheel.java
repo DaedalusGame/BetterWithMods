@@ -30,8 +30,8 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     public void verifyIntegrity() {
         boolean isAir = true;
         boolean hasWater = true;
-        if (getWorld().getBlockState(pos) != null && getWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        if (getBlockWorld().getBlockState(pos) != null && getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
+            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
                     int xPos = (axis == EnumFacing.Axis.Z ? i : 0);
@@ -48,9 +48,9 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
                         continue;
                     else if (j > -2) {
                         if (i == -2 || i == 2) {
-                            isAir = getWorld().isAirBlock(offset) || isWater(offset);
+                            isAir = getBlockWorld().isAirBlock(offset) || isWater(offset);
                         } else
-                            isAir = getWorld().isAirBlock(offset);
+                            isAir = getBlockWorld().isAirBlock(offset);
                     }
                     if (!isAir)
                         break;
@@ -63,7 +63,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     }
 
     public boolean sidesHaveWater() {
-        EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
         int leftWater = 0;
         int rightWater = 0;
         boolean bottomIsUnobstructed = true;
@@ -83,7 +83,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
             int yP = -2;
             int zP = axis == EnumFacing.Axis.X ? i : 0;
             BlockPos bPos = pos.add(xP, yP, zP);
-            bottomIsUnobstructed = getWorld().isAirBlock(bPos) || isWater(bPos);
+            bottomIsUnobstructed = getBlockWorld().isAirBlock(bPos) || isWater(bPos);
             if (!bottomIsUnobstructed)
                 break;
         }
@@ -95,7 +95,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         byte power = 0;
         if (isValid() && isOverworld()) {
             float[] waterMeta = {0, 0, 0};
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int leftWater = 0;
             int rightWater = 0;
             for (int i = 0; i < 3; i++) {
@@ -104,7 +104,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
                 int zP = axis == EnumFacing.Axis.X ? metaPos : 0;
                 BlockPos lowPos = pos.add(xP, -2, zP);
                 if (isWater(lowPos)) {
-                    int meta = getWorld().getBlockState(lowPos).getBlock().getMetaFromState(getWorld().getBlockState(lowPos));
+                    int meta = getBlockWorld().getBlockState(lowPos).getBlock().getMetaFromState(getBlockWorld().getBlockState(lowPos));
                     waterMeta[i] = BlockLiquid.getLiquidHeightPercent(meta);
                 }
             }
@@ -144,8 +144,8 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWaterwheel) {
-            EnumFacing.Axis axis = getWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        if (getBlockWorld().getBlockState(pos).getBlock() != null && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWaterwheel) {
+            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;
             int zP = axis == EnumFacing.Axis.X ? radius : 0;

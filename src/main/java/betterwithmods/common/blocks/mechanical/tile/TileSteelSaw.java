@@ -99,12 +99,12 @@ public class TileSteelSaw extends TileAxleMachine {
     }
 
     @Override
-    public World getWorld() {
-        return super.getWorld();
+    public World getBlockWorld() {
+        return super.getBlockWorld();
     }
 
     @Override
-    public BlockPos getPos() {
-        return super.getPos();
+    public BlockPos getBlockPos() {
+        return super.getBlockPos();
     }
 }

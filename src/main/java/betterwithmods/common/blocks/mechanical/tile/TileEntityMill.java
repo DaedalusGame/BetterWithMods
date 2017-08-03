@@ -55,7 +55,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     @Override
     public void update() {
-        if (this.getWorld().isRemote)
+        if (this.getBlockWorld().isRemote)
             return;
 
         this.power = calculateInput();
@@ -66,18 +66,18 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             validateContents();
 
         if (isActive())
-            if (getWorld().rand.nextInt(20) == 0)
-                getWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getWorld().rand.nextFloat() * 0.1F, 0.5F + getWorld().rand.nextFloat() * 0.1F);
+            if (getBlockWorld().rand.nextInt(20) == 0)
+                getBlockWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F);
 
         if (this.containsIngredientsToGrind && isActive()) {
-            if (!this.getWorld().isRemote) {
+            if (!this.getBlockWorld().isRemote) {
                 if (grindType == 2) {
-                    if (this.getWorld().rand.nextInt(25) < 2) {
-                        getWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_HURT, SoundCategory.BLOCKS, 1F, getWorld().rand.nextFloat() * 0.4F + 0.8F);
+                    if (this.getBlockWorld().rand.nextInt(25) < 2) {
+                        getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_HURT, SoundCategory.BLOCKS, 1F, getBlockWorld().rand.nextFloat() * 0.4F + 0.8F);
                     }
                 } else if (grindType == 1) {
-                    if (this.getWorld().rand.nextInt(20) < 2)
-                        getWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.BLOCKS, 2.0F, (getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.2F + 1.0F);
+                    if (this.getBlockWorld().rand.nextInt(20) < 2)
+                        getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.BLOCKS, 2.0F, (getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.2F + 1.0F);
                 }
             }
             this.grindCounter++;
@@ -118,9 +118,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public void markDirty() {
         super.markDirty();
         validateContents();
-        if (this.getWorld() != null && !this.getWorld().isRemote) {
+        if (this.getBlockWorld() != null && !this.getBlockWorld().isRemote) {
             if (grindType == 1)
-                this.getWorld().playSound(null, this.pos, SoundEvents.ENTITY_WOLF_WHINE, SoundCategory.BLOCKS, 1F, 1.0F);
+                this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_WOLF_WHINE, SoundCategory.BLOCKS, 1F, 1.0F);
             this.validateContents = true;
         }
     }
@@ -128,26 +128,26 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private void ejectStack(ItemStack stack) {
         List<EnumFacing> validDirections = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            IBlockState check = getWorld().getBlockState(pos.offset(facing));
-            if (check.getBlock().isReplaceable(getWorld(), pos.offset(facing)) || getWorld().isAirBlock(pos.offset(facing)))
+            IBlockState check = getBlockWorld().getBlockState(pos.offset(facing));
+            if (check.getBlock().isReplaceable(getBlockWorld(), pos.offset(facing)) || getBlockWorld().isAirBlock(pos.offset(facing)))
                 validDirections.add(facing);
         }
 
         if (validDirections.isEmpty()) {
-            IBlockState down = getWorld().getBlockState(pos.offset(EnumFacing.DOWN));
-            if (down.getBlock().isReplaceable(getWorld(), pos.offset(EnumFacing.DOWN)) || getWorld().isAirBlock(pos.offset(EnumFacing.DOWN)))
+            IBlockState down = getBlockWorld().getBlockState(pos.offset(EnumFacing.DOWN));
+            if (down.getBlock().isReplaceable(getBlockWorld(), pos.offset(EnumFacing.DOWN)) || getBlockWorld().isAirBlock(pos.offset(EnumFacing.DOWN)))
                 validDirections.add(EnumFacing.DOWN);
         }
 
         BlockPos offset;
         if (validDirections.size() > 1)
-            offset = pos.offset(validDirections.get(getWorld().rand.nextInt(validDirections.size())));
+            offset = pos.offset(validDirections.get(getBlockWorld().rand.nextInt(validDirections.size())));
         else if (validDirections.isEmpty())
             offset = pos.offset(EnumFacing.UP);
         else
             offset = pos.offset(validDirections.get(0));
 
-        InvUtils.ejectStackWithOffset(getWorld(), offset, stack);
+        InvUtils.ejectStackWithOffset(getBlockWorld(), offset, stack);
     }
 
     public double getGrindProgress() {
@@ -164,7 +164,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
         if (ingredients != null) {
             if (grindType == 1)
-                this.getWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                this.getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
             NonNullList<ItemStack> output = mill.craftItem(world, this, inventory);
             if (!output.isEmpty()) {
                 for (ItemStack anOutput : output) {
@@ -236,7 +236,12 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return getPos();
     }
 }

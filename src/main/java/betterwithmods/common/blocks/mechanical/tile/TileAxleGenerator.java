@@ -65,7 +65,7 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
 
     @Override
     public void update() {
-        if (this.getWorld().getTotalWorldTime() % 20L == 0L && getWorld().getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
+        if (this.getBlockWorld().getTotalWorldTime() % 20L == 0L && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
             verifyIntegrity();
             calculatePower();
         }
@@ -75,8 +75,8 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
                 this.previousRotation = this.power * runningSpeed * waterMod;
                 this.currentRotation += (this.power * this.power) * runningSpeed * waterMod;
                 this.currentRotation %= 360;
-                if (this.getWorld().rand.nextInt(100) == 0)
-                    this.getWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, getWorld().rand.nextFloat() * 0.25F + 0.25F);
+                if (this.getBlockWorld().rand.nextInt(100) == 0)
+                    this.getBlockWorld().playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, getBlockWorld().rand.nextFloat() * 0.25F + 0.25F);
             }
         }
     }
@@ -152,12 +152,12 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getBlockPos() {
         return super.getPos();
     }
 

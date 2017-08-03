@@ -89,7 +89,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
     @Override
     public void update() {
-        if (this.getWorld().isRemote)
+        if (this.getBlockWorld().isRemote)
             return;
         tryNextOperation();
     }
@@ -97,7 +97,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     private void tryNextOperation() {
         this.power = calculateInput();
 
-        if (!activeOperation() && this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachines) {
+        if (!activeOperation() && this.getBlockWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachines) {
             if (canGoDown(false)) {
                 goDown();
             } else if (canGoUp()) {
@@ -109,7 +109,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     private boolean canGoUp() {
         if (isRaising()) {
             if (putRope(false)) {
-                BlockPos lowest = BlockRope.getLowestRopeBlock(getWorld(), pos);
+                BlockPos lowest = BlockRope.getLowestRopeBlock(getBlockWorld(), pos);
                 if (!lowest.equals(pos)) {
                     return true;
                 }
@@ -121,11 +121,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     private boolean canGoDown(boolean isMoving) {
         if (isLowering()) {
             if (takeRope(false)) {
-                BlockPos newPos = BlockRope.getLowestRopeBlock(getWorld(), pos).down();
-                IBlockState state = getWorld().getBlockState(newPos);
+                BlockPos newPos = BlockRope.getLowestRopeBlock(getBlockWorld(), pos).down();
+                IBlockState state = getBlockWorld().getBlockState(newPos);
                 boolean flag = !isMoving && state.getBlock() == BWMBlocks.ANCHOR
                         && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
-                if (newPos.getY() > 0 && (getWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getWorld(), newPos) || flag)
+                if (newPos.getY() > 0 && (getBlockWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getBlockWorld(), newPos) || flag)
                         && newPos.up().getY() > 0) {
                     return true;
                 }
@@ -135,16 +135,16 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     }
 
     private void goUp() {
-        BlockPos lowest = BlockRope.getLowestRopeBlock(getWorld(), pos);
-        IBlockState state = getWorld().getBlockState(lowest.down());
+        BlockPos lowest = BlockRope.getLowestRopeBlock(getBlockWorld(), pos);
+        IBlockState state = getBlockWorld().getBlockState(lowest.down());
         boolean flag = state.getBlock() == BWMBlocks.ANCHOR
                 && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
-        rope = new EntityExtendingRope(getWorld(), pos, lowest, lowest.up().getY());
+        rope = new EntityExtendingRope(getBlockWorld(), pos, lowest, lowest.up().getY());
         if (!flag || movePlatform(lowest.down(), true)) {
-            getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
-                    0.4F + (getWorld().rand.nextFloat() * 0.1F), 1.0F);
-            getWorld().spawnEntity(rope);
-            getWorld().setBlockToAir(lowest);
+            getBlockWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
+                    0.4F + (getBlockWorld().rand.nextFloat() * 0.1F), 1.0F);
+            getBlockWorld().spawnEntity(rope);
+            getBlockWorld().setBlockToAir(lowest);
             putRope(true);
         } else {
             rope = null;
@@ -152,13 +152,13 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     }
 
     private void goDown() {
-        BlockPos newPos = BlockRope.getLowestRopeBlock(getWorld(), pos).down();
-        IBlockState state = getWorld().getBlockState(newPos);
+        BlockPos newPos = BlockRope.getLowestRopeBlock(getBlockWorld(), pos).down();
+        IBlockState state = getBlockWorld().getBlockState(newPos);
         boolean flag = state.getBlock() == BWMBlocks.ANCHOR
                 && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
-        rope = new EntityExtendingRope(getWorld(), pos, newPos.up(), newPos.getY());
+        rope = new EntityExtendingRope(getBlockWorld(), pos, newPos.up(), newPos.getY());
         if (!flag || movePlatform(newPos, false)) {
-            getWorld().spawnEntity(rope);
+            getBlockWorld().spawnEntity(rope);
         } else {
             rope = null;
         }
@@ -169,7 +169,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
      */
 
     private boolean movePlatform(BlockPos anchor, boolean up) {
-        IBlockState state = getWorld().getBlockState(anchor);
+        IBlockState state = getBlockWorld().getBlockState(anchor);
         if (state.getBlock() != BWMBlocks.ANCHOR)
             return false;
 
@@ -199,16 +199,16 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
             });
         }
 
-        if (!getWorld().isRemote) {
+        if (!getBlockWorld().isRemote) {
             for (BlockPos blockPos : platformBlocks) {
-                IBlockState blockState = getWorld().getBlockState(blockPos.up());
+                IBlockState blockState = getBlockWorld().getBlockState(blockPos.up());
                 Vec3i offset = blockPos.subtract(anchor.up());
-                rope.addBlock(offset, getWorld().getBlockState(blockPos));
+                rope.addBlock(offset, getBlockWorld().getBlockState(blockPos));
                 if (isMoveableBlock(blockPos.up())) {
                     rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), blockState);
-                    getWorld().setBlockToAir(blockPos.up());
+                    getBlockWorld().setBlockToAir(blockPos.up());
                 }
-                getWorld().setBlockToAir(blockPos);
+                getBlockWorld().setBlockToAir(blockPos);
             }
         }
 
@@ -232,8 +232,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     @SuppressWarnings("unchecked")
     private void fixRail(BlockPos rail, EnumRailDirection... directions) {
         List<EnumRailDirection> list = Arrays.asList(directions);
-        IBlockState state = getWorld().getBlockState(rail);
-        if (getWorld().getBlockState(rail).getBlock() instanceof BlockRailBase) {
+        IBlockState state = getBlockWorld().getBlockState(rail);
+        if (getBlockWorld().getBlockState(rail).getBlock() instanceof BlockRailBase) {
             PropertyEnum<EnumRailDirection> shape = null;
             for (IProperty<?> p : state.getPropertyKeys()) {
                 if ("shape".equals(p.getName()) && p instanceof PropertyEnum<?>) {
@@ -245,7 +245,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
             if (shape != null) {
                 EnumRailDirection currentShape = state.getValue(shape);
                 if (list.contains(currentShape)) {
-                    getWorld().setBlockState(rail, state.withProperty(shape, flatten(currentShape)), 6);
+                    getBlockWorld().setBlockState(rail, state.withProperty(shape, flatten(currentShape)), 6);
                 }
             } else {
                 Formatter f = new Formatter();
@@ -307,11 +307,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
     public boolean onJobCompleted(boolean up, int targetY, EntityExtendingRope theRope) {
         BlockPos ropePos = new BlockPos(pos.getX(), targetY - (up ? 1 : 0), pos.getZ());
-        IBlockState state = getWorld().getBlockState(ropePos);
+        IBlockState state = getBlockWorld().getBlockState(ropePos);
         if (!up) {
-            if ((getWorld().isAirBlock(ropePos) || state.getBlock().isReplaceable(getWorld(), ropePos)) && BWMBlocks.ROPE.canPlaceBlockAt(getWorld(), ropePos) && takeRope(true)) {
-                getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.4F, 1.0F);
-                getWorld().setBlockState(ropePos, BWMBlocks.ROPE.getDefaultState());
+            if ((getBlockWorld().isAirBlock(ropePos) || state.getBlock().isReplaceable(getBlockWorld(), ropePos)) && BWMBlocks.ROPE.canPlaceBlockAt(getBlockWorld(), ropePos) && takeRope(true)) {
+                getBlockWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.4F, 1.0F);
+                getBlockWorld().setBlockState(ropePos, BWMBlocks.ROPE.getDefaultState());
             } else {
                 tryNextOperation();
                 theRope.setDead();
@@ -321,10 +321,10 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         if ((theRope.getUp() ? canGoUp() : canGoDown(true)) && !theRope.isPathBlocked()) {
             theRope.setTargetY(targetY + (theRope.getUp() ? 1 : -1));
             if (up) {
-                if (!getWorld().isAirBlock(ropePos.up())) {
-                    getWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
-                            0.4F + (getWorld().rand.nextFloat() * 0.1F), 1.0F);
-                    getWorld().setBlockToAir(ropePos.up());
+                if (!getBlockWorld().isAirBlock(ropePos.up())) {
+                    getBlockWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
+                            0.4F + (getBlockWorld().rand.nextFloat() * 0.1F), 1.0F);
+                    getBlockWorld().setBlockToAir(ropePos.up());
                     putRope(true);
                 }
             }
@@ -360,7 +360,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         if (rope == null && !worldIn.isRemote && ropeTag != null && !ropeTag.hasNoTags()) {
             NBTTagList pos = (NBTTagList) ropeTag.getTag("Pos");
             if (pos != null) {
-                rope = (EntityExtendingRope) AnvilChunkLoader.readWorldEntityPos(ropeTag, getWorld(), pos.getDoubleAt(0),
+                rope = (EntityExtendingRope) AnvilChunkLoader.readWorldEntityPos(ropeTag, getBlockWorld(), pos.getDoubleAt(0),
                         pos.getDoubleAt(1), pos.getDoubleAt(2), true);
             }
         }
@@ -404,12 +404,12 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getBlockPos() {
         return super.getPos();
     }
 

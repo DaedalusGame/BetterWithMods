@@ -53,12 +53,12 @@ public class CapabilityMechanicalPower {
         }
 
         @Override
-        public World getWorld() {
+        public World getBlockWorld() {
             return null;
         }
 
         @Override
-        public BlockPos getPos() {
+        public BlockPos getBlockPos() {
             return null;
         }
 

@@ -68,7 +68,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        BlockPos pos = getPos().offset(facing);
+        BlockPos pos = getBlockPos().offset(facing);
         if (!(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
             return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
         return 0;
@@ -124,12 +124,12 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
     @Override
-    public BlockPos getPos() {
+    public BlockPos getBlockPos() {
         return super.getPos();
     }
 

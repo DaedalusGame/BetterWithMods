@@ -130,10 +130,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public void update() {
-        if (this.getWorld().isRemote)
+        if (this.getBlockWorld().isRemote)
             return;
-        if (this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockCookingPot) {
-            IBlockState state = this.getWorld().getBlockState(this.pos);
+        if (this.getBlockWorld().getBlockState(this.pos).getBlock() instanceof BlockCookingPot) {
+            IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (this.fireIntensity != getFireIntensity()) {
                 validateFireIntensity();
                 this.forceValidation = true;
@@ -179,7 +179,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     private void entityCollision() {
         if (captureDroppedItems()) {
-            getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
+            getBlockWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getBlockWorld()), 5);
             this.markDirty();
         }
     }
@@ -191,14 +191,14 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     private boolean captureDroppedItems() {
         boolean insert = false;
         if (!InvUtils.isFull(inventory)) {
-            List<EntityItem> items = this.getCaptureItems(getWorld(), getPos());
+            List<EntityItem> items = this.getCaptureItems(getBlockWorld(), getPos());
             for (EntityItem item : items)
                 insert &= InvUtils.insertFromWorld(inventory, item, 0, 18, false);
         }
         if (insert) {
-            this.getWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             if (this.validateInventory()) {
-                getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);
+                getBlockWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getBlockWorld()), 5);
             }
             return true;
         }
@@ -217,11 +217,11 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
             BlockPos target = pos.offset(facing);
             ItemStack eject = new ItemStack(stack.getItem(), ejectStackSize, stack.getItemDamage());
             InvUtils.copyTags(eject, stack);
-            IBlockState targetState = getWorld().getBlockState(target);
-            boolean ejectIntoWorld = getWorld().isAirBlock(target) || targetState.getBlock().isReplaceable(getWorld(), target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(getWorld(), target).maxY < 0.5d;
+            IBlockState targetState = getBlockWorld().getBlockState(target);
+            boolean ejectIntoWorld = getBlockWorld().isAirBlock(target) || targetState.getBlock().isReplaceable(getBlockWorld(), target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(getBlockWorld(), target).maxY < 0.5d;
             if (ejectIntoWorld) {
-                this.getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                ejectStack(getWorld(), target, facing, eject);
+                this.getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                ejectStack(getBlockWorld(), target, facing, eject);
                 inventory.extractItem(index, ejectStackSize, false);
             }
         }
@@ -242,14 +242,14 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public void markDirty() {
         super.markDirty();
         this.forceValidation = true;
-        if (this.getWorld() != null) {
+        if (this.getBlockWorld() != null) {
             validateInventory();
         }
     }
 
 
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.getWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     public abstract boolean validateStoked();
@@ -277,8 +277,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                 for (int z = -1; z <= 1; z++) {
                     int yPos = -1;
                     BlockPos target = pos.add(x, yPos, z);
-                    Block block = this.getWorld().getBlockState(target).getBlock();
-                    int meta = this.getWorld().getBlockState(target).getBlock().damageDropped(this.getWorld().getBlockState(target));
+                    Block block = this.getBlockWorld().getBlockState(target).getBlock();
+                    int meta = this.getBlockWorld().getBlockState(target).getBlock().damageDropped(this.getBlockWorld().getBlockState(target));
                     if (BWMHeatRegistry.get(block, meta) != null)
                         fireFactor += BWMHeatRegistry.get(block, meta).value;
                 }
@@ -340,7 +340,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                         if (!out.isEmpty()) {
                             ItemStack stack = out.copy();
                             if (!InvUtils.insert(inventory, stack, false).isEmpty())
-                                InvUtils.ejectStackWithOffset(this.getWorld(), this.pos.up(), stack);
+                                InvUtils.ejectStackWithOffset(this.getBlockWorld(), this.pos.up(), stack);
                         }
                     }
                     return true;
@@ -365,9 +365,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
             this.occupiedSlots = currentSlots;
             stateChanged = true;
         }
-        if (getWorld() != null && stateChanged) {
-            IBlockState state = getWorld().getBlockState(pos);
-            getWorld().notifyBlockUpdate(pos, state, state, 3);
+        if (getBlockWorld() != null && stateChanged) {
+            IBlockState state = getBlockWorld().getBlockState(pos);
+            getBlockWorld().notifyBlockUpdate(pos, state, state, 3);
         }
 
         return stateChanged;
@@ -375,8 +375,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     public int getFireIntensity() {
         BlockPos down = pos.down();
-        Block block = this.getWorld().getBlockState(down).getBlock();
-        int meta = block.damageDropped(this.getWorld().getBlockState(down));
+        Block block = this.getBlockWorld().getBlockState(down).getBlock();
+        int meta = block.damageDropped(this.getBlockWorld().getBlockState(down));
         BWMHeatSource source = BWMHeatRegistry.get(block, meta);
         if (source != null)
             return source.value;
@@ -385,8 +385,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     private void validateFireIntensity() {
         BlockPos down = pos.down();
-        Block block = this.getWorld().getBlockState(down).getBlock();
-        int meta = block.damageDropped(this.getWorld().getBlockState(down));
+        Block block = this.getBlockWorld().getBlockState(down).getBlock();
+        int meta = block.damageDropped(this.getBlockWorld().getBlockState(down));
         BWMHeatSource source = BWMHeatRegistry.get(block, meta);
         if (source != null)
             fireIntensity = source.value;
@@ -420,8 +420,12 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     @Override
-    public World getWorld() {
+    public World getBlockWorld() {
         return super.getWorld();
     }
 
+    @Override
+    public BlockPos getBlockPos() {
+        return getPos();
+    }
 }

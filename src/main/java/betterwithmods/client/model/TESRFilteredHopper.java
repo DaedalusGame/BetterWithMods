@@ -38,7 +38,7 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
                     occupiedStacks = te.filledSlots();
                 double fillOffset = 0.65D * occupationMod(te);
                 if (fillOffset > 0D)
-                    RenderUtils.renderFill(new ResourceLocation("minecraft", "blocks/gravel"), te.getPos(), x, y, z, 0.125D, 0.25D, 0.125D, 0.875D, 0.25D + fillOffset, 0.875D);
+                    RenderUtils.renderFill(new ResourceLocation("minecraft", "blocks/gravel"), te.getBlockPos(), x, y, z, 0.125D, 0.25D, 0.125D, 0.875D, 0.25D + fillOffset, 0.875D);
             }
         }
     }

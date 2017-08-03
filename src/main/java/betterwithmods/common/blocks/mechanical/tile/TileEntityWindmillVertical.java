@@ -36,8 +36,8 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
         if (bladeMeta[dyeIndex] != dyeColor) {
             bladeMeta[dyeIndex] = dyeColor;
             dyed = true;
-            IBlockState state = getWorld().getBlockState(this.pos);
-            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
+            IBlockState state = getBlockWorld().getBlockState(this.pos);
+            this.getBlockWorld().notifyBlockUpdate(this.pos, state, state, 3);
             this.markDirty();
         }
         dyeIndex++;
@@ -72,7 +72,7 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
                 BlockPos offPos = pos.add(x, offset, z);
                 if (x == 0 && z == 0)
                     continue;
-                if (getWorld().isAirBlock(offPos)) {
+                if (getBlockWorld().isAirBlock(offPos)) {
                     airCounter++;
                 } else {
                     return false;
@@ -86,7 +86,7 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
     @Override
     public void verifyIntegrity() {
         boolean valid = false;
-        if (getWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
             for (int i = -3; i <= 3; i++) {
                 if (i != 0) {
                     if (isSlaveValid(i)) {
@@ -99,7 +99,7 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
             }
         }
 
-        isValid = valid && this.getWorld().canBlockSeeSky(pos);
+        isValid = valid && this.getBlockWorld().canBlockSeeSky(pos);
     }
 
     @Override
@@ -107,8 +107,8 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
         this.readFromNBT(tag);
-        IBlockState state = getWorld().getBlockState(this.pos);
-        this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
+        IBlockState state = getBlockWorld().getBlockState(this.pos);
+        this.getBlockWorld().notifyBlockUpdate(this.pos, state, state, 3);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class TileEntityWindmillVertical extends TileAxleGenerator implements ICo
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (getWorld().getBlockState(pos).getBlock() != null && getWorld().getBlockState(pos).getBlock() instanceof BlockWindmill)
+        if (getBlockWorld().getBlockState(pos).getBlock() != null && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWindmill)
             return new AxisAlignedBB(x - 4, y - 4, z - 4, x + 4, y + 4, z + 4);
         else
             return super.getRenderBoundingBox();

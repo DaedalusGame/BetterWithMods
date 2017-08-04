@@ -428,4 +428,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public BlockPos getBlockPos() {
         return getPos();
     }
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }

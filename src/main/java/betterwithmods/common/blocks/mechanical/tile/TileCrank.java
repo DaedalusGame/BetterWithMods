@@ -5,6 +5,7 @@ import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockCrank;
 import betterwithmods.common.blocks.tile.TileBasic;
+import net.minecraft.block.Block;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -92,5 +93,10 @@ public class TileCrank extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public BlockPos getBlockPos() {
         return super.getPos();
+    }
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
     }
 }

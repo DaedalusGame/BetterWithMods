@@ -414,4 +414,9 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     public BlockPos getBlockPos() {
         return super.getPos();
     }
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }

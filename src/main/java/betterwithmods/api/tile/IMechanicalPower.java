@@ -15,7 +15,7 @@ public interface IMechanicalPower {
 
     int getMinimumInput(EnumFacing facing);
 
-    Block getBlockType();
+    Block getBlock();
 
     World getBlockWorld();
 
@@ -41,8 +41,8 @@ public interface IMechanicalPower {
     }
 
     default void overpower() {
-        if (getBlockType() instanceof IOverpower)
-            ((IOverpower) getBlockType()).overpower(getBlockWorld(), getBlockPos());
+        if (getBlock() instanceof IOverpower)
+            ((IOverpower) getBlock()).overpower(getBlockWorld(), getBlockPos());
     }
 
 }

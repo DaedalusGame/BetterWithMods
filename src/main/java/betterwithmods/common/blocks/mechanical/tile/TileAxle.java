@@ -8,6 +8,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -229,6 +230,10 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     public BlockPos getBlockPos() {
         return super.getPos();
     }
-    
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }
 

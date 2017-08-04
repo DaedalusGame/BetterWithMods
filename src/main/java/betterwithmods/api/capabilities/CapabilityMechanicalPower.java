@@ -48,7 +48,7 @@ public class CapabilityMechanicalPower {
         }
 
         @Override
-        public Block getBlockType() {
+        public Block getBlock() {
             return null;
         }
 

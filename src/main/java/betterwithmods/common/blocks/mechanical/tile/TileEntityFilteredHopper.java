@@ -375,4 +375,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public BlockPos getBlockPos() {
         return super.getPos();
     }
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }

@@ -3,6 +3,7 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.util.DirUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -152,5 +153,10 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
             return new AxisAlignedBB(x - xP - 1, y - yP - 1, z - zP - 1, x + xP + 1, y + yP + 1, z + zP + 1);
         } else
             return super.getRenderBoundingBox();
+    }
+
+    @Override
+    public Block getBlock() {
+        return getBlockType();
     }
 }

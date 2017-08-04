@@ -14,6 +14,7 @@ import betterwithmods.common.registry.PulleyStructureManager;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.properties.IProperty;
@@ -413,5 +414,8 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         return super.getPos();
     }
 
-
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }

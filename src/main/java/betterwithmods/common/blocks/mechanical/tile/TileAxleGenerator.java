@@ -7,6 +7,7 @@ import betterwithmods.common.blocks.mechanical.BlockAxleGenerator;
 import betterwithmods.common.blocks.mechanical.IBlockActive;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.DirUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -161,4 +162,8 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
         return super.getPos();
     }
 
+    @Override
+    public Block getBlock() {
+        return getBlockType();
+    }
 }

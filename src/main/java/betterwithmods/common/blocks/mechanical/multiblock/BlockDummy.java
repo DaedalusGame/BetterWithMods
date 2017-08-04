@@ -1,14 +1,14 @@
 package betterwithmods.common.blocks.mechanical.multiblock;
 
 import betterwithmods.api.tile.multiblock.TileEntityProxyBlock;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockDummy extends BlockContainer {
+public class BlockDummy extends Block {
     public BlockDummy(Material material) {
         super(material);
     }
@@ -22,7 +22,12 @@ public class BlockDummy extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityProxyBlock();
     }
 }

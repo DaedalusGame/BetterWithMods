@@ -27,6 +27,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCBeacons());
         registerFeature(new HCBeds());
         registerFeature(new HCBonemeal());
+        registerFeature(new HCBrewing());
         registerFeature(new HCBuckets());
         registerFeature(new HCBuoy());
         registerFeature(new HCChickens());

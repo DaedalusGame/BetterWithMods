@@ -1,22 +1,28 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.common.entity.EntityJungleSpider;
 import betterwithmods.module.Feature;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by tyler on 4/20/17.
@@ -24,6 +30,8 @@ import java.util.ArrayList;
 public class MobSpawning extends Feature {
     private boolean slime;
     private boolean nether;
+    private boolean witches;
+    private boolean jungleSpiders;
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -34,17 +42,28 @@ public class MobSpawning extends Feature {
             NetherSpawnWhitelist.addBlock(Blocks.GRAVEL);
             NetherSpawnWhitelist.addBlock(Blocks.QUARTZ_BLOCK);
         }
+
+        Iterator<Biome> iterator = Biome.REGISTRY.iterator();
+        while (iterator.hasNext()) {
+            Biome biome = iterator.next();
+            if (jungleSpiders && BiomeDictionary.hasType(biome, BiomeDictionary.Type.JUNGLE))
+                EntityRegistry.addSpawn(EntityJungleSpider.class, 100, 1, 3, EnumCreatureType.MONSTER, biome);
+            if (witches && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))
+                EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biome);
+        }
     }
 
     @Override
     public String getFeatureDescription() {
-        return "Nether Mobs can only spawn on nether blocks and Slimes can only spawn on natural blocks";
+        return "Nether Mobs can only spawn on nether blocks and Slimes can only spawn on natural blocks. Also adjusts whether witches only spawn in swamps and if jungle spiders spawn in jungles.";
     }
 
     @Override
     public void setupConfig() {
         slime = loadPropBool("Limit Slime Spawning", "Slimes can only spawn on natural blocks", true);
         nether = loadPropBool("Limit Nether Spawning", "Nether Mobs can only spawn on nether blocks", true);
+        witches = loadPropBool("Limit Witch Spawning", "Witches can only spawn in swamps", true);
+        jungleSpiders = loadPropBool("Jungle Spider Spawning", "Jungle Spiders can spawn in jungles", true);
     }
 
     @SubscribeEvent
@@ -104,8 +123,8 @@ public class MobSpawning extends Feature {
         }
 
         public static void addBlock(ItemStack stack) {
-            if(stack.getItem() instanceof ItemBlock) {
-                addBlock(((ItemBlock) stack.getItem()).getBlock(),stack.getMetadata());
+            if (stack.getItem() instanceof ItemBlock) {
+                addBlock(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
             }
         }
 

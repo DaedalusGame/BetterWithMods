@@ -362,6 +362,9 @@ item.bwm:material.chain_mail.name=Chain Mail
 item.bwm:material.steel_gear.name=Soulforged Steel Gear
 item.bwm:material.steel_spring.name=Soulforged Steel Spring
 item.bwm:material.soap.name=Soap
+item.bwm:material.mystery_gland.name=Mysterious Gland
+item.bwm:material.witch_wart.name=Witch Wart
+item.bwm:material.poison_sac.name=Poison Sac
 
 
 item.bwm:donut.name=Donut
@@ -485,6 +488,7 @@ modifier.mending.name=Mending
 modifier.mending.desc=??oKillsteal!??r\nAbsorbs experience to repair the tool.
 
 entity.entity_sheared_creeper.name=Sheared Creeper
+entity.bwm_jungle_spider.name=Jungle Spider
 tile.bwm:single_machine=Mechanical Machine
 
 subtitles.bwm.wood.creak=Wood creaks

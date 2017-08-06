@@ -1,12 +1,15 @@
 package betterwithmods.common.damagesource;
 
 import betterwithmods.event.FakePlayerHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nullable;
 
 public class BWDamageSource extends DamageSource {
     public static final BWDamageSource gloom = new BWDamageSource("gloom", true);
@@ -61,7 +64,7 @@ public class BWDamageSource extends DamageSource {
 
         @Override
         public boolean isUnblockable() {
-            return true;
+            return false;
         }
 
         @Override
@@ -72,6 +75,12 @@ public class BWDamageSource extends DamageSource {
         @Override
         public ITextComponent getDeathMessage(EntityLivingBase killed) {
             return new TextComponentTranslation("death.attack." + message, killed.getDisplayName());
+        }
+
+        @Nullable
+        @Override
+        public Entity getTrueSource() {
+            return null;
         }
 
         @Override

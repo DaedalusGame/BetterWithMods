@@ -67,8 +67,7 @@ public class Stack {
 
     @Override
     public int hashCode() {
-        boolean wild = meta == OreDictionary.WILDCARD_VALUE;
-        return Objects.hashCode(data);
+        return Objects.hashCode(data) ^ meta;
     }
 
     private enum Type {

@@ -175,7 +175,9 @@ public final class BWMBlocks {
         registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
             @Override
             public String getUnlocalizedName(ItemStack stack) {
-                return getUnlocalizedName();
+                if (stack.getMetadata() == 0)
+                    return getUnlocalizedName();
+                return "tile.cut_steel_block.name";
             }
         });
 

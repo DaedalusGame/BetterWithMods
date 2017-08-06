@@ -274,6 +274,17 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         return Material.WOOD;
     }
 
+    @Override
+    public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+        return type != EnumTier.STEEL || entity instanceof EntityPlayer;
+    }
+
+    @Override
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
+        if (type != EnumTier.STEEL) {
+            super.onBlockExploded(world, pos, explosion);
+        }
+    }
 
 
 }

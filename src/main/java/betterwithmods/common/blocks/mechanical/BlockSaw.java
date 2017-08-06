@@ -9,7 +9,6 @@ import betterwithmods.common.blocks.mechanical.tile.TileSaw;
 import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
-import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -21,7 +20,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -55,7 +53,6 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.UP));
     }
-
 
 
     @Override
@@ -154,7 +151,8 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         if (isActive(state) && entity instanceof EntityLivingBase) {
             EnumFacing dir = getFacing(world, pos);
 
-            DamageSource source = BWDamageSource.saw;
+            DamageSource source = BWDamageSource.getSawDamage();
+
             int damage = 4;
             boolean unobstructed = true;
             for (int i = 0; i < 3; i++) {
@@ -162,7 +160,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
                 Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
                 if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.TYPE).getMeta() < 2) {
-                    source = BWDamageSource.choppingBlock;
+                    source = BWDamageSource.getChoppingBlockDamage();
                     damage *= 3;
                     if (blockState.getValue(BlockAesthetic.TYPE).getMeta() == 0 && unobstructed)
                         world.setBlockState(pos2, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.TYPE, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
@@ -172,19 +170,11 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
                 else if (!world.isAirBlock(pos2))
                     unobstructed = false;
             }
-            if (entity instanceof EntityMob && ((EntityLivingBase) entity).getHealth() <= damage) {
-                ((EntityLivingBase) entity).recentlyHit = 60;
-                if (world instanceof WorldServer)
-                    performLastHit(entity, damage);
-            } else if (entity.attackEntityFrom(source, damage)) {
+            if (source != null && entity.attackEntityFrom(source, damage)) {
                 ((EntityLivingBase) entity).recentlyHit = 60;
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
             }
         }
-    }
-
-    private void performLastHit(Entity entity, float damage) {
-        entity.attackEntityFrom(DamageSource.causePlayerDamage(FakePlayerHandler.player), damage);
     }
 
     @Override
@@ -285,7 +275,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
         if (world.isRemote || !(world instanceof WorldServer))
             return;
-        if(world.getBlockState(pos).getBlock() != this)
+        if (world.getBlockState(pos).getBlock() != this)
             return;
         BlockPos pos2 = pos.offset(getFacing(world, pos));
         if (world.isAirBlock(pos2))

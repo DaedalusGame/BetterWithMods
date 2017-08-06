@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.items.tools.ItemHacksaw;
@@ -138,5 +139,9 @@ public class BlockSteel extends BWMBlock implements IMultiVariants{
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         if(stack.getMetadata() > 0)
             tooltip.add(String.format("Height:%s", 16-stack.getMetadata()));
+    }
+
+    public static IBlockState getBlock(int height) {
+        return BWMBlocks.STEEL_BLOCK.getDefaultState().withProperty(HEIGHT, height);
     }
 }

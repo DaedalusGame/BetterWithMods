@@ -1,11 +1,9 @@
 package betterwithmods.module.tweaks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.PlayerHelper;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -17,8 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -30,8 +26,8 @@ public class HeadDrops extends Feature {
 
     @Override
     public void setupConfig() {
-        sawHeadDropChance = loadPropInt("Saw Drop Chance","Chance for extra drops from Mobs dying on a Saw. 0 disables it entirely", 3);
-        battleAxeHeadDropChance = loadPropInt("BattleAxe Drop Chance","Chance for extra drops from Mobs dying from a BattleAxe. 0 disables it entirely", 3);
+        sawHeadDropChance = loadPropInt("Saw Drop Chance", "Chance for extra drops from Mobs dying on a Saw. 0 disables it entirely", 3);
+        battleAxeHeadDropChance = loadPropInt("BattleAxe Drop Chance", "Chance for extra drops from Mobs dying from a BattleAxe. 0 disables it entirely", 3);
     }
 
     @Override
@@ -40,21 +36,15 @@ public class HeadDrops extends Feature {
     }
 
     @SubscribeEvent
-    public void onLivingDrop(LivingDropsEvent evt) {
-        BlockPos pos = evt.getEntityLiving().getPosition().down();
-        World world = evt.getEntityLiving().getEntityWorld();
-        if(isChoppingBlock(world,pos))
-            addHead(evt, sawHeadDropChance);
-        if(isBattleAxe(evt.getEntityLiving()))
-            addHead(evt,battleAxeHeadDropChance);
+    public void onLivingDrop(LivingDropsEvent event) {
+        if (isChoppingBlock(event.getSource()))
+            addHead(event, sawHeadDropChance);
+        if (isBattleAxe(event.getEntityLiving()))
+            addHead(event, battleAxeHeadDropChance);
     }
 
-    private boolean isChoppingBlock(World world, BlockPos pos) {
-        if (world.getBlockState(pos).getBlock() == BWMBlocks.AESTHETIC) {
-            IBlockState state = world.getBlockState(pos);
-            return state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.CHOPBLOCK || state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.CHOPBLOCKBLOOD;
-        }
-        return false;
+    private boolean isChoppingBlock(DamageSource source) {
+        return source.equals(BWDamageSource.getChoppingBlockDamage());
     }
 
     private boolean isBattleAxe(EntityLivingBase entity) {
@@ -78,7 +68,7 @@ public class HeadDrops extends Feature {
     }
 
     public void addHead(LivingDropsEvent evt, int chance) {
-        if(chance == 0 || evt.getEntity().getEntityWorld().rand.nextInt(chance) != 0)
+        if (chance > 0 && evt.getEntity().getEntityWorld().rand.nextInt(chance) != 0)
             return;
         if (evt.getEntityLiving() instanceof EntitySkeleton)
             addDrop(evt, new ItemStack(Items.SKULL, 1, 0));

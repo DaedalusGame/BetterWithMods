@@ -20,6 +20,8 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
     @Override
     public void render(TileSteelSaw te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         IBlockState state = getWorld().getBlockState(te.getBlockPos());
+        if (state.getBlock() != BWMBlocks.STEEL_SAW)
+            return;
         boolean active = state.getValue(IBlockActive.ACTIVE);
         EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
         GlStateManager.pushAttrib();
@@ -32,12 +34,15 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
                 IBlockState axle = BWMBlocks.STEEL_AXLE.getDefaultState().withProperty(DirUtils.AXIS, axis).withProperty(IBlockActive.ACTIVE, active);
                 renderBlock(te, axle);
             }
+
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             {
-                GlStateManager.translate(0.5, 0.5, (axis == EnumFacing.Axis.Z ? -1 : 1) * 0.5);
+
+                GlStateManager.translate(0.5, 0.5, 0.5);
                 if (active) {
-                    long angle = (axis != EnumFacing.Axis.Z ? -1 : 1) * (System.currentTimeMillis() / 2) % 360;
+                    long angle = (axis != EnumFacing.Axis.Z ? -1 : 1) * (System.currentTimeMillis() / 3) % 360;
+
                     switch (axis) {
 
                         case X:
@@ -52,7 +57,10 @@ public class TESRSteelSaw extends TileEntitySpecialRenderer<TileSteelSaw> {
                     }
 
                 }
+                GlStateManager.translate(-0.5, -0.5, -0.5);
                 renderBlock(te, state);
+
+
             }
             GlStateManager.popMatrix();
 

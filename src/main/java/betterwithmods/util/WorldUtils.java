@@ -1,14 +1,19 @@
 package betterwithmods.util;
 
+import com.google.common.collect.Sets;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+
+import java.util.Set;
 
 import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
 
@@ -94,8 +99,8 @@ public final class WorldUtils {
     }
 
     public static int getDistance(BlockPos pos1, BlockPos pos2) {
-        if(pos1 != null && pos2 != null)
-            return (int) pos1.getDistance(pos2.getX(),pos2.getY(), pos2.getZ());
+        if (pos1 != null && pos2 != null)
+            return (int) pos1.getDistance(pos2.getX(), pos2.getY(), pos2.getZ());
         return 0;
     }
 
@@ -121,9 +126,34 @@ public final class WorldUtils {
         IBlockState state = world.getBlockState(pos);
         return state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER;
     }
-    public static boolean isWaterSource(World world,BlockPos pos) {
+
+    public static boolean isWaterSource(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         return state.getBlock() == Blocks.WATER && state.getValue(BlockLiquid.LEVEL) == 0;
+    }
+
+    public static AxisAlignedBB toInts(AxisAlignedBB box) {
+        return new AxisAlignedBB((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ);
+    }
+
+    public static Set<BlockPos> getPosAround(BlockPos pos, EnumFacing.Axis axis) {
+        Set<BlockPos> posSet = Sets.newHashSet();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                switch (axis) {
+                    case X:
+                        posSet.add(pos.add(0, i, j));
+                        break;
+                    case Y:
+                        posSet.add(pos.add(i, 0, j));
+                        break;
+                    case Z:
+                        posSet.add(pos.add(i, j, 0));
+                        break;
+                }
+            }
+        }
+        return posSet;
     }
 
 }

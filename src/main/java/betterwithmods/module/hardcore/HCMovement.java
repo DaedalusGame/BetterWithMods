@@ -27,6 +27,11 @@ public class HCMovement extends Feature {
     public static final float DEFAULT_SPEED = 0.75f;
 
     @Override
+    public String getFeatureDescription() {
+        return "Change walking speed depending on the block";
+    }
+
+    @Override
     public void preInit(FMLPreInitializationEvent event) {
         MATERIAL_MOVEMENT.put(Material.ROCK, 1.1f);
         MATERIAL_MOVEMENT.put(Material.WOOD, 1.1f);
@@ -79,6 +84,8 @@ public class HCMovement extends Feature {
                     }
                 }
                 PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
+            } else {
+                PlayerHelper.changeSpeed(player, "HCMovement", 1, PENALTY_SPEED_UUID);
             }
         }
     }

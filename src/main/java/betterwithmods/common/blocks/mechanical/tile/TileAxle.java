@@ -204,7 +204,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public void markDirty() {
         super.markDirty();
-        ((BlockAxle) getBlockType()).setActive(world, pos, power > 0);
+        ((BlockAxle) getBlockType()).setActive(world, pos, getPower() > 0);
         for (EnumFacing facing : getDirections()) {
             if (!MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite())) {
                 world.neighborChanged(pos.offset(facing), ((BlockAxle) getBlockType()), pos);

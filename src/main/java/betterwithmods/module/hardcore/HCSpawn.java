@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static net.minecraft.world.WorldType.FLAT;
+
 /**
  * Created by tyler on 4/20/17.
  */
@@ -69,6 +71,8 @@ public class HCSpawn extends Feature {
     @SubscribeEvent
     public void randomRespawn(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof EntityPlayerMP)) return;
+        if (event.getEntity().getEntityWorld().getWorldType() == FLAT)
+            return;
         EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
         if (PlayerHelper.isSurvival(player)) {
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
@@ -156,7 +160,7 @@ public class HCSpawn extends Feature {
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(BWMod.MODID, "spawn_position"), new SpawnSaving((EntityPlayer)event.getObject()));
+            event.addCapability(new ResourceLocation(BWMod.MODID, "spawn_position"), new SpawnSaving((EntityPlayer) event.getObject()));
         }
     }
 

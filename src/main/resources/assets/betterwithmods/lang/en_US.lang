@@ -54,6 +54,7 @@ tile.bwm:aesthetic.12.name=Block of Wicker
 tile.bwm:advanced_bellows.name=Spring-Action Bellows
 
 tile.bwm:steel_block.name=Soulforged Steel Block
+tile.bwm:cut_steel_block.name=Cut Soulforged Steel Block
 
 tile.bwm:windmill.windmill.name=Windmill
 tile.bwm:windmill.waterwheel.name=Waterwheel
@@ -500,6 +501,8 @@ subtitles.bwm.oof=Oof
 death.attack.growth=%s was devoured by the Growth
 death.attack.gloom=%s was eaten by a Grue
 death.attack.saw=%s forgot the lessons of wood shop safety
+death.attack.steel_saw.0=became a %s siding.
+death.attack.steel_saw.1=%s forgot the lessons of steel shop safety
 death.attack.chopping_block=%s lost their head
 death.blasting_oil=%s is having a blast
 death.acid_rain=%s should have packed a steel umbrella

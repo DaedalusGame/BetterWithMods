@@ -9,7 +9,11 @@ import net.minecraft.world.World;
 public interface IMultiblock<T extends TileEntityMultiblock> {
     String getName();
 
-    ItemStack[][][] getStructureBlocks();
+    static boolean isState(World world, BlockPos pos, IBlockState state) {
+        IBlockState check = world.getBlockState(pos);
+        System.out.println(check);
+        return check.equals(state);
+    }
 
     boolean isController(int x, int y, int z);
 
@@ -18,4 +22,12 @@ public interface IMultiblock<T extends TileEntityMultiblock> {
     void createMultiblockStructure(World world, BlockPos pos, IBlockState state, EnumFacing facing);
 
     void destroyMultiblock(World world, BlockPos pos, IBlockState state, EnumFacing facing);
+
+    /**
+     * Axis order: height, length, width.
+     *
+     * @return
+     */
+    ItemStack[][][] getStructureBlocks();
+
 }

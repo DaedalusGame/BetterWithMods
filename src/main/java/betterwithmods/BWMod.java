@@ -61,7 +61,6 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-        MinecraftForge.EVENT_BUS.register(new FakePlayerHandler());
         MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
@@ -82,4 +81,10 @@ public class BWMod {
         ModuleLoader.serverStarting(evt);
     }
 
+    @Mod.EventHandler
+    public void serverStopping(FMLServerStoppingEvent evt) {
+        if (FakePlayerHandler.player != null) {
+            FakePlayerHandler.player = null;
+        }
+    }
 }

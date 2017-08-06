@@ -7,7 +7,7 @@
       "side": "betterwithmods:blocks/steel_axle_side",
       "active": "betterwithmods:blocks/steel_axle_side_on"
     },
-    "model": "betterwithmods:steel_saw.obj",
+    "model": "betterwithmods:large_sawblade",
     "uvlock": false
   },
   "variants": {

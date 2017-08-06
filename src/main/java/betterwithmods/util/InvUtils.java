@@ -435,6 +435,20 @@ public class InvUtils {
         return -1;
     }
 
+    public static boolean spawnStack(World world, BlockPos pos, List<ItemStack> stacks) {
+        boolean spawned = true;
+        for (ItemStack stack : stacks) {
+            if (!stack.isEmpty())
+                if (!spawnStack(world, pos, stack, 10))
+                    spawned = false;
+        }
+        return spawned;
+    }
+
+    public static boolean spawnStack(World world, BlockPos pos, ItemStack stack, int pickupDelay) {
+        return spawnStack(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, stack, pickupDelay);
+    }
+
 
     public static boolean spawnStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {
         EntityItem item = new EntityItem(world, x, y, z, stack);
@@ -473,6 +487,19 @@ public class InvUtils {
         float yOff = world.rand.nextFloat() * 0.2F + 0.1F;
         float zOff = world.rand.nextFloat() * 0.7F + 0.15F;
         ejectStack(world, (double) ((float) pos.getX() + xOff), (double) ((float) pos.getY() + yOff), (double) ((float) pos.getZ() + zOff), stack, 10);
+    }
+
+    public static void ejectStack(World world, BlockPos pos, List<ItemStack> stacks) {
+        for (ItemStack stack : stacks)
+            ejectStack(world, pos.getX(), pos.getY(), pos.getZ(), stack, 10);
+    }
+
+    public static void ejectStack(World world, BlockPos pos, ItemStack stack) {
+        ejectStack(world, pos.getX(), pos.getY(), pos.getZ(), stack, 10);
+    }
+
+    public static void ejectStack(World world, BlockPos pos, ItemStack stack, int pickupDelay) {
+        ejectStack(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, stack, pickupDelay);
     }
 
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {

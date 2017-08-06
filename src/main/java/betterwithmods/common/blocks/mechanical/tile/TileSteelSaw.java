@@ -103,7 +103,7 @@ public class TileSteelSaw extends TileAxleMachine {
                 List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
                 world.setBlockToAir(pos);
                 if (!products.isEmpty())
-                    InvUtils.ejectStackWithOffset(world, pos, products);
+                    InvUtils.spawnStack(world, pos, products);
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
             }
             return true;
@@ -113,7 +113,7 @@ public class TileSteelSaw extends TileAxleMachine {
                 List<ItemStack> products = SawManager.STEEL_SAW.getProducts(block, harvestMeta);
                 world.setBlockToAir(pos);
                 if (!products.isEmpty())
-                    InvUtils.ejectStackWithOffset(world, pos, products);
+                    InvUtils.spawnStack(world, pos, products);
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
             }
             return true;

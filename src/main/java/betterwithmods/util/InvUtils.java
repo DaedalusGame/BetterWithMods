@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -420,15 +421,20 @@ public class InvUtils {
     }
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, ItemStack stack) {
+        return getFirstOccupiedStackOfItem(inv, Ingredient.fromStacks(stack));
+    }
+
+    public static int getFirstOccupiedStackOfItem(IItemHandler inv, Ingredient ingred) {
         for (int i = 0; i < inv.getSlots(); ++i) {
             if (!inv.getStackInSlot(i).isEmpty()) {
-                if (matches(inv.getStackInSlot(i),stack)) {
+                if (ingred.apply(inv.getStackInSlot(i))) {
                     return i;
                 }
             }
         }
         return -1;
     }
+
 
     public static boolean spawnStack(World world, double x, double y, double z, ItemStack stack, int pickupDelay) {
         EntityItem item = new EntityItem(world, x, y, z, stack);

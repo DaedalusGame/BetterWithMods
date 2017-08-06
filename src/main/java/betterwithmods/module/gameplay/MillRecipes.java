@@ -43,7 +43,7 @@ public class MillRecipes extends Feature {
 
 
         addMillRecipe(1, new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3), new Object[]{new ItemStack(BWMBlocks.WOLF)});
-        addMillRecipe(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new ItemStack[]{new ItemStack(Blocks.NETHERRACK)});
+        addMillRecipe(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new String[]{"netherrack"});
         addMillRecipe(2, new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack[]{new ItemStack(Items.BLAZE_ROD)});
         addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack[]{new ItemStack(Items.REEDS)});
         addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), new String[]{"cropHemp"});

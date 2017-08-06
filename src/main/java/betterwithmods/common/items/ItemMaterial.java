@@ -129,7 +129,10 @@ public class ItemMaterial extends Item implements IMultiLocations {
         STEEL_GEAR,
         STEEL_SPRING,
         SOAP,
-        PLATE_STEEL;
+        PLATE_STEEL,
+        WITCH_WART,
+        MYSTERY_GLAND,
+        POISON_SAC;
 
 
         public final static EnumMaterial[] VALUES = values();

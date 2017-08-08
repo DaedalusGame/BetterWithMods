@@ -1,6 +1,7 @@
 package betterwithmods.common.entity;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockBloodSapling;
 import betterwithmods.common.blocks.BlockNetherGrowth;
 import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.util.WorldUtils;
@@ -65,6 +66,11 @@ public class EntityUrn extends EntitySnowball {
                         for(int i =0;i<10;i++)
                             b.grow(world, p, state, rand);
                         grew = true;
+                    }
+                    if (state != null && state.getBlock() == BWMBlocks.BLOOD_SAPLING) {
+                        BlockBloodSapling sapling = (BlockBloodSapling)state.getBlock();
+                        if (sapling.generateTree(world, p, world.getBlockState(p), rand))
+                            grew = true;
                     }
                 }
                 if (!grew) {

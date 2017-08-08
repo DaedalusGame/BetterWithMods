@@ -94,8 +94,13 @@ public final class BWMBlocks {
     public static final Block STAKE_STRING = new BlockStakeString().setRegistryName("stake_string");
     public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
     public static final Block BEACON = new BlockBeacon();
+    public static final Block GRASS = new BlockGrassCustom();
+    public static final Block MYCELIUM = new BlockMyceliumCustom();
     public static final Block STEEL_BLOCK = new BlockSteel().setRegistryName("steel_block");
     public static final Block STEEL_SAW = new BlockSteelSaw().setRegistryName("steel_saw");
+    public static final Block BLOOD_LOG = new BlockBloodLog().setRegistryName("blood_log");
+    public static final Block BLOOD_LEAVES = new BlockBloodLeaves().setRegistryName("blood_leaves");
+    public static final Block BLOOD_SAPLING = new BlockBloodSapling().setRegistryName("blood_sapling");
 
 
     private static final List<Block> BLOCKS = new ArrayList<>();
@@ -172,6 +177,8 @@ public final class BWMBlocks {
         registerBlock(STAKE_STRING,null);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
+        registerBlock(GRASS);
+        registerBlock(MYCELIUM);
         registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
             @Override
             public String getUnlocalizedName(ItemStack stack) {
@@ -182,6 +189,9 @@ public final class BWMBlocks {
         });
 
         registerBlock(STEEL_SAW, new ItemSteelSaw(STEEL_SAW));
+        registerBlock(BLOOD_LOG);
+        registerBlock(BLOOD_LEAVES);
+        registerBlock(BLOOD_SAPLING);
     }
 
     public static void registerTileEntities() {

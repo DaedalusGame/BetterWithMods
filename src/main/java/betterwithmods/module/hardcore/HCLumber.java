@@ -10,6 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -63,13 +65,26 @@ public class HCLumber extends Feature {
         if (!Loader.isModLoaded("primal")) {
             for (IRecipe recipe : BWOreDictionary.logRecipes) {
                 ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.woods.stream().filter(w -> w.getPlank(plankAmount).isItemEqual(plank)).forEach(wood -> {
+                BWOreDictionary.woods.stream().filter(w -> w.getPlank(plankAmount).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
                     if (wood != null) {
                         addHardcoreRecipe(new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
                     }
                 });
             }
         }
+    }
+
+    private boolean hasLog(IRecipe recipe, ItemStack log) {
+        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getMatchingStacks() != null && ingredient.getMatchingStacks().length > 0) {
+                for (ItemStack stack : ingredient.getMatchingStacks()) {
+                    if (stack.isItemEqual(log))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

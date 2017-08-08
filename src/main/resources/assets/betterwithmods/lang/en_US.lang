@@ -241,6 +241,10 @@ tile.bwm:ie_siding.2.name=Packaged Treated Wood Siding
 tile.bwm:ie_moulding.2.name=Packaged Treated Wood Moulding
 tile.bwm:ie_corner.2.name=Packaged Treated Wood Corner
 
+tile.bwm:blood_log.name=Bloody Wood
+tile.bwm:blood_leaves.name=Bloody Leaves
+tile.bwm:blood_sapling.name=Bloody Sapling
+
 
 tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
 tile.bwm:rustic_compat_siding.1.name=Ironwood Siding

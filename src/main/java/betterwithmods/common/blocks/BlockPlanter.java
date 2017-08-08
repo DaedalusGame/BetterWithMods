@@ -253,7 +253,12 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.VALUES)
             items.add(getStack(type));
+    }
 
+    @Override
+    public void onPlantGrow(IBlockState state, World world, BlockPos pos, BlockPos source) {
+        if (state.getValue(TYPE) == EnumType.GRASS && source.getY() == pos.getY() + 1)
+            world.setBlockState(pos, state.withProperty(TYPE, EnumType.DIRT));
     }
 
     @Override

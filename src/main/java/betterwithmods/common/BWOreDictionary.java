@@ -89,6 +89,7 @@ public class BWOreDictionary {
         registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
         registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
+        registerOre("barkBlood", new ItemStack(BWMItems.BARK, 1, 6));
 
         registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
         registerOre("hideBelt", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_BELT));
@@ -123,6 +124,9 @@ public class BWOreDictionary {
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
 
         registerOre("blockVase", new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("treeSapling", new ItemStack(BWMBlocks.BLOOD_SAPLING));
+        registerOre("treeLeaves", new ItemStack(BWMBlocks.BLOOD_LEAVES));
+        registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
 
     }
 
@@ -176,10 +180,11 @@ public class BWOreDictionary {
                 new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
-                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
+                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1)),
+                new Wood(new ItemStack(BWMBlocks.BLOOD_LOG), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("bloody", 1), true)
         ));
         woods.forEach(w -> getPlankOutput(w.getLog(1)));
-        logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
+        logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft") && !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("betterwithmods")).collect(Collectors.toList());
         for (ItemStack log : logs) {
             if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
                 for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?
@@ -261,6 +266,7 @@ public class BWOreDictionary {
 
     public static class Wood {
         public ItemStack log, plank, bark;
+        boolean isSoulDust = false;
 
         public Wood(ItemStack log, ItemStack plank) {
             this.log = log;
@@ -274,6 +280,11 @@ public class BWOreDictionary {
             this.log = log;
             this.plank = plank;
             this.bark = bark;
+        }
+
+        public Wood(ItemStack log, ItemStack plank, ItemStack bark, boolean isSoulDust) {
+            this(log, plank, bark);
+            this.isSoulDust = isSoulDust;
         }
 
         public ItemStack getLog(int count) {
@@ -295,7 +306,7 @@ public class BWOreDictionary {
         }
 
         public ItemStack getSawdust(int count) {
-            ItemStack copy = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
+            ItemStack copy = isSoulDust ? ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
             return copy;
         }
 

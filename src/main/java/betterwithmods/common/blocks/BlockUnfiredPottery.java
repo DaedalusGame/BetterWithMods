@@ -2,6 +2,8 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.items.ItemMaterial;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -10,6 +12,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -17,8 +21,12 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("potterytype",
@@ -26,6 +34,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     private static final AxisAlignedBB BLOCK_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB URN_AABB = new AxisAlignedBB(0.3125D, 0.0F, 0.3125D, 0.6875D, 0.625D, 0.6875D);
     private static final AxisAlignedBB VASE_AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static final AxisAlignedBB BRICK_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D);
 
     public BlockUnfiredPottery() {
         super(Material.CLAY);
@@ -63,7 +72,21 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.VALUES)
-            items.add(getStack(type));
+            if(type.hasItem)
+                items.add(getStack(type));
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        EnumType type = state.getValue(TYPE);
+        switch (type) {
+            case BRICK:
+                return Lists.newArrayList(new ItemStack(Items.CLAY_BALL));
+            case NETHER_BRICK:
+                return Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
+            default:
+                return super.getDrops(world,pos,state,fortune);
+        }
     }
 
     @Override
@@ -81,14 +104,32 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
             case URN:
                 return URN_AABB;
             case VASE:
-            default:
                 return VASE_AABB;
+            case BRICK:
+            case NETHER_BRICK:
+                return BRICK_AABB;
+            default:
+                return NULL_AABB;
         }
     }
 
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.isSideSolid(pos.down(), EnumFacing.UP);
+    }
+
+    @Override
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        EnumType type = state.getValue(TYPE);
+        switch(type)
+        {
+            case BRICK:
+                return new ItemStack(Items.CLAY_BALL);
+            case NETHER_BRICK:
+                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
+            default:
+                return super.getPickBlock(state, target, world, pos, player);
+        }
     }
 
     @Override
@@ -118,15 +159,24 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         CRUCIBLE(0, "crucible"),
         PLANTER(1, "planter"),
         URN(2, "urn"),
-        VASE(3, "vase");
+        VASE(3, "vase"),
+        BRICK(4, "brick", false),
+        NETHER_BRICK(5, "nether_brick", false);
         private static final EnumType[] VALUES = values();
 
         private String name;
         private int meta;
+        private boolean hasItem;
 
-        EnumType(int meta, String name) {
+        EnumType(int meta, String name, boolean hasItem) {
             this.meta = meta;
             this.name = name;
+            this.hasItem = hasItem;
+        }
+
+        EnumType(int meta, String name)
+        {
+            this(meta,name,true);
         }
 
         public static EnumType byMeta(int meta) {

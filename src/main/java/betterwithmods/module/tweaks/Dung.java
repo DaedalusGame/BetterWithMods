@@ -1,18 +1,42 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Created by tyler on 4/20/17.
  */
 public class Dung extends Feature {
-    private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
     private boolean wolvesOnly;
+    public static final ResourceLocation DUNG_PRODUCER = new ResourceLocation(BWMod.MODID, "dung_producer");
+    @CapabilityInject(DungProducer.class)
+    public static Capability<DungProducer> DUNG_PRODUCER_CAP;
 
     @Override
     public String getFeatureDescription() {
@@ -24,6 +48,22 @@ public class Dung extends Feature {
         wolvesOnly = loadPropBool("Only Wolves", "Only Wolves will produce dung", true);
     }
 
+    @Override
+    public void init(FMLInitializationEvent event) {
+        CapabilityManager.INSTANCE.register(DungProducer.class, new Capability.IStorage<DungProducer>() {
+            @Nullable
+            @Override
+            public NBTBase writeNBT(Capability<DungProducer> capability, DungProducer instance, EnumFacing side) {
+                return instance.serializeNBT();
+            }
+
+            @Override
+            public void readNBT(Capability<DungProducer> capability, DungProducer instance, EnumFacing side, NBTBase nbt) {
+                instance.deserializeNBT((NBTTagCompound)nbt);
+            }
+        },DungProducer::new);
+    }
+
     @SubscribeEvent
     public void mobDungProduction(LivingEvent.LivingUpdateEvent evt) {
         if (evt.getEntityLiving().getEntityWorld().isRemote)
@@ -32,15 +72,90 @@ public class Dung extends Feature {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
             if(wolvesOnly && !(animal instanceof EntityWolf))
                 return;
-            if (!animal.getEntityWorld().canSeeSky(animal.getPosition())) {
-                if (animal.getGrowingAge() > 99) {
-                    int light = animal.getEntityWorld().getLight(animal.getPosition());
-                    if (animal.getGrowingAge() == fearLevel[light]) {
-                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
-                        animal.setGrowingAge(99);
+            if(!animal.hasCapability(DUNG_PRODUCER_CAP,null))
+                return;
+            DungProducer dungProducer = animal.getCapability(DUNG_PRODUCER_CAP,null);
+            if(animal.isInLove())
+            {
+                dungProducer.nextPoop = 12000;
+            }
+            else if(dungProducer.nextPoop > 0)
+            {
+                Random rand = animal.getRNG();
+                int light = animal.getEntityWorld().getLight(animal.getPosition());
+                dungProducer.nextPoop = Math.max(0,dungProducer.nextPoop - (rand.nextInt(16) < light ? 1 : 2));
+                if(dungProducer.nextPoop == 0)
+                {
+                    EnumFacing poopDir = findSpaceForPoop(animal.world,animal.getPosition(),rand);
+                    if(poopDir != null) {
+                        BlockPos poopSpot = animal.getPosition().offset(poopDir);
+                        EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() +  0.5, poopSpot.getZ() + 0.5, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
+                        double xmotion = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
+                        double zmotion = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
+                        item.setVelocity(xmotion, 0.0, zmotion);
+                        item.setDefaultPickupDelay();
+                        animal.world.spawnEntity(item);
                     }
+                    dungProducer.nextPoop = -1;
                 }
             }
+        }
+    }
+
+    private EnumFacing findSpaceForPoop(World world, BlockPos pos, Random random)
+    {
+        int dir = random.nextInt(4);
+        for(int i = 0; i < 4; i++)
+        {
+            EnumFacing checkFacing = EnumFacing.getHorizontal((dir + i) % 4);
+            BlockPos checkPos = pos.offset(checkFacing);
+            if(world.isAirBlock(checkPos) || world.getBlockState(checkPos).getBlock().isReplaceable(world,pos))
+                return checkFacing;
+        }
+        return null;
+    }
+
+    public static class DungProducer implements ICapabilitySerializable<NBTTagCompound>
+    {
+        public int nextPoop = -1;
+
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+        {
+            return capability == DUNG_PRODUCER_CAP;
+        }
+
+        @Nullable
+        @Override
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            return hasCapability(capability, facing) ? (T) this : null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("NextPoop", nextPoop);
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            nextPoop = nbt.getInteger("NextPoop");
+        }
+    }
+
+    @SubscribeEvent
+    public void dungCapabilityEvent(AttachCapabilitiesEvent<Entity> event)
+    {
+        Entity entity = event.getObject();
+        if(entity instanceof EntityAnimal)
+        {
+            if(wolvesOnly && !(entity instanceof EntityWolf))
+                return;
+            event.addCapability(DUNG_PRODUCER,new DungProducer());
         }
     }
 

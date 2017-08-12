@@ -110,7 +110,7 @@ public final class PlayerHelper {
     }
 
     public static boolean canSwim(EntityPlayer player) {
-        return (!isWeighted(player)) && player.getHealth() > 4;
+        return (!isWeighted(player)) && canJump(player);
     }
 
     /**

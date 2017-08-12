@@ -48,6 +48,11 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     }
 
     @Override
+    public boolean getUseNeighborBrightness(IBlockState state) {
+        return true;
+    }
+
+    @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(this, 1, 0);
     }

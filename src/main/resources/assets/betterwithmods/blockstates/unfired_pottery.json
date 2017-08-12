@@ -31,6 +31,16 @@
       },
       "vase": {
         "model": "betterwithmods:vase"
+      },
+      "brick": {
+        "model": "betterwithmods:brick"
+      },
+      "nether_brick": {
+		"model": "betterwithmods:brick",
+        "textures": {
+		  "particle": "betterwithmods:blocks/nether_sludge",
+		  "side": "betterwithmods:blocks/nether_sludge"
+		}
       }
     }
   }

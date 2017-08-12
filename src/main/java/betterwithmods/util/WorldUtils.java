@@ -14,6 +14,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
 
@@ -113,11 +114,11 @@ public final class WorldUtils {
             double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
-
-            if (ghast.getCanSpawnHere()) {
-                world.spawnEntity(ghast);
-                return true;
-            }
+            AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition());
+            boolean blocked = StreamSupport.stream(BlockPos.MutableBlockPos.getAllInBox(getMin(box), getMax(box)).spliterator(), false).anyMatch(p -> !world.isAirBlock(p));
+            System.out.println(box);
+            if (!blocked)
+                return world.spawnEntity(ghast);
         }
         return false;
     }
@@ -156,4 +157,11 @@ public final class WorldUtils {
         return posSet;
     }
 
+    public static BlockPos getMin(AxisAlignedBB box) {
+        return new BlockPos(box.minX, box.minY, box.minZ);
+    }
+
+    public static BlockPos getMax(AxisAlignedBB box) {
+        return new BlockPos(box.maxX, box.maxY, box.maxZ);
+    }
 }

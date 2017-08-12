@@ -289,6 +289,9 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     }
 
     public static final ResourceLocation MILLSTONE = LootTableList.register(new ResourceLocation(BWMod.MODID, "block/mill"));
+    public static final ResourceLocation PULLEY = LootTableList.register(new ResourceLocation(BWMod.MODID, "block/pulley"));
+    public static final ResourceLocation HOPPER = LootTableList.register(new ResourceLocation(BWMod.MODID, "block/hopper"));
+    public static final ResourceLocation TURNTABLE = LootTableList.register(new ResourceLocation(BWMod.MODID, "block/turntable"));
 
     @Override
     public void overpower(World world, BlockPos pos) {
@@ -300,12 +303,16 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
                 world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
                 break;
             case PULLEY:
-                InvUtils.ejectBrokenItems(world,pos.offset(EnumFacing.random(world.rand)),MILLSTONE);
-                world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
+                InvUtils.ejectBrokenItems(world, pos.offset(EnumFacing.random(world.rand)), PULLEY);
+                world.setBlockToAir(pos);
                 break;
             case HOPPER:
+                InvUtils.ejectBrokenItems(world, pos.offset(EnumFacing.random(world.rand)), HOPPER);
+                world.setBlockToAir(pos);
                 break;
             case TURNTABLE:
+                InvUtils.ejectBrokenItems(world, pos.offset(EnumFacing.random(world.rand)), TURNTABLE);
+                world.setBlockToAir(pos);
                 break;
         }
     }

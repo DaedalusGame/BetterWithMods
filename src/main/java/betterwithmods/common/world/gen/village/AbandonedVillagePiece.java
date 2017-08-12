@@ -1,6 +1,7 @@
 package betterwithmods.common.world.gen.village;
 
 import betterwithmods.common.world.BWMapGenVillage;
+import betterwithmods.module.hardcore.HCVillages;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -65,19 +66,23 @@ public abstract class AbandonedVillagePiece extends StructureVillagePieces.Villa
 
     @Override
     protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof) {
-        switch (status) {
-            case NORMAL:
-                return super.chooseForgeProfession(count, prof);
-            case SEMIABANDONED:
-                VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
-                String name = profession.getRegistryName().toString();
-                if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
+        if (HCVillages.disableVillagerSpawning) {
+            switch (status) {
+                case NORMAL:
+                    return super.chooseForgeProfession(count, prof);
+                case SEMIABANDONED:
+                    VillagerRegistry.VillagerProfession profession = super.chooseForgeProfession(count, prof);
+                    String name = profession.getRegistryName().toString();
+                    if (name.equals("minecraft:priest") || name.equals("minecraft:librarian"))
+                        return nitwit;
+                    else
+                        return profession;
+                default:
                     return nitwit;
-                else
-                    return profession;
-            default:
-                return nitwit;
 
+            }
+        } else {
+            return super.chooseForgeProfession(count, prof);
         }
     }
 

@@ -34,6 +34,7 @@ import static net.minecraft.world.WorldType.FLAT;
 /**
  * Created by tyler on 4/20/17.
  */
+@SuppressWarnings("unused")
 public class HCSpawn extends Feature {
 
     public static int HARDCORE_SPAWN_RADIUS;

@@ -1,6 +1,6 @@
 package betterwithmods.common.items;
 
-import li.cil.manual.api.ManualAPI;
+import betterwithmods.manual.api.ManualAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;

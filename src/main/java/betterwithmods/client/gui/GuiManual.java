@@ -1,12 +1,12 @@
 package betterwithmods.client.gui;
 
+import betterwithmods.manual.api.ManualAPI;
+import betterwithmods.manual.client.manual.Document;
+import betterwithmods.manual.client.manual.segment.InteractiveSegment;
+import betterwithmods.manual.client.manual.segment.Segment;
+import betterwithmods.manual.client.renderer.TextureLoader;
+import betterwithmods.manual.common.api.ManualAPIImpl;
 import com.google.common.collect.Lists;
-import li.cil.manual.api.ManualAPI;
-import li.cil.manual.client.manual.Document;
-import li.cil.manual.client.manual.segment.InteractiveSegment;
-import li.cil.manual.client.manual.segment.Segment;
-import li.cil.manual.client.renderer.TextureLoader;
-import li.cil.manual.common.api.ManualAPIImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;

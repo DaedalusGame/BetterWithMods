@@ -18,8 +18,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.List;
-
 /**
  * Created by tyler on 4/20/17.
  */
@@ -67,7 +65,21 @@ public class HCLumber extends Feature {
                 ItemStack plank = recipe.getRecipeOutput();
                 BWOreDictionary.woods.stream().filter(w -> w.getPlank(plankAmount).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
                     if (wood != null) {
-                        addHardcoreRecipe(new ChoppingRecipe(wood).setRegistryName(recipe.getRegistryName()));
+                        addHardcoreRecipe(new ChoppingRecipe(wood, axePlankAmount).setRegistryName(recipe.getRegistryName()));
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void disabledPostInit(FMLPostInitializationEvent event) {
+        if (!Loader.isModLoaded("primal")) {
+            for (IRecipe recipe : BWOreDictionary.logRecipes) {
+                ItemStack plank = recipe.getRecipeOutput();
+                BWOreDictionary.woods.stream().filter(w -> w.getPlank(4).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
+                    if (wood != null) {
+                        addHardcoreRecipe(new ChoppingRecipe(wood, 4).setRegistryName(recipe.getRegistryName()));
                     }
                 });
             }

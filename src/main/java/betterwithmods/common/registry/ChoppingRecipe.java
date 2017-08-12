@@ -19,8 +19,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 public class ChoppingRecipe extends ToolDamageRecipe {
     private BWOreDictionary.Wood wood;
 
-    public ChoppingRecipe(BWOreDictionary.Wood wood) {
-        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(HCLumber.axePlankAmount), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
+    public ChoppingRecipe(BWOreDictionary.Wood wood, int planks) {
+        super(new ResourceLocation(BWMod.MODID, "chopping"), wood.getPlank(planks), Ingredient.fromStacks(wood.getLog(1)), ChoppingRecipe::isAxe);
         this.wood = wood;
         MinecraftForge.EVENT_BUS.register(this);
     }

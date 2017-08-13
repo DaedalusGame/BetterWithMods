@@ -31,8 +31,7 @@ public class TileEntitySteelAnvil extends TileBasicInventory {
     }
 
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.getWorld().getTileEntity(this.getPos()) == this
-                && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
+        return this.getWorld().getTileEntity(this.getPos()) == this && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
     }
 
     public String getName() {

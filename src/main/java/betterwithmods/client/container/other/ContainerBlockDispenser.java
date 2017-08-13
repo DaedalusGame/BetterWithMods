@@ -37,7 +37,7 @@ public class ContainerBlockDispenser extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return true;
+        return tile.isUseableByPlayer(player);
     }
 
     @Override

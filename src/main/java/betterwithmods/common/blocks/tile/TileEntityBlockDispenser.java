@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -115,6 +116,10 @@ public class TileEntityBlockDispenser extends TileBasicInventory {
             return currentSlot;
 
         return -1;
+    }
+
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.getWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
 }

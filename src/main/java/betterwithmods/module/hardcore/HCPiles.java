@@ -2,7 +2,6 @@ package betterwithmods.module.hardcore;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.Feature;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
@@ -79,16 +78,12 @@ public class HCPiles extends Feature {
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
         IBlockState state = event.getState();
-        boolean shouldDropInferior = true;
         EntityPlayer player = event.getHarvester();
         if (player != null) {
             ItemStack stack = event.getHarvester().getHeldItemMainhand();
-            shouldDropInferior = !PlayerHelper.isCurrentToolEffectiveOnBlock(stack, event.getState());
+            if (PlayerHelper.isCurrentToolEffectiveOnBlock(stack, event.getState()))
+                return;
         }
-        if (!shouldDropInferior) {
-            return;
-        }
-
         if (blockStateToPile.containsKey(state)) {
             ItemStack pile = blockStateToPile.get(state).copy();
             event.getDrops().clear();

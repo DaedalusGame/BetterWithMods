@@ -13,3 +13,4 @@ Growth can also be accelerated by [fertilizing](fertile_farmland.md) the farmlan
 Hemp has two stages, it is best to let the plant grow to stage 2 and only harvest the top block, similar to Sugar Cane.
 ![Hemp Stage 1](betterwithmods:docs/imgs/hemp-stage-1.png)
 ![Hemp Stage 2](betterwithmods:docs/imgs/hemp-stage-2.png)
+@[Test](minecraft:stick)

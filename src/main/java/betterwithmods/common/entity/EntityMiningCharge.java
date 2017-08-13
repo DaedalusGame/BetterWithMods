@@ -161,7 +161,7 @@ public class EntityMiningCharge extends Entity {
     }
 
     /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
+     * (abstract) Protected HELPER method to write subclass entity data to NBT.
      */
     @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
@@ -170,7 +170,7 @@ public class EntityMiningCharge extends Entity {
     }
 
     /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
+     * (abstract) Protected HELPER method to read subclass entity data from NBT.
      */
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {

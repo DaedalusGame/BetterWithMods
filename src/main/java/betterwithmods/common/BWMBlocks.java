@@ -177,8 +177,8 @@ public final class BWMBlocks {
         registerBlock(STAKE_STRING,null);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
-        registerBlock(GRASS);
-        registerBlock(MYCELIUM);
+//        registerBlock(GRASS);
+//        registerBlock(MYCELIUM);
         registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
             @Override
             public String getUnlocalizedName(ItemStack stack) {

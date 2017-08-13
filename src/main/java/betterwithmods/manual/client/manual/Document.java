@@ -36,11 +36,13 @@ public final class Document {
             new PatternMapping("^(#+)\\s(.*)", Document::HeaderSegment), // headers: # ...
             new PatternMapping("(`)(.*?)\\1", Document::CodeSegment), // code: `...`
             new PatternMapping("!\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::ImageSegment), // images: ![...](...)
+            new PatternMapping("@\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEISegment), // images: @[...](...)
             new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
             new PatternMapping("(\\*\\*|__)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | __...__
             new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
             new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment), // strikethrough: ~~...~~
             new PatternMapping("\\{([^\\?]+)\\?([^\\[]+):([^\\[]+)\\}", Document::FeatureSegment)
+
     };
 
     private Document() {
@@ -240,6 +242,10 @@ public final class Document {
 
     private static Segment FeatureSegment(final Segment s, final Matcher m) {
         return new FeatureSegment(s, m.group(1), m.group(2), m.group(3));
+    }
+
+    private static Segment JEISegment(final Segment s, final Matcher m) {
+        return new JEISegment(s, m.group(1), m.group(2));
     }
 
     private static final class PatternMapping {

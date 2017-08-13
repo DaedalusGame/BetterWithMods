@@ -33,7 +33,7 @@ public class ContainerMill extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return true;
+        return mill.isUseableByPlayer(player);
     }
 
     @Override

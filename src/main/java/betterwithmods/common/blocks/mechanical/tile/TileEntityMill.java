@@ -10,6 +10,7 @@ import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -204,7 +205,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public int getMechanicalInput(EnumFacing facing) {
         if (facing.getAxis().isVertical())
             return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
-        if(world.getTileEntity(pos.offset(facing)) instanceof TileCrank) {
+        if (world.getTileEntity(pos.offset(facing)) instanceof TileCrank) {
             return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         }
         return 0;
@@ -243,5 +244,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     @Override
     public BlockPos getBlockPos() {
         return getPos();
+    }
+
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
 }

@@ -90,9 +90,9 @@ public class Dung extends Feature {
                     if(poopDir != null) {
                         BlockPos poopSpot = animal.getPosition().offset(poopDir);
                         EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() +  0.5, poopSpot.getZ() + 0.5, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-                        double xmotion = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
-                        double zmotion = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
-                        item.setVelocity(xmotion, 0.0, zmotion);
+                        item.motionX = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
+                        item.motionY = 0;
+                        item.motionZ = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
                         item.setDefaultPickupDelay();
                         animal.world.spawnEntity(item);
                     }
